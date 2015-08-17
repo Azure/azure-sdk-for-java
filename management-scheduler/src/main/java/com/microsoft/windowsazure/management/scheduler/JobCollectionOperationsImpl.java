@@ -28,7 +28,9 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.Base64;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCreateParameters;
@@ -50,6 +52,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -150,6 +153,15 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getIntrinsicSettings() != null) {
+            if (parameters.getIntrinsicSettings().getQuota() != null) {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence() != null) {
+                    if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence().getFrequency() == null) {
+                        throw new NullPointerException("parameters.IntrinsicSettings.Quota.MaxRecurrence.Frequency");
+                    }
+                }
+            }
+        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -164,7 +176,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/cloudservices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
+        url = url + "/resources/";
+        url = url + "scheduler";
+        url = url + "/";
+        url = url + "JobCollections";
+        url = url + "/";
+        url = url + URLEncoder.encode(jobCollectionName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -202,9 +225,11 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             Element intrinsicSettingsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
             resourceElement.appendChild(intrinsicSettingsElement);
             
-            Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
-            planElement.appendChild(requestDoc.createTextNode(parameters.getIntrinsicSettings().getPlan().toString()));
-            intrinsicSettingsElement.appendChild(planElement);
+            if (parameters.getIntrinsicSettings().getPlan() != null) {
+                Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
+                planElement.appendChild(requestDoc.createTextNode(parameters.getIntrinsicSettings().getPlan().toString()));
+                intrinsicSettingsElement.appendChild(planElement);
+            }
             
             if (parameters.getIntrinsicSettings().getQuota() != null) {
                 Element quotaElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Quota");
@@ -275,6 +300,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             // Create Result
             JobCollectionCreateResponse result = null;
+            // Deserialize Response
             result = new JobCollectionCreateResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("ETag").length > 0) {
@@ -349,7 +375,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/cloudservices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
+        url = url + "/resources/";
+        url = url + "scheduler";
+        url = url + "/";
+        url = url + "JobCollections";
+        url = url + "/";
+        url = url + URLEncoder.encode(jobCollectionName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -388,6 +425,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -465,6 +503,15 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         if (parameters.getETag() == null) {
             throw new NullPointerException("parameters.ETag");
         }
+        if (parameters.getIntrinsicSettings() != null) {
+            if (parameters.getIntrinsicSettings().getQuota() != null) {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence() != null) {
+                    if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence().getFrequency() == null) {
+                        throw new NullPointerException("parameters.IntrinsicSettings.Quota.MaxRecurrence.Frequency");
+                    }
+                }
+            }
+        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -479,7 +526,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/cloudservices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
+        url = url + "/resources/";
+        url = url + "scheduler";
+        url = url + "/";
+        url = url + "JobCollections";
+        url = url + "/";
+        url = url + URLEncoder.encode(jobCollectionName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -521,9 +579,11 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             Element intrinsicSettingsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
             resourceElement.appendChild(intrinsicSettingsElement);
             
-            Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
-            planElement.appendChild(requestDoc.createTextNode(parameters.getIntrinsicSettings().getPlan().toString()));
-            intrinsicSettingsElement.appendChild(planElement);
+            if (parameters.getIntrinsicSettings().getPlan() != null) {
+                Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
+                planElement.appendChild(requestDoc.createTextNode(parameters.getIntrinsicSettings().getPlan().toString()));
+                intrinsicSettingsElement.appendChild(planElement);
+            }
             
             if (parameters.getIntrinsicSettings().getQuota() != null) {
                 Element quotaElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Quota");
@@ -594,6 +654,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             // Create Result
             JobCollectionUpdateResponse result = null;
+            // Deserialize Response
             result = new JobCollectionUpdateResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("ETag").length > 0) {
@@ -677,9 +738,23 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + "?";
-        url = url + "op=checknameavailability";
-        url = url + "&" + "resourceName=" + URLEncoder.encode(jobCollectionName.trim(), "UTF-8");
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/cloudservices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
+        url = url + "/resources/";
+        url = url + "scheduler";
+        url = url + "/";
+        url = url + "JobCollections";
+        url = url + "/";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("op=checknameavailability");
+        queryParameters.add("resourceName=" + URLEncoder.encode(jobCollectionName, "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -719,23 +794,25 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             // Create Result
             JobCollectionCheckNameAvailabilityResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new JobCollectionCheckNameAvailabilityResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element resourceNameAvailabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceNameAvailabilityResponse");
-            if (resourceNameAvailabilityResponseElement != null) {
-                Element isAvailableElement = XmlUtility.getElementByTagNameNS(resourceNameAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "IsAvailable");
-                if (isAvailableElement != null) {
-                    boolean isAvailableInstance;
-                    isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent().toLowerCase());
-                    result.setIsAvailable(isAvailableInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new JobCollectionCheckNameAvailabilityResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element resourceNameAvailabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceNameAvailabilityResponse");
+                if (resourceNameAvailabilityResponseElement != null) {
+                    Element isAvailableElement = XmlUtility.getElementByTagNameNS(resourceNameAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "IsAvailable");
+                    if (isAvailableElement != null) {
+                        boolean isAvailableInstance;
+                        isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent().toLowerCase());
+                        result.setIsAvailable(isAvailableInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -836,7 +913,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -849,11 +926,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -953,7 +1031,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -966,11 +1044,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -1046,7 +1125,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/cloudservices/" + cloudServiceName.trim() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + jobCollectionName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/cloudservices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
+        url = url + "/resources/";
+        url = url + "scheduler";
+        url = url + "/~/";
+        url = url + "JobCollections";
+        url = url + "/";
+        url = url + URLEncoder.encode(jobCollectionName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1086,144 +1176,146 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             // Create Result
             JobCollectionGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new JobCollectionGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element resourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Resource");
-            if (resourceElement != null) {
-                Element nameElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new JobCollectionGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element eTagElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "ETag");
-                if (eTagElement != null) {
-                    String eTagInstance;
-                    eTagInstance = eTagElement.getTextContent();
-                    result.setETag(eTagInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    JobCollectionState stateInstance;
-                    stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
-                    result.setState(stateInstance);
-                }
-                
-                Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
-                if (schemaVersionElement != null) {
-                    String schemaVersionInstance;
-                    schemaVersionInstance = schemaVersionElement.getTextContent();
-                    result.setSchemaVersion(schemaVersionInstance);
-                }
-                
-                Element promotionCodeElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "PromotionCode");
-                if (promotionCodeElement != null) {
-                    String promotionCodeInstance;
-                    promotionCodeInstance = promotionCodeElement.getTextContent();
-                    result.setPromotionCode(promotionCodeInstance);
-                }
-                
-                Element intrinsicSettingsElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
-                if (intrinsicSettingsElement != null) {
-                    JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
-                    result.setIntrinsicSettings(intrinsicSettingsInstance);
-                    
-                    Element planElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
-                    if (planElement != null) {
-                        JobCollectionPlan planInstance;
-                        planInstance = JobCollectionPlan.valueOf(planElement.getTextContent());
-                        intrinsicSettingsInstance.setPlan(planInstance);
+                Element resourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Resource");
+                if (resourceElement != null) {
+                    Element nameElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
                     }
                     
-                    Element quotaElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Quota");
-                    if (quotaElement != null) {
-                        JobCollectionQuota quotaInstance = new JobCollectionQuota();
-                        intrinsicSettingsInstance.setQuota(quotaInstance);
+                    Element eTagElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "ETag");
+                    if (eTagElement != null) {
+                        String eTagInstance;
+                        eTagInstance = eTagElement.getTextContent();
+                        result.setETag(eTagInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
+                        JobCollectionState stateInstance;
+                        stateInstance = JobCollectionState.valueOf(stateElement.getTextContent().toUpperCase());
+                        result.setState(stateInstance);
+                    }
+                    
+                    Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
+                    if (schemaVersionElement != null) {
+                        String schemaVersionInstance;
+                        schemaVersionInstance = schemaVersionElement.getTextContent();
+                        result.setSchemaVersion(schemaVersionInstance);
+                    }
+                    
+                    Element promotionCodeElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "PromotionCode");
+                    if (promotionCodeElement != null) {
+                        String promotionCodeInstance;
+                        promotionCodeInstance = promotionCodeElement.getTextContent();
+                        result.setPromotionCode(promotionCodeInstance);
+                    }
+                    
+                    Element intrinsicSettingsElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
+                    if (intrinsicSettingsElement != null) {
+                        JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
+                        result.setIntrinsicSettings(intrinsicSettingsInstance);
                         
-                        Element maxJobCountElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxJobCount");
-                        if (maxJobCountElement != null && (maxJobCountElement.getTextContent() == null || maxJobCountElement.getTextContent().isEmpty() == true) == false) {
-                            int maxJobCountInstance;
-                            maxJobCountInstance = DatatypeConverter.parseInt(maxJobCountElement.getTextContent());
-                            quotaInstance.setMaxJobCount(maxJobCountInstance);
+                        Element planElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
+                        if (planElement != null && planElement.getTextContent() != null && !planElement.getTextContent().isEmpty()) {
+                            JobCollectionPlan planInstance;
+                            planInstance = JobCollectionPlan.valueOf(planElement.getTextContent().toUpperCase());
+                            intrinsicSettingsInstance.setPlan(planInstance);
                         }
                         
-                        Element maxJobOccurrenceElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxJobOccurrence");
-                        if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() == null || maxJobOccurrenceElement.getTextContent().isEmpty() == true) == false) {
-                            int maxJobOccurrenceInstance;
-                            maxJobOccurrenceInstance = DatatypeConverter.parseInt(maxJobOccurrenceElement.getTextContent());
-                            quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
-                        }
-                        
-                        Element maxRecurrenceElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxRecurrence");
-                        if (maxRecurrenceElement != null) {
-                            JobCollectionMaxRecurrence maxRecurrenceInstance = new JobCollectionMaxRecurrence();
-                            quotaInstance.setMaxRecurrence(maxRecurrenceInstance);
+                        Element quotaElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Quota");
+                        if (quotaElement != null) {
+                            JobCollectionQuota quotaInstance = new JobCollectionQuota();
+                            intrinsicSettingsInstance.setQuota(quotaInstance);
                             
-                            Element frequencyElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Frequency");
-                            if (frequencyElement != null) {
-                                JobCollectionRecurrenceFrequency frequencyInstance;
-                                frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
-                                maxRecurrenceInstance.setFrequency(frequencyInstance);
+                            Element maxJobCountElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxJobCount");
+                            if (maxJobCountElement != null && maxJobCountElement.getTextContent() != null && !maxJobCountElement.getTextContent().isEmpty()) {
+                                int maxJobCountInstance;
+                                maxJobCountInstance = DatatypeConverter.parseInt(maxJobCountElement.getTextContent());
+                                quotaInstance.setMaxJobCount(maxJobCountInstance);
                             }
                             
-                            Element intervalElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Interval");
-                            if (intervalElement != null) {
-                                int intervalInstance;
-                                intervalInstance = DatatypeConverter.parseInt(intervalElement.getTextContent());
-                                maxRecurrenceInstance.setInterval(intervalInstance);
+                            Element maxJobOccurrenceElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxJobOccurrence");
+                            if (maxJobOccurrenceElement != null && maxJobOccurrenceElement.getTextContent() != null && !maxJobOccurrenceElement.getTextContent().isEmpty()) {
+                                int maxJobOccurrenceInstance;
+                                maxJobOccurrenceInstance = DatatypeConverter.parseInt(maxJobOccurrenceElement.getTextContent());
+                                quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
+                            }
+                            
+                            Element maxRecurrenceElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxRecurrence");
+                            if (maxRecurrenceElement != null) {
+                                JobCollectionMaxRecurrence maxRecurrenceInstance = new JobCollectionMaxRecurrence();
+                                quotaInstance.setMaxRecurrence(maxRecurrenceInstance);
+                                
+                                Element frequencyElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Frequency");
+                                if (frequencyElement != null && frequencyElement.getTextContent() != null && !frequencyElement.getTextContent().isEmpty()) {
+                                    JobCollectionRecurrenceFrequency frequencyInstance;
+                                    frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent().toUpperCase());
+                                    maxRecurrenceInstance.setFrequency(frequencyInstance);
+                                }
+                                
+                                Element intervalElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Interval");
+                                if (intervalElement != null) {
+                                    int intervalInstance;
+                                    intervalInstance = DatatypeConverter.parseInt(intervalElement.getTextContent());
+                                    maxRecurrenceInstance.setInterval(intervalInstance);
+                                }
                             }
                         }
                     }
-                }
-                
-                Element labelElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement != null) {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
-                    result.setLabel(labelInstance);
-                }
-                
-                Element operationStatusElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
-                if (operationStatusElement != null) {
-                    JobCollectionGetResponse.OperationStatus operationStatusInstance = new JobCollectionGetResponse.OperationStatus();
-                    result.setLastOperationStatus(operationStatusInstance);
                     
-                    Element errorElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                    if (errorElement != null) {
-                        JobCollectionGetResponse.OperationStatusResponseDetails errorInstance = new JobCollectionGetResponse.OperationStatusResponseDetails();
-                        operationStatusInstance.setResponseDetails(errorInstance);
-                        
-                        Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
-                        if (httpCodeElement != null) {
-                            Integer httpCodeInstance;
-                            httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
-                            errorInstance.setStatusCode(httpCodeInstance);
-                        }
-                        
-                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                        if (messageElement != null) {
-                            String messageInstance;
-                            messageInstance = messageElement.getTextContent();
-                            errorInstance.setMessage(messageInstance);
-                        }
+                    Element labelElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement != null) {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
+                        result.setLabel(labelInstance);
                     }
                     
-                    Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
-                    if (resultElement != null) {
-                        SchedulerOperationStatus resultInstance;
-                        resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());
-                        operationStatusInstance.setStatus(resultInstance);
+                    Element operationStatusElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
+                    if (operationStatusElement != null) {
+                        JobCollectionGetResponse.OperationStatus operationStatusInstance = new JobCollectionGetResponse.OperationStatus();
+                        result.setLastOperationStatus(operationStatusInstance);
+                        
+                        Element errorElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                        if (errorElement != null) {
+                            JobCollectionGetResponse.OperationStatusResponseDetails errorInstance = new JobCollectionGetResponse.OperationStatusResponseDetails();
+                            operationStatusInstance.setResponseDetails(errorInstance);
+                            
+                            Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
+                            if (httpCodeElement != null && httpCodeElement.getTextContent() != null && !httpCodeElement.getTextContent().isEmpty()) {
+                                Integer httpCodeInstance;
+                                httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent().toUpperCase());
+                                errorInstance.setStatusCode(httpCodeInstance);
+                            }
+                            
+                            Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                            if (messageElement != null) {
+                                String messageInstance;
+                                messageInstance = messageElement.getTextContent();
+                                errorInstance.setMessage(messageInstance);
+                            }
+                        }
+                        
+                        Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
+                        if (resultElement != null && resultElement.getTextContent() != null && !resultElement.getTextContent().isEmpty()) {
+                            SchedulerOperationStatus resultInstance;
+                            resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent().toUpperCase());
+                            operationStatusInstance.setStatus(resultInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1324,7 +1416,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1337,11 +1429,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }

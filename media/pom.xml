@@ -18,7 +18,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -45,6 +45,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <skipTests>true</skipTests>
+    <jjwt.version>0.5.1</jjwt.version>
+    <jackson.version>2.6.0</jackson.version>
   </properties>
 
   <developers>
@@ -89,7 +92,26 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
-
+    <dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId>
+	  <version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+     <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version><!--$NO-MVN-MAN-VER$-->
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>${jjwt.version}</version>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -203,12 +225,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.12</version>
           <configuration>
-            <includes>
-              <include>**/Test*.java</include>
-              <include>**/*Test.java</include>
-              <include>**/*Tests.java</include>
-              <include>**/*TestCase.java</include>
-            </includes>
+            <skipTests>${skipTests}</skipTests>
           </configuration>
         </plugin>
       </plugins>

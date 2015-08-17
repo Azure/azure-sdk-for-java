@@ -43,7 +43,23 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for logoType complex type.
- * </p>
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="logoType">
+ *   &lt;simpleContent>
+ *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
+ *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
+ *       &lt;anyAttribute namespace='##other'/>
+ *     &lt;/extension>
+ *   &lt;/simpleContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "logoType", propOrder = { "value" })

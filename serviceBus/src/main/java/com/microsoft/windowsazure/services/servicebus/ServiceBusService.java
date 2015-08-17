@@ -33,7 +33,6 @@ public final class ServiceBusService {
     /**
      * Creates an instance of the <code>ServiceBusContract</code> API.
      * 
-     * @return The service bus contract.
      */
     public static ServiceBusContract create() {
         return Configuration.getInstance().create(ServiceBusContract.class);
@@ -46,7 +45,7 @@ public final class ServiceBusService {
      * @param config
      *            A <code>Configuration</code> object that represents the
      *            configuration for the service bus service.
-     * @return The service bus contract.
+     * 
      */
     public static ServiceBusContract create(Configuration config) {
         return config.create(ServiceBusContract.class);
@@ -55,8 +54,6 @@ public final class ServiceBusService {
     /**
      * Creates an instance of the <code>ServiceBusContract</code> API.
      * 
-     * @param profile The profile.
-     * @return The service bus contract.
      */
     public static ServiceBusContract create(String profile) {
         return Configuration.getInstance().create(profile,
@@ -67,11 +64,10 @@ public final class ServiceBusService {
      * Creates an instance of the <code>ServiceBusContract</code> API using the
      * specified configuration.
      * 
-     * @param profile The profile.
      * @param config
      *            A <code>Configuration</code> object that represents the
      *            configuration for the service bus service.
-     * @return The service bus contract.
+     * 
      */
     public static ServiceBusContract create(String profile, Configuration config) {
         return config.create(profile, ServiceBusContract.class);

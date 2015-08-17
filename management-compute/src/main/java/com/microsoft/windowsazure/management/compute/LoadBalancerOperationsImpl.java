@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerUpdateParameters;
@@ -36,6 +37,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -166,7 +168,16 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/loadbalancers";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/loadbalancers";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -183,7 +194,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -255,6 +266,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -342,7 +354,17 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/loadbalancers/" + loadBalancerName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/loadbalancers/";
+        url = url + URLEncoder.encode(loadBalancerName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -358,7 +380,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -381,6 +403,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -482,7 +505,17 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/loadbalancers/" + loadBalancerName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/loadbalancers/";
+        url = url + URLEncoder.encode(loadBalancerName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -499,7 +532,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -571,6 +604,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -676,7 +710,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             }
             
             OperationStatusResponse response = client2.getLoadBalancersOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -684,7 +718,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -697,11 +731,12 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -789,7 +824,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -802,11 +837,12 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -913,7 +949,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             }
             
             OperationStatusResponse response = client2.getLoadBalancersOperations().beginUpdatingAsync(serviceName, deploymentName, loadBalancerName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -921,7 +957,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -934,11 +970,12 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }

@@ -123,9 +123,13 @@ public class VirtualMachineDiskCreateParameters {
     * Initializes a new instance of the VirtualMachineDiskCreateParameters
     * class with required arguments.
     *
-    * @param label The label.
-    * @param mediaLinkUri The media link Uri.
-    * @param name The name.
+    * @param label Specifies the friendly name of the disk.
+    * @param mediaLinkUri Specifies the location of the blob in Azure storage.
+    * The blob location must belong to a storage account in the subscription
+    * specified by the SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
+    * @param name Specifies a name for the disk. Azure uses the name to
+    * identify the disk when creating virtual machines from the disk.
     */
     public VirtualMachineDiskCreateParameters(String label, URI mediaLinkUri, String name) {
         if (label == null) {

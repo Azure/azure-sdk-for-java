@@ -26,8 +26,10 @@ package com.microsoft.windowsazure.management.network.models;
 /**
 * Possible values for the Local Network Connection Type.
 */
-public enum LocalNetworkConnectionType {
-    IPSecurity,
+public abstract class LocalNetworkConnectionType {
+    public static final String IPSECURITY = "IPsec";
     
-    Dedicated,
+    public static final String DEDICATED = "Dedicated";
+    
+    public static final String BACKEND = "Backend";
 }

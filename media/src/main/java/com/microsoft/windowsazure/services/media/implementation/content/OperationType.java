@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * This type maps the XML returned in the odata ATOM serialization for Asset
+ * This type maps the XML returned in the odata ATOM serialization for operation
  * entities.
  * 
  */

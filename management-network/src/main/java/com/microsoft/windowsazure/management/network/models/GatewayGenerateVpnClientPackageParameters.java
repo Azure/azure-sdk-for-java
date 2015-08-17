@@ -57,8 +57,12 @@ public class GatewayGenerateVpnClientPackageParameters {
     * Initializes a new instance of the
     * GatewayGenerateVpnClientPackageParameters class with required arguments.
     *
+    * @param processorArchitecture The client processor architecture.
     */
     public GatewayGenerateVpnClientPackageParameters(GatewayProcessorArchitecture processorArchitecture) {
+        if (processorArchitecture == null) {
+            throw new NullPointerException("processorArchitecture");
+        }
         this.setProcessorArchitecture(processorArchitecture);
     }
 }

@@ -19,6 +19,7 @@
 package com.microsoft.windowsazure.core.pipeline.filter;
 
 import java.net.URI;
+import java.util.Map;
 
 public interface ServiceRequestContext {
     String getMethod();
@@ -28,6 +29,8 @@ public interface ServiceRequestContext {
     URI getURI();
 
     void setURI(URI uri);
+
+    URI getFullURI();
 
     String getHeader(String name);
 
@@ -42,4 +45,6 @@ public interface ServiceRequestContext {
     Object getProperty(String name);
 
     void setProperty(String name, Object value);
+
+    Map<String, String> getAllHeaders();
 }

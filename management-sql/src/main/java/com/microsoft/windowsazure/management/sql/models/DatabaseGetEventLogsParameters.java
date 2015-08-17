@@ -94,9 +94,9 @@ public class DatabaseGetEventLogsParameters {
     * Initializes a new instance of the DatabaseGetEventLogsParameters class
     * with required arguments.
     *
-    * @param startDate The start date.
-    * @param intervalSizeInMinutes The interval size in minutes.
-    * @param eventTypes The event types.
+    * @param startDate Gets or sets the start date for the event log.
+    * @param intervalSizeInMinutes Gets or sets the interval size in minutes.
+    * @param eventTypes Gets or sets the event types to retrieve.
     */
     public DatabaseGetEventLogsParameters(Calendar startDate, int intervalSizeInMinutes, String eventTypes) {
         if (eventTypes == null) {

@@ -48,13 +48,13 @@ public class GatewayGetResponse extends OperationResponse {
         this.defaultSite = defaultSiteValue;
     }
     
-    private GatewaySKU gatewaySKU;
+    private String gatewaySKU;
     
     /**
     * Optional. The SKU for this virtual network gateway.
     * @return The GatewaySKU value.
     */
-    public GatewaySKU getGatewaySKU() {
+    public String getGatewaySKU() {
         return this.gatewaySKU;
     }
     
@@ -62,17 +62,17 @@ public class GatewayGetResponse extends OperationResponse {
     * Optional. The SKU for this virtual network gateway.
     * @param gatewaySKUValue The GatewaySKU value.
     */
-    public void setGatewaySKU(final GatewaySKU gatewaySKUValue) {
+    public void setGatewaySKU(final String gatewaySKUValue) {
         this.gatewaySKU = gatewaySKUValue;
     }
     
-    private GatewayType gatewayType;
+    private String gatewayType;
     
     /**
     * Optional. The type of gateway routing used for this virtual network.
     * @return The GatewayType value.
     */
-    public GatewayType getGatewayType() {
+    public String getGatewayType() {
         return this.gatewayType;
     }
     
@@ -80,7 +80,7 @@ public class GatewayGetResponse extends OperationResponse {
     * Optional. The type of gateway routing used for this virtual network.
     * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(final GatewayType gatewayTypeValue) {
+    public void setGatewayType(final String gatewayTypeValue) {
         this.gatewayType = gatewayTypeValue;
     }
     

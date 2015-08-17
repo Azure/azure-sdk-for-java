@@ -91,6 +91,11 @@ public class EntitleResourceParameters {
     * Initializes a new instance of the EntitleResourceParameters class with
     * required arguments.
     *
+    * @param resourceNamespace Required NameSpace identifier for the resource
+    * provider.
+    * @param resourceType Required type for the resource.
+    * @param registrationDate The required data when the entitlement is
+    * performed.
     */
     public EntitleResourceParameters(String resourceNamespace, String resourceType, Calendar registrationDate) {
         if (resourceNamespace == null) {

@@ -18,15 +18,15 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-compute</artifactId>
+  <artifactId>azure-svc-mgmt-compute</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Compute Management</name>
-  <description>This package contains Microsoft Azure Compute Management SDK.</description>
+  <name>Microsoft Azure SDK for Compute Management SvcMgmt</name>
+  <description>This package contains Microsoft Azure Compute Management SDK for Service Management APIs.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -70,9 +70,15 @@
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>azure-management-storage</artifactId>
+      <artifactId>azure-svc-mgmt-storage</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -84,7 +90,7 @@
     </dependency>
     <dependency> 
       <groupId>${project.groupId}</groupId>
-      <artifactId>azure-management</artifactId>
+      <artifactId>azure-svc-mgmt</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -109,7 +115,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
+      <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
     </dependency>

@@ -201,6 +201,10 @@ public final class AccessCondition {
      *            A <code>java.net.HttpURLConnection</code> object that
      *            represents the request to which the condition is being
      *            applied.
+     * 
+     * @throws StorageException
+     *             If there is an error parsing the date value of the access
+     *             condition.
      */
     public void applyConditionToRequest(final HttpURLConnection request) {
         applyConditionToRequest(request, false);
@@ -216,6 +220,9 @@ public final class AccessCondition {
      * @param useSourceAccessHeaders
      *            If true will use the Source_ headers for the conditions,
      *            otherwise standard headers are used.
+     * @throws StorageException
+     *             If there is an error parsing the date value of the access
+     *             condition.
      */
     public void applyConditionToRequest(final HttpURLConnection request,
             boolean useSourceAccessHeaders) {

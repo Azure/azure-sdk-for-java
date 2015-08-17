@@ -220,6 +220,34 @@ public class VirtualMachineCreateParameters {
         this.roleSize = roleSizeValue;
     }
     
+    private VMImageInput vMImageInput;
+    
+    /**
+    * Optional. When a VM Image is used to create a new PersistantVMRole, the
+    * DiskConfigurations in the VM Image are used to create new Disks for the
+    * new VM. This parameter can be used to resize the newly created Disks to
+    * a larger size than the underlying DiskConfigurations in the VM
+    * Image.This property is only returned with a version header of 2014-10-01
+    * or newer.
+    * @return The VMImageInput value.
+    */
+    public VMImageInput getVMImageInput() {
+        return this.vMImageInput;
+    }
+    
+    /**
+    * Optional. When a VM Image is used to create a new PersistantVMRole, the
+    * DiskConfigurations in the VM Image are used to create new Disks for the
+    * new VM. This parameter can be used to resize the newly created Disks to
+    * a larger size than the underlying DiskConfigurations in the VM
+    * Image.This property is only returned with a version header of 2014-10-01
+    * or newer.
+    * @param vMImageInputValue The VMImageInput value.
+    */
+    public void setVMImageInput(final VMImageInput vMImageInputValue) {
+        this.vMImageInput = vMImageInputValue;
+    }
+    
     private String vMImageName;
     
     /**
@@ -260,7 +288,8 @@ public class VirtualMachineCreateParameters {
     * Initializes a new instance of the VirtualMachineCreateParameters class
     * with required arguments.
     *
-    * @param roleName The role name.
+    * @param roleName Specifies the name for the virtual machine. The name must
+    * be unique within the deployment.
     */
     public VirtualMachineCreateParameters(String roleName) {
         this();

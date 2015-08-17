@@ -32,26 +32,26 @@ public enum JobCollectionState {
     * which might either be a result of failed communication with the RP or
     * just that the Service Manager hasn't got around to process the resource.
     */
-    Unknown,
+    UNKNOWN,
     
     /**
     * The resource provider did not respond with information for the resource.
     */
-    NotFound,
+    NOTFOUND,
     
     /**
     * Resource is running fine.
     */
-    Started,
+    STARTED,
     
     /**
     * Resource was stopped due to an issue.
     */
-    Stopped,
+    STOPPED,
     
     /**
     * The resource was temporarily put on hold primarily due to a monetary
     * event.
     */
-    Paused,
+    PAUSED,
 }

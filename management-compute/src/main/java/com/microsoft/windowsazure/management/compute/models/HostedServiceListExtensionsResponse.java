@@ -221,7 +221,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * Initializes a new instance of the Extension class with required
         * arguments.
         *
-        * @param type The type.
+        * @param type The type of the extension.
         */
         public Extension(String type) {
             if (type == null) {

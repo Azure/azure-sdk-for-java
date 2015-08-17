@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -287,7 +288,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.deployments = new DeploymentOperationsImpl(this);
         this.dnsServer = new DNSServerOperationsImpl(this);
@@ -301,7 +302,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
         this.virtualMachineOSImages = new VirtualMachineOSImageOperationsImpl(this);
         this.virtualMachineVMImages = new VirtualMachineVMImageOperationsImpl(this);
-        this.apiVersion = "2014-10-01";
+        this.apiVersion = "2015-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -314,7 +315,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
     */
     @Inject
@@ -364,9 +365,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
-    * @param apiVersion Required. Gets the API version.
+    * @param apiVersion Optional. Gets the API version.
     * @param longRunningOperationInitialTimeout Required. Gets or sets the
     * initial timeout for Long Running Operations.
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
@@ -399,10 +400,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static CertificateFormat parseCertificateFormat(String value) {
         if ("pfx".equalsIgnoreCase(value)) {
-            return CertificateFormat.Pfx;
+            return CertificateFormat.PFX;
         }
         if ("cer".equalsIgnoreCase(value)) {
-            return CertificateFormat.Cer;
+            return CertificateFormat.CER;
         }
         throw new IllegalArgumentException("value");
     }
@@ -414,10 +415,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value as a string.
     */
      static String certificateFormatToString(CertificateFormat value) {
-        if (value == CertificateFormat.Pfx) {
+        if (value == CertificateFormat.PFX) {
             return "pfx";
         }
-        if (value == CertificateFormat.Cer) {
+        if (value == CertificateFormat.CER) {
             return "cer";
         }
         throw new IllegalArgumentException("value");
@@ -431,10 +432,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
         if ("tcp".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Tcp;
+            return LoadBalancerProbeTransportProtocol.TCP;
         }
         if ("http".equalsIgnoreCase(value)) {
-            return LoadBalancerProbeTransportProtocol.Http;
+            return LoadBalancerProbeTransportProtocol.HTTP;
         }
         throw new IllegalArgumentException("value");
     }
@@ -446,10 +447,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value as a string.
     */
      static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
-        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
+        if (value == LoadBalancerProbeTransportProtocol.TCP) {
             return "tcp";
         }
-        if (value == LoadBalancerProbeTransportProtocol.Http) {
+        if (value == LoadBalancerProbeTransportProtocol.HTTP) {
             return "http";
         }
         throw new IllegalArgumentException("value");
@@ -531,7 +532,13 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         }
         
         // Construct URL
-        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/operations/" + requestId.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(requestId, "UTF-8");
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -547,7 +554,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -571,57 +578,59 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             // Create Result
             OperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new OperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            if (operationElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new OperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    OperationStatus statusInstance;
-                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                if (httpStatusCodeElement != null) {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                if (errorElement != null) {
-                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    if (codeElement != null) {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
+                Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
+                if (operationElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
+                    Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        OperationStatus statusInstance;
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                    if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
+                        Integer httpStatusCodeInstance;
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
+                        result.setHttpStatusCode(httpStatusCodeInstance);
+                    }
+                    
+                    Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                    if (errorElement != null) {
+                        OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
+                        result.setError(errorInstance);
+                        
+                        Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                        if (codeElement != null) {
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            errorInstance.setCode(codeInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

@@ -42,17 +42,7 @@ public class JobCollectionJobsUpdateStateParameters {
     * @param stateValue The State value.
     */
     public void setState(final JobState stateValue) {
-        this.stateIsIncluded = true;
         this.state = stateValue;
-    }
-    
-    private boolean stateIsIncluded;
-    
-    /**
-    * @return The StateIsIncluded value.
-    */
-    public boolean isStateIsIncluded() {
-        return this.stateIsIncluded;
     }
     
     /**
@@ -67,8 +57,12 @@ public class JobCollectionJobsUpdateStateParameters {
     * Initializes a new instance of the JobCollectionJobsUpdateStateParameters
     * class with required arguments.
     *
+    * @param state New state to update to: 'enabled' or 'disabled'.
     */
     public JobCollectionJobsUpdateStateParameters(JobState state) {
+        if (state == null) {
+            throw new NullPointerException("state");
+        }
         this.setState(state);
     }
 }

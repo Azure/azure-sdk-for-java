@@ -74,7 +74,7 @@ public class DeploymentSwapParameters {
     * Initializes a new instance of the DeploymentSwapParameters class with
     * required arguments.
     *
-    * @param sourceDeployment The source deployment.
+    * @param sourceDeployment The name of the source deployment.
     */
     public DeploymentSwapParameters(String sourceDeployment) {
         if (sourceDeployment == null) {

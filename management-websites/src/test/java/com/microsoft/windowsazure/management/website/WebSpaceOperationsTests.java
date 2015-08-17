@@ -41,15 +41,6 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        setupTest(WebSpaceOperationsTests.class.getSimpleName());
-        cleanup();
-        resetTest(WebSpaceOperationsTests.class.getSimpleName());
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        setupTest(WebSpaceOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
-        resetTest(WebSpaceOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     @Before
@@ -177,7 +168,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
         for (WebSite  webSite : webSiteslist) { 
              //Assert
-             Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
+             Assert.assertEquals(WebSpaceAvailabilityState.NORMAL, webSite.getAvailabilityState());
              Assert.assertNotNull(webSite.getName()); 
         }
     }

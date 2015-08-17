@@ -55,6 +55,9 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.NotificationEndPoint;
 import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo;
+import com.microsoft.windowsazure.services.media.models.StreamingEndpoint;
+import com.microsoft.windowsazure.services.media.models.StreamingEndpointInfo;
+import com.microsoft.windowsazure.services.media.models.StreamingEndpointState;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.QueueService;
@@ -74,7 +77,7 @@ public abstract class IntegrationTestBase {
     protected static final String testChannelPrefix = "testChannel";
     protected static final String testProgramPrefix = "testProgram";
     protected static final String testNotificationEndPointPrefix = "testNotificationEndPointPrefix";
-
+    protected static final String testStreamingEndPointPrefix = "testSEPPrfx";
 
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
@@ -157,6 +160,47 @@ public abstract class IntegrationTestBase {
         removeAllTestContentKeys();
         removeAllTestQueues();
         removeAllTestNotificationEndPoints();
+        removeAllTestStreamingEndPoints();
+    }
+    
+    private static boolean ensureStreamingPointStopped(String streamingEndpointId) throws ServiceException {
+        StreamingEndpointInfo streamingEndPoint = service.get(StreamingEndpoint.get(streamingEndpointId));
+        if (streamingEndPoint.getState().equals(StreamingEndpointState.Stopped)) {
+            return true;
+        }
+        if (streamingEndPoint.getState().equals(StreamingEndpointState.Running)) {
+            String opid = service.action(StreamingEndpoint.stop(streamingEndpointId));
+            OperationUtils.await(service, opid);
+            return ensureStreamingPointStopped(streamingEndpointId);
+        }
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // do nothing
+        }
+        return ensureStreamingPointStopped(streamingEndpointId);
+    }
+    
+    private static void removeAllTestStreamingEndPoints()
+    {
+        try {
+            ListResult<StreamingEndpointInfo> listStreamingEndpointResult = service.list(StreamingEndpoint.list());
+            for (StreamingEndpointInfo streamingEndPoint : listStreamingEndpointResult) {
+                if (streamingEndPoint.getName().startsWith(testStreamingEndPointPrefix)) {
+                    try {
+                        ensureStreamingPointStopped(streamingEndPoint.getId());
+                        String operationId = service.delete(StreamingEndpoint.delete(streamingEndPoint.getId()));
+                        if (operationId != null) {
+                            OperationUtils.await(service, operationId);
+                        }
+                    } catch (Exception e) {
+                        // e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // e.printStackTrace();
+        }
     }
     
     private static void removeAllTestNotificationEndPoints()
@@ -399,9 +443,9 @@ public abstract class IntegrationTestBase {
 
     protected void assertDateApproxEquals(String message, Date expected,
             Date actual) {
-        // Default allows for a 30 seconds difference in dates, for clock skew,
+        // Default allows for a 2:30 minutes difference in dates, for clock skew,
         // network delays, etc.
-        long deltaInMilliseconds = 30000;
+        long deltaInMilliseconds = 150000;
 
         if (expected == null || actual == null) {
             assertEquals(message, expected, actual);

@@ -134,8 +134,12 @@ public class JobRecurrence {
     * Initializes a new instance of the JobRecurrence class with required
     * arguments.
     *
+    * @param frequency The frequency of recurrence.
     */
     public JobRecurrence(JobRecurrenceFrequency frequency) {
+        if (frequency == null) {
+            throw new NullPointerException("frequency");
+        }
         this.setFrequency(frequency);
     }
 }

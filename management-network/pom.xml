@@ -18,15 +18,15 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-network</artifactId>
+  <artifactId>azure-svc-mgmt-network</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Network Management.</name>
-  <description>This package contains Microsoft Azure SDK for Network Management module.</description>
+  <name>Microsoft Azure SDK for Network Management SvcMgmt.</name>
+  <description>This package contains Microsoft Azure SDK for Network Management module for Service Management APIs.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -71,6 +71,12 @@
 
     <!-- Test dependencies -->
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
       <scope>test</scope>
@@ -91,7 +97,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
+      <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
     </dependency>

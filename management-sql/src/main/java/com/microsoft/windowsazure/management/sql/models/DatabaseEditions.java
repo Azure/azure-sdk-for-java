@@ -44,7 +44,7 @@ public abstract class DatabaseEditions {
     
     /**
     * The Basic Edition Database is best suited for small databases with few
-    * transactions (less than 100) per minute and only a couple users.
+    * transactions (<100) per minute and only a couple users.
     */
     public static final String BASIC = "Basic";
     
@@ -56,7 +56,7 @@ public abstract class DatabaseEditions {
     
     /**
     * The Premium Edition Database is for situations requiring a high number of
-    * transactionsper second (larger than 100).  Supports more users than Basic and
+    * transactionsper second (>100).  Supports more users than Basic and
     * Standard.
     */
     public static final String PREMIUM = "Premium";

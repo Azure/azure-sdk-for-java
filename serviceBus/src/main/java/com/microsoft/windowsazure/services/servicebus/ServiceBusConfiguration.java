@@ -346,7 +346,7 @@ public abstract class ServiceBusConfiguration {
      * @param profile
      *            A <code>String</code> object that represents the profile.
      * @param configuration
-     *            A previously instantiated <code>Configuration</code> object.
+     *            A previously instantiated <code>Configuration</cone> object.
      * @param connectionString
      *            A <code>String</code> object the contains the connection
      *            string for the service bus connection information.

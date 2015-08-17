@@ -40,7 +40,23 @@ import javax.xml.namespace.QName;
 /**
  * <p>
  * Java class for dateTimeType complex type.
- * </p>
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="dateTimeType">
+ *   &lt;simpleContent>
+ *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>dateTime">
+ *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
+ *       &lt;anyAttribute namespace='##other'/>
+ *     &lt;/extension>
+ *   &lt;/simpleContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dateTimeType", propOrder = { "value" })

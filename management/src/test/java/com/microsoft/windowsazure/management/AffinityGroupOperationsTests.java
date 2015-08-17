@@ -42,9 +42,9 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     @BeforeClass
     public static void setup() throws Exception {
         createService();
+        setupTest(AffinityGroupOperationsTests.class.getSimpleName());
         cleanup();
         
-        setupTest(AffinityGroupOperationsTests.class.getSimpleName());
         getLocation();
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
         createParameters.setName(affinityGroupName1);
@@ -142,7 +142,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setLabel(expectedAffinityGroupLabel );
 
         // Act
-        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters); 
+        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters);
         Assert.assertEquals(201, operationResponse.getStatusCode());
 
         AffinityGroupUpdateParameters updateParameters = new AffinityGroupUpdateParameters();      

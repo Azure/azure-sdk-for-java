@@ -477,14 +477,14 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
             this.eula = eulaValue;
         }
         
-        private URI iconUri;
+        private String iconUri;
         
         /**
         * Optional. Provides the URI to the icon for this Operating System
         * Image.
         * @return The IconUri value.
         */
-        public URI getIconUri() {
+        public String getIconUri() {
             return this.iconUri;
         }
         
@@ -493,7 +493,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         * Image.
         * @param iconUriValue The IconUri value.
         */
-        public void setIconUri(final URI iconUriValue) {
+        public void setIconUri(final String iconUriValue) {
             this.iconUri = iconUriValue;
         }
         
@@ -791,14 +791,14 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
             this.showInGui = showInGuiValue;
         }
         
-        private URI smallIconUri;
+        private String smallIconUri;
         
         /**
         * Optional. Specifies the URI to the small icon that is displayed when
         * the image is presented in the Azure Management Portal.
         * @return The SmallIconUri value.
         */
-        public URI getSmallIconUri() {
+        public String getSmallIconUri() {
             return this.smallIconUri;
         }
         
@@ -807,7 +807,7 @@ public class VirtualMachineVMImageListResponse extends OperationResponse impleme
         * the image is presented in the Azure Management Portal.
         * @param smallIconUriValue The SmallIconUri value.
         */
-        public void setSmallIconUri(final URI smallIconUriValue) {
+        public void setSmallIconUri(final String smallIconUriValue) {
             this.smallIconUri = smallIconUriValue;
         }
         

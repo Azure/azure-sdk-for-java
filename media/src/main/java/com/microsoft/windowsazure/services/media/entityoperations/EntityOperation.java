@@ -24,7 +24,7 @@ public interface EntityOperation {
     /**
      * Supplies the current proxy information to the action.
      * 
-     * @param proxyData The proxy data.
+     * @param proxyData
      */
     void setProxyData(EntityProxyData proxyData);
 
@@ -38,13 +38,13 @@ public interface EntityOperation {
     /**
      * Get the MIME type for the content that's being sent to the server.
      * 
-     * @return The MIME type.
+     * @return The MIME type
+     * @throws ServiceException
      */
     MediaType getContentType();
 
     /**
      * Get the MIME type that we're expecting the server to send back.
-     * @return The MIME type.
      */
     MediaType getAcceptType();
 

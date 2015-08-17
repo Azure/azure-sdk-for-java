@@ -24,8 +24,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.core.OperationStatus;
-import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.*;
 
@@ -114,7 +112,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         createParameters.setDescription(cloudServiceDesc);
         createParameters.setGeoRegion(hostedLocation);
 
-        OperationResponse CloudServiceOperationResponse = cloudServiceManagementClient.getCloudServicesOperations().create(cloudServiceName, createParameters);  
+        OperationResponse CloudServiceOperationResponse = cloudServiceManagementClient.getCloudServicesOperations().create(cloudServiceName, createParameters);
         Assert.assertEquals(200, CloudServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(CloudServiceOperationResponse.getRequestId());
     }
@@ -127,7 +125,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         createParameters.setLabel(jcLabels);
 
         //act
-        OperationResponse operationResponse = schedulerManagementClient.getJobCollectionsOperations().create(cloudServiceName, jobCollectionName, createParameters); 
+        OperationResponse operationResponse = schedulerManagementClient.getJobCollectionsOperations().create(cloudServiceName, jobCollectionName, createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -212,7 +210,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
                 e.printStackTrace();
             }
 
-            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.FAILED) || (operationStatus.getStatus() == CloudServiceOperationStatus.SUCCEEDED))
             {
                 operationCompleted = true;
             }else{

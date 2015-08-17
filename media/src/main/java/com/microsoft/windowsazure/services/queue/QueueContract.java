@@ -36,7 +36,7 @@ import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
  * Defines the methods available on the Windows Azure storage queue service.
  * Construct an object instance implementing <strong>QueueContract</strong> with
  * one of the static <em>create</em> methods on {@link QueueService}. These
- * methods associate a Configuration with the implementation, so the
+ * methods associate a {@link Configuration} with the implementation, so the
  * methods on the instance of <strong>QueueContract</strong> all work with a
  * particular storage account.
  */

@@ -82,8 +82,10 @@ public class StoredCertificateSettings {
     * Initializes a new instance of the StoredCertificateSettings class with
     * required arguments.
     *
-    * @param storeName The store name.
-    * @param thumbprint The thumbprint.
+    * @param storeName Specifies the name of the certificate store from which
+    * to retrieve certificates.  For example, "My".
+    * @param thumbprint Specifies the thumbprint of the certificate to be
+    * provisioned. The thumbprint must specify an existing service certificate.
     */
     public StoredCertificateSettings(String storeName, String thumbprint) {
         if (storeName == null) {

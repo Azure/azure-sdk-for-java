@@ -100,7 +100,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setAccountType("Standard_LRS");
      
         //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
         
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -120,7 +120,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setAccountType("Standard_LRS");
         
         //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
@@ -169,7 +169,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     public void generateKeysSuccess() throws Exception {
         StorageAccountRegenerateKeysParameters storageAccountRegenerateKeysParameters = new StorageAccountRegenerateKeysParameters();        
         storageAccountRegenerateKeysParameters.setName(storageAccountName);
-        storageAccountRegenerateKeysParameters.setKeyType(StorageKeyType.Primary); 
+        storageAccountRegenerateKeysParameters.setKeyType(StorageKeyType.PRIMARY);
         
         //Act   
         StorageAccountGetKeysResponse  storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountName);
@@ -205,7 +205,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         createParameters.setAccountType("Standard_LRS");
         
         //Act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
         Assert.assertEquals(200, operationResponse.getStatusCode());           
         
         StorageAccountUpdateParameters updateParameters = new StorageAccountUpdateParameters();      
@@ -216,5 +216,33 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());            
+    }
+
+    @Test
+    public void deleteStorageAccountSuccess() throws Exception {
+        String storageAccountName = testStorageAccountPrefix + "csas"+randomString(7);
+        String storageAccountDescription = "create storage account success";
+
+        //Arrange
+        StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
+        createParameters.setName(storageAccountName);
+        createParameters.setLabel(storageAccountDescription);
+        createParameters.setLocation(storageLocation);
+        createParameters.setAccountType("Standard_LRS");
+
+        //act
+        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
+
+        //Assert
+        Assert.assertEquals(200, operationResponse.getStatusCode());
+        Assert.assertNotNull(operationResponse.getRequestId());
+
+        //delete
+        addRegexRule(testStorageAccountPrefix + "csas" + "[a-z]{7}");
+        OperationResponse deleteOperationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
+
+        //Assert
+        Assert.assertEquals(200, deleteOperationResponse.getStatusCode());
+        Assert.assertNotNull(deleteOperationResponse.getRequestId());
     }
 }

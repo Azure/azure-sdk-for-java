@@ -138,7 +138,8 @@ public class RestoreRequest {
     private String storageAccountUrl;
     
     /**
-    * Optional. SAS URL for a container in a storage account.
+    * Optional. SAS URL for a container in a storage account. E.g.
+    * https://NAME.blob.core.windows.net/CONTAINERNAME/?sv=2012-02-12&st=2013-12-05T19%3A30%3A45Z&se=2017-12-04T19%3A30%3A45Z&sr=c&sp=rwdl&sig=abcdefABCDEFabcdef0123456789
     * @return The StorageAccountUrl value.
     */
     public String getStorageAccountUrl() {
@@ -146,7 +147,8 @@ public class RestoreRequest {
     }
     
     /**
-    * Optional. SAS URL for a container in a storage account.
+    * Optional. SAS URL for a container in a storage account. E.g.
+    * https://NAME.blob.core.windows.net/CONTAINERNAME/?sv=2012-02-12&st=2013-12-05T19%3A30%3A45Z&se=2017-12-04T19%3A30%3A45Z&sr=c&sp=rwdl&sig=abcdefABCDEFabcdef0123456789
     * @param storageAccountUrlValue The StorageAccountUrl value.
     */
     public void setStorageAccountUrl(final String storageAccountUrlValue) {

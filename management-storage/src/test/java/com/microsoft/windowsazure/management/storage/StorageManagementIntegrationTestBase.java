@@ -72,13 +72,23 @@ public abstract class StorageManagementIntegrationTestBase extends MockIntegrati
     
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );        
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null,
+                    null,
+                    null
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
     }
     
     protected static void getLocation() throws Exception {

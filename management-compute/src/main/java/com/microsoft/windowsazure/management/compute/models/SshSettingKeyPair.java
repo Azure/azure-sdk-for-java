@@ -84,8 +84,13 @@ public class SshSettingKeyPair {
     * Initializes a new instance of the SshSettingKeyPair class with required
     * arguments.
     *
-    * @param fingerprint The finger print.
-    * @param path The path.
+    * @param fingerprint Specifies the SHA1 fingerprint of an X509 certificate
+    * associated with the hosted service that includes the SSH key pair.
+    * @param path Specifies the full path of a file on the virtual machine
+    * which stores the SSH private key. The file is overwritten when multiple
+    * keys are written to it. The SSH public key is stored in the same
+    * directory and has the same name as the private key file with .pub
+    * suffix. Example: /home/user/.ssh/id_rsa.
     */
     public SshSettingKeyPair(String fingerprint, String path) {
         if (fingerprint == null) {

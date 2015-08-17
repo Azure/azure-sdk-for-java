@@ -252,7 +252,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.dac = new DacOperationsImpl(this);
         this.databaseCopies = new DatabaseCopyOperationsImpl(this);
@@ -279,7 +279,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
     */
     @Inject
@@ -329,9 +329,9 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
-    * @param apiVersion Required. Gets the API version.
+    * @param apiVersion Optional. Gets the API version.
     * @param longRunningOperationInitialTimeout Required. Gets or sets the
     * initial timeout for Long Running Operations.
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry

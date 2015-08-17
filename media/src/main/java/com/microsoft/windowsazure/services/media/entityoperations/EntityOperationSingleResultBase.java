@@ -26,8 +26,7 @@ public class EntityOperationSingleResultBase<T> extends EntityOperationBase
     private final Class<T> responseClass;
 
     /**
-     * @param uri The uri.
-     * @param responseClass The response class.
+     * 
      */
     public EntityOperationSingleResultBase(String uri, Class<T> responseClass) {
         super(uri);
@@ -48,10 +47,11 @@ public class EntityOperationSingleResultBase<T> extends EntityOperationBase
      * EntityOperationSingleResult#getResponseClass()
      */
     @Override
-    public Class<T> getResponseClass() {
+    public Class<?> getResponseClass() {
         return responseClass;
     }
 
+    @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
         return rawResponse;
     }

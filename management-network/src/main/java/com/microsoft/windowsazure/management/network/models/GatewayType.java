@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
-public enum GatewayType {
-    StaticRouting,
+public abstract class GatewayType {
+    public static final String STATICROUTING = "StaticRouting";
     
-    DynamicRouting,
+    public static final String DYNAMICROUTING = "DynamicRouting";
 }

@@ -168,8 +168,13 @@ public class SubscriptionListOperationsParameters {
     * Initializes a new instance of the SubscriptionListOperationsParameters
     * class with required arguments.
     *
-    * @param startTime The start time.
-    * @param endTime The end time.
+    * @param startTime The start of the timeframe to begin listing subscription
+    * operations in UTC format. This parameter and the EndTime parameter
+    * indicate the timeframe to retrieve subscription operations. This
+    * parameter cannot indicate a start date of more than 90 days in the past.
+    * @param endTime The end of the timeframe to begin listing subscription
+    * operations in UTC format. This parameter and the StartTime parameter
+    * indicate the timeframe to retrieve subscription operations.
     */
     public SubscriptionListOperationsParameters(Calendar startTime, Calendar endTime) {
         this.setStartTime(startTime);

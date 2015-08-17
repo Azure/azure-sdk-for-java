@@ -80,8 +80,12 @@ public class SshSettingPublicKey {
     * Initializes a new instance of the SshSettingPublicKey class with required
     * arguments.
     *
-    * @param fingerprint The fingerprint.
-    * @param path The path.
+    * @param fingerprint Specifies the SHA1 fingerprint of an X509 certificate
+    * associated with the hosted service that includes the SSH public key.
+    * @param path Specifies the full path of a file on the virtual machine
+    * which stores the SSH public key. If the file already exists, the
+    * specified key is appended to the file. Example:
+    * /home/user/.ssh/authorized_keys.
     */
     public SshSettingPublicKey(String fingerprint, String path) {
         if (fingerprint == null) {

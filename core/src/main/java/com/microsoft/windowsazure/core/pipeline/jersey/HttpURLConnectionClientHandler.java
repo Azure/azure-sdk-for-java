@@ -25,7 +25,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -325,7 +325,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
                 urlConnection.setRequestProperty(e.getKey(),
                         ClientRequest.getHeaderValue(vs.get(0)));
             } else {
-                CommaStringBuilder sb = new CommaStringBuilder();
+                CollectionStringBuilder sb = new CollectionStringBuilder();
                 for (Object v : e.getValue()) {
                     sb.add(ClientRequest.getHeaderValue(v));
                 }

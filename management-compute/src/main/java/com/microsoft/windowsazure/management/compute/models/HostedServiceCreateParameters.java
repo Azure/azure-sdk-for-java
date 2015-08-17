@@ -216,8 +216,12 @@ public class HostedServiceCreateParameters {
     * Initializes a new instance of the HostedServiceCreateParameters class
     * with required arguments.
     *
-    * @param serviceName The service name.
-    * @param label The label.
+    * @param serviceName A name for the cloud service that is unique within
+    * Azure. This name is the DNS prefix name and can be used to access the
+    * service.
+    * @param label A name for the cloud service. The name can be up to 100
+    * characters in length. The name can be used to identify the storage
+    * account for your tracking purposes.
     */
     public HostedServiceCreateParameters(String serviceName, String label) {
         this();

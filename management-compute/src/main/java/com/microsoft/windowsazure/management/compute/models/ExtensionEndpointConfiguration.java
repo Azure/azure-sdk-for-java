@@ -268,9 +268,16 @@ public class ExtensionEndpointConfiguration {
         * Initializes a new instance of the InternalEndpoint class with
         * required arguments.
         *
-        * @param name The name.
-        * @param protocol The protocol.
-        * @param port The port.
+        * @param name Required for each internal endpoint. A unique name for
+        * the external endpoint.
+        * @param protocol Required for each internal endpoint. Transport
+        * protocol for the endpoint. Its value has to be one of the following:
+        * 'tcp', 'udp', 'http', 'https'.
+        * @param port Required for each internal endpoint. The port for the
+        * external endpoint. You can specify any port number you choose, but
+        * the port number specified must not collide with port numbers
+        * occupied by roles in the service. Possible values range between 1
+        * and 65535, inclusive
         */
         public InternalEndpoint(String name, String protocol, int port) {
             if (name == null) {

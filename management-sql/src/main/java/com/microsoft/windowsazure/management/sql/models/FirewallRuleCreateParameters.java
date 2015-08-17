@@ -94,9 +94,11 @@ public class FirewallRuleCreateParameters {
     * Initializes a new instance of the FirewallRuleCreateParameters class with
     * required arguments.
     *
-    * @param name The name.
-    * @param startIPAddress The start IP address.
-    * @param endIPAddress The end IP address.
+    * @param name Gets or sets the name for the new Firewall Rule.
+    * @param startIPAddress Gets or sets the beginning IP address for the new
+    * Firewall Rule.
+    * @param endIPAddress Gets or sets the ending IP address for the new
+    * Firewall Rule.
     */
     public FirewallRuleCreateParameters(String name, InetAddress startIPAddress, InetAddress endIPAddress) {
         if (name == null) {

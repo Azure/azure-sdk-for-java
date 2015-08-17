@@ -226,8 +226,15 @@ public class StorageAccountCreateParameters {
     * Initializes a new instance of the StorageAccountCreateParameters class
     * with required arguments.
     *
-    * @param name The name.
-    * @param label The label.
+    * @param name A name for the storage account, unique within Azure. Storage
+    * account names must be between 3 and 24 characters in length, and must
+    * use numbers and lower-case letters only. This name is the DNS prefix
+    * name and can be used to access blobs, queues, and tables in the storage
+    * account. For example:
+    * http://ServiceName.blob.core.windows.net/mycontainer/.
+    * @param label A name for the storage account, specified as abase64-encoded
+    * string. The name may be up to 100 characters in length. The name can be
+    * used identify the storage account for your tracking purposes.
     */
     public StorageAccountCreateParameters(String name, String label) {
         this();

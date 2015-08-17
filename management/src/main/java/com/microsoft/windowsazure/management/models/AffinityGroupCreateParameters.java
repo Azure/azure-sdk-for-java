@@ -124,10 +124,13 @@ public class AffinityGroupCreateParameters {
     * Initializes a new instance of the AffinityGroupCreateParameters class
     * with required arguments.
     *
-    * @param name The affinity group name.
-    * @param label The affinity group label.
-    * @param location The affinity group location.
-    *
+    * @param name A name for the affinity group that is unique to the
+    * subscription.
+    * @param label A base-64-encoded name for the affinity group. The name can
+    * be up to 100 characters in length. Its value defaults to the Name of the
+    * affinity group if not provided.
+    * @param location The data center location where the affinity group will be
+    * created. To list available locations, see the List Locations operation.
     */
     public AffinityGroupCreateParameters(String name, String label, String location) {
         if (name == null) {

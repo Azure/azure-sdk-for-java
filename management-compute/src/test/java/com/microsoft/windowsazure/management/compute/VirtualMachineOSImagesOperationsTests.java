@@ -93,7 +93,7 @@ public class VirtualMachineOSImagesOperationsTests extends ComputeManagementInte
         createParameters.setOperatingSystemType(VirtualMachineOSImageOperatingSystemType.WINDOWS);
         
         //Act
-        OperationResponse operationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().create(createParameters);        
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachineOSImagesOperations().create(createParameters);
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());

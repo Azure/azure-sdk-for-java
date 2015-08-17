@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -188,7 +189,12 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/mediaservices/Accounts";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -269,40 +275,42 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             // Create Result
             MediaServicesAccountCreateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new MediaServicesAccountCreateResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new MediaServicesAccountCreateResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    MediaServicesCreatedAccount accountInstance = new MediaServicesCreatedAccount();
+                    result.setAccount(accountInstance);
+                    
+                    JsonNode accountIdValue = responseDoc.get("AccountId");
+                    if (accountIdValue != null && accountIdValue instanceof NullNode == false) {
+                        String accountIdInstance;
+                        accountIdInstance = accountIdValue.getTextValue();
+                        accountInstance.setAccountId(accountIdInstance);
+                    }
+                    
+                    JsonNode accountNameValue = responseDoc.get("AccountName");
+                    if (accountNameValue != null && accountNameValue instanceof NullNode == false) {
+                        String accountNameInstance;
+                        accountNameInstance = accountNameValue.getTextValue();
+                        accountInstance.setAccountName(accountNameInstance);
+                    }
+                    
+                    JsonNode subscriptionValue = responseDoc.get("Subscription");
+                    if (subscriptionValue != null && subscriptionValue instanceof NullNode == false) {
+                        String subscriptionInstance;
+                        subscriptionInstance = subscriptionValue.getTextValue();
+                        accountInstance.setSubscriptionId(subscriptionInstance);
+                    }
+                }
+                
             }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                MediaServicesCreatedAccount accountInstance = new MediaServicesCreatedAccount();
-                result.setAccount(accountInstance);
-                
-                JsonNode accountIdValue = responseDoc.get("AccountId");
-                if (accountIdValue != null && accountIdValue instanceof NullNode == false) {
-                    String accountIdInstance;
-                    accountIdInstance = accountIdValue.getTextValue();
-                    accountInstance.setAccountId(accountIdInstance);
-                }
-                
-                JsonNode accountNameValue = responseDoc.get("AccountName");
-                if (accountNameValue != null && accountNameValue instanceof NullNode == false) {
-                    String accountNameInstance;
-                    accountNameInstance = accountNameValue.getTextValue();
-                    accountInstance.setAccountName(accountNameInstance);
-                }
-                
-                JsonNode subscriptionValue = responseDoc.get("Subscription");
-                if (subscriptionValue != null && subscriptionValue instanceof NullNode == false) {
-                    String subscriptionInstance;
-                    subscriptionInstance = subscriptionValue.getTextValue();
-                    accountInstance.setSubscriptionId(subscriptionInstance);
-                }
-            }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -371,7 +379,13 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/mediaservices/Accounts/";
+        url = url + URLEncoder.encode(accountName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -410,6 +424,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -477,7 +492,13 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/mediaservices/Accounts/";
+        url = url + URLEncoder.encode(accountName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -517,67 +538,69 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             // Create Result
             MediaServicesAccountGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new MediaServicesAccountGetResponse();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
-            }
-            
-            if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                MediaServicesAccount accountInstance = new MediaServicesAccount();
-                result.setAccount(accountInstance);
-                
-                JsonNode accountNameValue = responseDoc.get("AccountName");
-                if (accountNameValue != null && accountNameValue instanceof NullNode == false) {
-                    String accountNameInstance;
-                    accountNameInstance = accountNameValue.getTextValue();
-                    accountInstance.setAccountName(accountNameInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new MediaServicesAccountGetResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                if (responseContent == null == false) {
+                    responseDoc = objectMapper.readTree(responseContent);
                 }
                 
-                JsonNode accountKeyValue = responseDoc.get("AccountKey");
-                if (accountKeyValue != null && accountKeyValue instanceof NullNode == false) {
-                    String accountKeyInstance;
-                    accountKeyInstance = accountKeyValue.getTextValue();
-                    accountInstance.setAccountKey(accountKeyInstance);
-                }
-                
-                JsonNode accountKeysValue = responseDoc.get("AccountKeys");
-                if (accountKeysValue != null && accountKeysValue instanceof NullNode == false) {
-                    MediaServicesAccount.AccountKeys accountKeysInstance = new MediaServicesAccount.AccountKeys();
-                    accountInstance.setStorageAccountKeys(accountKeysInstance);
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    MediaServicesAccount accountInstance = new MediaServicesAccount();
+                    result.setAccount(accountInstance);
                     
-                    JsonNode primaryValue = accountKeysValue.get("Primary");
-                    if (primaryValue != null && primaryValue instanceof NullNode == false) {
-                        String primaryInstance;
-                        primaryInstance = primaryValue.getTextValue();
-                        accountKeysInstance.setPrimary(primaryInstance);
+                    JsonNode accountNameValue = responseDoc.get("AccountName");
+                    if (accountNameValue != null && accountNameValue instanceof NullNode == false) {
+                        String accountNameInstance;
+                        accountNameInstance = accountNameValue.getTextValue();
+                        accountInstance.setAccountName(accountNameInstance);
                     }
                     
-                    JsonNode secondaryValue = accountKeysValue.get("Secondary");
-                    if (secondaryValue != null && secondaryValue instanceof NullNode == false) {
-                        String secondaryInstance;
-                        secondaryInstance = secondaryValue.getTextValue();
-                        accountKeysInstance.setSecondary(secondaryInstance);
+                    JsonNode accountKeyValue = responseDoc.get("AccountKey");
+                    if (accountKeyValue != null && accountKeyValue instanceof NullNode == false) {
+                        String accountKeyInstance;
+                        accountKeyInstance = accountKeyValue.getTextValue();
+                        accountInstance.setAccountKey(accountKeyInstance);
+                    }
+                    
+                    JsonNode accountKeysValue = responseDoc.get("AccountKeys");
+                    if (accountKeysValue != null && accountKeysValue instanceof NullNode == false) {
+                        MediaServicesAccount.AccountKeys accountKeysInstance = new MediaServicesAccount.AccountKeys();
+                        accountInstance.setStorageAccountKeys(accountKeysInstance);
+                        
+                        JsonNode primaryValue = accountKeysValue.get("Primary");
+                        if (primaryValue != null && primaryValue instanceof NullNode == false) {
+                            String primaryInstance;
+                            primaryInstance = primaryValue.getTextValue();
+                            accountKeysInstance.setPrimary(primaryInstance);
+                        }
+                        
+                        JsonNode secondaryValue = accountKeysValue.get("Secondary");
+                        if (secondaryValue != null && secondaryValue instanceof NullNode == false) {
+                            String secondaryInstance;
+                            secondaryInstance = secondaryValue.getTextValue();
+                            accountKeysInstance.setSecondary(secondaryInstance);
+                        }
+                    }
+                    
+                    JsonNode accountRegionValue = responseDoc.get("AccountRegion");
+                    if (accountRegionValue != null && accountRegionValue instanceof NullNode == false) {
+                        String accountRegionInstance;
+                        accountRegionInstance = accountRegionValue.getTextValue();
+                        accountInstance.setAccountRegion(accountRegionInstance);
+                    }
+                    
+                    JsonNode storageAccountNameValue = responseDoc.get("StorageAccountName");
+                    if (storageAccountNameValue != null && storageAccountNameValue instanceof NullNode == false) {
+                        String storageAccountNameInstance;
+                        storageAccountNameInstance = storageAccountNameValue.getTextValue();
+                        accountInstance.setStorageAccountName(storageAccountNameInstance);
                     }
                 }
                 
-                JsonNode accountRegionValue = responseDoc.get("AccountRegion");
-                if (accountRegionValue != null && accountRegionValue instanceof NullNode == false) {
-                    String accountRegionInstance;
-                    accountRegionInstance = accountRegionValue.getTextValue();
-                    accountInstance.setAccountRegion(accountRegionInstance);
-                }
-                
-                JsonNode storageAccountNameValue = responseDoc.get("StorageAccountName");
-                if (storageAccountNameValue != null && storageAccountNameValue instanceof NullNode == false) {
-                    String storageAccountNameInstance;
-                    storageAccountNameInstance = storageAccountNameValue.getTextValue();
-                    accountInstance.setStorageAccountName(storageAccountNameInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -646,7 +669,12 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/mediaservices/Accounts";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -686,64 +714,66 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             // Create Result
             MediaServicesAccountListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new MediaServicesAccountListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
-                    MediaServicesAccountListResponse.MediaServiceAccount serviceResourceInstance = new MediaServicesAccountListResponse.MediaServiceAccount();
-                    result.getAccounts().add(serviceResourceInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serviceResourceInstance.setName(nameInstance);
-                    }
-                    
-                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                    if (typeElement != null) {
-                        String typeInstance;
-                        typeInstance = typeElement.getTextContent();
-                        serviceResourceInstance.setType(typeInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        serviceResourceInstance.setState(stateInstance);
-                    }
-                    
-                    Element selfLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
-                    if (selfLinkElement != null) {
-                        URI selfLinkInstance;
-                        selfLinkInstance = new URI(selfLinkElement.getTextContent());
-                        serviceResourceInstance.setUri(selfLinkInstance);
-                    }
-                    
-                    Element parentLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
-                    if (parentLinkElement != null) {
-                        URI parentLinkInstance;
-                        parentLinkInstance = new URI(parentLinkElement.getTextContent());
-                        serviceResourceInstance.setParentUri(parentLinkInstance);
-                    }
-                    
-                    Element accountIdElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "AccountId");
-                    if (accountIdElement != null) {
-                        String accountIdInstance;
-                        accountIdInstance = accountIdElement.getTextContent();
-                        serviceResourceInstance.setAccountId(accountIdInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new MediaServicesAccountListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
+                if (serviceResourcesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
+                        MediaServicesAccountListResponse.MediaServiceAccount serviceResourceInstance = new MediaServicesAccountListResponse.MediaServiceAccount();
+                        result.getAccounts().add(serviceResourceInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            serviceResourceInstance.setName(nameInstance);
+                        }
+                        
+                        Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                        if (typeElement != null) {
+                            String typeInstance;
+                            typeInstance = typeElement.getTextContent();
+                            serviceResourceInstance.setType(typeInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            serviceResourceInstance.setState(stateInstance);
+                        }
+                        
+                        Element selfLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
+                        if (selfLinkElement != null) {
+                            URI selfLinkInstance;
+                            selfLinkInstance = new URI(selfLinkElement.getTextContent());
+                            serviceResourceInstance.setUri(selfLinkInstance);
+                        }
+                        
+                        Element parentLinkElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
+                        if (parentLinkElement != null) {
+                            URI parentLinkInstance;
+                            parentLinkInstance = new URI(parentLinkElement.getTextContent());
+                            serviceResourceInstance.setParentUri(parentLinkInstance);
+                        }
+                        
+                        Element accountIdElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "AccountId");
+                        if (accountIdElement != null) {
+                            String accountIdInstance;
+                            accountIdInstance = accountIdElement.getTextContent();
+                            serviceResourceInstance.setAccountId(accountIdInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -804,6 +834,9 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         if (accountName == null) {
             throw new NullPointerException("accountName");
         }
+        if (keyType == null) {
+            throw new NullPointerException("keyType");
+        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -817,7 +850,16 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/mediaservices/Accounts/" + accountName.trim() + "/AccountKeys/" + keyType + "/Regenerate";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/mediaservices/Accounts/";
+        url = url + URLEncoder.encode(accountName, "UTF-8");
+        url = url + "/AccountKeys/";
+        url = url + URLEncoder.encode(keyType.toString(), "UTF-8");
+        url = url + "/Regenerate";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -856,6 +898,7 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {

@@ -246,7 +246,7 @@ public class ExtensionImage {
     /**
     * Optional. Optional. If this is set to 'true' the extension is not visible
     * for public use, i.e. being returned from list API's. It can be still
-    * accessed by referring to the ProviderNamespace, Type Version combo.
+    * accessed by referring to the ProviderNamespace, Type & Version combo.
     * Therefore an internal extension is intended only for testing purpose.
     * Its value has to be 'true' or 'false' (case-sensitive) if present.
     * @return The IsInternalExtension value.
@@ -258,7 +258,7 @@ public class ExtensionImage {
     /**
     * Optional. Optional. If this is set to 'true' the extension is not visible
     * for public use, i.e. being returned from list API's. It can be still
-    * accessed by referring to the ProviderNamespace, Type Version combo.
+    * accessed by referring to the ProviderNamespace, Type & Version combo.
     * Therefore an internal extension is intended only for testing purpose.
     * Its value has to be 'true' or 'false' (case-sensitive) if present.
     * @param isInternalExtensionValue The IsInternalExtension value.
@@ -482,6 +482,26 @@ public class ExtensionImage {
         this.publisherName = publisherNameValue;
     }
     
+    private String regions;
+    
+    /**
+    * Optional. String property containing the name of the regions required for
+    * the slice.
+    * @return The Regions value.
+    */
+    public String getRegions() {
+        return this.regions;
+    }
+    
+    /**
+    * Optional. String property containing the name of the regions required for
+    * the slice.
+    * @param regionsValue The Regions value.
+    */
+    public void setRegions(final String regionsValue) {
+        this.regions = regionsValue;
+    }
+    
     private Boolean replicationCompleted;
     
     /**
@@ -612,9 +632,10 @@ public class ExtensionImage {
     * Initializes a new instance of the ExtensionImage class with required
     * arguments.
     *
-    * @param providerNameSpace The provider name space.
-    * @param type The type.
-    * @param version The version.
+    * @param providerNameSpace Required. The provider namespace of the
+    * extension.
+    * @param type Required. The type of the extension.
+    * @param version Required. The version of the extension.
     */
     public ExtensionImage(String providerNameSpace, String type, String version) {
         this();

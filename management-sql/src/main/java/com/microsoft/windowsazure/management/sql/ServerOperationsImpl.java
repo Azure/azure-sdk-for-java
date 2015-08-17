@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.Server;
@@ -38,6 +39,8 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -150,7 +153,18 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "?" + "op=ResetPassword";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("op=ResetPassword");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -212,6 +226,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -292,7 +307,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -371,23 +391,25 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             // Create Result
             ServerCreateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServerCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element serverNameElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
-            if (serverNameElement != null) {
-                Attr fullyQualifiedDomainNameAttribute = serverNameElement.getAttributeNodeNS("http://schemas.microsoft.com/sqlazure/2010/12/", "FullyQualifiedDomainName");
-                if (fullyQualifiedDomainNameAttribute != null) {
-                    result.setFullyQualifiedDomainName(fullyQualifiedDomainNameAttribute.getValue());
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServerCreateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element serverNameElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
+                if (serverNameElement != null) {
+                    Attr fullyQualifiedDomainNameAttribute = serverNameElement.getAttributeNodeNS("http://schemas.microsoft.com/sqlazure/2010/12/", "FullyQualifiedDomainName");
+                    if (fullyQualifiedDomainNameAttribute != null) {
+                        result.setFullyQualifiedDomainName(fullyQualifiedDomainNameAttribute.getValue());
+                    }
+                    
+                    result.setServerName(serverNameElement.getTextContent());
                 }
                 
-                result.setServerName(serverNameElement.getTextContent());
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -452,7 +474,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -491,6 +519,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -552,7 +581,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -592,64 +626,66 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             // Create Result
             ServerListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServerListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serversSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
-            if (serversSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").get(i1));
-                    Server serverInstance = new Server();
-                    result.getServers().add(serverInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serverInstance.setName(nameInstance);
-                    }
-                    
-                    Element administratorLoginElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
-                    if (administratorLoginElement != null) {
-                        String administratorLoginInstance;
-                        administratorLoginInstance = administratorLoginElement.getTextContent();
-                        serverInstance.setAdministratorUserName(administratorLoginInstance);
-                    }
-                    
-                    Element locationElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
-                    if (locationElement != null) {
-                        String locationInstance;
-                        locationInstance = locationElement.getTextContent();
-                        serverInstance.setLocation(locationInstance);
-                    }
-                    
-                    Element fullyQualifiedDomainNameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "FullyQualifiedDomainName");
-                    if (fullyQualifiedDomainNameElement != null) {
-                        String fullyQualifiedDomainNameInstance;
-                        fullyQualifiedDomainNameInstance = fullyQualifiedDomainNameElement.getTextContent();
-                        serverInstance.setFullyQualifiedDomainName(fullyQualifiedDomainNameInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        serverInstance.setState(stateInstance);
-                    }
-                    
-                    Element versionElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Version");
-                    if (versionElement != null) {
-                        String versionInstance;
-                        versionInstance = versionElement.getTextContent();
-                        serverInstance.setVersion(versionInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServerListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element serversSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
+                if (serversSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").get(i1));
+                        Server serverInstance = new Server();
+                        result.getServers().add(serverInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            serverInstance.setName(nameInstance);
+                        }
+                        
+                        Element administratorLoginElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
+                        if (administratorLoginElement != null) {
+                            String administratorLoginInstance;
+                            administratorLoginInstance = administratorLoginElement.getTextContent();
+                            serverInstance.setAdministratorUserName(administratorLoginInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            serverInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element fullyQualifiedDomainNameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "FullyQualifiedDomainName");
+                        if (fullyQualifiedDomainNameElement != null) {
+                            String fullyQualifiedDomainNameInstance;
+                            fullyQualifiedDomainNameInstance = fullyQualifiedDomainNameElement.getTextContent();
+                            serverInstance.setFullyQualifiedDomainName(fullyQualifiedDomainNameInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            serverInstance.setState(stateInstance);
+                        }
+                        
+                        Element versionElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Version");
+                        if (versionElement != null) {
+                            String versionInstance;
+                            versionInstance = versionElement.getTextContent();
+                            serverInstance.setVersion(versionInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

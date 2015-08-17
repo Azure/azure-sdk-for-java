@@ -119,9 +119,13 @@ public class ServerCreateParameters {
     * Initializes a new instance of the ServerCreateParameters class with
     * required arguments.
     *
-    * @param administratorUserName The administrator user name.
-    * @param administratorPassword The administrator password.
-    * @param location The location.
+    * @param administratorUserName Gets or sets the administrator username that
+    * will be used for the new server.
+    * @param administratorPassword Gets or sets the administrator password for
+    * the new server.
+    * @param location Gets or sets the region in which this server will be
+    * created.  See http://azure.microsoft.com/en-us/regions/#services for a
+    * list of all the available regions.
     */
     public ServerCreateParameters(String administratorUserName, String administratorPassword, String location) {
         if (administratorUserName == null) {

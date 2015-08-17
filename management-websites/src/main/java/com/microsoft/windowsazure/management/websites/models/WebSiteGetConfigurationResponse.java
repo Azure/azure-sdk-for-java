@@ -273,6 +273,24 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         this.javaVersion = javaVersionValue;
     }
     
+    private WebSiteGetConfigurationResponse.SiteLimits limits;
+    
+    /**
+    * Optional. The per site limits.
+    * @return The Limits value.
+    */
+    public WebSiteGetConfigurationResponse.SiteLimits getLimits() {
+        return this.limits;
+    }
+    
+    /**
+    * Optional. The per site limits.
+    * @param limitsValue The Limits value.
+    */
+    public void setLimits(final WebSiteGetConfigurationResponse.SiteLimits limitsValue) {
+        this.limits = limitsValue;
+    }
+    
     private Integer logsDirectorySizeLimit;
     
     /**
@@ -542,6 +560,46 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         this.scmType = scmTypeValue;
     }
     
+    private Boolean siteAuthEnabled;
+    
+    /**
+    * Optional. Gets or sets a value indicating whether the site's
+    * Authentication / Authorization feature is enabled.
+    * @return The SiteAuthEnabled value.
+    */
+    public Boolean isSiteAuthEnabled() {
+        return this.siteAuthEnabled;
+    }
+    
+    /**
+    * Optional. Gets or sets a value indicating whether the site's
+    * Authentication / Authorization feature is enabled.
+    * @param siteAuthEnabledValue The SiteAuthEnabled value.
+    */
+    public void setSiteAuthEnabled(final Boolean siteAuthEnabledValue) {
+        this.siteAuthEnabled = siteAuthEnabledValue;
+    }
+    
+    private SiteAuthSettings siteAuthSettings;
+    
+    /**
+    * Optional. Gets or sets the Authentication / Authorization settings of a
+    * web site.
+    * @return The SiteAuthSettings value.
+    */
+    public SiteAuthSettings getSiteAuthSettings() {
+        return this.siteAuthSettings;
+    }
+    
+    /**
+    * Optional. Gets or sets the Authentication / Authorization settings of a
+    * web site.
+    * @param siteAuthSettingsValue The SiteAuthSettings value.
+    */
+    public void setSiteAuthSettings(final SiteAuthSettings siteAuthSettingsValue) {
+        this.siteAuthSettings = siteAuthSettingsValue;
+    }
+    
     private Boolean use32BitWorkerProcess;
     
     /**
@@ -718,6 +776,65 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         */
         public void setScriptProcessor(final String scriptProcessorValue) {
             this.scriptProcessor = scriptProcessorValue;
+        }
+    }
+    
+    /**
+    * Per site limits
+    */
+    public static class SiteLimits {
+        private Long maxDiskSizeInMb;
+        
+        /**
+        * Optional. Maximum disk size allowed in MB
+        * @return The MaxDiskSizeInMb value.
+        */
+        public Long getMaxDiskSizeInMb() {
+            return this.maxDiskSizeInMb;
+        }
+        
+        /**
+        * Optional. Maximum disk size allowed in MB
+        * @param maxDiskSizeInMbValue The MaxDiskSizeInMb value.
+        */
+        public void setMaxDiskSizeInMb(final Long maxDiskSizeInMbValue) {
+            this.maxDiskSizeInMb = maxDiskSizeInMbValue;
+        }
+        
+        private Long maxMemoryInMb;
+        
+        /**
+        * Optional. Maximum memory allowed in MB
+        * @return The MaxMemoryInMb value.
+        */
+        public Long getMaxMemoryInMb() {
+            return this.maxMemoryInMb;
+        }
+        
+        /**
+        * Optional. Maximum memory allowed in MB
+        * @param maxMemoryInMbValue The MaxMemoryInMb value.
+        */
+        public void setMaxMemoryInMb(final Long maxMemoryInMbValue) {
+            this.maxMemoryInMb = maxMemoryInMbValue;
+        }
+        
+        private Double maxPercentageCpu;
+        
+        /**
+        * Optional. The name of the pair.
+        * @return The MaxPercentageCpu value.
+        */
+        public Double getMaxPercentageCpu() {
+            return this.maxPercentageCpu;
+        }
+        
+        /**
+        * Optional. The name of the pair.
+        * @param maxPercentageCpuValue The MaxPercentageCpu value.
+        */
+        public void setMaxPercentageCpu(final Double maxPercentageCpuValue) {
+            this.maxPercentageCpu = maxPercentageCpuValue;
         }
     }
 }

@@ -245,6 +245,24 @@ public class ConfigurationSet {
         this.inputEndpoints = inputEndpointsValue;
     }
     
+    private String iPForwarding;
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this role. Optional
+    * @return The IPForwarding value.
+    */
+    public String getIPForwarding() {
+        return this.iPForwarding;
+    }
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this role. Optional
+    * @param iPForwardingValue The IPForwarding value.
+    */
+    public void setIPForwarding(final String iPForwardingValue) {
+        this.iPForwarding = iPForwardingValue;
+    }
+    
     private ArrayList<NetworkInterface> networkInterfaces;
     
     /**
@@ -530,6 +548,24 @@ public class ConfigurationSet {
     * addressable via the default deployment VIP.
     */
     public static class PublicIP {
+        private String domainNameLabel;
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @return The DomainNameLabel value.
+        */
+        public String getDomainNameLabel() {
+            return this.domainNameLabel;
+        }
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @param domainNameLabelValue The DomainNameLabel value.
+        */
+        public void setDomainNameLabel(final String domainNameLabelValue) {
+            this.domainNameLabel = domainNameLabelValue;
+        }
+        
         private Integer idleTimeoutInMinutes;
         
         /**

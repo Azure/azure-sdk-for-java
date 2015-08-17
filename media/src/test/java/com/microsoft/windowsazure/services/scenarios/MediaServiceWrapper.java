@@ -29,7 +29,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -38,8 +38,6 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import junit.framework.Assert;
 
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -69,6 +67,9 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
+import java.util.HashMap;
+
+import org.junit.Assert;
 
 class MediaServiceWrapper {
     private final MediaContract service;
@@ -111,7 +112,7 @@ class MediaServiceWrapper {
 
             ListResult<AssetInfo> listAssetResult = service.list(listOperation);
             pages.add(listAssetResult);
-            if (listAssetResult.size() == 0) {
+            if (listAssetResult.isEmpty()) {
                 break;
             }
         }
@@ -121,12 +122,12 @@ class MediaServiceWrapper {
 
     // Ingest
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes,
-            Hashtable<String, InputStream> inputFiles) throws Exception {
+            Map<String, InputStream> inputFiles) throws Exception {
         uploadFilesToAsset(asset, uploadWindowInMinutes, inputFiles, null);
     }
 
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes,
-            Hashtable<String, InputStream> inputFiles, byte[] aesKey)
+            Map<String, InputStream> inputFiles, byte[] aesKey)
             throws Exception {
         AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(
                 accessPolicyPrefix + "tempAccessPolicy", uploadWindowInMinutes,
@@ -139,7 +140,7 @@ class MediaServiceWrapper {
         WritableBlobContainerContract uploader = service
                 .createBlobWriter(locator);
 
-        Hashtable<String, AssetFileInfo> infoToUpload = new Hashtable<String, AssetFileInfo>();
+        Map<String, AssetFileInfo> infoToUpload = new HashMap<String, AssetFileInfo>();
 
         boolean isFirst = true;
         for (String fileName : inputFiles.keySet()) {
@@ -364,10 +365,10 @@ class MediaServiceWrapper {
     }
 
     // Deliver
-    private Hashtable<String, URL> createFileURLsFromAsset(AssetInfo asset,
+    private Map<String, URL> createFileURLsFromAsset(AssetInfo asset,
             int availabilityWindowInMinutes) throws ServiceException,
             MalformedURLException {
-        Hashtable<String, URL> ret = new Hashtable<String, URL>();
+        Map<String, URL> ret = new HashMap<String, URL>();
 
         AccessPolicyInfo readAP = service.create(AccessPolicy.create(
                 accessPolicyPrefix + "tempAccessPolicy",
@@ -388,11 +389,11 @@ class MediaServiceWrapper {
     }
 
     // Deliver
-    public Hashtable<String, InputStream> downloadFilesFromAsset(
+    public Map<String, InputStream> downloadFilesFromAsset(
             AssetInfo asset, int downloadWindowInMinutes) throws Exception {
-        Hashtable<String, URL> urls = createFileURLsFromAsset(asset,
+        Map<String, URL> urls = createFileURLsFromAsset(asset,
                 downloadWindowInMinutes);
-        Hashtable<String, InputStream> ret = new Hashtable<String, InputStream>();
+        Map<String, InputStream> ret = new HashMap<String, InputStream>();
 
         for (String fileName : urls.keySet()) {
             URL url = urls.get(fileName);

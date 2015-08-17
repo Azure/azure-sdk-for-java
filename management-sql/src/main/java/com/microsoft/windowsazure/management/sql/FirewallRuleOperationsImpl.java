@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -159,7 +160,14 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/firewallrules";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -232,54 +240,56 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             // Create Result
             FirewallRuleCreateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new FirewallRuleCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            if (serviceResourceElement2 != null) {
-                FirewallRule serviceResourceInstance = new FirewallRule();
-                result.setFirewallRule(serviceResourceInstance);
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new FirewallRuleCreateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
                 
-                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                if (startIPAddressElement2 != null) {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+                if (serviceResourceElement2 != null) {
+                    FirewallRule serviceResourceInstance = new FirewallRule();
+                    result.setFirewallRule(serviceResourceInstance);
+                    
+                    Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                    if (startIPAddressElement2 != null) {
+                        InetAddress startIPAddressInstance;
+                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
+                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                    }
+                    
+                    Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                    if (endIPAddressElement2 != null) {
+                        InetAddress endIPAddressInstance;
+                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
+                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    }
+                    
+                    Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement2 != null) {
+                        String nameInstance;
+                        nameInstance = nameElement2.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
                 }
                 
-                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                if (endIPAddressElement2 != null) {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
-                }
-                
-                Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement2 != null) {
-                    String nameInstance;
-                    nameInstance = nameElement2.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
-                }
-                
-                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
-                if (typeElement != null) {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -350,7 +360,15 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/firewallrules/";
+        url = url + URLEncoder.encode(ruleName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -389,6 +407,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -464,7 +483,15 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/firewallrules/";
+        url = url + URLEncoder.encode(ruleName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -504,54 +531,56 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             // Create Result
             FirewallRuleGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new FirewallRuleGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            if (serviceResourceElement != null) {
-                FirewallRule serviceResourceInstance = new FirewallRule();
-                result.setFirewallRule(serviceResourceInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new FirewallRuleGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                if (startIPAddressElement != null) {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                Element serviceResourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+                if (serviceResourceElement != null) {
+                    FirewallRule serviceResourceInstance = new FirewallRule();
+                    result.setFirewallRule(serviceResourceInstance);
+                    
+                    Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                    if (startIPAddressElement != null) {
+                        InetAddress startIPAddressInstance;
+                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                    }
+                    
+                    Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                    if (endIPAddressElement != null) {
+                        InetAddress endIPAddressInstance;
+                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
                 }
                 
-                Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                if (endIPAddressElement != null) {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
-                }
-                
-                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                if (typeElement != null) {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -620,7 +649,14 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/firewallrules";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -660,57 +696,59 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             // Create Result
             FirewallRuleListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new FirewallRuleListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
-                    FirewallRule serviceResourceInstance = new FirewallRule();
-                    result.getFirewallRules().add(serviceResourceInstance);
-                    
-                    Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                    if (startIPAddressElement != null) {
-                        InetAddress startIPAddressInstance;
-                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
-                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
-                    }
-                    
-                    Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                    if (endIPAddressElement != null) {
-                        InetAddress endIPAddressInstance;
-                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
-                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
-                    }
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serviceResourceInstance.setName(nameInstance);
-                    }
-                    
-                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                    if (typeElement != null) {
-                        String typeInstance;
-                        typeInstance = typeElement.getTextContent();
-                        serviceResourceInstance.setType(typeInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        serviceResourceInstance.setState(stateInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new FirewallRuleListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
+                if (serviceResourcesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
+                        FirewallRule serviceResourceInstance = new FirewallRule();
+                        result.getFirewallRules().add(serviceResourceInstance);
+                        
+                        Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                        if (startIPAddressElement != null) {
+                            InetAddress startIPAddressInstance;
+                            startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                            serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                        }
+                        
+                        Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                        if (endIPAddressElement != null) {
+                            InetAddress endIPAddressInstance;
+                            endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                            serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                        }
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            serviceResourceInstance.setName(nameInstance);
+                        }
+                        
+                        Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                        if (typeElement != null) {
+                            String typeInstance;
+                            typeInstance = typeElement.getTextContent();
+                            serviceResourceInstance.setType(typeInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            serviceResourceInstance.setState(stateInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -804,7 +842,15 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/firewallrules/";
+        url = url + URLEncoder.encode(ruleName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -877,54 +923,56 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             // Create Result
             FirewallRuleUpdateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new FirewallRuleUpdateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            if (serviceResourceElement2 != null) {
-                FirewallRule serviceResourceInstance = new FirewallRule();
-                result.setFirewallRule(serviceResourceInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new FirewallRuleUpdateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
                 
-                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                if (startIPAddressElement2 != null) {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+                if (serviceResourceElement2 != null) {
+                    FirewallRule serviceResourceInstance = new FirewallRule();
+                    result.setFirewallRule(serviceResourceInstance);
+                    
+                    Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                    if (startIPAddressElement2 != null) {
+                        InetAddress startIPAddressInstance;
+                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
+                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                    }
+                    
+                    Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                    if (endIPAddressElement2 != null) {
+                        InetAddress endIPAddressInstance;
+                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
+                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    }
+                    
+                    Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement2 != null) {
+                        String nameInstance;
+                        nameInstance = nameElement2.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
                 }
                 
-                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                if (endIPAddressElement2 != null) {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
-                }
-                
-                Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement2 != null) {
-                    String nameInstance;
-                    nameInstance = nameElement2.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
-                }
-                
-                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
-                if (typeElement != null) {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

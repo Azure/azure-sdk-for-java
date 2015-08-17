@@ -114,9 +114,11 @@ public class DatabaseCopyCreateParameters {
     * Initializes a new instance of the DatabaseCopyCreateParameters class with
     * required arguments.
     *
-    * @param partnerServer The partner server.
-    * @param partnerDatabase The partner database.
-    * @param isContinuous Is continuous.
+    * @param partnerServer Gets the name of the destination server for the copy.
+    * @param partnerDatabase Gets the name of the destination database for the
+    * copy.
+    * @param isContinuous Gets a value that indicates whether the copy should
+    * be continuous.
     */
     public DatabaseCopyCreateParameters(String partnerServer, String partnerDatabase, boolean isContinuous) {
         if (partnerServer == null) {

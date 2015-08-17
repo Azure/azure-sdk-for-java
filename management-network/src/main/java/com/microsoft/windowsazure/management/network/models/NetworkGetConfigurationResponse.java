@@ -59,6 +59,7 @@ public class NetworkGetConfigurationResponse extends OperationResponse {
     * Initializes a new instance of the NetworkGetConfigurationResponse class
     * with required arguments.
     *
+    * @param configuration The network configuration for this subscription.
     */
     public NetworkGetConfigurationResponse(String configuration) {
         if (configuration == null) {

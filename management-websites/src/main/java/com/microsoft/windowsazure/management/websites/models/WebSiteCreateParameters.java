@@ -96,8 +96,11 @@ public class WebSiteCreateParameters {
     * Initializes a new instance of the WebSiteCreateParameters class with
     * required arguments.
     *
-    * @param name The name.
-    * @param serverFarm The server farm.
+    * @param name The name of the web site. This should match the host name in
+    * the default domain.
+    * @param serverFarm The name of the Server Farm (Web Hosting Plan)
+    * associated with this web site. This is a required value. Server Farm
+    * must already exist.
     */
     public WebSiteCreateParameters(String name, String serverFarm) {
         if (name == null) {
@@ -181,9 +184,11 @@ public class WebSiteCreateParameters {
         * Initializes a new instance of the WebSpaceDetails class with required
         * arguments.
         *
-        * @param geoRegion The geo region.
-        * @param name The name.
-        * @param plan The plan.
+        * @param geoRegion The geographical region of the web space that will
+        * be created.
+        * @param name The name of the web space.
+        * @param plan The web space plan. This value must be
+        * VirtualDedicatedPlan.
         */
         public WebSpaceDetails(String geoRegion, String name, String plan) {
             if (geoRegion == null) {

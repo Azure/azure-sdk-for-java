@@ -97,12 +97,16 @@ public class ServiceCertificateCreateParameters {
     * Initializes a new instance of the ServiceCertificateCreateParameters
     * class with required arguments.
     *
-    * @param data The data.
-    * @param certificateFormat The certificate format.
+    * @param data The pfx or cer file.
+    * @param certificateFormat The service certificate format. Azure supports
+    * the pfx and cer file formats.
     */
     public ServiceCertificateCreateParameters(byte[] data, CertificateFormat certificateFormat) {
         if (data == null) {
             throw new NullPointerException("data");
+        }
+        if (certificateFormat == null) {
+            throw new NullPointerException("certificateFormat");
         }
         this.setData(data);
         this.setCertificateFormat(certificateFormat);

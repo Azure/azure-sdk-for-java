@@ -30,20 +30,20 @@ public enum JobState {
     /**
     * An enabled job that is scheduled for future execution.
     */
-    Enabled,
+    ENABLED,
     
     /**
     * A disabled job does not have any future execution scheduled.
     */
-    Disabled,
+    DISABLED,
     
     /**
     * A faulted job is one whose final execution attempt failed.
     */
-    Faulted,
+    FAULTED,
     
     /**
     * A completed job is one whose final execution attempt succeeded.
     */
-    Completed,
+    COMPLETED,
 }

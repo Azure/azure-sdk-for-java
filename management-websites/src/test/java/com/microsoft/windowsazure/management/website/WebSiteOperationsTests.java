@@ -32,7 +32,7 @@ import org.junit.Test;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
     private static String websiteName = testWebsitePrefix + "01";
-    private static String webSpaceName = WebSpaceNames.NORTHCENTRALUSWEBSPACE; 
+    private static String webSpaceName = WebSpaceNames.NORTHCENTRALUSWEBSPACE;
     private static String hostName = ".azurewebsites.net";
     
     @BeforeClass
@@ -82,6 +82,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         } catch (Exception e) {
             // fine if it fails.
         }
+        resetTest(WebSiteOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void createWebSite() throws Exception {
@@ -90,7 +91,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
 
         WebHostingPlanCreateParameters params = new WebHostingPlanCreateParameters();
         params.setName("DefaultSF");
-        params.setSKU(SkuOptions.Free);
+        params.setSKU(SkuOptions.FREE);
         webSiteManagementClient.getWebHostingPlansOperations().create(webSpaceName, params);
 
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
@@ -172,7 +173,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters();
         updateParameters.setHostNames(hostNamesValue);
 
-        OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);            
+        OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());
@@ -214,7 +215,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
 
     @Test
     public void restartWebSiteSuccess() throws Exception {
-        OperationResponse  operationResponse = webSiteManagementClient.getWebSitesOperations().restart(webSpaceName, websiteName);
+        OperationResponse operationResponse = webSiteManagementClient.getWebSitesOperations().restart(webSpaceName, websiteName);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());

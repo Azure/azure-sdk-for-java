@@ -48,7 +48,29 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for personType complex type.
- * </p>
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="personType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;choice maxOccurs="unbounded">
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="uri" type="{http://www.w3.org/2005/Atom}uriType" minOccurs="0"/>
+ *         &lt;element name="email" type="{http://www.w3.org/2005/Atom}emailType" minOccurs="0"/>
+ *         &lt;any namespace='##other'/>
+ *       &lt;/choice>
+ *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
+ *       &lt;anyAttribute namespace='##other'/>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "personType", propOrder = { "nameOrUriOrEmail" })

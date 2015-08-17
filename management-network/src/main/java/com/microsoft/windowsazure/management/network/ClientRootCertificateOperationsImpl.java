@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.management.network.models.GatewayOperationResp
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -115,14 +116,6 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * gateway.
     * @param parameters Required. Parameters supplied to the Upload Client Root
     * Certificate Virtual Network Gateway operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -133,11 +126,18 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public GatewayOperationResponse create(String networkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
+    public GatewayOperationResponse create(String networkName, ClientRootCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException {
         // Validate
         if (networkName == null) {
             throw new NullPointerException("networkName");
@@ -161,7 +161,14 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/clientrootcertificates";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -178,7 +185,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = parameters.getCertificate();
@@ -208,23 +215,25 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -272,14 +281,6 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * @param networkName Required. The name of the virtual network for this
     * gateway.
     * @param certificateThumbprint Required. The X509 certificate thumbprint.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -290,11 +291,18 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public GatewayOperationResponse delete(String networkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
+    public GatewayOperationResponse delete(String networkName, String certificateThumbprint) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException {
         // Validate
         if (networkName == null) {
             throw new NullPointerException("networkName");
@@ -315,7 +323,15 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates/" + certificateThumbprint.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/clientrootcertificates/";
+        url = url + URLEncoder.encode(certificateThumbprint, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -332,7 +348,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -356,23 +372,25 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -453,7 +471,15 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates/" + certificateThumbprint.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/clientrootcertificates/";
+        url = url + URLEncoder.encode(certificateThumbprint, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -469,7 +495,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -493,10 +519,12 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
             // Create Result
             ClientRootCertificateGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ClientRootCertificateGetResponse();
-            result.setCertificate(StreamUtils.toString(responseContent));
-            
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ClientRootCertificateGetResponse();
+                result.setCertificate(StreamUtils.toString(responseContent));
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -571,7 +599,14 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/clientrootcertificates";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -588,7 +623,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -612,43 +647,45 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
             // Create Result
             ClientRootCertificateListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ClientRootCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element clientRootCertificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ClientRootCertificates");
-            if (clientRootCertificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(clientRootCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ClientRootCertificate").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(clientRootCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ClientRootCertificate").get(i1));
-                    ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
-                    result.getClientRootCertificates().add(clientRootCertificateInstance);
-                    
-                    Element expirationTimeElement = XmlUtility.getElementByTagNameNS(clientRootCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ExpirationTime");
-                    if (expirationTimeElement != null) {
-                        Calendar expirationTimeInstance;
-                        expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
-                        clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
-                    }
-                    
-                    Element subjectElement = XmlUtility.getElementByTagNameNS(clientRootCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Subject");
-                    if (subjectElement != null) {
-                        String subjectInstance;
-                        subjectInstance = subjectElement.getTextContent();
-                        clientRootCertificateInstance.setSubject(subjectInstance);
-                    }
-                    
-                    Element thumbprintElement = XmlUtility.getElementByTagNameNS(clientRootCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    if (thumbprintElement != null) {
-                        String thumbprintInstance;
-                        thumbprintInstance = thumbprintElement.getTextContent();
-                        clientRootCertificateInstance.setThumbprint(thumbprintInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ClientRootCertificateListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element clientRootCertificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ClientRootCertificates");
+                if (clientRootCertificatesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(clientRootCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ClientRootCertificate").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(clientRootCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ClientRootCertificate").get(i1));
+                        ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
+                        result.getClientRootCertificates().add(clientRootCertificateInstance);
+                        
+                        Element expirationTimeElement = XmlUtility.getElementByTagNameNS(clientRootCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ExpirationTime");
+                        if (expirationTimeElement != null) {
+                            Calendar expirationTimeInstance;
+                            expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
+                            clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
+                        }
+                        
+                        Element subjectElement = XmlUtility.getElementByTagNameNS(clientRootCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Subject");
+                        if (subjectElement != null) {
+                            String subjectInstance;
+                            subjectInstance = subjectElement.getTextContent();
+                            clientRootCertificateInstance.setSubject(subjectInstance);
+                        }
+                        
+                        Element thumbprintElement = XmlUtility.getElementByTagNameNS(clientRootCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        if (thumbprintElement != null) {
+                            String thumbprintInstance;
+                            thumbprintInstance = thumbprintElement.getTextContent();
+                            clientRootCertificateInstance.setThumbprint(thumbprintInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

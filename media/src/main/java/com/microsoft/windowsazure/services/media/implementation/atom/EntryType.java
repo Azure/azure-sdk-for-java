@@ -48,7 +48,38 @@ import javax.xml.namespace.QName;
  * 
  * <p>
  * Java class for entryType complex type.
- * </p>
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * 
+ * <pre>
+ * &lt;complexType name="entryType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;choice maxOccurs="unbounded">
+ *         &lt;element name="author" type="{http://www.w3.org/2005/Atom}personType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="category" type="{http://www.w3.org/2005/Atom}categoryType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="content" type="{http://www.w3.org/2005/Atom}contentType" minOccurs="0"/>
+ *         &lt;element name="contributor" type="{http://www.w3.org/2005/Atom}personType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="id" type="{http://www.w3.org/2005/Atom}idType"/>
+ *         &lt;element name="link" type="{http://www.w3.org/2005/Atom}linkType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="published" type="{http://www.w3.org/2005/Atom}dateTimeType" minOccurs="0"/>
+ *         &lt;element name="rights" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
+ *         &lt;element name="source" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
+ *         &lt;element name="summary" type="{http://www.w3.org/2005/Atom}textType" minOccurs="0"/>
+ *         &lt;element name="title" type="{http://www.w3.org/2005/Atom}textType"/>
+ *         &lt;element name="updated" type="{http://www.w3.org/2005/Atom}dateTimeType"/>
+ *         &lt;any namespace='##other' maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/choice>
+ *       &lt;attGroup ref="{http://www.w3.org/2005/Atom}commonAttributes"/>
+ *       &lt;anyAttribute namespace='##other'/>
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "entryType", propOrder = { "entryChildren" })

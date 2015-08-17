@@ -19,8 +19,7 @@ package com.microsoft.windowsazure.management;
 import java.net.URI;
 import java.util.Map;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;
@@ -268,11 +267,13 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         createManagementClient(config);
 
+        setupTest();
         TestRequestFilter testFilter = new TestRequestFilter("filterUserAgent");
         ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
 
         // Executing operation on the filtered service should execute the filter
         AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
+        resetTest();
 
         String userAgent = testFilter.getUserAgent();
         Assert.assertNotNull(userAgent);

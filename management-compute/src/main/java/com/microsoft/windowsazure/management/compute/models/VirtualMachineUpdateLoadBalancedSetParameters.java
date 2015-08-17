@@ -333,6 +333,24 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
             this.virtualIPAddress = virtualIPAddressValue;
         }
         
+        private String virtualIPName;
+        
+        /**
+        * Optional. Virtual IP Name for this endpoint.
+        * @return The VirtualIPName value.
+        */
+        public String getVirtualIPName() {
+            return this.virtualIPName;
+        }
+        
+        /**
+        * Optional. Virtual IP Name for this endpoint.
+        * @param virtualIPNameValue The VirtualIPName value.
+        */
+        public void setVirtualIPName(final String virtualIPNameValue) {
+            this.virtualIPName = virtualIPNameValue;
+        }
+        
         /**
         * Initializes a new instance of the InputEndpoint class.
         *
@@ -345,7 +363,12 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Initializes a new instance of the InputEndpoint class with required
         * arguments.
         *
-        * @param loadBalancedEndpointSetName The load balanced endpoint set name.
+        * @param loadBalancedEndpointSetName Specifies whether this endpoint is
+        * part of shared LoadBalanced endpoint and served by multiple role
+        * instances. If not specified a BadRequest error will be returned. It
+        * must also be in use by the deployment (at least one role in the
+        * deployment must have an endpoint whose LoadBalancedEndpointSetName
+        * matches this) otherwise a BadRequest error will be returned.
         */
         public InputEndpoint(String loadBalancedEndpointSetName) {
             this();

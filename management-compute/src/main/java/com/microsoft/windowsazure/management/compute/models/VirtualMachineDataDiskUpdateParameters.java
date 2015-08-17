@@ -185,8 +185,15 @@ public class VirtualMachineDataDiskUpdateParameters {
     * Initializes a new instance of the VirtualMachineDataDiskUpdateParameters
     * class with required arguments.
     *
-    * @param hostCaching The host caching.
-    * @param mediaLinkUri The media link uri.
+    * @param hostCaching Specifies the platform caching behavior of data disk
+    * blob for read/write efficiency. The default vault is ReadOnly. Possible
+    * values are: None, ReadOnly, or ReadWrite. Warning: Setting this property
+    * impacts the consistency of the disk.
+    * @param mediaLinkUri Specifies the location of the blob in Azure blob
+    * store where the media for the disk is located. The blob location must
+    * belong to the storage account in the subscription specified by the
+    * SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
     */
     public VirtualMachineDataDiskUpdateParameters(String hostCaching, URI mediaLinkUri) {
         if (hostCaching == null) {

@@ -263,4 +263,22 @@ public class InputEndpoint {
     public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {
         this.virtualIPAddress = virtualIPAddressValue;
     }
+    
+    private String virtualIPName;
+    
+    /**
+    * Optional. Virtual IP Name for this endpoint.
+    * @return The VirtualIPName value.
+    */
+    public String getVirtualIPName() {
+        return this.virtualIPName;
+    }
+    
+    /**
+    * Optional. Virtual IP Name for this endpoint.
+    * @param virtualIPNameValue The VirtualIPName value.
+    */
+    public void setVirtualIPName(final String virtualIPNameValue) {
+        this.virtualIPName = virtualIPNameValue;
+    }
 }

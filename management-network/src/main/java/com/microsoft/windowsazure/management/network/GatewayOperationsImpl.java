@@ -23,13 +23,19 @@
 
 package com.microsoft.windowsazure.management.network;
 
+import com.microsoft.windowsazure.core.LazyCollection;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.StreamUtils;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.GatewayConnectDisconnectOrTestParameters;
+import com.microsoft.windowsazure.management.network.models.GatewayConnectionCreateParameters;
+import com.microsoft.windowsazure.management.network.models.GatewayConnectionGetResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayConnectivityState;
 import com.microsoft.windowsazure.management.network.models.GatewayCreateParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayDefaultSite;
@@ -39,20 +45,33 @@ import com.microsoft.windowsazure.management.network.models.GatewayEvent;
 import com.microsoft.windowsazure.management.network.models.GatewayGenerateVpnClientPackageParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayGetDeviceConfigurationScriptParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayGetDeviceConfigurationScriptResponse;
+import com.microsoft.windowsazure.management.network.models.GatewayGetIPsecParametersResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayGetOperationStatusResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayGetResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayGetSharedKeyResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayListConnectionsResponse;
+import com.microsoft.windowsazure.management.network.models.GatewayListGatewayConnectionsResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayListSupportedDevicesResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayOperationResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayOperationStatus;
 import com.microsoft.windowsazure.management.network.models.GatewayResetSharedKeyParameters;
-import com.microsoft.windowsazure.management.network.models.GatewaySKU;
 import com.microsoft.windowsazure.management.network.models.GatewaySetDefaultSiteListParameters;
+import com.microsoft.windowsazure.management.network.models.GatewaySetIPsecParametersParameters;
 import com.microsoft.windowsazure.management.network.models.GatewaySetSharedKeyParameters;
-import com.microsoft.windowsazure.management.network.models.GatewayType;
+import com.microsoft.windowsazure.management.network.models.IPsecParameters;
+import com.microsoft.windowsazure.management.network.models.ListLocalNetworkGatewaysResponse;
+import com.microsoft.windowsazure.management.network.models.ListVirtualNetworkGatewaysResponse;
+import com.microsoft.windowsazure.management.network.models.LocalNetworkGatewayCreateParameters;
+import com.microsoft.windowsazure.management.network.models.LocalNetworkGatewayCreateResponse;
+import com.microsoft.windowsazure.management.network.models.LocalNetworkGatewayGetResponse;
+import com.microsoft.windowsazure.management.network.models.ResetGatewayParameters;
 import com.microsoft.windowsazure.management.network.models.ResizeGatewayParameters;
-import com.microsoft.windowsazure.management.network.models.UpdateGatewayPublicDiagnostics;
+import com.microsoft.windowsazure.management.network.models.StartGatewayPublicDiagnosticsParameters;
+import com.microsoft.windowsazure.management.network.models.StopGatewayPublicDiagnosticsParameters;
+import com.microsoft.windowsazure.management.network.models.UpdateGatewayConnectionParameters;
+import com.microsoft.windowsazure.management.network.models.UpdateLocalNetworkGatewayParameters;
+import com.microsoft.windowsazure.management.network.models.VirtualNetworkGatewayCreateParameters;
+import com.microsoft.windowsazure.management.network.models.VirtualNetworkGatewayGetResponse;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -60,6 +79,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -177,6 +197,9 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getOperation() == null) {
+            throw new NullPointerException("parameters.Operation");
+        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -191,7 +214,15 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkSiteName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connection/";
+        url = url + URLEncoder.encode(localNetworkSiteName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -208,7 +239,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -262,23 +293,25 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -363,7 +396,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -380,7 +420,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -391,13 +431,17 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         Element createGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateGatewayParameters");
         requestDoc.appendChild(createGatewayParametersElement);
         
-        Element gatewaySizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewaySize");
-        gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU().toString()));
-        createGatewayParametersElement.appendChild(gatewaySizeElement);
+        if (parameters.getGatewaySKU() != null) {
+            Element gatewaySizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewaySize");
+            gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU()));
+            createGatewayParametersElement.appendChild(gatewaySizeElement);
+        }
         
-        Element gatewayTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "gatewayType");
-        gatewayTypeElement.appendChild(requestDoc.createTextNode(parameters.getGatewayType().toString()));
-        createGatewayParametersElement.appendChild(gatewayTypeElement);
+        if (parameters.getGatewayType() != null) {
+            Element gatewayTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "gatewayType");
+            gatewayTypeElement.appendChild(requestDoc.createTextNode(parameters.getGatewayType()));
+            createGatewayParametersElement.appendChild(gatewayTypeElement);
+        }
         
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
@@ -432,23 +476,418 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Creating Virtual network Gateway connection operation creates a
+    * new network gateway connection.
+    *
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Gateway Connection operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginCreatingGatewayConnectionAsync(final GatewayConnectionCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginCreatingGatewayConnection(parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Creating Virtual network Gateway connection operation creates a
+    * new network gateway connection.
+    *
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Gateway Connection operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginCreatingGatewayConnection(GatewayConnectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingGatewayConnectionAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/gatewayconnections";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element createGatewayConnectionParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateGatewayConnectionParameters");
+        requestDoc.appendChild(createGatewayConnectionParametersElement);
+        
+        if (parameters.getConnectedEntityId() != null) {
+            Element connectedEntityIdElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConnectedEntityId");
+            connectedEntityIdElement.appendChild(requestDoc.createTextNode(parameters.getConnectedEntityId()));
+            createGatewayConnectionParametersElement.appendChild(connectedEntityIdElement);
+        }
+        
+        if (parameters.getGatewayConnectionName() != null) {
+            Element gatewayConnectionNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewayConnectionName");
+            gatewayConnectionNameElement.appendChild(requestDoc.createTextNode(parameters.getGatewayConnectionName()));
+            createGatewayConnectionParametersElement.appendChild(gatewayConnectionNameElement);
+        }
+        
+        if (parameters.getGatewayConnectionType() != null) {
+            Element gatewayConnectionTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewayConnectionType");
+            gatewayConnectionTypeElement.appendChild(requestDoc.createTextNode(parameters.getGatewayConnectionType()));
+            createGatewayConnectionParametersElement.appendChild(gatewayConnectionTypeElement);
+        }
+        
+        if (parameters.getVirtualNetworkGatewayId() != null) {
+            Element virtualNetworkGatewayIdElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualNetworkGatewayId");
+            virtualNetworkGatewayIdElement.appendChild(requestDoc.createTextNode(parameters.getVirtualNetworkGatewayId()));
+            createGatewayConnectionParametersElement.appendChild(virtualNetworkGatewayIdElement);
+        }
+        
+        Element routingWeightElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoutingWeight");
+        routingWeightElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getRoutingWeight())));
+        createGatewayConnectionParametersElement.appendChild(routingWeightElement);
+        
+        if (parameters.getSharedKey() != null) {
+            Element sharedKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SharedKey");
+            sharedKeyElement.appendChild(requestDoc.createTextNode(parameters.getSharedKey()));
+            createGatewayConnectionParametersElement.appendChild(sharedKeyElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Creating Virtual network Gateway operation creates a new
+    * network gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Virtual Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginCreatingVirtualNetworkGatewayAsync(final String networkName, final VirtualNetworkGatewayCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginCreatingVirtualNetworkGateway(networkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Creating Virtual network Gateway operation creates a new
+    * network gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Virtual Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginCreatingVirtualNetworkGateway(String networkName, VirtualNetworkGatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (networkName == null) {
+            throw new NullPointerException("networkName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/virtualnetworkgateways";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element createVirtualNetworkGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateVirtualNetworkGatewayParameters");
+        requestDoc.appendChild(createVirtualNetworkGatewayParametersElement);
+        
+        if (parameters.getGatewayName() != null) {
+            Element gatewayNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewayName");
+            gatewayNameElement.appendChild(requestDoc.createTextNode(parameters.getGatewayName()));
+            createVirtualNetworkGatewayParametersElement.appendChild(gatewayNameElement);
+        }
+        
+        if (parameters.getGatewaySKU() != null) {
+            Element gatewaySizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewaySize");
+            gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU()));
+            createVirtualNetworkGatewayParametersElement.appendChild(gatewaySizeElement);
+        }
+        
+        if (parameters.getGatewayType() != null) {
+            Element gatewayTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewayType");
+            gatewayTypeElement.appendChild(requestDoc.createTextNode(parameters.getGatewayType()));
+            createVirtualNetworkGatewayParametersElement.appendChild(gatewayTypeElement);
+        }
+        
+        if (parameters.getLocation() != null) {
+            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
+            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
+            createVirtualNetworkGatewayParametersElement.appendChild(locationElement);
+        }
+        
+        if (parameters.getVnetId() != null) {
+            Element vnetIdElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VnetId");
+            vnetIdElement.appendChild(requestDoc.createTextNode(parameters.getVnetId()));
+            createVirtualNetworkGatewayParametersElement.appendChild(vnetIdElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_CREATED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -521,7 +960,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -538,7 +984,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -562,23 +1008,306 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Deleting Virtual Network Gateway connection deletes a network
+    * gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginDeletingGatewayConnectionAsync(final String gatewayId, final String connectedentityId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginDeletingGatewayConnection(gatewayId, connectedentityId);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Deleting Virtual Network Gateway connection deletes a network
+    * gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginDeletingGatewayConnection(String gatewayId, String connectedentityId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            CloudTracing.enter(invocationId, this, "beginDeletingGatewayConnectionAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/gatewayconnections/virtualnetworkgateway/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Deleting Virtual Network Gateway operation deletes a network
+    * gateway
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginDeletingVirtualNetworkGatewayAsync(final String gatewayId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginDeletingVirtualNetworkGateway(gatewayId);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Deleting Virtual Network Gateway operation deletes a network
+    * gateway
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginDeletingVirtualNetworkGateway(String gatewayId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            CloudTracing.enter(invocationId, this, "beginDeletingVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -651,7 +1380,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -668,10 +1404,10 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
-        String requestContent = "<" + "?" + "xml version=\"1.0\" encoding=\"utf-8\"" + "?" + "><UpdateGateway xmlns=\"http://schemas.microsoft.com/windowsazure\"><UpdateGatewayOperation>Failover</UpdateGatewayOperation></UpdateGateway>";
+        String requestContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><UpdateGateway xmlns=\"http://schemas.microsoft.com/windowsazure\"><UpdateGatewayOperation>Failover</UpdateGatewayOperation></UpdateGateway>";
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
@@ -698,23 +1434,25 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -786,6 +1524,9 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getProcessorArchitecture() == null) {
+            throw new NullPointerException("parameters.ProcessorArchitecture");
+        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -799,7 +1540,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/vpnclientpackage";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/vpnclientpackage";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -816,7 +1564,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -864,23 +1612,25 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -953,7 +1703,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/defaultsites";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/defaultsites";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -970,7 +1727,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -994,23 +1751,198 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Reset
+    * Virtual Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginResetAsync(final String networkName, final ResetGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginReset(networkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Reset
+    * Virtual Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginReset(String networkName, ResetGatewayParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (networkName == null) {
+            throw new NullPointerException("networkName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginResetAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayParameters");
+        requestDoc.appendChild(updateGatewayParametersElement);
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("Reset"));
+            updateGatewayParametersElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1103,7 +2035,16 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkName.trim() + "/sharedkey";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connection/";
+        url = url + URLEncoder.encode(localNetworkName, "UTF-8");
+        url = url + "/sharedkey";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1120,7 +2061,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1168,23 +2109,372 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Reset Virtual Network Gateway Shared Key V2 operation resets
+    * the shared key used between the gateway and customer vpn.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Reset Shared Key V2 request.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginResetSharedKeyV2Async(final String gatewayId, final String connectedentityId, final GatewayResetSharedKeyParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginResetSharedKeyV2(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Reset Virtual Network Gateway Shared Key V2 operation resets
+    * the shared key used between the gateway and customer vpn.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Reset Shared Key V2 request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginResetSharedKeyV2(String gatewayId, String connectedentityId, GatewayResetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginResetSharedKeyV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        url = url + "/sharedkey";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element resetSharedKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetSharedKey");
+        requestDoc.appendChild(resetSharedKeyElement);
+        
+        Element keyLengthElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyLength");
+        keyLengthElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getKeyLength())));
+        resetSharedKeyElement.appendChild(keyLengthElement);
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway.
+    * @param parameters Required. Parameters supplied to the Begin Reset
+    * Virtual Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginResetVirtualNetworkGatewayAsync(final String gatewayId, final ResetGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginResetVirtualNetworkGateway(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway.
+    * @param parameters Required. Parameters supplied to the Begin Reset
+    * Virtual Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginResetVirtualNetworkGateway(String gatewayId, ResetGatewayParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginResetVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayParameters");
+        requestDoc.appendChild(updateGatewayParametersElement);
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("Reset"));
+            updateGatewayParametersElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1265,7 +2555,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1282,7 +2579,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1290,16 +2587,20 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        Element updateGatewayParametersElement = requestDoc.createElementNS("", "UpdateGatewayParameters");
+        Element updateGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayParameters");
         requestDoc.appendChild(updateGatewayParametersElement);
         
-        Element gatewaySizeElement = requestDoc.createElementNS("", "GatewaySize");
-        gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU().toString()));
-        updateGatewayParametersElement.appendChild(gatewaySizeElement);
+        if (parameters.getGatewaySKU() != null) {
+            Element gatewaySizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewaySize");
+            gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU()));
+            updateGatewayParametersElement.appendChild(gatewaySizeElement);
+        }
         
-        Element operationElement = requestDoc.createElementNS("", "Operation");
-        operationElement.appendChild(requestDoc.createTextNode("Resize"));
-        updateGatewayParametersElement.appendChild(operationElement);
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("Resize"));
+            updateGatewayParametersElement.appendChild(operationElement);
+        }
         
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
@@ -1334,23 +2635,201 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Resize Virtual network Gateway operation resizes an existing
+    * gateway to a different GatewaySKU.
+    *
+    * @param gatewayId Required. The virtual network for this gateway id.
+    * @param parameters Required. Parameters supplied to the Begin Resize
+    * Virtual Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginResizeVirtualNetworkGatewayAsync(final String gatewayId, final ResizeGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginResizeVirtualNetworkGateway(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Resize Virtual network Gateway operation resizes an existing
+    * gateway to a different GatewaySKU.
+    *
+    * @param gatewayId Required. The virtual network for this gateway id.
+    * @param parameters Required. Parameters supplied to the Begin Resize
+    * Virtual Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginResizeVirtualNetworkGateway(String gatewayId, ResizeGatewayParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginResizeVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayParameters");
+        requestDoc.appendChild(updateGatewayParametersElement);
+        
+        if (parameters.getGatewaySKU() != null) {
+            Element gatewaySizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewaySize");
+            gatewaySizeElement.appendChild(requestDoc.createTextNode(parameters.getGatewaySKU()));
+            updateGatewayParametersElement.appendChild(gatewaySizeElement);
+        }
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("Resize"));
+            updateGatewayParametersElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1433,7 +2912,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/defaultsites";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/defaultsites";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1450,7 +2936,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1500,23 +2986,431 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters operation sets the
+    * IPsec parameters on the virtual network gateway for the specified
+    * connection to the specified local network in Azure.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters request.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginSetIPsecParametersAsync(final String networkName, final String localNetworkName, final GatewaySetIPsecParametersParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginSetIPsecParameters(networkName, localNetworkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters operation sets the
+    * IPsec parameters on the virtual network gateway for the specified
+    * connection to the specified local network in Azure.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginSetIPsecParameters(String networkName, String localNetworkName, GatewaySetIPsecParametersParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (networkName == null) {
+            throw new NullPointerException("networkName");
+        }
+        if (localNetworkName == null) {
+            throw new NullPointerException("localNetworkName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("localNetworkName", localNetworkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginSetIPsecParametersAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connection/";
+        url = url + URLEncoder.encode(localNetworkName, "UTF-8");
+        url = url + "/ipsecparameters";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        if (parameters.getParameters() != null) {
+            Element iPsecParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPsecParameters");
+            requestDoc.appendChild(iPsecParametersElement);
+            
+            if (parameters.getParameters().getEncryptionType() != null) {
+                Element encryptionTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EncryptionType");
+                encryptionTypeElement.appendChild(requestDoc.createTextNode(parameters.getParameters().getEncryptionType()));
+                iPsecParametersElement.appendChild(encryptionTypeElement);
+            }
+            
+            if (parameters.getParameters().getPfsGroup() != null) {
+                Element pfsGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PfsGroup");
+                pfsGroupElement.appendChild(requestDoc.createTextNode(parameters.getParameters().getPfsGroup()));
+                iPsecParametersElement.appendChild(pfsGroupElement);
+            }
+            
+            Element sADataSizeKilobytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SADataSizeKilobytes");
+            sADataSizeKilobytesElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getParameters().getSADataSizeKilobytes())));
+            iPsecParametersElement.appendChild(sADataSizeKilobytesElement);
+            
+            Element sALifeTimeSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SALifeTimeSeconds");
+            sALifeTimeSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getParameters().getSALifeTimeSeconds())));
+            iPsecParametersElement.appendChild(sALifeTimeSecondsElement);
+            
+            if (parameters.getParameters().getHashAlgorithm() != null) {
+                Element hashAlgorithmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HashAlgorithm");
+                hashAlgorithmElement.appendChild(requestDoc.createTextNode(parameters.getParameters().getHashAlgorithm()));
+                iPsecParametersElement.appendChild(hashAlgorithmElement);
+            }
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters V2 operation sets
+    * the IPsec parameters on the virtual network gateway connection.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters V2 request.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginSetIPsecParametersV2Async(final String gatewayId, final String connectedentityId, final GatewaySetIPsecParametersParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginSetIPsecParametersV2(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters V2 operation sets
+    * the IPsec parameters on the virtual network gateway connection.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters V2 request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginSetIPsecParametersV2(String gatewayId, String connectedentityId, GatewaySetIPsecParametersParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginSetIPsecParametersV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        url = url + "/ipsecparameters";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        if (parameters.getParameters() != null) {
+            Element iPsecParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPsecParameters");
+            requestDoc.appendChild(iPsecParametersElement);
+            
+            if (parameters.getParameters().getEncryptionType() != null) {
+                Element encryptionTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EncryptionType");
+                encryptionTypeElement.appendChild(requestDoc.createTextNode(parameters.getParameters().getEncryptionType()));
+                iPsecParametersElement.appendChild(encryptionTypeElement);
+            }
+            
+            if (parameters.getParameters().getPfsGroup() != null) {
+                Element pfsGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PfsGroup");
+                pfsGroupElement.appendChild(requestDoc.createTextNode(parameters.getParameters().getPfsGroup()));
+                iPsecParametersElement.appendChild(pfsGroupElement);
+            }
+            
+            Element sADataSizeKilobytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SADataSizeKilobytes");
+            sADataSizeKilobytesElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getParameters().getSADataSizeKilobytes())));
+            iPsecParametersElement.appendChild(sADataSizeKilobytesElement);
+            
+            Element sALifeTimeSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SALifeTimeSeconds");
+            sALifeTimeSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getParameters().getSALifeTimeSeconds())));
+            iPsecParametersElement.appendChild(sALifeTimeSecondsElement);
+            
+            if (parameters.getParameters().getHashAlgorithm() != null) {
+                Element hashAlgorithmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HashAlgorithm");
+                hashAlgorithmElement.appendChild(requestDoc.createTextNode(parameters.getParameters().getHashAlgorithm()));
+                iPsecParametersElement.appendChild(hashAlgorithmElement);
+            }
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1609,7 +3503,16 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkName.trim() + "/sharedkey";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connection/";
+        url = url + URLEncoder.encode(localNetworkName, "UTF-8");
+        url = url + "/sharedkey";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1626,7 +3529,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1676,23 +3579,25 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1710,40 +3615,36 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     }
     
     /**
-    * The Begin Update Diagnostics operation begins an asynchronous operation
-    * to starta diagnostics session for the specified virtual network gateway
-    * in Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
-    * more information)
+    * The Begin Set Virtual Network Gateway Shared Key V2 operation sets the
+    * shared key used between the gateway and customer vpn for the specified
+    * site.
     *
-    * @param networkName Required. The name of the virtual network for this
-    * gateway.
-    * @param parameters Required. Parameters supplied to the Begin Creating
-    * Virtual Network Gateway operation.
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set Shared Key V2 request.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> beginUpdateDiagnosticsAsync(final String networkName, final UpdateGatewayPublicDiagnostics parameters) {
+    public Future<GatewayOperationResponse> beginSetSharedKeyV2Async(final String gatewayId, final String connectedentityId, final GatewaySetSharedKeyParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
             public GatewayOperationResponse call() throws Exception {
-                return beginUpdateDiagnostics(networkName, parameters);
+                return beginSetSharedKeyV2(gatewayId, connectedentityId, parameters);
             }
          });
     }
     
     /**
-    * The Begin Update Diagnostics operation begins an asynchronous operation
-    * to starta diagnostics session for the specified virtual network gateway
-    * in Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
-    * more information)
+    * The Begin Set Virtual Network Gateway Shared Key V2 operation sets the
+    * shared key used between the gateway and customer vpn for the specified
+    * site.
     *
-    * @param networkName Required. The name of the virtual network for this
-    * gateway.
-    * @param parameters Required. Parameters supplied to the Begin Creating
-    * Virtual Network Gateway operation.
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set Shared Key V2 request.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1758,10 +3659,13 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * request ID.
     */
     @Override
-    public GatewayOperationResponse beginUpdateDiagnostics(String networkName, UpdateGatewayPublicDiagnostics parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public GatewayOperationResponse beginSetSharedKeyV2(String gatewayId, String connectedentityId, GatewaySetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (networkName == null) {
-            throw new NullPointerException("networkName");
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
         }
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -1773,13 +3677,23 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginUpdateDiagnosticsAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginSetSharedKeyV2Async", tracingParameters);
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/publicdiagnostics";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        url = url + "/sharedkey";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -1792,11 +3706,11 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
-        HttpPut httpRequest = new HttpPut(url);
+        HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1804,36 +3718,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        Element updateGatewayPublicDiagnosticsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayPublicDiagnostics");
-        requestDoc.appendChild(updateGatewayPublicDiagnosticsElement);
+        Element sharedKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SharedKey");
+        requestDoc.appendChild(sharedKeyElement);
         
-        if (parameters.getCaptureDurationInSeconds() != null) {
-            Element captureDurationInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CaptureDurationInSeconds");
-            captureDurationInSecondsElement.appendChild(requestDoc.createTextNode(parameters.getCaptureDurationInSeconds()));
-            updateGatewayPublicDiagnosticsElement.appendChild(captureDurationInSecondsElement);
+        if (parameters.getValue() != null) {
+            Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+            valueElement.appendChild(requestDoc.createTextNode(parameters.getValue()));
+            sharedKeyElement.appendChild(valueElement);
         }
-        
-        if (parameters.getContainerName() != null) {
-            Element containerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ContainerName");
-            containerNameElement.appendChild(requestDoc.createTextNode(parameters.getContainerName()));
-            updateGatewayPublicDiagnosticsElement.appendChild(containerNameElement);
-        }
-        
-        if (parameters.getCustomerStorageKey() != null) {
-            Element customerStorageKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomerStorageKey");
-            customerStorageKeyElement.appendChild(requestDoc.createTextNode(parameters.getCustomerStorageKey()));
-            updateGatewayPublicDiagnosticsElement.appendChild(customerStorageKeyElement);
-        }
-        
-        if (parameters.getCustomerStorageName() != null) {
-            Element customerStorageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomerStorageName");
-            customerStorageNameElement.appendChild(requestDoc.createTextNode(parameters.getCustomerStorageName()));
-            updateGatewayPublicDiagnosticsElement.appendChild(customerStorageNameElement);
-        }
-        
-        Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
-        operationElement.appendChild(requestDoc.createTextNode(parameters.getOperation().toString()));
-        updateGatewayPublicDiagnosticsElement.appendChild(operationElement);
         
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
@@ -1868,23 +3760,608 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
-            if (gatewayOperationAsyncResponseElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setOperationId(idInstance);
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Start Diagnostics operation begins an asynchronous operation to
+    * starta diagnostics session for the specified virtual network gateway in
+    * Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Start
+    * Diagnostics operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginStartDiagnosticsAsync(final String networkName, final StartGatewayPublicDiagnosticsParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginStartDiagnostics(networkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Start Diagnostics operation begins an asynchronous operation to
+    * starta diagnostics session for the specified virtual network gateway in
+    * Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
+    * more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Begin Start
+    * Diagnostics operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginStartDiagnostics(String networkName, StartGatewayPublicDiagnosticsParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (networkName == null) {
+            throw new NullPointerException("networkName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginStartDiagnosticsAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/publicdiagnostics";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayPublicDiagnosticsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayPublicDiagnostics");
+        requestDoc.appendChild(updateGatewayPublicDiagnosticsElement);
+        
+        if (parameters.getCaptureDurationInSeconds() != null) {
+            Element captureDurationInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CaptureDurationInSeconds");
+            captureDurationInSecondsElement.appendChild(requestDoc.createTextNode(parameters.getCaptureDurationInSeconds()));
+            updateGatewayPublicDiagnosticsElement.appendChild(captureDurationInSecondsElement);
+        }
+        
+        if (parameters.getContainerName() != null) {
+            Element containerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ContainerName");
+            containerNameElement.appendChild(requestDoc.createTextNode(parameters.getContainerName()));
+            updateGatewayPublicDiagnosticsElement.appendChild(containerNameElement);
+        }
+        
+        if (parameters.getCustomerStorageKey() != null) {
+            Element customerStorageKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomerStorageKey");
+            customerStorageKeyElement.appendChild(requestDoc.createTextNode(parameters.getCustomerStorageKey()));
+            updateGatewayPublicDiagnosticsElement.appendChild(customerStorageKeyElement);
+        }
+        
+        if (parameters.getCustomerStorageName() != null) {
+            Element customerStorageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomerStorageName");
+            customerStorageNameElement.appendChild(requestDoc.createTextNode(parameters.getCustomerStorageName()));
+            updateGatewayPublicDiagnosticsElement.appendChild(customerStorageNameElement);
+        }
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("StartDiagnostics"));
+            updateGatewayPublicDiagnosticsElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Start Diagnostics V2 operation begins an asynchronous operation
+    * to starta diagnostics session for the specified virtual network gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param parameters Required. Parameters supplied to the Begin Start
+    * Diagnostics V2 operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginStartDiagnosticsV2Async(final String gatewayId, final StartGatewayPublicDiagnosticsParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginStartDiagnosticsV2(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Start Diagnostics V2 operation begins an asynchronous operation
+    * to starta diagnostics session for the specified virtual network gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param parameters Required. Parameters supplied to the Begin Start
+    * Diagnostics V2 operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginStartDiagnosticsV2(String gatewayId, StartGatewayPublicDiagnosticsParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginStartDiagnosticsV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/publicdiagnostics";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayPublicDiagnosticsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayPublicDiagnostics");
+        requestDoc.appendChild(updateGatewayPublicDiagnosticsElement);
+        
+        if (parameters.getCaptureDurationInSeconds() != null) {
+            Element captureDurationInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CaptureDurationInSeconds");
+            captureDurationInSecondsElement.appendChild(requestDoc.createTextNode(parameters.getCaptureDurationInSeconds()));
+            updateGatewayPublicDiagnosticsElement.appendChild(captureDurationInSecondsElement);
+        }
+        
+        if (parameters.getContainerName() != null) {
+            Element containerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ContainerName");
+            containerNameElement.appendChild(requestDoc.createTextNode(parameters.getContainerName()));
+            updateGatewayPublicDiagnosticsElement.appendChild(containerNameElement);
+        }
+        
+        if (parameters.getCustomerStorageKey() != null) {
+            Element customerStorageKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomerStorageKey");
+            customerStorageKeyElement.appendChild(requestDoc.createTextNode(parameters.getCustomerStorageKey()));
+            updateGatewayPublicDiagnosticsElement.appendChild(customerStorageKeyElement);
+        }
+        
+        if (parameters.getCustomerStorageName() != null) {
+            Element customerStorageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CustomerStorageName");
+            customerStorageNameElement.appendChild(requestDoc.createTextNode(parameters.getCustomerStorageName()));
+            updateGatewayPublicDiagnosticsElement.appendChild(customerStorageNameElement);
+        }
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("StartDiagnostics"));
+            updateGatewayPublicDiagnosticsElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Operation to update existing gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Update
+    * gateway conneciton operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> beginUpdateGatewayConnectionAsync(final String gatewayId, final String connectedentityId, final UpdateGatewayConnectionParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return beginUpdateGatewayConnection(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Operation to update existing gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Update
+    * gateway conneciton operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse beginUpdateGatewayConnection(String gatewayId, String connectedentityId, UpdateGatewayConnectionParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginUpdateGatewayConnectionAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/gatewayconnections/virtualnetworkgateway/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayConnectionParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayConnectionParameters");
+        requestDoc.appendChild(updateGatewayConnectionParametersElement);
+        
+        Element routingWeightElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoutingWeight");
+        routingWeightElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getRoutingWeight())));
+        updateGatewayConnectionParametersElement.appendChild(routingWeightElement);
+        
+        if (parameters.getSharedKey() != null) {
+            Element sharedKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SharedKey");
+            sharedKeyElement.appendChild(requestDoc.createTextNode(parameters.getSharedKey()));
+            updateGatewayConnectionParametersElement.appendChild(sharedKeyElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -1993,7 +4470,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2006,11 +4483,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2072,14 +4550,6 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * gateway.
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Network Gateway operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -2090,6 +4560,13 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is in
     * progress, or has failed. Note that this status is distinct from the HTTP
@@ -2101,7 +4578,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
+    public GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -2123,7 +4600,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2136,11 +4613,420 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Create Virtual network Gateway Connection operation creates a new
+    * network gateway.
+    *
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Gateway Connection operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> createGatewayConnectionAsync(final GatewayConnectionCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return createGatewayConnection(parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Create Virtual network Gateway Connection operation creates a new
+    * network gateway.
+    *
+    * @param parameters Required. Parameters supplied to the Begin Creating
+    * Gateway Connection operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse createGatewayConnection(GatewayConnectionCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "createGatewayConnectionAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginCreatingGatewayConnectionAsync(parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Create Local network Gateway operation creates a new local network
+    * gateway.
+    *
+    * @param parameters Required. Parameters supplied to Create Local Network
+    * Gateway operation.
+    * @return The Create Local Network Gateway operation response.
+    */
+    @Override
+    public Future<LocalNetworkGatewayCreateResponse> createLocalNetworkGatewayAsync(final LocalNetworkGatewayCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<LocalNetworkGatewayCreateResponse>() { 
+            @Override
+            public LocalNetworkGatewayCreateResponse call() throws Exception {
+                return createLocalNetworkGateway(parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Create Local network Gateway operation creates a new local network
+    * gateway.
+    *
+    * @param parameters Required. Parameters supplied to Create Local Network
+    * Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The Create Local Network Gateway operation response.
+    */
+    @Override
+    public LocalNetworkGatewayCreateResponse createLocalNetworkGateway(LocalNetworkGatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "createLocalNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/localnetworkgateways";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element createLocalNetworkGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateLocalNetworkGatewayParameters");
+        requestDoc.appendChild(createLocalNetworkGatewayParametersElement);
+        
+        if (parameters.getAddressSpace() != null) {
+            if (parameters.getAddressSpace() instanceof LazyCollection == false || ((LazyCollection) parameters.getAddressSpace()).isInitialized()) {
+                Element addressSpaceSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "AddressSpace");
+                for (String addressSpaceItem : parameters.getAddressSpace()) {
+                    Element addressSpaceItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string");
+                    addressSpaceItemElement.appendChild(requestDoc.createTextNode(addressSpaceItem));
+                    addressSpaceSequenceElement.appendChild(addressSpaceItemElement);
+                }
+                createLocalNetworkGatewayParametersElement.appendChild(addressSpaceSequenceElement);
+            }
+        }
+        
+        if (parameters.getGatewayName() != null) {
+            Element gatewayNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GatewayName");
+            gatewayNameElement.appendChild(requestDoc.createTextNode(parameters.getGatewayName()));
+            createLocalNetworkGatewayParametersElement.appendChild(gatewayNameElement);
+        }
+        
+        if (parameters.getIpAddress() != null) {
+            Element ipAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IpAddress");
+            ipAddressElement.appendChild(requestDoc.createTextNode(parameters.getIpAddress()));
+            createLocalNetworkGatewayParametersElement.appendChild(ipAddressElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            LocalNetworkGatewayCreateResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new LocalNetworkGatewayCreateResponse();
+                result.setLocalNetworkGatewayId(StreamUtils.toString(responseContent));
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Create Virtual network Gateway operation creates a new network
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> createVirtualNetworkGatewayAsync(final String networkName, final VirtualNetworkGatewayCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return createVirtualNetworkGateway(networkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Create Virtual network Gateway operation creates a new network
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse createVirtualNetworkGateway(String networkName, VirtualNetworkGatewayCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "createVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginCreatingVirtualNetworkGatewayAsync(networkName, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2196,14 +5082,6 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * more information)
     *
     * @param networkName Required. The name of the virtual network.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -2214,6 +5092,13 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is in
     * progress, or has failed. Note that this status is distinct from the HTTP
@@ -2225,7 +5110,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
+    public GatewayGetOperationStatusResponse delete(String networkName) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -2246,7 +5131,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2259,11 +5144,356 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Delete Virtual network Gateway Connection operation deletes a network
+    * gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> deleteGatewayConnectionAsync(final String gatewayId, final String connectedentityId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return deleteGatewayConnection(gatewayId, connectedentityId);
+            }
+         });
+    }
+    
+    /**
+    * The Delete Virtual network Gateway Connection operation deletes a network
+    * gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse deleteGatewayConnection(String gatewayId, String connectedentityId) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            CloudTracing.enter(invocationId, this, "deleteGatewayConnectionAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginDeletingGatewayConnectionAsync(gatewayId, connectedentityId).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Delete Local Network Gateway operation deletes a local network gateway
+    *
+    * @param gatewayId Required. The local network gateway id.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> deleteLocalNetworkGatewayAsync(final String gatewayId) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return deleteLocalNetworkGateway(gatewayId);
+            }
+         });
+    }
+    
+    /**
+    * The Delete Local Network Gateway operation deletes a local network gateway
+    *
+    * @param gatewayId Required. The local network gateway id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse deleteLocalNetworkGateway(String gatewayId) throws IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            CloudTracing.enter(invocationId, this, "deleteLocalNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/localnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            // Deserialize Response
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Delete Virtual Network Gateway operation deletes a network gateway
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> deleteVirtualNetworkGatewayAsync(final String gatewayId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return deleteVirtualNetworkGateway(gatewayId);
+            }
+         });
+    }
+    
+    /**
+    * The Delete Virtual Network Gateway operation deletes a network gateway
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse deleteVirtualNetworkGateway(String gatewayId) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            CloudTracing.enter(invocationId, this, "deleteVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginDeletingVirtualNetworkGatewayAsync(gatewayId).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2363,7 +5593,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2376,11 +5606,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2487,7 +5718,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2500,11 +5731,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -2584,7 +5816,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -2600,7 +5839,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2624,91 +5863,93 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Gateway");
-            if (gatewayElement != null) {
-                Element stateElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    result.setState(stateInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element vIPAddressElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "VIPAddress");
-                if (vIPAddressElement != null) {
-                    InetAddress vIPAddressInstance;
-                    vIPAddressInstance = InetAddress.getByName(vIPAddressElement.getTextContent());
-                    result.setVipAddress(vIPAddressInstance);
-                }
-                
-                Element lastEventElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "LastEvent");
-                if (lastEventElement != null) {
-                    GatewayEvent lastEventInstance = new GatewayEvent();
-                    result.setLastEvent(lastEventInstance);
-                    
-                    Element timestampElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
-                    if (timestampElement != null) {
-                        Calendar timestampInstance;
-                        timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
-                        lastEventInstance.setTimestamp(timestampInstance);
+                Element gatewayElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Gateway");
+                if (gatewayElement != null) {
+                    Element stateElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        result.setState(stateInstance);
                     }
                     
-                    Element idElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Id");
-                    if (idElement != null) {
-                        String idInstance;
-                        idInstance = idElement.getTextContent();
-                        lastEventInstance.setId(idInstance);
+                    Element vIPAddressElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "VIPAddress");
+                    if (vIPAddressElement != null) {
+                        InetAddress vIPAddressInstance;
+                        vIPAddressInstance = InetAddress.getByName(vIPAddressElement.getTextContent());
+                        result.setVipAddress(vIPAddressInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        lastEventInstance.setMessage(messageInstance);
+                    Element lastEventElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "LastEvent");
+                    if (lastEventElement != null) {
+                        GatewayEvent lastEventInstance = new GatewayEvent();
+                        result.setLastEvent(lastEventInstance);
+                        
+                        Element timestampElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                        if (timestampElement != null) {
+                            Calendar timestampInstance;
+                            timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
+                            lastEventInstance.setTimestamp(timestampInstance);
+                        }
+                        
+                        Element idElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                        if (idElement != null) {
+                            String idInstance;
+                            idInstance = idElement.getTextContent();
+                            lastEventInstance.setId(idInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            lastEventInstance.setMessage(messageInstance);
+                        }
+                        
+                        Element dataElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Data");
+                        if (dataElement != null) {
+                            String dataInstance;
+                            dataInstance = dataElement.getTextContent();
+                            lastEventInstance.setData(dataInstance);
+                        }
                     }
                     
-                    Element dataElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Data");
-                    if (dataElement != null) {
-                        String dataInstance;
-                        dataInstance = dataElement.getTextContent();
-                        lastEventInstance.setData(dataInstance);
+                    Element gatewayTypeElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewayType");
+                    if (gatewayTypeElement != null) {
+                        String gatewayTypeInstance;
+                        gatewayTypeInstance = gatewayTypeElement.getTextContent();
+                        result.setGatewayType(gatewayTypeInstance);
+                    }
+                    
+                    Element gatewaySizeElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewaySize");
+                    if (gatewaySizeElement != null) {
+                        String gatewaySizeInstance;
+                        gatewaySizeInstance = gatewaySizeElement.getTextContent();
+                        result.setGatewaySKU(gatewaySizeInstance);
+                    }
+                    
+                    Element defaultSitesElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "DefaultSites");
+                    if (defaultSitesElement != null) {
+                        GatewayDefaultSite defaultSitesInstance = new GatewayDefaultSite();
+                        result.setDefaultSite(defaultSitesInstance);
+                        
+                        Element stringElement = XmlUtility.getElementByTagNameNS(defaultSitesElement, "http://schemas.microsoft.com/windowsazure", "string");
+                        if (stringElement != null) {
+                            String stringInstance;
+                            stringInstance = stringElement.getTextContent();
+                            defaultSitesInstance.setName(stringInstance);
+                        }
                     }
                 }
                 
-                Element gatewayTypeElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewayType");
-                if (gatewayTypeElement != null) {
-                    GatewayType gatewayTypeInstance;
-                    gatewayTypeInstance = GatewayType.valueOf(gatewayTypeElement.getTextContent());
-                    result.setGatewayType(gatewayTypeInstance);
-                }
-                
-                Element gatewaySizeElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewaySize");
-                if (gatewaySizeElement != null) {
-                    GatewaySKU gatewaySizeInstance;
-                    gatewaySizeInstance = GatewaySKU.valueOf(gatewaySizeElement.getTextContent());
-                    result.setGatewaySKU(gatewaySizeInstance);
-                }
-                
-                Element defaultSitesElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "DefaultSites");
-                if (defaultSitesElement != null) {
-                    GatewayDefaultSite defaultSitesInstance = new GatewayDefaultSite();
-                    result.setDefaultSite(defaultSitesInstance);
-                    
-                    Element stringElement = XmlUtility.getElementByTagNameNS(defaultSitesElement, "http://schemas.microsoft.com/windowsazure", "string");
-                    if (stringElement != null) {
-                        String stringInstance;
-                        stringInstance = stringElement.getTextContent();
-                        defaultSitesInstance.setName(stringInstance);
-                    }
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2787,15 +6028,26 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/vpndeviceconfigurationscript" + "?";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/vpndeviceconfigurationscript";
+        ArrayList<String> queryParameters = new ArrayList<String>();
         if (parameters.getVendor() != null) {
-            url = url + "vendor=" + URLEncoder.encode(parameters.getVendor() != null ? parameters.getVendor().trim() : "", "UTF-8");
+            queryParameters.add("vendor=" + URLEncoder.encode(parameters.getVendor(), "UTF-8"));
         }
         if (parameters.getPlatform() != null) {
-            url = url + "&" + "platform=" + URLEncoder.encode(parameters.getPlatform() != null ? parameters.getPlatform().trim() : "", "UTF-8");
+            queryParameters.add("platform=" + URLEncoder.encode(parameters.getPlatform(), "UTF-8"));
         }
         if (parameters.getOSFamily() != null) {
-            url = url + "&" + "OSfamily=" + URLEncoder.encode(parameters.getOSFamily() != null ? parameters.getOSFamily().trim() : "", "UTF-8");
+            queryParameters.add("OSfamily=" + URLEncoder.encode(parameters.getOSFamily(), "UTF-8"));
+        }
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
@@ -2812,7 +6064,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2836,10 +6088,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayGetDeviceConfigurationScriptResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayGetDeviceConfigurationScriptResponse();
-            result.setConfigurationScript(StreamUtils.toString(responseContent));
-            
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetDeviceConfigurationScriptResponse();
+                result.setConfigurationScript(StreamUtils.toString(responseContent));
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -2912,7 +6166,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/publicdiagnostics";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/publicdiagnostics";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -2928,7 +6189,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2952,30 +6213,864 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayDiagnosticsStatus result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayDiagnosticsStatus();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayPublicDiagnosticsStatusElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayPublicDiagnosticsStatus");
-            if (gatewayPublicDiagnosticsStatusElement != null) {
-                Element stateElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    GatewayDiagnosticsState stateInstance;
-                    stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent());
-                    result.setState(stateInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayDiagnosticsStatus();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayPublicDiagnosticsStatusElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayPublicDiagnosticsStatus");
+                if (gatewayPublicDiagnosticsStatusElement != null) {
+                    Element stateElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
+                        GatewayDiagnosticsState stateInstance;
+                        stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent().toUpperCase());
+                        result.setState(stateInstance);
+                    }
+                    
+                    Element publicDiagnosticsUrlElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "PublicDiagnosticsUrl");
+                    if (publicDiagnosticsUrlElement != null) {
+                        String publicDiagnosticsUrlInstance;
+                        publicDiagnosticsUrlInstance = publicDiagnosticsUrlElement.getTextContent();
+                        result.setDiagnosticsUrl(publicDiagnosticsUrlInstance);
+                    }
                 }
                 
-                Element publicDiagnosticsUrlElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "PublicDiagnosticsUrl");
-                if (publicDiagnosticsUrlElement != null) {
-                    String publicDiagnosticsUrlInstance;
-                    publicDiagnosticsUrlInstance = publicDiagnosticsUrlElement.getTextContent();
-                    result.setDiagnosticsUrl(publicDiagnosticsUrlInstance);
-                }
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Diagnostics V2 operation gets information about the current
+    * virtual network gateway diagnostics session
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @return The status of a gateway diagnostics operation.
+    */
+    @Override
+    public Future<GatewayDiagnosticsStatus> getDiagnosticsV2Async(final String gatewayId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayDiagnosticsStatus>() { 
+            @Override
+            public GatewayDiagnosticsStatus call() throws Exception {
+                return getDiagnosticsV2(gatewayId);
+            }
+         });
+    }
+    
+    /**
+    * The Get Diagnostics V2 operation gets information about the current
+    * virtual network gateway diagnostics session
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The status of a gateway diagnostics operation.
+    */
+    @Override
+    public GatewayDiagnosticsStatus getDiagnosticsV2(String gatewayId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            CloudTracing.enter(invocationId, this, "getDiagnosticsV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/publicdiagnostics";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayDiagnosticsStatus result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayDiagnosticsStatus();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayPublicDiagnosticsStatusElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayPublicDiagnosticsStatus");
+                if (gatewayPublicDiagnosticsStatusElement != null) {
+                    Element stateElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
+                        GatewayDiagnosticsState stateInstance;
+                        stateInstance = GatewayDiagnosticsState.valueOf(stateElement.getTextContent().toUpperCase());
+                        result.setState(stateInstance);
+                    }
+                    
+                    Element publicDiagnosticsUrlElement = XmlUtility.getElementByTagNameNS(gatewayPublicDiagnosticsStatusElement, "http://schemas.microsoft.com/windowsazure", "PublicDiagnosticsUrl");
+                    if (publicDiagnosticsUrlElement != null) {
+                        String publicDiagnosticsUrlInstance;
+                        publicDiagnosticsUrlInstance = publicDiagnosticsUrlElement.getTextContent();
+                        result.setDiagnosticsUrl(publicDiagnosticsUrlInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Virtual Network Gateway Connection operation gets information
+    * about the virtual network gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @param connectedentityId Required. The virtual network gateway connected
+    * entity Id.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayConnectionGetResponse> getGatewayConnectionAsync(final String gatewayId, final String connectedentityId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayConnectionGetResponse>() { 
+            @Override
+            public GatewayConnectionGetResponse call() throws Exception {
+                return getGatewayConnection(gatewayId, connectedentityId);
+            }
+         });
+    }
+    
+    /**
+    * The Get Virtual Network Gateway Connection operation gets information
+    * about the virtual network gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @param connectedentityId Required. The virtual network gateway connected
+    * entity Id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayConnectionGetResponse getGatewayConnection(String gatewayId, String connectedentityId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            CloudTracing.enter(invocationId, this, "getGatewayConnectionAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/gatewayconnections/virtualnetworkgateway/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayConnectionGetResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayConnectionGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayConnectionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayConnection");
+                if (gatewayConnectionElement != null) {
+                    Element gatewayConnectionNameElement = XmlUtility.getElementByTagNameNS(gatewayConnectionElement, "http://schemas.microsoft.com/windowsazure", "GatewayConnectionName");
+                    if (gatewayConnectionNameElement != null) {
+                        String gatewayConnectionNameInstance;
+                        gatewayConnectionNameInstance = gatewayConnectionNameElement.getTextContent();
+                        result.setGatewayConnectionName(gatewayConnectionNameInstance);
+                    }
+                    
+                    Element virtualNetworkGatewayIdElement = XmlUtility.getElementByTagNameNS(gatewayConnectionElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkGatewayId");
+                    if (virtualNetworkGatewayIdElement != null && virtualNetworkGatewayIdElement.getTextContent() != null && !virtualNetworkGatewayIdElement.getTextContent().isEmpty()) {
+                        String virtualNetworkGatewayIdInstance;
+                        virtualNetworkGatewayIdInstance = virtualNetworkGatewayIdElement.getTextContent();
+                        result.setVirtualNetworkGatewayId(virtualNetworkGatewayIdInstance);
+                    }
+                    
+                    Element connectedEntityIdElement = XmlUtility.getElementByTagNameNS(gatewayConnectionElement, "http://schemas.microsoft.com/windowsazure", "ConnectedEntityId");
+                    if (connectedEntityIdElement != null) {
+                        String connectedEntityIdInstance;
+                        connectedEntityIdInstance = connectedEntityIdElement.getTextContent();
+                        result.setConnectedEntityId(connectedEntityIdInstance);
+                    }
+                    
+                    Element gatewayConnectionTypeElement = XmlUtility.getElementByTagNameNS(gatewayConnectionElement, "http://schemas.microsoft.com/windowsazure", "GatewayConnectionType");
+                    if (gatewayConnectionTypeElement != null) {
+                        String gatewayConnectionTypeInstance;
+                        gatewayConnectionTypeInstance = gatewayConnectionTypeElement.getTextContent();
+                        result.setGatewayConnectionType(gatewayConnectionTypeInstance);
+                    }
+                    
+                    Element routingWeightElement = XmlUtility.getElementByTagNameNS(gatewayConnectionElement, "http://schemas.microsoft.com/windowsazure", "RoutingWeight");
+                    if (routingWeightElement != null) {
+                        int routingWeightInstance;
+                        routingWeightInstance = DatatypeConverter.parseInt(routingWeightElement.getTextContent());
+                        result.setRoutingWeight(routingWeightInstance);
+                    }
+                    
+                    Element sharedKeyElement = XmlUtility.getElementByTagNameNS(gatewayConnectionElement, "http://schemas.microsoft.com/windowsazure", "SharedKey");
+                    if (sharedKeyElement != null) {
+                        String sharedKeyInstance;
+                        sharedKeyInstance = sharedKeyElement.getTextContent();
+                        result.setSharedKey(sharedKeyInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get IPsec Parameters operation gets the IPsec parameters that have
+    * been set for the connection between the provided virtual network gateway
+    * and the provided local network site.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @return The response that will be returned from a GetIPsecParameters
+    * request. This contains the IPsec parameters for the specified connection.
+    */
+    @Override
+    public Future<GatewayGetIPsecParametersResponse> getIPsecParametersAsync(final String networkName, final String localNetworkName) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetIPsecParametersResponse>() { 
+            @Override
+            public GatewayGetIPsecParametersResponse call() throws Exception {
+                return getIPsecParameters(networkName, localNetworkName);
+            }
+         });
+    }
+    
+    /**
+    * The Get IPsec Parameters operation gets the IPsec parameters that have
+    * been set for the connection between the provided virtual network gateway
+    * and the provided local network site.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response that will be returned from a GetIPsecParameters
+    * request. This contains the IPsec parameters for the specified connection.
+    */
+    @Override
+    public GatewayGetIPsecParametersResponse getIPsecParameters(String networkName, String localNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (networkName == null) {
+            throw new NullPointerException("networkName");
+        }
+        if (localNetworkName == null) {
+            throw new NullPointerException("localNetworkName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("localNetworkName", localNetworkName);
+            CloudTracing.enter(invocationId, this, "getIPsecParametersAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connection/";
+        url = url + URLEncoder.encode(localNetworkName, "UTF-8");
+        url = url + "/ipsecparameters";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayGetIPsecParametersResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetIPsecParametersResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element iPsecParametersElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "IPsecParameters");
+                if (iPsecParametersElement != null) {
+                    IPsecParameters iPsecParametersInstance = new IPsecParameters();
+                    result.setIPsecParameters(iPsecParametersInstance);
+                    
+                    Element encryptionTypeElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "EncryptionType");
+                    if (encryptionTypeElement != null) {
+                        String encryptionTypeInstance;
+                        encryptionTypeInstance = encryptionTypeElement.getTextContent();
+                        iPsecParametersInstance.setEncryptionType(encryptionTypeInstance);
+                    }
+                    
+                    Element pfsGroupElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "PfsGroup");
+                    if (pfsGroupElement != null) {
+                        String pfsGroupInstance;
+                        pfsGroupInstance = pfsGroupElement.getTextContent();
+                        iPsecParametersInstance.setPfsGroup(pfsGroupInstance);
+                    }
+                    
+                    Element sADataSizeKilobytesElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "SADataSizeKilobytes");
+                    if (sADataSizeKilobytesElement != null) {
+                        int sADataSizeKilobytesInstance;
+                        sADataSizeKilobytesInstance = DatatypeConverter.parseInt(sADataSizeKilobytesElement.getTextContent());
+                        iPsecParametersInstance.setSADataSizeKilobytes(sADataSizeKilobytesInstance);
+                    }
+                    
+                    Element sALifeTimeSecondsElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "SALifeTimeSeconds");
+                    if (sALifeTimeSecondsElement != null) {
+                        int sALifeTimeSecondsInstance;
+                        sALifeTimeSecondsInstance = DatatypeConverter.parseInt(sALifeTimeSecondsElement.getTextContent());
+                        iPsecParametersInstance.setSALifeTimeSeconds(sALifeTimeSecondsInstance);
+                    }
+                    
+                    Element hashAlgorithmElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "HashAlgorithm");
+                    if (hashAlgorithmElement != null) {
+                        String hashAlgorithmInstance;
+                        hashAlgorithmInstance = hashAlgorithmElement.getTextContent();
+                        iPsecParametersInstance.setHashAlgorithm(hashAlgorithmInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get IPsec Parameters V2 operation gets the IPsec parameters that have
+    * been set for the virtual network gateway  connection
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @return The response that will be returned from a GetIPsecParameters
+    * request. This contains the IPsec parameters for the specified connection.
+    */
+    @Override
+    public Future<GatewayGetIPsecParametersResponse> getIPsecParametersV2Async(final String gatewayId, final String connectedentityId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetIPsecParametersResponse>() { 
+            @Override
+            public GatewayGetIPsecParametersResponse call() throws Exception {
+                return getIPsecParametersV2(gatewayId, connectedentityId);
+            }
+         });
+    }
+    
+    /**
+    * The Get IPsec Parameters V2 operation gets the IPsec parameters that have
+    * been set for the virtual network gateway  connection
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response that will be returned from a GetIPsecParameters
+    * request. This contains the IPsec parameters for the specified connection.
+    */
+    @Override
+    public GatewayGetIPsecParametersResponse getIPsecParametersV2(String gatewayId, String connectedentityId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            CloudTracing.enter(invocationId, this, "getIPsecParametersV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        url = url + "/ipsecparameters";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayGetIPsecParametersResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetIPsecParametersResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element iPsecParametersElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "IPsecParameters");
+                if (iPsecParametersElement != null) {
+                    IPsecParameters iPsecParametersInstance = new IPsecParameters();
+                    result.setIPsecParameters(iPsecParametersInstance);
+                    
+                    Element encryptionTypeElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "EncryptionType");
+                    if (encryptionTypeElement != null) {
+                        String encryptionTypeInstance;
+                        encryptionTypeInstance = encryptionTypeElement.getTextContent();
+                        iPsecParametersInstance.setEncryptionType(encryptionTypeInstance);
+                    }
+                    
+                    Element pfsGroupElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "PfsGroup");
+                    if (pfsGroupElement != null) {
+                        String pfsGroupInstance;
+                        pfsGroupInstance = pfsGroupElement.getTextContent();
+                        iPsecParametersInstance.setPfsGroup(pfsGroupInstance);
+                    }
+                    
+                    Element sADataSizeKilobytesElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "SADataSizeKilobytes");
+                    if (sADataSizeKilobytesElement != null) {
+                        int sADataSizeKilobytesInstance;
+                        sADataSizeKilobytesInstance = DatatypeConverter.parseInt(sADataSizeKilobytesElement.getTextContent());
+                        iPsecParametersInstance.setSADataSizeKilobytes(sADataSizeKilobytesInstance);
+                    }
+                    
+                    Element sALifeTimeSecondsElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "SALifeTimeSeconds");
+                    if (sALifeTimeSecondsElement != null) {
+                        int sALifeTimeSecondsInstance;
+                        sALifeTimeSecondsInstance = DatatypeConverter.parseInt(sALifeTimeSecondsElement.getTextContent());
+                        iPsecParametersInstance.setSALifeTimeSeconds(sALifeTimeSecondsInstance);
+                    }
+                    
+                    Element hashAlgorithmElement = XmlUtility.getElementByTagNameNS(iPsecParametersElement, "http://schemas.microsoft.com/windowsazure", "HashAlgorithm");
+                    if (hashAlgorithmElement != null) {
+                        String hashAlgorithmInstance;
+                        hashAlgorithmInstance = hashAlgorithmElement.getTextContent();
+                        iPsecParametersInstance.setHashAlgorithm(hashAlgorithmInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Local Network Gateway operation gets information about the local
+    * network gateway
+    *
+    * @param gatewayId Required. The local network gateway id.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<LocalNetworkGatewayGetResponse> getLocalNetworkGatewayAsync(final String gatewayId) {
+        return this.getClient().getExecutorService().submit(new Callable<LocalNetworkGatewayGetResponse>() { 
+            @Override
+            public LocalNetworkGatewayGetResponse call() throws Exception {
+                return getLocalNetworkGateway(gatewayId);
+            }
+         });
+    }
+    
+    /**
+    * The Get Local Network Gateway operation gets information about the local
+    * network gateway
+    *
+    * @param gatewayId Required. The local network gateway id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public LocalNetworkGatewayGetResponse getLocalNetworkGateway(String gatewayId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            CloudTracing.enter(invocationId, this, "getLocalNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/localnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            LocalNetworkGatewayGetResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new LocalNetworkGatewayGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element localNetworkGatewayElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "LocalNetworkGateway");
+                if (localNetworkGatewayElement != null) {
+                    Element addressSpaceSequenceElement = XmlUtility.getElementByTagNameNS(localNetworkGatewayElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "AddressSpace");
+                    if (addressSpaceSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressSpaceSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element addressSpaceElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressSpaceSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i1));
+                            result.getAddressSpace().add(addressSpaceElement.getTextContent());
+                        }
+                    }
+                    
+                    Element idElement = XmlUtility.getElementByTagNameNS(localNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                    if (idElement != null && idElement.getTextContent() != null && !idElement.getTextContent().isEmpty()) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
+                    }
+                    
+                    Element gatewayNameElement = XmlUtility.getElementByTagNameNS(localNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewayName");
+                    if (gatewayNameElement != null) {
+                        String gatewayNameInstance;
+                        gatewayNameInstance = gatewayNameElement.getTextContent();
+                        result.setGatewayName(gatewayNameInstance);
+                    }
+                    
+                    Element ipAddressElement = XmlUtility.getElementByTagNameNS(localNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
+                    if (ipAddressElement != null) {
+                        String ipAddressInstance;
+                        ipAddressInstance = ipAddressElement.getTextContent();
+                        result.setIpAddress(ipAddressInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3062,7 +7157,13 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/operation/" + operationId.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/operation/";
+        url = url + URLEncoder.encode(operationId, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -3078,7 +7179,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3102,57 +7203,59 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayGetOperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayGetOperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element gatewayOperationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperation");
-            if (gatewayOperationElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetOperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element statusElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    GatewayOperationStatus statusInstance;
-                    statusInstance = GatewayOperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                if (httpStatusCodeElement != null) {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                Element errorElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                if (errorElement != null) {
-                    GatewayGetOperationStatusResponse.ErrorDetails errorInstance = new GatewayGetOperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    if (codeElement != null) {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
+                Element gatewayOperationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperation");
+                if (gatewayOperationElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
+                    Element statusElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        GatewayOperationStatus statusInstance;
+                        statusInstance = GatewayOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                    if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
+                        Integer httpStatusCodeInstance;
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
+                        result.setHttpStatusCode(httpStatusCodeInstance);
+                    }
+                    
+                    Element errorElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                    if (errorElement != null) {
+                        GatewayGetOperationStatusResponse.ErrorDetails errorInstance = new GatewayGetOperationStatusResponse.ErrorDetails();
+                        result.setError(errorInstance);
+                        
+                        Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                        if (codeElement != null) {
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            errorInstance.setCode(codeInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3233,7 +7336,16 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/connection/" + localNetworkName.trim() + "/sharedkey";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connection/";
+        url = url + URLEncoder.encode(localNetworkName, "UTF-8");
+        url = url + "/sharedkey";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -3249,7 +7361,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3273,23 +7385,408 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayGetSharedKeyResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayGetSharedKeyResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element sharedKeyElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SharedKey");
-            if (sharedKeyElement != null) {
-                Element valueElement = XmlUtility.getElementByTagNameNS(sharedKeyElement, "http://schemas.microsoft.com/windowsazure", "Value");
-                if (valueElement != null) {
-                    String valueInstance;
-                    valueInstance = valueElement.getTextContent();
-                    result.setSharedKey(valueInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetSharedKeyResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element sharedKeyElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SharedKey");
+                if (sharedKeyElement != null) {
+                    Element valueElement = XmlUtility.getElementByTagNameNS(sharedKeyElement, "http://schemas.microsoft.com/windowsazure", "Value");
+                    if (valueElement != null) {
+                        String valueInstance;
+                        valueInstance = valueElement.getTextContent();
+                        result.setSharedKey(valueInstance);
+                    }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Virtual Network Gateway Shared Key V2 operation gets the shared
+    * key used between the gateway and customer vpn.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @return The response to the get shared key request.
+    */
+    @Override
+    public Future<GatewayGetSharedKeyResponse> getSharedKeyV2Async(final String gatewayId, final String connectedentityId) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetSharedKeyResponse>() { 
+            @Override
+            public GatewayGetSharedKeyResponse call() throws Exception {
+                return getSharedKeyV2(gatewayId, connectedentityId);
+            }
+         });
+    }
+    
+    /**
+    * The Get Virtual Network Gateway Shared Key V2 operation gets the shared
+    * key used between the gateway and customer vpn.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response to the get shared key request.
+    */
+    @Override
+    public GatewayGetSharedKeyResponse getSharedKeyV2(String gatewayId, String connectedentityId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (connectedentityId == null) {
+            throw new NullPointerException("connectedentityId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            CloudTracing.enter(invocationId, this, "getSharedKeyV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/connectedentity/";
+        url = url + URLEncoder.encode(connectedentityId, "UTF-8");
+        url = url + "/sharedkey";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayGetSharedKeyResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayGetSharedKeyResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element sharedKeyElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SharedKey");
+                if (sharedKeyElement != null) {
+                    Element valueElement = XmlUtility.getElementByTagNameNS(sharedKeyElement, "http://schemas.microsoft.com/windowsazure", "Value");
+                    if (valueElement != null) {
+                        String valueInstance;
+                        valueInstance = valueElement.getTextContent();
+                        result.setSharedKey(valueInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get Virtual Network Gateway operation gets information about the
+    * virtual network gateway
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<VirtualNetworkGatewayGetResponse> getVirtualNetworkGatewayAsync(final String gatewayId) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkGatewayGetResponse>() { 
+            @Override
+            public VirtualNetworkGatewayGetResponse call() throws Exception {
+                return getVirtualNetworkGateway(gatewayId);
+            }
+         });
+    }
+    
+    /**
+    * The Get Virtual Network Gateway operation gets information about the
+    * virtual network gateway
+    *
+    * @param gatewayId Required. The virtual network gateway id.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public VirtualNetworkGatewayGetResponse getVirtualNetworkGateway(String gatewayId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            CloudTracing.enter(invocationId, this, "getVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            VirtualNetworkGatewayGetResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualNetworkGatewayGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element virtualNetworkGatewayElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkGateway");
+                if (virtualNetworkGatewayElement != null) {
+                    Element gatewayIdElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewayId");
+                    if (gatewayIdElement != null && gatewayIdElement.getTextContent() != null && !gatewayIdElement.getTextContent().isEmpty()) {
+                        String gatewayIdInstance;
+                        gatewayIdInstance = gatewayIdElement.getTextContent();
+                        result.setGatewayId(gatewayIdInstance);
+                    }
+                    
+                    Element lastEventElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "LastEvent");
+                    if (lastEventElement != null) {
+                        GatewayEvent lastEventInstance = new GatewayEvent();
+                        result.setLastEvent(lastEventInstance);
+                        
+                        Element timestampElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                        if (timestampElement != null) {
+                            Calendar timestampInstance;
+                            timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
+                            lastEventInstance.setTimestamp(timestampInstance);
+                        }
+                        
+                        Element idElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                        if (idElement != null) {
+                            String idInstance;
+                            idInstance = idElement.getTextContent();
+                            lastEventInstance.setId(idInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            lastEventInstance.setMessage(messageInstance);
+                        }
+                        
+                        Element dataElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Data");
+                        if (dataElement != null) {
+                            String dataInstance;
+                            dataInstance = dataElement.getTextContent();
+                            lastEventInstance.setData(dataInstance);
+                        }
+                    }
+                    
+                    Element gatewayNameElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewayName");
+                    if (gatewayNameElement != null) {
+                        String gatewayNameInstance;
+                        gatewayNameInstance = gatewayNameElement.getTextContent();
+                        result.setGatewayName(gatewayNameInstance);
+                    }
+                    
+                    Element gatewayTypeElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewayType");
+                    if (gatewayTypeElement != null) {
+                        String gatewayTypeInstance;
+                        gatewayTypeInstance = gatewayTypeElement.getTextContent();
+                        result.setGatewayType(gatewayTypeInstance);
+                    }
+                    
+                    Element gatewaySizeElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "GatewaySize");
+                    if (gatewaySizeElement != null) {
+                        String gatewaySizeInstance;
+                        gatewaySizeInstance = gatewaySizeElement.getTextContent();
+                        result.setGatewaySKU(gatewaySizeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        result.setState(stateInstance);
+                    }
+                    
+                    Element vIPAddressElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "VIPAddress");
+                    if (vIPAddressElement != null) {
+                        String vIPAddressInstance;
+                        vIPAddressInstance = vIPAddressElement.getTextContent();
+                        result.setVipAddress(vIPAddressInstance);
+                    }
+                    
+                    Element locationElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        result.setLocation(locationInstance);
+                    }
+                    
+                    Element vnetIdElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "VnetId");
+                    if (vnetIdElement != null) {
+                        String vnetIdInstance;
+                        vnetIdInstance = vnetIdElement.getTextContent();
+                        result.setVnetId(vnetIdInstance);
+                    }
+                    
+                    Element subnetIdElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "SubnetId");
+                    if (subnetIdElement != null) {
+                        String subnetIdInstance;
+                        subnetIdInstance = subnetIdElement.getTextContent();
+                        result.setSubnetId(subnetIdInstance);
+                    }
+                    
+                    Element defaultSitesElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "DefaultSites");
+                    if (defaultSitesElement != null) {
+                        GatewayDefaultSite defaultSitesInstance = new GatewayDefaultSite();
+                        result.setDefaultSite(defaultSitesInstance);
+                        
+                        Element stringElement = XmlUtility.getElementByTagNameNS(defaultSitesElement, "http://schemas.microsoft.com/windowsazure", "string");
+                        if (stringElement != null) {
+                            String stringInstance;
+                            stringInstance = stringElement.getTextContent();
+                            defaultSitesInstance.setName(stringInstance);
+                        }
+                    }
+                    
+                    Element enableBgpElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewayElement, "http://schemas.microsoft.com/windowsazure", "EnableBgp");
+                    if (enableBgpElement != null) {
+                        boolean enableBgpInstance;
+                        enableBgpInstance = DatatypeConverter.parseBoolean(enableBgpElement.getTextContent().toLowerCase());
+                        result.setEnableBgp(enableBgpInstance);
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3364,7 +7861,14 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/" + networkName.trim() + "/gateway/connections";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/connections";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -3380,7 +7884,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3404,99 +7908,428 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayListConnectionsResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayListConnectionsResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element connectionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Connections");
-            if (connectionsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").get(i1));
-                    GatewayListConnectionsResponse.GatewayConnection connectionInstance = new GatewayListConnectionsResponse.GatewayConnection();
-                    result.getConnections().add(connectionInstance);
-                    
-                    Element localNetworkSiteNameElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkSiteName");
-                    if (localNetworkSiteNameElement != null) {
-                        String localNetworkSiteNameInstance;
-                        localNetworkSiteNameInstance = localNetworkSiteNameElement.getTextContent();
-                        connectionInstance.setLocalNetworkSiteName(localNetworkSiteNameInstance);
-                    }
-                    
-                    Element connectivityStateElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "ConnectivityState");
-                    if (connectivityStateElement != null) {
-                        GatewayConnectivityState connectivityStateInstance;
-                        connectivityStateInstance = GatewayConnectivityState.valueOf(connectivityStateElement.getTextContent());
-                        connectionInstance.setConnectivityState(connectivityStateInstance);
-                    }
-                    
-                    Element lastEventElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "LastEvent");
-                    if (lastEventElement != null) {
-                        GatewayEvent lastEventInstance = new GatewayEvent();
-                        connectionInstance.setLastEvent(lastEventInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayListConnectionsResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element connectionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Connections");
+                if (connectionsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").get(i1));
+                        GatewayListConnectionsResponse.GatewayConnection connectionInstance = new GatewayListConnectionsResponse.GatewayConnection();
+                        result.getConnections().add(connectionInstance);
                         
-                        Element timestampElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
-                        if (timestampElement != null) {
-                            Calendar timestampInstance;
-                            timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
-                            lastEventInstance.setTimestamp(timestampInstance);
+                        Element localNetworkSiteNameElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkSiteName");
+                        if (localNetworkSiteNameElement != null) {
+                            String localNetworkSiteNameInstance;
+                            localNetworkSiteNameInstance = localNetworkSiteNameElement.getTextContent();
+                            connectionInstance.setLocalNetworkSiteName(localNetworkSiteNameInstance);
                         }
                         
-                        Element idElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Id");
-                        if (idElement != null) {
-                            String idInstance;
-                            idInstance = idElement.getTextContent();
-                            lastEventInstance.setId(idInstance);
+                        Element connectivityStateElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "ConnectivityState");
+                        if (connectivityStateElement != null && connectivityStateElement.getTextContent() != null && !connectivityStateElement.getTextContent().isEmpty()) {
+                            GatewayConnectivityState connectivityStateInstance;
+                            connectivityStateInstance = GatewayConnectivityState.valueOf(connectivityStateElement.getTextContent().toUpperCase());
+                            connectionInstance.setConnectivityState(connectivityStateInstance);
                         }
                         
-                        Element messageElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                        if (messageElement != null) {
-                            String messageInstance;
-                            messageInstance = messageElement.getTextContent();
-                            lastEventInstance.setMessage(messageInstance);
+                        Element lastEventElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "LastEvent");
+                        if (lastEventElement != null) {
+                            GatewayEvent lastEventInstance = new GatewayEvent();
+                            connectionInstance.setLastEvent(lastEventInstance);
+                            
+                            Element timestampElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                            if (timestampElement != null) {
+                                Calendar timestampInstance;
+                                timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
+                                lastEventInstance.setTimestamp(timestampInstance);
+                            }
+                            
+                            Element idElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                            if (idElement != null) {
+                                String idInstance;
+                                idInstance = idElement.getTextContent();
+                                lastEventInstance.setId(idInstance);
+                            }
+                            
+                            Element messageElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                            if (messageElement != null) {
+                                String messageInstance;
+                                messageInstance = messageElement.getTextContent();
+                                lastEventInstance.setMessage(messageInstance);
+                            }
+                            
+                            Element dataElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Data");
+                            if (dataElement != null) {
+                                String dataInstance;
+                                dataInstance = dataElement.getTextContent();
+                                lastEventInstance.setData(dataInstance);
+                            }
                         }
                         
-                        Element dataElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Data");
-                        if (dataElement != null) {
-                            String dataInstance;
-                            dataInstance = dataElement.getTextContent();
-                            lastEventInstance.setData(dataInstance);
+                        Element ingressBytesTransferredElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "IngressBytesTransferred");
+                        if (ingressBytesTransferredElement != null) {
+                            long ingressBytesTransferredInstance;
+                            ingressBytesTransferredInstance = DatatypeConverter.parseLong(ingressBytesTransferredElement.getTextContent());
+                            connectionInstance.setIngressBytesTransferred(ingressBytesTransferredInstance);
                         }
-                    }
-                    
-                    Element ingressBytesTransferredElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "IngressBytesTransferred");
-                    if (ingressBytesTransferredElement != null) {
-                        long ingressBytesTransferredInstance;
-                        ingressBytesTransferredInstance = DatatypeConverter.parseLong(ingressBytesTransferredElement.getTextContent());
-                        connectionInstance.setIngressBytesTransferred(ingressBytesTransferredInstance);
-                    }
-                    
-                    Element egressBytesTransferredElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "EgressBytesTransferred");
-                    if (egressBytesTransferredElement != null) {
-                        long egressBytesTransferredInstance;
-                        egressBytesTransferredInstance = DatatypeConverter.parseLong(egressBytesTransferredElement.getTextContent());
-                        connectionInstance.setEgressBytesTransferred(egressBytesTransferredInstance);
-                    }
-                    
-                    Element lastConnectionEstablishedElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "LastConnectionEstablished");
-                    if (lastConnectionEstablishedElement != null) {
-                        Calendar lastConnectionEstablishedInstance;
-                        lastConnectionEstablishedInstance = DatatypeConverter.parseDateTime(lastConnectionEstablishedElement.getTextContent());
-                        connectionInstance.setLastConnectionEstablished(lastConnectionEstablishedInstance);
-                    }
-                    
-                    Element allocatedIPAddressesSequenceElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "AllocatedIPAddresses");
-                    if (allocatedIPAddressesSequenceElement != null) {
-                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allocatedIPAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "string").size(); i2 = i2 + 1) {
-                            org.w3c.dom.Element allocatedIPAddressesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allocatedIPAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "string").get(i2));
-                            connectionInstance.getAllocatedIPAddresses().add(allocatedIPAddressesElement.getTextContent());
+                        
+                        Element egressBytesTransferredElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "EgressBytesTransferred");
+                        if (egressBytesTransferredElement != null) {
+                            long egressBytesTransferredInstance;
+                            egressBytesTransferredInstance = DatatypeConverter.parseLong(egressBytesTransferredElement.getTextContent());
+                            connectionInstance.setEgressBytesTransferred(egressBytesTransferredInstance);
+                        }
+                        
+                        Element lastConnectionEstablishedElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "LastConnectionEstablished");
+                        if (lastConnectionEstablishedElement != null) {
+                            Calendar lastConnectionEstablishedInstance;
+                            lastConnectionEstablishedInstance = DatatypeConverter.parseDateTime(lastConnectionEstablishedElement.getTextContent());
+                            connectionInstance.setLastConnectionEstablished(lastConnectionEstablishedInstance);
+                        }
+                        
+                        Element allocatedIPAddressesSequenceElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "AllocatedIPAddresses");
+                        if (allocatedIPAddressesSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allocatedIPAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "string").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element allocatedIPAddressesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allocatedIPAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "string").get(i2));
+                                connectionInstance.getAllocatedIPAddresses().add(allocatedIPAddressesElement.getTextContent());
+                            }
                         }
                     }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The List Connections operation Lists all GatewayConnections.
+    *
+    * @return The response to a ListGatewayConnections request to a Virtual
+    * Network Gateway.
+    */
+    @Override
+    public Future<GatewayListGatewayConnectionsResponse> listGatewayConnectionsAsync() {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayListGatewayConnectionsResponse>() { 
+            @Override
+            public GatewayListGatewayConnectionsResponse call() throws Exception {
+                return listGatewayConnections();
+            }
+         });
+    }
+    
+    /**
+    * The List Connections operation Lists all GatewayConnections.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response to a ListGatewayConnections request to a Virtual
+    * Network Gateway.
+    */
+    @Override
+    public GatewayListGatewayConnectionsResponse listGatewayConnections() throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            CloudTracing.enter(invocationId, this, "listGatewayConnectionsAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/gatewayconnections";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayListGatewayConnectionsResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayListGatewayConnectionsResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayConnectionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayConnections");
+                if (gatewayConnectionsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(gatewayConnectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "GatewayConnection").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element gatewayConnectionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(gatewayConnectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "GatewayConnection").get(i1));
+                        GatewayListGatewayConnectionsResponse.VirtualNetworkGatewayConnection gatewayConnectionInstance = new GatewayListGatewayConnectionsResponse.VirtualNetworkGatewayConnection();
+                        result.getVirtualNetworkGatewayConnections().add(gatewayConnectionInstance);
+                        
+                        Element gatewayConnectionNameElement = XmlUtility.getElementByTagNameNS(gatewayConnectionsElement, "http://schemas.microsoft.com/windowsazure", "GatewayConnectionName");
+                        if (gatewayConnectionNameElement != null) {
+                            String gatewayConnectionNameInstance;
+                            gatewayConnectionNameInstance = gatewayConnectionNameElement.getTextContent();
+                            gatewayConnectionInstance.setGatewayConnectionName(gatewayConnectionNameInstance);
+                        }
+                        
+                        Element virtualNetworkGatewayIdElement = XmlUtility.getElementByTagNameNS(gatewayConnectionsElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkGatewayId");
+                        if (virtualNetworkGatewayIdElement != null && virtualNetworkGatewayIdElement.getTextContent() != null && !virtualNetworkGatewayIdElement.getTextContent().isEmpty()) {
+                            String virtualNetworkGatewayIdInstance;
+                            virtualNetworkGatewayIdInstance = virtualNetworkGatewayIdElement.getTextContent();
+                            gatewayConnectionInstance.setVirtualNetworkGatewayId(virtualNetworkGatewayIdInstance);
+                        }
+                        
+                        Element connectedEntityIdElement = XmlUtility.getElementByTagNameNS(gatewayConnectionsElement, "http://schemas.microsoft.com/windowsazure", "ConnectedEntityId");
+                        if (connectedEntityIdElement != null) {
+                            String connectedEntityIdInstance;
+                            connectedEntityIdInstance = connectedEntityIdElement.getTextContent();
+                            gatewayConnectionInstance.setConnectedEntityId(connectedEntityIdInstance);
+                        }
+                        
+                        Element gatewayConnectionTypeElement = XmlUtility.getElementByTagNameNS(gatewayConnectionsElement, "http://schemas.microsoft.com/windowsazure", "GatewayConnectionType");
+                        if (gatewayConnectionTypeElement != null) {
+                            String gatewayConnectionTypeInstance;
+                            gatewayConnectionTypeInstance = gatewayConnectionTypeElement.getTextContent();
+                            gatewayConnectionInstance.setGatewayConnectionType(gatewayConnectionTypeInstance);
+                        }
+                        
+                        Element routingWeightElement = XmlUtility.getElementByTagNameNS(gatewayConnectionsElement, "http://schemas.microsoft.com/windowsazure", "RoutingWeight");
+                        if (routingWeightElement != null) {
+                            int routingWeightInstance;
+                            routingWeightInstance = DatatypeConverter.parseInt(routingWeightElement.getTextContent());
+                            gatewayConnectionInstance.setRoutingWeight(routingWeightInstance);
+                        }
+                        
+                        Element sharedKeyElement = XmlUtility.getElementByTagNameNS(gatewayConnectionsElement, "http://schemas.microsoft.com/windowsazure", "SharedKey");
+                        if (sharedKeyElement != null) {
+                            String sharedKeyInstance;
+                            sharedKeyInstance = sharedKeyElement.getTextContent();
+                            gatewayConnectionInstance.setSharedKey(sharedKeyInstance);
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The List Local network gateways operation returns a list of the local
+    * network gateways.
+    *
+    * @return The response to a ListLocalNetworkGateways request.
+    */
+    @Override
+    public Future<ListLocalNetworkGatewaysResponse> listLocalNetworkGatewaysAsync() {
+        return this.getClient().getExecutorService().submit(new Callable<ListLocalNetworkGatewaysResponse>() { 
+            @Override
+            public ListLocalNetworkGatewaysResponse call() throws Exception {
+                return listLocalNetworkGateways();
+            }
+         });
+    }
+    
+    /**
+    * The List Local network gateways operation returns a list of the local
+    * network gateways.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response to a ListLocalNetworkGateways request.
+    */
+    @Override
+    public ListLocalNetworkGatewaysResponse listLocalNetworkGateways() throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            CloudTracing.enter(invocationId, this, "listLocalNetworkGatewaysAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/localnetworkgateways";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ListLocalNetworkGatewaysResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ListLocalNetworkGatewaysResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element localNetworkGatewaysSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "LocalNetworkGateways");
+                if (localNetworkGatewaysSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(localNetworkGatewaysSequenceElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkGateway").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element localNetworkGatewaysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(localNetworkGatewaysSequenceElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkGateway").get(i1));
+                        ListLocalNetworkGatewaysResponse.LocalNetworkGateway localNetworkGatewayInstance = new ListLocalNetworkGatewaysResponse.LocalNetworkGateway();
+                        result.getLocalNetworkGateways().add(localNetworkGatewayInstance);
+                        
+                        Element idElement = XmlUtility.getElementByTagNameNS(localNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                        if (idElement != null && idElement.getTextContent() != null && !idElement.getTextContent().isEmpty()) {
+                            String idInstance;
+                            idInstance = idElement.getTextContent();
+                            localNetworkGatewayInstance.setId(idInstance);
+                        }
+                        
+                        Element gatewayNameElement = XmlUtility.getElementByTagNameNS(localNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "GatewayName");
+                        if (gatewayNameElement != null) {
+                            String gatewayNameInstance;
+                            gatewayNameInstance = gatewayNameElement.getTextContent();
+                            localNetworkGatewayInstance.setGatewayName(gatewayNameInstance);
+                        }
+                        
+                        Element ipAddressElement = XmlUtility.getElementByTagNameNS(localNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
+                        if (ipAddressElement != null) {
+                            String ipAddressInstance;
+                            ipAddressInstance = ipAddressElement.getTextContent();
+                            localNetworkGatewayInstance.setIpAddress(ipAddressInstance);
+                        }
+                        
+                        Element addressSpaceSequenceElement = XmlUtility.getElementByTagNameNS(localNetworkGatewaysElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "AddressSpace");
+                        if (addressSpaceSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressSpaceSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element addressSpaceElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressSpaceSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i2));
+                                localNetworkGatewayInstance.getAddressSpace().add(addressSpaceElement.getTextContent());
+                            }
+                        }
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3561,7 +8394,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/networking/supporteddevices";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/supporteddevices";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -3577,7 +8415,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-10-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -3601,51 +8439,53 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             GatewayListSupportedDevicesResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new GatewayListSupportedDevicesResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element vpnDeviceListElement = XmlUtility.getElementByTagNameNS(responseDoc, "", "VpnDeviceList");
-            if (vpnDeviceListElement != null) {
-                Attr versionAttribute = vpnDeviceListElement.getAttributeNodeNS("", "version");
-                if (versionAttribute != null) {
-                    result.setVersion(versionAttribute.getValue());
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayListSupportedDevicesResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
+                Element vpnDeviceListElement = XmlUtility.getElementByTagNameNS(responseDoc, "", "VpnDeviceList");
                 if (vpnDeviceListElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vpnDeviceListElement, "", "Vendor").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element vendorsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vpnDeviceListElement, "", "Vendor").get(i1));
-                        GatewayListSupportedDevicesResponse.Vendor vendorInstance = new GatewayListSupportedDevicesResponse.Vendor();
-                        result.getVendors().add(vendorInstance);
-                        
-                        Attr nameAttribute = vendorsElement.getAttributeNodeNS("", "name");
-                        if (nameAttribute != null) {
-                            vendorInstance.setName(nameAttribute.getValue());
-                        }
-                        
-                        if (vendorsElement != null) {
-                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vendorsElement, "", "Platform").size(); i2 = i2 + 1) {
-                                org.w3c.dom.Element platformsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vendorsElement, "", "Platform").get(i2));
-                                GatewayListSupportedDevicesResponse.Platform platformInstance = new GatewayListSupportedDevicesResponse.Platform();
-                                vendorInstance.getPlatforms().add(platformInstance);
-                                
-                                Attr nameAttribute2 = platformsElement.getAttributeNodeNS("", "name");
-                                if (nameAttribute2 != null) {
-                                    platformInstance.setName(nameAttribute2.getValue());
-                                }
-                                
-                                if (platformsElement != null) {
-                                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(platformsElement, "", "OSFamily").size(); i3 = i3 + 1) {
-                                        org.w3c.dom.Element oSFamiliesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(platformsElement, "", "OSFamily").get(i3));
-                                        GatewayListSupportedDevicesResponse.OSFamily oSFamilyInstance = new GatewayListSupportedDevicesResponse.OSFamily();
-                                        platformInstance.getOSFamilies().add(oSFamilyInstance);
-                                        
-                                        Attr nameAttribute3 = oSFamiliesElement.getAttributeNodeNS("", "name");
-                                        if (nameAttribute3 != null) {
-                                            oSFamilyInstance.setName(nameAttribute3.getValue());
+                    Attr versionAttribute = vpnDeviceListElement.getAttributeNodeNS("", "version");
+                    if (versionAttribute != null) {
+                        result.setVersion(versionAttribute.getValue());
+                    }
+                    
+                    if (vpnDeviceListElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vpnDeviceListElement, "", "Vendor").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element vendorsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vpnDeviceListElement, "", "Vendor").get(i1));
+                            GatewayListSupportedDevicesResponse.Vendor vendorInstance = new GatewayListSupportedDevicesResponse.Vendor();
+                            result.getVendors().add(vendorInstance);
+                            
+                            Attr nameAttribute = vendorsElement.getAttributeNodeNS("", "name");
+                            if (nameAttribute != null) {
+                                vendorInstance.setName(nameAttribute.getValue());
+                            }
+                            
+                            if (vendorsElement != null) {
+                                for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vendorsElement, "", "Platform").size(); i2 = i2 + 1) {
+                                    org.w3c.dom.Element platformsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(vendorsElement, "", "Platform").get(i2));
+                                    GatewayListSupportedDevicesResponse.Platform platformInstance = new GatewayListSupportedDevicesResponse.Platform();
+                                    vendorInstance.getPlatforms().add(platformInstance);
+                                    
+                                    Attr nameAttribute2 = platformsElement.getAttributeNodeNS("", "name");
+                                    if (nameAttribute2 != null) {
+                                        platformInstance.setName(nameAttribute2.getValue());
+                                    }
+                                    
+                                    if (platformsElement != null) {
+                                        for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(platformsElement, "", "OSFamily").size(); i3 = i3 + 1) {
+                                            org.w3c.dom.Element oSFamiliesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(platformsElement, "", "OSFamily").get(i3));
+                                            GatewayListSupportedDevicesResponse.OSFamily oSFamilyInstance = new GatewayListSupportedDevicesResponse.OSFamily();
+                                            platformInstance.getOSFamilies().add(oSFamilyInstance);
+                                            
+                                            Attr nameAttribute3 = oSFamiliesElement.getAttributeNodeNS("", "name");
+                                            if (nameAttribute3 != null) {
+                                                oSFamilyInstance.setName(nameAttribute3.getValue());
+                                            }
                                         }
                                     }
                                 }
@@ -3653,8 +8493,253 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                         }
                     }
                 }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The List Virtual network gateways operation returns a list of the virtual
+    * network gateways.
+    *
+    * @return The response to a ListVirtualNetworkGateways request.
+    */
+    @Override
+    public Future<ListVirtualNetworkGatewaysResponse> listVirtualNetworkGatewaysAsync() {
+        return this.getClient().getExecutorService().submit(new Callable<ListVirtualNetworkGatewaysResponse>() { 
+            @Override
+            public ListVirtualNetworkGatewaysResponse call() throws Exception {
+                return listVirtualNetworkGateways();
+            }
+         });
+    }
+    
+    /**
+    * The List Virtual network gateways operation returns a list of the virtual
+    * network gateways.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response to a ListVirtualNetworkGateways request.
+    */
+    @Override
+    public ListVirtualNetworkGatewaysResponse listVirtualNetworkGateways() throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            CloudTracing.enter(invocationId, this, "listVirtualNetworkGatewaysAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ListVirtualNetworkGatewaysResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ListVirtualNetworkGatewaysResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element virtualNetworkGatewaysSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkGateways");
+                if (virtualNetworkGatewaysSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualNetworkGatewaysSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkGateway").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element virtualNetworkGatewaysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualNetworkGatewaysSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkGateway").get(i1));
+                        ListVirtualNetworkGatewaysResponse.VirtualNetworkGateway virtualNetworkGatewayInstance = new ListVirtualNetworkGatewaysResponse.VirtualNetworkGateway();
+                        result.getVirtualNetworkGateways().add(virtualNetworkGatewayInstance);
+                        
+                        Element gatewayIdElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "GatewayId");
+                        if (gatewayIdElement != null && gatewayIdElement.getTextContent() != null && !gatewayIdElement.getTextContent().isEmpty()) {
+                            String gatewayIdInstance;
+                            gatewayIdInstance = gatewayIdElement.getTextContent();
+                            virtualNetworkGatewayInstance.setGatewayId(gatewayIdInstance);
+                        }
+                        
+                        Element lastEventElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "LastEvent");
+                        if (lastEventElement != null) {
+                            GatewayEvent lastEventInstance = new GatewayEvent();
+                            virtualNetworkGatewayInstance.setLastEvent(lastEventInstance);
+                            
+                            Element timestampElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                            if (timestampElement != null) {
+                                Calendar timestampInstance;
+                                timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
+                                lastEventInstance.setTimestamp(timestampInstance);
+                            }
+                            
+                            Element idElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                            if (idElement != null) {
+                                String idInstance;
+                                idInstance = idElement.getTextContent();
+                                lastEventInstance.setId(idInstance);
+                            }
+                            
+                            Element messageElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                            if (messageElement != null) {
+                                String messageInstance;
+                                messageInstance = messageElement.getTextContent();
+                                lastEventInstance.setMessage(messageInstance);
+                            }
+                            
+                            Element dataElement = XmlUtility.getElementByTagNameNS(lastEventElement, "http://schemas.microsoft.com/windowsazure", "Data");
+                            if (dataElement != null) {
+                                String dataInstance;
+                                dataInstance = dataElement.getTextContent();
+                                lastEventInstance.setData(dataInstance);
+                            }
+                        }
+                        
+                        Element gatewayNameElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "GatewayName");
+                        if (gatewayNameElement != null) {
+                            String gatewayNameInstance;
+                            gatewayNameInstance = gatewayNameElement.getTextContent();
+                            virtualNetworkGatewayInstance.setGatewayName(gatewayNameInstance);
+                        }
+                        
+                        Element gatewayTypeElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "GatewayType");
+                        if (gatewayTypeElement != null) {
+                            String gatewayTypeInstance;
+                            gatewayTypeInstance = gatewayTypeElement.getTextContent();
+                            virtualNetworkGatewayInstance.setGatewayType(gatewayTypeInstance);
+                        }
+                        
+                        Element gatewaySizeElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "GatewaySize");
+                        if (gatewaySizeElement != null) {
+                            String gatewaySizeInstance;
+                            gatewaySizeInstance = gatewaySizeElement.getTextContent();
+                            virtualNetworkGatewayInstance.setGatewaySKU(gatewaySizeInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            virtualNetworkGatewayInstance.setState(stateInstance);
+                        }
+                        
+                        Element vIPAddressElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "VIPAddress");
+                        if (vIPAddressElement != null) {
+                            String vIPAddressInstance;
+                            vIPAddressInstance = vIPAddressElement.getTextContent();
+                            virtualNetworkGatewayInstance.setVipAddress(vIPAddressInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            virtualNetworkGatewayInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element vnetIdElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "VnetId");
+                        if (vnetIdElement != null) {
+                            String vnetIdInstance;
+                            vnetIdInstance = vnetIdElement.getTextContent();
+                            virtualNetworkGatewayInstance.setVnetId(vnetIdInstance);
+                        }
+                        
+                        Element subnetIdElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "SubnetId");
+                        if (subnetIdElement != null) {
+                            String subnetIdInstance;
+                            subnetIdInstance = subnetIdElement.getTextContent();
+                            virtualNetworkGatewayInstance.setSubnetId(subnetIdInstance);
+                        }
+                        
+                        Element defaultSitesElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "DefaultSites");
+                        if (defaultSitesElement != null) {
+                            GatewayDefaultSite defaultSitesInstance = new GatewayDefaultSite();
+                            virtualNetworkGatewayInstance.setDefaultSite(defaultSitesInstance);
+                            
+                            Element stringElement = XmlUtility.getElementByTagNameNS(defaultSitesElement, "http://schemas.microsoft.com/windowsazure", "string");
+                            if (stringElement != null) {
+                                String stringInstance;
+                                stringInstance = stringElement.getTextContent();
+                                defaultSitesInstance.setName(stringInstance);
+                            }
+                        }
+                        
+                        Element enableBgpElement = XmlUtility.getElementByTagNameNS(virtualNetworkGatewaysElement, "http://schemas.microsoft.com/windowsazure", "EnableBgp");
+                        if (enableBgpElement != null) {
+                            boolean enableBgpInstance;
+                            enableBgpInstance = DatatypeConverter.parseBoolean(enableBgpElement.getTextContent().toLowerCase());
+                            virtualNetworkGatewayInstance.setEnableBgp(enableBgpInstance);
+                        }
+                    }
+                }
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -3747,7 +8832,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3760,11 +8845,133 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Reset Virtual
+    * Network Gateway operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> resetAsync(final String networkName, final ResetGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return reset(networkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Reset Virtual
+    * Network Gateway operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse reset(String networkName, ResetGatewayParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "resetAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginResetAsync(networkName, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -3876,7 +9083,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3889,11 +9096,253 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Reset Virtual Network Gateway Shared Key V2 operation resets the
+    * shared key used between the gateway and customer vpn.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Reset Shared Key request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> resetSharedKeyV2Async(final String gatewayId, final String connectedentityId, final GatewayResetSharedKeyParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return resetSharedKeyV2(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Reset Virtual Network Gateway Shared Key V2 operation resets the
+    * shared key used between the gateway and customer vpn.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Reset Shared Key request.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse resetSharedKeyV2(String gatewayId, String connectedentityId, GatewayResetSharedKeyParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "resetSharedKeyV2Async", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginResetSharedKeyV2Async(gatewayId, connectedentityId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway.
+    * @param parameters Required. Parameters supplied to the Reset Virtual
+    * Network Gateway operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> resetVirtualNetworkGatewayAsync(final String gatewayId, final ResetGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return resetVirtualNetworkGateway(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Reset Virtual network Gateway operation resets an existing
+    * gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway.
+    * @param parameters Required. Parameters supplied to the Reset Virtual
+    * Network Gateway operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse resetVirtualNetworkGateway(String gatewayId, ResetGatewayParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "resetVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginResetVirtualNetworkGatewayAsync(gatewayId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -3996,7 +9445,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -4009,11 +9458,131 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Resize Virtual network Gateway operation resizes an existing
+    * gateway to a different GatewaySKU.
+    *
+    * @param gatewayId Required. The virtual network for this gateway id.
+    * @param parameters Required. Parameters supplied to the Resize Virtual
+    * Network Gateway operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> resizeVirtualNetworkGatewayAsync(final String gatewayId, final ResizeGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return resizeVirtualNetworkGateway(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Resize Virtual network Gateway operation resizes an existing
+    * gateway to a different GatewaySKU.
+    *
+    * @param gatewayId Required. The virtual network for this gateway id.
+    * @param parameters Required. Parameters supplied to the Resize Virtual
+    * Network Gateway operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse resizeVirtualNetworkGateway(String gatewayId, ResizeGatewayParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "resizeVirtualNetworkGatewayAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginResizeVirtualNetworkGatewayAsync(gatewayId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -4116,7 +9685,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -4129,11 +9698,260 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters operation sets the
+    * IPsec parameters on the virtual network gateway for the specified
+    * connection to the specified local network in Azure.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> setIPsecParametersAsync(final String networkName, final String localNetworkName, final GatewaySetIPsecParametersParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return setIPsecParameters(networkName, localNetworkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters operation sets the
+    * IPsec parameters on the virtual network gateway for the specified
+    * connection to the specified local network in Azure.
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters request.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse setIPsecParameters(String networkName, String localNetworkName, GatewaySetIPsecParametersParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("localNetworkName", localNetworkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "setIPsecParametersAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginSetIPsecParametersAsync(networkName, localNetworkName, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters V2 operation sets
+    * the IPsec parameters on the virtual network gateway connection.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters V2 request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> setIPsecParametersV2Async(final String gatewayId, final String connectedentityId, final GatewaySetIPsecParametersParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return setIPsecParametersV2(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Begin Set Virtual Network Gateway IPsec Parameters V2 operation sets
+    * the IPsec parameters on the virtual network gateway connection.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Virtual
+    * Network Gateway Set IPsec Parameters V2 request.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse setIPsecParametersV2(String gatewayId, String connectedentityId, GatewaySetIPsecParametersParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "setIPsecParametersV2Async", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginSetIPsecParametersV2Async(gatewayId, connectedentityId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -4245,7 +10063,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -4258,11 +10076,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -4285,14 +10104,136 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     }
     
     /**
-    * The Update Diagnostics operation starts a diagnostics session for the
+    * The Set Virtual Network Gateway Shared Key V2 operation sets the shared
+    * key used between the gateway and customer vpn for the specified site.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to Virtual Network
+    * Gateway Set Shared Key V2 request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> setSharedKeyV2Async(final String gatewayId, final String connectedentityId, final GatewaySetSharedKeyParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return setSharedKeyV2(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Set Virtual Network Gateway Shared Key V2 operation sets the shared
+    * key used between the gateway and customer vpn for the specified site.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to Virtual Network
+    * Gateway Set Shared Key V2 request.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse setSharedKeyV2(String gatewayId, String connectedentityId, GatewaySetSharedKeyParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "setSharedKeyV2Async", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginSetSharedKeyV2Async(gatewayId, connectedentityId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Start Diagnostics operation starts a diagnostics session for the
     * specified virtual network gateway in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Update Diagnostics
+    * @param parameters Required. Parameters supplied to the Start Diagnostics
     * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is in
@@ -4305,24 +10246,24 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> updateDiagnosticsAsync(final String networkName, final UpdateGatewayPublicDiagnostics parameters) {
+    public Future<GatewayGetOperationStatusResponse> startDiagnosticsAsync(final String networkName, final StartGatewayPublicDiagnosticsParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
             public GatewayGetOperationStatusResponse call() throws Exception {
-                return updateDiagnostics(networkName, parameters);
+                return startDiagnostics(networkName, parameters);
             }
          });
     }
     
     /**
-    * The Update Diagnostics operation starts a diagnostics session for the
+    * The Start Diagnostics operation starts a diagnostics session for the
     * specified virtual network gateway in Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
     * @param networkName Required. The name of the virtual network for this
     * gateway.
-    * @param parameters Required. Parameters supplied to the Update Diagnostics
+    * @param parameters Required. Parameters supplied to the Start Diagnostics
     * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
@@ -4347,7 +10288,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse updateDiagnostics(String networkName, UpdateGatewayPublicDiagnostics parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public GatewayGetOperationStatusResponse startDiagnostics(String networkName, StartGatewayPublicDiagnosticsParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4356,20 +10297,20 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("networkName", networkName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateDiagnosticsAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "startDiagnosticsAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            GatewayOperationResponse response = client2.getGatewaysOperations().beginUpdateDiagnosticsAsync(networkName, parameters).get();
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginStartDiagnosticsAsync(networkName, parameters).get();
             GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
             int delayInSeconds = 30;
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -4382,11 +10323,12 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful) {
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -4404,6 +10346,754 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
         } finally {
             if (client2 != null && shouldTrace) {
                 client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Start Diagnostics V2 operation starts a diagnostics session for the
+    * specified virtual network gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param parameters Required. Parameters supplied to the Start Diagnostics
+    * V2 operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> startDiagnosticsV2Async(final String gatewayId, final StartGatewayPublicDiagnosticsParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return startDiagnosticsV2(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Start Diagnostics V2 operation starts a diagnostics session for the
+    * specified virtual network gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param parameters Required. Parameters supplied to the Start Diagnostics
+    * V2 operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse startDiagnosticsV2(String gatewayId, StartGatewayPublicDiagnosticsParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "startDiagnosticsV2Async", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginStartDiagnosticsV2Async(gatewayId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Stop Diagnostics operation begins an asynchronous operation to stopa
+    * diagnostics session for the specified virtual network gateway in Azure.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx
+    * for more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to Stop Diagnostics
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> stopDiagnosticsAsync(final String networkName, final StopGatewayPublicDiagnosticsParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return stopDiagnostics(networkName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Stop Diagnostics operation begins an asynchronous operation to stopa
+    * diagnostics session for the specified virtual network gateway in Azure.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx
+    * for more information)
+    *
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to Stop Diagnostics
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse stopDiagnostics(String networkName, StopGatewayPublicDiagnosticsParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (networkName == null) {
+            throw new NullPointerException("networkName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("networkName", networkName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "stopDiagnosticsAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        url = url + "/gateway/publicdiagnostics";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayPublicDiagnosticsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayPublicDiagnostics");
+        requestDoc.appendChild(updateGatewayPublicDiagnosticsElement);
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("StopDiagnostics"));
+            updateGatewayPublicDiagnosticsElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Stop Diagnostics V2 operation begins an asynchronous operation to
+    * stopa diagnostics session for the specified virtual network gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param parameters Required. Parameters supplied to Stop Diagnostics V2
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<GatewayOperationResponse> stopDiagnosticsV2Async(final String gatewayId, final StopGatewayPublicDiagnosticsParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
+            @Override
+            public GatewayOperationResponse call() throws Exception {
+                return stopDiagnosticsV2(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Stop Diagnostics V2 operation begins an asynchronous operation to
+    * stopa diagnostics session for the specified virtual network gateway.
+    *
+    * @param gatewayId Required. The virtual network for this gateway Id.
+    * @param parameters Required. Parameters supplied to Stop Diagnostics V2
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public GatewayOperationResponse stopDiagnosticsV2(String gatewayId, StopGatewayPublicDiagnosticsParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "stopDiagnosticsV2Async", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        url = url + "/publicdiagnostics";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateGatewayPublicDiagnosticsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateGatewayPublicDiagnostics");
+        requestDoc.appendChild(updateGatewayPublicDiagnosticsElement);
+        
+        if (parameters.getOperation() != null) {
+            Element operationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            operationElement.appendChild(requestDoc.createTextNode("StopDiagnostics"));
+            updateGatewayPublicDiagnosticsElement.appendChild(operationElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new GatewayOperationResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element gatewayOperationAsyncResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "GatewayOperationAsyncResponse");
+                if (gatewayOperationAsyncResponseElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(gatewayOperationAsyncResponseElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Operation to update existing gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Update
+    * gateway conneciton operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<GatewayGetOperationStatusResponse> updateGatewayConnectionAsync(final String gatewayId, final String connectedentityId, final UpdateGatewayConnectionParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
+            @Override
+            public GatewayGetOperationStatusResponse call() throws Exception {
+                return updateGatewayConnection(gatewayId, connectedentityId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Operation to update existing gateway connection.
+    *
+    * @param gatewayId Required. The virtual network gateway Id.
+    * @param connectedentityId Required. The connected entity Id.
+    * @param parameters Required. Parameters supplied to the Begin Update
+    * gateway conneciton operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is in
+    * progress, or has failed. Note that this status is distinct from the HTTP
+    * status code returned for the Get Operation Status operation itself. If
+    * the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public GatewayGetOperationStatusResponse updateGatewayConnection(String gatewayId, String connectedentityId, UpdateGatewayConnectionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        NetworkManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("connectedentityId", connectedentityId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "updateGatewayConnectionAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            GatewayOperationResponse response = client2.getGatewaysOperations().beginUpdateGatewayConnectionAsync(gatewayId, connectedentityId, parameters).get();
+            GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != GatewayOperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != GatewayOperationStatus.SUCCESSFUL) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * The Update Local Network Gateway operation updates a local network gateway
+    *
+    * @param gatewayId Required. The virtual network for this gateway.
+    * @param parameters Required. Parameters supplied to update the Local
+    * Network Gateway operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> updateLocalNetworkGatewayAsync(final String gatewayId, final UpdateLocalNetworkGatewayParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return updateLocalNetworkGateway(gatewayId, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Update Local Network Gateway operation updates a local network gateway
+    *
+    * @param gatewayId Required. The virtual network for this gateway.
+    * @param parameters Required. Parameters supplied to update the Local
+    * Network Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse updateLocalNetworkGateway(String gatewayId, UpdateLocalNetworkGatewayParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (gatewayId == null) {
+            throw new NullPointerException("gatewayId");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("gatewayId", gatewayId);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "updateLocalNetworkGatewayAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/localnetworkgateways/";
+        url = url + URLEncoder.encode(gatewayId, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-04-01");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPatch httpRequest = new HttpPatch(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element updateLocalNetworkGatewayParametersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateLocalNetworkGatewayParameters");
+        requestDoc.appendChild(updateLocalNetworkGatewayParametersElement);
+        
+        if (parameters.getAddressSpace() != null) {
+            if (parameters.getAddressSpace() instanceof LazyCollection == false || ((LazyCollection) parameters.getAddressSpace()).isInitialized()) {
+                Element addressSpaceSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "AddressSpace");
+                for (String addressSpaceItem : parameters.getAddressSpace()) {
+                    Element addressSpaceItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string");
+                    addressSpaceItemElement.appendChild(requestDoc.createTextNode(addressSpaceItem));
+                    addressSpaceSequenceElement.appendChild(addressSpaceItemElement);
+                }
+                updateLocalNetworkGatewayParametersElement.appendChild(addressSpaceSequenceElement);
+            }
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            // Deserialize Response
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
             }
         }
     }

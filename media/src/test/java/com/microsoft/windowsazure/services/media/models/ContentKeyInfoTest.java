@@ -160,5 +160,19 @@ public class ContentKeyInfoTest {
         assertEquals(expectedCheckSum, actualCheckSum);
 
     }
+    
+    @Test
+    public void testGetSetAuthorizationPolicyId() {
+        // Arrange
+        String expectedAuthorizationPolicyId = "testAuthorizationPolicyId";
+        ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
+                new ContentKeyRestType().setAuthorizationPolicyId(expectedAuthorizationPolicyId));
+
+        // Act
+        String actualAuthorizationPolicyId = contentKeyInfo.getAuthorizationPolicyId();
+
+        // Assert
+        assertEquals(expectedAuthorizationPolicyId, actualAuthorizationPolicyId);
+    }
 
 }

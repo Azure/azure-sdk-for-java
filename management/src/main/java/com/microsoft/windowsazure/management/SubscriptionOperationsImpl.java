@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
@@ -39,6 +40,7 @@ import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -132,7 +134,11 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "");
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -172,135 +178,137 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             // Create Result
             SubscriptionGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new SubscriptionGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element subscriptionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Subscription");
-            if (subscriptionElement != null) {
-                Element subscriptionIDElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionID");
-                if (subscriptionIDElement != null) {
-                    String subscriptionIDInstance;
-                    subscriptionIDInstance = subscriptionIDElement.getTextContent();
-                    result.setSubscriptionID(subscriptionIDInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new SubscriptionGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element subscriptionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Subscription");
+                if (subscriptionElement != null) {
+                    Element subscriptionIDElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionID");
+                    if (subscriptionIDElement != null) {
+                        String subscriptionIDInstance;
+                        subscriptionIDInstance = subscriptionIDElement.getTextContent();
+                        result.setSubscriptionID(subscriptionIDInstance);
+                    }
+                    
+                    Element subscriptionNameElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionName");
+                    if (subscriptionNameElement != null) {
+                        String subscriptionNameInstance;
+                        subscriptionNameInstance = subscriptionNameElement.getTextContent();
+                        result.setSubscriptionName(subscriptionNameInstance);
+                    }
+                    
+                    Element subscriptionStatusElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionStatus");
+                    if (subscriptionStatusElement != null && subscriptionStatusElement.getTextContent() != null && !subscriptionStatusElement.getTextContent().isEmpty()) {
+                        SubscriptionStatus subscriptionStatusInstance;
+                        subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent().toUpperCase());
+                        result.setSubscriptionStatus(subscriptionStatusInstance);
+                    }
+                    
+                    Element accountAdminLiveEmailIdElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "AccountAdminLiveEmailId");
+                    if (accountAdminLiveEmailIdElement != null) {
+                        String accountAdminLiveEmailIdInstance;
+                        accountAdminLiveEmailIdInstance = accountAdminLiveEmailIdElement.getTextContent();
+                        result.setAccountAdminLiveEmailId(accountAdminLiveEmailIdInstance);
+                    }
+                    
+                    Element serviceAdminLiveEmailIdElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "ServiceAdminLiveEmailId");
+                    if (serviceAdminLiveEmailIdElement != null) {
+                        String serviceAdminLiveEmailIdInstance;
+                        serviceAdminLiveEmailIdInstance = serviceAdminLiveEmailIdElement.getTextContent();
+                        result.setServiceAdminLiveEmailId(serviceAdminLiveEmailIdInstance);
+                    }
+                    
+                    Element maxCoreCountElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxCoreCount");
+                    if (maxCoreCountElement != null) {
+                        int maxCoreCountInstance;
+                        maxCoreCountInstance = DatatypeConverter.parseInt(maxCoreCountElement.getTextContent());
+                        result.setMaximumCoreCount(maxCoreCountInstance);
+                    }
+                    
+                    Element maxStorageAccountsElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxStorageAccounts");
+                    if (maxStorageAccountsElement != null) {
+                        int maxStorageAccountsInstance;
+                        maxStorageAccountsInstance = DatatypeConverter.parseInt(maxStorageAccountsElement.getTextContent());
+                        result.setMaximumStorageAccounts(maxStorageAccountsInstance);
+                    }
+                    
+                    Element maxHostedServicesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxHostedServices");
+                    if (maxHostedServicesElement != null) {
+                        int maxHostedServicesInstance;
+                        maxHostedServicesInstance = DatatypeConverter.parseInt(maxHostedServicesElement.getTextContent());
+                        result.setMaximumHostedServices(maxHostedServicesInstance);
+                    }
+                    
+                    Element currentCoreCountElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentCoreCount");
+                    if (currentCoreCountElement != null) {
+                        int currentCoreCountInstance;
+                        currentCoreCountInstance = DatatypeConverter.parseInt(currentCoreCountElement.getTextContent());
+                        result.setCurrentCoreCount(currentCoreCountInstance);
+                    }
+                    
+                    Element currentStorageAccountsElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentStorageAccounts");
+                    if (currentStorageAccountsElement != null) {
+                        int currentStorageAccountsInstance;
+                        currentStorageAccountsInstance = DatatypeConverter.parseInt(currentStorageAccountsElement.getTextContent());
+                        result.setCurrentStorageAccounts(currentStorageAccountsInstance);
+                    }
+                    
+                    Element currentHostedServicesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentHostedServices");
+                    if (currentHostedServicesElement != null) {
+                        int currentHostedServicesInstance;
+                        currentHostedServicesInstance = DatatypeConverter.parseInt(currentHostedServicesElement.getTextContent());
+                        result.setCurrentHostedServices(currentHostedServicesInstance);
+                    }
+                    
+                    Element maxVirtualNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxVirtualNetworkSites");
+                    if (maxVirtualNetworkSitesElement != null) {
+                        int maxVirtualNetworkSitesInstance;
+                        maxVirtualNetworkSitesInstance = DatatypeConverter.parseInt(maxVirtualNetworkSitesElement.getTextContent());
+                        result.setMaximumVirtualNetworkSites(maxVirtualNetworkSitesInstance);
+                    }
+                    
+                    Element currentVirtualNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentVirtualNetworkSites");
+                    if (currentVirtualNetworkSitesElement != null) {
+                        int currentVirtualNetworkSitesInstance;
+                        currentVirtualNetworkSitesInstance = DatatypeConverter.parseInt(currentVirtualNetworkSitesElement.getTextContent());
+                        result.setCurrentVirtualNetworkSites(currentVirtualNetworkSitesInstance);
+                    }
+                    
+                    Element maxLocalNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxLocalNetworkSites");
+                    if (maxLocalNetworkSitesElement != null) {
+                        int maxLocalNetworkSitesInstance;
+                        maxLocalNetworkSitesInstance = DatatypeConverter.parseInt(maxLocalNetworkSitesElement.getTextContent());
+                        result.setMaximumLocalNetworkSites(maxLocalNetworkSitesInstance);
+                    }
+                    
+                    Element maxDnsServersElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxDnsServers");
+                    if (maxDnsServersElement != null) {
+                        int maxDnsServersInstance;
+                        maxDnsServersInstance = DatatypeConverter.parseInt(maxDnsServersElement.getTextContent());
+                        result.setMaximumDnsServers(maxDnsServersInstance);
+                    }
+                    
+                    Element currentLocalNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentLocalNetworkSites");
+                    if (currentLocalNetworkSitesElement != null) {
+                        int currentLocalNetworkSitesInstance;
+                        currentLocalNetworkSitesInstance = DatatypeConverter.parseInt(currentLocalNetworkSitesElement.getTextContent());
+                        result.setCurrentLocalNetworkSites(currentLocalNetworkSitesInstance);
+                    }
+                    
+                    Element currentDnsServersElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentDnsServers");
+                    if (currentDnsServersElement != null) {
+                        int currentDnsServersInstance;
+                        currentDnsServersInstance = DatatypeConverter.parseInt(currentDnsServersElement.getTextContent());
+                        result.setCurrentDnsServers(currentDnsServersInstance);
+                    }
                 }
                 
-                Element subscriptionNameElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionName");
-                if (subscriptionNameElement != null) {
-                    String subscriptionNameInstance;
-                    subscriptionNameInstance = subscriptionNameElement.getTextContent();
-                    result.setSubscriptionName(subscriptionNameInstance);
-                }
-                
-                Element subscriptionStatusElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionStatus");
-                if (subscriptionStatusElement != null) {
-                    SubscriptionStatus subscriptionStatusInstance;
-                    subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent());
-                    result.setSubscriptionStatus(subscriptionStatusInstance);
-                }
-                
-                Element accountAdminLiveEmailIdElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "AccountAdminLiveEmailId");
-                if (accountAdminLiveEmailIdElement != null) {
-                    String accountAdminLiveEmailIdInstance;
-                    accountAdminLiveEmailIdInstance = accountAdminLiveEmailIdElement.getTextContent();
-                    result.setAccountAdminLiveEmailId(accountAdminLiveEmailIdInstance);
-                }
-                
-                Element serviceAdminLiveEmailIdElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "ServiceAdminLiveEmailId");
-                if (serviceAdminLiveEmailIdElement != null) {
-                    String serviceAdminLiveEmailIdInstance;
-                    serviceAdminLiveEmailIdInstance = serviceAdminLiveEmailIdElement.getTextContent();
-                    result.setServiceAdminLiveEmailId(serviceAdminLiveEmailIdInstance);
-                }
-                
-                Element maxCoreCountElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxCoreCount");
-                if (maxCoreCountElement != null) {
-                    int maxCoreCountInstance;
-                    maxCoreCountInstance = DatatypeConverter.parseInt(maxCoreCountElement.getTextContent());
-                    result.setMaximumCoreCount(maxCoreCountInstance);
-                }
-                
-                Element maxStorageAccountsElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxStorageAccounts");
-                if (maxStorageAccountsElement != null) {
-                    int maxStorageAccountsInstance;
-                    maxStorageAccountsInstance = DatatypeConverter.parseInt(maxStorageAccountsElement.getTextContent());
-                    result.setMaximumStorageAccounts(maxStorageAccountsInstance);
-                }
-                
-                Element maxHostedServicesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxHostedServices");
-                if (maxHostedServicesElement != null) {
-                    int maxHostedServicesInstance;
-                    maxHostedServicesInstance = DatatypeConverter.parseInt(maxHostedServicesElement.getTextContent());
-                    result.setMaximumHostedServices(maxHostedServicesInstance);
-                }
-                
-                Element currentCoreCountElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentCoreCount");
-                if (currentCoreCountElement != null) {
-                    int currentCoreCountInstance;
-                    currentCoreCountInstance = DatatypeConverter.parseInt(currentCoreCountElement.getTextContent());
-                    result.setCurrentCoreCount(currentCoreCountInstance);
-                }
-                
-                Element currentStorageAccountsElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentStorageAccounts");
-                if (currentStorageAccountsElement != null) {
-                    int currentStorageAccountsInstance;
-                    currentStorageAccountsInstance = DatatypeConverter.parseInt(currentStorageAccountsElement.getTextContent());
-                    result.setCurrentStorageAccounts(currentStorageAccountsInstance);
-                }
-                
-                Element currentHostedServicesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentHostedServices");
-                if (currentHostedServicesElement != null) {
-                    int currentHostedServicesInstance;
-                    currentHostedServicesInstance = DatatypeConverter.parseInt(currentHostedServicesElement.getTextContent());
-                    result.setCurrentHostedServices(currentHostedServicesInstance);
-                }
-                
-                Element maxVirtualNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxVirtualNetworkSites");
-                if (maxVirtualNetworkSitesElement != null) {
-                    int maxVirtualNetworkSitesInstance;
-                    maxVirtualNetworkSitesInstance = DatatypeConverter.parseInt(maxVirtualNetworkSitesElement.getTextContent());
-                    result.setMaximumVirtualNetworkSites(maxVirtualNetworkSitesInstance);
-                }
-                
-                Element currentVirtualNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentVirtualNetworkSites");
-                if (currentVirtualNetworkSitesElement != null) {
-                    int currentVirtualNetworkSitesInstance;
-                    currentVirtualNetworkSitesInstance = DatatypeConverter.parseInt(currentVirtualNetworkSitesElement.getTextContent());
-                    result.setCurrentVirtualNetworkSites(currentVirtualNetworkSitesInstance);
-                }
-                
-                Element maxLocalNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxLocalNetworkSites");
-                if (maxLocalNetworkSitesElement != null) {
-                    int maxLocalNetworkSitesInstance;
-                    maxLocalNetworkSitesInstance = DatatypeConverter.parseInt(maxLocalNetworkSitesElement.getTextContent());
-                    result.setMaximumLocalNetworkSites(maxLocalNetworkSitesInstance);
-                }
-                
-                Element maxDnsServersElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxDnsServers");
-                if (maxDnsServersElement != null) {
-                    int maxDnsServersInstance;
-                    maxDnsServersInstance = DatatypeConverter.parseInt(maxDnsServersElement.getTextContent());
-                    result.setMaximumDnsServers(maxDnsServersInstance);
-                }
-                
-                Element currentLocalNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentLocalNetworkSites");
-                if (currentLocalNetworkSitesElement != null) {
-                    int currentLocalNetworkSitesInstance;
-                    currentLocalNetworkSitesInstance = DatatypeConverter.parseInt(currentLocalNetworkSitesElement.getTextContent());
-                    result.setCurrentLocalNetworkSites(currentLocalNetworkSitesInstance);
-                }
-                
-                Element currentDnsServersElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentDnsServers");
-                if (currentDnsServersElement != null) {
-                    int currentDnsServersInstance;
-                    currentDnsServersInstance = DatatypeConverter.parseInt(currentDnsServersElement.getTextContent());
-                    result.setCurrentDnsServers(currentDnsServersInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -375,21 +383,30 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/operations" + "?";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operations";
+        ArrayList<String> queryParameters = new ArrayList<String>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
+        queryParameters.add("StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8"));
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-        url = url + "&" + "EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
+        queryParameters.add("EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8"));
         if (parameters.getObjectIdFilter() != null) {
-            url = url + "&" + "ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter() != null ? parameters.getObjectIdFilter().trim() : "", "UTF-8");
+            queryParameters.add("ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter(), "UTF-8"));
         }
         if (parameters.getOperationStatus() != null) {
-            url = url + "&" + "OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString(), "UTF-8");
+            queryParameters.add("OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString(), "UTF-8"));
         }
         if (parameters.getContinuationToken() != null) {
-            url = url + "&" + "ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken() != null ? parameters.getContinuationToken().trim() : "", "UTF-8");
+            queryParameters.add("ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken(), "UTF-8"));
+        }
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
@@ -430,118 +447,120 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             // Create Result
             SubscriptionListOperationsResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new SubscriptionListOperationsResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element subscriptionOperationCollectionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperationCollection");
-            if (subscriptionOperationCollectionElement != null) {
-                Element continuationTokenElement = XmlUtility.getElementByTagNameNS(subscriptionOperationCollectionElement, "http://schemas.microsoft.com/windowsazure", "ContinuationToken");
-                if (continuationTokenElement != null) {
-                    String continuationTokenInstance;
-                    continuationTokenInstance = continuationTokenElement.getTextContent();
-                    result.setContinuationToken(continuationTokenInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new SubscriptionListOperationsResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element subscriptionOperationsSequenceElement = XmlUtility.getElementByTagNameNS(subscriptionOperationCollectionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperations");
-                if (subscriptionOperationsSequenceElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionOperationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionOperationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").get(i1));
-                        SubscriptionListOperationsResponse.SubscriptionOperation subscriptionOperationInstance = new SubscriptionListOperationsResponse.SubscriptionOperation();
-                        result.getSubscriptionOperations().add(subscriptionOperationInstance);
-                        
-                        Element operationIdElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationId");
-                        if (operationIdElement != null) {
-                            String operationIdInstance;
-                            operationIdInstance = operationIdElement.getTextContent();
-                            subscriptionOperationInstance.setOperationId(operationIdInstance);
-                        }
-                        
-                        Element operationObjectIdElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationObjectId");
-                        if (operationObjectIdElement != null) {
-                            String operationObjectIdInstance;
-                            operationObjectIdInstance = operationObjectIdElement.getTextContent();
-                            subscriptionOperationInstance.setOperationObjectId(operationObjectIdInstance);
-                        }
-                        
-                        Element operationNameElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationName");
-                        if (operationNameElement != null) {
-                            String operationNameInstance;
-                            operationNameInstance = operationNameElement.getTextContent();
-                            subscriptionOperationInstance.setOperationName(operationNameInstance);
-                        }
-                        
-                        Element operationParametersSequenceElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationParameters");
-                        if (operationParametersSequenceElement != null) {
-                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operationParametersSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperationParameter").size(); i2 = i2 + 1) {
-                                org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operationParametersSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperationParameter").get(i2));
-                                String operationParametersKey = XmlUtility.getElementByTagNameNS(operationParametersElement, "http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name").getTextContent();
-                                String operationParametersValue = XmlUtility.getElementByTagNameNS(operationParametersElement, "http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value").getTextContent();
-                                subscriptionOperationInstance.getOperationParameters().put(operationParametersKey, operationParametersValue);
-                            }
-                        }
-                        
-                        Element operationCallerElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationCaller");
-                        if (operationCallerElement != null) {
-                            SubscriptionListOperationsResponse.OperationCallerDetails operationCallerInstance = new SubscriptionListOperationsResponse.OperationCallerDetails();
-                            subscriptionOperationInstance.setOperationCaller(operationCallerInstance);
+                Element subscriptionOperationCollectionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperationCollection");
+                if (subscriptionOperationCollectionElement != null) {
+                    Element continuationTokenElement = XmlUtility.getElementByTagNameNS(subscriptionOperationCollectionElement, "http://schemas.microsoft.com/windowsazure", "ContinuationToken");
+                    if (continuationTokenElement != null) {
+                        String continuationTokenInstance;
+                        continuationTokenInstance = continuationTokenElement.getTextContent();
+                        result.setContinuationToken(continuationTokenInstance);
+                    }
+                    
+                    Element subscriptionOperationsSequenceElement = XmlUtility.getElementByTagNameNS(subscriptionOperationCollectionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperations");
+                    if (subscriptionOperationsSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionOperationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionOperationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").get(i1));
+                            SubscriptionListOperationsResponse.SubscriptionOperation subscriptionOperationInstance = new SubscriptionListOperationsResponse.SubscriptionOperation();
+                            result.getSubscriptionOperations().add(subscriptionOperationInstance);
                             
-                            Element usedServiceManagementApiElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UsedServiceManagementApi");
-                            if (usedServiceManagementApiElement != null) {
-                                boolean usedServiceManagementApiInstance;
-                                usedServiceManagementApiInstance = DatatypeConverter.parseBoolean(usedServiceManagementApiElement.getTextContent().toLowerCase());
-                                operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
+                            Element operationIdElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationId");
+                            if (operationIdElement != null) {
+                                String operationIdInstance;
+                                operationIdInstance = operationIdElement.getTextContent();
+                                subscriptionOperationInstance.setOperationId(operationIdInstance);
                             }
                             
-                            Element userEmailAddressElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UserEmailAddress");
-                            if (userEmailAddressElement != null) {
-                                String userEmailAddressInstance;
-                                userEmailAddressInstance = userEmailAddressElement.getTextContent();
-                                operationCallerInstance.setUserEmailAddress(userEmailAddressInstance);
+                            Element operationObjectIdElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationObjectId");
+                            if (operationObjectIdElement != null) {
+                                String operationObjectIdInstance;
+                                operationObjectIdInstance = operationObjectIdElement.getTextContent();
+                                subscriptionOperationInstance.setOperationObjectId(operationObjectIdInstance);
                             }
                             
-                            Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
-                            if (subscriptionCertificateThumbprintElement != null) {
-                                String subscriptionCertificateThumbprintInstance;
-                                subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                                operationCallerInstance.setSubscriptionCertificateThumbprint(subscriptionCertificateThumbprintInstance);
+                            Element operationNameElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationName");
+                            if (operationNameElement != null) {
+                                String operationNameInstance;
+                                operationNameInstance = operationNameElement.getTextContent();
+                                subscriptionOperationInstance.setOperationName(operationNameInstance);
                             }
                             
-                            Element clientIPElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "ClientIP");
-                            if (clientIPElement != null) {
-                                InetAddress clientIPInstance;
-                                clientIPInstance = InetAddress.getByName(clientIPElement.getTextContent());
-                                operationCallerInstance.setClientIPAddress(clientIPInstance);
+                            Element operationParametersSequenceElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationParameters");
+                            if (operationParametersSequenceElement != null) {
+                                for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operationParametersSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperationParameter").size(); i2 = i2 + 1) {
+                                    org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operationParametersSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperationParameter").get(i2));
+                                    String operationParametersKey = XmlUtility.getElementByTagNameNS(operationParametersElement, "http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name").getTextContent();
+                                    String operationParametersValue = XmlUtility.getElementByTagNameNS(operationParametersElement, "http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value").getTextContent();
+                                    subscriptionOperationInstance.getOperationParameters().put(operationParametersKey, operationParametersValue);
+                                }
                             }
-                        }
-                        
-                        Element operationStatusElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
-                        if (operationStatusElement != null) {
-                            String operationStatusInstance;
-                            operationStatusInstance = operationStatusElement.getTextContent();
-                            subscriptionOperationInstance.setOperationStatus(operationStatusInstance);
-                        }
-                        
-                        Element operationStartedTimeElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationStartedTime");
-                        if (operationStartedTimeElement != null) {
-                            Calendar operationStartedTimeInstance;
-                            operationStartedTimeInstance = DatatypeConverter.parseDateTime(operationStartedTimeElement.getTextContent());
-                            subscriptionOperationInstance.setOperationStartedTime(operationStartedTimeInstance);
-                        }
-                        
-                        Element operationCompletedTimeElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationCompletedTime");
-                        if (operationCompletedTimeElement != null) {
-                            Calendar operationCompletedTimeInstance;
-                            operationCompletedTimeInstance = DatatypeConverter.parseDateTime(operationCompletedTimeElement.getTextContent());
-                            subscriptionOperationInstance.setOperationCompletedTime(operationCompletedTimeInstance);
+                            
+                            Element operationCallerElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationCaller");
+                            if (operationCallerElement != null) {
+                                SubscriptionListOperationsResponse.OperationCallerDetails operationCallerInstance = new SubscriptionListOperationsResponse.OperationCallerDetails();
+                                subscriptionOperationInstance.setOperationCaller(operationCallerInstance);
+                                
+                                Element usedServiceManagementApiElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UsedServiceManagementApi");
+                                if (usedServiceManagementApiElement != null) {
+                                    boolean usedServiceManagementApiInstance;
+                                    usedServiceManagementApiInstance = DatatypeConverter.parseBoolean(usedServiceManagementApiElement.getTextContent().toLowerCase());
+                                    operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
+                                }
+                                
+                                Element userEmailAddressElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UserEmailAddress");
+                                if (userEmailAddressElement != null) {
+                                    String userEmailAddressInstance;
+                                    userEmailAddressInstance = userEmailAddressElement.getTextContent();
+                                    operationCallerInstance.setUserEmailAddress(userEmailAddressInstance);
+                                }
+                                
+                                Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
+                                if (subscriptionCertificateThumbprintElement != null) {
+                                    String subscriptionCertificateThumbprintInstance;
+                                    subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                                    operationCallerInstance.setSubscriptionCertificateThumbprint(subscriptionCertificateThumbprintInstance);
+                                }
+                                
+                                Element clientIPElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "ClientIP");
+                                if (clientIPElement != null) {
+                                    InetAddress clientIPInstance;
+                                    clientIPInstance = InetAddress.getByName(clientIPElement.getTextContent());
+                                    operationCallerInstance.setClientIPAddress(clientIPInstance);
+                                }
+                            }
+                            
+                            Element operationStatusElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
+                            if (operationStatusElement != null) {
+                                String operationStatusInstance;
+                                operationStatusInstance = operationStatusElement.getTextContent();
+                                subscriptionOperationInstance.setOperationStatus(operationStatusInstance);
+                            }
+                            
+                            Element operationStartedTimeElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationStartedTime");
+                            if (operationStartedTimeElement != null) {
+                                Calendar operationStartedTimeInstance;
+                                operationStartedTimeInstance = DatatypeConverter.parseDateTime(operationStartedTimeElement.getTextContent());
+                                subscriptionOperationInstance.setOperationStartedTime(operationStartedTimeInstance);
+                            }
+                            
+                            Element operationCompletedTimeElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationCompletedTime");
+                            if (operationCompletedTimeElement != null) {
+                                Calendar operationCompletedTimeInstance;
+                                operationCompletedTimeInstance = DatatypeConverter.parseDateTime(operationCompletedTimeElement.getTextContent());
+                                subscriptionOperationInstance.setOperationCompletedTime(operationCompletedTimeInstance);
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -604,9 +623,18 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services" + "?";
-        url = url + "service=" + URLEncoder.encode(resourceName.trim(), "UTF-8");
-        url = url + "&" + "action=register";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("service=" + URLEncoder.encode(resourceName, "UTF-8"));
+        queryParameters.add("action=register");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -646,6 +674,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -709,9 +738,18 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services" + "?";
-        url = url + "service=" + URLEncoder.encode(resourceName.trim(), "UTF-8");
-        url = url + "&" + "action=unregister";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("service=" + URLEncoder.encode(resourceName, "UTF-8"));
+        queryParameters.add("action=unregister");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -751,6 +789,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {

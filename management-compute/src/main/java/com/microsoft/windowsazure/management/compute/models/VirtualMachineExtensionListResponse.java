@@ -367,6 +367,26 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
             this.publisher = publisherValue;
         }
         
+        private String regions;
+        
+        /**
+        * Optional. String property containing the name of the regions required
+        * for the slice.
+        * @return The Regions value.
+        */
+        public String getRegions() {
+            return this.regions;
+        }
+        
+        /**
+        * Optional. String property containing the name of the regions required
+        * for the slice.
+        * @param regionsValue The Regions value.
+        */
+        public void setRegions(final String regionsValue) {
+            this.regions = regionsValue;
+        }
+        
         private Boolean replicationCompleted;
         
         /**

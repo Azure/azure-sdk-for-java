@@ -99,13 +99,23 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
   
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-                baseUri != null ? new URI(baseUri) : null,
-                        System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                        System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                        System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-                        KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );        
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null,
+                    null,
+                    null
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
     }
     
     protected static void createStorageAccount(String storageAccountName) throws Exception {      
@@ -122,7 +132,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
         createParameters.setAccountType("Standard_LRS");
 
         //act
-        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
+        OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters);
         Assert.assertEquals(200, operationResponse.getStatusCode());
          
         //use container inside storage account, needed for os image storage.
@@ -182,7 +192,7 @@ public abstract class MediaServiceManagementIntegrationTestBase extends MockInte
     
     protected static void getLocation() throws Exception {
         ArrayList<String> serviceName = new ArrayList<String>();       
-        serviceName.add(LocationAvailableServiceNames.HIGHMEMORY);       
+        serviceName.add(LocationAvailableServiceNames.HIGHMEMORY);
 
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
         for (LocationsListResponse.Location location : locationsListResponse) {

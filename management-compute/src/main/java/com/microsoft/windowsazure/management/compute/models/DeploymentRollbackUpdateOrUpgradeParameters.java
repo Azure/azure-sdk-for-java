@@ -80,8 +80,12 @@ public class DeploymentRollbackUpdateOrUpgradeParameters {
     * DeploymentRollbackUpdateOrUpgradeParameters class with required
     * arguments.
     *
+    * @param mode Specifies whether the rollback should proceed automatically.
     */
     public DeploymentRollbackUpdateOrUpgradeParameters(RollbackUpdateOrUpgradeMode mode) {
+        if (mode == null) {
+            throw new NullPointerException("mode");
+        }
         this.setMode(mode);
     }
 }

@@ -27,19 +27,19 @@ package com.microsoft.windowsazure.management.compute.models;
 * The status of the deployment.
 */
 public enum DeploymentStatus {
-    Running,
+    RUNNING,
     
-    Suspended,
+    SUSPENDED,
     
-    RunningTransitioning,
+    RUNNINGTRANSITIONING,
     
-    SuspendedTransitioning,
+    SUSPENDEDTRANSITIONING,
     
-    Starting,
+    STARTING,
     
-    Suspending,
+    SUSPENDING,
     
-    Deploying,
+    DEPLOYING,
     
-    Deleting,
+    DELETING,
 }
