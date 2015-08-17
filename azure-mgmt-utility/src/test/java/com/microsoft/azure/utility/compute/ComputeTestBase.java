@@ -258,8 +258,6 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         Assert.assertEquals(
                 context.getVMInput().getLocation().toLowerCase(),
                 vmResponse.getVirtualMachine().getLocation().toLowerCase());
-        System.out.println(context.getAvailabilitySetId().toLowerCase());
-        System.out.println(vmResponse.getVirtualMachine().getAvailabilitySetReference().getReferenceUri().toLowerCase());
         Assert.assertEquals(
                 context.getAvailabilitySetId().toLowerCase(),
                 vmResponse.getVirtualMachine().getAvailabilitySetReference().getReferenceUri().toLowerCase());

@@ -57,12 +57,6 @@ public class ExtensionTests extends ComputeTestBase {
     }
 
     @Test
-    public void canaryTest() throws IOException, ServiceException, URISyntaxException {
-        createOrUpdateResourceGroup(m_rgName);
-        Assert.assertTrue(true);
-    }
-
-    @Test
     public void testVmExtensionsOperations() throws Exception {
         VirtualMachineExtension extension = getTestVmExtension();
         ImageReference imageReference = getPlatformVmImage(true);
@@ -86,9 +80,6 @@ public class ExtensionTests extends ComputeTestBase {
             verifyVmExtensionInVmInfo(extension, vm, context.getResourceGroupName());
             verifyVmExtensionInstanceViewInVmInstanceView(vm, context.getResourceGroupName());
             verifyDeleteExtension(extension, vm, context.getResourceGroupName());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw e;
         } finally {
             OperationResponse deleteResourceGroupResponse = resourceManagementClient.getResourceGroupsOperations().beginDeleting(context.getResourceGroupName());
             Assert.assertEquals(HttpStatus.SC_ACCEPTED, deleteResourceGroupResponse.getStatusCode());
