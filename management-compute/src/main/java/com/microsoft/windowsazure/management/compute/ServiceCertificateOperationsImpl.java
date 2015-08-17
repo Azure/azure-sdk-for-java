@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateDeleteParameters;
@@ -44,6 +45,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -149,6 +151,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getCertificateFormat() == null) {
+            throw new NullPointerException("parameters.CertificateFormat");
+        }
         if (parameters.getData() == null) {
             throw new NullPointerException("parameters.Data");
         }
@@ -165,7 +170,14 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/certificates";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/certificates";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -175,13 +187,14 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -238,6 +251,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -325,7 +339,17 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + parameters.getServiceName().trim() + "/certificates/" + parameters.getThumbprintAlgorithm().trim() + "-" + parameters.getThumbprint().trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(parameters.getServiceName(), "UTF-8");
+        url = url + "/certificates/";
+        url = url + URLEncoder.encode(parameters.getThumbprintAlgorithm(), "UTF-8");
+        url = url + "-";
+        url = url + URLEncoder.encode(parameters.getThumbprint(), "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -335,12 +359,13 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -363,6 +388,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -474,7 +500,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -487,11 +513,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -597,7 +624,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -610,11 +637,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -704,7 +732,17 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + parameters.getServiceName().trim() + "/certificates/" + parameters.getThumbprintAlgorithm().trim() + "-" + parameters.getThumbprint().trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(parameters.getServiceName(), "UTF-8");
+        url = url + "/certificates/";
+        url = url + URLEncoder.encode(parameters.getThumbprintAlgorithm(), "UTF-8");
+        url = url + "-";
+        url = url + URLEncoder.encode(parameters.getThumbprint(), "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -714,12 +752,13 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -743,23 +782,25 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             // Create Result
             ServiceCertificateGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceCertificateGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element certificateElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificate");
-            if (certificateElement != null) {
-                Element dataElement = XmlUtility.getElementByTagNameNS(certificateElement, "http://schemas.microsoft.com/windowsazure", "Data");
-                if (dataElement != null) {
-                    byte[] dataInstance;
-                    dataInstance = dataElement.getTextContent() != null ? Base64.decode(dataElement.getTextContent()) : null;
-                    result.setData(dataInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServiceCertificateGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element certificateElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificate");
+                if (certificateElement != null) {
+                    Element dataElement = XmlUtility.getElementByTagNameNS(certificateElement, "http://schemas.microsoft.com/windowsazure", "Data");
+                    if (dataElement != null) {
+                        byte[] dataInstance;
+                        dataInstance = dataElement.getTextContent() != null ? Base64.decode(dataElement.getTextContent()) : null;
+                        result.setData(dataInstance);
+                    }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -833,7 +874,14 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/certificates";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/certificates";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -843,12 +891,13 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -872,50 +921,52 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             // Create Result
             ServiceCertificateListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element certificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificates");
-            if (certificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").get(i1));
-                    ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
-                    result.getCertificates().add(certificateInstance);
-                    
-                    Element certificateUrlElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "CertificateUrl");
-                    if (certificateUrlElement != null) {
-                        URI certificateUrlInstance;
-                        certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
-                        certificateInstance.setCertificateUri(certificateUrlInstance);
-                    }
-                    
-                    Element thumbprintElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    if (thumbprintElement != null) {
-                        String thumbprintInstance;
-                        thumbprintInstance = thumbprintElement.getTextContent();
-                        certificateInstance.setThumbprint(thumbprintInstance);
-                    }
-                    
-                    Element thumbprintAlgorithmElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "ThumbprintAlgorithm");
-                    if (thumbprintAlgorithmElement != null) {
-                        String thumbprintAlgorithmInstance;
-                        thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
-                        certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
-                    }
-                    
-                    Element dataElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Data");
-                    if (dataElement != null) {
-                        byte[] dataInstance;
-                        dataInstance = dataElement.getTextContent() != null ? Base64.decode(dataElement.getTextContent()) : null;
-                        certificateInstance.setData(dataInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServiceCertificateListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element certificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificates");
+                if (certificatesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").get(i1));
+                        ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
+                        result.getCertificates().add(certificateInstance);
+                        
+                        Element certificateUrlElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "CertificateUrl");
+                        if (certificateUrlElement != null) {
+                            URI certificateUrlInstance;
+                            certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
+                            certificateInstance.setCertificateUri(certificateUrlInstance);
+                        }
+                        
+                        Element thumbprintElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        if (thumbprintElement != null) {
+                            String thumbprintInstance;
+                            thumbprintInstance = thumbprintElement.getTextContent();
+                            certificateInstance.setThumbprint(thumbprintInstance);
+                        }
+                        
+                        Element thumbprintAlgorithmElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "ThumbprintAlgorithm");
+                        if (thumbprintAlgorithmElement != null) {
+                            String thumbprintAlgorithmInstance;
+                            thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
+                            certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
+                        }
+                        
+                        Element dataElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Data");
+                        if (dataElement != null) {
+                            byte[] dataInstance;
+                            dataInstance = dataElement.getTextContent() != null ? Base64.decode(dataElement.getTextContent()) : null;
+                            certificateInstance.setData(dataInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

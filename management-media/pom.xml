@@ -17,12 +17,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-parent</artifactId>
-    <version>0.6.0</version>
+    <artifactId>azure</artifactId>
+    <version>0.8.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management-media</artifactId>
+  <artifactId>azure-svc-mgmt-media</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Media Services Management</name>
@@ -45,9 +45,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-
-    <jackson.version>2.1.1</jackson.version>
-    <spring.version>3.0.7.RELEASE</spring.version>
   </properties>
 
   <developers>
@@ -73,23 +70,28 @@
     </dependency>
 
     <!-- Test dependencies -->
-
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>azure-management</artifactId>
+        <artifactId>azure-svc-mgmt</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>azure-management-storage</artifactId>
+        <artifactId>azure-svc-mgmt-storage</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.windowsazure.storage</groupId>
-      <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-      <version>0.6.0</version>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
+      <version>1.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -110,6 +112,16 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk16</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

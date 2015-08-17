@@ -17,20 +17,22 @@ package com.microsoft.windowsazure.management.storage;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.ManagementClient;
 import com.microsoft.windowsazure.management.ManagementService;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
 
-public abstract class StorageManagementIntegrationTestBase {
+public abstract class StorageManagementIntegrationTestBase extends MockIntegrationTestBase {
 
     protected static String testStorageAccountPrefix = "azurejavatest";
     protected static String storageLocation = null;
@@ -45,23 +47,48 @@ public abstract class StorageManagementIntegrationTestBase {
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         storageManagementClient = StorageManagementService.create(config);
+        addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createService();
+                return null;
+            }
+        });
+        addRegexRule("azurejavatest[a-z]{10}");
     }
     
     protected static void createManagementClient() throws Exception {
         Configuration config = createConfiguration();
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
         managementClient = ManagementService.create(config);
+        addClient((ServiceClient<?>) managementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createManagementClient();
+                return null;
+            }
+        });
     }       
-  
+    
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );        
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null,
+                    null,
+                    null
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
     }
     
     protected static void getLocation() throws Exception {

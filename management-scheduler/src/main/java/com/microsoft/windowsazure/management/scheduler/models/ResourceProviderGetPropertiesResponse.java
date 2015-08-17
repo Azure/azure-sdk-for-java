@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.HashMap;
 
@@ -55,6 +56,6 @@ public class ResourceProviderGetPropertiesResponse extends OperationResponse {
     */
     public ResourceProviderGetPropertiesResponse() {
         super();
-        this.setProperties(new HashMap<String, String>());
+        this.setProperties(new LazyHashMap<String, String>());
     }
 }

@@ -24,13 +24,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.core.OperationStatus;
-import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.*;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -43,21 +43,27 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
     public static void setup() throws Exception {
         cloudServiceName = testJobCollectionPrefix + "jobcls" + randomString(5);
         jobCollectionName = testJobCollectionPrefix + "jobcl" + randomString(7);
+        addRegexRule(testJobCollectionPrefix + "jobcls[a-z]{5}");
+        addRegexRule(testJobCollectionPrefix + "jobcl[a-z]{7}");
 
         createManagementClient();
-        getLocation();
-
         createCloudServiceManagementService();
-        createCloudService();
-
         createSchedulerManagementService();
+        
+        setupTest(JobCollectionOperationsTests.class.getSimpleName());
+        
+        getLocation();
+        createCloudService();
         createJobCollection();
+        resetTest(JobCollectionOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest(JobCollectionOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanJobCollection();
         cleanCloudService();
+        resetTest(JobCollectionOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void cleanJobCollection() {
@@ -106,7 +112,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         createParameters.setDescription(cloudServiceDesc);
         createParameters.setGeoRegion(hostedLocation);
 
-        OperationResponse CloudServiceOperationResponse = cloudServiceManagementClient.getCloudServicesOperations().create(cloudServiceName, createParameters);  
+        OperationResponse CloudServiceOperationResponse = cloudServiceManagementClient.getCloudServicesOperations().create(cloudServiceName, createParameters);
         Assert.assertEquals(200, CloudServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(CloudServiceOperationResponse.getRequestId());
     }
@@ -119,13 +125,23 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
         createParameters.setLabel(jcLabels);
 
         //act
-        OperationResponse operationResponse = schedulerManagementClient.getJobCollectionsOperations().create(cloudServiceName, jobCollectionName, createParameters); 
+        OperationResponse operationResponse = schedulerManagementClient.getJobCollectionsOperations().create(cloudServiceName, jobCollectionName, createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void listCloudServiceSuccess() throws Exception {
         //Act
@@ -150,6 +166,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
     @Test
     public void checkAvailabilitySuccess() throws Exception {
         String checkJobCollectionName = testJobCollectionPrefix + "chk"+randomString(8);
+        addRegexRule(testJobCollectionPrefix + "chk[a-z]{8}");
 
         //Act
         JobCollectionCheckNameAvailabilityResponse checkNameAvailabilityResponse = schedulerManagementClient.getJobCollectionsOperations().checkNameAvailability(cloudServiceName, checkJobCollectionName);
@@ -193,7 +210,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
                 e.printStackTrace();
             }
 
-            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.FAILED) || (operationStatus.getStatus() == CloudServiceOperationStatus.SUCCEEDED))
             {
                 operationCompleted = true;
             }else{

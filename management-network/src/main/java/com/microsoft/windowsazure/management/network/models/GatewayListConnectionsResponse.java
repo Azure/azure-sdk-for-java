@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     */
     public GatewayListConnectionsResponse() {
         super();
-        this.setConnections(new ArrayList<GatewayListConnectionsResponse.GatewayConnection>());
+        this.setConnections(new LazyArrayList<GatewayListConnectionsResponse.GatewayConnection>());
     }
     
     /**
@@ -212,7 +213,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         *
         */
         public GatewayConnection() {
-            this.setAllocatedIPAddresses(new ArrayList<String>());
+            this.setAllocatedIPAddresses(new LazyArrayList<String>());
         }
     }
 }

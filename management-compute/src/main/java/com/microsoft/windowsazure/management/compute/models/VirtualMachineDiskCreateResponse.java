@@ -54,6 +54,24 @@ public class VirtualMachineDiskCreateResponse extends OperationResponse {
         this.affinityGroup = affinityGroupValue;
     }
     
+    private String iOType;
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @return The IOType value.
+    */
+    public String getIOType() {
+        return this.iOType;
+    }
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @param iOTypeValue The IOType value.
+    */
+    public void setIOType(final String iOTypeValue) {
+        this.iOType = iOTypeValue;
+    }
+    
     private Boolean isPremium;
     
     /**

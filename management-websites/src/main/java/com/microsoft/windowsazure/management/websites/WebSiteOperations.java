@@ -25,10 +25,22 @@ package com.microsoft.windowsazure.management.websites;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.websites.models.BackupRequest;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionCreateParameters;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionCreateResponse;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionGetResponse;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionListResponse;
+import com.microsoft.windowsazure.management.websites.models.HybridConnectionUpdateParameters;
+import com.microsoft.windowsazure.management.websites.models.RestoreRequest;
+import com.microsoft.windowsazure.management.websites.models.SlotConfigNames;
+import com.microsoft.windowsazure.management.websites.models.SlotConfigNamesUpdate;
+import com.microsoft.windowsazure.management.websites.models.WebSiteBackupResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteDeleteParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteDeleteRepositoryResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetBackupConfigurationResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetBackupsResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetConfigurationResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetHistoricalUsageMetricsParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetHistoricalUsageMetricsResponse;
@@ -40,6 +52,8 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteGetUsageMetr
 import com.microsoft.windowsazure.management.websites.models.WebSiteInstanceIdsResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteIsHostnameAvailableResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteRestoreDiscoverResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteRestoreResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateConfigurationParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateResponse;
@@ -57,6 +71,62 @@ import org.xml.sax.SAXException;
 * information)
 */
 public interface WebSiteOperations {
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param targetSwapSlot Required. The name of the target slot to be swapped
+    * with.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse applySlotConfiguration(String webSpaceName, String webSiteName, String targetSwapSlot) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param targetSwapSlot Required. The name of the target slot to be swapped
+    * with.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> applySlotConfigurationAsync(String webSpaceName, String webSiteName, String targetSwapSlot);
+    
+    /**
+    * Backups a site on-demand.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param backupRequest Required. A backup specification.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The backup record created based on the backup request.
+    */
+    WebSiteBackupResponse backup(String webSpaceName, String webSiteName, BackupRequest backupRequest) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Backups a site on-demand.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param backupRequest Required. A backup specification.
+    * @return The backup record created based on the backup request.
+    */
+    Future<WebSiteBackupResponse> backupAsync(String webSpaceName, String webSiteName, BackupRequest backupRequest);
+    
     /**
     * You can swap a web site from one slot to another slot.
     *
@@ -81,7 +151,7 @@ public interface WebSiteOperations {
     * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
-    WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String sourceSlotName, String targetSlotName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    WebSiteOperationStatusResponse beginSwappingSlots(String webSpaceName, String webSiteName, String sourceSlotName, String targetSlotName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * You can swap a web site from one slot to another slot.
@@ -99,7 +169,7 @@ public interface WebSiteOperations {
     * operation itself. If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
-    Future<WebSiteOperationStatusResponse> beginSwapingSlotsAsync(String webSpaceName, String webSiteName, String sourceSlotName, String targetSlotName);
+    Future<WebSiteOperationStatusResponse> beginSwappingSlotsAsync(String webSpaceName, String webSiteName, String sourceSlotName, String targetSlotName);
     
     /**
     * You can create a web site by using a POST request that includes the name
@@ -138,6 +208,38 @@ public interface WebSiteOperations {
     * @return The Create Web Site operation response.
     */
     Future<WebSiteCreateResponse> createAsync(String webSpaceName, WebSiteCreateParameters parameters);
+    
+    /**
+    * Creates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The Create Hybrid Connection operation response.
+    */
+    HybridConnectionCreateResponse createHybridConnection(String webSpaceName, String siteName, HybridConnectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Creates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @return The Create Hybrid Connection operation response.
+    */
+    Future<HybridConnectionCreateResponse> createHybridConnectionAsync(String webSpaceName, String siteName, HybridConnectionCreateParameters parameters);
     
     /**
     * A web site repository is essentially a Git repository that you can use to
@@ -212,6 +314,34 @@ public interface WebSiteOperations {
     Future<OperationResponse> deleteAsync(String webSpaceName, String webSiteName, WebSiteDeleteParameters parameters);
     
     /**
+    * Deletes a hybrid connection on a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse deleteHybridConnection(String webSpaceName, String webSiteName, String hybridConnectionName) throws IOException, ServiceException;
+    
+    /**
+    * Deletes a hybrid connection on a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> deleteHybridConnectionAsync(String webSpaceName, String webSiteName, String hybridConnectionName);
+    
+    /**
     * A web site repository is essentially a Git repository that you can use to
     * manage your web site content. By using Git source control tools, you can
     * push or pull version-controlled changes to your site. This API executes
@@ -248,6 +378,42 @@ public interface WebSiteOperations {
     * @return The Delete Repository Web Site operation response.
     */
     Future<WebSiteDeleteRepositoryResponse> deleteRepositoryAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    * Scans a backup in a storage account and returns database information etc.
+    * Should be called before calling Restore to discover what parameters are
+    * needed for the restore operation.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param restoreRequest Required. A restore request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The information gathered about a backup storaged in a storage
+    * account.
+    */
+    WebSiteRestoreDiscoverResponse discover(String webSpaceName, String webSiteName, RestoreRequest restoreRequest) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Scans a backup in a storage account and returns database information etc.
+    * Should be called before calling Restore to discover what parameters are
+    * needed for the restore operation.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param restoreRequest Required. A restore request.
+    * @return The information gathered about a backup storaged in a storage
+    * account.
+    */
+    Future<WebSiteRestoreDiscoverResponse> discoverAsync(String webSpaceName, String webSiteName, RestoreRequest restoreRequest);
     
     /**
     * You can generate a new random password for publishing a site by issuing
@@ -326,10 +492,7 @@ public interface WebSiteOperations {
     Future<WebSiteGetResponse> getAsync(String webSpaceName, String webSiteName, WebSiteGetParameters parameters);
     
     /**
-    * You can retrieve the config settings for a web site by issuing an HTTP
-    * GET request.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
-    * more information)
+    * Gets a schedule configuration for site backups.
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
@@ -341,9 +504,34 @@ public interface WebSiteOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
+    * @return Scheduled backup definition.
+    */
+    WebSiteGetBackupConfigurationResponse getBackupConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Gets a schedule configuration for site backups.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return Scheduled backup definition.
+    */
+    Future<WebSiteGetBackupConfigurationResponse> getBackupConfigurationAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    * You can retrieve the config settings for a web site by issuing an HTTP
+    * GET request.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
+    * more information)
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Get Configuration Web Site operation response.
     */
-    WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException;
     
     /**
     * You can retrieve the config settings for a web site by issuing an HTTP
@@ -392,6 +580,36 @@ public interface WebSiteOperations {
     * @return The Get Historical Usage Metrics Web Site operation response.
     */
     Future<WebSiteGetHistoricalUsageMetricsResponse> getHistoricalUsageMetricsAsync(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters);
+    
+    /**
+    * Retrieves a particular hybrid connection that belongs to a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Get Hybrid Connection operation response.
+    */
+    HybridConnectionGetResponse getHybridConnection(String webSpaceName, String webSiteName, String hybridConnectionName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Retrieves a particular hybrid connection that belongs to a specific site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param hybridConnectionName Required. The name of the hybrid connection
+    * entity
+    * @return The Get Hybrid Connection operation response.
+    */
+    Future<HybridConnectionGetResponse> getHybridConnectionAsync(String webSpaceName, String webSiteName, String hybridConnectionName);
     
     /**
     * You can retrieve the list of active instances by ids for a web site by
@@ -498,6 +716,28 @@ public interface WebSiteOperations {
     Future<WebSiteGetRepositoryResponse> getRepositoryAsync(String webSpaceName, String webSiteName);
     
     /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    SlotConfigNames getSlotConfigNames(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<SlotConfigNames> getSlotConfigNamesAsync(String webSpaceName, String webSiteName);
+    
+    /**
     * You can retrieve current usage metrics for a site by issuing an HTTP GET
     * request. The metrics returned include CPU Time, Data In, Data Out, Local
     * Bytes Read, Local Bytes Written, Network Bytes Read, Network Bytes
@@ -560,6 +800,80 @@ public interface WebSiteOperations {
     Future<WebSiteIsHostnameAvailableResponse> isHostnameAvailableAsync(String webSiteName);
     
     /**
+    * Returns list of all backups which are tracked by the system.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return List of backups for the website.
+    */
+    WebSiteGetBackupsResponse listBackups(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Returns list of all backups which are tracked by the system.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return List of backups for the website.
+    */
+    Future<WebSiteGetBackupsResponse> listBackupsAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    * Retrieves a list of all hybrid connections on a specific web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The List Hybrid Connection operation response.
+    */
+    HybridConnectionListResponse listHybridConnections(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Retrieves a list of all hybrid connections on a specific web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return The List Hybrid Connection operation response.
+    */
+    Future<HybridConnectionListResponse> listHybridConnectionsAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse resetSlotConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> resetSlotConfigurationAsync(String webSpaceName, String webSiteName);
+    
+    /**
     * You can restart a web site by issuing an HTTP POST request.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236425.aspx for
     * more information)
@@ -586,6 +900,38 @@ public interface WebSiteOperations {
     * request ID.
     */
     Future<OperationResponse> restartAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    * Restores a site to either a new site or existing site (Overwrite flag has
+    * to be set to true for that).
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param restoreRequest Required. A restore request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Restore operation information.
+    */
+    WebSiteRestoreResponse restore(String webSpaceName, String webSiteName, RestoreRequest restoreRequest) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Restores a site to either a new site or existing site (Overwrite flag has
+    * to be set to true for that).
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param restoreRequest Required. A restore request.
+    * @return Restore operation information.
+    */
+    Future<WebSiteRestoreResponse> restoreAsync(String webSpaceName, String webSiteName, RestoreRequest restoreRequest);
     
     /**
     * You can swap a web site from one slot to another slot.
@@ -710,15 +1056,11 @@ public interface WebSiteOperations {
     Future<WebSiteUpdateResponse> updateAsync(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters);
     
     /**
-    * You can update the config settings for a web site by issuing an HTTP PUT
-    * with a request body containing the updated settings.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
-    * more information)
+    * Updates a backup schedule for a site.
     *
     * @param webSpaceName Required. The name of the web space.
     * @param webSiteName Required. The name of the web site.
-    * @param parameters Required. Parameters supplied to the Update
-    * Configuration Web Site operation.
+    * @param backupRequest Required. A backup schedule specification.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -732,7 +1074,37 @@ public interface WebSiteOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse updateConfiguration(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse updateBackupConfiguration(String webSpaceName, String webSiteName, BackupRequest backupRequest) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Updates a backup schedule for a site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param backupRequest Required. A backup schedule specification.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> updateBackupConfigurationAsync(String webSpaceName, String webSiteName, BackupRequest backupRequest);
+    
+    /**
+    * You can update the config settings for a web site by issuing an HTTP PUT
+    * with a request body containing the updated settings.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
+    * more information)
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Update
+    * Configuration Web Site operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse updateConfiguration(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters) throws IOException, ServiceException;
     
     /**
     * You can update the config settings for a web site by issuing an HTTP PUT
@@ -748,4 +1120,62 @@ public interface WebSiteOperations {
     * request ID.
     */
     Future<OperationResponse> updateConfigurationAsync(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters);
+    
+    /**
+    * Updates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse updateHybridConnection(String webSpaceName, String siteName, HybridConnectionUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Updates an association to a hybrid connection for a web site.
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param siteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Create Hybrid
+    * Connection operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> updateHybridConnectionAsync(String webSpaceName, String siteName, HybridConnectionUpdateParameters parameters);
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse updateSlotConfigNames(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters) throws IOException, ServiceException;
+    
+    /**
+    *
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> updateSlotConfigNamesAsync(String webSpaceName, String webSiteName, SlotConfigNamesUpdate parameters);
 }

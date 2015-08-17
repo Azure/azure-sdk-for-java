@@ -117,13 +117,13 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
         this.eula = eulaValue;
     }
     
-    private URI iconUri;
+    private String iconUri;
     
     /**
     * Optional. Provides the URI to the icon for this Operating System Image.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public String getIconUri() {
         return this.iconUri;
     }
     
@@ -131,7 +131,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * Optional. Provides the URI to the icon for this Operating System Image.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final String iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -151,6 +151,24 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     */
     public void setImageFamily(final String imageFamilyValue) {
         this.imageFamily = imageFamilyValue;
+    }
+    
+    private String iOType;
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @return The IOType value.
+    */
+    public String getIOType() {
+        return this.iOType;
+    }
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @param iOTypeValue The IOType value.
+    */
+    public void setIOType(final String iOTypeValue) {
+        this.iOType = iOTypeValue;
     }
     
     private Boolean isPremium;
@@ -419,7 +437,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
         this.showInGui = showInGuiValue;
     }
     
-    private URI smallIconUri;
+    private String smallIconUri;
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
@@ -427,7 +445,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public String getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -437,7 +455,7 @@ public class VirtualMachineOSImageGetResponse extends OperationResponse {
     * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final String smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
 }

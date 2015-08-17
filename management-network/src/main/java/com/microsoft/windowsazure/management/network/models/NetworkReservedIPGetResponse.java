@@ -193,4 +193,22 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     public void setState(final String stateValue) {
         this.state = stateValue;
     }
+    
+    private String virtualIPName;
+    
+    /**
+    * Optional. The name of the virtual IP that we should reserve.
+    * @return The VirtualIPName value.
+    */
+    public String getVirtualIPName() {
+        return this.virtualIPName;
+    }
+    
+    /**
+    * Optional. The name of the virtual IP that we should reserve.
+    * @param virtualIPNameValue The VirtualIPName value.
+    */
+    public void setVirtualIPName(final String virtualIPNameValue) {
+        this.virtualIPName = virtualIPNameValue;
+    }
 }

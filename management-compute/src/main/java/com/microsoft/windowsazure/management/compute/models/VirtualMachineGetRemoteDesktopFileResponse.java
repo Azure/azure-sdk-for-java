@@ -62,6 +62,8 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     * Initializes a new instance of the
     * VirtualMachineGetRemoteDesktopFileResponse class with required arguments.
     *
+    * @param remoteDesktopFile A Remote Desktop Protocol (.rdp) file that can
+    * be used to establish a remote desktop session to the virtual machine
     */
     public VirtualMachineGetRemoteDesktopFileResponse(byte[] remoteDesktopFile) {
         if (remoteDesktopFile == null) {

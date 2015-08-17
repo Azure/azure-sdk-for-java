@@ -22,5 +22,5 @@ public interface EntityOperationSingleResult<T> extends EntityOperation {
      * 
      * @return Class object for response.
      */
-    Class<T> getResponseClass();
+    Class<?> getResponseClass();
 }

@@ -126,6 +126,9 @@ public class ExtensionCertificateConfiguration {
     * Initializes a new instance of the ExtensionCertificateConfiguration class
     * with required arguments.
     *
+    * @param storeLocation Required for certificate declaration. The Windows
+    * certificate store location to install the certificate for encryption, if
+    * required. Its value has to be 'LocalMachine' if present.
     */
     public ExtensionCertificateConfiguration(String storeLocation) {
         if (storeLocation == null) {

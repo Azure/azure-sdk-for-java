@@ -33,6 +33,7 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseGetResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
+import com.microsoft.windowsazure.management.sql.models.DatabaseUsagesListResponse;
 import java.io.IOException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -170,6 +171,34 @@ public interface DatabaseOperations {
     * @return Contains the response to a Get Database Event Logs request.
     */
     Future<DatabaseGetEventLogsResponse> getEventLogsAsync(String serverName, String databaseName, DatabaseGetEventLogsParameters parameters);
+    
+    /**
+    * Returns the usage information for an Azure SQL Database.
+    *
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Contains the response to a Get Database Usages request.
+    */
+    DatabaseUsagesListResponse getUsages(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Returns the usage information for an Azure SQL Database.
+    *
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database is hosted.
+    * @param databaseName Required. The name of the Azure SQL Database.
+    * @return Contains the response to a Get Database Usages request.
+    */
+    Future<DatabaseUsagesListResponse> getUsagesAsync(String serverName, String databaseName);
     
     /**
     * Returns a collection of Azure SQL Databases.

@@ -26,10 +26,13 @@ package com.microsoft.windowsazure.management.websites;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.models.ConnectionStringType;
+import com.microsoft.windowsazure.management.websites.models.ManagedPipelineMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -37,6 +40,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -137,16 +142,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
-    private ServerFarmOperations serverFarms;
+    private WebHostingPlanOperations webHostingPlans;
     
     /**
-    * Operations for managing the server farm in a web space.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    * @return The ServerFarmsOperations value.
+    * Operations for managing web hosting plans beneath your subscription.
+    * @return The WebHostingPlansOperations value.
     */
-    public ServerFarmOperations getServerFarmsOperations() {
-        return this.serverFarms;
+    public WebHostingPlanOperations getWebHostingPlansOperations() {
+        return this.webHostingPlans;
     }
     
     private WebSiteOperations webSites;
@@ -177,12 +180,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
-        this.serverFarms = new ServerFarmOperationsImpl(this);
+        this.webHostingPlans = new WebHostingPlanOperationsImpl(this);
         this.webSites = new WebSiteOperationsImpl(this);
         this.webSpaces = new WebSpaceOperationsImpl(this);
-        this.apiVersion = "2013-08-01";
+        this.apiVersion = "2014-04-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -195,7 +198,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
     */
     @Inject
@@ -215,7 +218,6 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
     }
     
     /**
@@ -246,9 +248,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
-    * @param apiVersion Required. Gets the API version.
+    * @param apiVersion Optional. Gets the API version.
     * @param longRunningOperationInitialTimeout Required. Gets or sets the
     * initial timeout for Long Running Operations.
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
@@ -271,6 +273,82 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
     protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
+    }
+    
+    /**
+    * Parse enum values for type ConnectionStringType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ConnectionStringType parseConnectionStringType(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ConnectionStringType.MYSQL;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SQLSERVER;
+        }
+        if ("2".equalsIgnoreCase(value)) {
+            return ConnectionStringType.SQLAZURE;
+        }
+        if ("3".equalsIgnoreCase(value)) {
+            return ConnectionStringType.CUSTOM;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ConnectionStringType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String connectionStringTypeToString(ConnectionStringType value) {
+        if (value == ConnectionStringType.MYSQL) {
+            return "0";
+        }
+        if (value == ConnectionStringType.SQLSERVER) {
+            return "1";
+        }
+        if (value == ConnectionStringType.SQLAZURE) {
+            return "2";
+        }
+        if (value == ConnectionStringType.CUSTOM) {
+            return "3";
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Parse enum values for type ManagedPipelineMode.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static ManagedPipelineMode parseManagedPipelineMode(String value) {
+        if ("0".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.INTEGRATED;
+        }
+        if ("1".equalsIgnoreCase(value)) {
+            return ManagedPipelineMode.CLASSIC;
+        }
+        throw new IllegalArgumentException("value");
+    }
+    
+    /**
+    * Convert an enum of type ManagedPipelineMode to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String managedPipelineModeToString(ManagedPipelineMode value) {
+        if (value == ManagedPipelineMode.INTEGRATED) {
+            return "0";
+        }
+        if (value == ManagedPipelineMode.CLASSIC) {
+            return "1";
+        }
+        throw new IllegalArgumentException("value");
     }
     
     /**
@@ -361,7 +439,17 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services/WebSpaces/" + webSpaceName.trim() + "/sites/" + siteName.trim() + "/operations/" + operationId.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/WebSpaces/";
+        url = url + URLEncoder.encode(webSpaceName, "UTF-8");
+        url = url + "/sites/";
+        url = url + URLEncoder.encode(siteName, "UTF-8");
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(operationId, "UTF-8");
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -371,12 +459,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -400,191 +489,193 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             // Create Result
             WebSiteOperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new WebSiteOperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            if (operationElement != null) {
-                Element createdTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
-                if (createdTimeElement != null) {
-                    Calendar createdTimeInstance;
-                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
-                    result.setCreatedTime(createdTimeInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new WebSiteOperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element errorsSequenceElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Errors");
-                if (errorsSequenceElement != null) {
-                    boolean isNil = false;
-                    Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute != null) {
-                        isNil = "true".equals(nilAttribute.getValue());
+                Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
+                if (operationElement != null) {
+                    Element createdTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
+                    if (createdTimeElement != null) {
+                        Calendar createdTimeInstance;
+                        createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
+                        result.setCreatedTime(createdTimeInstance);
                     }
-                    if (isNil == false) {
-                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").size(); i1 = i1 + 1) {
-                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").get(i1));
-                            WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
-                            result.getErrors().add(errorInstance);
-                            
-                            Element codeElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                            if (codeElement != null) {
-                                boolean isNil2 = false;
-                                Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute2 != null) {
-                                    isNil2 = "true".equals(nilAttribute2.getValue());
-                                }
-                                if (isNil2 == false) {
-                                    String codeInstance;
-                                    codeInstance = codeElement.getTextContent();
-                                    errorInstance.setCode(codeInstance);
-                                }
-                            }
-                            
-                            Element messageElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                            if (messageElement != null) {
-                                boolean isNil3 = false;
-                                Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute3 != null) {
-                                    isNil3 = "true".equals(nilAttribute3.getValue());
-                                }
-                                if (isNil3 == false) {
-                                    String messageInstance;
-                                    messageInstance = messageElement.getTextContent();
-                                    errorInstance.setMessage(messageInstance);
-                                }
-                            }
-                            
-                            Element extendedCodeElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "ExtendedCode");
-                            if (extendedCodeElement != null) {
-                                boolean isNil4 = false;
-                                Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute4 != null) {
-                                    isNil4 = "true".equals(nilAttribute4.getValue());
-                                }
-                                if (isNil4 == false) {
-                                    String extendedCodeInstance;
-                                    extendedCodeInstance = extendedCodeElement.getTextContent();
-                                    errorInstance.setExtendedCode(extendedCodeInstance);
-                                }
-                            }
-                            
-                            Element messageTemplateElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "MessageTemplate");
-                            if (messageTemplateElement != null) {
-                                boolean isNil5 = false;
-                                Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute5 != null) {
-                                    isNil5 = "true".equals(nilAttribute5.getValue());
-                                }
-                                if (isNil5 == false) {
-                                    String messageTemplateInstance;
-                                    messageTemplateInstance = messageTemplateElement.getTextContent();
-                                    errorInstance.setMessageTemplate(messageTemplateInstance);
-                                }
-                            }
-                            
-                            Element parametersSequenceElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Parameters");
-                            if (parametersSequenceElement != null) {
-                                boolean isNil6 = false;
-                                Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute6 != null) {
-                                    isNil6 = "true".equals(nilAttribute6.getValue());
-                                }
-                                if (isNil6 == false) {
-                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").size(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i2));
-                                        errorInstance.getParameters().add(parametersElement.getTextContent());
-                                    }
-                                } else {
-                                    errorInstance.setParameters(null);
-                                }
-                            }
-                            
-                            Element innerErrorsElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "InnerErrors");
-                            if (innerErrorsElement != null) {
-                                boolean isNil7 = false;
-                                Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute7 != null) {
-                                    isNil7 = "true".equals(nilAttribute7.getValue());
-                                }
-                                if (isNil7 == false) {
-                                    String innerErrorsInstance;
-                                    innerErrorsInstance = innerErrorsElement.getTextContent();
-                                    errorInstance.setInnerErrors(innerErrorsInstance);
-                                }
-                            }
+                    
+                    Element errorsSequenceElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Errors");
+                    if (errorsSequenceElement != null) {
+                        boolean isNil = false;
+                        Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                        if (nilAttribute != null) {
+                            isNil = "true".equals(nilAttribute.getValue());
                         }
-                    } else {
-                        result.setErrors(null);
+                        if (isNil == false) {
+                            for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").size(); i1 = i1 + 1) {
+                                org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").get(i1));
+                                WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
+                                result.getErrors().add(errorInstance);
+                                
+                                Element codeElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                if (codeElement != null) {
+                                    boolean isNil2 = false;
+                                    Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                    if (nilAttribute2 != null) {
+                                        isNil2 = "true".equals(nilAttribute2.getValue());
+                                    }
+                                    if (isNil2 == false) {
+                                        String codeInstance;
+                                        codeInstance = codeElement.getTextContent();
+                                        errorInstance.setCode(codeInstance);
+                                    }
+                                }
+                                
+                                Element messageElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement != null) {
+                                    boolean isNil3 = false;
+                                    Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                    if (nilAttribute3 != null) {
+                                        isNil3 = "true".equals(nilAttribute3.getValue());
+                                    }
+                                    if (isNil3 == false) {
+                                        String messageInstance;
+                                        messageInstance = messageElement.getTextContent();
+                                        errorInstance.setMessage(messageInstance);
+                                    }
+                                }
+                                
+                                Element extendedCodeElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "ExtendedCode");
+                                if (extendedCodeElement != null) {
+                                    boolean isNil4 = false;
+                                    Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                    if (nilAttribute4 != null) {
+                                        isNil4 = "true".equals(nilAttribute4.getValue());
+                                    }
+                                    if (isNil4 == false) {
+                                        String extendedCodeInstance;
+                                        extendedCodeInstance = extendedCodeElement.getTextContent();
+                                        errorInstance.setExtendedCode(extendedCodeInstance);
+                                    }
+                                }
+                                
+                                Element messageTemplateElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "MessageTemplate");
+                                if (messageTemplateElement != null) {
+                                    boolean isNil5 = false;
+                                    Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                    if (nilAttribute5 != null) {
+                                        isNil5 = "true".equals(nilAttribute5.getValue());
+                                    }
+                                    if (isNil5 == false) {
+                                        String messageTemplateInstance;
+                                        messageTemplateInstance = messageTemplateElement.getTextContent();
+                                        errorInstance.setMessageTemplate(messageTemplateInstance);
+                                    }
+                                }
+                                
+                                Element parametersSequenceElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Parameters");
+                                if (parametersSequenceElement != null) {
+                                    boolean isNil6 = false;
+                                    Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                    if (nilAttribute6 != null) {
+                                        isNil6 = "true".equals(nilAttribute6.getValue());
+                                    }
+                                    if (isNil6 == false) {
+                                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").size(); i2 = i2 + 1) {
+                                            org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i2));
+                                            errorInstance.getParameters().add(parametersElement.getTextContent());
+                                        }
+                                    } else {
+                                        errorInstance.setParameters(null);
+                                    }
+                                }
+                                
+                                Element innerErrorsElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "InnerErrors");
+                                if (innerErrorsElement != null) {
+                                    boolean isNil7 = false;
+                                    Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                    if (nilAttribute7 != null) {
+                                        isNil7 = "true".equals(nilAttribute7.getValue());
+                                    }
+                                    if (isNil7 == false) {
+                                        String innerErrorsInstance;
+                                        innerErrorsInstance = innerErrorsElement.getTextContent();
+                                        errorInstance.setInnerErrors(innerErrorsInstance);
+                                    }
+                                }
+                            }
+                        } else {
+                            result.setErrors(null);
+                        }
+                    }
+                    
+                    Element expirationTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ExpirationTime");
+                    if (expirationTimeElement != null) {
+                        Calendar expirationTimeInstance;
+                        expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
+                        result.setExpirationTime(expirationTimeInstance);
+                    }
+                    
+                    Element geoMasterOperationIdElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
+                    if (geoMasterOperationIdElement != null) {
+                        boolean isNil8 = false;
+                        Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                        if (nilAttribute8 != null) {
+                            isNil8 = "true".equals(nilAttribute8.getValue());
+                        }
+                        if (isNil8 == false) {
+                            String geoMasterOperationIdInstance;
+                            geoMasterOperationIdInstance = geoMasterOperationIdElement.getTextContent();
+                            result.setGeoMasterOperationId(geoMasterOperationIdInstance);
+                        }
+                    }
+                    
+                    Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                    if (idElement != null) {
+                        boolean isNil9 = false;
+                        Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                        if (nilAttribute9 != null) {
+                            isNil9 = "true".equals(nilAttribute9.getValue());
+                        }
+                        if (isNil9 == false) {
+                            String idInstance;
+                            idInstance = idElement.getTextContent();
+                            result.setOperationId(idInstance);
+                        }
+                    }
+                    
+                    Element modifiedTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ModifiedTime");
+                    if (modifiedTimeElement != null) {
+                        Calendar modifiedTimeInstance;
+                        modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
+                        result.setModifiedTime(modifiedTimeInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        boolean isNil10 = false;
+                        Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                        if (nilAttribute10 != null) {
+                            isNil10 = "true".equals(nilAttribute10.getValue());
+                        }
+                        if (isNil10 == false) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            result.setName(nameInstance);
+                        }
+                    }
+                    
+                    Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        WebSiteOperationStatus statusInstance;
+                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        result.setStatus(statusInstance);
                     }
                 }
                 
-                Element expirationTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ExpirationTime");
-                if (expirationTimeElement != null) {
-                    Calendar expirationTimeInstance;
-                    expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
-                    result.setExpirationTime(expirationTimeInstance);
-                }
-                
-                Element geoMasterOperationIdElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
-                if (geoMasterOperationIdElement != null) {
-                    boolean isNil8 = false;
-                    Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute8 != null) {
-                        isNil8 = "true".equals(nilAttribute8.getValue());
-                    }
-                    if (isNil8 == false) {
-                        String geoMasterOperationIdInstance;
-                        geoMasterOperationIdInstance = geoMasterOperationIdElement.getTextContent();
-                        result.setGeoMasterOperationId(geoMasterOperationIdInstance);
-                    }
-                }
-                
-                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Id");
-                if (idElement != null) {
-                    boolean isNil9 = false;
-                    Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute9 != null) {
-                        isNil9 = "true".equals(nilAttribute9.getValue());
-                    }
-                    if (isNil9 == false) {
-                        String idInstance;
-                        idInstance = idElement.getTextContent();
-                        result.setOperationId(idInstance);
-                    }
-                }
-                
-                Element modifiedTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ModifiedTime");
-                if (modifiedTimeElement != null) {
-                    Calendar modifiedTimeInstance;
-                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
-                    result.setModifiedTime(modifiedTimeInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    boolean isNil10 = false;
-                    Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute10 != null) {
-                        isNil10 = "true".equals(nilAttribute10.getValue());
-                    }
-                    if (isNil10 == false) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        result.setName(nameInstance);
-                    }
-                }
-                
-                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    WebSiteOperationStatus statusInstance;
-                    statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -641,9 +732,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services" + "?";
-        url = url + "service=website";
-        url = url + "&" + "action=register";
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("service=website");
+        queryParameters.add("action=register");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -653,13 +753,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -682,6 +783,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -739,9 +841,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services" + "?";
-        url = url + "service=website";
-        url = url + "&" + "action=unregister";
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("service=website");
+        queryParameters.add("action=unregister");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -751,13 +862,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -780,6 +892,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {

@@ -160,15 +160,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Creates an instance of (@link OriginType).
-     * 
-     * @return the origin type
-     */
-    public OriginType createOriginType() {
-        return new OriginType();
-    }
-
-    /**
      * Creates a instance of (@link @ProgramType).
      * 
      * @return the program type
@@ -176,4 +167,70 @@ public class ObjectFactory {
     public ProgramType createProgramType() {
         return new ProgramType();
     }
+    
+    /**
+     * Creates a instance of (@link ContentKeyAuthorizationPolicyOptionType).
+     * 
+     * @return the content key authorization policy option type
+     */
+    public ContentKeyAuthorizationPolicyOptionType createContentKeyAuthorizationPolicyOptionType() {
+        return new ContentKeyAuthorizationPolicyOptionType();
+    }
+    
+    /**
+     * Creates a instance of (@link ContentKeyAuthorizationPolicyRestrictionType).
+     * 
+     * @return the content key authorization policy restriction type
+     */
+    public ContentKeyAuthorizationPolicyRestrictionType createContentKeyAuthorizationPolicyRestrictionType() {
+        return new ContentKeyAuthorizationPolicyRestrictionType();
+    }
+    
+    /**
+     * Creates a instance of (@link ContentKeyAuthorizationPolicyType).
+     * 
+     * @return the content key authorization policy type
+     */
+    public ContentKeyAuthorizationPolicyType createContentKeyAuthorizationPolicyType() {
+        return new ContentKeyAuthorizationPolicyType();
+    }
+    
+    /**
+     * Creates a instance of (@link AssetDeliveryPolicyType).
+     * 
+     * @return the asset delivery policy type
+     */
+    public AssetDeliveryPolicyRestType createAssetDeliveryPolicyType() {
+        return new AssetDeliveryPolicyRestType();
+    }
+    
+
+    /**
+     * Creates a instance of (@link StreamingEndpointType).
+     * 
+     * @return the streaming endpoint type
+     */
+    public StreamingEndpointType createStreamingEndpointType() {
+        return new StreamingEndpointType();
+    }
+    
+    /**
+     * Creates a instance of (@link EncodingReservedUnitType).
+     * 
+     * @return the encoding reserved unit type
+     */
+    public EncodingReservedUnitRestType createEncodingReservedUnitType() {
+        return new EncodingReservedUnitRestType();
+    }
+    
+    /**
+     * Creates a instance of (@link StorageAccountType).
+     * 
+     * @return the storage account type
+     */
+    public StorageAccountType createStorageAccountType() {
+        return new StorageAccountType();
+    }
+    
+    
 }

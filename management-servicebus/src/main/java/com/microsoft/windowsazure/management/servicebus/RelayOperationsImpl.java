@@ -33,6 +33,7 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnect
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -125,7 +126,16 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/servicebus/namespaces/" + namespaceName.trim() + "/Relays/" + relayName.trim() + "/ConnectionDetails";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/servicebus/namespaces/";
+        url = url + URLEncoder.encode(namespaceName, "UTF-8");
+        url = url + "/Relays/";
+        url = url + URLEncoder.encode(relayName, "UTF-8");
+        url = url + "/ConnectionDetails";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -166,59 +176,61 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
             // Create Result
             ServiceBusConnectionDetailsResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceBusConnectionDetailsResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
-            if (feedElement != null) {
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServiceBusConnectionDetailsResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
                 if (feedElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
-                        ServiceBusConnectionDetail entryInstance = new ServiceBusConnectionDetail();
-                        result.getConnectionDetails().add(entryInstance);
-                        
-                        Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
-                        if (contentElement != null) {
-                            Element connectionDetailElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
-                            if (connectionDetailElement != null) {
-                                Element keyNameElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                                if (keyNameElement != null) {
-                                    String keyNameInstance;
-                                    keyNameInstance = keyNameElement.getTextContent();
-                                    entryInstance.setKeyName(keyNameInstance);
-                                }
-                                
-                                Element connectionStringElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
-                                if (connectionStringElement != null) {
-                                    String connectionStringInstance;
-                                    connectionStringInstance = connectionStringElement.getTextContent();
-                                    entryInstance.setConnectionString(connectionStringInstance);
-                                }
-                                
-                                Element authorizationTypeElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
-                                if (authorizationTypeElement != null) {
-                                    String authorizationTypeInstance;
-                                    authorizationTypeInstance = authorizationTypeElement.getTextContent();
-                                    entryInstance.setAuthorizationType(authorizationTypeInstance);
-                                }
-                                
-                                Element rightsSequenceElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                                if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                        entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
+                    if (feedElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
+                            ServiceBusConnectionDetail entryInstance = new ServiceBusConnectionDetail();
+                            result.getConnectionDetails().add(entryInstance);
+                            
+                            Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
+                            if (contentElement != null) {
+                                Element connectionDetailElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
+                                if (connectionDetailElement != null) {
+                                    Element keyNameElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
+                                    if (keyNameElement != null) {
+                                        String keyNameInstance;
+                                        keyNameInstance = keyNameElement.getTextContent();
+                                        entryInstance.setKeyName(keyNameInstance);
+                                    }
+                                    
+                                    Element connectionStringElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
+                                    if (connectionStringElement != null) {
+                                        String connectionStringInstance;
+                                        connectionStringInstance = connectionStringElement.getTextContent();
+                                        entryInstance.setConnectionString(connectionStringInstance);
+                                    }
+                                    
+                                    Element authorizationTypeElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
+                                    if (authorizationTypeElement != null) {
+                                        String authorizationTypeInstance;
+                                        authorizationTypeInstance = authorizationTypeElement.getTextContent();
+                                        entryInstance.setAuthorizationType(authorizationTypeInstance);
+                                    }
+                                    
+                                    Element rightsSequenceElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                                    if (rightsSequenceElement != null) {
+                                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
+                                            org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
+                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

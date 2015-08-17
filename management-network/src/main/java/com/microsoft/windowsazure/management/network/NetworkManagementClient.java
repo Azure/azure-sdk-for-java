@@ -86,6 +86,15 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     */
     void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
     /**
+    * The Application Gateway Management API includes operations for managing
+    * application gateways in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
+    * more information)
+    * @return The ApplicationGatewaysOperations value.
+    */
+    ApplicationGatewayOperations getApplicationGatewaysOperations();
+    
+    /**
     * The Network Management API includes operations for managing the client
     * root certificates for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
@@ -104,6 +113,13 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     GatewayOperations getGatewaysOperations();
     
     /**
+    * The Network Management API includes operations for managing the IP
+    * Forwarding for your roles and network interfaces in your subscription.
+    * @return The IPForwardingOperations value.
+    */
+    IPForwardingOperations getIPForwardingOperations();
+    
+    /**
     * The Network Management API includes operations for managing the virtual
     * networks for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for
@@ -113,6 +129,13 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     NetworkOperations getNetworksOperations();
     
     /**
+    * The Network Management API includes operations for managing the Network
+    * Security Groups for your subscription.
+    * @return The NetworkSecurityGroupsOperations value.
+    */
+    NetworkSecurityGroupOperations getNetworkSecurityGroupsOperations();
+    
+    /**
     * The Network Management API includes operations for managing the reserved
     * IPs for your subscription.
     * @return The ReservedIPsOperations value.
@@ -120,11 +143,25 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     ReservedIPOperations getReservedIPsOperations();
     
     /**
+    * The Network Management API includes operations for managing the routes
+    * for your subscription.
+    * @return The RoutesOperations value.
+    */
+    RouteOperations getRoutesOperations();
+    
+    /**
     * The Network Management API includes operations for managing the static
     * IPs for your subscription.
     * @return The StaticIPsOperations value.
     */
     StaticIPOperations getStaticIPsOperations();
+    
+    /**
+    * The Network Management API includes operations for managing the Virtual
+    * IPs for your deployment.
+    * @return The VirtualIPsOperations value.
+    */
+    VirtualIPOperations getVirtualIPsOperations();
     
     /**
     * The Get Operation Status operation returns the status of the specified

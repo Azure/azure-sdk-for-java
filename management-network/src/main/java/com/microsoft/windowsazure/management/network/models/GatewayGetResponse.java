@@ -30,13 +30,49 @@ import java.net.InetAddress;
 * A standard service response including an HTTP status code and request ID.
 */
 public class GatewayGetResponse extends OperationResponse {
-    private GatewayType gatewayType;
+    private GatewayDefaultSite defaultSite;
+    
+    /**
+    * Optional. The default site on the gateway.
+    * @return The DefaultSite value.
+    */
+    public GatewayDefaultSite getDefaultSite() {
+        return this.defaultSite;
+    }
+    
+    /**
+    * Optional. The default site on the gateway.
+    * @param defaultSiteValue The DefaultSite value.
+    */
+    public void setDefaultSite(final GatewayDefaultSite defaultSiteValue) {
+        this.defaultSite = defaultSiteValue;
+    }
+    
+    private String gatewaySKU;
+    
+    /**
+    * Optional. The SKU for this virtual network gateway.
+    * @return The GatewaySKU value.
+    */
+    public String getGatewaySKU() {
+        return this.gatewaySKU;
+    }
+    
+    /**
+    * Optional. The SKU for this virtual network gateway.
+    * @param gatewaySKUValue The GatewaySKU value.
+    */
+    public void setGatewaySKU(final String gatewaySKUValue) {
+        this.gatewaySKU = gatewaySKUValue;
+    }
+    
+    private String gatewayType;
     
     /**
     * Optional. The type of gateway routing used for this virtual network.
     * @return The GatewayType value.
     */
-    public GatewayType getGatewayType() {
+    public String getGatewayType() {
         return this.gatewayType;
     }
     
@@ -44,7 +80,7 @@ public class GatewayGetResponse extends OperationResponse {
     * Optional. The type of gateway routing used for this virtual network.
     * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(final GatewayType gatewayTypeValue) {
+    public void setGatewayType(final String gatewayTypeValue) {
         this.gatewayType = gatewayTypeValue;
     }
     

@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -193,7 +194,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.namespaces = new NamespaceOperationsImpl(this);
         this.notificationHubs = new NotificationHubOperationsImpl(this);
@@ -213,7 +214,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
     */
     @Inject
@@ -233,7 +234,6 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         } else {
             this.baseUri = baseUri;
         }
-        this.credentials = credentials;
     }
     
     /**
@@ -264,9 +264,9 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @param credentials Required. Gets subscription credentials which uniquely
     * identify Microsoft Azure subscription. The subscription ID forms part of
     * the URI for every service call.
-    * @param baseUri Required. Gets the URI used as the base for all cloud
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
     * service requests.
-    * @param apiVersion Required. Gets the API version.
+    * @param apiVersion Optional. Gets the API version.
     * @param longRunningOperationInitialTimeout Required. Gets or sets the
     * initial timeout for Long Running Operations.
     * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
@@ -369,7 +369,13 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         }
         
         // Construct URL
-        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/operations/" + requestId.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(requestId, "UTF-8");
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -409,57 +415,59 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             // Create Result
             OperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new OperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            if (operationElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new OperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    OperationStatus statusInstance;
-                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                if (httpStatusCodeElement != null) {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                if (errorElement != null) {
-                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    if (codeElement != null) {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
+                Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
+                if (operationElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
+                    Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        OperationStatus statusInstance;
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                    if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
+                        Integer httpStatusCodeInstance;
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
+                        result.setHttpStatusCode(httpStatusCodeInstance);
+                    }
+                    
+                    Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                    if (errorElement != null) {
+                        OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
+                        result.setError(errorInstance);
+                        
+                        Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                        if (codeElement != null) {
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            errorInstance.setCode(codeInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -524,7 +532,12 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         }
         
         // Construct URL
-        String url = "/" + (this.getCredentials().getSubscriptionId() != null ? this.getCredentials().getSubscriptionId().trim() : "") + "/services/servicebus/regions";
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/servicebus/regions";
         String baseUrl = this.getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -566,44 +579,46 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             // Create Result
             ServiceBusRegionsResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceBusRegionsResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
-            if (feedElement != null) {
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServiceBusRegionsResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
                 if (feedElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
-                        ServiceBusLocation entryInstance = new ServiceBusLocation();
-                        result.getRegions().add(entryInstance);
-                        
-                        Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
-                        if (contentElement != null) {
-                            Element regionCodeDescriptionElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
-                            if (regionCodeDescriptionElement != null) {
-                                Element codeElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
-                                if (codeElement != null) {
-                                    String codeInstance;
-                                    codeInstance = codeElement.getTextContent();
-                                    entryInstance.setCode(codeInstance);
-                                }
-                                
-                                Element fullNameElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
-                                if (fullNameElement != null) {
-                                    String fullNameInstance;
-                                    fullNameInstance = fullNameElement.getTextContent();
-                                    entryInstance.setFullName(fullNameInstance);
+                    if (feedElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
+                            ServiceBusLocation entryInstance = new ServiceBusLocation();
+                            result.getRegions().add(entryInstance);
+                            
+                            Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
+                            if (contentElement != null) {
+                                Element regionCodeDescriptionElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
+                                if (regionCodeDescriptionElement != null) {
+                                    Element codeElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
+                                    if (codeElement != null) {
+                                        String codeInstance;
+                                        codeInstance = codeElement.getTextContent();
+                                        entryInstance.setCode(codeInstance);
+                                    }
+                                    
+                                    Element fullNameElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
+                                    if (fullNameElement != null) {
+                                        String fullNameInstance;
+                                        fullNameInstance = fullNameElement.getTextContent();
+                                        entryInstance.setFullName(fullNameInstance);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

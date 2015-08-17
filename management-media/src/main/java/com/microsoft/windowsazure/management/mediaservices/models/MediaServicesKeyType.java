@@ -24,7 +24,7 @@
 package com.microsoft.windowsazure.management.mediaservices.models;
 
 public enum MediaServicesKeyType {
-    Primary,
+    PRIMARY,
     
-    Secondary,
+    SECONDARY,
 }

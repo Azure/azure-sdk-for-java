@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,14 +24,24 @@ import org.apache.http.client.methods.HttpPost;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import java.util.Locale;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
-public class JavaTracingInterceptorTest
-{
+public class JavaTracingInterceptorTest {
+
+    private static Locale locale;
+
     private ByteArrayOutputStream logContent;
-    
+
+    @BeforeClass
+    public static void setUSLocale() {
+        locale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
+    }
+
     @Test
-    public void testInformationSendRequest()
-    {
+    public void testInformationSendRequest() {
         // Arrange
         logContent = new ByteArrayOutputStream();
         System.setErr(new PrintStream(logContent));
@@ -54,5 +64,10 @@ public class JavaTracingInterceptorTest
         CloudTracing.information("hello there");
         result = logContent.toString();
         assertTrue(result.contains("INFO: hello there"));
+    }
+
+    @AfterClass
+    public static void restoreLocale() {
+        Locale.setDefault(locale);
     }
 }

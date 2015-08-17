@@ -160,6 +160,7 @@ public class DatabaseCreateParameters {
     * Initializes a new instance of the DatabaseCreateParameters class with
     * required arguments.
     *
+    * @param name Gets or sets the name for the new database.
     */
     public DatabaseCreateParameters(String name) {
         if (name == null) {

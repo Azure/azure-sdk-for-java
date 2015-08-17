@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class JobGetHistoryResponse extends OperationResponse implements Iterable
     */
     public JobGetHistoryResponse() {
         super();
-        this.setJobHistory(new ArrayList<JobGetHistoryResponse.JobHistoryEntry>());
+        this.setJobHistory(new LazyArrayList<JobGetHistoryResponse.JobHistoryEntry>());
     }
     
     /**

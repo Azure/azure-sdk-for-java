@@ -21,17 +21,17 @@ public interface Builder {
     <S, T> T build(String profile, Class<S> service, Class<T> instance,
             Map<String, Object> properties);
 
-    public interface Factory<T> {
+    interface Factory<T> {
         <S> T create(String profile, Class<S> service, Builder builder,
                 Map<String, Object> properties);
     }
 
-    public interface Alteration<T> {
+    interface Alteration<T> {
         T alter(String profile, T instance, Builder builder,
                 Map<String, Object> properties);
     }
 
-    public interface Registry {
+    interface Registry {
         <T> Registry add(Class<T> service);
 
         <T, TImpl> Registry add(Class<T> service, Class<TImpl> implementation);
@@ -42,7 +42,7 @@ public interface Builder {
                 Alteration<T> alteration);
     }
 
-    public interface Exports {
+    interface Exports {
         void register(Registry registry);
     }
 }

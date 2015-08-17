@@ -31,10 +31,11 @@ import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.*;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -64,6 +65,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //create management service for accessing management operation
         createManagementClient();
         
+        setupTest(VirtualMachineOperationsTests.class.getSimpleName());
         hostedServicesOperations = computeManagementClient.getHostedServicesOperations();
         
         //dynamic get location for vm storage/hosted service
@@ -72,14 +74,27 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createStorageAccount(storageAccountName, storageContainer);
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
+        resetTest(VirtualMachineOperationsTests.class.getSimpleName());
     }
 
     @AfterClass   
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanHostedService();
         cleanDeployment();
         cleanBlob(storageAccountName, storageContainer);
         cleanStorageAccount(storageAccountName);
+        resetTest(VirtualMachineOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
+    }
+    
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
     }
     
     private OSVirtualHardDisk createOSVirtualHardDisk(String osVHarddiskName, String operatingSystemName, URI mediaLinkUriValue, String sourceImageName)
@@ -201,7 +216,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createParameters.setDescription(hostedServiceDescription);
         //required
         createParameters.setLocation(vmLocation);
-        OperationResponse hostedServiceOperationResponse = hostedServicesOperations.create(createParameters);         
+        OperationResponse hostedServiceOperationResponse = hostedServicesOperations.create(createParameters);
         Assert.assertEquals(201, hostedServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(hostedServiceOperationResponse.getRequestId());
         
@@ -248,7 +263,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required        
         role.setRoleName(roleName);
         //required
-        role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
+        role.setRoleType(VirtualMachineRoleType.PERSISTENTVMROLE.toString());
         role.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         role.setProvisionGuestAgent(true);
         role.setConfigurationSets(configurationSetList);
@@ -263,7 +278,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         ArrayList<Role> rolelist = createRoleList(); 
         
         VirtualMachineCreateDeploymentParameters deploymentParameters = new VirtualMachineCreateDeploymentParameters();
-        deploymentParameters.setDeploymentSlot(DeploymentSlot.Staging);
+        deploymentParameters.setDeploymentSlot(DeploymentSlot.STAGING);
         deploymentParameters.setName(deploymentName); 
         deploymentParameters.setLabel(deploymentLabel);        
         deploymentParameters.setRoles(rolelist);
@@ -300,7 +315,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                     Assert.assertNotNull(rolelist);
 
                     for (Role role : rolelist) {
-                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString()))) {
+                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENTVMROLE.toString()))) {
                              Assert.assertTrue(role.getRoleName().contains(testVMPrefix));
                              vmlist.add(role);
                         }
@@ -319,7 +334,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
         //vm always has VirtualMachineRoleType.PersistentVMRole property
-        Assert.assertEquals(VirtualMachineRoleType.PersistentVMRole, virtualMachinesGetResponse.getRoleType());
+        Assert.assertEquals(VirtualMachineRoleType.PERSISTENTVMROLE, virtualMachinesGetResponse.getRoleType());
 
         OSVirtualHardDisk osharddisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
         Assert.assertTrue(osharddisk.getOperatingSystem().contains("Window"));
@@ -340,7 +355,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String vmName = virtualMachinesGetResponse.getRoleName();
 
         VirtualMachineShutdownParameters stopParameters = new VirtualMachineShutdownParameters();
-        stopParameters.setPostShutdownAction(PostShutdownAction.Stopped);
+        stopParameters.setPostShutdownAction(PostShutdownAction.STOPPED);
         OperationStatusResponse shutdownresponse = computeManagementClient.getVirtualMachinesOperations().shutdown(hostedServiceName, deploymentName, vmName, stopParameters);
         Assert.assertEquals(200, shutdownresponse.getStatusCode());
         Assert.assertNotNull(shutdownresponse.getRequestId());
@@ -355,8 +370,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
     
     @Test
-    @Ignore("Because it takes too long to run")
-    public void deleteVirtualMachines() throws Exception {        
+    public void deleteVirtualMachines() throws Exception {
         //Act
         VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
         //Assert
@@ -501,7 +515,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         
         try {
-            Thread.sleep(3*60*1000);
+            if (!IS_MOCKED) {
+                Thread.sleep(3*60*1000);
+            }
         } catch (InterruptedException e) {
         }
     }
@@ -524,7 +540,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                 e.printStackTrace();
             }
             
-            if ((operationStatus.getStatus() == OperationStatus.Failed) || (operationStatus.getStatus() == OperationStatus.Succeeded))
+            if ((operationStatus.getStatus() == OperationStatus.FAILED) || (operationStatus.getStatus() == OperationStatus.SUCCEEDED))
             {
                 operationCompleted = true;
             }else{

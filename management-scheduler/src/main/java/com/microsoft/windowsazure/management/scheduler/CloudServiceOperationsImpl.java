@@ -28,17 +28,20 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceCreateParameters;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetResponse;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceListResponse;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatus;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatusResponse;
+import com.microsoft.windowsazure.management.scheduler.models.Error;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -159,7 +162,12 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices/" + cloudServiceName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/CloudServices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -169,6 +177,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -236,6 +245,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -299,7 +309,12 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices/" + cloudServiceName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/CloudServices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -309,6 +324,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -337,6 +353,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -431,7 +448,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != CloudServiceOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != CloudServiceOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 5;
@@ -444,11 +461,12 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != CloudServiceOperationStatus.Succeeded) {
+            if (result.getStatus() != CloudServiceOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -542,7 +560,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != CloudServiceOperationStatus.InProgress) == false) {
+            while ((result.getStatus() != CloudServiceOperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 5;
@@ -555,11 +573,12 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != CloudServiceOperationStatus.Succeeded) {
+            if (result.getStatus() != CloudServiceOperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -632,7 +651,12 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices/" + cloudServiceName.trim();
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/CloudServices/";
+        url = url + URLEncoder.encode(cloudServiceName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -642,6 +666,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -671,105 +696,107 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             // Create Result
             CloudServiceGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new CloudServiceGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element cloudServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "CloudService");
-            if (cloudServiceElement != null) {
-                Element geoLocationElement = XmlUtility.getElementByTagNameNS(cloudServiceElement, "http://schemas.microsoft.com/windowsazure", "GeoLocation");
-                if (geoLocationElement != null) {
-                    String geoLocationInstance;
-                    geoLocationInstance = geoLocationElement.getTextContent();
-                    result.setGeoLocation(geoLocationInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new CloudServiceGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element resourcesSequenceElement = XmlUtility.getElementByTagNameNS(cloudServiceElement, "http://schemas.microsoft.com/windowsazure", "Resources");
-                if (resourcesSequenceElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").get(i1));
-                        CloudServiceGetResponse.Resource resourceInstance = new CloudServiceGetResponse.Resource();
-                        result.getResources().add(resourceInstance);
-                        
-                        Element resourceProviderNamespaceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ResourceProviderNamespace");
-                        if (resourceProviderNamespaceElement != null) {
-                            String resourceProviderNamespaceInstance;
-                            resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
-                            resourceInstance.setResourceProviderNamespace(resourceProviderNamespaceInstance);
-                        }
-                        
-                        Element typeElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                        if (typeElement != null) {
-                            String typeInstance;
-                            typeInstance = typeElement.getTextContent();
-                            resourceInstance.setType(typeInstance);
-                        }
-                        
-                        Element eTagElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ETag");
-                        if (eTagElement != null) {
-                            String eTagInstance;
-                            eTagInstance = eTagElement.getTextContent();
-                            resourceInstance.setETag(eTagInstance);
-                        }
-                        
-                        Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
-                        if (schemaVersionElement != null) {
-                            String schemaVersionInstance;
-                            schemaVersionInstance = schemaVersionElement.getTextContent();
-                            resourceInstance.setSchemaVersion(schemaVersionInstance);
-                        }
-                        
-                        Element nameElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                        if (nameElement != null) {
-                            String nameInstance;
-                            nameInstance = nameElement.getTextContent();
-                            resourceInstance.setName(nameInstance);
-                        }
-                        
-                        Element planElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Plan");
-                        if (planElement != null) {
-                            String planInstance;
-                            planInstance = planElement.getTextContent();
-                            resourceInstance.setPlan(planInstance);
-                        }
-                        
-                        Element outputItemsSequenceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "OutputItems");
-                        if (outputItemsSequenceElement != null) {
-                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").size(); i2 = i2 + 1) {
-                                org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").get(i2));
-                                String outputItemsKey = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Key").getTextContent();
-                                String outputItemsValue = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
-                                resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
+                Element cloudServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "CloudService");
+                if (cloudServiceElement != null) {
+                    Element geoLocationElement = XmlUtility.getElementByTagNameNS(cloudServiceElement, "http://schemas.microsoft.com/windowsazure", "GeoLocation");
+                    if (geoLocationElement != null) {
+                        String geoLocationInstance;
+                        geoLocationInstance = geoLocationElement.getTextContent();
+                        result.setGeoLocation(geoLocationInstance);
+                    }
+                    
+                    Element resourcesSequenceElement = XmlUtility.getElementByTagNameNS(cloudServiceElement, "http://schemas.microsoft.com/windowsazure", "Resources");
+                    if (resourcesSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").get(i1));
+                            CloudServiceGetResponse.Resource resourceInstance = new CloudServiceGetResponse.Resource();
+                            result.getResources().add(resourceInstance);
+                            
+                            Element resourceProviderNamespaceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ResourceProviderNamespace");
+                            if (resourceProviderNamespaceElement != null) {
+                                String resourceProviderNamespaceInstance;
+                                resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
+                                resourceInstance.setResourceProviderNamespace(resourceProviderNamespaceInstance);
                             }
-                        }
-                        
-                        Element stateElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                        if (stateElement != null) {
-                            String stateInstance;
-                            stateInstance = stateElement.getTextContent();
-                            resourceInstance.setState(stateInstance);
-                        }
-                        
-                        Element subStateElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "SubState");
-                        if (subStateElement != null) {
-                            String subStateInstance;
-                            subStateInstance = subStateElement.getTextContent();
-                            resourceInstance.setSubState(subStateInstance);
-                        }
-                        
-                        Element labelElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                        if (labelElement != null) {
-                            String labelInstance;
-                            labelInstance = labelElement.getTextContent();
-                            resourceInstance.setLabel(labelInstance);
+                            
+                            Element typeElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                            if (typeElement != null) {
+                                String typeInstance;
+                                typeInstance = typeElement.getTextContent();
+                                resourceInstance.setType(typeInstance);
+                            }
+                            
+                            Element eTagElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ETag");
+                            if (eTagElement != null) {
+                                String eTagInstance;
+                                eTagInstance = eTagElement.getTextContent();
+                                resourceInstance.setETag(eTagInstance);
+                            }
+                            
+                            Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
+                            if (schemaVersionElement != null) {
+                                String schemaVersionInstance;
+                                schemaVersionInstance = schemaVersionElement.getTextContent();
+                                resourceInstance.setSchemaVersion(schemaVersionInstance);
+                            }
+                            
+                            Element nameElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                            if (nameElement != null) {
+                                String nameInstance;
+                                nameInstance = nameElement.getTextContent();
+                                resourceInstance.setName(nameInstance);
+                            }
+                            
+                            Element planElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Plan");
+                            if (planElement != null) {
+                                String planInstance;
+                                planInstance = planElement.getTextContent();
+                                resourceInstance.setPlan(planInstance);
+                            }
+                            
+                            Element outputItemsSequenceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "OutputItems");
+                            if (outputItemsSequenceElement != null) {
+                                for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").size(); i2 = i2 + 1) {
+                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").get(i2));
+                                    String outputItemsKey = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Key").getTextContent();
+                                    String outputItemsValue = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
+                                    resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
+                                }
+                            }
+                            
+                            Element stateElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                            if (stateElement != null) {
+                                String stateInstance;
+                                stateInstance = stateElement.getTextContent();
+                                resourceInstance.setState(stateInstance);
+                            }
+                            
+                            Element subStateElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "SubState");
+                            if (subStateElement != null) {
+                                String subStateInstance;
+                                subStateInstance = subStateElement.getTextContent();
+                                resourceInstance.setSubState(subStateInstance);
+                            }
+                            
+                            Element labelElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                            if (labelElement != null) {
+                                String labelInstance;
+                                labelInstance = labelElement.getTextContent();
+                                resourceInstance.setLabel(labelInstance);
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             
             if (shouldTrace) {
@@ -827,7 +854,11 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
         }
         
         // Construct URL
-        String url = (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/CloudServices";
+        String url = "";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/CloudServices";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -837,6 +868,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -866,175 +898,204 @@ public class CloudServiceOperationsImpl implements ServiceOperations<CloudServic
             // Create Result
             CloudServiceListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new CloudServiceListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element cloudServicesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "CloudServices");
-            if (cloudServicesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(cloudServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "CloudService").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(cloudServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "CloudService").get(i1));
-                    CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
-                    result.getCloudServices().add(cloudServiceInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        cloudServiceInstance.setName(nameInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        cloudServiceInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element descriptionElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                    if (descriptionElement != null) {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        cloudServiceInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    Element geoRegionElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "GeoRegion");
-                    if (geoRegionElement != null) {
-                        String geoRegionInstance;
-                        geoRegionInstance = geoRegionElement.getTextContent();
-                        cloudServiceInstance.setGeoRegion(geoRegionInstance);
-                    }
-                    
-                    Element resourcesSequenceElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Resources");
-                    if (resourcesSequenceElement != null) {
-                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").size(); i2 = i2 + 1) {
-                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").get(i2));
-                            CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
-                            cloudServiceInstance.getResources().add(resourceInstance);
-                            
-                            Element resourceProviderNamespaceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ResourceProviderNamespace");
-                            if (resourceProviderNamespaceElement != null) {
-                                String resourceProviderNamespaceInstance;
-                                resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
-                                resourceInstance.setNamespace(resourceProviderNamespaceInstance);
-                            }
-                            
-                            Element typeElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                            if (typeElement != null) {
-                                String typeInstance;
-                                typeInstance = typeElement.getTextContent();
-                                resourceInstance.setType(typeInstance);
-                            }
-                            
-                            Element nameElement2 = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                            if (nameElement2 != null) {
-                                String nameInstance2;
-                                nameInstance2 = nameElement2.getTextContent();
-                                resourceInstance.setName(nameInstance2);
-                            }
-                            
-                            Element planElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Plan");
-                            if (planElement != null) {
-                                String planInstance;
-                                planInstance = planElement.getTextContent();
-                                resourceInstance.setPlan(planInstance);
-                            }
-                            
-                            Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
-                            if (schemaVersionElement != null) {
-                                String schemaVersionInstance;
-                                schemaVersionInstance = schemaVersionElement.getTextContent();
-                                resourceInstance.setSchemaVersion(schemaVersionInstance);
-                            }
-                            
-                            Element eTagElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ETag");
-                            if (eTagElement != null) {
-                                String eTagInstance;
-                                eTagInstance = eTagElement.getTextContent();
-                                resourceInstance.setETag(eTagInstance);
-                            }
-                            
-                            Element stateElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                            if (stateElement != null) {
-                                String stateInstance;
-                                stateInstance = stateElement.getTextContent();
-                                resourceInstance.setState(stateInstance);
-                            }
-                            
-                            Element usageMetersSequenceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "UsageMeters");
-                            if (usageMetersSequenceElement != null) {
-                                for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usageMetersSequenceElement, "http://schemas.microsoft.com/windowsazure", "UsageMeter").size(); i3 = i3 + 1) {
-                                    org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usageMetersSequenceElement, "http://schemas.microsoft.com/windowsazure", "UsageMeter").get(i3));
-                                    CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
-                                    resourceInstance.getUsageLimits().add(usageMeterInstance);
-                                    
-                                    Element nameElement3 = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                    if (nameElement3 != null) {
-                                        String nameInstance3;
-                                        nameInstance3 = nameElement3.getTextContent();
-                                        usageMeterInstance.setName(nameInstance3);
-                                    }
-                                    
-                                    Element unitElement = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Unit");
-                                    if (unitElement != null) {
-                                        String unitInstance;
-                                        unitInstance = unitElement.getTextContent();
-                                        usageMeterInstance.setUnit(unitInstance);
-                                    }
-                                    
-                                    Element includedElement = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Included");
-                                    if (includedElement != null) {
-                                        String includedInstance;
-                                        includedInstance = includedElement.getTextContent();
-                                        usageMeterInstance.setAmountIncluded(includedInstance);
-                                    }
-                                    
-                                    Element usedElement = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Used");
-                                    if (usedElement != null) {
-                                        String usedInstance;
-                                        usedInstance = usedElement.getTextContent();
-                                        usageMeterInstance.setAmountUsed(usedInstance);
-                                    }
-                                }
-                            }
-                            
-                            Element outputItemsSequenceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "OutputItems");
-                            if (outputItemsSequenceElement != null) {
-                                for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").size(); i4 = i4 + 1) {
-                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").get(i4));
-                                    String outputItemsKey = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Key").getTextContent();
-                                    String outputItemsValue = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
-                                    resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
-                                }
-                            }
-                            
-                            Element operationStatusElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
-                            if (operationStatusElement != null) {
-                                CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
-                                resourceInstance.setStatus(operationStatusInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new CloudServiceListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element cloudServicesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "CloudServices");
+                if (cloudServicesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(cloudServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "CloudService").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(cloudServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "CloudService").get(i1));
+                        CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
+                        result.getCloudServices().add(cloudServiceInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            cloudServiceInstance.setName(nameInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            cloudServiceInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element descriptionElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                        if (descriptionElement != null) {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionElement.getTextContent();
+                            cloudServiceInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        Element geoRegionElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "GeoRegion");
+                        if (geoRegionElement != null) {
+                            String geoRegionInstance;
+                            geoRegionInstance = geoRegionElement.getTextContent();
+                            cloudServiceInstance.setGeoRegion(geoRegionInstance);
+                        }
+                        
+                        Element resourcesSequenceElement = XmlUtility.getElementByTagNameNS(cloudServicesElement, "http://schemas.microsoft.com/windowsazure", "Resources");
+                        if (resourcesSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Resource").get(i2));
+                                CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
+                                cloudServiceInstance.getResources().add(resourceInstance);
                                 
-                                Element typeElement2 = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                                if (typeElement2 != null) {
-                                    String typeInstance2;
-                                    typeInstance2 = typeElement2.getTextContent();
-                                    operationStatusInstance.setType(typeInstance2);
+                                Element resourceProviderNamespaceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ResourceProviderNamespace");
+                                if (resourceProviderNamespaceElement != null) {
+                                    String resourceProviderNamespaceInstance;
+                                    resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
+                                    resourceInstance.setNamespace(resourceProviderNamespaceInstance);
                                 }
                                 
-                                Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
-                                if (resultElement != null) {
-                                    String resultInstance;
-                                    resultInstance = resultElement.getTextContent();
-                                    operationStatusInstance.setResult(resultInstance);
+                                Element typeElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                                if (typeElement != null) {
+                                    String typeInstance;
+                                    typeInstance = typeElement.getTextContent();
+                                    resourceInstance.setType(typeInstance);
+                                }
+                                
+                                Element nameElement2 = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                if (nameElement2 != null) {
+                                    String nameInstance2;
+                                    nameInstance2 = nameElement2.getTextContent();
+                                    resourceInstance.setName(nameInstance2);
+                                }
+                                
+                                Element planElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "Plan");
+                                if (planElement != null) {
+                                    String planInstance;
+                                    planInstance = planElement.getTextContent();
+                                    resourceInstance.setPlan(planInstance);
+                                }
+                                
+                                Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
+                                if (schemaVersionElement != null) {
+                                    String schemaVersionInstance;
+                                    schemaVersionInstance = schemaVersionElement.getTextContent();
+                                    resourceInstance.setSchemaVersion(schemaVersionInstance);
+                                }
+                                
+                                Element eTagElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "ETag");
+                                if (eTagElement != null) {
+                                    String eTagInstance;
+                                    eTagInstance = eTagElement.getTextContent();
+                                    resourceInstance.setETag(eTagInstance);
+                                }
+                                
+                                Element stateElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                                if (stateElement != null) {
+                                    String stateInstance;
+                                    stateInstance = stateElement.getTextContent();
+                                    resourceInstance.setState(stateInstance);
+                                }
+                                
+                                Element usageMetersSequenceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "UsageMeters");
+                                if (usageMetersSequenceElement != null) {
+                                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usageMetersSequenceElement, "http://schemas.microsoft.com/windowsazure", "UsageMeter").size(); i3 = i3 + 1) {
+                                        org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usageMetersSequenceElement, "http://schemas.microsoft.com/windowsazure", "UsageMeter").get(i3));
+                                        CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
+                                        resourceInstance.getUsageLimits().add(usageMeterInstance);
+                                        
+                                        Element nameElement3 = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                        if (nameElement3 != null) {
+                                            String nameInstance3;
+                                            nameInstance3 = nameElement3.getTextContent();
+                                            usageMeterInstance.setName(nameInstance3);
+                                        }
+                                        
+                                        Element unitElement = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Unit");
+                                        if (unitElement != null) {
+                                            String unitInstance;
+                                            unitInstance = unitElement.getTextContent();
+                                            usageMeterInstance.setUnit(unitInstance);
+                                        }
+                                        
+                                        Element includedElement = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Included");
+                                        if (includedElement != null) {
+                                            String includedInstance;
+                                            includedInstance = includedElement.getTextContent();
+                                            usageMeterInstance.setAmountIncluded(includedInstance);
+                                        }
+                                        
+                                        Element usedElement = XmlUtility.getElementByTagNameNS(usageMetersElement, "http://schemas.microsoft.com/windowsazure", "Used");
+                                        if (usedElement != null) {
+                                            String usedInstance;
+                                            usedInstance = usedElement.getTextContent();
+                                            usageMeterInstance.setAmountUsed(usedInstance);
+                                        }
+                                    }
+                                }
+                                
+                                Element outputItemsSequenceElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "OutputItems");
+                                if (outputItemsSequenceElement != null) {
+                                    for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").size(); i4 = i4 + 1) {
+                                        org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(outputItemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OutputItem").get(i4));
+                                        String outputItemsKey = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Key").getTextContent();
+                                        String outputItemsValue = XmlUtility.getElementByTagNameNS(outputItemsElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
+                                        resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
+                                    }
+                                }
+                                
+                                Element operationStatusElement = XmlUtility.getElementByTagNameNS(resourcesElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
+                                if (operationStatusElement != null) {
+                                    CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
+                                    resourceInstance.setStatus(operationStatusInstance);
+                                    
+                                    Element typeElement2 = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                                    if (typeElement2 != null) {
+                                        String typeInstance2;
+                                        typeInstance2 = typeElement2.getTextContent();
+                                        operationStatusInstance.setType(typeInstance2);
+                                    }
+                                    
+                                    Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
+                                    if (resultElement != null) {
+                                        String resultInstance;
+                                        resultInstance = resultElement.getTextContent();
+                                        operationStatusInstance.setResult(resultInstance);
+                                    }
+                                    
+                                    Element errorElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                                    if (errorElement != null) {
+                                        Error errorInstance = new Error();
+                                        operationStatusInstance.setError(errorInstance);
+                                        
+                                        Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
+                                        if (httpCodeElement != null) {
+                                            String httpCodeInstance;
+                                            httpCodeInstance = httpCodeElement.getTextContent();
+                                            errorInstance.setHttpCode(httpCodeInstance);
+                                        }
+                                        
+                                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                        if (messageElement != null) {
+                                            String messageInstance;
+                                            messageInstance = messageElement.getTextContent();
+                                            errorInstance.setMessage(messageInstance);
+                                        }
+                                        
+                                        Element extendedCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "ExtendedCode");
+                                        if (extendedCodeElement != null) {
+                                            String extendedCodeInstance;
+                                            extendedCodeInstance = extendedCodeElement.getTextContent();
+                                            errorInstance.setExtendedCode(extendedCodeInstance);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

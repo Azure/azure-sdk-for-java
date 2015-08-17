@@ -23,8 +23,6 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import java.util.ArrayList;
-
 /**
 * Parameters supplied to the Update Extension Image operation.
 */
@@ -35,13 +33,16 @@ public class ExtensionImageUpdateParameters extends ExtensionImageRegisterParame
     */
     public ExtensionImageUpdateParameters() {
         super();
-        this.setLocalResources(new ArrayList<ExtensionLocalResourceConfiguration>());
     }
     
     /**
     * Initializes a new instance of the ExtensionImageUpdateParameters class
     * with required arguments.
     *
+    * @param providerNameSpace Required. The provider namespace of the
+    * extension.
+    * @param type Required. The type of the extension.
+    * @param version Required. The version of the extension.
     */
     public ExtensionImageUpdateParameters(String providerNameSpace, String type, String version) {
         this();

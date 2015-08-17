@@ -27,7 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.List;
 
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -43,6 +43,7 @@ import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.JobInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
+import java.util.Set;
 
 class MediaServiceValidation {
     private final MediaContract service;
@@ -101,7 +102,7 @@ class MediaServiceValidation {
     }
 
     public void validateAssetFiles(AssetInfo asset,
-            Hashtable<String, InputStream> inputFiles) throws ServiceException,
+            Map<String, InputStream> inputFiles) throws ServiceException,
             IOException, NoSuchAlgorithmException {
         List<AssetFileInfo> assetFiles = service.list(AssetFile.list(asset
                 .getAssetFilesLink()));
@@ -161,8 +162,8 @@ class MediaServiceValidation {
         }
     }
 
-    public void validateAssetFiles(Hashtable<String, InputStream> inputFiles,
-            Hashtable<String, InputStream> actualFileStreams)
+    public void validateAssetFiles(Map<String, InputStream> inputFiles,
+            Map<String, InputStream> actualFileStreams)
             throws IOException, InterruptedException {
         assertEquals("fileUrls count", inputFiles.size(),
                 actualFileStreams.size());
@@ -194,7 +195,7 @@ class MediaServiceValidation {
     }
 
     public void validateOutputAssets(List<AssetInfo> outputAssets,
-            Enumeration<String> enumeration) {
+            Set<String> enumeration) {
         assertNotNull("outputAssets", outputAssets);
         for (AssetInfo asset : outputAssets) {
             assertNotNull("asset", asset);

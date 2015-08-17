@@ -124,6 +124,10 @@ public class DacExportParameters {
         * Initializes a new instance of the BlobCredentialsParameter class with
         * required arguments.
         *
+        * @param uri Gets or sets the URI of where the DACPAC file should be
+        * stored in Azure Blob Storage.
+        * @param storageAccessKey Gets or sets the access key for the Azure
+        * Storage account.
         */
         public BlobCredentialsParameter(URI uri, String storageAccessKey) {
             if (uri == null) {

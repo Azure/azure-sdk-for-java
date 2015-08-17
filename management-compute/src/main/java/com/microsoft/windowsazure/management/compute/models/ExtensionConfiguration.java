@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -74,8 +75,8 @@ public class ExtensionConfiguration {
     *
     */
     public ExtensionConfiguration() {
-        this.setAllRoles(new ArrayList<ExtensionConfiguration.Extension>());
-        this.setNamedRoles(new ArrayList<ExtensionConfiguration.NamedRole>());
+        this.setAllRoles(new LazyArrayList<ExtensionConfiguration.Extension>());
+        this.setNamedRoles(new LazyArrayList<ExtensionConfiguration.NamedRole>());
     }
     
     /**
@@ -118,6 +119,10 @@ public class ExtensionConfiguration {
         * Initializes a new instance of the Extension class with required
         * arguments.
         *
+        * @param id The identifier of the extension. The identifier is created
+        * when the extension is added to the cloud service. You can find the
+        * ID of an extension that was added to a cloud service by using List
+        * Extensions.
         */
         public Extension(String id) {
             if (id == null) {
@@ -175,13 +180,16 @@ public class ExtensionConfiguration {
         *
         */
         public NamedRole() {
-            this.setExtensions(new ArrayList<ExtensionConfiguration.Extension>());
+            this.setExtensions(new LazyArrayList<ExtensionConfiguration.Extension>());
         }
         
         /**
         * Initializes a new instance of the NamedRole class with required
         * arguments.
         *
+        * @param roleName Specifies the name of the role.
+        * @param extensions Represents an extension that is to be deployed to a
+        * role in a cloud service.
         */
         public NamedRole(String roleName, ArrayList<ExtensionConfiguration.Extension> extensions) {
             this();

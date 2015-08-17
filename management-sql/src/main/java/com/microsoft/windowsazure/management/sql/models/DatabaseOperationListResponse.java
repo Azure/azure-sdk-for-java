@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.sql.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     */
     public DatabaseOperationListResponse() {
         super();
-        this.setDatabaseOperations(new ArrayList<DatabaseOperation>());
+        this.setDatabaseOperations(new LazyArrayList<DatabaseOperation>());
     }
     
     /**

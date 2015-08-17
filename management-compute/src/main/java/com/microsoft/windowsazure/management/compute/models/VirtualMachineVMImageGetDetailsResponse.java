@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -66,6 +67,30 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     */
     public void setCategory(final String categoryValue) {
         this.category = categoryValue;
+    }
+    
+    private ComputeImageAttributes computeImageAttributes;
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @return The ComputeImageAttributes value.
+    */
+    public ComputeImageAttributes getComputeImageAttributes() {
+        return this.computeImageAttributes;
+    }
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @param computeImageAttributesValue The ComputeImageAttributes value.
+    */
+    public void setComputeImageAttributes(final ComputeImageAttributes computeImageAttributesValue) {
+        this.computeImageAttributes = computeImageAttributesValue;
     }
     
     private Calendar createdTime;
@@ -162,13 +187,13 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
         this.eula = eulaValue;
     }
     
-    private URI iconUri;
+    private String iconUri;
     
     /**
     * Optional. Provides the URI to the icon for this Operating System Image.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public String getIconUri() {
         return this.iconUri;
     }
     
@@ -176,7 +201,7 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     * Optional. Provides the URI to the icon for this Operating System Image.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final String iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -286,6 +311,29 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     */
     public void setLocation(final String locationValue) {
         this.location = locationValue;
+    }
+    
+    private MarketplaceImageAttributes marketplaceImageAttributes;
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @return The MarketplaceImageAttributes value.
+    */
+    public MarketplaceImageAttributes getMarketplaceImageAttributes() {
+        return this.marketplaceImageAttributes;
+    }
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @param marketplaceImageAttributesValue The MarketplaceImageAttributes
+    * value.
+    */
+    public void setMarketplaceImageAttributes(final MarketplaceImageAttributes marketplaceImageAttributesValue) {
+        this.marketplaceImageAttributes = marketplaceImageAttributesValue;
     }
     
     private Calendar modifiedTime;
@@ -544,14 +592,14 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
         this.showInGui = showInGuiValue;
     }
     
-    private URI smallIconUri;
+    private String smallIconUri;
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
     * image is presented in the Azure Management Portal.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public String getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -560,7 +608,7 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     * image is presented in the Azure Management Portal.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final String smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
     
@@ -571,8 +619,25 @@ public class VirtualMachineVMImageGetDetailsResponse extends OperationResponse {
     */
     public VirtualMachineVMImageGetDetailsResponse() {
         super();
-        this.setDataDiskConfigurations(new ArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>());
-        this.setReplicationProgress(new ArrayList<VirtualMachineVMImageGetDetailsResponse.ReplicationProgressElement>());
+        this.setDataDiskConfigurations(new LazyArrayList<VirtualMachineVMImageListResponse.DataDiskConfiguration>());
+        this.setReplicationProgress(new LazyArrayList<VirtualMachineVMImageGetDetailsResponse.ReplicationProgressElement>());
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineVMImageGetDetailsResponse
+    * class with required arguments.
+    *
+    * @param computeImageAttributes The compute image attributes. Metadata
+    * which is required for this image to be useablein the Microsoft.Compute
+    * Provider.The combination of values provided for Offer, Sku, and Verison
+    * must be unique for a publisher.
+    */
+    public VirtualMachineVMImageGetDetailsResponse(ComputeImageAttributes computeImageAttributes) {
+        this();
+        if (computeImageAttributes == null) {
+            throw new NullPointerException("computeImageAttributes");
+        }
+        this.setComputeImageAttributes(computeImageAttributes);
     }
     
     /**

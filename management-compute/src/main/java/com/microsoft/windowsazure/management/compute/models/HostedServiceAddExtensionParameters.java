@@ -211,6 +211,8 @@ public class HostedServiceAddExtensionParameters {
     * Initializes a new instance of the HostedServiceAddExtensionParameters
     * class with required arguments.
     *
+    * @param type The type of the extension.
+    * @param id The identifier of the extension.
     */
     public HostedServiceAddExtensionParameters(String type, String id) {
         if (type == null) {

@@ -179,6 +179,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     * Initializes a new instance of the HostedServiceGetExtensionResponse class
     * with required arguments.
     *
+    * @param type The type of the extension.
     */
     public HostedServiceGetExtensionResponse(String type) {
         if (type == null) {

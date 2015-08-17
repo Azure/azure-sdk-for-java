@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -246,6 +247,24 @@ public class RoleInstance {
         this.iPAddress = iPAddressValue;
     }
     
+    private ArrayList<NetworkInterfaceInstance> networkInterfaces;
+    
+    /**
+    * Optional.
+    * @return The NetworkInterfaces value.
+    */
+    public ArrayList<NetworkInterfaceInstance> getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+    
+    /**
+    * Optional.
+    * @param networkInterfacesValue The NetworkInterfaces value.
+    */
+    public void setNetworkInterfaces(final ArrayList<NetworkInterfaceInstance> networkInterfacesValue) {
+        this.networkInterfaces = networkInterfacesValue;
+    }
+    
     private RoleInstancePowerState powerState;
     
     /**
@@ -351,9 +370,10 @@ public class RoleInstance {
     *
     */
     public RoleInstance() {
-        this.setInstanceEndpoints(new ArrayList<InstanceEndpoint>());
-        this.setPublicIPs(new ArrayList<RoleInstance.PublicIP>());
-        this.setResourceExtensionStatusList(new ArrayList<ResourceExtensionStatus>());
+        this.setInstanceEndpoints(new LazyArrayList<InstanceEndpoint>());
+        this.setNetworkInterfaces(new LazyArrayList<NetworkInterfaceInstance>());
+        this.setPublicIPs(new LazyArrayList<RoleInstance.PublicIP>());
+        this.setResourceExtensionStatusList(new LazyArrayList<ResourceExtensionStatus>());
     }
     
     /**
@@ -380,6 +400,60 @@ public class RoleInstance {
             this.address = addressValue;
         }
         
+        private String domainNameLabel;
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @return The DomainNameLabel value.
+        */
+        public String getDomainNameLabel() {
+            return this.domainNameLabel;
+        }
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @param domainNameLabelValue The DomainNameLabel value.
+        */
+        public void setDomainNameLabel(final String domainNameLabelValue) {
+            this.domainNameLabel = domainNameLabelValue;
+        }
+        
+        private ArrayList<String> fqdns;
+        
+        /**
+        * Optional. The list of FQDN for the public IP.
+        * @return The Fqdns value.
+        */
+        public ArrayList<String> getFqdns() {
+            return this.fqdns;
+        }
+        
+        /**
+        * Optional. The list of FQDN for the public IP.
+        * @param fqdnsValue The Fqdns value.
+        */
+        public void setFqdns(final ArrayList<String> fqdnsValue) {
+            this.fqdns = fqdnsValue;
+        }
+        
+        private Integer idleTimeoutInMinutes;
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @return The IdleTimeoutInMinutes value.
+        */
+        public Integer getIdleTimeoutInMinutes() {
+            return this.idleTimeoutInMinutes;
+        }
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+        */
+        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
+        }
+        
         private String name;
         
         /**
@@ -396,6 +470,14 @@ public class RoleInstance {
         */
         public void setName(final String nameValue) {
             this.name = nameValue;
+        }
+        
+        /**
+        * Initializes a new instance of the PublicIP class.
+        *
+        */
+        public PublicIP() {
+            this.setFqdns(new LazyArrayList<String>());
         }
     }
 }

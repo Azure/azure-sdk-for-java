@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     */
     public HostedServiceListExtensionsResponse() {
         super();
-        this.setExtensions(new ArrayList<HostedServiceListExtensionsResponse.Extension>());
+        this.setExtensions(new LazyArrayList<HostedServiceListExtensionsResponse.Extension>());
     }
     
     /**
@@ -220,6 +221,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * Initializes a new instance of the Extension class with required
         * arguments.
         *
+        * @param type The type of the extension.
         */
         public Extension(String type) {
             if (type == null) {

@@ -23,6 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
+import com.microsoft.windowsazure.core.LazyHashMap;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +34,24 @@ import java.util.HashMap;
 * The Get Configuration Web Site operation response.
 */
 public class WebSiteGetConfigurationResponse extends OperationResponse {
+    private Boolean alwaysOn;
+    
+    /**
+    * Optional. Indicates if site's Always On feature is enabled.
+    * @return The AlwaysOn value.
+    */
+    public Boolean isAlwaysOn() {
+        return this.alwaysOn;
+    }
+    
+    /**
+    * Optional. Indicates if site's Always On feature is enabled.
+    * @param alwaysOnValue The AlwaysOn value.
+    */
+    public void setAlwaysOn(final Boolean alwaysOnValue) {
+        this.alwaysOn = alwaysOnValue;
+    }
+    
     private HashMap<String, String> appSettings;
     
     /**
@@ -50,6 +70,24 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     */
     public void setAppSettings(final HashMap<String, String> appSettingsValue) {
         this.appSettings = appSettingsValue;
+    }
+    
+    private String autoSwapSlotName;
+    
+    /**
+    * Optional. Gets the slot name to swap with after successful deployment.
+    * @return The AutoSwapSlotName value.
+    */
+    public String getAutoSwapSlotName() {
+        return this.autoSwapSlotName;
+    }
+    
+    /**
+    * Optional. Gets the slot name to swap with after successful deployment.
+    * @param autoSwapSlotNameValue The AutoSwapSlotName value.
+    */
+    public void setAutoSwapSlotName(final String autoSwapSlotNameValue) {
+        this.autoSwapSlotName = autoSwapSlotNameValue;
     }
     
     private ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings;
@@ -173,6 +211,84 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     */
     public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue) {
         this.httpLoggingEnabled = httpLoggingEnabledValue;
+    }
+    
+    private String javaContainer;
+    
+    /**
+    * Optional. The web site Java Container. Supported values are TOMCAT, JETTY
+    * @return The JavaContainer value.
+    */
+    public String getJavaContainer() {
+        return this.javaContainer;
+    }
+    
+    /**
+    * Optional. The web site Java Container. Supported values are TOMCAT, JETTY
+    * @param javaContainerValue The JavaContainer value.
+    */
+    public void setJavaContainer(final String javaContainerValue) {
+        this.javaContainer = javaContainerValue;
+    }
+    
+    private String javaContainerVersion;
+    
+    /**
+    * Optional. The web site Java Container Version. Supported values are
+    * 7.0.50 if Java Container is TOMCAT and 9.1.0.20131115 if Java Container
+    * is JETTY
+    * @return The JavaContainerVersion value.
+    */
+    public String getJavaContainerVersion() {
+        return this.javaContainerVersion;
+    }
+    
+    /**
+    * Optional. The web site Java Container Version. Supported values are
+    * 7.0.50 if Java Container is TOMCAT and 9.1.0.20131115 if Java Container
+    * is JETTY
+    * @param javaContainerVersionValue The JavaContainerVersion value.
+    */
+    public void setJavaContainerVersion(final String javaContainerVersionValue) {
+        this.javaContainerVersion = javaContainerVersionValue;
+    }
+    
+    private String javaVersion;
+    
+    /**
+    * Optional. The web site JDK version. Supported values are an empty string
+    * (an empty string disables Java), 1.7.0_51
+    * @return The JavaVersion value.
+    */
+    public String getJavaVersion() {
+        return this.javaVersion;
+    }
+    
+    /**
+    * Optional. The web site JDK version. Supported values are an empty string
+    * (an empty string disables Java), 1.7.0_51
+    * @param javaVersionValue The JavaVersion value.
+    */
+    public void setJavaVersion(final String javaVersionValue) {
+        this.javaVersion = javaVersionValue;
+    }
+    
+    private WebSiteGetConfigurationResponse.SiteLimits limits;
+    
+    /**
+    * Optional. The per site limits.
+    * @return The Limits value.
+    */
+    public WebSiteGetConfigurationResponse.SiteLimits getLimits() {
+        return this.limits;
+    }
+    
+    /**
+    * Optional. The per site limits.
+    * @param limitsValue The Limits value.
+    */
+    public void setLimits(final WebSiteGetConfigurationResponse.SiteLimits limitsValue) {
+        this.limits = limitsValue;
     }
     
     private Integer logsDirectorySizeLimit;
@@ -404,6 +520,24 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         this.requestTracingExpirationTime = requestTracingExpirationTimeValue;
     }
     
+    private ArrayList<RoutingRule> routingRules;
+    
+    /**
+    * Optional. List of routing rules for the website.
+    * @return The RoutingRules value.
+    */
+    public ArrayList<RoutingRule> getRoutingRules() {
+        return this.routingRules;
+    }
+    
+    /**
+    * Optional. List of routing rules for the website.
+    * @param routingRulesValue The RoutingRules value.
+    */
+    public void setRoutingRules(final ArrayList<RoutingRule> routingRulesValue) {
+        this.routingRules = routingRulesValue;
+    }
+    
     private String scmType;
     
     /**
@@ -424,6 +558,46 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     */
     public void setScmType(final String scmTypeValue) {
         this.scmType = scmTypeValue;
+    }
+    
+    private Boolean siteAuthEnabled;
+    
+    /**
+    * Optional. Gets or sets a value indicating whether the site's
+    * Authentication / Authorization feature is enabled.
+    * @return The SiteAuthEnabled value.
+    */
+    public Boolean isSiteAuthEnabled() {
+        return this.siteAuthEnabled;
+    }
+    
+    /**
+    * Optional. Gets or sets a value indicating whether the site's
+    * Authentication / Authorization feature is enabled.
+    * @param siteAuthEnabledValue The SiteAuthEnabled value.
+    */
+    public void setSiteAuthEnabled(final Boolean siteAuthEnabledValue) {
+        this.siteAuthEnabled = siteAuthEnabledValue;
+    }
+    
+    private SiteAuthSettings siteAuthSettings;
+    
+    /**
+    * Optional. Gets or sets the Authentication / Authorization settings of a
+    * web site.
+    * @return The SiteAuthSettings value.
+    */
+    public SiteAuthSettings getSiteAuthSettings() {
+        return this.siteAuthSettings;
+    }
+    
+    /**
+    * Optional. Gets or sets the Authentication / Authorization settings of a
+    * web site.
+    * @param siteAuthSettingsValue The SiteAuthSettings value.
+    */
+    public void setSiteAuthSettings(final SiteAuthSettings siteAuthSettingsValue) {
+        this.siteAuthSettings = siteAuthSettingsValue;
     }
     
     private Boolean use32BitWorkerProcess;
@@ -468,11 +642,12 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     */
     public WebSiteGetConfigurationResponse() {
         super();
-        this.setAppSettings(new HashMap<String, String>());
-        this.setConnectionStrings(new ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo>());
-        this.setDefaultDocuments(new ArrayList<String>());
-        this.setHandlerMappings(new ArrayList<WebSiteGetConfigurationResponse.HandlerMapping>());
-        this.setMetadata(new HashMap<String, String>());
+        this.setAppSettings(new LazyHashMap<String, String>());
+        this.setConnectionStrings(new LazyArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo>());
+        this.setDefaultDocuments(new LazyArrayList<String>());
+        this.setHandlerMappings(new LazyArrayList<WebSiteGetConfigurationResponse.HandlerMapping>());
+        this.setMetadata(new LazyHashMap<String, String>());
+        this.setRoutingRules(new LazyArrayList<RoutingRule>());
     }
     
     /**
@@ -515,13 +690,13 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
             this.name = nameValue;
         }
         
-        private String type;
+        private ConnectionStringType type;
         
         /**
         * Optional. The type of the connection string (for example, "MySQL").
         * @return The Type value.
         */
-        public String getType() {
+        public ConnectionStringType getType() {
             return this.type;
         }
         
@@ -529,7 +704,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         * Optional. The type of the connection string (for example, "MySQL").
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue) {
+        public void setType(final ConnectionStringType typeValue) {
             this.type = typeValue;
         }
     }
@@ -601,6 +776,65 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
         */
         public void setScriptProcessor(final String scriptProcessorValue) {
             this.scriptProcessor = scriptProcessorValue;
+        }
+    }
+    
+    /**
+    * Per site limits
+    */
+    public static class SiteLimits {
+        private Long maxDiskSizeInMb;
+        
+        /**
+        * Optional. Maximum disk size allowed in MB
+        * @return The MaxDiskSizeInMb value.
+        */
+        public Long getMaxDiskSizeInMb() {
+            return this.maxDiskSizeInMb;
+        }
+        
+        /**
+        * Optional. Maximum disk size allowed in MB
+        * @param maxDiskSizeInMbValue The MaxDiskSizeInMb value.
+        */
+        public void setMaxDiskSizeInMb(final Long maxDiskSizeInMbValue) {
+            this.maxDiskSizeInMb = maxDiskSizeInMbValue;
+        }
+        
+        private Long maxMemoryInMb;
+        
+        /**
+        * Optional. Maximum memory allowed in MB
+        * @return The MaxMemoryInMb value.
+        */
+        public Long getMaxMemoryInMb() {
+            return this.maxMemoryInMb;
+        }
+        
+        /**
+        * Optional. Maximum memory allowed in MB
+        * @param maxMemoryInMbValue The MaxMemoryInMb value.
+        */
+        public void setMaxMemoryInMb(final Long maxMemoryInMbValue) {
+            this.maxMemoryInMb = maxMemoryInMbValue;
+        }
+        
+        private Double maxPercentageCpu;
+        
+        /**
+        * Optional. The name of the pair.
+        * @return The MaxPercentageCpu value.
+        */
+        public Double getMaxPercentageCpu() {
+            return this.maxPercentageCpu;
+        }
+        
+        /**
+        * Optional. The name of the pair.
+        * @param maxPercentageCpuValue The MaxPercentageCpu value.
+        */
+        public void setMaxPercentageCpu(final Double maxPercentageCpuValue) {
+            this.maxPercentageCpu = maxPercentageCpuValue;
         }
     }
 }

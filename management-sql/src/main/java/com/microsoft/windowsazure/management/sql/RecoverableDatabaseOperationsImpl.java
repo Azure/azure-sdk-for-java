@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.management.sql;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.RecoverableDatabase;
@@ -33,6 +34,8 @@ import com.microsoft.windowsazure.management.sql.models.RecoverableDatabaseListR
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -75,20 +78,18 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     /**
     * Returns information about a recoverable Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the database was hosted.
-    * @param sourceDatabaseName Required. The name of the recoverable Azure SQL
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database was hosted.
+    * @param databaseName Required. The name of the recoverable Azure SQL
     * Database to be obtained.
     * @return Contains the response to the Get Recoverable Database request.
     */
     @Override
-    public Future<RecoverableDatabaseGetResponse> getAsync(final String targetServerName, final String sourceServerName, final String sourceDatabaseName) {
+    public Future<RecoverableDatabaseGetResponse> getAsync(final String serverName, final String databaseName) {
         return this.getClient().getExecutorService().submit(new Callable<RecoverableDatabaseGetResponse>() { 
             @Override
             public RecoverableDatabaseGetResponse call() throws Exception {
-                return get(targetServerName, sourceServerName, sourceDatabaseName);
+                return get(serverName, databaseName);
             }
          });
     }
@@ -96,11 +97,9 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     /**
     * Returns information about a recoverable Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the database was hosted.
-    * @param sourceDatabaseName Required. The name of the recoverable Azure SQL
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database was hosted.
+    * @param databaseName Required. The name of the recoverable Azure SQL
     * Database to be obtained.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -113,16 +112,13 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * @return Contains the response to the Get Recoverable Database request.
     */
     @Override
-    public RecoverableDatabaseGetResponse get(String targetServerName, String sourceServerName, String sourceDatabaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public RecoverableDatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (targetServerName == null) {
-            throw new NullPointerException("targetServerName");
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
         }
-        if (sourceServerName == null) {
-            throw new NullPointerException("sourceServerName");
-        }
-        if (sourceDatabaseName == null) {
-            throw new NullPointerException("sourceDatabaseName");
+        if (databaseName == null) {
+            throw new NullPointerException("databaseName");
         }
         
         // Tracing
@@ -131,14 +127,21 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("targetServerName", targetServerName);
-            tracingParameters.put("sourceServerName", sourceServerName);
-            tracingParameters.put("sourceDatabaseName", sourceDatabaseName);
+            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("databaseName", databaseName);
             CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + targetServerName.trim() + "/recoverabledatabases/" + sourceServerName.trim() + "/" + sourceDatabaseName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/recoverabledatabases/";
+        url = url + URLEncoder.encode(databaseName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -178,68 +181,70 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
             // Create Result
             RecoverableDatabaseGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new RecoverableDatabaseGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            if (serviceResourceElement != null) {
-                RecoverableDatabase serviceResourceInstance = new RecoverableDatabase();
-                result.setDatabase(serviceResourceInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new RecoverableDatabaseGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element entityIdElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EntityId");
-                if (entityIdElement != null) {
-                    String entityIdInstance;
-                    entityIdInstance = entityIdElement.getTextContent();
-                    serviceResourceInstance.setEntityId(entityIdInstance);
+                Element serviceResourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+                if (serviceResourceElement != null) {
+                    RecoverableDatabase serviceResourceInstance = new RecoverableDatabase();
+                    result.setDatabase(serviceResourceInstance);
+                    
+                    Element entityIdElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EntityId");
+                    if (entityIdElement != null) {
+                        String entityIdInstance;
+                        entityIdInstance = entityIdElement.getTextContent();
+                        serviceResourceInstance.setEntityId(entityIdInstance);
+                    }
+                    
+                    Element serverNameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ServerName");
+                    if (serverNameElement != null) {
+                        String serverNameInstance;
+                        serverNameInstance = serverNameElement.getTextContent();
+                        serviceResourceInstance.setServerName(serverNameInstance);
+                    }
+                    
+                    Element editionElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Edition");
+                    if (editionElement != null) {
+                        String editionInstance;
+                        editionInstance = editionElement.getTextContent();
+                        serviceResourceInstance.setEdition(editionInstance);
+                    }
+                    
+                    Element lastAvailableBackupDateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "LastAvailableBackupDate");
+                    if (lastAvailableBackupDateElement != null) {
+                        Calendar lastAvailableBackupDateInstance;
+                        lastAvailableBackupDateInstance = DatatypeConverter.parseDateTime(lastAvailableBackupDateElement.getTextContent());
+                        serviceResourceInstance.setLastAvailableBackupDate(lastAvailableBackupDateInstance);
+                    }
+                    
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                    if (typeElement != null) {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
+                    if (stateElement != null) {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
                 }
                 
-                Element serverNameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ServerName");
-                if (serverNameElement != null) {
-                    String serverNameInstance;
-                    serverNameInstance = serverNameElement.getTextContent();
-                    serviceResourceInstance.setServerName(serverNameInstance);
-                }
-                
-                Element editionElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Edition");
-                if (editionElement != null) {
-                    String editionInstance;
-                    editionInstance = editionElement.getTextContent();
-                    serviceResourceInstance.setEdition(editionInstance);
-                }
-                
-                Element lastAvailableBackupDateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "LastAvailableBackupDate");
-                if (lastAvailableBackupDateElement != null) {
-                    Calendar lastAvailableBackupDateInstance;
-                    lastAvailableBackupDateInstance = DatatypeConverter.parseDateTime(lastAvailableBackupDateElement.getTextContent());
-                    serviceResourceInstance.setLastAvailableBackupDate(lastAvailableBackupDateInstance);
-                }
-                
-                Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
-                }
-                
-                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                if (typeElement != null) {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
-                if (stateElement != null) {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -260,18 +265,16 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * Returns a collection of databases that can be recovered from a specified
     * server.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the databases were hosted.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the databases were hosted.
     * @return Contains the response to the List Recoverable Databases request.
     */
     @Override
-    public Future<RecoverableDatabaseListResponse> listAsync(final String targetServerName, final String sourceServerName) {
+    public Future<RecoverableDatabaseListResponse> listAsync(final String serverName) {
         return this.getClient().getExecutorService().submit(new Callable<RecoverableDatabaseListResponse>() { 
             @Override
             public RecoverableDatabaseListResponse call() throws Exception {
-                return list(targetServerName, sourceServerName);
+                return list(serverName);
             }
          });
     }
@@ -280,10 +283,8 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * Returns a collection of databases that can be recovered from a specified
     * server.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the databases were hosted.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the databases were hosted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -295,13 +296,10 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
     * @return Contains the response to the List Recoverable Databases request.
     */
     @Override
-    public RecoverableDatabaseListResponse list(String targetServerName, String sourceServerName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public RecoverableDatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (targetServerName == null) {
-            throw new NullPointerException("targetServerName");
-        }
-        if (sourceServerName == null) {
-            throw new NullPointerException("sourceServerName");
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
         }
         
         // Tracing
@@ -310,13 +308,24 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("targetServerName", targetServerName);
-            tracingParameters.put("sourceServerName", sourceServerName);
+            tracingParameters.put("serverName", serverName);
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/sqlservers/servers/" + targetServerName.trim() + "/recoverabledatabases/" + sourceServerName.trim() + "?" + "contentview=generic";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        url = url + "/recoverabledatabases";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("contentview=generic");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -356,71 +365,73 @@ public class RecoverableDatabaseOperationsImpl implements ServiceOperations<SqlM
             // Create Result
             RecoverableDatabaseListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new RecoverableDatabaseListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
-                    RecoverableDatabase serviceResourceInstance = new RecoverableDatabase();
-                    result.getDatabases().add(serviceResourceInstance);
-                    
-                    Element entityIdElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EntityId");
-                    if (entityIdElement != null) {
-                        String entityIdInstance;
-                        entityIdInstance = entityIdElement.getTextContent();
-                        serviceResourceInstance.setEntityId(entityIdInstance);
-                    }
-                    
-                    Element serverNameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ServerName");
-                    if (serverNameElement != null) {
-                        String serverNameInstance;
-                        serverNameInstance = serverNameElement.getTextContent();
-                        serviceResourceInstance.setServerName(serverNameInstance);
-                    }
-                    
-                    Element editionElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Edition");
-                    if (editionElement != null) {
-                        String editionInstance;
-                        editionInstance = editionElement.getTextContent();
-                        serviceResourceInstance.setEdition(editionInstance);
-                    }
-                    
-                    Element lastAvailableBackupDateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "LastAvailableBackupDate");
-                    if (lastAvailableBackupDateElement != null) {
-                        Calendar lastAvailableBackupDateInstance;
-                        lastAvailableBackupDateInstance = DatatypeConverter.parseDateTime(lastAvailableBackupDateElement.getTextContent());
-                        serviceResourceInstance.setLastAvailableBackupDate(lastAvailableBackupDateInstance);
-                    }
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serviceResourceInstance.setName(nameInstance);
-                    }
-                    
-                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                    if (typeElement != null) {
-                        String typeInstance;
-                        typeInstance = typeElement.getTextContent();
-                        serviceResourceInstance.setType(typeInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        serviceResourceInstance.setState(stateInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new RecoverableDatabaseListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
+                if (serviceResourcesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
+                        RecoverableDatabase serviceResourceInstance = new RecoverableDatabase();
+                        result.getDatabases().add(serviceResourceInstance);
+                        
+                        Element entityIdElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EntityId");
+                        if (entityIdElement != null) {
+                            String entityIdInstance;
+                            entityIdInstance = entityIdElement.getTextContent();
+                            serviceResourceInstance.setEntityId(entityIdInstance);
+                        }
+                        
+                        Element serverNameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ServerName");
+                        if (serverNameElement != null) {
+                            String serverNameInstance;
+                            serverNameInstance = serverNameElement.getTextContent();
+                            serviceResourceInstance.setServerName(serverNameInstance);
+                        }
+                        
+                        Element editionElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Edition");
+                        if (editionElement != null) {
+                            String editionInstance;
+                            editionInstance = editionElement.getTextContent();
+                            serviceResourceInstance.setEdition(editionInstance);
+                        }
+                        
+                        Element lastAvailableBackupDateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "LastAvailableBackupDate");
+                        if (lastAvailableBackupDateElement != null) {
+                            Calendar lastAvailableBackupDateInstance;
+                            lastAvailableBackupDateInstance = DatatypeConverter.parseDateTime(lastAvailableBackupDateElement.getTextContent());
+                            serviceResourceInstance.setLastAvailableBackupDate(lastAvailableBackupDateInstance);
+                        }
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            serviceResourceInstance.setName(nameInstance);
+                        }
+                        
+                        Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                        if (typeElement != null) {
+                            String typeInstance;
+                            typeInstance = typeElement.getTextContent();
+                            serviceResourceInstance.setType(typeInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            serviceResourceInstance.setState(stateInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

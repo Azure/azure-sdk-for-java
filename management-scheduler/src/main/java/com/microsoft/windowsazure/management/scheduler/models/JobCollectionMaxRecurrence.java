@@ -73,8 +73,14 @@ public class JobCollectionMaxRecurrence {
     * Initializes a new instance of the JobCollectionMaxRecurrence class with
     * required arguments.
     *
+    * @param frequency Defines the maximum recurrences that can be specified in
+    * any job in this job collection.
+    * @param interval Defines the interval.
     */
     public JobCollectionMaxRecurrence(JobCollectionRecurrenceFrequency frequency, int interval) {
+        if (frequency == null) {
+            throw new NullPointerException("frequency");
+        }
         this.setFrequency(frequency);
         this.setInterval(interval);
     }

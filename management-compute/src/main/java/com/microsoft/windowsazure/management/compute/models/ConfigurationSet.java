@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -242,6 +243,62 @@ public class ConfigurationSet {
     */
     public void setInputEndpoints(final ArrayList<InputEndpoint> inputEndpointsValue) {
         this.inputEndpoints = inputEndpointsValue;
+    }
+    
+    private String iPForwarding;
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this role. Optional
+    * @return The IPForwarding value.
+    */
+    public String getIPForwarding() {
+        return this.iPForwarding;
+    }
+    
+    /**
+    * Optional. Gets or sets the IP Forwarding status for this role. Optional
+    * @param iPForwardingValue The IPForwarding value.
+    */
+    public void setIPForwarding(final String iPForwardingValue) {
+        this.iPForwarding = iPForwardingValue;
+    }
+    
+    private ArrayList<NetworkInterface> networkInterfaces;
+    
+    /**
+    * Optional.
+    * @return The NetworkInterfaces value.
+    */
+    public ArrayList<NetworkInterface> getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+    
+    /**
+    * Optional.
+    * @param networkInterfacesValue The NetworkInterfaces value.
+    */
+    public void setNetworkInterfaces(final ArrayList<NetworkInterface> networkInterfacesValue) {
+        this.networkInterfaces = networkInterfacesValue;
+    }
+    
+    private String networkSecurityGroup;
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * role. Optional
+    * @return The NetworkSecurityGroup value.
+    */
+    public String getNetworkSecurityGroup() {
+        return this.networkSecurityGroup;
+    }
+    
+    /**
+    * Optional. Gets or sets the Network Security Group associated with this
+    * role. Optional
+    * @param networkSecurityGroupValue The NetworkSecurityGroup value.
+    */
+    public void setNetworkSecurityGroup(final String networkSecurityGroupValue) {
+        this.networkSecurityGroup = networkSecurityGroupValue;
     }
     
     private ArrayList<ConfigurationSet.PublicIP> publicIPs;
@@ -478,10 +535,11 @@ public class ConfigurationSet {
     *
     */
     public ConfigurationSet() {
-        this.setInputEndpoints(new ArrayList<InputEndpoint>());
-        this.setPublicIPs(new ArrayList<ConfigurationSet.PublicIP>());
-        this.setStoredCertificateSettings(new ArrayList<StoredCertificateSettings>());
-        this.setSubnetNames(new ArrayList<String>());
+        this.setInputEndpoints(new LazyArrayList<InputEndpoint>());
+        this.setNetworkInterfaces(new LazyArrayList<NetworkInterface>());
+        this.setPublicIPs(new LazyArrayList<ConfigurationSet.PublicIP>());
+        this.setStoredCertificateSettings(new LazyArrayList<StoredCertificateSettings>());
+        this.setSubnetNames(new LazyArrayList<String>());
     }
     
     /**
@@ -490,6 +548,42 @@ public class ConfigurationSet {
     * addressable via the default deployment VIP.
     */
     public static class PublicIP {
+        private String domainNameLabel;
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @return The DomainNameLabel value.
+        */
+        public String getDomainNameLabel() {
+            return this.domainNameLabel;
+        }
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @param domainNameLabelValue The DomainNameLabel value.
+        */
+        public void setDomainNameLabel(final String domainNameLabelValue) {
+            this.domainNameLabel = domainNameLabelValue;
+        }
+        
+        private Integer idleTimeoutInMinutes;
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @return The IdleTimeoutInMinutes value.
+        */
+        public Integer getIdleTimeoutInMinutes() {
+            return this.idleTimeoutInMinutes;
+        }
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+        */
+        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
+        }
+        
         private String name;
         
         /**

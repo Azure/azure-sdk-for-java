@@ -28,13 +28,16 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.LoadBalancerUpdateParameters;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -50,6 +53,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -164,7 +168,16 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/loadbalancers";
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/loadbalancers";
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -174,13 +187,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -252,6 +266,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -339,7 +354,17 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
         }
         
         // Construct URL
-        String url = "/" + (this.getClient().getCredentials().getSubscriptionId() != null ? this.getClient().getCredentials().getSubscriptionId().trim() : "") + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/loadbalancers/" + loadBalancerName.trim();
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/loadbalancers/";
+        url = url + URLEncoder.encode(loadBalancerName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
@@ -349,12 +374,13 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-05-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -377,6 +403,208 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             
             // Create Result
             OperationStatusResponse result = null;
+            // Deserialize Response
+            result = new OperationStatusResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> beginUpdatingAsync(final String serviceName, final String deploymentName, final String loadBalancerName, final LoadBalancerUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return beginUpdating(serviceName, deploymentName, loadBalancerName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public OperationStatusResponse beginUpdating(String serviceName, String deploymentName, String loadBalancerName, LoadBalancerUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (loadBalancerName == null) {
+            throw new NullPointerException("loadBalancerName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("loadBalancerName", loadBalancerName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginUpdatingAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/hostedservices/";
+        url = url + URLEncoder.encode(serviceName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        url = url + "/loadbalancers/";
+        url = url + URLEncoder.encode(loadBalancerName, "UTF-8");
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPut httpRequest = new HttpPut(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element loadBalancerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancer");
+        requestDoc.appendChild(loadBalancerElement);
+        
+        if (parameters.getName() != null) {
+            Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+            nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+            loadBalancerElement.appendChild(nameElement);
+        }
+        
+        if (parameters.getFrontendIPConfiguration() != null) {
+            Element frontendIpConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FrontendIpConfiguration");
+            loadBalancerElement.appendChild(frontendIpConfigurationElement);
+            
+            if (parameters.getFrontendIPConfiguration().getType() != null) {
+                Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                typeElement.appendChild(requestDoc.createTextNode(parameters.getFrontendIPConfiguration().getType()));
+                frontendIpConfigurationElement.appendChild(typeElement);
+            }
+            
+            if (parameters.getFrontendIPConfiguration().getSubnetName() != null) {
+                Element subnetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                subnetNameElement.appendChild(requestDoc.createTextNode(parameters.getFrontendIPConfiguration().getSubnetName()));
+                frontendIpConfigurationElement.appendChild(subnetNameElement);
+            }
+            
+            if (parameters.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress() != null) {
+                Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getFrontendIPConfiguration().getStaticVirtualNetworkIPAddress().getHostAddress()));
+                frontendIpConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement);
+            }
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationStatusResponse result = null;
+            // Deserialize Response
             result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -482,7 +710,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             }
             
             OperationStatusResponse response = client2.getLoadBalancersOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
-            if (response.getStatus() == OperationStatus.Succeeded) {
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -490,7 +718,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -503,11 +731,12 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
@@ -595,7 +824,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -608,11 +837,145 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<ComputeMana
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
+            }
+        }
+    }
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> updateAsync(final String serviceName, final String deploymentName, final String loadBalancerName, final LoadBalancerUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return update(serviceName, deploymentName, loadBalancerName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Updates an internal load balancer associated with an existing deployment.
+    *
+    * @param serviceName Required. The name of the service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param loadBalancerName Required. The name of the loadBalancer.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balancer operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    @Override
+    public OperationStatusResponse update(String serviceName, String deploymentName, String loadBalancerName, LoadBalancerUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
+        ComputeManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("loadBalancerName", loadBalancerName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationStatusResponse response = client2.getLoadBalancersOperations().beginUpdatingAsync(serviceName, deploymentName, loadBalancerName, parameters).get();
+            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+                return response;
+            }
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }

@@ -54,7 +54,7 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
  * <li>https://manage.windowsazure.com/publishsettings/Index?client=vs&
  * SchemaVersion=2.0</li>
  * </ul>
- * 
+ *
  */
 public abstract class PublishSettingsLoader {
 
@@ -68,8 +68,7 @@ public abstract class PublishSettingsLoader {
      * <li>An unprotected keystore file <code>keystore.out</code> will be left
      * in the working directory containing the management certificate.</li>
      * </ul>
-     * </p>
-     * 
+     *
      * @param publishSettingsFileName
      *            The name of the publish settings file with a valid certificate obtained from
      *            Microsoft Azure portal.

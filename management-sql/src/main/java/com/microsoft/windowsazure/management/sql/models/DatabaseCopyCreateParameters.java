@@ -47,6 +47,26 @@ public class DatabaseCopyCreateParameters {
         this.isContinuous = isContinuousValue;
     }
     
+    private boolean isOfflineSecondary;
+    
+    /**
+    * Optional. Gets a value that indicates whether it is an offline secondary
+    * copy.
+    * @return The IsOfflineSecondary value.
+    */
+    public boolean isOfflineSecondary() {
+        return this.isOfflineSecondary;
+    }
+    
+    /**
+    * Optional. Gets a value that indicates whether it is an offline secondary
+    * copy.
+    * @param isOfflineSecondaryValue The IsOfflineSecondary value.
+    */
+    public void setIsOfflineSecondary(final boolean isOfflineSecondaryValue) {
+        this.isOfflineSecondary = isOfflineSecondaryValue;
+    }
+    
     private String partnerDatabase;
     
     /**
@@ -94,6 +114,11 @@ public class DatabaseCopyCreateParameters {
     * Initializes a new instance of the DatabaseCopyCreateParameters class with
     * required arguments.
     *
+    * @param partnerServer Gets the name of the destination server for the copy.
+    * @param partnerDatabase Gets the name of the destination database for the
+    * copy.
+    * @param isContinuous Gets a value that indicates whether the copy should
+    * be continuous.
     */
     public DatabaseCopyCreateParameters(String partnerServer, String partnerDatabase, boolean isContinuous) {
         if (partnerServer == null) {

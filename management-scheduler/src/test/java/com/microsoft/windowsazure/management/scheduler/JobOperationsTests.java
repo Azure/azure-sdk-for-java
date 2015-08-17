@@ -28,8 +28,10 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.*;
 import com.microsoft.windowsazure.scheduler.models.*;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -45,25 +47,30 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         cloudServiceName = testJobCollectionPrefix + "jobcls" + randomString(5);
         jobCollectionName = testJobCollectionPrefix + "jobcl" + randomString(7);
         jobName = testSchedulerPrefix + "job" + randomString(7);
+        addRegexRule(testJobCollectionPrefix + "jobcls[a-z]{5}");
+        addRegexRule(testJobCollectionPrefix + "jobcl[a-z]{7}");
+        addRegexRule(testSchedulerPrefix + "job[a-z]{7}");
 
         createManagementClient();
-        getLocation();
-
         createCloudServiceManagementService();
-        createCloudService();
-
         createSchedulerManagementService();
-        createJobCollection();
-
         createSchedulerService(cloudServiceName, jobCollectionName);
+
+        setupTest(JobOperationsTests.class.getSimpleName());
+        getLocation();
+        createCloudService();
+        createJobCollection();
         createjob();
+        resetTest(JobOperationsTests.class.getSimpleName());
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void cleanup() throws Exception {
+        setupTest(JobOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
         cleanjob();
         cleanJobCollection();
         cleanCloudService();
+        resetTest(JobOperationsTests.class.getSimpleName() + CLEANUP_SUFFIX);
     }
 
     private static void cleanjob() {
@@ -149,7 +156,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         jobHttpRequest.setUri(uri);
 
         action.setRequest(jobHttpRequest);
-        action.setType(JobActionType.Http);
+        action.setType(JobActionType.HTTP);
 
         //Arrange
         JobCreateParameters createParameters = new JobCreateParameters();
@@ -164,9 +171,19 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         jobId = operationResponse.getJob().getId();
         Assert.assertEquals(201, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
-        Assert.assertEquals(operationResponse.getJob().getState(), JobState.Enabled);
+        Assert.assertEquals(operationResponse.getJob().getState(), JobState.ENABLED);
     }
 
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
+    }
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     public void getjobSuccess() throws Exception {
         //Act
@@ -175,7 +192,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         //Assert
         Assert.assertEquals(200, getResponse.getStatusCode());
         Assert.assertNotNull(getResponse.getRequestId());
-        Assert.assertEquals(getResponse.getJob().getAction().getType(), JobActionType.Http);
+        Assert.assertEquals(getResponse.getJob().getAction().getType(), JobActionType.HTTP);
     }
 
     @Test
@@ -193,7 +210,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     @Test
     public void getHistoryWithFilter() throws Exception {
         JobGetHistoryWithFilterParameters jobGetHistoryWithFilterParameters = new JobGetHistoryWithFilterParameters();
-        jobGetHistoryWithFilterParameters.setStatus(JobHistoryStatus.Completed);
+        jobGetHistoryWithFilterParameters.setStatus(JobHistoryStatus.COMPLETED);
         jobGetHistoryWithFilterParameters.setTop(1);
         //Act
         JobGetHistoryResponse getResponse = schedulerClient.getJobsOperations().getHistoryWithFilter(jobId, jobGetHistoryWithFilterParameters);
@@ -220,7 +237,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     @Test
     public void listJobWithFilter() throws Exception {
         JobListWithFilterParameters jobListParameters = new JobListWithFilterParameters();
-        jobListParameters.setState(JobState.Disabled);
+        jobListParameters.setState(JobState.DISABLED);
         jobListParameters.setTop(1);
 
         //Act
@@ -236,7 +253,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     public void updatejobCollectionStateSuccess() throws Exception {
         //Act
         JobCollectionJobsUpdateStateParameters updateParameters = new JobCollectionJobsUpdateStateParameters();
-        updateParameters.setState(JobState.Enabled);
+        updateParameters.setState(JobState.ENABLED);
         JobCollectionJobsUpdateStateResponse updateOperationResponse = schedulerClient.getJobsOperations().updateJobCollectionState(updateParameters);
 
         //Assert
@@ -249,14 +266,14 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     public void updatejobStateSuccess() throws Exception {
         //Act
         JobUpdateStateParameters updateParameters = new JobUpdateStateParameters();
-        updateParameters.setState(JobState.Disabled);
+        updateParameters.setState(JobState.DISABLED);
         updateParameters.setUpdateStateReason("just test");
         JobUpdateStateResponse updateOperationResponse = schedulerClient.getJobsOperations().updateState(jobId, updateParameters);
 
         //Assert
         Assert.assertEquals(200, updateOperationResponse.getStatusCode());
         Assert.assertNotNull(updateOperationResponse.getRequestId());
-        Assert.assertEquals(updateOperationResponse.getJob().getState(), JobState.Disabled);
+        Assert.assertEquals(updateOperationResponse.getJob().getState(), JobState.DISABLED);
     }
 
     private static void waitOperationToComplete(String requestId, long waitTimeBetweenTriesInSeconds, int maximumNumberOfTries) {
@@ -277,7 +294,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
                 e.printStackTrace();
             }
 
-            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.FAILED) || (operationStatus.getStatus() == CloudServiceOperationStatus.SUCCEEDED))
             {
                 operationCompleted = true;
             } else {

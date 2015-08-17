@@ -38,11 +38,9 @@ public interface RecoverableDatabaseOperations {
     /**
     * Returns information about a recoverable Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the database was hosted.
-    * @param sourceDatabaseName Required. The name of the recoverable Azure SQL
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database was hosted.
+    * @param databaseName Required. The name of the recoverable Azure SQL
     * Database to be obtained.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -54,29 +52,25 @@ public interface RecoverableDatabaseOperations {
     * response.
     * @return Contains the response to the Get Recoverable Database request.
     */
-    RecoverableDatabaseGetResponse get(String targetServerName, String sourceServerName, String sourceDatabaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    RecoverableDatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns information about a recoverable Azure SQL Database.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the database was hosted.
-    * @param sourceDatabaseName Required. The name of the recoverable Azure SQL
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the database was hosted.
+    * @param databaseName Required. The name of the recoverable Azure SQL
     * Database to be obtained.
     * @return Contains the response to the Get Recoverable Database request.
     */
-    Future<RecoverableDatabaseGetResponse> getAsync(String targetServerName, String sourceServerName, String sourceDatabaseName);
+    Future<RecoverableDatabaseGetResponse> getAsync(String serverName, String databaseName);
     
     /**
     * Returns a collection of databases that can be recovered from a specified
     * server.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the databases were hosted.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the databases were hosted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -87,17 +81,15 @@ public interface RecoverableDatabaseOperations {
     * response.
     * @return Contains the response to the List Recoverable Databases request.
     */
-    RecoverableDatabaseListResponse list(String targetServerName, String sourceServerName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    RecoverableDatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns a collection of databases that can be recovered from a specified
     * server.
     *
-    * @param targetServerName Required. The name of the Azure SQL Database
-    * Server on which to recover the source database.
-    * @param sourceServerName Required. The name of the Azure SQL Database
-    * Server on which the databases were hosted.
+    * @param serverName Required. The name of the Azure SQL Database Server on
+    * which the databases were hosted.
     * @return Contains the response to the List Recoverable Databases request.
     */
-    Future<RecoverableDatabaseListResponse> listAsync(String targetServerName, String sourceServerName);
+    Future<RecoverableDatabaseListResponse> listAsync(String serverName);
 }

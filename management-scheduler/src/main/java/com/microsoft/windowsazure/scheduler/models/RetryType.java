@@ -30,10 +30,10 @@ public enum RetryType {
     /**
     * Do not retry following a failed execution attempt.
     */
-    None,
+    NONE,
     
     /**
     * Retry up to a fixed number of times following failed execution attempts.
     */
-    Fixed,
+    FIXED,
 }

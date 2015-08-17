@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -70,7 +71,7 @@ public class ComputeCapabilities {
     *
     */
     public ComputeCapabilities() {
-        this.setVirtualMachinesRoleSizes(new ArrayList<String>());
-        this.setWebWorkerRoleSizes(new ArrayList<String>());
+        this.setVirtualMachinesRoleSizes(new LazyArrayList<String>());
+        this.setWebWorkerRoleSizes(new LazyArrayList<String>());
     }
 }

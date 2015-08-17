@@ -23,12 +23,60 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
 * Parameters supplied to the Replicate Virtual Machine Image operation.
 */
 public class VirtualMachineOSImageReplicateParameters {
+    private ComputeImageAttributes computeImageAttributes;
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @return The ComputeImageAttributes value.
+    */
+    public ComputeImageAttributes getComputeImageAttributes() {
+        return this.computeImageAttributes;
+    }
+    
+    /**
+    * Required. The compute image attributes. Metadata which is required for
+    * this image to be useablein the Microsoft.Compute Provider.The
+    * combination of values provided for Offer, Sku, and Verison must be
+    * unique for a publisher.
+    * @param computeImageAttributesValue The ComputeImageAttributes value.
+    */
+    public void setComputeImageAttributes(final ComputeImageAttributes computeImageAttributesValue) {
+        this.computeImageAttributes = computeImageAttributesValue;
+    }
+    
+    private MarketplaceImageAttributes marketplaceImageAttributes;
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @return The MarketplaceImageAttributes value.
+    */
+    public MarketplaceImageAttributes getMarketplaceImageAttributes() {
+        return this.marketplaceImageAttributes;
+    }
+    
+    /**
+    * Optional. The market place image attributes.Metadata which is required
+    * for VM Marketplace sourced imagesto be useable in the Microsoft.Compute
+    * Provider.
+    * @param marketplaceImageAttributesValue The MarketplaceImageAttributes
+    * value.
+    */
+    public void setMarketplaceImageAttributes(final MarketplaceImageAttributes marketplaceImageAttributesValue) {
+        this.marketplaceImageAttributes = marketplaceImageAttributesValue;
+    }
+    
     private ArrayList<String> targetLocations;
     
     /**
@@ -61,6 +109,23 @@ public class VirtualMachineOSImageReplicateParameters {
     *
     */
     public VirtualMachineOSImageReplicateParameters() {
-        this.setTargetLocations(new ArrayList<String>());
+        this.setTargetLocations(new LazyArrayList<String>());
+    }
+    
+    /**
+    * Initializes a new instance of the
+    * VirtualMachineOSImageReplicateParameters class with required arguments.
+    *
+    * @param computeImageAttributes The compute image attributes. Metadata
+    * which is required for this image to be useablein the Microsoft.Compute
+    * Provider.The combination of values provided for Offer, Sku, and Verison
+    * must be unique for a publisher.
+    */
+    public VirtualMachineOSImageReplicateParameters(ComputeImageAttributes computeImageAttributes) {
+        this();
+        if (computeImageAttributes == null) {
+            throw new NullPointerException("computeImageAttributes");
+        }
+        this.setComputeImageAttributes(computeImageAttributes);
     }
 }

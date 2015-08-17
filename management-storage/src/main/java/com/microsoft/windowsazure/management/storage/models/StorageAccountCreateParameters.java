@@ -23,12 +23,37 @@
 
 package com.microsoft.windowsazure.management.storage.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
 * Parameters supplied to the Create Storage Account operation.
 */
 public class StorageAccountCreateParameters {
+    private String accountType;
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @return The AccountType value.
+    */
+    public String getAccountType() {
+        return this.accountType;
+    }
+    
+    /**
+    * Optional. Specifies whether the account supports locally-redundant
+    * storage, geo-redundant storage, zone-redundant storage, or read access
+    * geo-redundant storage. Possible values are:'Standard_LRS',
+    * 'Standard_ZRS', 'Standard_GRS', and 'Standard_RAGRS'.
+    * @param accountTypeValue The AccountType value.
+    */
+    public void setAccountType(final String accountTypeValue) {
+        this.accountType = accountTypeValue;
+    }
+    
     private String affinityGroup;
     
     /**
@@ -109,32 +134,6 @@ public class StorageAccountCreateParameters {
     */
     public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
-    }
-    
-    private boolean geoReplicationEnabled;
-    
-    /**
-    * Optional. Specifies whether the storage account is created with
-    * geo-replication enabled. If the element is not included in the request
-    * body, the default value is true. If set to true, the data in the storage
-    * account is replicated across more than one geographic location to enable
-    * resilience in the face of catastrophic service loss.
-    * @return The GeoReplicationEnabled value.
-    */
-    public boolean isGeoReplicationEnabled() {
-        return this.geoReplicationEnabled;
-    }
-    
-    /**
-    * Optional. Specifies whether the storage account is created with
-    * geo-replication enabled. If the element is not included in the request
-    * body, the default value is true. If set to true, the data in the storage
-    * account is replicated across more than one geographic location to enable
-    * resilience in the face of catastrophic service loss.
-    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
-    */
-    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
-        this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
     private String label;
@@ -220,13 +219,22 @@ public class StorageAccountCreateParameters {
     *
     */
     public StorageAccountCreateParameters() {
-        this.setExtendedProperties(new HashMap<String, String>());
+        this.setExtendedProperties(new LazyHashMap<String, String>());
     }
     
     /**
     * Initializes a new instance of the StorageAccountCreateParameters class
     * with required arguments.
     *
+    * @param name A name for the storage account, unique within Azure. Storage
+    * account names must be between 3 and 24 characters in length, and must
+    * use numbers and lower-case letters only. This name is the DNS prefix
+    * name and can be used to access blobs, queues, and tables in the storage
+    * account. For example:
+    * http://ServiceName.blob.core.windows.net/mycontainer/.
+    * @param label A name for the storage account, specified as abase64-encoded
+    * string. The name may be up to 100 characters in length. The name can be
+    * used identify the storage account for your tracking purposes.
     */
     public StorageAccountCreateParameters(String name, String label) {
         this();

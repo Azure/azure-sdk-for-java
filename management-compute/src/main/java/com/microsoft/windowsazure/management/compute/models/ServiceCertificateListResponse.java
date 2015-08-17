@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     */
     public ServiceCertificateListResponse() {
         super();
-        this.setCertificates(new ArrayList<ServiceCertificateListResponse.Certificate>());
+        this.setCertificates(new LazyArrayList<ServiceCertificateListResponse.Certificate>());
     }
     
     /**
