@@ -51,6 +51,76 @@ import org.xml.sax.SAXException;
 */
 public interface VirtualMachineDiskOperations {
     /**
+    * The Create Data Disk operation adds a data disk to a virtual machine.
+    * There are three ways to create the data disk using the Add Data Disk
+    * operation. Option 1 - Attach an empty data disk to the role by
+    * specifying the disk label and location of the disk image. Do not include
+    * the DiskName and SourceMediaLink elements in the request body. Include
+    * the MediaLink element and reference a blob that is in the same
+    * geographical region as the role. You can also omit the MediaLink
+    * element. In this usage, Azure will create the data disk in the storage
+    * account configured as default for the role. Option 2 - Attach an
+    * existing data disk that is in the image repository. Do not include the
+    * DiskName and SourceMediaLink elements in the request body. Specify the
+    * data disk to use by including the DiskName element. Note: If included
+    * the in the response body, the MediaLink and LogicalDiskSizeInGB elements
+    * are ignored. Option 3 - Specify the location of a blob in your storage
+    * account that contain a disk image to use. Include the SourceMediaLink
+    * element. Note: If the MediaLink element isincluded, it is ignored.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginCreatingDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Create Data Disk operation adds a data disk to a virtual machine.
+    * There are three ways to create the data disk using the Add Data Disk
+    * operation. Option 1 - Attach an empty data disk to the role by
+    * specifying the disk label and location of the disk image. Do not include
+    * the DiskName and SourceMediaLink elements in the request body. Include
+    * the MediaLink element and reference a blob that is in the same
+    * geographical region as the role. You can also omit the MediaLink
+    * element. In this usage, Azure will create the data disk in the storage
+    * account configured as default for the role. Option 2 - Attach an
+    * existing data disk that is in the image repository. Do not include the
+    * DiskName and SourceMediaLink elements in the request body. Specify the
+    * data disk to use by including the DiskName element. Note: If included
+    * the in the response body, the MediaLink and LogicalDiskSizeInGB elements
+    * are ignored. Option 3 - Specify the location of a blob in your storage
+    * account that contain a disk image to use. Include the SourceMediaLink
+    * element. Note: If the MediaLink element isincluded, it is ignored.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginCreatingDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters);
+    
+    /**
     * The Begin Deleting Data Disk operation removes the specified data disk
     * from a virtual machine.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
@@ -91,30 +161,14 @@ public interface VirtualMachineDiskOperations {
     Future<OperationResponse> beginDeletingDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
     
     /**
-    * The Create Data Disk operation adds a data disk to a virtual machine.
-    * There are three ways to create the data disk using the Add Data Disk
-    * operation. Option 1 - Attach an empty data disk to the role by
-    * specifying the disk label and location of the disk image. Do not include
-    * the DiskName and SourceMediaLink elements in the request body. Include
-    * the MediaLink element and reference a blob that is in the same
-    * geographical region as the role. You can also omit the MediaLink
-    * element. In this usage, Azure will create the data disk in the storage
-    * account configured as default for the role. Option 2 - Attach an
-    * existing data disk that is in the image repository. Do not include the
-    * DiskName and SourceMediaLink elements in the request body. Specify the
-    * data disk to use by including the DiskName element. Note: If included
-    * the in the response body, the MediaLink and LogicalDiskSizeInGB elements
-    * are ignored. Option 3 - Specify the location of a blob in your storage
-    * account that contain a disk image to use. Include the SourceMediaLink
-    * element. Note: If the MediaLink element isincluded, it is ignored.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+    * The Add Disk operation adds a disk to the user image repository. The disk
+    * can be an operating system disk or a data disk.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param serviceName Required. The name of your service.
-    * @param deploymentName Required. The name of the deployment.
-    * @param roleName Required. The name of the role to add the data disk to.
-    * @param parameters Required. Parameters supplied to the Create Virtual
-    * Machine Data Disk operation.
+    * @param name Required. The name of the disk being updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Disk operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -128,7 +182,21 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginUpdatingDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Add Disk operation adds a disk to the user image repository. The disk
+    * can be an operating system disk or a data disk.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+    * more information)
+    *
+    * @param name Required. The name of the disk being updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Disk operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginUpdatingDiskAsync(String name, VirtualMachineDiskUpdateParameters parameters);
     
     /**
     * The Create Data Disk operation adds a data disk to a virtual machine.
@@ -155,10 +223,64 @@ public interface VirtualMachineDiskOperations {
     * @param roleName Required. The name of the role to add the data disk to.
     * @param parameters Required. Parameters supplied to the Create Virtual
     * Machine Data Disk operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
     */
-    Future<OperationResponse> createDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters);
+    OperationStatusResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * The Create Data Disk operation adds a data disk to a virtual machine.
+    * There are three ways to create the data disk using the Add Data Disk
+    * operation. Option 1 - Attach an empty data disk to the role by
+    * specifying the disk label and location of the disk image. Do not include
+    * the DiskName and SourceMediaLink elements in the request body. Include
+    * the MediaLink element and reference a blob that is in the same
+    * geographical region as the role. You can also omit the MediaLink
+    * element. In this usage, Azure will create the data disk in the storage
+    * account configured as default for the role. Option 2 - Attach an
+    * existing data disk that is in the image repository. Do not include the
+    * DiskName and SourceMediaLink elements in the request body. Specify the
+    * data disk to use by including the DiskName element. Note: If included
+    * the in the response body, the MediaLink and LogicalDiskSizeInGB elements
+    * are ignored. Option 3 - Specify the location of a blob in your storage
+    * account that contain a disk image to use. Include the SourceMediaLink
+    * element. Note: If the MediaLink element isincluded, it is ignored.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+    * more information)
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> createDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters);
     
     /**
     * The Create Disk operation adds a disk to the user image repository. The
@@ -469,4 +591,56 @@ public interface VirtualMachineDiskOperations {
     * @return A virtual machine disk associated with your subscription.
     */
     Future<VirtualMachineDiskUpdateResponse> updateDiskAsync(String name, VirtualMachineDiskUpdateParameters parameters);
+    
+    /**
+    * The Add Disk operation adds a disk to the user image repository. The disk
+    * can be an operating system disk or a data disk.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+    * more information)
+    *
+    * @param name Required. The name of the disk being updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Disk operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    OperationStatusResponse updateDiskSize(String name, VirtualMachineDiskUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * The Add Disk operation adds a disk to the user image repository. The disk
+    * can be an operating system disk or a data disk.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+    * more information)
+    *
+    * @param name Required. The name of the disk being updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Disk operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request. If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request and error information regarding the failure.
+    */
+    Future<OperationStatusResponse> updateDiskSizeAsync(String name, VirtualMachineDiskUpdateParameters parameters);
 }

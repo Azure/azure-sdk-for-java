@@ -30,6 +30,24 @@ import java.net.URI;
 * The Get Hosted Service operation response.
 */
 public class HostedServiceGetResponse extends OperationResponse {
+    private ComputeCapabilities computeCapabilities;
+    
+    /**
+    * Optional. The compute capabilities in this hosted service.
+    * @return The ComputeCapabilities value.
+    */
+    public ComputeCapabilities getComputeCapabilities() {
+        return this.computeCapabilities;
+    }
+    
+    /**
+    * Optional. The compute capabilities in this hosted service.
+    * @param computeCapabilitiesValue The ComputeCapabilities value.
+    */
+    public void setComputeCapabilities(final ComputeCapabilities computeCapabilitiesValue) {
+        this.computeCapabilities = computeCapabilitiesValue;
+    }
+    
     private HostedServiceProperties properties;
     
     /**

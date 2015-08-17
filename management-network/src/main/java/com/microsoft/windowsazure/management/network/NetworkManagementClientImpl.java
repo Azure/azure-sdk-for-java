@@ -31,12 +31,12 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.network.models.LocalNetworkConnectionType;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -61,10 +61,20 @@ import org.xml.sax.SAXException;
 * information)
 */
 public class NetworkManagementClientImpl extends ServiceClient<NetworkManagementClient> implements NetworkManagementClient {
+    private String apiVersion;
+    
+    /**
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+    
     private URI baseUri;
     
     /**
-    * The URI used as the base for all SQL requests.
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     public URI getBaseUri() {
@@ -74,16 +84,64 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
+    }
+    
+    private int longRunningOperationInitialTimeout;
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    public int getLongRunningOperationInitialTimeout() {
+        return this.longRunningOperationInitialTimeout;
+    }
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    public void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue) {
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeoutValue;
+    }
+    
+    private int longRunningOperationRetryTimeout;
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    public int getLongRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    public void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
+    }
+    
+    private ApplicationGatewayOperations applicationGateways;
+    
+    /**
+    * The Application Gateway Management API includes operations for managing
+    * application gateways in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
+    * more information)
+    * @return The ApplicationGatewaysOperations value.
+    */
+    public ApplicationGatewayOperations getApplicationGatewaysOperations() {
+        return this.applicationGateways;
     }
     
     private ClientRootCertificateOperations clientRootCertificates;
@@ -112,6 +170,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.gateways;
     }
     
+    private IPForwardingOperations iPForwarding;
+    
+    /**
+    * The Network Management API includes operations for managing the IP
+    * Forwarding for your roles and network interfaces in your subscription.
+    * @return The IPForwardingOperations value.
+    */
+    public IPForwardingOperations getIPForwardingOperations() {
+        return this.iPForwarding;
+    }
+    
     private NetworkOperations networks;
     
     /**
@@ -125,6 +194,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.networks;
     }
     
+    private NetworkSecurityGroupOperations networkSecurityGroups;
+    
+    /**
+    * The Network Management API includes operations for managing the Network
+    * Security Groups for your subscription.
+    * @return The NetworkSecurityGroupsOperations value.
+    */
+    public NetworkSecurityGroupOperations getNetworkSecurityGroupsOperations() {
+        return this.networkSecurityGroups;
+    }
+    
     private ReservedIPOperations reservedIPs;
     
     /**
@@ -134,6 +214,17 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     */
     public ReservedIPOperations getReservedIPsOperations() {
         return this.reservedIPs;
+    }
+    
+    private RouteOperations routes;
+    
+    /**
+    * The Network Management API includes operations for managing the routes
+    * for your subscription.
+    * @return The RoutesOperations value.
+    */
+    public RouteOperations getRoutesOperations() {
+        return this.routes;
     }
     
     private StaticIPOperations staticIPs;
@@ -147,19 +238,15 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         return this.staticIPs;
     }
     
+    private VirtualIPOperations virtualIPs;
+    
     /**
-    * Initializes a new instance of the NetworkManagementClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
+    * The Network Management API includes operations for managing the Virtual
+    * IPs for your deployment.
+    * @return The VirtualIPsOperations value.
     */
-    private NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        super(httpBuilder, executorService);
-        this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
-        this.gateways = new GatewayOperationsImpl(this);
-        this.networks = new NetworkOperationsImpl(this);
-        this.reservedIPs = new ReservedIPOperationsImpl(this);
-        this.staticIPs = new StaticIPOperationsImpl(this);
+    public VirtualIPOperations getVirtualIPsOperations() {
+        return this.virtualIPs;
     }
     
     /**
@@ -167,13 +254,34 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
-    * @param baseUri Required. The URI used as the base for all SQL requests.
+    */
+    public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+        super(httpBuilder, executorService);
+        this.applicationGateways = new ApplicationGatewayOperationsImpl(this);
+        this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
+        this.gateways = new GatewayOperationsImpl(this);
+        this.iPForwarding = new IPForwardingOperationsImpl(this);
+        this.networks = new NetworkOperationsImpl(this);
+        this.networkSecurityGroups = new NetworkSecurityGroupOperationsImpl(this);
+        this.reservedIPs = new ReservedIPOperationsImpl(this);
+        this.routes = new RouteOperationsImpl(this);
+        this.staticIPs = new StaticIPOperationsImpl(this);
+        this.virtualIPs = new VirtualIPOperationsImpl(this);
+        this.apiVersion = "2015-04-01";
+        this.longRunningOperationInitialTimeout = -1;
+        this.longRunningOperationRetryTimeout = -1;
+    }
+    
+    /**
+    * Initializes a new instance of the NetworkManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
+    * service requests.
     */
     @Inject
     public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -199,12 +307,9 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -222,9 +327,34 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
+    * service requests.
+    * @param apiVersion Optional. Gets the API version.
+    * @param longRunningOperationInitialTimeout Required. Gets or sets the
+    * initial timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
+    * timeout for Long Running Operations.
+    */
+    public NetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.apiVersion = apiVersion;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the NetworkManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected NetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new NetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+        return new NetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
     }
     
     /**
@@ -305,8 +435,14 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(requestId, "UTF-8");
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/operations/" + requestId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -315,12 +451,13 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -344,57 +481,59 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
             // Create Result
             OperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new OperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            if (operationElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new OperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    OperationStatus statusInstance;
-                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                if (httpStatusCodeElement != null) {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                if (errorElement != null) {
-                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    if (codeElement != null) {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
+                Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
+                if (operationElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
+                    Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        OperationStatus statusInstance;
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                    if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
+                        Integer httpStatusCodeInstance;
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
+                        result.setHttpStatusCode(httpStatusCodeInstance);
+                    }
+                    
+                    Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                    if (errorElement != null) {
+                        OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
+                        result.setError(errorInstance);
+                        
+                        Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                        if (codeElement != null) {
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            errorInstance.setCode(codeInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -409,37 +548,5 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
                 httpResponse.getEntity().getContent().close();
             }
         }
-    }
-    
-    /**
-    * Parse enum values for type LocalNetworkConnectionType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
-        if ("IPsec".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.IPSecurity;
-        }
-        if ("Dedicated".equalsIgnoreCase(value)) {
-            return LocalNetworkConnectionType.Dedicated;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type LocalNetworkConnectionType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
-        if (value == LocalNetworkConnectionType.IPSecurity) {
-            return "IPsec";
-        }
-        if (value == LocalNetworkConnectionType.Dedicated) {
-            return "Dedicated";
-        }
-        throw new IllegalArgumentException("value");
     }
 }

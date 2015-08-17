@@ -111,6 +111,15 @@ public class ContentKeyInfo extends ODataEntity<ContentKeyRestType> {
     }
 
     /**
+     * Gets the authorization policy id.
+     * 
+     * @return the authorization policy id
+     */
+    public String getAuthorizationPolicyId() {
+        return getContent().getAuthorizationPolicyId();
+    }
+
+    /**
      * Gets the content key type.
      * 
      * @return the content key type

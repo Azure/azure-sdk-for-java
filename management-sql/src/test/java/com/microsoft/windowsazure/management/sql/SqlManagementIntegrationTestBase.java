@@ -14,19 +14,6 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
-import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
-import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
-import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
-import com.microsoft.windowsazure.management.storage.StorageManagementClient;
-import com.microsoft.windowsazure.management.storage.StorageManagementService;
-import com.microsoft.windowsazure.management.storage.models.GeoRegionNames;
-import com.microsoft.windowsazure.management.storage.models.StorageAccount;
-import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -42,19 +30,37 @@ import javax.xml.transform.TransformerException;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.xml.sax.SAXException;
 
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.ManagementClient;
+import com.microsoft.windowsazure.management.ManagementService;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+import com.microsoft.windowsazure.management.models.LocationsListResponse;
+import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
+import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
+import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
+import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
+import com.microsoft.windowsazure.management.storage.StorageManagementClient;
+import com.microsoft.windowsazure.management.storage.StorageManagementService;
+import com.microsoft.windowsazure.management.storage.models.StorageAccount;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
-public abstract class SqlManagementIntegrationTestBase {
+public abstract class SqlManagementIntegrationTestBase extends MockIntegrationTestBase {
 
     protected static String testStorageAccountPrefix = "azsql";
+    protected static ManagementClient managementClient;
     protected static SqlManagementClient sqlManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static DatabaseOperations databaseOperations;
@@ -66,7 +72,7 @@ public abstract class SqlManagementIntegrationTestBase {
     
     protected static String testAdministratorPasswordValue = "testAdminPassword!8";
     protected static String testAdministratorUserNameValue = "testadminuser";
-    protected static String testLocationValue = "West US";
+    protected static String testLocationValue = null;
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -74,6 +80,13 @@ public abstract class SqlManagementIntegrationTestBase {
         config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
 
         sqlManagementClient = SqlManagementService.create(config);
+        addClient((ServiceClient<?>) sqlManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createService();
+                return null;
+            }
+        });
     }
     
     protected static void createStorageService() throws Exception {
@@ -91,6 +104,14 @@ public abstract class SqlManagementIntegrationTestBase {
         });
 
         storageManagementClient = StorageManagementService.create(config);
+        addClient((ServiceClient<?>) storageManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createStorageService();
+                return null;
+            }
+        });
+        addRegexRule("azsql[a-z]{10}");
     }
     
     protected static StorageAccount createStorageAccount(String storageAccountName) throws Exception { 
@@ -99,7 +120,8 @@ public abstract class SqlManagementIntegrationTestBase {
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
-        createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);
+        createParameters.setLocation(testLocationValue);
+        createParameters.setAccountType("Standard_LRS");
         storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
@@ -120,7 +142,7 @@ public abstract class SqlManagementIntegrationTestBase {
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverToBeRemoved.add(serverName);
-        return serverName; 
+        return serverName;
     
     }
     
@@ -142,13 +164,57 @@ public abstract class SqlManagementIntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
-        );
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null,
+                    null,
+                    null
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
+    }
+    
+    protected static void createManagementClient() throws Exception {
+        Configuration config = createConfiguration();
+        config.setProperty(ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER, new DefaultHttpRequestRetryHandler());
+        managementClient = ManagementService.create(config);
+        addClient((ServiceClient<?>) managementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createManagementClient();
+                return null;
+            }
+        });
+    }      
+    
+    protected static void getLocation() throws Exception {
+        ArrayList<String> serviceName = new ArrayList<String>();       
+        serviceName.add(LocationAvailableServiceNames.STORAGE);       
+
+        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
+        for (LocationsListResponse.Location location : locationsListResponse) {
+            ArrayList<String> availableServicelist = location.getAvailableServices();
+            String locationName = location.getName();
+            if (availableServicelist.containsAll(serviceName)== true) {  
+                if (locationName.contains("West US") == true)
+                {
+                    testLocationValue = locationName;
+                }
+                if (testLocationValue==null)
+                {
+                    testLocationValue = locationName;
+                }
+            }
+        } 
     }
     
     protected static String randomString(int length) {

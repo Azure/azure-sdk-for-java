@@ -30,15 +30,15 @@ public enum GatewayOperationStatus {
     /**
     * The asynchronous request is in progress.
     */
-    InProgress,
+    INPROGRESS,
     
     /**
     * The asynchronous request succeeded.
     */
-    Successful,
+    SUCCESSFUL,
     
     /**
     * The asynchronous request failed.
     */
-    Failed,
+    FAILED,
 }

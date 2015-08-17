@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 
 /**
-* Preview Only. A reserved IP associated with your subscription.
+* A reserved IP associated with your subscription.
 */
 public class NetworkReservedIPGetResponse extends OperationResponse {
     private InetAddress address;
@@ -46,26 +46,6 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     */
     public void setAddress(final InetAddress addressValue) {
         this.address = addressValue;
-    }
-    
-    private String affinityGroup;
-    
-    /**
-    * Optional. An affinity group, which indirectly refers to the location
-    * where the virtual network exists.
-    * @return The AffinityGroup value.
-    */
-    public String getAffinityGroup() {
-        return this.affinityGroup;
-    }
-    
-    /**
-    * Optional. An affinity group, which indirectly refers to the location
-    * where the virtual network exists.
-    * @param affinityGroupValue The AffinityGroup value.
-    */
-    public void setAffinityGroup(final String affinityGroupValue) {
-        this.affinityGroup = affinityGroupValue;
     }
     
     private String deploymentName;
@@ -140,6 +120,24 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
         this.label = labelValue;
     }
     
+    private String location;
+    
+    /**
+    * Optional. Location where the virtual network exists.
+    * @return The Location value.
+    */
+    public String getLocation() {
+        return this.location;
+    }
+    
+    /**
+    * Optional. Location where the virtual network exists.
+    * @param locationValue The Location value.
+    */
+    public void setLocation(final String locationValue) {
+        this.location = locationValue;
+    }
+    
     private String name;
     
     /**
@@ -194,5 +192,23 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     */
     public void setState(final String stateValue) {
         this.state = stateValue;
+    }
+    
+    private String virtualIPName;
+    
+    /**
+    * Optional. The name of the virtual IP that we should reserve.
+    * @return The VirtualIPName value.
+    */
+    public String getVirtualIPName() {
+        return this.virtualIPName;
+    }
+    
+    /**
+    * Optional. The name of the virtual IP that we should reserve.
+    * @param virtualIPNameValue The VirtualIPName value.
+    */
+    public void setVirtualIPName(final String virtualIPNameValue) {
+        this.virtualIPName = virtualIPNameValue;
     }
 }

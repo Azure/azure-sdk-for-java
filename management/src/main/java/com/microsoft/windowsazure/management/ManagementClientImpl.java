@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -62,10 +63,20 @@ import org.xml.sax.SAXException;
 * information)
 */
 public class ManagementClientImpl extends ServiceClient<ManagementClient> implements ManagementClient {
+    private String apiVersion;
+    
+    /**
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+    
     private URI baseUri;
     
     /**
-    * The URI used as the base for all Service Management requests.
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     public URI getBaseUri() {
@@ -75,16 +86,51 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
+    }
+    
+    private int longRunningOperationInitialTimeout;
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    public int getLongRunningOperationInitialTimeout() {
+        return this.longRunningOperationInitialTimeout;
+    }
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    public void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue) {
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeoutValue;
+    }
+    
+    private int longRunningOperationRetryTimeout;
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    public int getLongRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    public void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
     }
     
     private AffinityGroupOperations affinityGroups;
@@ -155,13 +201,16 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.affinityGroups = new AffinityGroupOperationsImpl(this);
         this.locations = new LocationOperationsImpl(this);
         this.managementCertificates = new ManagementCertificateOperationsImpl(this);
         this.roleSizes = new RoleSizeOperationsImpl(this);
         this.subscriptions = new SubscriptionOperationsImpl(this);
+        this.apiVersion = "2014-10-01";
+        this.longRunningOperationInitialTimeout = -1;
+        this.longRunningOperationRetryTimeout = -1;
     }
     
     /**
@@ -169,14 +218,11 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
-    * @param baseUri Required. The URI used as the base for all Service
-    * Management requests.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
+    * service requests.
     */
     @Inject
     public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -202,12 +248,9 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create an Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Azure Service Management API uses mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure. No anonymous requests are allowed.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -225,9 +268,34 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
+    * service requests.
+    * @param apiVersion Optional. Gets the API version.
+    * @param longRunningOperationInitialTimeout Required. Gets or sets the
+    * initial timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
+    * timeout for Long Running Operations.
+    */
+    public ManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.apiVersion = apiVersion;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the ManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected ManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new ManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+        return new ManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
     }
     
     /**
@@ -308,8 +376,14 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/operations/";
+        url = url + URLEncoder.encode(requestId, "UTF-8");
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/operations/" + requestId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -318,12 +392,13 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -347,57 +422,59 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             // Create Result
             OperationStatusResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new OperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            if (operationElement != null) {
-                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                if (idElement != null) {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    result.setId(idInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new OperationStatusResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                if (statusElement != null) {
-                    OperationStatus statusInstance;
-                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                    result.setStatus(statusInstance);
-                }
-                
-                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                if (httpStatusCodeElement != null) {
-                    Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                    result.setHttpStatusCode(httpStatusCodeInstance);
-                }
-                
-                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                if (errorElement != null) {
-                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
-                    result.setError(errorInstance);
-                    
-                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    if (codeElement != null) {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        errorInstance.setCode(codeInstance);
+                Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
+                if (operationElement != null) {
+                    Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
+                    if (idElement != null) {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setId(idInstance);
                     }
                     
-                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    if (messageElement != null) {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
+                    Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
+                        OperationStatus statusInstance;
+                        statusInstance = OperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        result.setStatus(statusInstance);
+                    }
+                    
+                    Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                    if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
+                        Integer httpStatusCodeInstance;
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
+                        result.setHttpStatusCode(httpStatusCodeInstance);
+                    }
+                    
+                    Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
+                    if (errorElement != null) {
+                        OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
+                        result.setError(errorInstance);
+                        
+                        Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                        if (codeElement != null) {
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            errorInstance.setCode(codeInstance);
+                        }
+                        
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                        if (messageElement != null) {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

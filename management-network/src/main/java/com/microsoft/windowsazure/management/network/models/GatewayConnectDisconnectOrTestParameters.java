@@ -74,4 +74,28 @@ public class GatewayConnectDisconnectOrTestParameters {
     public void setOperation(final GatewayConnectionUpdateOperation operationValue) {
         this.operation = operationValue;
     }
+    
+    /**
+    * Initializes a new instance of the
+    * GatewayConnectDisconnectOrTestParameters class.
+    *
+    */
+    public GatewayConnectDisconnectOrTestParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the
+    * GatewayConnectDisconnectOrTestParameters class with required arguments.
+    *
+    * @param operation Specifies the operation to perform on the connection.
+    * Can be set to Connect, Disconnect, or Test to connect to a local
+    * network, disconnect from a local network, or test the gateway's
+    * connection to a local network site.
+    */
+    public GatewayConnectDisconnectOrTestParameters(GatewayConnectionUpdateOperation operation) {
+        if (operation == null) {
+            throw new NullPointerException("operation");
+        }
+        this.setOperation(operation);
+    }
 }

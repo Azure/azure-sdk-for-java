@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -221,8 +222,29 @@ public class VirtualMachineUpdateParameters {
     *
     */
     public VirtualMachineUpdateParameters() {
-        this.configurationSets = new ArrayList<ConfigurationSet>();
-        this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
-        this.resourceExtensionReferences = new ArrayList<ResourceExtensionReference>();
+        this.setConfigurationSets(new LazyArrayList<ConfigurationSet>());
+        this.setDataVirtualHardDisks(new LazyArrayList<DataVirtualHardDisk>());
+        this.setResourceExtensionReferences(new LazyArrayList<ResourceExtensionReference>());
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineUpdateParameters class
+    * with required arguments.
+    *
+    * @param roleName Specifies the name for the virtual machine. The name must
+    * be unique within the deployment.
+    * @param oSVirtualHardDisk Contains the parameters Azure used to create the
+    * operating system disk for the virtual machine.
+    */
+    public VirtualMachineUpdateParameters(String roleName, OSVirtualHardDisk oSVirtualHardDisk) {
+        this();
+        if (roleName == null) {
+            throw new NullPointerException("roleName");
+        }
+        if (oSVirtualHardDisk == null) {
+            throw new NullPointerException("oSVirtualHardDisk");
+        }
+        this.setRoleName(roleName);
+        this.setOSVirtualHardDisk(oSVirtualHardDisk);
     }
 }

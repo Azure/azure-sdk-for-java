@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     */
     public WebSpacesListGeoRegionsResponse() {
         super();
-        this.geoRegions = new ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>();
+        this.setGeoRegions(new LazyArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>());
     }
     
     /**
@@ -106,13 +107,13 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
             this.name = nameValue;
         }
         
-        private int sortOrder;
+        private Integer sortOrder;
         
         /**
         * Optional. Sort order for the geo region.
         * @return The SortOrder value.
         */
-        public int getSortOrder() {
+        public Integer getSortOrder() {
             return this.sortOrder;
         }
         
@@ -120,7 +121,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         * Optional. Sort order for the geo region.
         * @param sortOrderValue The SortOrder value.
         */
-        public void setSortOrder(final int sortOrderValue) {
+        public void setSortOrder(final Integer sortOrderValue) {
             this.sortOrder = sortOrderValue;
         }
     }

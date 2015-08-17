@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -246,6 +247,24 @@ public class RoleInstance {
         this.iPAddress = iPAddressValue;
     }
     
+    private ArrayList<NetworkInterfaceInstance> networkInterfaces;
+    
+    /**
+    * Optional.
+    * @return The NetworkInterfaces value.
+    */
+    public ArrayList<NetworkInterfaceInstance> getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+    
+    /**
+    * Optional.
+    * @param networkInterfacesValue The NetworkInterfaces value.
+    */
+    public void setNetworkInterfaces(final ArrayList<NetworkInterfaceInstance> networkInterfacesValue) {
+        this.networkInterfaces = networkInterfacesValue;
+    }
+    
     private RoleInstancePowerState powerState;
     
     /**
@@ -262,6 +281,28 @@ public class RoleInstance {
     */
     public void setPowerState(final RoleInstancePowerState powerStateValue) {
         this.powerState = powerStateValue;
+    }
+    
+    private ArrayList<RoleInstance.PublicIP> publicIPs;
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @return The PublicIPs value.
+    */
+    public ArrayList<RoleInstance.PublicIP> getPublicIPs() {
+        return this.publicIPs;
+    }
+    
+    /**
+    * Optional. Optional. A set of public IPs. Currently, only one additional
+    * public IP per role is supported in an IaaS deployment. The IP address is
+    * in addition to the default VIP for the deployment.
+    * @param publicIPsValue The PublicIPs value.
+    */
+    public void setPublicIPs(final ArrayList<RoleInstance.PublicIP> publicIPsValue) {
+        this.publicIPs = publicIPsValue;
     }
     
     private String remoteAccessCertificateThumbprint;
@@ -329,7 +370,114 @@ public class RoleInstance {
     *
     */
     public RoleInstance() {
-        this.instanceEndpoints = new ArrayList<InstanceEndpoint>();
-        this.resourceExtensionStatusList = new ArrayList<ResourceExtensionStatus>();
+        this.setInstanceEndpoints(new LazyArrayList<InstanceEndpoint>());
+        this.setNetworkInterfaces(new LazyArrayList<NetworkInterfaceInstance>());
+        this.setPublicIPs(new LazyArrayList<RoleInstance.PublicIP>());
+        this.setResourceExtensionStatusList(new LazyArrayList<ResourceExtensionStatus>());
+    }
+    
+    /**
+    * An additional public IP that will be created for the role. The public IP
+    * will be an additional IP for the role. The role continues to be
+    * addressable via the default deployment VIP.
+    */
+    public static class PublicIP {
+        private InetAddress address;
+        
+        /**
+        * Optional. The address of the public IP.
+        * @return The Address value.
+        */
+        public InetAddress getAddress() {
+            return this.address;
+        }
+        
+        /**
+        * Optional. The address of the public IP.
+        * @param addressValue The Address value.
+        */
+        public void setAddress(final InetAddress addressValue) {
+            this.address = addressValue;
+        }
+        
+        private String domainNameLabel;
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @return The DomainNameLabel value.
+        */
+        public String getDomainNameLabel() {
+            return this.domainNameLabel;
+        }
+        
+        /**
+        * Optional. The DNS name of the public IP.
+        * @param domainNameLabelValue The DomainNameLabel value.
+        */
+        public void setDomainNameLabel(final String domainNameLabelValue) {
+            this.domainNameLabel = domainNameLabelValue;
+        }
+        
+        private ArrayList<String> fqdns;
+        
+        /**
+        * Optional. The list of FQDN for the public IP.
+        * @return The Fqdns value.
+        */
+        public ArrayList<String> getFqdns() {
+            return this.fqdns;
+        }
+        
+        /**
+        * Optional. The list of FQDN for the public IP.
+        * @param fqdnsValue The Fqdns value.
+        */
+        public void setFqdns(final ArrayList<String> fqdnsValue) {
+            this.fqdns = fqdnsValue;
+        }
+        
+        private Integer idleTimeoutInMinutes;
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @return The IdleTimeoutInMinutes value.
+        */
+        public Integer getIdleTimeoutInMinutes() {
+            return this.idleTimeoutInMinutes;
+        }
+        
+        /**
+        * Optional. The idle timeout in minutes for this Public IP.
+        * @param idleTimeoutInMinutesValue The IdleTimeoutInMinutes value.
+        */
+        public void setIdleTimeoutInMinutes(final Integer idleTimeoutInMinutesValue) {
+            this.idleTimeoutInMinutes = idleTimeoutInMinutesValue;
+        }
+        
+        private String name;
+        
+        /**
+        * Optional. The name of the public IP.
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * Optional. The name of the public IP.
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
+        
+        /**
+        * Initializes a new instance of the PublicIP class.
+        *
+        */
+        public PublicIP() {
+            this.setFqdns(new LazyArrayList<String>());
+        }
     }
 }

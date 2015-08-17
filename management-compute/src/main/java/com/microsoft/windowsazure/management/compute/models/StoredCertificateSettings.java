@@ -70,4 +70,31 @@ public class StoredCertificateSettings {
     public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
+    
+    /**
+    * Initializes a new instance of the StoredCertificateSettings class.
+    *
+    */
+    public StoredCertificateSettings() {
+    }
+    
+    /**
+    * Initializes a new instance of the StoredCertificateSettings class with
+    * required arguments.
+    *
+    * @param storeName Specifies the name of the certificate store from which
+    * to retrieve certificates.  For example, "My".
+    * @param thumbprint Specifies the thumbprint of the certificate to be
+    * provisioned. The thumbprint must specify an existing service certificate.
+    */
+    public StoredCertificateSettings(String storeName, String thumbprint) {
+        if (storeName == null) {
+            throw new NullPointerException("storeName");
+        }
+        if (thumbprint == null) {
+            throw new NullPointerException("thumbprint");
+        }
+        this.setStoreName(storeName);
+        this.setThumbprint(thumbprint);
+    }
 }

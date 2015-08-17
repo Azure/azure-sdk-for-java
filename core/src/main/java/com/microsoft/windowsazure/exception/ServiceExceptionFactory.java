@@ -84,8 +84,8 @@ public abstract class ServiceExceptionFactory {
         exception.setServiceName(cause.getServiceName());
         exception.setHttpStatusCode(cause.getHttpStatusCode());
         exception.setHttpReasonPhrase(cause.getHttpReasonPhrase());
-        exception.setErrorCode(cause.getErrorCode());
-        exception.setErrorMessage(cause.getErrorMessage());
+        exception.getError().setCode(cause.getError().getCode());
+        exception.getError().setMessage(cause.getError().getMessage());
         exception.setRawResponseBody(cause.getRawResponseBody());
         exception.setErrorValues(cause.getErrorValues());
         return exception;

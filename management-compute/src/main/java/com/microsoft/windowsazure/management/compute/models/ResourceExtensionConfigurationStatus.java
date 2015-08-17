@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -206,6 +207,6 @@ public class ResourceExtensionConfigurationStatus {
     *
     */
     public ResourceExtensionConfigurationStatus() {
-        this.subStatusList = new ArrayList<ResourceExtensionSubStatus>();
+        this.setSubStatusList(new LazyArrayList<ResourceExtensionSubStatus>());
     }
 }

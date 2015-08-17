@@ -80,4 +80,34 @@ public class ServiceCertificateGetParameters {
     public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
         this.thumbprintAlgorithm = thumbprintAlgorithmValue;
     }
+    
+    /**
+    * Initializes a new instance of the ServiceCertificateGetParameters class.
+    *
+    */
+    public ServiceCertificateGetParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the ServiceCertificateGetParameters class
+    * with required arguments.
+    *
+    * @param serviceName The DNS prefix name of your service.
+    * @param thumbprintAlgorithm The algorithm for the certificate's thumbprint.
+    * @param thumbprint The hexadecimal representation of the thumbprint.
+    */
+    public ServiceCertificateGetParameters(String serviceName, String thumbprintAlgorithm, String thumbprint) {
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (thumbprintAlgorithm == null) {
+            throw new NullPointerException("thumbprintAlgorithm");
+        }
+        if (thumbprint == null) {
+            throw new NullPointerException("thumbprint");
+        }
+        this.setServiceName(serviceName);
+        this.setThumbprintAlgorithm(thumbprintAlgorithm);
+        this.setThumbprint(thumbprint);
+    }
 }

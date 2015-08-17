@@ -46,4 +46,25 @@ public class NetworkGetConfigurationResponse extends OperationResponse {
     public void setConfiguration(final String configurationValue) {
         this.configuration = configurationValue;
     }
+    
+    /**
+    * Initializes a new instance of the NetworkGetConfigurationResponse class.
+    *
+    */
+    public NetworkGetConfigurationResponse() {
+        super();
+    }
+    
+    /**
+    * Initializes a new instance of the NetworkGetConfigurationResponse class
+    * with required arguments.
+    *
+    * @param configuration The network configuration for this subscription.
+    */
+    public NetworkGetConfigurationResponse(String configuration) {
+        if (configuration == null) {
+            throw new NullPointerException("configuration");
+        }
+        this.setConfiguration(configuration);
+    }
 }

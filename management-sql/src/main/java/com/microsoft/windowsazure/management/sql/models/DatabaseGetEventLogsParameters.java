@@ -26,13 +26,13 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.util.Calendar;
 
 /**
-* Parameters supplied to the get database event logs operation.
+* Represents the parameters supplied to the Get Database Event Logs operation.
 */
 public class DatabaseGetEventLogsParameters {
     private String eventTypes;
     
     /**
-    * Required. Gets or sets the event types.
+    * Required. Gets or sets the event types to retrieve.
     * @return The EventTypes value.
     */
     public String getEventTypes() {
@@ -40,7 +40,7 @@ public class DatabaseGetEventLogsParameters {
     }
     
     /**
-    * Required. Gets or sets the event types.
+    * Required. Gets or sets the event types to retrieve.
     * @param eventTypesValue The EventTypes value.
     */
     public void setEventTypes(final String eventTypesValue) {
@@ -68,7 +68,7 @@ public class DatabaseGetEventLogsParameters {
     private Calendar startDate;
     
     /**
-    * Required. Gets or sets the start date.
+    * Required. Gets or sets the start date for the event log.
     * @return The StartDate value.
     */
     public Calendar getStartDate() {
@@ -76,10 +76,34 @@ public class DatabaseGetEventLogsParameters {
     }
     
     /**
-    * Required. Gets or sets the start date.
+    * Required. Gets or sets the start date for the event log.
     * @param startDateValue The StartDate value.
     */
     public void setStartDate(final Calendar startDateValue) {
         this.startDate = startDateValue;
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseGetEventLogsParameters class.
+    *
+    */
+    public DatabaseGetEventLogsParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseGetEventLogsParameters class
+    * with required arguments.
+    *
+    * @param startDate Gets or sets the start date for the event log.
+    * @param intervalSizeInMinutes Gets or sets the interval size in minutes.
+    * @param eventTypes Gets or sets the event types to retrieve.
+    */
+    public DatabaseGetEventLogsParameters(Calendar startDate, int intervalSizeInMinutes, String eventTypes) {
+        if (eventTypes == null) {
+            throw new NullPointerException("eventTypes");
+        }
+        this.setStartDate(startDate);
+        this.setIntervalSizeInMinutes(intervalSizeInMinutes);
+        this.setEventTypes(eventTypes);
     }
 }

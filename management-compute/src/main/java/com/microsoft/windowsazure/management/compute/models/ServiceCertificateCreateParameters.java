@@ -84,4 +84,31 @@ public class ServiceCertificateCreateParameters {
     public void setPassword(final String passwordValue) {
         this.password = passwordValue;
     }
+    
+    /**
+    * Initializes a new instance of the ServiceCertificateCreateParameters
+    * class.
+    *
+    */
+    public ServiceCertificateCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the ServiceCertificateCreateParameters
+    * class with required arguments.
+    *
+    * @param data The pfx or cer file.
+    * @param certificateFormat The service certificate format. Azure supports
+    * the pfx and cer file formats.
+    */
+    public ServiceCertificateCreateParameters(byte[] data, CertificateFormat certificateFormat) {
+        if (data == null) {
+            throw new NullPointerException("data");
+        }
+        if (certificateFormat == null) {
+            throw new NullPointerException("certificateFormat");
+        }
+        this.setData(data);
+        this.setCertificateFormat(certificateFormat);
+    }
 }

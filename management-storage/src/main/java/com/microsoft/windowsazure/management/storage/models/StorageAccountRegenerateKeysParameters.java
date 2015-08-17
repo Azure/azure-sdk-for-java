@@ -62,4 +62,30 @@ public class StorageAccountRegenerateKeysParameters {
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
+    
+    /**
+    * Initializes a new instance of the StorageAccountRegenerateKeysParameters
+    * class.
+    *
+    */
+    public StorageAccountRegenerateKeysParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the StorageAccountRegenerateKeysParameters
+    * class with required arguments.
+    *
+    * @param name The name of the desired storage account.
+    * @param keyType Specifies which key to regenerate.
+    */
+    public StorageAccountRegenerateKeysParameters(String name, StorageKeyType keyType) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        if (keyType == null) {
+            throw new NullPointerException("keyType");
+        }
+        this.setName(name);
+        this.setKeyType(keyType);
+    }
 }

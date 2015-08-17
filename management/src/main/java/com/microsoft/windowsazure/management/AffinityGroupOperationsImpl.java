@@ -34,15 +34,19 @@ import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameter
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
+import com.microsoft.windowsazure.management.models.ComputeCapabilities;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -162,8 +166,13 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/affinitygroups";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -172,13 +181,14 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -239,6 +249,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -308,8 +319,14 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/affinitygroups/";
+        url = url + URLEncoder.encode(affinityGroupName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups/" + affinityGroupName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -318,12 +335,13 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -346,6 +364,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -421,8 +440,14 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/affinitygroups/";
+        url = url + URLEncoder.encode(affinityGroupName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups/" + affinityGroupName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -431,12 +456,13 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -460,98 +486,129 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             // Create Result
             AffinityGroupGetResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new AffinityGroupGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element affinityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-            if (affinityGroupElement != null) {
-                Element nameElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                if (nameElement != null) {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    result.setName(nameInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new AffinityGroupGetResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element labelElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                if (labelElement != null) {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
-                    result.setLabel(labelInstance);
-                }
-                
-                Element descriptionElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                if (descriptionElement != null) {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement.getTextContent();
-                    result.setDescription(descriptionInstance);
-                }
-                
-                Element locationElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                if (locationElement != null) {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    result.setLocation(locationInstance);
-                }
-                
-                Element hostedServicesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "HostedServices");
-                if (hostedServicesSequenceElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostedServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostedService").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostedServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostedService").get(i1));
-                        AffinityGroupGetResponse.HostedServiceReference hostedServiceInstance = new AffinityGroupGetResponse.HostedServiceReference();
-                        result.getHostedServices().add(hostedServiceInstance);
+                Element affinityGroupElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                if (affinityGroupElement != null) {
+                    Element nameElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                    if (nameElement != null) {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                    
+                    Element labelElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                    if (labelElement != null) {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
+                        result.setLabel(labelInstance);
+                    }
+                    
+                    Element descriptionElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                    if (descriptionElement != null) {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement.getTextContent();
+                        result.setDescription(descriptionInstance);
+                    }
+                    
+                    Element locationElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                    if (locationElement != null) {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        result.setLocation(locationInstance);
+                    }
+                    
+                    Element hostedServicesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "HostedServices");
+                    if (hostedServicesSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostedServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostedService").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostedServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostedService").get(i1));
+                            AffinityGroupGetResponse.HostedServiceReference hostedServiceInstance = new AffinityGroupGetResponse.HostedServiceReference();
+                            result.getHostedServices().add(hostedServiceInstance);
+                            
+                            Element urlElement = XmlUtility.getElementByTagNameNS(hostedServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
+                            if (urlElement != null) {
+                                URI urlInstance;
+                                urlInstance = new URI(urlElement.getTextContent());
+                                hostedServiceInstance.setUri(urlInstance);
+                            }
+                            
+                            Element serviceNameElement = XmlUtility.getElementByTagNameNS(hostedServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
+                            if (serviceNameElement != null) {
+                                String serviceNameInstance;
+                                serviceNameInstance = serviceNameElement.getTextContent();
+                                hostedServiceInstance.setServiceName(serviceNameInstance);
+                            }
+                        }
+                    }
+                    
+                    Element storageServicesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "StorageServices");
+                    if (storageServicesSequenceElement != null) {
+                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").size(); i2 = i2 + 1) {
+                            org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").get(i2));
+                            AffinityGroupGetResponse.StorageServiceReference storageServiceInstance = new AffinityGroupGetResponse.StorageServiceReference();
+                            result.getStorageServices().add(storageServiceInstance);
+                            
+                            Element urlElement2 = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
+                            if (urlElement2 != null) {
+                                URI urlInstance2;
+                                urlInstance2 = new URI(urlElement2.getTextContent());
+                                storageServiceInstance.setUri(urlInstance2);
+                            }
+                            
+                            Element serviceNameElement2 = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
+                            if (serviceNameElement2 != null) {
+                                String serviceNameInstance2;
+                                serviceNameInstance2 = serviceNameElement2.getTextContent();
+                                storageServiceInstance.setServiceName(serviceNameInstance2);
+                            }
+                        }
+                    }
+                    
+                    Element capabilitiesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
+                    if (capabilitiesSequenceElement != null) {
+                        for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").size(); i3 = i3 + 1) {
+                            org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").get(i3));
+                            result.getCapabilities().add(capabilitiesElement.getTextContent());
+                        }
+                    }
+                    
+                    Element createdTimeElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
+                    if (createdTimeElement != null && createdTimeElement.getTextContent() != null && !createdTimeElement.getTextContent().isEmpty()) {
+                        Calendar createdTimeInstance;
+                        createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
+                        result.setCreatedTime(createdTimeInstance);
+                    }
+                    
+                    Element computeCapabilitiesElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "ComputeCapabilities");
+                    if (computeCapabilitiesElement != null) {
+                        ComputeCapabilities computeCapabilitiesInstance = new ComputeCapabilities();
+                        result.setComputeCapabilities(computeCapabilitiesInstance);
                         
-                        Element urlElement = XmlUtility.getElementByTagNameNS(hostedServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
-                        if (urlElement != null) {
-                            URI urlInstance;
-                            urlInstance = new URI(urlElement.getTextContent());
-                            hostedServiceInstance.setUri(urlInstance);
+                        Element virtualMachinesRoleSizesSequenceElement = XmlUtility.getElementByTagNameNS(computeCapabilitiesElement, "http://schemas.microsoft.com/windowsazure", "VirtualMachinesRoleSizes");
+                        if (virtualMachinesRoleSizesSequenceElement != null) {
+                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualMachinesRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i4 = i4 + 1) {
+                                org.w3c.dom.Element virtualMachinesRoleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualMachinesRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i4));
+                                computeCapabilitiesInstance.getVirtualMachinesRoleSizes().add(virtualMachinesRoleSizesElement.getTextContent());
+                            }
                         }
                         
-                        Element serviceNameElement = XmlUtility.getElementByTagNameNS(hostedServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
-                        if (serviceNameElement != null) {
-                            String serviceNameInstance;
-                            serviceNameInstance = serviceNameElement.getTextContent();
-                            hostedServiceInstance.setServiceName(serviceNameInstance);
+                        Element webWorkerRoleSizesSequenceElement = XmlUtility.getElementByTagNameNS(computeCapabilitiesElement, "http://schemas.microsoft.com/windowsazure", "WebWorkerRoleSizes");
+                        if (webWorkerRoleSizesSequenceElement != null) {
+                            for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(webWorkerRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i5 = i5 + 1) {
+                                org.w3c.dom.Element webWorkerRoleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(webWorkerRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i5));
+                                computeCapabilitiesInstance.getWebWorkerRoleSizes().add(webWorkerRoleSizesElement.getTextContent());
+                            }
                         }
                     }
                 }
                 
-                Element storageServicesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "StorageServices");
-                if (storageServicesSequenceElement != null) {
-                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").size(); i2 = i2 + 1) {
-                        org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").get(i2));
-                        AffinityGroupGetResponse.StorageServiceReference storageServiceInstance = new AffinityGroupGetResponse.StorageServiceReference();
-                        result.getStorageServices().add(storageServiceInstance);
-                        
-                        Element urlElement2 = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
-                        if (urlElement2 != null) {
-                            URI urlInstance2;
-                            urlInstance2 = new URI(urlElement2.getTextContent());
-                            storageServiceInstance.setUri(urlInstance2);
-                        }
-                        
-                        Element serviceNameElement2 = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
-                        if (serviceNameElement2 != null) {
-                            String serviceNameInstance2;
-                            serviceNameInstance2 = serviceNameElement2.getTextContent();
-                            storageServiceInstance.setServiceName(serviceNameInstance2);
-                        }
-                    }
-                }
-                
-                Element capabilitiesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
-                if (capabilitiesSequenceElement != null) {
-                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").size(); i3 = i3 + 1) {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").get(i3));
-                        result.getCapabilities().add(capabilitiesElement.getTextContent());
-                    }
-                }
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -616,8 +673,13 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/affinitygroups";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -626,12 +688,13 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -655,58 +718,89 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             // Create Result
             AffinityGroupListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new AffinityGroupListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element affinityGroupsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AffinityGroups");
-            if (affinityGroupsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(affinityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(affinityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup").get(i1));
-                    AffinityGroupListResponse.AffinityGroup affinityGroupInstance = new AffinityGroupListResponse.AffinityGroup();
-                    result.getAffinityGroups().add(affinityGroupInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        affinityGroupInstance.setName(nameInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
-                        affinityGroupInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element descriptionElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                    if (descriptionElement != null) {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        affinityGroupInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    Element locationElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                    if (locationElement != null) {
-                        String locationInstance;
-                        locationInstance = locationElement.getTextContent();
-                        affinityGroupInstance.setLocation(locationInstance);
-                    }
-                    
-                    Element capabilitiesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
-                    if (capabilitiesSequenceElement != null) {
-                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").size(); i2 = i2 + 1) {
-                            org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").get(i2));
-                            affinityGroupInstance.getCapabilities().add(capabilitiesElement.getTextContent());
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new AffinityGroupListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element affinityGroupsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AffinityGroups");
+                if (affinityGroupsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(affinityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(affinityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup").get(i1));
+                        AffinityGroupListResponse.AffinityGroup affinityGroupInstance = new AffinityGroupListResponse.AffinityGroup();
+                        result.getAffinityGroups().add(affinityGroupInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            affinityGroupInstance.setName(nameInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
+                            affinityGroupInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element descriptionElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                        if (descriptionElement != null) {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionElement.getTextContent();
+                            affinityGroupInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            affinityGroupInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element capabilitiesSequenceElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
+                        if (capabilitiesSequenceElement != null) {
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").get(i2));
+                                affinityGroupInstance.getCapabilities().add(capabilitiesElement.getTextContent());
+                            }
+                        }
+                        
+                        Element createdTimeElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
+                        if (createdTimeElement != null && createdTimeElement.getTextContent() != null && !createdTimeElement.getTextContent().isEmpty()) {
+                            Calendar createdTimeInstance;
+                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
+                            affinityGroupInstance.setCreatedTime(createdTimeInstance);
+                        }
+                        
+                        Element computeCapabilitiesElement = XmlUtility.getElementByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "ComputeCapabilities");
+                        if (computeCapabilitiesElement != null) {
+                            ComputeCapabilities computeCapabilitiesInstance = new ComputeCapabilities();
+                            affinityGroupInstance.setComputeCapabilities(computeCapabilitiesInstance);
+                            
+                            Element virtualMachinesRoleSizesSequenceElement = XmlUtility.getElementByTagNameNS(computeCapabilitiesElement, "http://schemas.microsoft.com/windowsazure", "VirtualMachinesRoleSizes");
+                            if (virtualMachinesRoleSizesSequenceElement != null) {
+                                for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualMachinesRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i3 = i3 + 1) {
+                                    org.w3c.dom.Element virtualMachinesRoleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualMachinesRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i3));
+                                    computeCapabilitiesInstance.getVirtualMachinesRoleSizes().add(virtualMachinesRoleSizesElement.getTextContent());
+                                }
+                            }
+                            
+                            Element webWorkerRoleSizesSequenceElement = XmlUtility.getElementByTagNameNS(computeCapabilitiesElement, "http://schemas.microsoft.com/windowsazure", "WebWorkerRoleSizes");
+                            if (webWorkerRoleSizesSequenceElement != null) {
+                                for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(webWorkerRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i4 = i4 + 1) {
+                                    org.w3c.dom.Element webWorkerRoleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(webWorkerRoleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i4));
+                                    computeCapabilitiesInstance.getWebWorkerRoleSizes().add(webWorkerRoleSizesElement.getTextContent());
+                                }
+                            }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -798,8 +892,14 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/affinitygroups/";
+        url = url + URLEncoder.encode(affinityGroupName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/affinitygroups/" + affinityGroupName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -808,13 +908,14 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Serialize Request
         String requestContent = null;
@@ -867,6 +968,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {

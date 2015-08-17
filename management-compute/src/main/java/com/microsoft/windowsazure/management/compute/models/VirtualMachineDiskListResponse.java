@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     */
     public VirtualMachineDiskListResponse() {
         super();
-        this.disks = new ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>();
+        this.setDisks(new LazyArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>());
     }
     
     /**
@@ -93,6 +94,24 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         */
         public void setAffinityGroup(final String affinityGroupValue) {
             this.affinityGroup = affinityGroupValue;
+        }
+        
+        private String iOType;
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @return The IOType value.
+        */
+        public String getIOType() {
+            return this.iOType;
+        }
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @param iOTypeValue The IOType value.
+        */
+        public void setIOType(final String iOTypeValue) {
+            this.iOType = iOTypeValue;
         }
         
         private Boolean isCorrupted;

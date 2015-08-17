@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
     */
     public VirtualMachineOSImageListResponse() {
         super();
-        this.images = new ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage>();
+        this.setImages(new LazyArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage>());
     }
     
     /**
@@ -160,6 +161,26 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
             this.eula = eulaValue;
         }
         
+        private String iconUri;
+        
+        /**
+        * Optional. Gets or sets the URI to the icon for this Operating System
+        * Image.
+        * @return The IconUri value.
+        */
+        public String getIconUri() {
+            return this.iconUri;
+        }
+        
+        /**
+        * Optional. Gets or sets the URI to the icon for this Operating System
+        * Image.
+        * @param iconUriValue The IconUri value.
+        */
+        public void setIconUri(final String iconUriValue) {
+            this.iconUri = iconUriValue;
+        }
+        
         private String imageFamily;
         
         /**
@@ -176,6 +197,24 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         */
         public void setImageFamily(final String imageFamilyValue) {
             this.imageFamily = imageFamilyValue;
+        }
+        
+        private String iOType;
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @return The IOType value.
+        */
+        public String getIOType() {
+            return this.iOType;
+        }
+        
+        /**
+        * Optional. Gets or sets the IO type.
+        * @param iOTypeValue The IOType value.
+        */
+        public void setIOType(final String iOTypeValue) {
+            this.iOType = iOTypeValue;
         }
         
         private Boolean isPremium;
@@ -454,7 +493,27 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
             this.recommendedVMSize = recommendedVMSizeValue;
         }
         
-        private URI smallIconUri;
+        private Boolean showInGui;
+        
+        /**
+        * Optional. Indicates whether the image should be shown in the Azure
+        * portal.
+        * @return The ShowInGui value.
+        */
+        public Boolean isShowInGui() {
+            return this.showInGui;
+        }
+        
+        /**
+        * Optional. Indicates whether the image should be shown in the Azure
+        * portal.
+        * @param showInGuiValue The ShowInGui value.
+        */
+        public void setShowInGui(final Boolean showInGuiValue) {
+            this.showInGui = showInGuiValue;
+        }
+        
+        private String smallIconUri;
         
         /**
         * Optional. Specifies the URI to the small icon that is displayed when
@@ -463,7 +522,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         * higher.
         * @return The SmallIconUri value.
         */
-        public URI getSmallIconUri() {
+        public String getSmallIconUri() {
             return this.smallIconUri;
         }
         
@@ -474,7 +533,7 @@ public class VirtualMachineOSImageListResponse extends OperationResponse impleme
         * higher.
         * @param smallIconUriValue The SmallIconUri value.
         */
-        public void setSmallIconUri(final URI smallIconUriValue) {
+        public void setSmallIconUri(final String smallIconUriValue) {
             this.smallIconUri = smallIconUriValue;
         }
     }

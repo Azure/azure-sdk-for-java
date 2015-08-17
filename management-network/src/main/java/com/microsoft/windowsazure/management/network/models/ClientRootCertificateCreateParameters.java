@@ -43,4 +43,26 @@ public class ClientRootCertificateCreateParameters {
     public void setCertificate(final String certificateValue) {
         this.certificate = certificateValue;
     }
+    
+    /**
+    * Initializes a new instance of the ClientRootCertificateCreateParameters
+    * class.
+    *
+    */
+    public ClientRootCertificateCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the ClientRootCertificateCreateParameters
+    * class with required arguments.
+    *
+    * @param certificate The new client root certificate to upload, represented
+    * as a hex-encoded string.
+    */
+    public ClientRootCertificateCreateParameters(String certificate) {
+        if (certificate == null) {
+            throw new NullPointerException("certificate");
+        }
+        this.setCertificate(certificate);
+    }
 }

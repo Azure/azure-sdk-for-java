@@ -68,4 +68,25 @@ public class DeploymentGetPackageParameters {
     public void setOverwriteExisting(final Boolean overwriteExistingValue) {
         this.overwriteExisting = overwriteExistingValue;
     }
+    
+    /**
+    * Initializes a new instance of the DeploymentGetPackageParameters class.
+    *
+    */
+    public DeploymentGetPackageParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DeploymentGetPackageParameters class
+    * with required arguments.
+    *
+    * @param containerUri Specifies the URI of the container to which the
+    * packages will be saved.
+    */
+    public DeploymentGetPackageParameters(URI containerUri) {
+        if (containerUri == null) {
+            throw new NullPointerException("containerUri");
+        }
+        this.setContainerUri(containerUri);
+    }
 }

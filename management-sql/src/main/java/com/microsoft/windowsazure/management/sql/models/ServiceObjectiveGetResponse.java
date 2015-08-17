@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response containing the service objective for a given server and service
-* objective Id.
+* Response containing the service objective for a given Azure SQL Database
+* Server with matching service objective Id.
 */
 public class ServiceObjectiveGetResponse extends OperationResponse {
     private ServiceObjective serviceObjective;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the service objective for the given Azure SQL
+    * Database Server with matching service objective Id.  This object
+    * contains all the properties of the service objective.
     * @return The ServiceObjective value.
     */
     public ServiceObjective getServiceObjective() {
@@ -41,7 +43,9 @@ public class ServiceObjectiveGetResponse extends OperationResponse {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the service objective for the given Azure SQL
+    * Database Server with matching service objective Id.  This object
+    * contains all the properties of the service objective.
     * @param serviceObjectiveValue The ServiceObjective value.
     */
     public void setServiceObjective(final ServiceObjective serviceObjectiveValue) {

@@ -26,12 +26,12 @@ package com.microsoft.windowsazure.management.network.models;
 /**
 * Possible values for the Gateway Profile.
 */
-public enum GatewayProfile {
-    Small,
+public abstract class GatewayProfile {
+    public static final String SMALL = "Small";
     
-    Medium,
+    public static final String MEDIUM = "Medium";
     
-    Large,
+    public static final String LARGE = "Large";
     
-    ExtraLarge,
+    public static final String EXTRALARGE = "ExtraLarge";
 }

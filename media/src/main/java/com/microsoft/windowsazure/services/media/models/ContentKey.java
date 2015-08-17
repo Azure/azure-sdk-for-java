@@ -20,13 +20,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.InvalidParameterException;
 
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultEntityTypeActionOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.DefaultGetOperation;
@@ -34,8 +39,10 @@ import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOpe
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityTypeActionOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
 import com.microsoft.windowsazure.services.media.implementation.content.RebindContentKeyType;
 import com.sun.jersey.api.client.ClientResponse;
@@ -320,6 +327,111 @@ public final class ContentKey {
                 throw new RuntimeException(e);
             }
             return rebindContentKeyTypeJaxbElement.getValue();
+        }
+
+    }
+    
+    
+    public static KeyDeliveryUrlGetter getKeyDeliveryUrl(String contentKeyId, ContentKeyDeliveryType contentKeyDeliveryType) {
+        return new KeyDeliveryUrlGetter(contentKeyId, contentKeyDeliveryType);
+    }
+    
+    private static class KeyDeliveryUrlGetter extends
+            EntityOperationSingleResultBase<String> implements
+            EntityCreateOperation<String> {
+        /** The contentKeyId */
+        private final String contentKeyId;
+     
+        /** content Key delivery type */
+        private final ContentKeyDeliveryType contentKeyDeliveryType;
+        
+        public KeyDeliveryUrlGetter(String contentKeyId,
+                ContentKeyDeliveryType contentKeyDeliveryType) {
+            super(ENTITY_SET, String.class);
+            
+            this.contentKeyId = contentKeyId;
+            this.contentKeyDeliveryType = contentKeyDeliveryType;
+        }
+                
+        @Override
+        public String getUri() {
+            String escapedEntityId;
+            try {
+                escapedEntityId = URLEncoder.encode(contentKeyId, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new InvalidParameterException(
+                        "UTF-8 encoding is not supported.");
+            }
+            return String.format("%s('%s')/GetKeyDeliveryUrl", ENTITY_SET, escapedEntityId);
+        }
+
+        @Override
+        public Object getRequestContents() throws ServiceException {
+            JSONObject document = new JSONObject();
+            try {
+                document.put("keyDeliveryType", contentKeyDeliveryType.getCode());
+            } catch (JSONException e) {
+                throw new ServiceException("JSON Exception", e);
+            }
+            return document.toString();
+        }
+        
+        @Override
+        public MediaType getContentType() {
+            return MediaType.APPLICATION_JSON_TYPE;
+        }
+        
+        @Override
+        public MediaType getAcceptType() {
+            return MediaType.APPLICATION_JSON_TYPE;
+        }
+
+        @Override
+        public Object processResponse(Object rawResponse) throws ServiceException {
+            try {
+                JSONObject object = new JSONObject(rawResponse.toString());
+                return object.getString("value");
+            } catch (JSONException e) {
+                throw new ServiceException(e);
+            }
+        }
+    }    
+    
+    /** Updates a ContentKey with an ContentKeyAuthorizationPolicyId
+     * 
+     * @param contentKeyId  The id of the ContentKey to be updated.
+     * @param contentKeyAuthorizationPolicyId The id of the ContentKeyAuthorizationPolicy
+     * @return Entity Operation
+     */
+    public static Updater update(String contentKeyId, String contentKeyAuthorizationPolicyId) {
+        return new Updater(contentKeyId, contentKeyAuthorizationPolicyId);
+    }
+    
+    public static class Updater extends EntityOperationBase implements
+        EntityUpdateOperation {
+        
+        private String contentKeyAuthorizationPolicyId;
+        
+        protected Updater(String contentKeyId, String contentKeyAuthorizationPolicyId) {
+            super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET,
+                    contentKeyId));            
+            this.contentKeyAuthorizationPolicyId = contentKeyAuthorizationPolicyId;
+        }
+        
+        @Override
+        public MediaType getContentType() {
+            return MediaType.APPLICATION_JSON_TYPE;
+        }
+        
+        @Override
+        public Object getRequestContents() {
+            JSONObject document = new JSONObject();
+            try {
+                document.put("AuthorizationPolicyId", contentKeyAuthorizationPolicyId);
+            } catch (JSONException e) {
+                throw new RuntimeException("JSON Exception", e);
+            }
+            return document.toString();
         }
 
     }

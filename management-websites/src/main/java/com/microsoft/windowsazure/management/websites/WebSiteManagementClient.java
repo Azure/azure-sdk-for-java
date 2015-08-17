@@ -45,29 +45,54 @@ import org.xml.sax.SAXException;
 */
 public interface WebSiteManagementClient extends Closeable, FilterableService<WebSiteManagementClient> {
     /**
-    * The URI used as the base for all Service Management requests.
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    String getApiVersion();
+    
+    /**
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     URI getBaseUri();
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials();
     
     /**
-    * Operations for managing the server farm in a web space.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    * @return The ServerFarmsOperations value.
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
     */
-    ServerFarmOperations getServerFarmsOperations();
+    int getLongRunningOperationInitialTimeout();
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue);
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    int getLongRunningOperationRetryTimeout();
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
+    /**
+    * Operations for managing web hosting plans beneath your subscription.
+    * @return The WebHostingPlansOperations value.
+    */
+    WebHostingPlanOperations getWebHostingPlansOperations();
     
     /**
     * Operations for managing the web sites in a web space.  (see

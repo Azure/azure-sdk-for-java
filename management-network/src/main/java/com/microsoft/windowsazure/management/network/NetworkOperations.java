@@ -54,7 +54,7 @@ public interface NetworkOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws IOException, ServiceException;
@@ -67,7 +67,7 @@ public interface NetworkOperations {
     *
     * @param parameters Required. Parameters supplied to the Set Network
     * Configuration operation.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     Future<OperationResponse> beginSettingConfigurationAsync(NetworkSetConfigurationParameters parameters);

@@ -42,21 +42,57 @@ import org.xml.sax.SAXException;
 */
 public interface NetworkManagementClient extends Closeable, FilterableService<NetworkManagementClient> {
     /**
-    * The URI used as the base for all SQL requests.
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    String getApiVersion();
+    
+    /**
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     URI getBaseUri();
     
     /**
-    * When you create an Azure subscription, it is uniquely identified by a
-    * subscription ID. The subscription ID forms part of the URI for every
-    * call that you make to the Service Management API. The Azure Service
-    * Management API uses mutual authentication of management certificates
-    * over SSL to ensure that a request made to the service is secure. No
-    * anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials();
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    int getLongRunningOperationInitialTimeout();
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue);
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    int getLongRunningOperationRetryTimeout();
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue);
+    /**
+    * The Application Gateway Management API includes operations for managing
+    * application gateways in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154113.aspx for
+    * more information)
+    * @return The ApplicationGatewaysOperations value.
+    */
+    ApplicationGatewayOperations getApplicationGatewaysOperations();
     
     /**
     * The Network Management API includes operations for managing the client
@@ -77,6 +113,13 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     GatewayOperations getGatewaysOperations();
     
     /**
+    * The Network Management API includes operations for managing the IP
+    * Forwarding for your roles and network interfaces in your subscription.
+    * @return The IPForwardingOperations value.
+    */
+    IPForwardingOperations getIPForwardingOperations();
+    
+    /**
     * The Network Management API includes operations for managing the virtual
     * networks for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for
@@ -86,6 +129,13 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     NetworkOperations getNetworksOperations();
     
     /**
+    * The Network Management API includes operations for managing the Network
+    * Security Groups for your subscription.
+    * @return The NetworkSecurityGroupsOperations value.
+    */
+    NetworkSecurityGroupOperations getNetworkSecurityGroupsOperations();
+    
+    /**
     * The Network Management API includes operations for managing the reserved
     * IPs for your subscription.
     * @return The ReservedIPsOperations value.
@@ -93,11 +143,25 @@ public interface NetworkManagementClient extends Closeable, FilterableService<Ne
     ReservedIPOperations getReservedIPsOperations();
     
     /**
+    * The Network Management API includes operations for managing the routes
+    * for your subscription.
+    * @return The RoutesOperations value.
+    */
+    RouteOperations getRoutesOperations();
+    
+    /**
     * The Network Management API includes operations for managing the static
     * IPs for your subscription.
     * @return The StaticIPsOperations value.
     */
     StaticIPOperations getStaticIPsOperations();
+    
+    /**
+    * The Network Management API includes operations for managing the Virtual
+    * IPs for your deployment.
+    * @return The VirtualIPsOperations value.
+    */
+    VirtualIPOperations getVirtualIPsOperations();
     
     /**
     * The Get Operation Status operation returns the status of the specified

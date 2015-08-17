@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.management.network;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkStaticIPAvailabilityResponse;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -130,10 +132,20 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/";
+        url = url + URLEncoder.encode(networkName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("op=checkavailability");
+        queryParameters.add("address=" + URLEncoder.encode(ipAddress.getHostAddress(), "UTF-8"));
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "?";
-        url = url + "op=checkavailability";
-        url = url + "&" + "address=" + URLEncoder.encode(ipAddress.getHostAddress(), "UTF-8");
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -142,12 +154,13 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -171,31 +184,33 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
             // Create Result
             NetworkStaticIPAvailabilityResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new NetworkStaticIPAvailabilityResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element addressAvailabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AddressAvailabilityResponse");
-            if (addressAvailabilityResponseElement != null) {
-                Element isAvailableElement = XmlUtility.getElementByTagNameNS(addressAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "IsAvailable");
-                if (isAvailableElement != null) {
-                    boolean isAvailableInstance;
-                    isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent().toLowerCase());
-                    result.setIsAvailable(isAvailableInstance);
-                }
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkStaticIPAvailabilityResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
                 
-                Element availableAddressesSequenceElement = XmlUtility.getElementByTagNameNS(addressAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "AvailableAddresses");
-                if (availableAddressesSequenceElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(availableAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AvailableAddress").size(); i1 = i1 + 1) {
-                        org.w3c.dom.Element availableAddressesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(availableAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AvailableAddress").get(i1));
-                        result.getAvailableAddresses().add(InetAddress.getByName(availableAddressesElement.getTextContent()));
+                Element addressAvailabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AddressAvailabilityResponse");
+                if (addressAvailabilityResponseElement != null) {
+                    Element isAvailableElement = XmlUtility.getElementByTagNameNS(addressAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "IsAvailable");
+                    if (isAvailableElement != null) {
+                        boolean isAvailableInstance;
+                        isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent().toLowerCase());
+                        result.setIsAvailable(isAvailableInstance);
+                    }
+                    
+                    Element availableAddressesSequenceElement = XmlUtility.getElementByTagNameNS(addressAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "AvailableAddresses");
+                    if (availableAddressesSequenceElement != null) {
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(availableAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AvailableAddress").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element availableAddressesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(availableAddressesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AvailableAddress").get(i1));
+                            result.getAvailableAddresses().add(InetAddress.getByName(availableAddressesElement.getTextContent()));
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

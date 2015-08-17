@@ -24,7 +24,8 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Parameters supplied to the Create Database operation.
+* Represents the parameters required to create a new database on a Azure SQL
+* Database Server.
 */
 public class DatabaseCreateParameters {
     private String collationName;
@@ -48,7 +49,8 @@ public class DatabaseCreateParameters {
     private String edition;
     
     /**
-    * Required. Gets or sets the edition for the new database.
+    * Optional. Gets or sets the edition for the new database.  The
+    * DatabaseEditions enumeration contains the valid values for this property.
     * @return The Edition value.
     */
     public String getEdition() {
@@ -56,28 +58,56 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Required. Gets or sets the edition for the new database.
+    * Optional. Gets or sets the edition for the new database.  The
+    * DatabaseEditions enumeration contains the valid values for this property.
     * @param editionValue The Edition value.
     */
     public void setEdition(final String editionValue) {
         this.edition = editionValue;
     }
     
-    private int maximumDatabaseSizeInGB;
+    private Long maximumDatabaseSizeInBytes;
     
     /**
-    * Required. Gets or sets the maximum size of this database, in Gigabytes.
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * bytes.  If this is used in conjunction with MaximumDatabaseSizeInGB they
+    * must agree.
+    * @return The MaximumDatabaseSizeInBytes value.
+    */
+    public Long getMaximumDatabaseSizeInBytes() {
+        return this.maximumDatabaseSizeInBytes;
+    }
+    
+    /**
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * bytes.  If this is used in conjunction with MaximumDatabaseSizeInGB they
+    * must agree.
+    * @param maximumDatabaseSizeInBytesValue The MaximumDatabaseSizeInBytes
+    * value.
+    */
+    public void setMaximumDatabaseSizeInBytes(final Long maximumDatabaseSizeInBytesValue) {
+        this.maximumDatabaseSizeInBytes = maximumDatabaseSizeInBytesValue;
+    }
+    
+    private Integer maximumDatabaseSizeInGB;
+    
+    /**
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * gigabytes.  If this is used in conjunction with
+    * MaximumDatabaseSizeInBytes they must agree.
     * @return The MaximumDatabaseSizeInGB value.
     */
-    public int getMaximumDatabaseSizeInGB() {
+    public Integer getMaximumDatabaseSizeInGB() {
         return this.maximumDatabaseSizeInGB;
     }
     
     /**
-    * Required. Gets or sets the maximum size of this database, in Gigabytes.
+    * Optional. Gets or sets the maximum size of this database expressed in
+    * gigabytes.  If this is used in conjunction with
+    * MaximumDatabaseSizeInBytes they must agree.
     * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(final int maximumDatabaseSizeInGBValue) {
+    public void setMaximumDatabaseSizeInGB(final Integer maximumDatabaseSizeInGBValue) {
         this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
@@ -102,7 +132,8 @@ public class DatabaseCreateParameters {
     private String serviceObjectiveId;
     
     /**
-    * Optional. Gets or sets the id of this service objective.
+    * Optional. Gets or sets the service objective ID to be applied to the
+    * database.
     * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId() {
@@ -110,10 +141,31 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Optional. Gets or sets the id of this service objective.
+    * Optional. Gets or sets the service objective ID to be applied to the
+    * database.
     * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
     public void setServiceObjectiveId(final String serviceObjectiveIdValue) {
         this.serviceObjectiveId = serviceObjectiveIdValue;
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseCreateParameters class.
+    *
+    */
+    public DatabaseCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the DatabaseCreateParameters class with
+    * required arguments.
+    *
+    * @param name Gets or sets the name for the new database.
+    */
+    public DatabaseCreateParameters(String name) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        this.setName(name);
     }
 }

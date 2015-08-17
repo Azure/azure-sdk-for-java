@@ -16,10 +16,16 @@
 package com.microsoft.windowsazure.core.pipeline.apache;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
+import org.apache.http.client.methods.HttpRequestWrapper;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.protocol.HttpContext;
 
 public class HttpServiceRequestContext implements ServiceRequestContext {
@@ -43,6 +49,15 @@ public class HttpServiceRequestContext implements ServiceRequestContext {
     }
 
     @Override
+    public Map<String, String> getAllHeaders() {
+        Map<String, String> allHeaders = new HashMap<String, String>();
+        for (Header header : clientRequest.getAllHeaders()) {
+            allHeaders.put(header.getName(), header.getValue());
+        }
+        return allHeaders;
+    }
+
+    @Override
     public URI getURI() {
         try {
             return new URI(clientRequest.getRequestLine().getUri());
@@ -54,6 +69,43 @@ public class HttpServiceRequestContext implements ServiceRequestContext {
     @Override
     public void setURI(final URI uri) {
         // Do nothing. not supported
+    }
+
+    @Override
+    public URI getFullURI() {
+        HttpRequest request = clientRequest;
+        for (;;) {
+            URI result = tryGetFullURI(request);
+            if (result != null) {
+                return result;
+            }
+            if (!(request instanceof HttpRequestWrapper)) {
+                break;
+            }
+            HttpRequestWrapper wrapper = (HttpRequestWrapper) request;
+            request = wrapper.getOriginal();
+        }
+        throw new UnsupportedOperationException("The full URI is not available");
+    }
+
+    private static URI tryGetFullURI(HttpRequest request) {
+        if (!(request instanceof HttpUriRequest)) {
+            return null;
+        }
+        HttpUriRequest uriRequest = (HttpUriRequest) request;
+        URI uri = uriRequest.getURI();
+        return isFullURI(uri) ? uri : null;
+    }
+
+    private static boolean isFullURI(URI uri) {
+        if (uri == null) {
+            return false;
+        }
+        String host = uri.getHost();
+        if (host == null || host.length() == 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override

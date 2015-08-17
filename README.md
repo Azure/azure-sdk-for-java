@@ -2,6 +2,7 @@
 
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [Microsoft Azure Java Developer Center](http://azure.microsoft.com/en-us/develop/java/).
 
+
 #Features
 
 
@@ -22,10 +23,17 @@ This project provides a client library in Java that makes it easy to consume Mic
     * Create/Read/Update/Delete access policies
     * Create/Read/Update/Delete asset files
     * Create/Read/Update/Delete assets
+    * Create/Read/Delete asset delivery policies
     * Create/Read/Update/Delete/Rebind content keys
+    * Create/Read/Delete content keys authorization policies/options
     * Create/Read/Update/Cancel/Delete jobs
     * Add/Get job notifications
     * Create/Read/Update/Delete notification endpoints
+    * Create/Start/Scale/Stop/Delete streaming endpoints
+    * Get/Update encoding reserved units
+    * Get storage accounts
+    * Serialize/Deserialize/GetTestToken [TokenRestriction](https://msdn.microsoft.com/en-us/library/azure/dn783467.aspx#code-snippet-4) Templates
+    * Serialize/Deserialize [PlayReadyLicenseResponse](https://azure.microsoft.com/en-us/documentation/articles/media-services-playready-license-template-overview/#_schema) Templates
 * Service Management
     * Management
       * Create/Delete/Get/List/Update affinity group
@@ -65,7 +73,11 @@ This project provides a client library in Java that makes it easy to consume Mic
       * Get/List service objective
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
-
+* Storage
+  * The Azure Storage SDK for Java is maintained in a separate repository. You can find the Azure Storage SDK for Java at [https://github.com/Azure/azure-storage-java](https://github.com/Azure/azure-storage-java). 
+* Key Vault
+    * Create/Update/Delete/Get/List keys.
+    * Create/Update/Delete/Get/List secrets.
 
 #Getting Started
 
@@ -85,65 +97,65 @@ within your project you can also have them installed by the Java package manager
 
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-compute</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-compute</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-network</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-network</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-sql</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-sql</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-storage</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-storage</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-management-websites</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-management-websites</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-media</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-media</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-servicebus</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-servicebus</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 ```xml
 <dependency>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-serviceruntime</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-serviceruntime</artifactId>
+  <version>0.6.0</version>
 </dependency>
 ```
 

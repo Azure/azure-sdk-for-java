@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -114,8 +115,13 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/rolesizes";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/rolesizes";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -124,12 +130,13 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-03-01");
+        httpRequest.setHeader("x-ms-version", "2014-10-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -153,64 +160,87 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             // Create Result
             RoleSizeListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new RoleSizeListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element roleSizesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "RoleSizes");
-            if (roleSizesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i1));
-                    RoleSizeListResponse.RoleSize roleSizeInstance = new RoleSizeListResponse.RoleSize();
-                    result.getRoleSizes().add(roleSizeInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        roleSizeInstance.setName(nameInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        roleSizeInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element coresElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Cores");
-                    if (coresElement != null) {
-                        int coresInstance;
-                        coresInstance = DatatypeConverter.parseInt(coresElement.getTextContent());
-                        roleSizeInstance.setCores(coresInstance);
-                    }
-                    
-                    Element memoryInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "MemoryInMb");
-                    if (memoryInMbElement != null) {
-                        int memoryInMbInstance;
-                        memoryInMbInstance = DatatypeConverter.parseInt(memoryInMbElement.getTextContent());
-                        roleSizeInstance.setMemoryInMb(memoryInMbInstance);
-                    }
-                    
-                    Element supportedByWebWorkerRolesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByWebWorkerRoles");
-                    if (supportedByWebWorkerRolesElement != null) {
-                        boolean supportedByWebWorkerRolesInstance;
-                        supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent().toLowerCase());
-                        roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
-                    }
-                    
-                    Element supportedByVirtualMachinesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByVirtualMachines");
-                    if (supportedByVirtualMachinesElement != null) {
-                        boolean supportedByVirtualMachinesInstance;
-                        supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent().toLowerCase());
-                        roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new RoleSizeListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element roleSizesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "RoleSizes");
+                if (roleSizesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i1));
+                        RoleSizeListResponse.RoleSize roleSizeInstance = new RoleSizeListResponse.RoleSize();
+                        result.getRoleSizes().add(roleSizeInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            roleSizeInstance.setName(nameInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            roleSizeInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element coresElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Cores");
+                        if (coresElement != null) {
+                            int coresInstance;
+                            coresInstance = DatatypeConverter.parseInt(coresElement.getTextContent());
+                            roleSizeInstance.setCores(coresInstance);
+                        }
+                        
+                        Element memoryInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "MemoryInMb");
+                        if (memoryInMbElement != null) {
+                            int memoryInMbInstance;
+                            memoryInMbInstance = DatatypeConverter.parseInt(memoryInMbElement.getTextContent());
+                            roleSizeInstance.setMemoryInMb(memoryInMbInstance);
+                        }
+                        
+                        Element supportedByWebWorkerRolesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByWebWorkerRoles");
+                        if (supportedByWebWorkerRolesElement != null) {
+                            boolean supportedByWebWorkerRolesInstance;
+                            supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent().toLowerCase());
+                            roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
+                        }
+                        
+                        Element supportedByVirtualMachinesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByVirtualMachines");
+                        if (supportedByVirtualMachinesElement != null) {
+                            boolean supportedByVirtualMachinesInstance;
+                            supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent().toLowerCase());
+                            roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
+                        }
+                        
+                        Element maxDataDiskCountElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "MaxDataDiskCount");
+                        if (maxDataDiskCountElement != null) {
+                            int maxDataDiskCountInstance;
+                            maxDataDiskCountInstance = DatatypeConverter.parseInt(maxDataDiskCountElement.getTextContent());
+                            roleSizeInstance.setMaxDataDiskCount(maxDataDiskCountInstance);
+                        }
+                        
+                        Element webWorkerResourceDiskSizeInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "WebWorkerResourceDiskSizeInMb");
+                        if (webWorkerResourceDiskSizeInMbElement != null) {
+                            int webWorkerResourceDiskSizeInMbInstance;
+                            webWorkerResourceDiskSizeInMbInstance = DatatypeConverter.parseInt(webWorkerResourceDiskSizeInMbElement.getTextContent());
+                            roleSizeInstance.setWebWorkerResourceDiskSizeInMb(webWorkerResourceDiskSizeInMbInstance);
+                        }
+                        
+                        Element virtualMachineResourceDiskSizeInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "VirtualMachineResourceDiskSizeInMb");
+                        if (virtualMachineResourceDiskSizeInMbElement != null) {
+                            int virtualMachineResourceDiskSizeInMbInstance;
+                            virtualMachineResourceDiskSizeInMbInstance = DatatypeConverter.parseInt(virtualMachineResourceDiskSizeInMbElement.getTextContent());
+                            roleSizeInstance.setVirtualMachineResourceDiskSizeInMb(virtualMachineResourceDiskSizeInMbInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

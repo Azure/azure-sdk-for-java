@@ -20,7 +20,8 @@ import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -117,7 +118,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.uploadFilesToAsset(asset, 10, getTestAssetFiles());
         signalSetupFinished();
 
-        Hashtable<String, InputStream> actualFileStreams = wrapper
+        Map<String, InputStream> actualFileStreams = wrapper
                 .downloadFilesFromAsset(asset, 10);
         validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
     }
@@ -151,8 +152,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         waitForJobToFinish(job);
         List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
 
-        validator
-                .validateOutputAssets(outputAssets, getTestAssetFiles().keys());
+        validator.validateOutputAssets(outputAssets, getTestAssetFiles().keySet());
     }
 
     @Test
@@ -172,8 +172,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
 
         waitForJobToFinish(job);
         List<AssetInfo> outputAssets = wrapper.getJobOutputMediaAssets(job);
-        validator
-                .validateOutputAssets(outputAssets, getTestAssetFiles().keys());
+        validator.validateOutputAssets(outputAssets, getTestAssetFiles().keySet());
 
         // Verify output asset files.
         assertEquals("output assets count", 1, outputAssets.size());
@@ -181,8 +180,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateAssetFiles(outputAsset, getTestAssetFiles());
 
         // Verify assets were decoded.
-        Hashtable<String, InputStream> actualFileStreams = wrapper
-                .downloadFilesFromAsset(outputAsset, 10);
+        Map<String, InputStream> actualFileStreams = wrapper.downloadFilesFromAsset(outputAsset, 10);
         validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
     }
 
@@ -215,8 +213,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         return tasks;
     }
 
-    private Hashtable<String, InputStream> getTestAssetFiles() {
-        Hashtable<String, InputStream> inputFiles = new Hashtable<String, InputStream>();
+    private Map<String, InputStream> getTestAssetFiles() {
+        Map<String, InputStream> inputFiles = new HashMap<String, InputStream>();
         inputFiles.put("MPEG4-H264.mp4",
                 getClass().getResourceAsStream("/media/MPEG4-H264.mp4"));
         return inputFiles;

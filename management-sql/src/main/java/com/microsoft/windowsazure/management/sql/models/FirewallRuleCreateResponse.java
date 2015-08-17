@@ -26,13 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response containing the firewall rule create response.
+* Contains the response to a Create Firewall Rule operation.
 */
 public class FirewallRuleCreateResponse extends OperationResponse {
     private FirewallRule firewallRule;
     
     /**
-    * Optional.
+    * Optional. Gets or sets the resultant rule that was created from calling
+    * the Create Firewall Rule operation.
     * @return The FirewallRule value.
     */
     public FirewallRule getFirewallRule() {
@@ -40,7 +41,8 @@ public class FirewallRuleCreateResponse extends OperationResponse {
     }
     
     /**
-    * Optional.
+    * Optional. Gets or sets the resultant rule that was created from calling
+    * the Create Firewall Rule operation.
     * @param firewallRuleValue The FirewallRule value.
     */
     public void setFirewallRule(final FirewallRule firewallRuleValue) {

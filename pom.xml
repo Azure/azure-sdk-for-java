@@ -15,13 +15,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.microsoft.windowsazure</groupId>
-  <artifactId>microsoft-azure-api-bom</artifactId>
-  <version>0.5.0</version>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-bom</artifactId>
+  <version>0.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Microsoft Azure Client API</name>
-  <description>API for Microsoft Azure Clients</description>
+  <name>Microsoft Azure SDK</name>
+  <description>This package contains Microsoft Azure SDK for Java.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -38,7 +38,7 @@
   </scm>
 
   <properties>
-    <projectVersion>0.5.0</projectVersion>
+    <projectVersion>0.8.0-SNAPSHOT</projectVersion>
   </properties>
 
   <developers>
@@ -50,4 +50,41 @@
   <modules>
     <module>parent</module>
   </modules>
+  <build>
+  	<pluginManagement>
+  		<plugins>
+  			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+  			<plugin>
+  				<groupId>org.eclipse.m2e</groupId>
+  				<artifactId>lifecycle-mapping</artifactId>
+  				<version>1.0.0</version>
+  				<configuration>
+  					<lifecycleMappingMetadata>
+  						<pluginExecutions>
+  							<pluginExecution>
+  								<pluginExecutionFilter>
+  									<groupId>
+  										org.apache.maven.plugins
+  									</groupId>
+  									<artifactId>
+  										maven-checkstyle-plugin
+  									</artifactId>
+  									<versionRange>
+  										[2.11,)
+  									</versionRange>
+  									<goals>
+  										<goal>check</goal>
+  									</goals>
+  								</pluginExecutionFilter>
+  								<action>
+  									<ignore></ignore>
+  								</action>
+  							</pluginExecution>
+  						</pluginExecutions>
+  					</lifecycleMappingMetadata>
+  				</configuration>
+  			</plugin>
+  		</plugins>
+  	</pluginManagement>
+  </build>
 </project>

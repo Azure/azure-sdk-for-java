@@ -110,4 +110,39 @@ public class VirtualMachineDiskCreateParameters {
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskCreateParameters
+    * class.
+    *
+    */
+    public VirtualMachineDiskCreateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskCreateParameters
+    * class with required arguments.
+    *
+    * @param label Specifies the friendly name of the disk.
+    * @param mediaLinkUri Specifies the location of the blob in Azure storage.
+    * The blob location must belong to a storage account in the subscription
+    * specified by the SubscriptionId value in the operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd.
+    * @param name Specifies a name for the disk. Azure uses the name to
+    * identify the disk when creating virtual machines from the disk.
+    */
+    public VirtualMachineDiskCreateParameters(String label, URI mediaLinkUri, String name) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        if (mediaLinkUri == null) {
+            throw new NullPointerException("mediaLinkUri");
+        }
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        this.setLabel(label);
+        this.setMediaLinkUri(mediaLinkUri);
+        this.setName(name);
+    }
 }

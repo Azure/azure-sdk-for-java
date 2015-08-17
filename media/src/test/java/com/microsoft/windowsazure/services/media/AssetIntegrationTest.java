@@ -34,6 +34,10 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 import com.microsoft.windowsazure.services.media.models.Asset;
+import com.microsoft.windowsazure.services.media.models.AssetDeliveryPolicy;
+import com.microsoft.windowsazure.services.media.models.AssetDeliveryPolicyInfo;
+import com.microsoft.windowsazure.services.media.models.AssetDeliveryPolicyType;
+import com.microsoft.windowsazure.services.media.models.AssetDeliveryProtocol;
 import com.microsoft.windowsazure.services.media.models.AssetFile;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.AssetOption;
@@ -408,5 +412,107 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals(originalAsset.getId(), parentAsset.getId());
+    }
+    
+    @Test
+    public void unlinkAssetContentKeySuccess() throws ServiceException,
+            URISyntaxException {
+        // Arrange
+        String originalTestName = testAssetPrefix
+                + "linkAssetContentKeySuccess";
+        AssetInfo assetInfo = service.create(Asset.create()
+                .setName(originalTestName)
+                .setOptions(AssetOption.StorageEncrypted));
+
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String contentKeyId = String
+                .format("nb:kid:UUID:%s", UUID.randomUUID());
+        String encryptedContentKey = "dummyEncryptedContentKey";
+        service.create(ContentKey.create(contentKeyId,
+                ContentKeyType.StorageEncryption, encryptedContentKey)
+                .setProtectionKeyId(protectionKeyId));
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
+
+        // Act
+        service.delete(Asset.unlinkContentKey(assetInfo.getId(), contentKeyId));
+
+        // Assert
+        List<ContentKeyInfo> contentKeys = service.list(ContentKey
+                .list(assetInfo.getContentKeysLink()));
+        assertEquals(0, contentKeys.size());
+    }
+    
+    @Test
+    public void linkAssetDeliveryPolicySuccess() throws ServiceException,
+            URISyntaxException {
+        // Arrange
+        String originalTestName = testAssetPrefix
+                + "linkAssetContentKeySuccess";
+        AssetDeliveryPolicyInfo adpInfo = service.create(AssetDeliveryPolicy.create()
+                .setName(originalTestName)
+                .setAssetDeliveryPolicyType(AssetDeliveryPolicyType.NoDynamicEncryption)
+                .setAssetDeliveryProtocol(EnumSet.of(AssetDeliveryProtocol.SmoothStreaming)));
+        
+        AssetInfo assetInfo = service.create(Asset.create()
+                .setName(originalTestName)
+                .setOptions(AssetOption.StorageEncrypted));
+        
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String contentKeyId = String
+                .format("nb:kid:UUID:%s", UUID.randomUUID());
+        String encryptedContentKey = "dummyEncryptedContentKey";
+        service.create(ContentKey.create(contentKeyId,
+                ContentKeyType.StorageEncryption, encryptedContentKey)
+                .setProtectionKeyId(protectionKeyId));        
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
+        
+        // Act
+        service.action(Asset.linkDeliveryPolicy(assetInfo.getId(), adpInfo.getId()));
+        
+        // Assert
+        AssetInfo assetInfo2 = service.get(Asset.get(assetInfo.getId()));
+        ListResult<AssetDeliveryPolicyInfo> listResult = service.list(AssetDeliveryPolicy.list(assetInfo2.getDeliveryPoliciesLink()));
+        assertNotNull(listResult);
+        assertEquals(listResult.size(), 1);
+        assertEquals(listResult.get(0).getName(), originalTestName);
+        assertEquals(listResult.get(0).getAssetDeliveryPolicyType(), AssetDeliveryPolicyType.NoDynamicEncryption);
+    }
+    
+    @Test
+    public void unlinkAssetDeliveryPolicySuccess() throws ServiceException,
+            URISyntaxException {        
+        // Arrange
+        String originalTestName = testAssetPrefix
+                + "unlinkAssetContentKeySuccess";
+        AssetDeliveryPolicyInfo adpInfo = service.create(AssetDeliveryPolicy.create()
+                .setName(originalTestName)
+                .setAssetDeliveryPolicyType(AssetDeliveryPolicyType.NoDynamicEncryption)
+                .setAssetDeliveryProtocol(EnumSet.of(AssetDeliveryProtocol.SmoothStreaming)));
+        
+        AssetInfo assetInfo = service.create(Asset.create()
+                .setName(originalTestName)
+                .setOptions(AssetOption.StorageEncrypted));
+        
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String contentKeyId = String
+                .format("nb:kid:UUID:%s", UUID.randomUUID());
+        String encryptedContentKey = "dummyEncryptedContentKey";
+        service.create(ContentKey.create(contentKeyId,
+                ContentKeyType.StorageEncryption, encryptedContentKey)
+                .setProtectionKeyId(protectionKeyId));        
+        service.action(Asset.linkContentKey(assetInfo.getId(), contentKeyId));
+        service.action(Asset.linkDeliveryPolicy(assetInfo.getId(), adpInfo.getId()));
+        
+        // Act
+        service.delete(Asset.unlinkDeliveryPolicy(assetInfo.getId(), adpInfo.getId()));
+        
+        // Assert
+        AssetInfo assetInfo2 = service.get(Asset.get(assetInfo.getId()));
+        ListResult<AssetDeliveryPolicyInfo> listResult = service.list(AssetDeliveryPolicy.list(assetInfo2.getDeliveryPoliciesLink()));
+        assertNotNull(listResult);
+        assertEquals(listResult.size(), 0);
     }
 }

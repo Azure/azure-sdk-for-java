@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -91,6 +92,26 @@ public class VirtualMachineCreateDeploymentParameters {
         this.label = labelValue;
     }
     
+    private ArrayList<LoadBalancer> loadBalancers;
+    
+    /**
+    * Optional. A list of internal load balancers that each provide load
+    * balancing on a private VIP.
+    * @return The LoadBalancers value.
+    */
+    public ArrayList<LoadBalancer> getLoadBalancers() {
+        return this.loadBalancers;
+    }
+    
+    /**
+    * Optional. A list of internal load balancers that each provide load
+    * balancing on a private VIP.
+    * @param loadBalancersValue The LoadBalancers value.
+    */
+    public void setLoadBalancers(final ArrayList<LoadBalancer> loadBalancersValue) {
+        this.loadBalancers = loadBalancersValue;
+    }
+    
     private String name;
     
     /**
@@ -114,9 +135,9 @@ public class VirtualMachineCreateDeploymentParameters {
     private String reservedIPName;
     
     /**
-    * Optional. Optional and Preview Only. Specifies the name of an existing
-    * reserved IP to which the deployment will belong. Reserved IPs are
-    * created by calling the Create Reserved IP operation.
+    * Optional. Optional. Specifies the name of an existing reserved IP to
+    * which the deployment will belong. Reserved IPs are created by calling
+    * the Create Reserved IP operation.
     * @return The ReservedIPName value.
     */
     public String getReservedIPName() {
@@ -124,9 +145,9 @@ public class VirtualMachineCreateDeploymentParameters {
     }
     
     /**
-    * Optional. Optional and Preview Only. Specifies the name of an existing
-    * reserved IP to which the deployment will belong. Reserved IPs are
-    * created by calling the Create Reserved IP operation.
+    * Optional. Optional. Specifies the name of an existing reserved IP to
+    * which the deployment will belong. Reserved IPs are created by calling
+    * the Create Reserved IP operation.
     * @param reservedIPNameValue The ReservedIPName value.
     */
     public void setReservedIPName(final String reservedIPNameValue) {
@@ -181,6 +202,7 @@ public class VirtualMachineCreateDeploymentParameters {
     *
     */
     public VirtualMachineCreateDeploymentParameters() {
-        this.roles = new ArrayList<Role>();
+        this.setLoadBalancers(new LazyArrayList<LoadBalancer>());
+        this.setRoles(new LazyArrayList<Role>());
     }
 }

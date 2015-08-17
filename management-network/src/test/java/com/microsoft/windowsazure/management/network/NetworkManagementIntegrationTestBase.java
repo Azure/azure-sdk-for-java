@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -38,6 +39,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -46,7 +48,7 @@ import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurat
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.*;
 
-public abstract class NetworkManagementIntegrationTestBase {
+public abstract class NetworkManagementIntegrationTestBase extends MockIntegrationTestBase {
 
     protected static NetworkManagementClient networkManagementClient;    
     protected static NetworkOperations networkOperations;
@@ -65,16 +67,34 @@ public abstract class NetworkManagementIntegrationTestBase {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();      
         networkManagementClient = NetworkManagementService.create(config);
+        addClient((ServiceClient<?>) networkManagementClient, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createService();
+                return null;
+            }
+        });
     }
 
     protected static Configuration createConfiguration() throws Exception {
         String baseUri = System.getenv(ManagementConfiguration.URI);
-        return ManagementConfiguration.configure(
-            baseUri != null ? new URI(baseUri) : null,
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
-            KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE)));
+        if (IS_MOCKED) {
+            return ManagementConfiguration.configure(
+                    new URI(MOCK_URI),
+                    MOCK_SUBSCRIPTION,
+                    null,
+                    null,
+                    null
+            );
+        } else {
+            return ManagementConfiguration.configure(
+                    baseUri != null ? new URI(baseUri) : null,
+                    System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                    System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD),
+                    KeyStoreType.fromString(System.getenv(ManagementConfiguration.KEYSTORE_TYPE))
+            );
+        }
     }
     
     protected static void createNetwork(String networkName) throws Exception {

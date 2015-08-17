@@ -26,13 +26,16 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* Response for an DAC Import/Export request.
+* Represents the response that the service returns once an import or export
+* operation has been initiated.
 */
 public class DacImportExportResponse extends OperationResponse {
     private String guid;
     
     /**
-    * Optional. Gets or sets the operation's identifier.
+    * Optional. Gets or sets a unique identifier for an import or export
+    * operation.  Use this identifier for querying the status of the import or
+    * export operation with GetStatus.
     * @return The Guid value.
     */
     public String getGuid() {
@@ -40,7 +43,9 @@ public class DacImportExportResponse extends OperationResponse {
     }
     
     /**
-    * Optional. Gets or sets the operation's identifier.
+    * Optional. Gets or sets a unique identifier for an import or export
+    * operation.  Use this identifier for querying the status of the import or
+    * export operation with GetStatus.
     * @param guidValue The Guid value.
     */
     public void setGuid(final String guidValue) {

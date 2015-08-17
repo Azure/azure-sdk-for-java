@@ -30,9 +30,8 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
 import com.microsoft.windowsazure.core.utils.StreamUtils;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.network.models.GatewayProfile;
-import com.microsoft.windowsazure.management.network.models.LocalNetworkConnectionType;
 import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
@@ -41,6 +40,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -92,7 +92,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     *
     * @param parameters Required. Parameters supplied to the Set Network
     * Configuration operation.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
@@ -117,7 +117,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard storage response including an HTTP status code and
+    * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
@@ -141,8 +141,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/media";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -151,13 +156,14 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/octet-stream");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Serialize Request
         String requestContent = parameters.getConfiguration();
@@ -186,6 +192,7 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -247,8 +254,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/media";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -257,12 +269,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -286,10 +299,12 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             NetworkGetConfigurationResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new NetworkGetConfigurationResponse();
-            result.setConfiguration(StreamUtils.toString(responseContent));
-            
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkGetConfigurationResponse();
+                result.setConfiguration(StreamUtils.toString(responseContent));
+                
+            }
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -354,8 +369,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/networking/virtualnetwork";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/virtualnetwork";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -364,12 +384,13 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -393,200 +414,216 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             // Create Result
             NetworkListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new NetworkListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element virtualNetworkSitesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkSites");
-            if (virtualNetworkSitesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualNetworkSitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkSite").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element virtualNetworkSitesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualNetworkSitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkSite").get(i1));
-                    NetworkListResponse.VirtualNetworkSite virtualNetworkSiteInstance = new NetworkListResponse.VirtualNetworkSite();
-                    result.getVirtualNetworkSites().add(virtualNetworkSiteInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        virtualNetworkSiteInstance.setName(nameInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        virtualNetworkSiteInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element idElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Id");
-                    if (idElement != null) {
-                        String idInstance;
-                        idInstance = idElement.getTextContent();
-                        virtualNetworkSiteInstance.setId(idInstance);
-                    }
-                    
-                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                    if (affinityGroupElement != null) {
-                        String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement.getTextContent();
-                        virtualNetworkSiteInstance.setAffinityGroup(affinityGroupInstance);
-                    }
-                    
-                    Element stateElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                    if (stateElement != null) {
-                        String stateInstance;
-                        stateInstance = stateElement.getTextContent();
-                        virtualNetworkSiteInstance.setState(stateInstance);
-                    }
-                    
-                    Element addressSpaceElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "AddressSpace");
-                    if (addressSpaceElement != null) {
-                        NetworkListResponse.AddressSpace addressSpaceInstance = new NetworkListResponse.AddressSpace();
-                        virtualNetworkSiteInstance.setAddressSpace(addressSpaceInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element virtualNetworkSitesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkSites");
+                if (virtualNetworkSitesSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualNetworkSitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkSite").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element virtualNetworkSitesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualNetworkSitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkSite").get(i1));
+                        NetworkListResponse.VirtualNetworkSite virtualNetworkSiteInstance = new NetworkListResponse.VirtualNetworkSite();
+                        result.getVirtualNetworkSites().add(virtualNetworkSiteInstance);
                         
-                        Element addressPrefixesSequenceElement = XmlUtility.getElementByTagNameNS(addressSpaceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
-                        if (addressPrefixesSequenceElement != null) {
-                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i2 = i2 + 1) {
-                                org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i2));
-                                addressSpaceInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
-                            }
+                        Element nameElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            virtualNetworkSiteInstance.setName(nameInstance);
                         }
-                    }
-                    
-                    Element subnetsSequenceElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Subnets");
-                    if (subnetsSequenceElement != null) {
-                        for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Subnet").size(); i3 = i3 + 1) {
-                            org.w3c.dom.Element subnetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Subnet").get(i3));
-                            NetworkListResponse.Subnet subnetInstance = new NetworkListResponse.Subnet();
-                            virtualNetworkSiteInstance.getSubnets().add(subnetInstance);
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            virtualNetworkSiteInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element idElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Id");
+                        if (idElement != null) {
+                            String idInstance;
+                            idInstance = idElement.getTextContent();
+                            virtualNetworkSiteInstance.setId(idInstance);
+                        }
+                        
+                        Element affinityGroupElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                        if (affinityGroupElement != null) {
+                            String affinityGroupInstance;
+                            affinityGroupInstance = affinityGroupElement.getTextContent();
+                            virtualNetworkSiteInstance.setAffinityGroup(affinityGroupInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            virtualNetworkSiteInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            virtualNetworkSiteInstance.setState(stateInstance);
+                        }
+                        
+                        Element addressSpaceElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "AddressSpace");
+                        if (addressSpaceElement != null) {
+                            NetworkListResponse.AddressSpace addressSpaceInstance = new NetworkListResponse.AddressSpace();
+                            virtualNetworkSiteInstance.setAddressSpace(addressSpaceInstance);
                             
-                            Element nameElement2 = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                            if (nameElement2 != null) {
-                                String nameInstance2;
-                                nameInstance2 = nameElement2.getTextContent();
-                                subnetInstance.setName(nameInstance2);
-                            }
-                            
-                            Element addressPrefixElement = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix");
-                            if (addressPrefixElement != null) {
-                                String addressPrefixInstance;
-                                addressPrefixInstance = addressPrefixElement.getTextContent();
-                                subnetInstance.setAddressPrefix(addressPrefixInstance);
-                            }
-                        }
-                    }
-                    
-                    Element dnsElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Dns");
-                    if (dnsElement != null) {
-                        Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
-                        if (dnsServersSequenceElement != null) {
-                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i4 = i4 + 1) {
-                                org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i4));
-                                NetworkListResponse.DnsServer dnsServerInstance = new NetworkListResponse.DnsServer();
-                                virtualNetworkSiteInstance.getDnsServers().add(dnsServerInstance);
-                                
-                                Element nameElement3 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                if (nameElement3 != null) {
-                                    String nameInstance3;
-                                    nameInstance3 = nameElement3.getTextContent();
-                                    dnsServerInstance.setName(nameInstance3);
-                                }
-                                
-                                Element addressElement = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Address");
-                                if (addressElement != null) {
-                                    InetAddress addressInstance;
-                                    addressInstance = InetAddress.getByName(addressElement.getTextContent());
-                                    dnsServerInstance.setAddress(addressInstance);
+                            Element addressPrefixesSequenceElement = XmlUtility.getElementByTagNameNS(addressSpaceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
+                            if (addressPrefixesSequenceElement != null) {
+                                for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i2 = i2 + 1) {
+                                    org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i2));
+                                    addressSpaceInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
                                 }
                             }
-                        }
-                    }
-                    
-                    Element gatewayElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Gateway");
-                    if (gatewayElement != null) {
-                        NetworkListResponse.Gateway gatewayInstance = new NetworkListResponse.Gateway();
-                        virtualNetworkSiteInstance.setGateway(gatewayInstance);
-                        
-                        Element profileElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "Profile");
-                        if (profileElement != null) {
-                            GatewayProfile profileInstance;
-                            profileInstance = GatewayProfile.valueOf(profileElement.getTextContent());
-                            gatewayInstance.setProfile(profileInstance);
                         }
                         
-                        Element sitesSequenceElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "Sites");
-                        if (sitesSequenceElement != null) {
-                            for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkSite").size(); i5 = i5 + 1) {
-                                org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkSite").get(i5));
-                                NetworkListResponse.LocalNetworkSite localNetworkSiteInstance = new NetworkListResponse.LocalNetworkSite();
-                                gatewayInstance.getSites().add(localNetworkSiteInstance);
+                        Element subnetsSequenceElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Subnets");
+                        if (subnetsSequenceElement != null) {
+                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Subnet").size(); i3 = i3 + 1) {
+                                org.w3c.dom.Element subnetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Subnet").get(i3));
+                                NetworkListResponse.Subnet subnetInstance = new NetworkListResponse.Subnet();
+                                virtualNetworkSiteInstance.getSubnets().add(subnetInstance);
                                 
-                                Element nameElement4 = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                if (nameElement4 != null) {
-                                    String nameInstance4;
-                                    nameInstance4 = nameElement4.getTextContent();
-                                    localNetworkSiteInstance.setName(nameInstance4);
+                                Element nameElement2 = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                if (nameElement2 != null) {
+                                    String nameInstance2;
+                                    nameInstance2 = nameElement2.getTextContent();
+                                    subnetInstance.setName(nameInstance2);
                                 }
                                 
-                                Element vpnGatewayAddressElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "VpnGatewayAddress");
-                                if (vpnGatewayAddressElement != null) {
-                                    InetAddress vpnGatewayAddressInstance;
-                                    vpnGatewayAddressInstance = InetAddress.getByName(vpnGatewayAddressElement.getTextContent());
-                                    localNetworkSiteInstance.setVpnGatewayAddress(vpnGatewayAddressInstance);
+                                Element addressPrefixElement = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefix");
+                                if (addressPrefixElement != null) {
+                                    String addressPrefixInstance;
+                                    addressPrefixInstance = addressPrefixElement.getTextContent();
+                                    subnetInstance.setAddressPrefix(addressPrefixInstance);
                                 }
                                 
-                                Element addressSpaceElement2 = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "AddressSpace");
-                                if (addressSpaceElement2 != null) {
-                                    NetworkListResponse.AddressSpace addressSpaceInstance2 = new NetworkListResponse.AddressSpace();
-                                    localNetworkSiteInstance.setAddressSpace(addressSpaceInstance2);
+                                Element networkSecurityGroupElement = XmlUtility.getElementByTagNameNS(subnetsElement, "http://schemas.microsoft.com/windowsazure", "NetworkSecurityGroup");
+                                if (networkSecurityGroupElement != null) {
+                                    String networkSecurityGroupInstance;
+                                    networkSecurityGroupInstance = networkSecurityGroupElement.getTextContent();
+                                    subnetInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                }
+                            }
+                        }
+                        
+                        Element dnsElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Dns");
+                        if (dnsElement != null) {
+                            Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
+                            if (dnsServersSequenceElement != null) {
+                                for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i4 = i4 + 1) {
+                                    org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i4));
+                                    NetworkListResponse.DnsServer dnsServerInstance = new NetworkListResponse.DnsServer();
+                                    virtualNetworkSiteInstance.getDnsServers().add(dnsServerInstance);
                                     
-                                    Element addressPrefixesSequenceElement2 = XmlUtility.getElementByTagNameNS(addressSpaceElement2, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
-                                    if (addressPrefixesSequenceElement2 != null) {
-                                        for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i6 = i6 + 1) {
-                                            org.w3c.dom.Element addressPrefixesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i6));
-                                            addressSpaceInstance2.getAddressPrefixes().add(addressPrefixesElement2.getTextContent());
-                                        }
+                                    Element nameElement3 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                    if (nameElement3 != null) {
+                                        String nameInstance3;
+                                        nameInstance3 = nameElement3.getTextContent();
+                                        dnsServerInstance.setName(nameInstance3);
                                     }
-                                }
-                                
-                                Element connectionsSequenceElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Connections");
-                                if (connectionsSequenceElement != null) {
-                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").size(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").get(i7));
-                                        NetworkListResponse.Connection connectionInstance = new NetworkListResponse.Connection();
-                                        localNetworkSiteInstance.getConnections().add(connectionInstance);
-                                        
-                                        Element typeElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                                        if (typeElement != null) {
-                                            LocalNetworkConnectionType typeInstance;
-                                            typeInstance = NetworkManagementClientImpl.parseLocalNetworkConnectionType(typeElement.getTextContent());
-                                            connectionInstance.setType(typeInstance);
-                                        }
+                                    
+                                    Element addressElement = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Address");
+                                    if (addressElement != null) {
+                                        InetAddress addressInstance;
+                                        addressInstance = InetAddress.getByName(addressElement.getTextContent());
+                                        dnsServerInstance.setAddress(addressInstance);
                                     }
                                 }
                             }
                         }
                         
-                        Element vPNClientAddressPoolElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "VPNClientAddressPool");
-                        if (vPNClientAddressPoolElement != null) {
-                            NetworkListResponse.VPNClientAddressPool vPNClientAddressPoolInstance = new NetworkListResponse.VPNClientAddressPool();
-                            gatewayInstance.setVPNClientAddressPool(vPNClientAddressPoolInstance);
+                        Element gatewayElement = XmlUtility.getElementByTagNameNS(virtualNetworkSitesElement, "http://schemas.microsoft.com/windowsazure", "Gateway");
+                        if (gatewayElement != null) {
+                            NetworkListResponse.Gateway gatewayInstance = new NetworkListResponse.Gateway();
+                            virtualNetworkSiteInstance.setGateway(gatewayInstance);
                             
-                            Element addressPrefixesSequenceElement3 = XmlUtility.getElementByTagNameNS(vPNClientAddressPoolElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
-                            if (addressPrefixesSequenceElement3 != null) {
-                                for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement3, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i8 = i8 + 1) {
-                                    org.w3c.dom.Element addressPrefixesElement3 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement3, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i8));
-                                    vPNClientAddressPoolInstance.getAddressPrefixes().add(addressPrefixesElement3.getTextContent());
+                            Element profileElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "Profile");
+                            if (profileElement != null) {
+                                String profileInstance;
+                                profileInstance = profileElement.getTextContent();
+                                gatewayInstance.setProfile(profileInstance);
+                            }
+                            
+                            Element sitesSequenceElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "Sites");
+                            if (sitesSequenceElement != null) {
+                                for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkSite").size(); i5 = i5 + 1) {
+                                    org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sitesSequenceElement, "http://schemas.microsoft.com/windowsazure", "LocalNetworkSite").get(i5));
+                                    NetworkListResponse.LocalNetworkSite localNetworkSiteInstance = new NetworkListResponse.LocalNetworkSite();
+                                    gatewayInstance.getSites().add(localNetworkSiteInstance);
+                                    
+                                    Element nameElement4 = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                    if (nameElement4 != null) {
+                                        String nameInstance4;
+                                        nameInstance4 = nameElement4.getTextContent();
+                                        localNetworkSiteInstance.setName(nameInstance4);
+                                    }
+                                    
+                                    Element vpnGatewayAddressElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "VpnGatewayAddress");
+                                    if (vpnGatewayAddressElement != null) {
+                                        InetAddress vpnGatewayAddressInstance;
+                                        vpnGatewayAddressInstance = InetAddress.getByName(vpnGatewayAddressElement.getTextContent());
+                                        localNetworkSiteInstance.setVpnGatewayAddress(vpnGatewayAddressInstance);
+                                    }
+                                    
+                                    Element addressSpaceElement2 = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "AddressSpace");
+                                    if (addressSpaceElement2 != null) {
+                                        NetworkListResponse.AddressSpace addressSpaceInstance2 = new NetworkListResponse.AddressSpace();
+                                        localNetworkSiteInstance.setAddressSpace(addressSpaceInstance2);
+                                        
+                                        Element addressPrefixesSequenceElement2 = XmlUtility.getElementByTagNameNS(addressSpaceElement2, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
+                                        if (addressPrefixesSequenceElement2 != null) {
+                                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i6 = i6 + 1) {
+                                                org.w3c.dom.Element addressPrefixesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i6));
+                                                addressSpaceInstance2.getAddressPrefixes().add(addressPrefixesElement2.getTextContent());
+                                            }
+                                        }
+                                    }
+                                    
+                                    Element connectionsSequenceElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Connections");
+                                    if (connectionsSequenceElement != null) {
+                                        for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").size(); i7 = i7 + 1) {
+                                            org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Connection").get(i7));
+                                            NetworkListResponse.Connection connectionInstance = new NetworkListResponse.Connection();
+                                            localNetworkSiteInstance.getConnections().add(connectionInstance);
+                                            
+                                            Element typeElement = XmlUtility.getElementByTagNameNS(connectionsElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                                            if (typeElement != null) {
+                                                String typeInstance;
+                                                typeInstance = typeElement.getTextContent();
+                                                connectionInstance.setType(typeInstance);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            Element vPNClientAddressPoolElement = XmlUtility.getElementByTagNameNS(gatewayElement, "http://schemas.microsoft.com/windowsazure", "VPNClientAddressPool");
+                            if (vPNClientAddressPoolElement != null) {
+                                NetworkListResponse.VPNClientAddressPool vPNClientAddressPoolInstance = new NetworkListResponse.VPNClientAddressPool();
+                                gatewayInstance.setVPNClientAddressPool(vPNClientAddressPoolInstance);
+                                
+                                Element addressPrefixesSequenceElement3 = XmlUtility.getElementByTagNameNS(vPNClientAddressPoolElement, "http://schemas.microsoft.com/windowsazure", "AddressPrefixes");
+                                if (addressPrefixesSequenceElement3 != null) {
+                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement3, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").size(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element addressPrefixesElement3 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(addressPrefixesSequenceElement3, "http://schemas.microsoft.com/windowsazure", "AddressPrefix").get(i8));
+                                        vPNClientAddressPoolInstance.getAddressPrefixes().add(addressPrefixesElement3.getTextContent());
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -680,21 +717,28 @@ public class NetworkOperationsImpl implements ServiceOperations<NetworkManagemen
             OperationResponse response = client2.getNetworksOperations().beginSettingConfigurationAsync(parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
+            if (result.getStatus() != OperationStatus.SUCCEEDED) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                    ex.setErrorCode(result.getError().getCode());
-                    ex.setErrorMessage(result.getError().getMessage());
+                    ex.setError(new CloudError());
+                    ex.getError().setCode(result.getError().getCode());
+                    ex.getError().setMessage(result.getError().getMessage());
                     if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }

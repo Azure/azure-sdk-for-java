@@ -54,7 +54,7 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
  * <li>https://manage.windowsazure.com/publishsettings/Index?client=vs&
  * SchemaVersion=2.0</li>
  * </ul>
- * 
+ *
  */
 public abstract class PublishSettingsLoader {
 
@@ -68,8 +68,7 @@ public abstract class PublishSettingsLoader {
      * <li>An unprotected keystore file <code>keystore.out</code> will be left
      * in the working directory containing the management certificate.</li>
      * </ul>
-     * </p>
-     * 
+     *
      * @param publishSettingsFileName
      *            The name of the publish settings file with a valid certificate obtained from
      *            Microsoft Azure portal.
@@ -106,7 +105,10 @@ public abstract class PublishSettingsLoader {
         String outputKeyStore = System.getProperty("user.home") + File.separator
                 + ".azure" + File.separator + subscriptionId + ".out";
         URI managementUrl = createCertficateFromPublishSettingsFile(publishSettingsFile, subscriptionId, outputKeyStore);
-        return ManagementConfiguration.configure(managementUrl, subscriptionId, outputKeyStore, "",
+        
+        // create new configuration object
+        Configuration configuration = Configuration.load();
+        return ManagementConfiguration.configure(null, configuration, managementUrl, subscriptionId, outputKeyStore, "",
                 KeyStoreType.pkcs12);
     }
 

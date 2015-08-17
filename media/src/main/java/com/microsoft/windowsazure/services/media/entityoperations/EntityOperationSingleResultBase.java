@@ -47,10 +47,11 @@ public class EntityOperationSingleResultBase<T> extends EntityOperationBase
      * EntityOperationSingleResult#getResponseClass()
      */
     @Override
-    public Class<T> getResponseClass() {
+    public Class<?> getResponseClass() {
         return responseClass;
     }
 
+    @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
         return rawResponse;
     }

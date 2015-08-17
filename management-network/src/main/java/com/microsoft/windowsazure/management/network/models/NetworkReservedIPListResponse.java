@@ -23,13 +23,14 @@
 
 package com.microsoft.windowsazure.management.network.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Preview Only. The response structure for the Server List operation.
+* The response structure for the Server List operation.
 */
 public class NetworkReservedIPListResponse extends OperationResponse implements Iterable<NetworkReservedIPListResponse.ReservedIP> {
     private ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs;
@@ -56,7 +57,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
     */
     public NetworkReservedIPListResponse() {
         super();
-        this.reservedIPs = new ArrayList<NetworkReservedIPListResponse.ReservedIP>();
+        this.setReservedIPs(new LazyArrayList<NetworkReservedIPListResponse.ReservedIP>());
     }
     
     /**
@@ -87,26 +88,6 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         */
         public void setAddress(final InetAddress addressValue) {
             this.address = addressValue;
-        }
-        
-        private String affinityGroup;
-        
-        /**
-        * Optional. An affinity group, which indirectly refers to the location
-        * where the virtual network exists.
-        * @return The AffinityGroup value.
-        */
-        public String getAffinityGroup() {
-            return this.affinityGroup;
-        }
-        
-        /**
-        * Optional. An affinity group, which indirectly refers to the location
-        * where the virtual network exists.
-        * @param affinityGroupValue The AffinityGroup value.
-        */
-        public void setAffinityGroup(final String affinityGroupValue) {
-            this.affinityGroup = affinityGroupValue;
         }
         
         private String deploymentName;
@@ -181,6 +162,24 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
             this.label = labelValue;
         }
         
+        private String location;
+        
+        /**
+        * Optional. Location where the virtual network exists.
+        * @return The Location value.
+        */
+        public String getLocation() {
+            return this.location;
+        }
+        
+        /**
+        * Optional. Location where the virtual network exists.
+        * @param locationValue The Location value.
+        */
+        public void setLocation(final String locationValue) {
+            this.location = locationValue;
+        }
+        
         private String name;
         
         /**
@@ -235,6 +234,24 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         */
         public void setState(final String stateValue) {
             this.state = stateValue;
+        }
+        
+        private String virtualIPName;
+        
+        /**
+        * Optional. The name of the virtual IP that we should reserve.
+        * @return The VirtualIPName value.
+        */
+        public String getVirtualIPName() {
+            return this.virtualIPName;
+        }
+        
+        /**
+        * Optional. The name of the virtual IP that we should reserve.
+        * @param virtualIPNameValue The VirtualIPName value.
+        */
+        public void setVirtualIPName(final String virtualIPNameValue) {
+            this.virtualIPName = virtualIPNameValue;
         }
     }
 }

@@ -70,14 +70,14 @@ public class VirtualMachineOSImageUpdateParameters {
         this.eula = eulaValue;
     }
     
-    private URI iconUri;
+    private String iconUri;
     
     /**
     * Optional. Specifies the URI to the icon that is displayed for the image
     * in the Management Portal.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public String getIconUri() {
         return this.iconUri;
     }
     
@@ -86,7 +86,7 @@ public class VirtualMachineOSImageUpdateParameters {
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final String iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -108,14 +108,14 @@ public class VirtualMachineOSImageUpdateParameters {
         this.imageFamily = imageFamilyValue;
     }
     
-    private boolean isPremium;
+    private Boolean isPremium;
     
     /**
     * Optional. Indicates if the image contains software or associated services
     * that will incur charges above the core price for the virtual machine.
     * @return The IsPremium value.
     */
-    public boolean isPremium() {
+    public Boolean isPremium() {
         return this.isPremium;
     }
     
@@ -124,7 +124,7 @@ public class VirtualMachineOSImageUpdateParameters {
     * that will incur charges above the core price for the virtual machine.
     * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(final boolean isPremiumValue) {
+    public void setIsPremium(final Boolean isPremiumValue) {
         this.isPremium = isPremiumValue;
     }
     
@@ -230,7 +230,27 @@ public class VirtualMachineOSImageUpdateParameters {
         this.recommendedVMSize = recommendedVMSizeValue;
     }
     
-    private URI smallIconUri;
+    private Boolean showInGui;
+    
+    /**
+    * Optional. When published, should this image show up in the windows azure
+    * image gallery or not. True by default.
+    * @return The ShowInGui value.
+    */
+    public Boolean isShowInGui() {
+        return this.showInGui;
+    }
+    
+    /**
+    * Optional. When published, should this image show up in the windows azure
+    * image gallery or not. True by default.
+    * @param showInGuiValue The ShowInGui value.
+    */
+    public void setShowInGui(final Boolean showInGuiValue) {
+        this.showInGui = showInGuiValue;
+    }
+    
+    private String smallIconUri;
     
     /**
     * Optional. Specifies the URI to the small icon that is displayed when the
@@ -238,7 +258,7 @@ public class VirtualMachineOSImageUpdateParameters {
     * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public String getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -248,7 +268,30 @@ public class VirtualMachineOSImageUpdateParameters {
     * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final String smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineOSImageUpdateParameters
+    * class.
+    *
+    */
+    public VirtualMachineOSImageUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineOSImageUpdateParameters
+    * class with required arguments.
+    *
+    * @param label Specifies the friendly name of the image to be updated. You
+    * cannot use this operation to update images provided by the Azure
+    * platform.
+    */
+    public VirtualMachineOSImageUpdateParameters(String label) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        this.setLabel(label);
     }
 }

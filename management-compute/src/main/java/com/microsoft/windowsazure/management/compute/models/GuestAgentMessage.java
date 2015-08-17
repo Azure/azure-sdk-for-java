@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -70,6 +71,6 @@ public class GuestAgentMessage {
     *
     */
     public GuestAgentMessage() {
-        this.paramList = new ArrayList<String>();
+        this.setParamList(new LazyArrayList<String>());
     }
 }

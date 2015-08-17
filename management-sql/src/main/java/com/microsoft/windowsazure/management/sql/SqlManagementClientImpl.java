@@ -34,16 +34,24 @@ import javax.inject.Named;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
-* The SQL Database Management API is a REST API for managing SQL Database
-* servers and the firewall rules associated with SQL Database servers.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
-* information)
+* This is the main client class for interacting with the Azure SQL Database
+* REST APIs.
 */
 public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> implements SqlManagementClient {
+    private String apiVersion;
+    
+    /**
+    * Gets the API version.
+    * @return The ApiVersion value.
+    */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+    
     private URI baseUri;
     
     /**
-    * The URI used as the base for all SQL requests.
+    * Gets the URI used as the base for all cloud service requests.
     * @return The BaseUri value.
     */
     public URI getBaseUri() {
@@ -53,34 +61,82 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     private SubscriptionCloudCredentials credentials;
     
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
+    * Gets subscription credentials which uniquely identify Microsoft Azure
+    * subscription. The subscription ID forms part of the URI for every
+    * service call.
     * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
     
+    private int longRunningOperationInitialTimeout;
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @return The LongRunningOperationInitialTimeout value.
+    */
+    public int getLongRunningOperationInitialTimeout() {
+        return this.longRunningOperationInitialTimeout;
+    }
+    
+    /**
+    * Gets or sets the initial timeout for Long Running Operations.
+    * @param longRunningOperationInitialTimeoutValue The
+    * LongRunningOperationInitialTimeout value.
+    */
+    public void setLongRunningOperationInitialTimeout(final int longRunningOperationInitialTimeoutValue) {
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeoutValue;
+    }
+    
+    private int longRunningOperationRetryTimeout;
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @return The LongRunningOperationRetryTimeout value.
+    */
+    public int getLongRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Gets or sets the retry timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeoutValue The
+    * LongRunningOperationRetryTimeout value.
+    */
+    public void setLongRunningOperationRetryTimeout(final int longRunningOperationRetryTimeoutValue) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeoutValue;
+    }
+    
     private DacOperations dac;
     
     /**
-    * Includes operations for importing and exporting SQL Databases into and
-    * out of Windows Azure blob storage.
+    * Includes operations for importing and exporting Azure SQL Databases into
+    * and out of Azure blob storage.
     * @return The DacOperations value.
     */
     public DacOperations getDacOperations() {
         return this.dac;
     }
     
+    private DatabaseCopyOperations databaseCopies;
+    
+    /**
+    * Represents the SQL Database Management API includes operations for
+    * managing SQL Server database copies for a subscription.
+    * @return The DatabaseCopiesOperations value.
+    */
+    public DatabaseCopyOperations getDatabaseCopiesOperations() {
+        return this.databaseCopies;
+    }
+    
     private DatabaseOperationOperations databaseOperations;
     
     /**
-    * The SQL Database Management API includes operations for get/stop SQL
-    * Databases' operations for a subscription.
+    * The Azure SQL Database Management API includes operations for getting
+    * database operations. Specifically, this API allows you to get a specific
+    * operation, or to list all the operations that happened on a specific
+    * database or on all databases in the Azure SQL Database Server.
     * @return The DatabaseOperationsOperations value.
     */
     public DatabaseOperationOperations getDatabaseOperationsOperations() {
@@ -90,8 +146,9 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     private DatabaseOperations databases;
     
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Databases for a subscription.
+    * Represents all the operations for operating on Azure SQL Databases.
+    * Contains operations to: Create, Retrieve, Update, and Delete databases,
+    * and also includes the ability to get the event logs for a database.
     * @return The DatabasesOperations value.
     */
     public DatabaseOperations getDatabasesOperations() {
@@ -101,27 +158,77 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     private FirewallRuleOperations firewallRules;
     
     /**
-    * The Windows Azure SQL Database Management API includes operations for
-    * managing the server-level firewall rules for SQL Database servers.You
-    * cannot manage the database-level firewall rules using the Windows Azure
-    * SQL Database Management API; they can only be managed by running the
-    * Transact-SQL statements against the master or individual user
-    * databases.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
-    * more information)
+    * The Azure SQL Database Management API includes operations for managing
+    * the server-level Firewall Rules for Azure SQL Database Servers. You
+    * cannot manage the database-level firewall rules using the Azure SQL
+    * Database Management API; they can only be managed by running the
+    * Transact-SQL statements against the master or individual user databases.
     * @return The FirewallRulesOperations value.
     */
     public FirewallRuleOperations getFirewallRulesOperations() {
         return this.firewallRules;
     }
     
+    private QuotaOperations quotas;
+    
+    /**
+    * The Azure SQL Database Management API includes operations for getting
+    * Azure SQL Database Server quotas. Specifically, using the APIs you can
+    * get a specific quota or list all of the quotas for the Azure SQL
+    * Database Server.
+    * @return The QuotasOperations value.
+    */
+    public QuotaOperations getQuotasOperations() {
+        return this.quotas;
+    }
+    
+    private RecoverableDatabaseOperations recoverableDatabases;
+    
+    /**
+    * Contains operations for getting Azure SQL Databases that can be recovered.
+    * @return The RecoverableDatabasesOperations value.
+    */
+    public RecoverableDatabaseOperations getRecoverableDatabasesOperations() {
+        return this.recoverableDatabases;
+    }
+    
+    private RecoverDatabaseOperations recoverDatabaseOperations;
+    
+    /**
+    * Contains the operation to create recovery requests for Azure SQL
+    * Databases.
+    * @return The RecoverDatabaseOperationsOperations value.
+    */
+    public RecoverDatabaseOperations getRecoverDatabaseOperationsOperations() {
+        return this.recoverDatabaseOperations;
+    }
+    
+    private RestorableDroppedDatabaseOperations restorableDroppedDatabases;
+    
+    /**
+    * Contains operations for getting dropped Azure SQL Databases that can be
+    * restored.
+    * @return The RestorableDroppedDatabasesOperations value.
+    */
+    public RestorableDroppedDatabaseOperations getRestorableDroppedDatabasesOperations() {
+        return this.restorableDroppedDatabases;
+    }
+    
+    private RestoreDatabaseOperations restoreDatabaseOperations;
+    
+    /**
+    * Contains the operation to create restore requests for Azure SQL Databases.
+    * @return The RestoreDatabaseOperationsOperations value.
+    */
+    public RestoreDatabaseOperations getRestoreDatabaseOperationsOperations() {
+        return this.restoreDatabaseOperations;
+    }
+    
     private ServerOperations servers;
     
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Database servers for a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
-    * more information)
+    * Contains methods to allow various operations on Azure SQL Database
+    * Servers.
     * @return The ServersOperations value.
     */
     public ServerOperations getServersOperations() {
@@ -131,8 +238,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     private ServiceObjectiveOperations serviceObjectives;
     
     /**
-    * The SQL Database Management API includes operations for getting Service
-    * Objective for a subscription.
+    * This class provides methods to get a specific service objective by using
+    * its ID or to List all of the service objectives on a server.
     * @return The ServiceObjectivesOperations value.
     */
     public ServiceObjectiveOperations getServiceObjectivesOperations() {
@@ -145,14 +252,23 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.dac = new DacOperationsImpl(this);
+        this.databaseCopies = new DatabaseCopyOperationsImpl(this);
         this.databaseOperations = new DatabaseOperationOperationsImpl(this);
         this.databases = new DatabaseOperationsImpl(this);
         this.firewallRules = new FirewallRuleOperationsImpl(this);
+        this.quotas = new QuotaOperationsImpl(this);
+        this.recoverableDatabases = new RecoverableDatabaseOperationsImpl(this);
+        this.recoverDatabaseOperations = new RecoverDatabaseOperationsImpl(this);
+        this.restorableDroppedDatabases = new RestorableDroppedDatabaseOperationsImpl(this);
+        this.restoreDatabaseOperations = new RestoreDatabaseOperationsImpl(this);
         this.servers = new ServerOperationsImpl(this);
         this.serviceObjectives = new ServiceObjectiveOperationsImpl(this);
+        this.apiVersion = "2012-03-01";
+        this.longRunningOperationInitialTimeout = -1;
+        this.longRunningOperationRetryTimeout = -1;
     }
     
     /**
@@ -160,14 +276,11 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
-    * @param baseUri Required. The URI used as the base for all SQL requests.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
+    * service requests.
     */
     @Inject
     public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, @Named(ManagementConfiguration.URI) URI baseUri) {
@@ -193,13 +306,9 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials Required. When you create a Windows Azure
-    * subscription, it is uniquely identified by a subscription ID. The
-    * subscription ID forms part of the URI for every call that you make to
-    * the Service Management API.  The Windows Azure Service ManagementAPI use
-    * mutual authentication of management certificates over SSL to ensure that
-    * a request made to the service is secure.  No anonymous requests are
-    * allowed.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     */
@@ -217,8 +326,33 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
+    * @param credentials Required. Gets subscription credentials which uniquely
+    * identify Microsoft Azure subscription. The subscription ID forms part of
+    * the URI for every service call.
+    * @param baseUri Optional. Gets the URI used as the base for all cloud
+    * service requests.
+    * @param apiVersion Optional. Gets the API version.
+    * @param longRunningOperationInitialTimeout Required. Gets or sets the
+    * initial timeout for Long Running Operations.
+    * @param longRunningOperationRetryTimeout Required. Gets or sets the retry
+    * timeout for Long Running Operations.
+    */
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri, String apiVersion, int longRunningOperationInitialTimeout, int longRunningOperationRetryTimeout) {
+        this(httpBuilder, executorService);
+        this.credentials = credentials;
+        this.baseUri = baseUri;
+        this.apiVersion = apiVersion;
+        this.longRunningOperationInitialTimeout = longRunningOperationInitialTimeout;
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+    
+    /**
+    * Initializes a new instance of the SqlManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
     */
     protected SqlManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new SqlManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+        return new SqlManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri(), this.getApiVersion(), this.getLongRunningOperationInitialTimeout(), this.getLongRunningOperationRetryTimeout());
     }
 }

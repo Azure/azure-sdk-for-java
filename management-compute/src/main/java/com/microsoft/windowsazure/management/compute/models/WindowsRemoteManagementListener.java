@@ -72,4 +72,25 @@ public class WindowsRemoteManagementListener {
     public void setListenerType(final VirtualMachineWindowsRemoteManagementListenerType listenerTypeValue) {
         this.listenerType = listenerTypeValue;
     }
+    
+    /**
+    * Initializes a new instance of the WindowsRemoteManagementListener class.
+    *
+    */
+    public WindowsRemoteManagementListener() {
+    }
+    
+    /**
+    * Initializes a new instance of the WindowsRemoteManagementListener class
+    * with required arguments.
+    *
+    * @param listenerType Specifies the type of listener. This value can be
+    * Http or Https. The value is case sensitive.
+    */
+    public WindowsRemoteManagementListener(VirtualMachineWindowsRemoteManagementListenerType listenerType) {
+        if (listenerType == null) {
+            throw new NullPointerException("listenerType");
+        }
+        this.setListenerType(listenerType);
+    }
 }

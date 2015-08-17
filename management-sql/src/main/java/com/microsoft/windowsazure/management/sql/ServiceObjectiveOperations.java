@@ -32,14 +32,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* The SQL Database Management API includes operations for getting Service
-* Objective for a subscription.
+* This class provides methods to get a specific service objective by using its
+* ID or to List all of the service objectives on a server.
 */
 public interface ServiceObjectiveOperations {
     /**
-    * Returns information about a certain Service Objective on a given Id.
+    * Returns information about a certain Service Objective with a specific Id.
     *
-    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be queried.
     * @param serviceObjectiveId Required. The Id of the Service Objective to be
     * obtained.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -50,26 +51,29 @@ public interface ServiceObjectiveOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return Response containing the service objective for a given server and
-    * service objective Id.
+    * @return Response containing the service objective for a given Azure SQL
+    * Database Server with matching service objective Id.
     */
     ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * Returns information about a certain Service Objective on a given Id.
+    * Returns information about a certain Service Objective with a specific Id.
     *
-    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be queried.
     * @param serviceObjectiveId Required. The Id of the Service Objective to be
     * obtained.
-    * @return Response containing the service objective for a given server and
-    * service objective Id.
+    * @return Response containing the service objective for a given Azure SQL
+    * Database Server with matching service objective Id.
     */
     Future<ServiceObjectiveGetResponse> getAsync(String serverName, String serviceObjectiveId);
     
     /**
-    * Returns information about all Service Objectives on a database server.
+    * Returns information about all Service Objectives on an Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the database server to be queried.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be queried.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -79,16 +83,18 @@ public interface ServiceObjectiveOperations {
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
     * @return Response containing the list of service objective for a given
-    * server.
+    * server.  This is returnedfrom a call to List Service Objectives.
     */
     ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
-    * Returns information about all Service Objectives on a database server.
+    * Returns information about all Service Objectives on an Azure SQL Database
+    * Server.
     *
-    * @param serverName Required. The name of the database server to be queried.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be queried.
     * @return Response containing the list of service objective for a given
-    * server.
+    * server.  This is returnedfrom a call to List Service Objectives.
     */
     Future<ServiceObjectiveListResponse> listAsync(String serverName);
 }

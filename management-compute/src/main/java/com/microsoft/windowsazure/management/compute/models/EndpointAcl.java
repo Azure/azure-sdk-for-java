@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import java.util.ArrayList;
 
 /**
@@ -52,6 +53,6 @@ public class EndpointAcl {
     *
     */
     public EndpointAcl() {
-        this.rules = new ArrayList<AccessControlListRule>();
+        this.setRules(new LazyArrayList<AccessControlListRule>());
     }
 }

@@ -23,9 +23,11 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
 * The Get Affinity Group operation response.
@@ -53,6 +55,42 @@ public class AffinityGroupGetResponse extends OperationResponse {
     */
     public void setCapabilities(final ArrayList<String> capabilitiesValue) {
         this.capabilities = capabilitiesValue;
+    }
+    
+    private ComputeCapabilities computeCapabilities;
+    
+    /**
+    * Optional. The compute capabilities in this affinity group.
+    * @return The ComputeCapabilities value.
+    */
+    public ComputeCapabilities getComputeCapabilities() {
+        return this.computeCapabilities;
+    }
+    
+    /**
+    * Optional. The compute capabilities in this affinity group.
+    * @param computeCapabilitiesValue The ComputeCapabilities value.
+    */
+    public void setComputeCapabilities(final ComputeCapabilities computeCapabilitiesValue) {
+        this.computeCapabilities = computeCapabilitiesValue;
+    }
+    
+    private Calendar createdTime;
+    
+    /**
+    * Optional. The time that the affinity group was created.
+    * @return The CreatedTime value.
+    */
+    public Calendar getCreatedTime() {
+        return this.createdTime;
+    }
+    
+    /**
+    * Optional. The time that the affinity group was created.
+    * @param createdTimeValue The CreatedTime value.
+    */
+    public void setCreatedTime(final Calendar createdTimeValue) {
+        this.createdTime = createdTimeValue;
     }
     
     private String description;
@@ -173,9 +211,9 @@ public class AffinityGroupGetResponse extends OperationResponse {
     */
     public AffinityGroupGetResponse() {
         super();
-        this.capabilities = new ArrayList<String>();
-        this.hostedServices = new ArrayList<AffinityGroupGetResponse.HostedServiceReference>();
-        this.storageServices = new ArrayList<AffinityGroupGetResponse.StorageServiceReference>();
+        this.setCapabilities(new LazyArrayList<String>());
+        this.setHostedServices(new LazyArrayList<AffinityGroupGetResponse.HostedServiceReference>());
+        this.setStorageServices(new LazyArrayList<AffinityGroupGetResponse.StorageServiceReference>());
     }
     
     /**

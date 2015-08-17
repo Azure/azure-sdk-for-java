@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     */
     public WebSiteGetPublishProfileResponse() {
         super();
-        this.publishProfiles = new ArrayList<WebSiteGetPublishProfileResponse.PublishProfile>();
+        this.setPublishProfiles(new LazyArrayList<WebSiteGetPublishProfileResponse.PublishProfile>());
     }
     
     /**
@@ -400,7 +401,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         *
         */
         public PublishProfile() {
-            this.databases = new ArrayList<WebSiteGetPublishProfileResponse.Database>();
+            this.setDatabases(new LazyArrayList<WebSiteGetPublishProfileResponse.Database>());
         }
     }
 }

@@ -171,9 +171,8 @@ public final class Job {
          * @see com.microsoft.windowsazure.services.media.entityoperations.
          * EntityOperationSingleResultBase#getResponseClass()
          */
-        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
-        public Class getResponseClass() {
+        public Class<?> getResponseClass() {
             return ClientResponse.class;
         }
 
@@ -400,8 +399,7 @@ public final class Job {
                                 "InputMediaAssets",
                                 String.format("%s/Assets('%s')",
                                         createBatchOperation.getServiceUri()
-                                                .toString(), inputMediaAsset
-                                                .toString()),
+                                                .toString(), inputMediaAsset),
                                 "application/atom+xml;type=feed",
                                 "http://schemas.microsoft.com/ado/2007/08/dataservices/related/InputMediaAssets");
             }

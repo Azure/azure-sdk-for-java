@@ -84,4 +84,29 @@ public class WebSiteDeleteParameters {
     public void setDeleteMetrics(final boolean deleteMetricsValue) {
         this.deleteMetrics = deleteMetricsValue;
     }
+    
+    /**
+    * Initializes a new instance of the WebSiteDeleteParameters class.
+    *
+    */
+    public WebSiteDeleteParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the WebSiteDeleteParameters class with
+    * required arguments.
+    *
+    * @param deleteEmptyServerFarm Indicates if the server farm should be
+    * deleted. You can delete the server farm if the web site being deleted is
+    * the last web site in a server farm.
+    * @param deleteMetrics Indicates if the metrics for the web site should be
+    * deleted.
+    * @param deleteAllSlots Indicates if all slots for the web site should be
+    * deleted.
+    */
+    public WebSiteDeleteParameters(boolean deleteEmptyServerFarm, boolean deleteMetrics, boolean deleteAllSlots) {
+        this.setDeleteEmptyServerFarm(deleteEmptyServerFarm);
+        this.setDeleteMetrics(deleteMetrics);
+        this.setDeleteAllSlots(deleteAllSlots);
+    }
 }

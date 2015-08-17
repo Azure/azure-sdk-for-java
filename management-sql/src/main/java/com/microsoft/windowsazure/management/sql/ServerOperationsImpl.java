@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.Server;
@@ -38,6 +39,8 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -54,15 +57,13 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* The SQL Database Management API includes operations for managing SQL Database
-* servers for a subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for more
-* information)
+* Contains methods to allow various operations on Azure SQL Database Servers.
 */
 public class ServerOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, ServerOperations {
     /**
@@ -86,15 +87,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Sets the administrative password of a SQL Database server for a
-    * subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
-    * more information)
+    * Changes the administrative password of an existing Azure SQL Database
+    * Server for a given subscription.
     *
-    * @param serverName Required. The server that will have the change made to
-    * the administrative user.
-    * @param parameters Required. Parameters for the Manage Administrator
-    * Password operation.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that will have the administrator password changed.
+    * @param parameters Required. The necessary parameters for modifying the
+    * adminstrator password for a server.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -109,15 +108,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Sets the administrative password of a SQL Database server for a
-    * subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
-    * more information)
+    * Changes the administrative password of an existing Azure SQL Database
+    * Server for a given subscription.
     *
-    * @param serverName Required. The server that will have the change made to
-    * the administrative user.
-    * @param parameters Required. Parameters for the Manage Administrator
-    * Password operation.
+    * @param serverName Required. The name of the Azure SQL Database Server
+    * that will have the administrator password changed.
+    * @param parameters Required. The necessary parameters for modifying the
+    * adminstrator password for a server.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -156,8 +153,19 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("op=ResetPassword");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "?" + "op=ResetPassword";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -166,6 +174,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -217,6 +226,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -235,13 +245,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Adds a new SQL Database server to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
-    * more information)
+    * Provisions a new SQL Database server in a subscription.
     *
-    * @param parameters Required. Parameters supplied to the Create Server
-    * operation.
-    * @return The response returned from the Create Server operation.
+    * @param parameters Required. The parameters needed to provision a server.
+    * @return The response returned from the Create Server operation.  This
+    * contains all the information returned from the service when a server is
+    * created.
     */
     @Override
     public Future<ServerCreateResponse> createAsync(final ServerCreateParameters parameters) {
@@ -254,12 +263,9 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Adds a new SQL Database server to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
-    * more information)
+    * Provisions a new SQL Database server in a subscription.
     *
-    * @param parameters Required. Parameters supplied to the Create Server
-    * operation.
+    * @param parameters Required. The parameters needed to provision a server.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -270,7 +276,9 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response returned from the Create Server operation.
+    * @return The response returned from the Create Server operation.  This
+    * contains all the information returned from the service when a server is
+    * created.
     */
     @Override
     public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
@@ -299,8 +307,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -309,6 +322,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -337,6 +351,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
         locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
         serverElement.appendChild(locationElement);
+        
+        if (parameters.getVersion() != null) {
+            Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Version");
+            versionElement.appendChild(requestDoc.createTextNode(parameters.getVersion()));
+            serverElement.appendChild(versionElement);
+        }
         
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
@@ -371,18 +391,25 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             // Create Result
             ServerCreateResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServerCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-            Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
-            
-            Element serverNameElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
-            if (serverNameElement != null) {
-                result.setServerName(serverNameElement.getTextContent());
+            if (statusCode == HttpStatus.SC_CREATED) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServerCreateResponse();
+                DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory2.setNamespaceAware(true);
+                DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+                Document responseDoc = documentBuilder2.parse(new BOMInputStream(responseContent));
+                
+                Element serverNameElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
+                if (serverNameElement != null) {
+                    Attr fullyQualifiedDomainNameAttribute = serverNameElement.getAttributeNodeNS("http://schemas.microsoft.com/sqlazure/2010/12/", "FullyQualifiedDomainName");
+                    if (fullyQualifiedDomainNameAttribute != null) {
+                        result.setFullyQualifiedDomainName(fullyQualifiedDomainNameAttribute.getValue());
+                    }
+                    
+                    result.setServerName(serverNameElement.getTextContent());
+                }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -400,11 +427,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Drops a SQL Database server from a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
-    * more information)
+    * Deletes the specified Azure SQL Database Server from a subscription.
     *
-    * @param serverName Required. The name of the server to be deleted.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be deleted.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -419,11 +445,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Drops a SQL Database server from a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
-    * more information)
+    * Deletes the specified Azure SQL Database Server from a subscription.
     *
-    * @param serverName Required. The name of the server to be deleted.
+    * @param serverName Required. The name of the Azure SQL Database Server to
+    * be deleted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -449,8 +474,14 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers/";
+        url = url + URLEncoder.encode(serverName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -459,6 +490,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -487,6 +519,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             
             // Create Result
             OperationResponse result = null;
+            // Deserialize Response
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
@@ -505,11 +538,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Returns all SQL Database servers that are provisioned for a subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
-    * for more information)
+    * Returns all SQL Database Servers that are provisioned for a subscription.
     *
-    * @return The response structure for the Server List operation.
+    * @return The response structure for the Server List operation.  Contains a
+    * list of all the servers in a subscription.
     */
     @Override
     public Future<ServerListResponse> listAsync() {
@@ -522,9 +554,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     }
     
     /**
-    * Returns all SQL Database servers that are provisioned for a subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
-    * for more information)
+    * Returns all SQL Database Servers that are provisioned for a subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -534,7 +564,8 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return The response structure for the Server List operation.
+    * @return The response structure for the Server List operation.  Contains a
+    * list of all the servers in a subscription.
     */
     @Override
     public ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
@@ -550,8 +581,13 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/sqlservers/servers";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -560,6 +596,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -589,53 +626,66 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             // Create Result
             ServerListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServerListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element serversSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
-            if (serversSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").get(i1));
-                    Server serverInstance = new Server();
-                    result.getServers().add(serverInstance);
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        serverInstance.setName(nameInstance);
-                    }
-                    
-                    Element administratorLoginElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
-                    if (administratorLoginElement != null) {
-                        String administratorLoginInstance;
-                        administratorLoginInstance = administratorLoginElement.getTextContent();
-                        serverInstance.setAdministratorUserName(administratorLoginInstance);
-                    }
-                    
-                    Element locationElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
-                    if (locationElement != null) {
-                        String locationInstance;
-                        locationInstance = locationElement.getTextContent();
-                        serverInstance.setLocation(locationInstance);
-                    }
-                    
-                    Element featuresSequenceElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Features");
-                    if (featuresSequenceElement != null) {
-                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(featuresSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").size(); i2 = i2 + 1) {
-                            org.w3c.dom.Element featuresElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(featuresSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").get(i2));
-                            String featuresKey = XmlUtility.getElementByTagNameNS(featuresElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name").getTextContent();
-                            String featuresValue = XmlUtility.getElementByTagNameNS(featuresElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Value").getTextContent();
-                            serverInstance.getFeatures().put(featuresKey, featuresValue);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new ServerListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element serversSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
+                if (serversSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").get(i1));
+                        Server serverInstance = new Server();
+                        result.getServers().add(serverInstance);
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            serverInstance.setName(nameInstance);
+                        }
+                        
+                        Element administratorLoginElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
+                        if (administratorLoginElement != null) {
+                            String administratorLoginInstance;
+                            administratorLoginInstance = administratorLoginElement.getTextContent();
+                            serverInstance.setAdministratorUserName(administratorLoginInstance);
+                        }
+                        
+                        Element locationElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
+                        if (locationElement != null) {
+                            String locationInstance;
+                            locationInstance = locationElement.getTextContent();
+                            serverInstance.setLocation(locationInstance);
+                        }
+                        
+                        Element fullyQualifiedDomainNameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "FullyQualifiedDomainName");
+                        if (fullyQualifiedDomainNameElement != null) {
+                            String fullyQualifiedDomainNameInstance;
+                            fullyQualifiedDomainNameInstance = fullyQualifiedDomainNameElement.getTextContent();
+                            serverInstance.setFullyQualifiedDomainName(fullyQualifiedDomainNameInstance);
+                        }
+                        
+                        Element stateElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "State");
+                        if (stateElement != null) {
+                            String stateInstance;
+                            stateInstance = stateElement.getTextContent();
+                            serverInstance.setState(stateInstance);
+                        }
+                        
+                        Element versionElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Version");
+                        if (versionElement != null) {
+                            String versionInstance;
+                            versionInstance = versionElement.getTextContent();
+                            serverInstance.setVersion(versionInstance);
                         }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

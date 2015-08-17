@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -132,8 +134,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/resourceextensions";
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -142,12 +149,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -171,113 +179,157 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             // Create Result
             VirtualMachineExtensionListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineExtensionListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element resourceExtensionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
-            if (resourceExtensionsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").get(i1));
-                    VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
-                    result.getResourceExtensions().add(resourceExtensionInstance);
-                    
-                    Element publisherElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
-                    if (publisherElement != null) {
-                        String publisherInstance;
-                        publisherInstance = publisherElement.getTextContent();
-                        resourceExtensionInstance.setPublisher(publisherInstance);
-                    }
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        resourceExtensionInstance.setName(nameInstance);
-                    }
-                    
-                    Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Version");
-                    if (versionElement != null) {
-                        String versionInstance;
-                        versionInstance = versionElement.getTextContent();
-                        resourceExtensionInstance.setVersion(versionInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        resourceExtensionInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element descriptionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                    if (descriptionElement != null) {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        resourceExtensionInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
-                    if (publicConfigurationSchemaElement != null) {
-                        String publicConfigurationSchemaInstance;
-                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
-                        resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
-                    }
-                    
-                    Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
-                    if (privateConfigurationSchemaElement != null) {
-                        String privateConfigurationSchemaInstance;
-                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
-                        resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
-                    }
-                    
-                    Element sampleConfigElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
-                    if (sampleConfigElement != null) {
-                        String sampleConfigInstance;
-                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
-                        resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
-                    }
-                    
-                    Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
-                    if (replicationCompletedElement != null && (replicationCompletedElement.getTextContent() == null || replicationCompletedElement.getTextContent().isEmpty() == true) == false) {
-                        boolean replicationCompletedInstance;
-                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent().toLowerCase());
-                        resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
-                    }
-                    
-                    Element eulaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
-                    if (eulaElement != null) {
-                        URI eulaInstance;
-                        eulaInstance = new URI(eulaElement.getTextContent());
-                        resourceExtensionInstance.setEula(eulaInstance);
-                    }
-                    
-                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                    if (privacyUriElement != null) {
-                        URI privacyUriInstance;
-                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                        resourceExtensionInstance.setPrivacyUri(privacyUriInstance);
-                    }
-                    
-                    Element homepageUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "HomepageUri");
-                    if (homepageUriElement != null) {
-                        URI homepageUriInstance;
-                        homepageUriInstance = new URI(homepageUriElement.getTextContent());
-                        resourceExtensionInstance.setHomepageUri(homepageUriInstance);
-                    }
-                    
-                    Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
-                    if (isJsonExtensionElement != null && (isJsonExtensionElement.getTextContent() == null || isJsonExtensionElement.getTextContent().isEmpty() == true) == false) {
-                        boolean isJsonExtensionInstance;
-                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
-                        resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineExtensionListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element resourceExtensionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
+                if (resourceExtensionsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").get(i1));
+                        VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
+                        result.getResourceExtensions().add(resourceExtensionInstance);
+                        
+                        Element publisherElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
+                        if (publisherElement != null) {
+                            String publisherInstance;
+                            publisherInstance = publisherElement.getTextContent();
+                            resourceExtensionInstance.setPublisher(publisherInstance);
+                        }
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            resourceExtensionInstance.setName(nameInstance);
+                        }
+                        
+                        Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                        if (versionElement != null) {
+                            String versionInstance;
+                            versionInstance = versionElement.getTextContent();
+                            resourceExtensionInstance.setVersion(versionInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            resourceExtensionInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element descriptionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                        if (descriptionElement != null) {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionElement.getTextContent();
+                            resourceExtensionInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
+                        if (publicConfigurationSchemaElement != null) {
+                            String publicConfigurationSchemaInstance;
+                            publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
+                            resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
+                        }
+                        
+                        Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
+                        if (privateConfigurationSchemaElement != null) {
+                            String privateConfigurationSchemaInstance;
+                            privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
+                            resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
+                        }
+                        
+                        Element sampleConfigElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
+                        if (sampleConfigElement != null) {
+                            String sampleConfigInstance;
+                            sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
+                            resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
+                        }
+                        
+                        Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
+                        if (replicationCompletedElement != null && replicationCompletedElement.getTextContent() != null && !replicationCompletedElement.getTextContent().isEmpty()) {
+                            boolean replicationCompletedInstance;
+                            replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
+                        }
+                        
+                        Element eulaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                        if (eulaElement != null) {
+                            URI eulaInstance;
+                            eulaInstance = new URI(eulaElement.getTextContent());
+                            resourceExtensionInstance.setEula(eulaInstance);
+                        }
+                        
+                        Element privacyUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                        if (privacyUriElement != null) {
+                            URI privacyUriInstance;
+                            privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                            resourceExtensionInstance.setPrivacyUri(privacyUriInstance);
+                        }
+                        
+                        Element homepageUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "HomepageUri");
+                        if (homepageUriElement != null) {
+                            URI homepageUriInstance;
+                            homepageUriInstance = new URI(homepageUriElement.getTextContent());
+                            resourceExtensionInstance.setHomepageUri(homepageUriInstance);
+                        }
+                        
+                        Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
+                        if (isJsonExtensionElement != null && isJsonExtensionElement.getTextContent() != null && !isJsonExtensionElement.getTextContent().isEmpty()) {
+                            boolean isJsonExtensionInstance;
+                            isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                        }
+                        
+                        Element isInternalExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsInternalExtension");
+                        if (isInternalExtensionElement != null && isInternalExtensionElement.getTextContent() != null && !isInternalExtensionElement.getTextContent().isEmpty()) {
+                            boolean isInternalExtensionInstance;
+                            isInternalExtensionInstance = DatatypeConverter.parseBoolean(isInternalExtensionElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setIsInternalExtension(isInternalExtensionInstance);
+                        }
+                        
+                        Element disallowMajorVersionUpgradeElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
+                        if (disallowMajorVersionUpgradeElement != null && disallowMajorVersionUpgradeElement.getTextContent() != null && !disallowMajorVersionUpgradeElement.getTextContent().isEmpty()) {
+                            boolean disallowMajorVersionUpgradeInstance;
+                            disallowMajorVersionUpgradeInstance = DatatypeConverter.parseBoolean(disallowMajorVersionUpgradeElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setDisallowMajorVersionUpgrade(disallowMajorVersionUpgradeInstance);
+                        }
+                        
+                        Element supportedOSElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SupportedOS");
+                        if (supportedOSElement != null) {
+                            String supportedOSInstance;
+                            supportedOSInstance = supportedOSElement.getTextContent();
+                            resourceExtensionInstance.setSupportedOS(supportedOSInstance);
+                        }
+                        
+                        Element companyNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "CompanyName");
+                        if (companyNameElement != null) {
+                            String companyNameInstance;
+                            companyNameInstance = companyNameElement.getTextContent();
+                            resourceExtensionInstance.setCompanyName(companyNameInstance);
+                        }
+                        
+                        Element publishedDateElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                        if (publishedDateElement != null && publishedDateElement.getTextContent() != null && !publishedDateElement.getTextContent().isEmpty()) {
+                            Calendar publishedDateInstance;
+                            publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                            resourceExtensionInstance.setPublishedDate(publishedDateInstance);
+                        }
+                        
+                        Element regionsElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Regions");
+                        if (regionsElement != null) {
+                            String regionsInstance;
+                            regionsInstance = regionsElement.getTextContent();
+                            resourceExtensionInstance.setRegions(regionsInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -362,8 +414,16 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         }
         
         // Construct URL
+        String url = "";
+        url = url + "/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/services/resourceextensions/";
+        url = url + URLEncoder.encode(publisherName, "UTF-8");
+        url = url + "/";
+        url = url + URLEncoder.encode(extensionName, "UTF-8");
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/resourceextensions/" + publisherName.trim() + "/" + extensionName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -372,12 +432,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             url = url.substring(1);
         }
         url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        httpRequest.setHeader("x-ms-version", "2015-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -401,113 +462,157 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             // Create Result
             VirtualMachineExtensionListResponse result = null;
             // Deserialize Response
-            InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineExtensionListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
-            
-            Element resourceExtensionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
-            if (resourceExtensionsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").get(i1));
-                    VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
-                    result.getResourceExtensions().add(resourceExtensionInstance);
-                    
-                    Element publisherElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
-                    if (publisherElement != null) {
-                        String publisherInstance;
-                        publisherInstance = publisherElement.getTextContent();
-                        resourceExtensionInstance.setPublisher(publisherInstance);
-                    }
-                    
-                    Element nameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    if (nameElement != null) {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        resourceExtensionInstance.setName(nameInstance);
-                    }
-                    
-                    Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Version");
-                    if (versionElement != null) {
-                        String versionInstance;
-                        versionInstance = versionElement.getTextContent();
-                        resourceExtensionInstance.setVersion(versionInstance);
-                    }
-                    
-                    Element labelElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    if (labelElement != null) {
-                        String labelInstance;
-                        labelInstance = labelElement.getTextContent();
-                        resourceExtensionInstance.setLabel(labelInstance);
-                    }
-                    
-                    Element descriptionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                    if (descriptionElement != null) {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        resourceExtensionInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
-                    if (publicConfigurationSchemaElement != null) {
-                        String publicConfigurationSchemaInstance;
-                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
-                        resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
-                    }
-                    
-                    Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
-                    if (privateConfigurationSchemaElement != null) {
-                        String privateConfigurationSchemaInstance;
-                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
-                        resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
-                    }
-                    
-                    Element sampleConfigElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
-                    if (sampleConfigElement != null) {
-                        String sampleConfigInstance;
-                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
-                        resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
-                    }
-                    
-                    Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
-                    if (replicationCompletedElement != null && (replicationCompletedElement.getTextContent() == null || replicationCompletedElement.getTextContent().isEmpty() == true) == false) {
-                        boolean replicationCompletedInstance;
-                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent().toLowerCase());
-                        resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
-                    }
-                    
-                    Element eulaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
-                    if (eulaElement != null) {
-                        URI eulaInstance;
-                        eulaInstance = new URI(eulaElement.getTextContent());
-                        resourceExtensionInstance.setEula(eulaInstance);
-                    }
-                    
-                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                    if (privacyUriElement != null) {
-                        URI privacyUriInstance;
-                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
-                        resourceExtensionInstance.setPrivacyUri(privacyUriInstance);
-                    }
-                    
-                    Element homepageUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "HomepageUri");
-                    if (homepageUriElement != null) {
-                        URI homepageUriInstance;
-                        homepageUriInstance = new URI(homepageUriElement.getTextContent());
-                        resourceExtensionInstance.setHomepageUri(homepageUriInstance);
-                    }
-                    
-                    Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
-                    if (isJsonExtensionElement != null && (isJsonExtensionElement.getTextContent() == null || isJsonExtensionElement.getTextContent().isEmpty() == true) == false) {
-                        boolean isJsonExtensionInstance;
-                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
-                        resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new VirtualMachineExtensionListResponse();
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setNamespaceAware(true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document responseDoc = documentBuilder.parse(new BOMInputStream(responseContent));
+                
+                Element resourceExtensionsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
+                if (resourceExtensionsSequenceElement != null) {
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").get(i1));
+                        VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
+                        result.getResourceExtensions().add(resourceExtensionInstance);
+                        
+                        Element publisherElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
+                        if (publisherElement != null) {
+                            String publisherInstance;
+                            publisherInstance = publisherElement.getTextContent();
+                            resourceExtensionInstance.setPublisher(publisherInstance);
+                        }
+                        
+                        Element nameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement != null) {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            resourceExtensionInstance.setName(nameInstance);
+                        }
+                        
+                        Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                        if (versionElement != null) {
+                            String versionInstance;
+                            versionInstance = versionElement.getTextContent();
+                            resourceExtensionInstance.setVersion(versionInstance);
+                        }
+                        
+                        Element labelElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Label");
+                        if (labelElement != null) {
+                            String labelInstance;
+                            labelInstance = labelElement.getTextContent();
+                            resourceExtensionInstance.setLabel(labelInstance);
+                        }
+                        
+                        Element descriptionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Description");
+                        if (descriptionElement != null) {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionElement.getTextContent();
+                            resourceExtensionInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
+                        if (publicConfigurationSchemaElement != null) {
+                            String publicConfigurationSchemaInstance;
+                            publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
+                            resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
+                        }
+                        
+                        Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
+                        if (privateConfigurationSchemaElement != null) {
+                            String privateConfigurationSchemaInstance;
+                            privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
+                            resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
+                        }
+                        
+                        Element sampleConfigElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
+                        if (sampleConfigElement != null) {
+                            String sampleConfigInstance;
+                            sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
+                            resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
+                        }
+                        
+                        Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
+                        if (replicationCompletedElement != null && replicationCompletedElement.getTextContent() != null && !replicationCompletedElement.getTextContent().isEmpty()) {
+                            boolean replicationCompletedInstance;
+                            replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
+                        }
+                        
+                        Element eulaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                        if (eulaElement != null) {
+                            URI eulaInstance;
+                            eulaInstance = new URI(eulaElement.getTextContent());
+                            resourceExtensionInstance.setEula(eulaInstance);
+                        }
+                        
+                        Element privacyUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                        if (privacyUriElement != null) {
+                            URI privacyUriInstance;
+                            privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                            resourceExtensionInstance.setPrivacyUri(privacyUriInstance);
+                        }
+                        
+                        Element homepageUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "HomepageUri");
+                        if (homepageUriElement != null) {
+                            URI homepageUriInstance;
+                            homepageUriInstance = new URI(homepageUriElement.getTextContent());
+                            resourceExtensionInstance.setHomepageUri(homepageUriInstance);
+                        }
+                        
+                        Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
+                        if (isJsonExtensionElement != null && isJsonExtensionElement.getTextContent() != null && !isJsonExtensionElement.getTextContent().isEmpty()) {
+                            boolean isJsonExtensionInstance;
+                            isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                        }
+                        
+                        Element isInternalExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsInternalExtension");
+                        if (isInternalExtensionElement != null && isInternalExtensionElement.getTextContent() != null && !isInternalExtensionElement.getTextContent().isEmpty()) {
+                            boolean isInternalExtensionInstance;
+                            isInternalExtensionInstance = DatatypeConverter.parseBoolean(isInternalExtensionElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setIsInternalExtension(isInternalExtensionInstance);
+                        }
+                        
+                        Element disallowMajorVersionUpgradeElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "DisallowMajorVersionUpgrade");
+                        if (disallowMajorVersionUpgradeElement != null && disallowMajorVersionUpgradeElement.getTextContent() != null && !disallowMajorVersionUpgradeElement.getTextContent().isEmpty()) {
+                            boolean disallowMajorVersionUpgradeInstance;
+                            disallowMajorVersionUpgradeInstance = DatatypeConverter.parseBoolean(disallowMajorVersionUpgradeElement.getTextContent().toLowerCase());
+                            resourceExtensionInstance.setDisallowMajorVersionUpgrade(disallowMajorVersionUpgradeInstance);
+                        }
+                        
+                        Element supportedOSElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SupportedOS");
+                        if (supportedOSElement != null) {
+                            String supportedOSInstance;
+                            supportedOSInstance = supportedOSElement.getTextContent();
+                            resourceExtensionInstance.setSupportedOS(supportedOSInstance);
+                        }
+                        
+                        Element companyNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "CompanyName");
+                        if (companyNameElement != null) {
+                            String companyNameInstance;
+                            companyNameInstance = companyNameElement.getTextContent();
+                            resourceExtensionInstance.setCompanyName(companyNameInstance);
+                        }
+                        
+                        Element publishedDateElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                        if (publishedDateElement != null && publishedDateElement.getTextContent() != null && !publishedDateElement.getTextContent().isEmpty()) {
+                            Calendar publishedDateInstance;
+                            publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
+                            resourceExtensionInstance.setPublishedDate(publishedDateInstance);
+                        }
+                        
+                        Element regionsElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Regions");
+                        if (regionsElement != null) {
+                            String regionsInstance;
+                            regionsInstance = regionsElement.getTextContent();
+                            resourceExtensionInstance.setRegions(regionsInstance);
+                        }
                     }
                 }
+                
             }
-            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

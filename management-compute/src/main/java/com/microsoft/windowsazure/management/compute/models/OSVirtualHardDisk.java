@@ -30,14 +30,14 @@ import java.net.URI;
 * machine.
 */
 public class OSVirtualHardDisk {
-    private VirtualHardDiskHostCaching hostCaching;
+    private String hostCaching;
     
     /**
     * Optional. Specifies the platform caching behavior of the operating system
     * disk blob for read/write efficiency.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public String getHostCaching() {
         return this.hostCaching;
     }
     
@@ -46,8 +46,26 @@ public class OSVirtualHardDisk {
     * disk blob for read/write efficiency.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final String hostCachingValue) {
         this.hostCaching = hostCachingValue;
+    }
+    
+    private String iOType;
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @return The IOType value.
+    */
+    public String getIOType() {
+        return this.iOType;
+    }
+    
+    /**
+    * Optional. Gets or sets the IO type.
+    * @param iOTypeValue The IOType value.
+    */
+    public void setIOType(final String iOTypeValue) {
+        this.iOType = iOTypeValue;
     }
     
     private String label;
@@ -126,6 +144,56 @@ public class OSVirtualHardDisk {
     */
     public void setOperatingSystem(final String operatingSystemValue) {
         this.operatingSystem = operatingSystemValue;
+    }
+    
+    private URI remoteSourceImageLink;
+    
+    /**
+    * Optional. Uri of the source OS image that will be copied to the
+    * customer’s storage account of VM creation.If RemoteSourceImageLink is
+    * specified, then MediaLink must also be specified.If
+    * RemoteSourceImageLink is specified, thenSourceIamgeName must not be
+    * specified.
+    * @return The RemoteSourceImageLink value.
+    */
+    public URI getRemoteSourceImageLink() {
+        return this.remoteSourceImageLink;
+    }
+    
+    /**
+    * Optional. Uri of the source OS image that will be copied to the
+    * customer’s storage account of VM creation.If RemoteSourceImageLink is
+    * specified, then MediaLink must also be specified.If
+    * RemoteSourceImageLink is specified, thenSourceIamgeName must not be
+    * specified.
+    * @param remoteSourceImageLinkValue The RemoteSourceImageLink value.
+    */
+    public void setRemoteSourceImageLink(final URI remoteSourceImageLinkValue) {
+        this.remoteSourceImageLink = remoteSourceImageLinkValue;
+    }
+    
+    private Integer resizedSizeInGB;
+    
+    /**
+    * Optional. When an OS Image or a RemoteSourceImage is used to create an
+    * OSVirtualHardDisk, this parameter can be used to resize the new
+    * OSVirtualHardDisk to a larger size. ResizedSizeInGB must be larger than
+    * the underlying OS Image’s LogicalSizeInGB.
+    * @return The ResizedSizeInGB value.
+    */
+    public Integer getResizedSizeInGB() {
+        return this.resizedSizeInGB;
+    }
+    
+    /**
+    * Optional. When an OS Image or a RemoteSourceImage is used to create an
+    * OSVirtualHardDisk, this parameter can be used to resize the new
+    * OSVirtualHardDisk to a larger size. ResizedSizeInGB must be larger than
+    * the underlying OS Image’s LogicalSizeInGB.
+    * @param resizedSizeInGBValue The ResizedSizeInGB value.
+    */
+    public void setResizedSizeInGB(final Integer resizedSizeInGBValue) {
+        this.resizedSizeInGB = resizedSizeInGBValue;
     }
     
     private String sourceImageName;

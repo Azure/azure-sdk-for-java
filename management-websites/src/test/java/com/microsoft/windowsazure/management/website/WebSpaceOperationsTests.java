@@ -17,14 +17,14 @@ package com.microsoft.windowsazure.management.website;
 
 import java.util.ArrayList;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.websites.models.ServerFarmListResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
@@ -41,20 +41,18 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        cleanup();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        String webSpaceName = "northcentraluswebspace"; 
-        try {
-            webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);
-        }
-        catch (ServiceException e) {
-            e.printStackTrace();
-        }
+    @Before
+    public void beforeTest() throws Exception {
+        setupTest();
     }
-
+    
+    @After
+    public void afterTest() throws Exception {
+        resetTest();
+    }
+    
     @Test
     @Ignore("Currently, when there are co-admin on the subscription, this test cannot pass.")
     public void createWebSpaceSuccess() throws Exception {
@@ -101,7 +99,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     }
 
     @Test
-    public void getDnsSuffixSuccess() throws Exception {    	
+    public void getDnsSuffixSuccess() throws Exception {
         WebSpacesGetDnsSuffixResponse  webSpacesGetDnsSuffixResponse = webSiteManagementClient.getWebSpacesOperations().getDnsSuffix();
         // Assert
         Assert.assertEquals(200, webSpacesGetDnsSuffixResponse.getStatusCode());
@@ -170,7 +168,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
         for (WebSite  webSite : webSiteslist) { 
              //Assert
-             Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
+             Assert.assertEquals(WebSpaceAvailabilityState.NORMAL, webSite.getAvailabilityState());
              Assert.assertNotNull(webSite.getName()); 
         }
     }

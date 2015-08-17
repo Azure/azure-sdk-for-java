@@ -26,14 +26,13 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.net.InetAddress;
 
 /**
-* The parameters for the Create Firewall Rule operation.
+* Represents the parameters for the Create Firewall Rule operation.
 */
 public class FirewallRuleUpdateParameters {
     private InetAddress endIPAddress;
     
     /**
-    * Required. Gets or sets the ending IP address applied to this firewall
-    * rule.
+    * Required. Gets or sets the new ending IP address for this Firewall Rule.
     * @return The EndIPAddress value.
     */
     public InetAddress getEndIPAddress() {
@@ -41,8 +40,7 @@ public class FirewallRuleUpdateParameters {
     }
     
     /**
-    * Required. Gets or sets the ending IP address applied to this firewall
-    * rule.
+    * Required. Gets or sets the new ending IP address for this Firewall Rule.
     * @param endIPAddressValue The EndIPAddress value.
     */
     public void setEndIPAddress(final InetAddress endIPAddressValue) {
@@ -52,7 +50,7 @@ public class FirewallRuleUpdateParameters {
     private String name;
     
     /**
-    * Required. Gets or sets the name of this firewall rule.
+    * Required. Gets or sets the new name of the Firewall Rule.
     * @return The Name value.
     */
     public String getName() {
@@ -60,7 +58,7 @@ public class FirewallRuleUpdateParameters {
     }
     
     /**
-    * Required. Gets or sets the name of this firewall rule.
+    * Required. Gets or sets the new name of the Firewall Rule.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -70,8 +68,8 @@ public class FirewallRuleUpdateParameters {
     private InetAddress startIPAddress;
     
     /**
-    * Required. Gets or sets the beginning IP address applied to this firewall
-    * rule.
+    * Required. Gets or sets the new beginning IP address for this Firewall
+    * Rule.
     * @return The StartIPAddress value.
     */
     public InetAddress getStartIPAddress() {
@@ -79,11 +77,43 @@ public class FirewallRuleUpdateParameters {
     }
     
     /**
-    * Required. Gets or sets the beginning IP address applied to this firewall
-    * rule.
+    * Required. Gets or sets the new beginning IP address for this Firewall
+    * Rule.
     * @param startIPAddressValue The StartIPAddress value.
     */
     public void setStartIPAddress(final InetAddress startIPAddressValue) {
         this.startIPAddress = startIPAddressValue;
+    }
+    
+    /**
+    * Initializes a new instance of the FirewallRuleUpdateParameters class.
+    *
+    */
+    public FirewallRuleUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the FirewallRuleUpdateParameters class with
+    * required arguments.
+    *
+    * @param name Gets or sets the new name of the Firewall Rule.
+    * @param startIPAddress Gets or sets the new beginning IP address for this
+    * Firewall Rule.
+    * @param endIPAddress Gets or sets the new ending IP address for this
+    * Firewall Rule.
+    */
+    public FirewallRuleUpdateParameters(String name, InetAddress startIPAddress, InetAddress endIPAddress) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        if (startIPAddress == null) {
+            throw new NullPointerException("startIPAddress");
+        }
+        if (endIPAddress == null) {
+            throw new NullPointerException("endIPAddress");
+        }
+        this.setName(name);
+        this.setStartIPAddress(startIPAddress);
+        this.setEndIPAddress(endIPAddress);
     }
 }

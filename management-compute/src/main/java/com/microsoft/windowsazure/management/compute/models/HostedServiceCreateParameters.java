@@ -23,6 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.windowsazure.core.LazyHashMap;
 import java.util.HashMap;
 
 /**
@@ -163,6 +164,26 @@ public class HostedServiceCreateParameters {
         this.location = locationValue;
     }
     
+    private String reverseDnsFqdn;
+    
+    /**
+    * Optional. Dns address to which the cloud service's IP address resolves
+    * when queried using a reverse Dns query.
+    * @return The ReverseDnsFqdn value.
+    */
+    public String getReverseDnsFqdn() {
+        return this.reverseDnsFqdn;
+    }
+    
+    /**
+    * Optional. Dns address to which the cloud service's IP address resolves
+    * when queried using a reverse Dns query.
+    * @param reverseDnsFqdnValue The ReverseDnsFqdn value.
+    */
+    public void setReverseDnsFqdn(final String reverseDnsFqdnValue) {
+        this.reverseDnsFqdn = reverseDnsFqdnValue;
+    }
+    
     private String serviceName;
     
     /**
@@ -188,6 +209,29 @@ public class HostedServiceCreateParameters {
     *
     */
     public HostedServiceCreateParameters() {
-        this.extendedProperties = new HashMap<String, String>();
+        this.setExtendedProperties(new LazyHashMap<String, String>());
+    }
+    
+    /**
+    * Initializes a new instance of the HostedServiceCreateParameters class
+    * with required arguments.
+    *
+    * @param serviceName A name for the cloud service that is unique within
+    * Azure. This name is the DNS prefix name and can be used to access the
+    * service.
+    * @param label A name for the cloud service. The name can be up to 100
+    * characters in length. The name can be used to identify the storage
+    * account for your tracking purposes.
+    */
+    public HostedServiceCreateParameters(String serviceName, String label) {
+        this();
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        this.setServiceName(serviceName);
+        this.setLabel(label);
     }
 }

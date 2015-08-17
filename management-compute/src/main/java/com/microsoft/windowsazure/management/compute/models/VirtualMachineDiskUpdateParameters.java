@@ -132,4 +132,53 @@ public class VirtualMachineDiskUpdateParameters {
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
+    
+    private Integer resizedSizeInGB;
+    
+    /**
+    * Optional. Resizes the underlying blob to the indicated size in GB.To use
+    * the ResizedSizeInGB property, the version header should be at least
+    * 2014-10-01.
+    * @return The ResizedSizeInGB value.
+    */
+    public Integer getResizedSizeInGB() {
+        return this.resizedSizeInGB;
+    }
+    
+    /**
+    * Optional. Resizes the underlying blob to the indicated size in GB.To use
+    * the ResizedSizeInGB property, the version header should be at least
+    * 2014-10-01.
+    * @param resizedSizeInGBValue The ResizedSizeInGB value.
+    */
+    public void setResizedSizeInGB(final Integer resizedSizeInGBValue) {
+        this.resizedSizeInGB = resizedSizeInGBValue;
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskUpdateParameters
+    * class.
+    *
+    */
+    public VirtualMachineDiskUpdateParameters() {
+    }
+    
+    /**
+    * Initializes a new instance of the VirtualMachineDiskUpdateParameters
+    * class with required arguments.
+    *
+    * @param label Specifies the friendly name of the disk.
+    * @param name Specifies a name for the disk. Azure uses the name to
+    * identify the disk when creating virtual machines from the disk.
+    */
+    public VirtualMachineDiskUpdateParameters(String label, String name) {
+        if (label == null) {
+            throw new NullPointerException("label");
+        }
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        this.setLabel(label);
+        this.setName(name);
+    }
 }
