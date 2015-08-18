@@ -4471,14 +4471,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 JsonNode settingsValue = propertiesValue3.get("settings");
                                 if (settingsValue != null && settingsValue instanceof NullNode == false) {
                                     String settingsInstance;
-                                    settingsInstance = settingsValue.getTextValue();
+                                    settingsInstance = settingsValue.toString();
                                     virtualMachineExtensionJsonInstance.setSettings(settingsInstance);
                                 }
                                 
                                 JsonNode protectedSettingsValue = propertiesValue3.get("protectedSettings");
                                 if (protectedSettingsValue != null && protectedSettingsValue instanceof NullNode == false) {
                                     String protectedSettingsInstance;
-                                    protectedSettingsInstance = protectedSettingsValue.getTextValue();
+                                    protectedSettingsInstance = protectedSettingsValue.toString();
                                     virtualMachineExtensionJsonInstance.setProtectedSettings(protectedSettingsInstance);
                                 }
                                 
