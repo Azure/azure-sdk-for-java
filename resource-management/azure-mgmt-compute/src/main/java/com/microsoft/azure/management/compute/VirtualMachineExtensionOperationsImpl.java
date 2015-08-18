@@ -410,14 +410,14 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         JsonNode settingsValue = propertiesValue2.get("settings");
                         if (settingsValue != null && settingsValue instanceof NullNode == false) {
                             String settingsInstance;
-                            settingsInstance = settingsValue.getTextValue();
+                            settingsInstance = settingsValue.toString();
                             virtualMachineExtensionInstance.setSettings(settingsInstance);
                         }
                         
                         JsonNode protectedSettingsValue = propertiesValue2.get("protectedSettings");
                         if (protectedSettingsValue != null && protectedSettingsValue instanceof NullNode == false) {
                             String protectedSettingsInstance;
-                            protectedSettingsInstance = protectedSettingsValue.getTextValue();
+                            protectedSettingsInstance = protectedSettingsValue.toString();
                             virtualMachineExtensionInstance.setProtectedSettings(protectedSettingsInstance);
                         }
                         
@@ -1092,14 +1092,14 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         JsonNode settingsValue = propertiesValue.get("settings");
                         if (settingsValue != null && settingsValue instanceof NullNode == false) {
                             String settingsInstance;
-                            settingsInstance = settingsValue.getTextValue();
+                            settingsInstance = settingsValue.toString();
                             virtualMachineExtensionInstance.setSettings(settingsInstance);
                         }
                         
                         JsonNode protectedSettingsValue = propertiesValue.get("protectedSettings");
                         if (protectedSettingsValue != null && protectedSettingsValue instanceof NullNode == false) {
                             String protectedSettingsInstance;
-                            protectedSettingsInstance = protectedSettingsValue.getTextValue();
+                            protectedSettingsInstance = protectedSettingsValue.toString();
                             virtualMachineExtensionInstance.setProtectedSettings(protectedSettingsInstance);
                         }
                         

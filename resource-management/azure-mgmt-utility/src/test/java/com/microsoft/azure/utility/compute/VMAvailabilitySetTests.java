@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class AvailabilitySetTests extends ComputeTestBase {
+public class VMAvailabilitySetTests extends ComputeTestBase {
     private static final int fdTooLow = -1;
     private static final int fdTooHigh = 4;
     private static final int udTooLow = 0;
@@ -27,7 +27,7 @@ public class AvailabilitySetTests extends ComputeTestBase {
     private static final int nonDefaultUd = 4;
 
     static {
-        log = LogFactory.getLog(AvailabilitySetTests.class);
+        log = LogFactory.getLog(VMAvailabilitySetTests.class);
     }
 
     @BeforeClass
