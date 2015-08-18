@@ -22,9 +22,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 import org.junit.*;
 
-public class ListVMTests extends ComputeTestBase {
+public class VMListTests extends ComputeTestBase {
     static {
-        log = LogFactory.getLog(ListVMTests.class);
+        log = LogFactory.getLog(VMListTests.class);
     }
 
     @BeforeClass
