@@ -57,12 +57,6 @@ public class VMExtensionTests extends ComputeTestBase {
     }
 
     @Test
-    public void canaryTest() throws IOException, ServiceException, URISyntaxException {
-        createOrUpdateResourceGroup(m_rgName);
-        Assert.assertTrue(true);
-    }
-
-    @Test
     public void testVmExtensionsOperations() throws Exception {
         VirtualMachineExtension extension = getTestVmExtension();
         ImageReference imageReference = getPlatformVmImage(true);
