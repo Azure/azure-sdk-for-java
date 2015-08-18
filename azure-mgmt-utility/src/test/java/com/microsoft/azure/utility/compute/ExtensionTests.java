@@ -65,25 +65,20 @@ public class ExtensionTests extends ComputeTestBase {
         context.setImageReference(imageReference);
         createOrUpdateResourceGroup(context.getResourceGroupName());
 
-        try {
-            StorageAccount storageAccount = StorageHelper.createStorageAccount(storageManagementClient, context);
-            Assert.assertNotNull(storageAccount);
+        StorageAccount storageAccount = StorageHelper.createStorageAccount(storageManagementClient, context);
+        Assert.assertNotNull(storageAccount);
 
-            String vmName = generateName("vm");
+        String vmName = generateName("vm");
 
-            VirtualMachine vm = createVM(context, vmName);
-            // TODO: Disable this case because there is (potentially) a bug in the http recorder which make this case fails under playback
+        VirtualMachine vm = createVM(context, vmName);
+        // TODO: Disable this case because there is (potentially) a bug in the http recorder which make this case fails under playback
 //            verifyDeleteNonExistingExtension(context.getResourceGroupName(), "RandomVM", "VMExtensionDoesNotExist");
-            verifyAddExtensionToVM(vm, context.getResourceGroupName());
-            verifyGetExtension(extension, vm, context.getResourceGroupName());
-            verifyGetExtensionInstanceView(extension, vm, context.getResourceGroupName());
-            verifyVmExtensionInVmInfo(extension, vm, context.getResourceGroupName());
-            verifyVmExtensionInstanceViewInVmInstanceView(vm, context.getResourceGroupName());
-            verifyDeleteExtension(extension, vm, context.getResourceGroupName());
-        } finally {
-            OperationResponse deleteResourceGroupResponse = resourceManagementClient.getResourceGroupsOperations().beginDeleting(context.getResourceGroupName());
-            Assert.assertEquals(HttpStatus.SC_ACCEPTED, deleteResourceGroupResponse.getStatusCode());
-        }
+        verifyAddExtensionToVM(vm, context.getResourceGroupName());
+        verifyGetExtension(extension, vm, context.getResourceGroupName());
+        verifyGetExtensionInstanceView(extension, vm, context.getResourceGroupName());
+        verifyVmExtensionInVmInfo(extension, vm, context.getResourceGroupName());
+        verifyVmExtensionInstanceViewInVmInstanceView(vm, context.getResourceGroupName());
+        verifyDeleteExtension(extension, vm, context.getResourceGroupName());
     }
 
     private void verifyDeleteNonExistingExtension(String rgName, String vmName, String extensionName) throws Exception {
