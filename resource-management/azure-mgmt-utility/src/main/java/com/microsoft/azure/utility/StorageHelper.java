@@ -19,6 +19,8 @@ import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 import java.util.List;
 
@@ -62,6 +64,8 @@ public class StorageHelper {
     }
 
     protected static void waitSeconds(double seconds) throws InterruptedException{
-        Thread.sleep((long)seconds * 100);
+        if (!ManagementConfiguration.isPlayback()) {
+            Thread.sleep((long)seconds * 100);
+        }
     }
 }

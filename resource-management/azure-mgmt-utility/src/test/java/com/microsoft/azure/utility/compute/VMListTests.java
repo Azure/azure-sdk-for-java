@@ -22,9 +22,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 import org.junit.*;
 
-public class ListVMTests extends ComputeTestBase {
+public class VMListTests extends ComputeTestBase {
     static {
-        log = LogFactory.getLog(ListVMTests.class);
+        log = LogFactory.getLog(VMListTests.class);
     }
 
     @BeforeClass
@@ -53,6 +53,8 @@ public class ListVMTests extends ComputeTestBase {
      * @throws Exception
      */
     @Test
+    @Ignore
+    // This test is flawed when test subscription has too many VMs and gets multiple pages.
     public void testListVMInSubscription() throws Exception {
         log.info("creating VM, in mock: " + IS_MOCKED);
         final ResourceContext context = createTestResourceContext(false);
