@@ -1,6 +1,5 @@
 package com.microsoft.azure.samples.templatedeployments;
 
-import com.google.common.base.Optional;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.resources.models.DeploymentExtended;
@@ -87,7 +86,7 @@ public class CreateTemplateDeploymentExample {
                     "1.0.0.0",
                     parameters);
 
-            System.out.printf("Created new deployment - %s in resource group - %s",
+            System.out.printf("Created new deployment - %s in resource group - %s\n",
                     deployment.getName(), resourceGroupName);
 
         } catch (Exception e) {
@@ -100,7 +99,8 @@ public class CreateTemplateDeploymentExample {
     }
 
     protected static String getInput(String envName, String defaultValue) {
-        return Optional.fromNullable(System.getenv(envName)).or(defaultValue);
+        String val = System.getenv(envName);
+        return (val == null || val.trim().isEmpty()) ? defaultValue : envName;
     }
 
     /**
