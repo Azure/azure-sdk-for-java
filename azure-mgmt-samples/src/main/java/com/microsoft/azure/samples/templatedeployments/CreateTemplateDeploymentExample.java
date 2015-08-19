@@ -100,7 +100,7 @@ public class CreateTemplateDeploymentExample {
 
     protected static String getInput(String envName, String defaultValue) {
         String val = System.getenv(envName);
-        return (val == null || val.trim().isEmpty()) ? defaultValue : envName;
+        return (val == null || val.trim().isEmpty()) ? defaultValue : val;
     }
 
     /**
