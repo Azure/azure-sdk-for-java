@@ -35,16 +35,16 @@ public class VMExtensionTests extends ComputeTestBase {
         log = LogFactory.getLog(VMScenarioTests.class);
     }
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        ensureClientsInitialized();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + m_rgName);
-        cleanupResourceGroup();
-    }
+//    @BeforeClass
+//    public static void setup() throws Exception {
+//        ensureClientsInitialized();
+//    }
+//
+//    @AfterClass
+//    public static void cleanup() throws Exception {
+//        log.debug("after class, clean resource group: " + m_rgName);
+//        cleanupResourceGroup();
+//    }
 
     @Before
     public void beforeTest() throws Exception {
@@ -56,6 +56,8 @@ public class VMExtensionTests extends ComputeTestBase {
         resetTest();
     }
 
+    // TODO disable, pending investigation
+    @Ignore
     @Test
     public void testVmExtensionsOperations() throws Exception {
         VirtualMachineExtension extension = getTestVmExtension();
