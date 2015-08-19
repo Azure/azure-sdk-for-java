@@ -64,6 +64,14 @@ public class ResourceContext {
     }
 
     public ResourceContext(
+            String location, String resourceGroupName, String subscriptionId) {
+        this.Location = location;
+        this.ResourceGroupName = resourceGroupName;
+        this.SubscriptionId = subscriptionId;
+        this.CreatePublicIpAddress = true;
+    }
+
+    public ResourceContext(
             String location, String resourceGroupName, String subscriptionId, boolean createPublicIpAddress) {
         this.Location = location;
         this.ResourceGroupName = resourceGroupName;

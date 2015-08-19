@@ -53,6 +53,8 @@ public class VMListTests extends ComputeTestBase {
      * @throws Exception
      */
     @Test
+    @Ignore
+    // This test is flawed when test subscription has too many VMs and gets multiple pages.
     public void testListVMInSubscription() throws Exception {
         log.info("creating VM, in mock: " + IS_MOCKED);
         final ResourceContext context = createTestResourceContext(false);
