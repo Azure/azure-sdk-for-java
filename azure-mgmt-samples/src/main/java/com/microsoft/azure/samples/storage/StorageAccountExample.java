@@ -16,6 +16,7 @@
 
 package com.microsoft.azure.samples.storage;
 
+import com.microsoft.azure.management.storage.models.*;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.azure.utility.StorageHelper;
 import com.microsoft.azure.utility.ResourceContext;
@@ -25,9 +26,6 @@ import com.microsoft.windowsazure.management.configuration.ManagementConfigurati
 
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
-import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 
 import java.util.Map;
 import java.net.URI;
@@ -48,6 +46,8 @@ public class StorageAccountExample {
      *          - deletes the storage account
      *      retrieve <resource group> <account name>
      *          - shows information about the storage account
+     *      regenerateKey <resource group> <account name> <primary/secondary>
+     *          - regenerates the specified key
      *
      * To use the sample please set following environment variable or simply replace the getenv call
      * with actual value:
@@ -115,6 +115,22 @@ public class StorageAccountExample {
             } else {
                 result = retrieveStorageAccount(storageManagementClient, args[1], args[2]);
             }
+        } else if(args[0].equals("regenerateKey")) {
+            if(args.length != 4) {
+                result = -1;
+            } else {
+                KeyName keyName = null;
+                if(args[3].toLowerCase().equals("primary")) {
+                    keyName = KeyName.KEY1;
+                } else if(args[3].toLowerCase().equals("secondary")) {
+                    keyName = KeyName.KEY2;
+                }
+                if(keyName == null) {
+                    result = -1;
+                } else {
+                    result = regenerateStorageAccountKey(storageManagementClient, args[1], args[2], keyName);
+                }
+            }
         } else {
             displayUsageAndExit(null);
         }
@@ -156,7 +172,7 @@ public class StorageAccountExample {
     /**
      * Create a storage account.
      *
-     * @param StorageManagementClient   storage management client
+     * @param client                storage management client
      * @param resourceGroup         name of the resource group
      * @param accountName           name of the storage account
      * @param accountType           type of storage account
@@ -174,9 +190,10 @@ public class StorageAccountExample {
             return -1;
         }
         
-        ResourceContext context = new ResourceContext(location, resourceGroup, 
-                                            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID), 
+        ResourceContext context = new ResourceContext(location, resourceGroup,
+                                            getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID),
                                             false);
+        context.setStorageAccountName(accountName);
         StorageAccountCreateParameters stoInput = new StorageAccountCreateParameters(accountTypeVal,
                                                                                      location);
                                                                                      
@@ -193,21 +210,20 @@ public class StorageAccountExample {
     /**
      * Delete a storage account.
      *
-     * @param StorageManagementClient   storage management client
+     * @param client                storage management client
      * @param resourceGroup         name of the resource group
      * @param accountName           name of the storage account
-     * @param accountType           type of storage account
-     * @param location              location of the storage account
      * @return int                  zero on success, one on failure
      * @throws Exception            throw all exceptions
      */
     private static int deleteStorageAccount(StorageManagementClient client,
                                             String resourceGroup, String accountName) 
                                             throws Exception {
-        ResourceContext context = new ResourceContext(null, resourceGroup, 
-                                            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID), 
+        ResourceContext context = new ResourceContext(null, resourceGroup,
+                                            getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID),
                                             false);
         boolean result = StorageHelper.deleteStorageAccount(client, context);
+        context.setStorageAccountName(accountName);
         if(result) {
             System.out.println("Storage account deleted: " + accountName);
         } else {
@@ -220,7 +236,7 @@ public class StorageAccountExample {
     /**
      * Retrieve a storage account and print it out.
      *
-     * @param StorageManagementClient   storage management client
+     * @param client                storage management client
      * @param resourceGroup         name of the resource group
      * @param accountName           name of the storage account
      * @return int                  zero on success, one on failure
@@ -230,8 +246,9 @@ public class StorageAccountExample {
                                             String resourceGroup, String accountName) 
                                             throws Exception {
         ResourceContext context = new ResourceContext(null, resourceGroup, 
-                                            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID), 
+                                            getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID),
                                             false);
+        context.setStorageAccountName(accountName);
         StorageAccount account = StorageHelper.getStorageAccount(client, context);
         if(account != null) {
             System.out.println("Account name:  " + accountName);
@@ -242,7 +259,36 @@ public class StorageAccountExample {
         }
                
         return (account == null ? 1 : 0);
-    } 
+    }
+
+    /**
+     * Regenerate the specified key on a storage account and print it out.
+     *
+     * @param client                storage management client
+     * @param resourceGroup         name of the resource group
+     * @param accountName           name of the storage account
+     * @param keyName               the key to regenerate
+     * @return int                  zero on success, one on failure
+     * @throws Exception            throw all exceptions
+     */
+    private static int regenerateStorageAccountKey(StorageManagementClient client,
+                                                   String resourceGroup, String accountName,
+                                                   KeyName keyName)
+            throws Exception {
+        ResourceContext context = new ResourceContext(null, resourceGroup,
+                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                false);
+        context.setStorageAccountName(accountName);
+        StorageAccountRegenerateKeyResponse response = StorageHelper.regenerateStorageAccountKey(client, context,
+                                                                                                 keyName);
+        if(response != null) {
+            System.out.println("Key " + (keyName == KeyName.KEY1 ? "Primary" : "Secondary") + " regenerated.");
+            StorageAccountKeys keys = response.getStorageAccountKeys();
+            System.out.println("Key Value: " + (keyName == KeyName.KEY1 ? keys.getKey1() : keys.getKey2()));
+        }
+
+        return (response == null ? 1 : 0);
+    }
 
     /**
      * Create configuration builds the management configuration needed for creating the clients.

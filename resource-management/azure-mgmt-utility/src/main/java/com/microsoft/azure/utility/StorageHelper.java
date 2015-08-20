@@ -16,14 +16,10 @@
 package com.microsoft.azure.utility;
 
 import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateResponse;
+import com.microsoft.azure.management.storage.models.*;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationResponse;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -115,13 +111,12 @@ public class StorageHelper {
     }
     
     /**
-     * Create a storage account based on the input parameters.  Call blocks until 
-     * either the storage account is created or an error occurs.
+     * Delete a storage account based on the input parameters.  Call blocks until
+     * until the storage account is removed.
      *
      * @param storageManagementClient       the storage management client object on which operations are performed
      * @param context                       information necessary for creating the storage account
-     * @param stoInput                      storage account specific parameters
-     * @return StorageAccount               the storage account created, null if operation failed     
+     * @return StorageAccount               the storage account created, null if operation failed
      * @throws Exception                    in the advent of a problem, the exception is thrown
      */
     public static boolean deleteStorageAccount(
@@ -149,5 +144,38 @@ public class StorageHelper {
         }
         
         return result;
-    }    
+    }
+
+    /**
+     * Regenerate storage account key based on the input parameters.  Call blocks until
+     * the key is regenerated.
+     *
+     * @param storageManagementClient       the storage management client object on which operations are performed
+     * @param context                       information necessary for creating the storage account
+     * @param keyName                       storage account specific parameters
+     * @return StorageAccount               the storage account created, null if operation failed
+     * @throws Exception                    in the advent of a problem, the exception is thrown
+     */
+    public static StorageAccountRegenerateKeyResponse regenerateStorageAccountKey(
+            StorageManagementClient storageManagementClient, ResourceContext context, KeyName keyName) throws Exception {
+
+        String storageAccountName = context.getStorageAccountName();
+        StorageAccountRegenerateKeyResponse response = null;
+
+        ExecutorService service = null;
+        try {
+            Future <StorageAccountRegenerateKeyResponse> future = null;
+            service = Executors.newFixedThreadPool(1);
+            future = storageManagementClient.getStorageAccountsOperations()
+                    .regenerateKeyAsync(context.getResourceGroupName(),
+                            storageAccountName, keyName);
+            response = future.get();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            service.shutdown();
+        }
+
+        return response;
+    }
 }
