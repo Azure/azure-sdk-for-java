@@ -27,6 +27,8 @@ import com.microsoft.windowsazure.management.configuration.ManagementConfigurati
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 
+import java.net.SocketTimeoutException;
+import java.util.List;
 import java.util.Map;
 import java.net.URI;
 
@@ -48,6 +50,9 @@ public class StorageAccountExample {
      *          - shows information about the storage account
      *      regenerateKey <resource group> <account name> <primary/secondary>
      *          - regenerates the specified key
+     *      listAccounts [resource group]
+     *          - if specified, list all storage accounts in the resource group,
+     *            otherwise, list all for subscription.
      *
      * To use the sample please set following environment variable or simply replace the getenv call
      * with actual value:
@@ -116,20 +121,26 @@ public class StorageAccountExample {
                 result = retrieveStorageAccount(storageManagementClient, args[1], args[2]);
             }
         } else if(args[0].equals("regenerateKey")) {
-            if(args.length != 4) {
+            if (args.length != 4) {
                 result = -1;
             } else {
                 KeyName keyName = null;
-                if(args[3].toLowerCase().equals("primary")) {
+                if (args[3].toLowerCase().equals("primary")) {
                     keyName = KeyName.KEY1;
-                } else if(args[3].toLowerCase().equals("secondary")) {
+                } else if (args[3].toLowerCase().equals("secondary")) {
                     keyName = KeyName.KEY2;
                 }
-                if(keyName == null) {
+                if (keyName == null) {
                     result = -1;
                 } else {
                     result = regenerateStorageAccountKey(storageManagementClient, args[1], args[2], keyName);
                 }
+            }
+        } else if(args[0].equals("listAccounts")) {
+            if(args.length > 2) {
+                result = -1;
+            } else {
+                result = listAccounts(storageManagementClient, (args.length == 1 ? null : args[1]));
             }
         } else {
             displayUsageAndExit(null);
@@ -280,7 +291,7 @@ public class StorageAccountExample {
                 false);
         context.setStorageAccountName(accountName);
         StorageAccountRegenerateKeyResponse response = StorageHelper.regenerateStorageAccountKey(client, context,
-                                                                                                 keyName);
+                keyName);
         if(response != null) {
             System.out.println("Key " + (keyName == KeyName.KEY1 ? "Primary" : "Secondary") + " regenerated.");
             StorageAccountKeys keys = response.getStorageAccountKeys();
@@ -288,6 +299,28 @@ public class StorageAccountExample {
         }
 
         return (response == null ? 1 : 0);
+    }
+
+    /**
+     * List storage accounts.  If resourceGroup not specified, list all for subscription.
+     *
+     * @param client                storage management client
+     * @param resourceGroup         resourceGroup (or null)
+     * @return int                  zero on success, one on failure
+     * @throws Exception            throw all exceptions
+     */
+    private static int listAccounts(StorageManagementClient client, String resourceGroup) throws Exception {
+        List<StorageAccount> accounts = null;
+        accounts = StorageHelper.listStorageAccounts(client, resourceGroup);
+        if(accounts != null) {
+            System.out.println("Storage accounts for " +
+                                (resourceGroup == null ? "subscription " + getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID) :
+                                                         "resource group " + resourceGroup) + ": ");
+            for (StorageAccount account : accounts) {
+                System.out.println("  " + account.getName());
+            }
+        }
+        return (accounts == null ? 1 : 0);
     }
 
     /**

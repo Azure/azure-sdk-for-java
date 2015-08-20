@@ -131,7 +131,7 @@ public class StorageHelper {
             service = Executors.newFixedThreadPool(1);            
             future = storageManagementClient.getStorageAccountsOperations()
                                 .deleteAsync(context.getResourceGroupName(),
-                                             storageAccountName);
+                                        storageAccountName);
             OperationResponse response = future.get();
             
             if(response.getStatusCode() / 100 == 2) {
@@ -144,6 +144,43 @@ public class StorageHelper {
         }
         
         return result;
+    }
+
+    /**
+     * Get list of storage accounts.  If resourceGroup specified, only those in the
+     * resource group are returned, otherwise all of them in the subscription.
+     *
+     * @param storageManagementClient       the storage management client object on which operations are performed
+     * @param resourceGroup                 the name of the resource group, can be null
+     * @return StorageAccount               the storage account created, null if operation failed
+     * @throws Exception                    in the advent of a problem, the exception is thrown
+     */
+    public static List<StorageAccount> listStorageAccounts(
+            StorageManagementClient storageManagementClient, String resourceGroup) throws Exception {
+
+        List<StorageAccount> accounts = null;
+
+        ExecutorService service = null;
+        try {
+            Future <StorageAccountListResponse> future = null;
+            service = Executors.newFixedThreadPool(1);
+            if(resourceGroup == null) {
+                future = storageManagementClient.getStorageAccountsOperations().listAsync();
+            } else {
+                future = storageManagementClient.getStorageAccountsOperations().listByResourceGroupAsync(resourceGroup);
+            }
+            StorageAccountListResponse response = future.get();
+
+            if(response != null) {
+                accounts = response.getStorageAccounts();
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            service.shutdown();
+        }
+
+        return accounts;
     }
 
     /**
