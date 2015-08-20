@@ -28,6 +28,7 @@ import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.net.URI;
@@ -53,6 +54,9 @@ public class StorageAccountExample {
      *      listAccounts [resource group]
      *          - if specified, list all storage accounts in the resource group,
      *            otherwise, list all for subscription.
+     *      updateTags <resource group> <account name> [<key> <value>]...
+     *          - updates the tags on a storage account.  up to fifteern key/value pairs can
+     *            be specified.  if none are specified, tags are removed.
      *
      * To use the sample please set following environment variable or simply replace the getenv call
      * with actual value:
@@ -137,10 +141,23 @@ public class StorageAccountExample {
                 }
             }
         } else if(args[0].equals("listAccounts")) {
-            if(args.length > 2) {
+            if (args.length > 2) {
                 result = -1;
             } else {
                 result = listAccounts(storageManagementClient, (args.length == 1 ? null : args[1]));
+            }
+        } else if(args[0].equals("updateTags")) {
+            if((args.length < 3) || ((args.length - 3) % 2 != 0)) {
+                result = -1;
+            } else {
+                HashMap<String, String> tags = null;
+                if(args.length > 3) {
+                    tags = new HashMap<String, String>();
+                    for(int i = 3; i < args.length; i += 2) {
+                        tags.put(args[i], args[i + 1]);
+                    }
+                }
+                result = updateAccountTags(storageManagementClient, args[1], args[2], tags);
             }
         } else {
             displayUsageAndExit(null);
@@ -160,7 +177,34 @@ public class StorageAccountExample {
         } else {
             System.out.println("Invalid number of arguments for command: " + command);
         }
-        System.out.println("Please see javadocs or source for required command line.");
+
+        System.out.println("For single storage account the following commands are supported along with");
+        System.out.println("the expected command line arguments:");System.out.println("");
+        System.out.println("     create <resource group> <account name> <type> <location>");
+        System.out.println("         - creates the storage account");
+        System.out.println("     delete <resource group> <account name>");
+        System.out.println("         - deletes the storage account");
+        System.out.println("     retrieve <resource group> <account name>");
+        System.out.println("         - shows information about the storage account");
+        System.out.println("     regenerateKey <resource group> <account name> <primary/secondary>");
+        System.out.println("         - regenerates the specified key");
+        System.out.println("     listAccounts [resource group]");
+        System.out.println("         - if specified, list all storage accounts in the resource group,");
+        System.out.println("           otherwise, list all for subscription.");
+        System.out.println("     updateTags <resource group> <account name> [<key> <value>]...");
+        System.out.println("         - updates the tags on a storage account.  up to fifteern key/value pairs can");
+        System.out.println("           be specified.  if none are specified, tags are removed.");
+        System.out.println("");
+        System.out.println("To use the sample please set following environment variable or simply replace the getenv call");
+        System.out.println("with actual value:");
+        System.out.println("     management.uri=https://management.core.windows.net/");
+        System.out.println("     arm.url=https://management.azure.com/");
+        System.out.println("     arm.aad.url=https://login.windows.net/");
+        System.out.println("     arm.clientid=[your service principal client id]");
+        System.out.println("     arm.clientkey=[your service principal client key]");
+        System.out.println("     arm.tenant=[your service principal tenant]");
+        System.out.println("     management.subscription.id =[your subscription id(GUID)]");
+
         System.exit(1);
     }
     
@@ -287,7 +331,7 @@ public class StorageAccountExample {
                                                    KeyName keyName)
             throws Exception {
         ResourceContext context = new ResourceContext(null, resourceGroup,
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID),
                 false);
         context.setStorageAccountName(accountName);
         StorageAccountRegenerateKeyResponse response = StorageHelper.regenerateStorageAccountKey(client, context,
@@ -324,6 +368,44 @@ public class StorageAccountExample {
     }
 
     /**
+     * Update (replace) the tags for a storage account.  Specifying no tags
+     *
+     * @param client                storage management client
+     * @param resourceGroup         name of the resource group
+     * @param accountName           name of the storage account
+     * @param tags                  a hash map of key value pairs to replace the tags (or null to empty them)
+     * @return int                  zero on success, one on failure
+     * @throws Exception            throw all exceptions
+     */
+    private static int updateAccountTags(StorageManagementClient client,
+                                         String resourceGroup, String accountName,
+                                         HashMap<String, String> tags) 
+            throws Exception {
+        ResourceContext context = new ResourceContext(null, resourceGroup,
+                getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID),
+                false);
+        context.setStorageAccountName(accountName);
+        StorageAccountUpdateResponse response = StorageHelper.updateAccountTags(client, context, tags);
+        if(response != null) {
+            if(tags != null) {
+                if (response.getStorageAccount().getTags().equals(tags)) {
+                    System.out.println("Updating of tags for storage account " + accountName + "succeeded.");
+                } else {
+                    System.out.println("Updating of tags for storage account " + accountName + "failed.");
+                }
+            } else {
+                if(response.getStorageAccount().getTags().isEmpty()) {
+                    System.out.println("Updating of tags for storage account " + accountName + "succeeded.");
+                } else {
+                    System.out.println("Updating of tags for storage account " + accountName + "failed.");
+                }
+            }
+        }
+
+        return (response == null ? 1 : 0);
+    }
+
+    /**
      * Create configuration builds the management configuration needed for creating the clients.
      * The config contains the baseURI which is the base of the ARM REST service, the subscription id as the context for
      * the ResourceManagementService and the AAD token required for the HTTP Authorization header.
@@ -332,7 +414,7 @@ public class StorageAccountExample {
      * @throws Exception all of the exceptions!!
      */
     public static Configuration createConfiguration() throws Exception {
-        // set up variables, and try both System.getenv and System.getProperty.
+        // set up variables, and try both getPropertyElseEnvironment and System.getProperty.
         // this allows the use of defining the values on the command line using -D
         // default to the property first, else environment
         String baseUri = getPropertyElseEnvironment("arm.url");
@@ -378,6 +460,6 @@ public class StorageAccountExample {
         if(System.getProperty(key) != null) {
             return System.getProperty(key);
         }
-        return System.getenv(key);
+        return getPropertyElseEnvironment(key);
     }
 }

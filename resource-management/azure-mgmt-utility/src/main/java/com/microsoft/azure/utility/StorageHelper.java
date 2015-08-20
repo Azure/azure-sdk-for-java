@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import java.util.List;
+import java.util.HashMap;
 
 public class StorageHelper {
     /**
@@ -206,6 +207,43 @@ public class StorageHelper {
             future = storageManagementClient.getStorageAccountsOperations()
                     .regenerateKeyAsync(context.getResourceGroupName(),
                             storageAccountName, keyName);
+            response = future.get();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            service.shutdown();
+        }
+
+        return response;
+    }
+
+    /**
+     * Update the tags for the storage account.
+     *
+     * @param storageManagementClient       the storage management client object on which operations are performed
+     * @param context                       information necessary for creating the storage account
+     * @param tags                          hash map of tags to apply to storage account, or null to clear
+     * @return StorageAccountUpdateResponse     the update response
+     * @throws Exception                    in the advent of a problem, the exception is thrown
+     */
+    public static StorageAccountUpdateResponse updateAccountTags(
+            StorageManagementClient storageManagementClient, ResourceContext context,
+            HashMap<String, String> tags) throws Exception {
+        String storageAccountName = context.getStorageAccountName();
+        StorageAccountUpdateResponse response = null;
+        StorageAccountUpdateParameters parameters = new StorageAccountUpdateParameters();
+
+        if(tags != null) {
+            parameters.setTags(tags);
+        }
+
+        ExecutorService service = null;
+        try {
+            Future <StorageAccountUpdateResponse> future = null;
+            service = Executors.newFixedThreadPool(1);
+            future = storageManagementClient.getStorageAccountsOperations()
+                    .updateAsync(context.getResourceGroupName(),
+                            storageAccountName, parameters);
             response = future.get();
         } catch (Exception ex) {
             throw ex;
