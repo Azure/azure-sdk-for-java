@@ -19,6 +19,12 @@ import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.models.*;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.azure.management.storage.StorageManagementClient;
+import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,31 +66,38 @@ public class StorageHelper {
     public static StorageAccount createStorageAccount(
             StorageManagementClient storageManagementClient, ResourceContext context,
             StorageAccountCreateParameters stoInput) throws Exception {
-            
         String storageAccountName = context.getStorageAccountName();
-        StorageAccount storageAccount = null;
-        
-        ExecutorService service = null;
-		try {
-		    Future <StorageAccountCreateResponse> future = null;
-            service = Executors.newFixedThreadPool(1);            
-            future = storageManagementClient.getStorageAccountsOperations()
-                                .createAsync(context.getResourceGroupName(),
-                                             storageAccountName, stoInput);
-            StorageAccountCreateResponse response = future.get();
-            
-            if(response.getStatus() == OperationStatus.SUCCEEDED) {
-                storageAccount = response.getStorageAccount();
+        StorageAccount storageAccount = storageManagementClient.getStorageAccountsOperations()
+                .create(context.getResourceGroupName(), storageAccountName, stoInput)
+                .getStorageAccount();
+
+        //wait for the creation of storage account
+        boolean created = false;
+        while(!created) {
+            waitSeconds(3);
+            List<StorageAccount> storageAccountList = storageManagementClient.getStorageAccountsOperations()
+                    .listByResourceGroup(context.getResourceGroupName()).getStorageAccounts();
+            for (StorageAccount account : storageAccountList) {
+                if (account.getName().equalsIgnoreCase(storageAccountName)) {
+                    created = true;
+                    break;
+                }
             }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            service.shutdown();
+
+            //follow overwrite from .net tests
+            storageAccount.setName(storageAccountName);
         }
-        
+
+        context.setStorageAccount(storageAccount);
         return storageAccount;
     }
-        
+
+    protected static void waitSeconds(double seconds) throws InterruptedException{
+        if (!ManagementConfiguration.isPlayback()) {
+            Thread.sleep((long)seconds * 100);
+        }
+    }
+
     /**
      * Retrieve a storage account by name.
      *
@@ -127,8 +140,8 @@ public class StorageHelper {
         boolean result = false;
         
         ExecutorService service = null;
-		try {
-		    Future <OperationResponse> future = null;
+        try {
+                    Future <OperationResponse> future = null;
             service = Executors.newFixedThreadPool(1);            
             future = storageManagementClient.getStorageAccountsOperations()
                                 .deleteAsync(context.getResourceGroupName(),
