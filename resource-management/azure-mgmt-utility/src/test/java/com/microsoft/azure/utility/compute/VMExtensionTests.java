@@ -135,18 +135,22 @@ public class VMExtensionTests extends ComputeTestBase {
 
     private void verifyAddExtensionToVM(VirtualMachine vm, ResourceContext context, VirtualMachineExtension extension)
             throws Exception {
-//        VirtualMachineExtensionCreateOrUpdateResponse response =
-//                computeManagementClient.getVirtualMachineExtensionsOperations()
-//                        .beginCreatingOrUpdating(context.getResourceGroupName(), vm.getName(), extension);
-//
-//        Assert.assertEquals("statusCode should be created", HttpStatus.SC_CREATED, response.getStatusCode());
-//        validateVmExtension(extension, response.getVirtualMachineExtension());
-
-        log.info("Start waiting for extension creation at vm: " + vm.getName());
-        ComputeLongRunningOperationResponse lroResponse =
+        VirtualMachineExtensionCreateOrUpdateResponse response =
                 computeManagementClient.getVirtualMachineExtensionsOperations()
-                        .createOrUpdate(context.getResourceGroupName(), vm.getName(), extension);
-        Assert.assertEquals(ComputeOperationStatus.SUCCEEDED, lroResponse.getStatus());
+                        .beginCreatingOrUpdating(context.getResourceGroupName(), vm.getName(), extension);
+
+        Assert.assertEquals("statusCode should be created", HttpStatus.SC_CREATED, response.getStatusCode());
+        validateVmExtension(extension, response.getVirtualMachineExtension());
+
+        if (!IS_MOCKED) {
+            Thread.sleep(120000);
+        }
+
+//        log.info("Start waiting for extension creation at vm: " + vm.getName());
+//        ComputeLongRunningOperationResponse lroResponse =
+//                computeManagementClient.getVirtualMachineExtensionsOperations()
+//                        .createOrUpdate(context.getResourceGroupName(), vm.getName(), extension);
+//        Assert.assertEquals(ComputeOperationStatus.SUCCEEDED, lroResponse.getStatus());
     }
 
     private void validateVmExtension(VirtualMachineExtension vmExtExpected, VirtualMachineExtension vmExtReturned) {
@@ -162,7 +166,7 @@ public class VMExtensionTests extends ComputeTestBase {
 
     private VirtualMachineExtension getTestVmExtension() {
         VirtualMachineExtension vmExtension = new VirtualMachineExtension(ComputeTestBase.m_location);
-        vmExtension.setName("vmext01");
+        vmExtension.setName("javatestext1");
         vmExtension.setTags(new HashMap<String, String>() {
             {
                 put("extensionTag1", "1");
@@ -171,10 +175,11 @@ public class VMExtensionTests extends ComputeTestBase {
         });
         vmExtension.setType("Microsoft.Compute/virtualMachines/extensions");
         vmExtension.setPublisher("Microsoft.Compute");
-        vmExtension.setTypeHandlerVersion("2.0");
+        vmExtension.setTypeHandlerVersion("1.3");
         vmExtension.setAutoUpgradeMinorVersion(true);
-        vmExtension.setExtensionType("VMAccessAgent");
-        vmExtension.setSettings("{}");
+        vmExtension.setExtensionType("CustomScriptExtension");
+        vmExtension.setSettings(
+                "{\"fileUris\":[],\"commandToExecute\":\"powershell -ExecutionPolicy Unrestricted pwd\"}");
         vmExtension.setProtectedSettings("{}");
 
         return vmExtension;
