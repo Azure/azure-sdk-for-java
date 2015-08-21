@@ -39,7 +39,7 @@
 
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
-    <connection>scm:git:git://github.com/Azure/azure-sdk-for-java.git</connection>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
   </scm>
 
   <properties>
