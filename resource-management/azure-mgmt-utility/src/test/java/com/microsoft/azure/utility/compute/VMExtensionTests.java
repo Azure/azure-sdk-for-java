@@ -16,9 +16,8 @@
 package com.microsoft.azure.utility.compute;
 
 import com.microsoft.azure.management.compute.models.*;
-import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.azure.utility.StorageHelper;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -32,19 +31,19 @@ import java.util.HashMap;
 
 public class VMExtensionTests extends ComputeTestBase {
     static {
-        log = LogFactory.getLog(VMScenarioTests.class);
+        log = LogFactory.getLog(VMExtensionTests.class);
     }
 
-//    @BeforeClass
-//    public static void setup() throws Exception {
-//        ensureClientsInitialized();
-//    }
-//
-//    @AfterClass
-//    public static void cleanup() throws Exception {
-//        log.debug("after class, clean resource group: " + m_rgName);
-//        cleanupResourceGroup();
-//    }
+    @BeforeClass
+    public static void setup() throws Exception {
+        ensureClientsInitialized();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        log.debug("after class, clean resource group: " + m_rgName);
+        cleanupResourceGroup();
+    }
 
     @Before
     public void beforeTest() throws Exception {
@@ -56,78 +55,76 @@ public class VMExtensionTests extends ComputeTestBase {
         resetTest();
     }
 
-    // TODO disable, pending investigation
-    @Ignore
     @Test
-    public void testVmExtensionsOperations() throws Exception {
+    public void testVmExtensionsOperations()
+            throws Exception {
         VirtualMachineExtension extension = getTestVmExtension();
-        ImageReference imageReference = getPlatformVmImage(true);
-
         ResourceContext context = createTestResourceContext(false);
-        context.setImageReference(imageReference);
-        createOrUpdateResourceGroup(context.getResourceGroupName());
+        context.setImageReference(
+                ComputeHelper.getWindowsServerDefaultImage(computeManagementClient, context.getLocation()));
 
-        try {
-            StorageAccount storageAccount = StorageHelper.createStorageAccount(storageManagementClient, context);
-            Assert.assertNotNull(storageAccount);
+        VirtualMachine vm = createVM(context, generateName("vm"));
+        // test framwork recording bug, track in issues
+        // verifyDeleteNonExistingExtension(context.getResourceGroupName(), vm.getName(), "VMExtensionDoesNotExist");
+        verifyAddExtensionToVM(vm, context, extension);
 
-            String vmName = generateName("vm");
+        log.info("Start verify created extension in vm: " + vm.getName());
+        verifyGetExtension(extension, vm, context.getResourceGroupName());
+        verifyGetExtensionInstanceView(extension, vm, context.getResourceGroupName());
+        verifyVmExtensionInVmInfo(extension, vm, context.getResourceGroupName());
+        verifyVmExtensionInstanceViewInVmInstanceView(vm, context.getResourceGroupName());
 
-            VirtualMachine vm = createVM(context, vmName);
-            // TODO: Disable this case because there is (potentially) a bug in the http recorder which make this case fails under playback
-//            verifyDeleteNonExistingExtension(context.getResourceGroupName(), "RandomVM", "VMExtensionDoesNotExist");
-            verifyAddExtensionToVM(vm, context.getResourceGroupName());
-            verifyGetExtension(extension, vm, context.getResourceGroupName());
-            verifyGetExtensionInstanceView(extension, vm, context.getResourceGroupName());
-            verifyVmExtensionInVmInfo(extension, vm, context.getResourceGroupName());
-            verifyVmExtensionInstanceViewInVmInstanceView(vm, context.getResourceGroupName());
-            verifyDeleteExtension(extension, vm, context.getResourceGroupName());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw e;
-        } finally {
-            OperationResponse deleteResourceGroupResponse = resourceManagementClient.getResourceGroupsOperations().beginDeleting(context.getResourceGroupName());
-            Assert.assertEquals(HttpStatus.SC_ACCEPTED, deleteResourceGroupResponse.getStatusCode());
-        }
+        log.info("Delete extension in vm: " + vm.getName());
+        verifyDeleteExtension(extension, vm, context.getResourceGroupName());
     }
 
-    private void verifyDeleteNonExistingExtension(String rgName, String vmName, String extensionName) throws Exception {
-        DeleteOperationResponse response = computeManagementClient.getVirtualMachineExtensionsOperations().delete(rgName, vmName, extensionName);
+    private void verifyDeleteNonExistingExtension(String rgName, String vmName, String extensionName)
+            throws Exception {
+        DeleteOperationResponse response = computeManagementClient.getVirtualMachineExtensionsOperations()
+                .delete(rgName, vmName, extensionName);
         Assert.assertEquals(HttpStatus.SC_NO_CONTENT, response.getStatusCode());
         Assert.assertEquals(OperationStatus.SUCCEEDED, response.getStatus());
     }
 
-    private void verifyDeleteExtension(VirtualMachineExtension extension, VirtualMachine vm, String rgName) throws IOException, ServiceException {
-        // Validate the extension delete API
-        OperationResponse deleteResponse = computeManagementClient.getVirtualMachineExtensionsOperations().beginDeleting(rgName, vm.getName(), extension.getName());
+    private void verifyDeleteExtension(VirtualMachineExtension extension, VirtualMachine vm, String rgName)
+            throws IOException, ServiceException {
+        OperationResponse deleteResponse = computeManagementClient.getVirtualMachineExtensionsOperations()
+                .beginDeleting(rgName, vm.getName(), extension.getName());
         Assert.assertEquals(HttpStatus.SC_ACCEPTED, deleteResponse.getStatusCode());
     }
 
-    private void verifyVmExtensionInstanceViewInVmInstanceView(VirtualMachine vm, String rgName) throws IOException, ServiceException, URISyntaxException {
-        // Validate the extension instance view in the VM isntance-view
-        VirtualMachineGetResponse getVmWithInstanceViewResponse = computeManagementClient.getVirtualMachinesOperations().getWithInstanceView(rgName, vm.getName());
+    private void verifyVmExtensionInstanceViewInVmInstanceView(VirtualMachine vm, String rgName)
+            throws IOException, ServiceException, URISyntaxException {
+        VirtualMachineGetResponse getVmWithInstanceViewResponse =
+                computeManagementClient.getVirtualMachinesOperations().getWithInstanceView(rgName, vm.getName());
         Assert.assertEquals(HttpStatus.SC_OK, getVmWithInstanceViewResponse.getStatusCode());
-        validateVmExtensionInstanceView(getVmWithInstanceViewResponse.getVirtualMachine().getInstanceView().getExtensions().get(0));
+        validateVmExtensionInstanceView(
+                getVmWithInstanceViewResponse.getVirtualMachine().getInstanceView().getExtensions().get(0));
     }
 
-    private void verifyVmExtensionInVmInfo(VirtualMachineExtension extension, VirtualMachine vm, String rgName) throws IOException, ServiceException, URISyntaxException {
-        // Validate the extension in the VM info
-        VirtualMachineGetResponse getVmResponse = computeManagementClient.getVirtualMachinesOperations().get(rgName, vm.getName());
+    private void verifyVmExtensionInVmInfo(VirtualMachineExtension extension, VirtualMachine vm, String rgName)
+            throws IOException, ServiceException, URISyntaxException {
+        VirtualMachineGetResponse getVmResponse =
+                computeManagementClient.getVirtualMachinesOperations().get(rgName, vm.getName());
         Assert.assertEquals(HttpStatus.SC_OK, getVmResponse.getStatusCode());
         validateVmExtension(extension, getVmResponse.getVirtualMachine().getExtensions().get(0));
     }
 
-    private void verifyGetExtensionInstanceView(VirtualMachineExtension extension, VirtualMachine vm, String rgName) throws IOException, ServiceException, URISyntaxException {
-        // Validate Get InstanceView for the extension
+    private void verifyGetExtensionInstanceView(VirtualMachineExtension extension, VirtualMachine vm, String rgName)
+            throws IOException, ServiceException, URISyntaxException {
         VirtualMachineExtensionGetResponse getVmExtensionInstanceViewResponse =
-                computeManagementClient.getVirtualMachineExtensionsOperations().getWithInstanceView(rgName, vm.getName(), extension.getName());
+                computeManagementClient.getVirtualMachineExtensionsOperations()
+                        .getWithInstanceView(rgName, vm.getName(), extension.getName());
         Assert.assertEquals(HttpStatus.SC_OK, getVmExtensionInstanceViewResponse.getStatusCode());
-        validateVmExtensionInstanceView(getVmExtensionInstanceViewResponse.getVirtualMachineExtension().getInstanceView());
+        validateVmExtensionInstanceView(
+                getVmExtensionInstanceViewResponse.getVirtualMachineExtension().getInstanceView());
     }
 
-    private void verifyGetExtension(VirtualMachineExtension extension, VirtualMachine vm, String rgName) throws IOException, ServiceException, URISyntaxException {
-        // Perform a Get operation on the extension
-        VirtualMachineExtensionGetResponse vmExtensionGetResponse = computeManagementClient.getVirtualMachineExtensionsOperations().get(rgName, vm.getName(), extension.getName());
+    private void verifyGetExtension(VirtualMachineExtension extension, VirtualMachine vm, String rgName)
+            throws IOException, ServiceException, URISyntaxException {
+        VirtualMachineExtensionGetResponse vmExtensionGetResponse =
+                computeManagementClient.getVirtualMachineExtensionsOperations()
+                        .get(rgName, vm.getName(), extension.getName());
         Assert.assertEquals(HttpStatus.SC_OK, vmExtensionGetResponse.getStatusCode());
         validateVmExtension(extension, vmExtensionGetResponse.getVirtualMachineExtension());
     }
@@ -136,19 +133,26 @@ public class VMExtensionTests extends ComputeTestBase {
         Assert.assertNotNull(virtualMachineExtension);
     }
 
-    private void verifyAddExtensionToVM(VirtualMachine vm, String rgName) throws Exception {
-        // Add an extension to the VM
-        VirtualMachineExtension vmExtension = getTestVmExtension();
-        VirtualMachineExtensionCreateOrUpdateResponse response = computeManagementClient.getVirtualMachineExtensionsOperations().beginCreatingOrUpdating(m_rgName, vm.getName(), vmExtension);
-        Assert.assertEquals(HttpStatus.SC_CREATED, response.getStatusCode());
+    private void verifyAddExtensionToVM(VirtualMachine vm, ResourceContext context, VirtualMachineExtension extension)
+            throws Exception {
+//        VirtualMachineExtensionCreateOrUpdateResponse response =
+//                computeManagementClient.getVirtualMachineExtensionsOperations()
+//                        .beginCreatingOrUpdating(context.getResourceGroupName(), vm.getName(), extension);
+//
+//        Assert.assertEquals("statusCode should be created", HttpStatus.SC_CREATED, response.getStatusCode());
+//        validateVmExtension(extension, response.getVirtualMachineExtension());
 
-        validateVmExtension(vmExtension, response.getVirtualMachineExtension());
+        log.info("Start waiting for extension creation at vm: " + vm.getName());
+        ComputeLongRunningOperationResponse lroResponse =
+                computeManagementClient.getVirtualMachineExtensionsOperations()
+                        .createOrUpdate(context.getResourceGroupName(), vm.getName(), extension);
+        Assert.assertEquals(ComputeOperationStatus.SUCCEEDED, lroResponse.getStatus());
     }
 
     private void validateVmExtension(VirtualMachineExtension vmExtExpected, VirtualMachineExtension vmExtReturned) {
         Assert.assertNotNull(vmExtReturned);
-        Assert.assertFalse(vmExtReturned.getProvisioningState().equals(null));
-        Assert.assertFalse(vmExtReturned.getProvisioningState().equals(""));
+        Assert.assertNotNull(vmExtReturned.getProvisioningState());
+        Assert.assertNotEquals("", vmExtReturned.getProvisioningState());
         Assert.assertEquals(vmExtExpected.getPublisher(), vmExtReturned.getPublisher());
         Assert.assertEquals(vmExtExpected.getExtensionType(), vmExtReturned.getExtensionType());
         Assert.assertEquals(vmExtExpected.isAutoUpgradeMinorVersion(), vmExtReturned.isAutoUpgradeMinorVersion());

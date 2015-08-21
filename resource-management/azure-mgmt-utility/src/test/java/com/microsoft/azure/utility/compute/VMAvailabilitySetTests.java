@@ -151,7 +151,8 @@ public class VMAvailabilitySetTests extends ComputeTestBase {
         return availabilitySet;
     }
 
-    private void verifyAvailabilitySetInResourceGroup(AvailabilitySet expectedAvailabilitySet, String rgName) throws Exception {
+    private void verifyAvailabilitySetInResourceGroup(AvailabilitySet expectedAvailabilitySet, String rgName)
+            throws Exception {
         AvailabilitySetListResponse response = computeManagementClient.getAvailabilitySetsOperations().list(rgName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
 
@@ -195,18 +196,23 @@ public class VMAvailabilitySetTests extends ComputeTestBase {
     }
 
     private void verifyGetAvailabilitySet(AvailabilitySet expectedAvailabilitySet, String rgName) throws Exception {
-        AvailabilitySetGetResponse response = computeManagementClient.getAvailabilitySetsOperations().get(rgName, expectedAvailabilitySet.getName());
+        AvailabilitySetGetResponse response =
+                computeManagementClient.getAvailabilitySetsOperations().get(rgName, expectedAvailabilitySet.getName());
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
         validateGetAvailabilitySetResponse(response, expectedAvailabilitySet);
     }
 
     private void deleteAvailabilitySet(String availabilitySetName) throws Exception {
-        OperationResponse response = computeManagementClient.getAvailabilitySetsOperations().delete(m_rgName, availabilitySetName);
+        OperationResponse response =
+                computeManagementClient.getAvailabilitySetsOperations().delete(m_rgName, availabilitySetName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
     }
 
     private void verifyGetVmSizeInAvailabilitySet(AvailabilitySet availabilitySet) throws Exception {
-        VirtualMachineSizeListResponse listVmSizesResponse = computeManagementClient.getAvailabilitySetsOperations().listAvailableSizes(m_rgName, availabilitySet.getName());
+        VirtualMachineSizeListResponse listVmSizesResponse =
+                computeManagementClient.getAvailabilitySetsOperations()
+                        .listAvailableSizes(m_rgName, availabilitySet.getName());
+
         Assert.assertEquals(listVmSizesResponse.getStatusCode(), HttpStatus.SC_OK);
         ComputeTestHelper.validateVirtualMachineSizeListResponse(listVmSizesResponse);
     }

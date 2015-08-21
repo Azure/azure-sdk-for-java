@@ -109,7 +109,7 @@ public class VMOperationalTests extends ComputeTestBase {
                 Thread.sleep(60000);
             }
         }
-        
+
         log.info("Generalize vm: " + vm.getName());
         OperationResponse generalizeOpResponse = computeManagementClient.getVirtualMachinesOperations()
                 .generalize(context.getResourceGroupName(), vm.getName());
