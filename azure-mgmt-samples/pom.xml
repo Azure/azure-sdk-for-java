@@ -68,6 +68,11 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>azure-core-test</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
             <version>${project.version}</version>
         </dependency>
