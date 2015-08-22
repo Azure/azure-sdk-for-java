@@ -15,7 +15,8 @@ git clone https://github.com/Azure/azure-sdk-for-java.git
 cd ./azure-sdk-for-java/
 ```
 
-## Azure Resource Manager Usage
+## Azure Resource Manager Usage (Preview)
+Be aware the Azure Resource Manager Java SDK is in preview and will likely have breaking interface changes in upcoming releases.
 ### Authentication
 The first step to using the SDK is authentication and permissioning. For people unfamilar with Azure this may be one of the more difficult concepts. For a reference on setting up a service principal from the command line see [Authenticating a service principal with Azure Resource Manager](http://aka.ms/cli-service-principal) or [Unattended Authentication](http://aka.ms/auth-unattended). For a more robust explanation of authentication in Azure, see [Developer’s guide to auth with Azure Resource Manager API](http://aka.ms/arm-auth-dev-guide).
 
