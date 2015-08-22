@@ -12,12 +12,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-bom</artifactId>
-  <version>0.8.0-SNAPSHOT</version>
+  <version>0.8.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK</name>
@@ -34,7 +33,8 @@
 
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
-    <connection>scm:git:git://github.com/Azure/azure-sdk-for-java.git</connection>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
@@ -48,11 +48,16 @@
     </developer>
   </developers>
   <modules>
-    <module>parent</module>
+    <module>azure</module>
   </modules>
   <build>
   	<pluginManagement>
   		<plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
   			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
   			<plugin>
   				<groupId>org.eclipse.m2e</groupId>
@@ -77,7 +82,7 @@
   									</goals>
   								</pluginExecutionFilter>
   								<action>
-  									<ignore></ignore>
+  									<ignore />
   								</action>
   							</pluginExecution>
   						</pluginExecutions>
