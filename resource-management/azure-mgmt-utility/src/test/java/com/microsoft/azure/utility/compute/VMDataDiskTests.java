@@ -92,17 +92,17 @@ public class VMDataDiskTests extends ComputeTestBase {
         Assert.assertNotNull("get vm not null", getVMWithInstanceViewResponse.getVirtualMachine());
         validateVMInstanceView(vmInput, getVMWithInstanceViewResponse.getVirtualMachine());
 
-        log.info("re-create same vm");
-        VirtualMachine vm2 = getVMWithInstanceViewResponse.getVirtualMachine();
-        ComputeLongRunningOperationResponse vmReCreateResponse = computeManagementClient.getVirtualMachinesOperations()
-                .createOrUpdate(context.getResourceGroupName(), vm2);
-        Assert.assertNotEquals("status should not be failed",
-                ComputeOperationStatus.FAILED, vmReCreateResponse.getStatus());
+        //TODO reenable after CRP rollout
+//        log.info("re-create same vm");
+//        VirtualMachine vm2 = getVMWithInstanceViewResponse.getVirtualMachine();
+//        ComputeLongRunningOperationResponse vmReCreateResponse = computeManagementClient.getVirtualMachinesOperations()
+//                .createOrUpdate(context.getResourceGroupName(), vm2);
+//        Assert.assertNotEquals("status should not be failed",
+//                ComputeOperationStatus.FAILED, vmReCreateResponse.getStatus());
 
         log.info("delete vm");
-        DeleteOperationResponse vmDeleteResponse = computeManagementClient.getVirtualMachinesOperations()
-                .delete(context.getResourceGroupName(), vm2.getName());
-        Assert.assertNotEquals("status should not be failed",
-                ComputeOperationStatus.FAILED, vmDeleteResponse.getStatus());
+        ComputeOperationResponse deleteResponse = computeManagementClient.getVirtualMachinesOperations()
+                .beginDeleting(context.getResourceGroupName(), vm.getName());
+        Assert.assertEquals(HttpStatus.SC_ACCEPTED, deleteResponse.getStatusCode());
     }
 }

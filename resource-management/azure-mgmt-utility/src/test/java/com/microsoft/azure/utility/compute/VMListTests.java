@@ -27,16 +27,16 @@ public class VMListTests extends ComputeTestBase {
         log = LogFactory.getLog(VMListTests.class);
     }
 
-    @BeforeClass
-    public static void setup() throws Exception {
-        ensureClientsInitialized();
-    }
-
-    @AfterClass
-    public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + m_rgName);
-        cleanupResourceGroup();
-    }
+//    @BeforeClass
+//    public static void setup() throws Exception {
+//        ensureClientsInitialized();
+//    }
+//
+//    @AfterClass
+//    public static void cleanup() throws Exception {
+//        log.debug("after class, clean resource group: " + m_rgName);
+//        cleanupResourceGroup();
+//    }
 
     @Before
     public void beforeTest() throws Exception {

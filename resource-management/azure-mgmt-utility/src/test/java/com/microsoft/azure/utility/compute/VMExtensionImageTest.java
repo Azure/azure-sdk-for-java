@@ -36,14 +36,11 @@ public class VMExtensionImageTest extends ComputeTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        log.debug("after class, clean resource group: " + m_rgName);
-        cleanupResourceGroup();
     }
 
     @Before
     public void beforeTest() throws Exception {
         setupTest();
-        createOrUpdateResourceGroup(ComputeTestBase.m_rgName);
     }
 
     @After
@@ -63,19 +60,22 @@ public class VMExtensionImageTest extends ComputeTestBase {
 
     @Test
     public void testExtensionImageGet() throws Exception {
-        VirtualMachineExtensionImageGetResponse vmExtensionImageResponse = computeManagementClient.getVirtualMachineExtensionImagesOperations().get(parameters);
-        Assert.assertEquals(vmExtensionImageVersion, vmExtensionImageResponse.getVirtualMachineExtensionImage().getName());
-        Assert.assertEquals(m_location.toLowerCase(), vmExtensionImageResponse.getVirtualMachineExtensionImage().getLocation().toLowerCase());
-        Assert.assertEquals("Windows", vmExtensionImageResponse.getVirtualMachineExtensionImage().getOperatingSystem());
-        Assert.assertEquals("IaaS", vmExtensionImageResponse.getVirtualMachineExtensionImage().getComputeRole());
+        VirtualMachineExtensionImageGetResponse vmExtensionImageResponse =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().get(parameters);
+        VirtualMachineExtensionImage extension = vmExtensionImageResponse.getVirtualMachineExtensionImage();
+        Assert.assertEquals(vmExtensionImageVersion, extension.getName());
+        Assert.assertEquals(m_location.toLowerCase(), extension.getLocation().toLowerCase());
+        Assert.assertEquals("Windows", extension.getOperatingSystem());
+        Assert.assertEquals("IaaS", extension.getComputeRole());
 
-        Assert.assertEquals(false, vmExtensionImageResponse.getVirtualMachineExtensionImage().isVMScaleSetEnabled());
-        Assert.assertEquals(false, vmExtensionImageResponse.getVirtualMachineExtensionImage().isSupportsMultipleExtensions());
+        Assert.assertEquals(false, extension.isVMScaleSetEnabled());
+        Assert.assertEquals(false, extension.isSupportsMultipleExtensions());
     }
 
     @Test
     public void testExtensionImageListTypes() throws Exception {
-        VirtualMachineImageResourceList vmExtensionImgList = computeManagementClient.getVirtualMachineExtensionImagesOperations().listTypes(parameters);
+        VirtualMachineImageResourceList vmExtensionImgList =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().listTypes(parameters);
 
         Assert.assertTrue(vmExtensionImgList.getResources().size() > 0);
         Assert.assertTrue(countVMExtensionImage(vmExtensionImgList, vmExtensionImageType) > 0);
@@ -83,7 +83,8 @@ public class VMExtensionImageTest extends ComputeTestBase {
 
     @Test
     public void testExtensionImageListVersionsNoFilter() throws Exception {
-        VirtualMachineImageResourceList vmExtensionImgList = computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(parameters);
+        VirtualMachineImageResourceList vmExtensionImgList =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(parameters);
 
         Assert.assertTrue(vmExtensionImgList.getResources().size() > 0);
         Assert.assertTrue(countVMExtensionImage(vmExtensionImgList, vmExtensionImageVersion) > 0);
@@ -91,32 +92,39 @@ public class VMExtensionImageTest extends ComputeTestBase {
 
     @Test
     public void TestExtImgListVersionsFilters() throws Exception {
-        VirtualMachineExtensionImageListVersionsParameters listVersionsParamers = new VirtualMachineExtensionImageListVersionsParameters();
+        VirtualMachineExtensionImageListVersionsParameters listVersionsParamers =
+                new VirtualMachineExtensionImageListVersionsParameters();
         listVersionsParamers.setLocation(parameters.getLocation());
         listVersionsParamers.setType(parameters.getType());
         listVersionsParamers.setPublisherName(parameters.getPublisherName());
 
         // Filter: startswith - Positive Test
-        listVersionsParamers.setFilterExpression(String.format("$filter=startswith(name,'%s')", vmExtensionImageVersion));
-        VirtualMachineImageResourceList vmExtensionImgList = computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
+        listVersionsParamers.setFilterExpression(
+                String.format("$filter=startswith(name,'%s')", vmExtensionImageVersion));
+
+        VirtualMachineImageResourceList vmExtensionImgList =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
         Assert.assertTrue(vmExtensionImgList.getResources().size() > 0);
         Assert.assertTrue(countVMExtensionImage(vmExtensionImgList, vmExtensionImageVersion) != 0);
 
         // Filter: startswith - Negative Test
         listVersionsParamers.setFilterExpression("$filter=startswith(name,'1.0')");
-        vmExtensionImgList = computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
+        vmExtensionImgList =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
         Assert.assertTrue(vmExtensionImgList.getResources().size() == 0);
         Assert.assertTrue(countVMExtensionImage(vmExtensionImgList, vmExtensionImageVersion) == 0);
 
         // Filter: top - Positive Test
         listVersionsParamers.setFilterExpression("$top=1");
-        vmExtensionImgList = computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
+        vmExtensionImgList =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
         Assert.assertTrue(vmExtensionImgList.getResources().size() == 1);
         Assert.assertTrue(countVMExtensionImage(vmExtensionImgList, vmExtensionImageVersion) != 0);
 
         // Filter: top - Negative Test
         listVersionsParamers.setFilterExpression("$top=0");
-        vmExtensionImgList = computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
+        vmExtensionImgList =
+                computeManagementClient.getVirtualMachineExtensionImagesOperations().listVersions(listVersionsParamers);
         Assert.assertTrue(vmExtensionImgList.getResources().size() == 0);
     }
 

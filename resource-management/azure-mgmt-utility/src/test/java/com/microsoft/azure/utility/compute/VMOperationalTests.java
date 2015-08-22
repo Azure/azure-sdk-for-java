@@ -102,8 +102,14 @@ public class VMOperationalTests extends ComputeTestBase {
 
         // manual pause for crp bug
         if (!IS_MOCKED) {
-            Thread.sleep(8000);
+            String sleepDuration = System.getenv("stopvmsleep");
+            if (sleepDuration != null) {
+                Thread.sleep(Long.parseLong(sleepDuration, 10));
+            } else {
+                Thread.sleep(60000);
+            }
         }
+
         log.info("Generalize vm: " + vm.getName());
         OperationResponse generalizeOpResponse = computeManagementClient.getVirtualMachinesOperations()
                 .generalize(context.getResourceGroupName(), vm.getName());
