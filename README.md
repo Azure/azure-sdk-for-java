@@ -6,7 +6,7 @@ This project provides a client library in Java that makes it easy to consume Mic
 You will need Java v1.6+. If you would like to develop on the SDK, you will also need maven.
 
 ##Via Maven
-Maven distributed jars are the recommended way of getting started with the Azure Java SDK. You can add these dependencies to many of the Java dependency managment tools (Maven, Gradle, Ivy...) and ensure that your project will contain all the Azure dependencies as well as the dependencies of the Azure Java SDK. A list of the artifacts are in the [Azure SDK for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
+Maven distributed jars are the recommended way of getting started with the Azure Java SDK. You can add these dependencies to many of the Java dependency managment tools (Maven, Gradle, Ivy...) and ensure that your project will contain all the Azure dependencies. A list of the artifacts are in the [Azure SDK for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
 
 ##Via Git
 If using package management is not your thing, then you can grab the sdk directly from source using git. To get the source code of the SDK via git just type:
