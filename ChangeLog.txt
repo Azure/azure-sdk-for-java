@@ -1,3 +1,7 @@
+2014.8.21 Version 0.8.0
+ * Support token based credentials
+ * Support Azure Resource Management
+
 2014.12.09 Version 0.7.0
  * Refresh client wrappers to latest specifications
 
