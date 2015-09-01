@@ -82,6 +82,7 @@ public class NetworkHelper {
         }
 
 
+
         VirtualNetwork createdVnet = networkResourceProviderClient.getVirtualNetworksOperations()
                 .get(context.getResourceGroupName(), vnetName)
                 .getVirtualNetwork();
@@ -119,8 +120,19 @@ public class NetworkHelper {
         }
 
         // send request
-        AzureAsyncOperationResponse response = networkResourceProviderClient.getNetworkInterfacesOperations()
-                .createOrUpdate(context.getResourceGroupName(), nicName, nic);
+        // TODO brute force handle for nic RetryableError, pending a robust solution in serviceClient directly.
+        try
+        {
+            AzureAsyncOperationResponse response = networkResourceProviderClient.getNetworkInterfacesOperations()
+                    .createOrUpdate(context.getResourceGroupName(), nicName, nic);
+        } catch (ExecutionException ee) {
+            if (ee.getMessage().contains("RetryableError")) {
+                AzureAsyncOperationResponse response2 = networkResourceProviderClient.getNetworkInterfacesOperations()
+                        .createOrUpdate(context.getResourceGroupName(), nicName, nic);
+            } else {
+                throw ee;
+            }
+        }
 
         NetworkInterface createdNic = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(context.getResourceGroupName(), nicName)

@@ -354,14 +354,6 @@ public class ComputeHelper {
                 context.getStorageAccount().getName(), context.getContainerName());
     }
 
-    public static ComputeLongRunningOperationResponse waitForVMCreation(
-            ComputeManagementClient computeManagementClient, VirtualMachineCreateOrUpdateResponse vmCreationResponse)
-            throws IOException, ServiceException {
-        //wait for the vm creation
-        return computeManagementClient.getLongRunningOperationStatus(
-                vmCreationResponse.getAzureAsyncOperation());
-    }
-
     private static void assertTrue(boolean condition) throws IllegalArgumentException {
         if (!condition) {
             throw new IllegalArgumentException();
