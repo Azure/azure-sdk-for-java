@@ -899,6 +899,27 @@ public class CloudBlockBlobTests {
         blockBlobRef.download(dstStream);
         BlobTestHelper.assertStreamsAreEqual(srcStream, new ByteArrayInputStream(dstStream.toByteArray()));
     }
+    
+    @Test
+    public void testBlobUploadFromStreamAccessConditionTest() throws URISyntaxException, StorageException, IOException {        
+        final String blockBlobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
+        final CloudBlockBlob blockBlobRef = this.container.getBlockBlobReference(blockBlobName);
+        AccessCondition accessCondition = AccessCondition.generateIfNotModifiedSinceCondition(new Date()); 
+        
+        int length = 2 * 1024;
+        ByteArrayInputStream srcStream = BlobTestHelper.getRandomDataStream(length);
+        blockBlobRef.upload(srcStream, -1, accessCondition, null, null);
+        ByteArrayOutputStream dstStream = new ByteArrayOutputStream();
+        blockBlobRef.download(dstStream);
+        BlobTestHelper.assertStreamsAreEqual(srcStream, new ByteArrayInputStream(dstStream.toByteArray()));
+
+        length = 5 * 1024 * 1024;
+        srcStream = BlobTestHelper.getRandomDataStream(length);
+        blockBlobRef.upload(srcStream, length);
+        dstStream = new ByteArrayOutputStream();
+        blockBlobRef.download(dstStream);
+        BlobTestHelper.assertStreamsAreEqual(srcStream, new ByteArrayInputStream(dstStream.toByteArray()));
+    }
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })

@@ -75,6 +75,24 @@ public class StorageAccountTests {
         cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, base64EncodedDummyKey);
         assertEquals(base64EncodedDummyKey, cred.exportBase64EncodedKey());
     }
+    
+    @Test
+    public void testStorageCredentialsSharedKeyUpdateKey() throws URISyntaxException, StorageException {
+        StorageCredentialsAccountAndKey cred = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);
+        assertEquals(ACCOUNT_KEY, cred.exportBase64EncodedKey());
+        
+        // Validate update with byte array
+        byte[] dummyKey = { 0, 1, 2 };
+        cred.updateKey(dummyKey);
+        String base64EncodedDummyKey = Base64.encode(dummyKey);
+        assertEquals(base64EncodedDummyKey, cred.exportBase64EncodedKey());
+
+        // Validate update with string
+        dummyKey[0] = 3;
+        base64EncodedDummyKey = Base64.encode(dummyKey);
+        cred.updateKey(base64EncodedDummyKey);
+        assertEquals(base64EncodedDummyKey, cred.exportBase64EncodedKey());
+    }
 
     @Test
     public void testStorageCredentialsSAS() throws URISyntaxException, StorageException {

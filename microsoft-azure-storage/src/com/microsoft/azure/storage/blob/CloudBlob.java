@@ -27,13 +27,9 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.TimeoutException;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
@@ -46,7 +42,6 @@ import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageLocation;
 import com.microsoft.azure.storage.StorageUri;
-import com.microsoft.azure.storage.core.Base64;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.Logger;
 import com.microsoft.azure.storage.core.NetworkInputStream;
@@ -59,6 +54,7 @@ import com.microsoft.azure.storage.core.StorageRequest;
 import com.microsoft.azure.storage.core.StreamMd5AndLength;
 import com.microsoft.azure.storage.core.UriQueryBuilder;
 import com.microsoft.azure.storage.core.Utility;
+import com.microsoft.azure.storage.core.WrappedByteArrayOutputStream;
 
 /**
  * Represents a Microsoft Azure blob. This is the base class for the {@link CloudBlockBlob} and {@link CloudPageBlob}
@@ -1490,7 +1486,45 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public Integer preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
                     throws Exception {
-                return preProcessDownloadResponse(this, options, client, blob, context, isRangeGet);
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_PARTIAL
+                        && this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                if (!this.getArePropertiesPopulated()) {
+                    String originalContentMD5 = null;
+
+                    final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(this.getConnection(),
+                            blob.getStorageUri(), blob.snapshotID);
+
+                    // Do not update Content-MD5 if it is a range get.
+                    if (isRangeGet) {
+                        originalContentMD5 = blob.properties.getContentMD5();
+                    }
+                    else {
+                        originalContentMD5 = retrievedAttributes.getProperties().getContentMD5();
+                    }
+
+                    if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
+                            && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
+                        throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
+                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
+
+                    blob.properties = retrievedAttributes.getProperties();
+                    blob.metadata = retrievedAttributes.getMetadata();
+                    this.setContentMD5(retrievedAttributes.getProperties().getContentMD5());
+                    blob.properties.setContentMD5(originalContentMD5);
+                    this.setLockedETag(blob.properties.getEtag());
+                    this.setArePropertiesPopulated(true);
+                }
+
+                // If the download fails and Get Blob needs to resume the download, going to the
+                // same storage location is important to prevent a possible ETag mismatch.
+                this.setRequestLocationMode(this.getResult().getTargetLocation() == StorageLocation.PRIMARY ? RequestLocationMode.PRIMARY_ONLY
+                        : RequestLocationMode.SECONDARY_ONLY);
+                return null;
             }
 
             @Override
@@ -1567,6 +1601,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
      * @param opContext
      *            An {@link OperationContext} object used to track the execution of the operation.
+     * @returns The total number of bytes read into the buffer.
+     * 
      * @throws StorageException
      *             an exception representing any error which occurred during the operation.
      */
@@ -1589,9 +1625,11 @@ public abstract class CloudBlob implements ListBlobItem {
             throw new IllegalArgumentException(SR.INVALID_RANGE_CONTENT_MD5_HEADER);
         }
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this, this.downloadToByteArrayImpl(blobOffset,
-                length, buffer, bufferOffset, accessCondition, options, opContext), options.getRetryPolicyFactory(),
-                opContext);
+        WrappedByteArrayOutputStream outputStream = new WrappedByteArrayOutputStream(buffer, bufferOffset);
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.downloadToStreamImpl(blobOffset, length, outputStream, accessCondition, options, opContext),
+                options.getRetryPolicyFactory(), opContext);
+        return outputStream.getPosition();
     }
 
     /**
@@ -1603,15 +1641,16 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A <code>Long</code> which represents the number of bytes to read or null.
      * @param buffer
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
-     * @param bufferOffet
+     * @param bufferOffset
      *            An <code>int</code> which represents the byte offset to use as the starting point for the target.
-     *
+     * @returns The total number of bytes read into the buffer.
+     * 
      * @throws StorageException
      */
     @DoesServiceRequest
     public final int downloadRangeToByteArray(final long offset, final Long length, final byte[] buffer,
-            final int bufferOffet) throws StorageException {
-        return this.downloadRangeToByteArray(offset, length, buffer, bufferOffet, null /* accessCondition */,
+            final int bufferOffset) throws StorageException {
+        return this.downloadRangeToByteArray(offset, length, buffer, bufferOffset, null /* accessCondition */,
                 null /* options */, null /* opContext */);
     }
 
@@ -1637,7 +1676,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     *
+     * @returns The total number of bytes read into the buffer.
+     * 
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1668,16 +1708,16 @@ public abstract class CloudBlob implements ListBlobItem {
      *
      * @param buffer
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
-     * @param bufferOffet
+     * @param bufferOffset
      *            An <code>int</code> which represents the byte offset to use as the starting point for the target.
      *
      * @throws StorageException
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public final int downloadToByteArray(final byte[] buffer, final int bufferOffet) throws StorageException {
+    public final int downloadToByteArray(final byte[] buffer, final int bufferOffset) throws StorageException {
         return this
-                .downloadToByteArray(buffer, bufferOffet, null /* accessCondition */, null /* options */, null /* opContext */);
+                .downloadToByteArray(buffer, bufferOffset, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
     /**
@@ -1723,152 +1763,11 @@ public abstract class CloudBlob implements ListBlobItem {
         opContext.initialize();
         options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
-        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.downloadToByteArrayImpl(null, null, buffer, bufferOffset, accessCondition, options, opContext),
+        WrappedByteArrayOutputStream outputStream = new WrappedByteArrayOutputStream(buffer, bufferOffset);
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.downloadToStreamImpl(null, null, outputStream, accessCondition, options, opContext),
                 options.getRetryPolicyFactory(), opContext);
-    }
-
-    private StorageRequest<CloudBlobClient, CloudBlob, Integer> downloadToByteArrayImpl(final Long blobOffset,
-            final Long length, final byte[] buffer, final int bufferOffset, final AccessCondition accessCondition,
-            final BlobRequestOptions options, OperationContext opContext) {
-        final long startingOffset = blobOffset == null ? 0 : blobOffset;
-        final boolean isRangeGet = blobOffset != null;
-        final StorageRequest<CloudBlobClient, CloudBlob, Integer> getRequest = new StorageRequest<CloudBlobClient, CloudBlob, Integer>(
-                options, this.getStorageUri()) {
-
-            @Override
-            public void setRequestLocationMode() {
-                this.setRequestLocationMode(RequestLocationMode.PRIMARY_OR_SECONDARY);
-            }
-
-            @Override
-            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
-                    throws Exception {
-                // The first time this is called, we have to set the length and blob offset. On retries, these will already have values and need not be called.
-                if (this.getOffset() == null) {
-                    this.setOffset(blobOffset);
-                }
-
-                if (this.getLength() == null) {
-                    this.setLength(length);
-                }
-
-                AccessCondition tempCondition = (this.getETagLockCondition() != null) ? this.getETagLockCondition()
-                        : accessCondition;
-                return BlobRequest.getBlob(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, tempCondition, blob.snapshotID, this.getOffset(), this.getLength(),
-                        (options.getUseTransactionalContentMD5() && !this.getArePropertiesPopulated()));
-            }
-
-            @Override
-            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
-                    throws Exception {
-                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
-            }
-
-            @Override
-            public Integer preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
-                    throws Exception {
-                return preProcessDownloadResponse(this, options, client, blob, context, isRangeGet);
-            }
-
-            @Override
-            public Integer postProcessResponse(HttpURLConnection connection, CloudBlob blob, CloudBlobClient client,
-                    OperationContext context, Integer storageObject) throws Exception {
-
-                final String contentLength = connection.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
-                final long expectedLength = Long.parseLong(contentLength);
-
-                Logger.info(context, String.format(SR.CREATING_NETWORK_STREAM, expectedLength));
-
-                final NetworkInputStream sourceStream = new NetworkInputStream(connection.getInputStream(),
-                        expectedLength);
-
-                try {
-                    int totalRead = 0;
-                    int nextRead = buffer.length - bufferOffset;
-                    int count = sourceStream.read(buffer, bufferOffset, nextRead);
-
-                    while (count > 0) {
-                        // if maximum execution time would be exceeded
-                        if (Utility.validateMaxExecutionTimeout(options.getOperationExpiryTimeInMs())) {
-                            // throw an exception
-                            TimeoutException timeoutException = new TimeoutException(
-                                    SR.MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION);
-                            throw Utility.initIOException(timeoutException);
-                        }
-
-                        totalRead += count;
-                        this.setCurrentRequestByteCount(this.getCurrentRequestByteCount() + count);
-
-                        nextRead = buffer.length - (bufferOffset + totalRead);
-
-                        if (nextRead == 0) {
-                            // check for case where more data is returned
-                            if (sourceStream.read(new byte[1], 0, 1) != -1) {
-                                throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                                        SR.CONTENT_LENGTH_MISMATCH, Constants.HeaderConstants.HTTP_UNUSED_306, null,
-                                        null);
-                            }
-                        }
-
-                        count = sourceStream.read(buffer, bufferOffset + totalRead, nextRead);
-                    }
-
-                    if (totalRead != expectedLength) {
-                        throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                                SR.CONTENT_LENGTH_MISMATCH, Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                    }
-                }
-                finally {
-                    // Close the stream. Closing an already closed stream is harmless. So its fine to try
-                    // to drain the response and close the stream again in the executor.
-                    sourceStream.close();
-                }
-
-                final Boolean validateMD5 = !options.getDisableContentMD5Validation()
-                        && !Utility.isNullOrEmpty(this.getContentMD5());
-                if (validateMD5) {
-                    try {
-                        final MessageDigest digest = MessageDigest.getInstance("MD5");
-                        digest.update(buffer, bufferOffset, (int) this.getCurrentRequestByteCount());
-
-                        final String calculatedMD5 = Base64.encode(digest.digest());
-                        if (!this.getContentMD5().equals(calculatedMD5)) {
-                            throw new StorageException(StorageErrorCodeStrings.INVALID_MD5, String.format(
-                                    SR.BLOB_HASH_MISMATCH, this.getContentMD5(), calculatedMD5),
-                                    Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                        }
-                    }
-                    catch (final NoSuchAlgorithmException e) {
-                        // This wont happen, throw fatal.
-                        throw Utility.generateNewUnexpectedStorageException(e);
-                    }
-                }
-
-                return (int) this.getCurrentRequestByteCount();
-            }
-
-            @Override
-            public void recoveryAction(OperationContext context) throws IOException {
-                if (this.getETagLockCondition() == null && (!Utility.isNullOrEmpty(this.getLockedETag()))) {
-                    AccessCondition etagLockCondition = new AccessCondition();
-                    etagLockCondition.setIfMatch(this.getLockedETag());
-                    if (accessCondition != null) {
-                        etagLockCondition.setLeaseID(accessCondition.getLeaseID());
-                    }
-                    this.setETagLockCondition(etagLockCondition);
-                }
-
-                if (this.getCurrentRequestByteCount() > 0) {
-                    this.setOffset(startingOffset + this.getCurrentRequestByteCount());
-                    if (length != null) {
-                        this.setLength(length - this.getCurrentRequestByteCount());
-                    }
-                }
-            }
-        };
-        return getRequest;
+        return outputStream.getPosition();
     }
 
     /**
@@ -3039,51 +2938,6 @@ public abstract class CloudBlob implements ListBlobItem {
         };
 
         return putRequest;
-    }
-
-    private Integer preProcessDownloadResponse(final StorageRequest<CloudBlobClient, CloudBlob, Integer> request,
-            final BlobRequestOptions options, final CloudBlobClient client, final CloudBlob blob,
-            final OperationContext context, final boolean isRangeGet) throws StorageException, URISyntaxException,
-            ParseException {
-        if (request.getResult().getStatusCode() != HttpURLConnection.HTTP_PARTIAL
-                && request.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
-            request.setNonExceptionedRetryableFailure(true);
-            return null;
-        }
-
-        if (!request.getArePropertiesPopulated()) {
-            String originalContentMD5 = null;
-
-            final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(request.getConnection(),
-                    blob.getStorageUri(), blob.snapshotID);
-
-            // Do not update Content-MD5 if it is a range get.
-            if (isRangeGet) {
-                originalContentMD5 = blob.properties.getContentMD5();
-            }
-            else {
-                originalContentMD5 = retrievedAttributes.getProperties().getContentMD5();
-            }
-
-            if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
-                    && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
-                throw new StorageException(StorageErrorCodeStrings.MISSING_MD5_HEADER, SR.MISSING_MD5,
-                        Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-            }
-
-            blob.properties = retrievedAttributes.getProperties();
-            blob.metadata = retrievedAttributes.getMetadata();
-            request.setContentMD5(retrievedAttributes.getProperties().getContentMD5());
-            blob.properties.setContentMD5(originalContentMD5);
-            request.setLockedETag(blob.properties.getEtag());
-            request.setArePropertiesPopulated(true);
-        }
-
-        // If the download fails and Get Blob needs to resume the download, going to the
-        // same storage location is important to prevent a possible ETag mismatch.
-        request.setRequestLocationMode(request.getResult().getTargetLocation() == StorageLocation.PRIMARY ? RequestLocationMode.PRIMARY_ONLY
-                : RequestLocationMode.SECONDARY_ONLY);
-        return null;
     }
 
     /**

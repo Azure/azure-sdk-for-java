@@ -33,7 +33,7 @@ import com.microsoft.azure.storage.core.Utility;
  * <p>
  * To create a table query with fluent syntax, the {@link #from} static factory method and the {@link #where},
  * {@link #select}, and {@link #take} mutator methods each return a reference to the object which can be chained into a
- * single expression. Use the {@link TableQuery#from(Class)} static class factory method to create a
+ * single expression. Use the {@link #from(Class)} static class factory method to create a
  * <code>TableQuery</code> instance that executes on the named table with entities of the specified {@link TableEntity}
  * implementing type. Use the {@link #where} method to specify a filter expression for the entities returned. Use the
  * {@link #select} method to specify the table entity properties to return. Use the {@link #take} method to limit the

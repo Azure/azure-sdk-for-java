@@ -41,7 +41,6 @@ public final class EntityProperty {
     private String value;
     private Class<?> type;
     private EdmType edmType = EdmType.NULL;
-    private boolean isNull = false;
     
     /**
      * Flag that specifies whether the client should look to correct Date values stored on a {@link TableEntity}
@@ -239,19 +238,6 @@ public final class EntityProperty {
     }
 
     /**
-     * Reserved for internal use. Constructs an {@link EntityProperty} instance as a <code>null</code> value with the
-     * specified type.
-     * 
-     * @param type
-     *            The {@link EdmType} to set as the entity property type.
-     */
-    protected EntityProperty(EdmType type) {
-        this.value = null;
-        this.edmType = type;
-        this.isNull = true;
-    }
-
-    /**
      * Constructs an {@link EntityProperty} instance from a <code>boolean</code> value.
      * 
      * @param value
@@ -289,7 +275,6 @@ public final class EntityProperty {
      */
     public EntityProperty(final Byte[] value) {
         this.setValue(value);
-        this.type = Byte[].class;
     }
 
     /**
@@ -370,7 +355,6 @@ public final class EntityProperty {
      */
     public EntityProperty(final String value) {
         this.setValue(value);
-        this.type = String.class;
     }
 
     /**
@@ -400,7 +384,7 @@ public final class EntityProperty {
      *         A <code>boolean</code> flag indicating that the {@link EntityProperty} value is <code>null</code>.
      */
     public boolean getIsNull() {
-        return this.isNull;
+        return this.value == null;
     }
 
     /**
@@ -423,7 +407,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as a <code>Boolean</code>.
      */
     public boolean getValueAsBoolean() {
-        if (this.isNull) {
+        if (this.getIsNull()) {
             throw new IllegalArgumentException(SR.ENTITY_PROPERTY_CANNOT_BE_NULL_FOR_PRIMITIVES);
         }
         return Boolean.parseBoolean(this.value);
@@ -439,7 +423,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as a <code>Boolean</code>.
      */
     public Boolean getValueAsBooleanObject() {
-        if (this.isNull) {
+        if (this.getIsNull()) {
             return null;
         }
         return Boolean.parseBoolean(this.value);
@@ -452,7 +436,7 @@ public final class EntityProperty {
      *         A <code>byte[]</code> representation of the {@link EntityProperty} value, or <code>null</code>.
      */
     public byte[] getValueAsByteArray() {
-        return this.isNull ? null : Base64.decode(this.value);
+        return this.getIsNull() ? null : Base64.decode(this.value);
     }
 
     /**
@@ -462,7 +446,7 @@ public final class EntityProperty {
      *         A <code>Byte[]</code> representation of the {@link EntityProperty} value, or <code>null</code>.
      */
     public Byte[] getValueAsByteObjectArray() {
-        return this.isNull ? null : Base64.decodeAsByteObjectArray(this.value);
+        return this.getIsNull() ? null : Base64.decodeAsByteObjectArray(this.value);
     }
 
     /**
@@ -475,10 +459,7 @@ public final class EntityProperty {
      *             If the value is not <code>null</code> and cannot be parsed as a <code>java.util.Date</code>.
      */
     public Date getValueAsDate() {
-        if (this.isNull) {
-            return null;
-        }
-        return Utility.parseDate(this.value, this.dateBackwardCompatibility);
+        return this.getIsNull() ? null : Utility.parseDate(this.value, this.dateBackwardCompatibility);
     }
 
     /**
@@ -491,7 +472,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as a <code>double</code>.
      */
     public double getValueAsDouble() {
-        if (this.isNull) {
+        if (this.getIsNull()) {
             throw new IllegalArgumentException(SR.ENTITY_PROPERTY_CANNOT_BE_NULL_FOR_PRIMITIVES);
         }
         else if (this.value.equals("Infinity") || this.value.equals("INF")) {
@@ -518,7 +499,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as a <code>double</code>.
      */
     public Double getValueAsDoubleObject() {
-        if (this.isNull) {
+        if (this.getIsNull()) {
             return null;
         }
         else if (this.value.equals("Infinity") || this.value.equals("INF")) {
@@ -545,7 +526,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as an <code>int</code>.
      */
     public int getValueAsInteger() {
-        if (this.isNull) {
+        if (this.getIsNull()) {
             throw new IllegalArgumentException(SR.ENTITY_PROPERTY_CANNOT_BE_NULL_FOR_PRIMITIVES);
         }
         return Integer.parseInt(this.value);
@@ -561,10 +542,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as an <code>int</code>.
      */
     public Integer getValueAsIntegerObject() {
-        if (this.isNull) {
-            return null;
-        }
-        return Integer.parseInt(this.value);
+        return this.getIsNull() ? null : Integer.parseInt(this.value);
     }
 
     /**
@@ -577,7 +555,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as a <code>long</code>.
      */
     public long getValueAsLong() {
-        if (this.isNull) {
+        if (this.getIsNull()) {
             throw new IllegalArgumentException(SR.ENTITY_PROPERTY_CANNOT_BE_NULL_FOR_PRIMITIVES);
         }
         return Long.parseLong(this.value);
@@ -593,10 +571,7 @@ public final class EntityProperty {
      *             If the value is <code>null</code> or cannot be parsed as a <code>long</code>.
      */
     public Long getValueAsLongObject() {
-        if (this.isNull) {
-            return null;
-        }
-        return Long.parseLong(this.value);
+        return this.getIsNull() ? null : Long.parseLong(this.value);
     }
 
     /**
@@ -606,7 +581,7 @@ public final class EntityProperty {
      *         A <code>String</code> representation of the {@link EntityProperty} value, or <code>null</code>.
      */
     public String getValueAsString() {
-        return this.isNull ? null : this.value;
+        return this.getIsNull() ? null : this.value;
     }
 
     /**
@@ -619,7 +594,7 @@ public final class EntityProperty {
      *             If the value cannot be parsed as a <code>java.util.UUID</code>.
      */
     public UUID getValueAsUUID() {
-        return this.isNull ? null : UUID.fromString(this.value);
+        return this.getIsNull() ? null : UUID.fromString(this.value);
     }
 
     /**
@@ -631,7 +606,6 @@ public final class EntityProperty {
     public synchronized final void setValue(final boolean value) {
         this.edmType = EdmType.BOOLEAN;
         this.type = boolean.class;
-        this.isNull = false;
         this.value = value ? Constants.TRUE : Constants.FALSE;
     }
 
@@ -646,10 +620,8 @@ public final class EntityProperty {
         this.type = Boolean.class;
         if (value == null) {
             this.value = null;
-            this.isNull = true;
         }
         else {
-            this.isNull = false;
             this.value = value ? Constants.TRUE : Constants.FALSE;
         }
     }
@@ -664,16 +636,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final byte[] value) {
         this.edmType = EdmType.BINARY;
         this.type = byte[].class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-            return;
-        }
-        else {
-            this.isNull = false;
-        }
-
-        this.value = Base64.encode(value);
+        this.value = value == null ? null : Base64.encode(value);
     }
 
     /**
@@ -686,16 +649,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final Byte[] value) {
         this.edmType = EdmType.BINARY;
         this.type = Byte[].class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-            return;
-        }
-        else {
-            this.isNull = false;
-        }
-
-        this.value = Base64.encode(value);
+        this.value = value == null ? null : Base64.encode(value);
     }
 
     /**
@@ -708,16 +662,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final Date value) {
         this.edmType = EdmType.DATE_TIME;
         this.type = Date.class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-            return;
-        }
-        else {
-            this.isNull = false;
-        }
-
-        this.value = Utility.getJavaISO8601Time(value);
+        this.value = value == null ? null : Utility.getJavaISO8601Time(value);
     }
 
     /**
@@ -729,7 +674,6 @@ public final class EntityProperty {
     public synchronized final void setValue(final double value) {
         this.edmType = EdmType.DOUBLE;
         this.type = double.class;
-        this.isNull = false;
         this.value = Double.toString(value);
     }
 
@@ -742,14 +686,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final Double value) {
         this.edmType = EdmType.DOUBLE;
         this.type = Double.class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-        }
-        else {
-            this.isNull = false;
-            this.value = Double.toString(value);
-        }
+        this.value = value == null ? null : Double.toString(value);
     }
 
     /**
@@ -761,7 +698,6 @@ public final class EntityProperty {
     public synchronized final void setValue(final int value) {
         this.edmType = EdmType.INT32;
         this.type = int.class;
-        this.isNull = false;
         this.value = Integer.toString(value);
     }
 
@@ -774,14 +710,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final Integer value) {
         this.edmType = EdmType.INT32;
         this.type = Integer.class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-        }
-        else {
-            this.isNull = false;
-            this.value = Integer.toString(value);
-        }
+        this.value = value == null ? null : Integer.toString(value);
     }
 
     /**
@@ -793,7 +722,6 @@ public final class EntityProperty {
     public synchronized final void setValue(final long value) {
         this.edmType = EdmType.INT64;
         this.type = long.class;
-        this.isNull = false;
         this.value = Long.toString(value);
     }
 
@@ -806,14 +734,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final Long value) {
         this.edmType = EdmType.INT64;
         this.type = Long.class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-        }
-        else {
-            this.isNull = false;
-            this.value = Long.toString(value);
-        }
+        this.value = value == null ? null : Long.toString(value);
     }
 
     /**
@@ -826,16 +747,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final String value) {
         this.edmType = EdmType.STRING;
         this.type = String.class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-            return;
-        }
-        else {
-            this.isNull = false;
-        }
-
-        this.value = value;
+        this.value = value;   
     }
 
     /**
@@ -848,16 +760,7 @@ public final class EntityProperty {
     public synchronized final void setValue(final UUID value) {
         this.edmType = EdmType.GUID;
         this.type = UUID.class;
-        if (value == null) {
-            this.value = null;
-            this.isNull = true;
-            return;
-        }
-        else {
-            this.isNull = false;
-        }
-
-        this.value = value.toString();
+        this.value = value == null ? null : value.toString();
     }
 
     /**

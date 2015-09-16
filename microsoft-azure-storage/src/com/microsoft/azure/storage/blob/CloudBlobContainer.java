@@ -1110,12 +1110,30 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public Iterable<ListBlobItem> listBlobs(final String prefix) {
-        return this.listBlobs(prefix, false, EnumSet.noneOf(BlobListingDetails.class), null, null);
+        return this.listBlobs(prefix, false);
+    }
+    
+    /**
+     * Returns an enumerable collection of blob items for the container whose names begin with the specified prefix
+     * using the specified flat or hierarchical option.
+     * 
+     * @param prefix
+     *            A <code>String</code> that represents the blob name prefix. This value must be preceded either by the
+     *            name of the container or by the absolute path to the container.
+     * @param useFlatBlobListing
+     *            <code>true</code> to indicate that the returned list will be flat; <code>false</code> to indicate that
+     *            the returned list will be hierarchical.
+     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represents the
+     *         items whose names begin with the specified prefix in this container.
+     */
+    @DoesServiceRequest
+    public Iterable<ListBlobItem> listBlobs(final String prefix, final boolean useFlatBlobListing) {
+        return this.listBlobs(prefix, useFlatBlobListing, EnumSet.noneOf(BlobListingDetails.class), null, null);
     }
 
     /**
-     * Returns an enumerable collection of blob items whose names begin with the specified prefix, using the specified
-     * flat or hierarchical option, listing details options, request options, and operation context.
+     * Returns an enumerable collection of blob items for the container whose names begin with the specified prefix, 
+     * using the specified flat or hierarchical option, listing details options, request options, and operation context.
      * 
      * @param prefix
      *            A <code>String</code> that represents the blob name prefix. This value must be preceded either by the
@@ -1135,9 +1153,8 @@ public final class CloudBlobContainer {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
-     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represent the block
-     *         items whose names begin with the specified prefix in this directory.
+     * @return An enumerable collection of {@link ListBlobItem} objects retrieved lazily that represents the
+     *         items whose names begin with the specified prefix in this container.
      */
     @DoesServiceRequest
     public Iterable<ListBlobItem> listBlobs(final String prefix, final boolean useFlatBlobListing,

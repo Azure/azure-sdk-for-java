@@ -18,8 +18,10 @@ package com.microsoft.azure.storage.table;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
@@ -190,58 +192,72 @@ final class PropertyPair {
      */
     protected void consumeEntityProperty(final EntityProperty prop, final Object instance)
             throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        if (prop.getEdmType() == EdmType.STRING) {
-            this.setter.invoke(instance, prop.getValueAsString());
-        }
-        else if (prop.getEdmType() == EdmType.BINARY) {
-            if (this.setter.getParameterTypes()[0].equals(Byte[].class)) {
-                this.setter.invoke(instance, (Object) prop.getValueAsByteObjectArray());
+        Class<?> paramType = this.setter.getParameterTypes()[0];
+        if (prop.getIsNull()) {
+            if (!paramType.isPrimitive()) {
+                this.setter.invoke(instance, (Object) null);
             }
-            else {
-                this.setter.invoke(instance, prop.getValueAsByteArray());
-            }
-        }
-        else if (prop.getEdmType() == EdmType.BOOLEAN) {
-            if (this.setter.getParameterTypes()[0].equals(Boolean.class)) {
-                this.setter.invoke(instance, prop.getValueAsBooleanObject());
-            }
-            else {
-                this.setter.invoke(instance, prop.getValueAsBoolean());
-            }
-        }
-        else if (prop.getEdmType() == EdmType.DOUBLE) {
-            if (this.setter.getParameterTypes()[0].equals(Double.class)) {
-                this.setter.invoke(instance, prop.getValueAsDoubleObject());
-            }
-            else {
-                this.setter.invoke(instance, prop.getValueAsDouble());
-            }
-        }
-        else if (prop.getEdmType() == EdmType.GUID) {
-            this.setter.invoke(instance, prop.getValueAsUUID());
-        }
-        else if (prop.getEdmType() == EdmType.INT32) {
-            if (this.setter.getParameterTypes()[0].equals(Integer.class)) {
-                this.setter.invoke(instance, prop.getValueAsIntegerObject());
-            }
-            else {
-                this.setter.invoke(instance, prop.getValueAsInteger());
-            }
-        }
-        else if (prop.getEdmType() == EdmType.INT64) {
-            if (this.setter.getParameterTypes()[0].equals(Long.class)) {
-                this.setter.invoke(instance, prop.getValueAsLongObject());
-            }
-            else {
-                this.setter.invoke(instance, prop.getValueAsLong());
-            }
-        }
-        else if (prop.getEdmType() == EdmType.DATE_TIME) {
-            this.setter.invoke(instance, prop.getValueAsDate());
         }
         else {
-            throw new IllegalArgumentException(String.format(SR.PROPERTY_CANNOT_BE_SERIALIZED_AS_GIVEN_EDMTYPE,
-                    this.name, prop.getEdmType().toString()));
+            if (prop.getEdmType() == EdmType.STRING) {
+                if (paramType.equals(String.class)) {
+                    this.setter.invoke(instance, prop.getValueAsString());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.BINARY) {
+                if (paramType.equals(Byte[].class)) {
+                    this.setter.invoke(instance, (Object) prop.getValueAsByteObjectArray());
+                }
+                else if (paramType.equals(byte[].class)) {
+                    this.setter.invoke(instance, prop.getValueAsByteArray());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.BOOLEAN) {
+                if (paramType.equals(Boolean.class)) {
+                    this.setter.invoke(instance, prop.getValueAsBooleanObject());
+                }
+                else if (paramType.equals(boolean.class)) {
+                    this.setter.invoke(instance, prop.getValueAsBoolean());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.DOUBLE) {
+                if (paramType.equals(Double.class)) {
+                    this.setter.invoke(instance, prop.getValueAsDoubleObject());
+                }
+                else if (paramType.equals(double.class)) {
+                    this.setter.invoke(instance, prop.getValueAsDouble());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.GUID) {                
+                if (paramType.equals(UUID.class)) {
+                    this.setter.invoke(instance, prop.getValueAsUUID());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.INT32) {
+                if (paramType.equals(Integer.class)) {
+                    this.setter.invoke(instance, prop.getValueAsIntegerObject());
+                }
+                else if (paramType.equals(int.class)) {
+                    this.setter.invoke(instance, prop.getValueAsInteger());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.INT64) {
+                if (paramType.equals(Long.class)) {
+                    this.setter.invoke(instance, prop.getValueAsLongObject());
+                }
+                else if (paramType.equals(long.class)) {
+                    this.setter.invoke(instance, prop.getValueAsLong());
+                }
+            }
+            else if (prop.getEdmType() == EdmType.DATE_TIME) {
+                if (paramType.equals(Date.class)) {
+                    this.setter.invoke(instance, prop.getValueAsDate());
+                }
+            }
+            else {
+                throw new IllegalArgumentException(String.format(SR.PROPERTY_CANNOT_BE_SERIALIZED_AS_GIVEN_EDMTYPE,
+                        this.name, prop.getEdmType().toString()));
+            }
         }
     }
 

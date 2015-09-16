@@ -1488,8 +1488,7 @@ public class CloudFileTests {
 
             // Get destination file reference
             StorageCredentialsSharedAccessSignature credentials = new StorageCredentialsSharedAccessSignature(sasToken);
-            copyDestination = new CloudFile(destination.getUri(),
-                    destination.getServiceClient().getCredentials());
+            copyDestination = new CloudFile(destination.getUri(), credentials);
         }
 
         // Start copy and wait for completion

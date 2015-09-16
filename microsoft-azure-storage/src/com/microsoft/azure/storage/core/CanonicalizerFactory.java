@@ -20,73 +20,41 @@ package com.microsoft.azure.storage.core;
 import java.net.HttpURLConnection;
 
 /**
- * RESERVED FOR INTERNAL USE. Retrieve appropriate version of CanonicalizationStrategy based on the webrequest for Blob
- * and Queue.
+ * RESERVED FOR INTERNAL USE. 
+ * Retrieve the appropriate version of the canonicalizer based on the service type.
  */
 final class CanonicalizerFactory {
     /**
      * The Canonicalizer instance for Blob & Queue
      */
-    private static final BlobQueueFullCanonicalizer BLOB_QUEUE_FULL_V2_INSTANCE = new BlobQueueFullCanonicalizer();
-
-    /**
-     * The Canonicalizer instance for Blob & Queue Shared Key Lite
-     */
-    private static final BlobQueueLiteCanonicalizer BLOB_QUEUE_LITE_INSTANCE = new BlobQueueLiteCanonicalizer();
+    private static final BlobQueueFileCanonicalizer BLOB_QUEUE_FILE_V2_INSTANCE = new BlobQueueFileCanonicalizer();
 
     /**
      * The Canonicalizer instance for Table
      */
-    private static final TableFullCanonicalizer TABLE_FULL_INSTANCE = new TableFullCanonicalizer();
+    private static final TableCanonicalizer TABLE_INSTANCE = new TableCanonicalizer();
 
     /**
-     * The Canonicalizer instance for Table Lite
-     */
-    private static final TableLiteCanonicalizer TABLE_LITE_INSTANCE = new TableLiteCanonicalizer();
-
-    /**
-     * Gets the Blob queue Canonicalizer full version 2.
+     * Gets the blob, queue or file Canonicalizer version 2.
      * 
      * @param conn
      *            the HttpURLConnection for the current operation
      * @return the appropriate Canonicalizer for the operation.
      */
-    protected static Canonicalizer getBlobQueueFullCanonicalizer(final HttpURLConnection conn) {
-        return BLOB_QUEUE_FULL_V2_INSTANCE;
+    protected static Canonicalizer getBlobQueueFileCanonicalizer(final HttpURLConnection conn) {
+        return BLOB_QUEUE_FILE_V2_INSTANCE;
     }
 
     /**
-     * Gets the Blob queue lite Canonicalizer
+     * Gets the table Canonicalizer.
      * 
      * @param conn
      *            the HttpURLConnection for the current operation
      * @return the appropriate Canonicalizer for the operation.
      */
-    protected static Canonicalizer getBlobQueueLiteCanonicalizer(final HttpURLConnection conn) {
-        return BLOB_QUEUE_LITE_INSTANCE;
-    }
+    protected static Canonicalizer getTableCanonicalizer(final HttpURLConnection conn) {
+        return TABLE_INSTANCE;
 
-    /**
-     * Gets the table full Canonicalizer.
-     * 
-     * @param conn
-     *            the HttpURLConnection for the current operation
-     * @return the appropriate Canonicalizer for the operation.
-     */
-    protected static Canonicalizer getTableFullCanonicalizer(final HttpURLConnection conn) {
-        return TABLE_FULL_INSTANCE;
-
-    }
-
-    /**
-     * Gets the table lite Canonicalizer
-     * 
-     * @param conn
-     *            the HttpURLConnection for the current operation
-     * @return the appropriate Canonicalizer for the operation.
-     */
-    protected static Canonicalizer getTableLiteCanonicalizer(final HttpURLConnection conn) {
-        return TABLE_LITE_INSTANCE;
     }
 
     /**

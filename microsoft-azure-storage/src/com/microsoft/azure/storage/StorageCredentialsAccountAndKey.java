@@ -110,7 +110,7 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      */
     @SuppressWarnings("deprecation")
     public void updateKey(final String key) {
-        if (Utility.isNullOrEmptyOrWhitespace(key) || Base64.validateIsBase64String(key)) {
+        if (Utility.isNullOrEmptyOrWhitespace(key) || !Base64.validateIsBase64String(key)) {
             throw new IllegalArgumentException(SR.INVALID_KEY);
         }
 
