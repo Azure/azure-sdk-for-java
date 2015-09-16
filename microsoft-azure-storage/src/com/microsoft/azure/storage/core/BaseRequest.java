@@ -173,7 +173,15 @@ public final class BaseRequest {
         
         final URL resourceUrl = builder.addToURI(uri).toURL();
 
-        final HttpURLConnection retConnection = (HttpURLConnection) resourceUrl.openConnection();
+        final HttpURLConnection retConnection;
+        
+        // Set up connection, optionally with proxy settings
+        if (opContext != null && opContext.getProxy() != null) {
+            retConnection = (HttpURLConnection) resourceUrl.openConnection(opContext.getProxy());
+        } 
+        else {
+            retConnection = (HttpURLConnection) resourceUrl.openConnection();
+        }
 
         /*
          * ReadTimeout must be explicitly set to avoid a bug in JDK 6. In certain cases, this bug causes an immediate 
@@ -459,7 +467,7 @@ public final class BaseRequest {
             final StorageCredentialsAccountAndKey credentials, final Long contentLength,
             final OperationContext opContext) throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
-        final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueFullCanonicalizer(request);
+        final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueFileCanonicalizer(request);
 
         final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength);
 
@@ -493,7 +501,7 @@ public final class BaseRequest {
             final OperationContext opContext) throws InvalidKeyException, StorageException {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
 
-        final Canonicalizer canonicalizer = CanonicalizerFactory.getTableFullCanonicalizer(request);
+        final Canonicalizer canonicalizer = CanonicalizerFactory.getTableCanonicalizer(request);
 
         final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength);
 

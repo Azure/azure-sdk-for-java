@@ -361,9 +361,9 @@ public class CloudAnalyticsClient {
      * Returns an enumerable collection of log records, retrieved lazily.
      * 
      * @param logBlobs
-     *            A {@link Iterable} of blobs to parse LogRecords from.
+     *            An {@link Iterable} of blobs to parse LogRecords from.
      * @return
-     *         An enumerable collection of objects that implement {@link ListBlobItem} and are retrieved lazily.
+     *         An enumerable collection of objects that implement {@link LogRecords} and are retrieved lazily.
      * @throws StorageException
      * @throws URISyntaxException
      */
@@ -376,10 +376,10 @@ public class CloudAnalyticsClient {
     /**
      * Returns an enumerable collection of log records, retrieved lazily.
      * 
-     * @param logBlob
-     *            A {ListBlobItem} to parse LogRecords from.
+     * @param logBlobs
+     *            An {@link Iterable} of blobs to parse LogRecords from.
      * @return
-     *         An enumerable collection of objects that implement {@link ListBlobItem} and are retrieved lazily.
+     *         An enumerable collection of objects that implement {@link LogRecords} and are retrieved lazily.
      * @throws StorageException
      * @throws URISyntaxException
      */

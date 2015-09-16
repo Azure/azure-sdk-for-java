@@ -450,6 +450,46 @@ public class CloudBlobContainerTests {
     }
     
     /**
+     * List the blobs in a container with a prefix
+     * 
+     * @throws URISyntaxException
+     * @throws StorageException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlobContainerListBlobsPrefix() throws StorageException, IOException, URISyntaxException {
+        this.container.create();
+        int numBlobs = 2;
+        List<String> blobNames = BlobTestHelper
+                .uploadNewBlobs(this.container, BlobType.BLOCK_BLOB, numBlobs, 128, null);
+
+        BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "pref/blob1", 128, null);
+        blobNames.add("pref/blob1");
+        
+        BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "pref/blob2", 128, null);
+        blobNames.add("pref/blob2");
+
+        // Flat listing false
+        int count = 0;
+        for (ListBlobItem blob : this.container.listBlobs("pref")) {
+            assertEquals(CloudBlobDirectory.class, blob.getClass());
+            assertTrue(((CloudBlobDirectory)blob).getPrefix().startsWith("pref"));
+            count++;
+        }
+        assertEquals(1, count);
+        
+        // Flat listing true
+        count = 0;
+        for (ListBlobItem blob : this.container.listBlobs("pref", true)) {
+            assertEquals(CloudBlockBlob.class, blob.getClass());
+            assertTrue(((CloudBlockBlob)blob).getName().startsWith("pref/blob"));
+            count++;
+        }
+        assertEquals(2, count);
+    }
+    
+    /**
      * List the blobs in a container with next(). This tests for the item in the changelog: "Fixed a bug for all 
      * listing API's where next() would sometimes throw an exception if hasNext() had not been called even if 
      * there were more elements to iterate on."

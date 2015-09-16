@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResponseReceivedEvent;
@@ -98,6 +100,36 @@ public class BlobOutputStreamTests {
         str.close();
         blocks = blockBlob.downloadBlockList(BlockListingFilter.COMMITTED, null, null, null);
         assertEquals(1, blocks.size());
+    }
+    
+    @Test
+    public void testWithAccessCondition() throws URISyntaxException, StorageException, IOException {
+        int blobLengthToUse = 8 * 512;
+        byte[] buffer = BlobTestHelper.getRandomBuffer(blobLengthToUse);
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        AccessCondition accessCondition = AccessCondition.generateIfNotModifiedSinceCondition(new Date()); 
+        
+        CloudBlockBlob blockBlob = this.container.getBlockBlobReference(blobName);
+        BlobOutputStream blobOutputStream = blockBlob.openOutputStream(accessCondition, null, null);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
+        blobOutputStream.write(inputStream, 512);
+
+        inputStream = new ByteArrayInputStream(buffer, 512, 3 * 512);
+        blobOutputStream.write(inputStream, 3 * 512);
+
+        blobOutputStream.close();
+
+        byte[] result = new byte[blobLengthToUse];
+        blockBlob.downloadToByteArray(result, 0);
+
+        int i = 0;
+        for (; i < 4 * 512; i++) {
+            assertEquals(buffer[i], result[i]);
+        }
+
+        for (; i < 8 * 512; i++) {
+            assertEquals(0, result[i]);
+        }
     }
     
     @Test

@@ -14,6 +14,7 @@
  */
 package com.microsoft.azure.storage;
 
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -37,6 +38,11 @@ public final class OperationContext {
      * enable logging for an individual operation context instance by using {@link setLoggingEnabled}.
      */
     private static boolean enableLoggingByDefault = false;
+
+    /**
+     * Represents a proxy to be used when making a request.
+     */
+    private Proxy proxy;
 
     /**
      * Represents the operation latency, in milliseconds, from the client's perspective. This may include any potential
@@ -199,6 +205,15 @@ public final class OperationContext {
         }
 
         return this.logger;
+    }
+
+    /**
+     * Gets a proxy which will be used when making a request. Default is <code>null</code>.
+     * 
+     * @return A {@link java.net.Proxy} to use when making a request.
+     */
+    public Proxy getProxy() {
+        return this.proxy;
     }
 
     /**
@@ -373,6 +388,16 @@ public final class OperationContext {
      */
     public void setLogger(final org.slf4j.Logger logger) {
         this.logger = logger;
+    }
+
+    /**
+     * Sets a proxy which will be used when making a request. Default is <code>null</code>.
+     * 
+     * @param proxy
+     *            A {@link java.net.Proxy} to use when making a request.
+     */
+    public void setProxy(Proxy proxy) {
+        this.proxy = proxy;
     }
 
     /**

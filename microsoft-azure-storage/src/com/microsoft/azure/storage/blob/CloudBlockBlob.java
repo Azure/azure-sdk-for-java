@@ -669,13 +669,7 @@ public final class CloudBlockBlob extends CloudBlob {
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient, 
                 false /* setStartTime */);
         
-        // Apply any conditional access conditions up front
-        if (accessCondition != null && 
-                (accessCondition.getIfMatch() != null || accessCondition.getIfNoneMatch() != null
-                    || accessCondition.getIfModifiedSinceDate() != null 
-                    || accessCondition.getIfUnmodifiedSinceDate() != null)) {
-            this.downloadAttributes(accessCondition, options, opContext);
-        }
+        // TODO: Apply any conditional access conditions up front
 
         return new BlobOutputStream(this, accessCondition, options, opContext);
     }

@@ -24,7 +24,7 @@ import com.microsoft.azure.storage.StorageException;
  * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Table
  * Service under the Shared Key authentication scheme.
  */
-final class TableFullCanonicalizer extends Canonicalizer {
+final class TableCanonicalizer extends Canonicalizer {
 
     /**
      * Constructs a canonicalized string for signing a request.

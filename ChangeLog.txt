@@ -1,3 +1,11 @@
+2015.09.16 Version 3.1.0
+ * Fixed a bug in table where a select on a non-existent field resulted in a null reference exception if the corresponding field in the TableEntity was not nullable.
+ * Fixed a bug in table where JsonParser was automatically closing the response stream before it was completely drained causing socket exhaustion.
+ * Fixed a bug in StorageCredentialsAccountAndKey.updateKey(String) which prevented valid keys from being set.
+ * Added CloudBlobContainer.listBlobs(final String, final boolean) method.
+ * Fixed a bug in blob where using AccessConditions on block blob uploads larger than 64MB done with the upload* methods or block blob uploads done openOutputStream with would fail if the blob did not already exist.
+ * Added support for setting a proxy per request. Proxy can be set on an OperationContext instance and will be used when that instance is passed to the request method.
+
 2015.08.04 Version 3.0.0
  * Added support for SAS to the Azure File service.
  * Added support for Append Blob.

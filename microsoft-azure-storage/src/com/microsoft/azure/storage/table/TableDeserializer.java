@@ -890,8 +890,12 @@ final class TableDeserializer {
     private static JsonParser createJsonParserFromStream(final InputStream streamRef) throws JsonParseException,
             IOException {
         JsonParser parser = jsonFactory.createParser(streamRef);
-
-        // allows handling of infinity, -infinity, and NaN for Doubles
-        return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+        
+        return parser
+                // allows handling of infinity, -infinity, and NaN for Doubles
+                .enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS)
+                // don't close the stream and allow it to be drained completely
+                // in ExecutionEngine to improve socket reuse
+                .disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
     }
 }
