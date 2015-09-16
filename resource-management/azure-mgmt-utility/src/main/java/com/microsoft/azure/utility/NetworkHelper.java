@@ -17,8 +17,10 @@ package com.microsoft.azure.utility;
 
 import com.microsoft.azure.management.network.NetworkResourceProviderClient;
 import com.microsoft.azure.management.network.models.*;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class NetworkHelper {
     public static PublicIpAddress createPublicIpAddress(
@@ -65,8 +67,21 @@ public class NetworkHelper {
         vnet.setSubnets(subNets);
 
         // send request
-        AzureAsyncOperationResponse response = networkResourceProviderClient.getVirtualNetworksOperations()
-                .createOrUpdate(context.getResourceGroupName(), vnetName, vnet);
+        // TODO brute force handle for nic RetryableError, pending a robust solution in serviceClient directly.
+        try
+        {
+            AzureAsyncOperationResponse response = networkResourceProviderClient.getVirtualNetworksOperations()
+                    .createOrUpdate(context.getResourceGroupName(), vnetName, vnet);
+        } catch (ExecutionException ee) {
+            if (ee.getMessage().contains("RetryableError")) {
+                AzureAsyncOperationResponse response2 = networkResourceProviderClient.getVirtualNetworksOperations()
+                        .createOrUpdate(context.getResourceGroupName(), vnetName, vnet);
+            } else {
+                throw ee;
+            }
+        }
+
+
 
         VirtualNetwork createdVnet = networkResourceProviderClient.getVirtualNetworksOperations()
                 .get(context.getResourceGroupName(), vnetName)
@@ -105,8 +120,19 @@ public class NetworkHelper {
         }
 
         // send request
-        AzureAsyncOperationResponse response = networkResourceProviderClient.getNetworkInterfacesOperations()
-                .createOrUpdate(context.getResourceGroupName(), nicName, nic);
+        // TODO brute force handle for nic RetryableError, pending a robust solution in serviceClient directly.
+        try
+        {
+            AzureAsyncOperationResponse response = networkResourceProviderClient.getNetworkInterfacesOperations()
+                    .createOrUpdate(context.getResourceGroupName(), nicName, nic);
+        } catch (ExecutionException ee) {
+            if (ee.getMessage().contains("RetryableError")) {
+                AzureAsyncOperationResponse response2 = networkResourceProviderClient.getNetworkInterfacesOperations()
+                        .createOrUpdate(context.getResourceGroupName(), nicName, nic);
+            } else {
+                throw ee;
+            }
+        }
 
         NetworkInterface createdNic = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(context.getResourceGroupName(), nicName)

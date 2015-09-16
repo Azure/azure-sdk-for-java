@@ -1,4 +1,7 @@
-2014.8.21 Version 0.8.0
+2015.9.15 Version 0.8.1
+* Use commons library for Base64 encoding
+
+2015.8.21 Version 0.8.0
  * Support token based credentials
  * Support Azure Resource Management
 

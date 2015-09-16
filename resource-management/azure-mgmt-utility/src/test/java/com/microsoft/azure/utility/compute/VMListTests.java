@@ -53,8 +53,6 @@ public class VMListTests extends ComputeTestBase {
      * @throws Exception
      */
     @Test
-    @Ignore
-    // This test is flawed when test subscription has too many VMs and gets multiple pages.
     public void testListVMInSubscription() throws Exception {
         log.info("creating VM, in mock: " + IS_MOCKED);
         final ResourceContext context = createTestResourceContext(false);
@@ -70,22 +68,28 @@ public class VMListTests extends ComputeTestBase {
         VirtualMachine vm2 = createVM(context2, generateName("2V"));
 
         log.info("list created VM");
-        VirtualMachineListResponse listResponse = computeManagementClient.getVirtualMachinesOperations()
-                .listAll(new ListParameters());
-        Assert.assertEquals("status code ok", HttpStatus.SC_OK, listResponse.getStatusCode());
-        Assert.assertTrue("vm count >= 2", listResponse.getVirtualMachines().size() >= 2);
-        Assert.assertNull("nextLink should be null", listResponse.getNextLink());
+        VirtualMachineListResponse listResponse = null;
 
         int vmCount = 0;
-        for (VirtualMachine vm : listResponse.getVirtualMachines()) {
-            if (vm.getName().equals(vm1.getName())) {
-                validateVM(vm1, vm);
-                vmCount++;
-            } else if (vm.getName().equals(vm2.getName())) {
-                validateVM(vm2, vm);
-                vmCount++;
+        while (listResponse == null || listResponse.getNextLink() != null) {
+            listResponse = listResponse == null ?
+                    computeManagementClient.getVirtualMachinesOperations().listAll(new ListParameters()) :
+                    computeManagementClient.getVirtualMachinesOperations().listNext(listResponse.getNextLink());
+
+            Assert.assertEquals("status code ok", HttpStatus.SC_OK, listResponse.getStatusCode());
+            Assert.assertTrue("vm count >= 0", listResponse.getVirtualMachines().size() >= 0);
+
+            for (VirtualMachine vm : listResponse.getVirtualMachines()) {
+                if (vm.getName().equals(vm1.getName())) {
+                    validateVM(vm1, vm);
+                    vmCount++;
+                } else if (vm.getName().equals(vm2.getName())) {
+                    validateVM(vm2, vm);
+                    vmCount++;
+                }
             }
         }
+
         Assert.assertTrue("VMs pass validation", 2 <= vmCount);
     }
 }

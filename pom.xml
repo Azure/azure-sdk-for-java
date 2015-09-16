@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-bom</artifactId>
-  <version>0.8.1-SNAPSHOT</version>
+  <version>0.8.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK</name>

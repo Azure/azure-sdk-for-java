@@ -460,6 +460,6 @@ public class StorageAccountExample {
         if(System.getProperty(key) != null) {
             return System.getProperty(key);
         }
-        return getPropertyElseEnvironment(key);
+        return null;
     }
 }

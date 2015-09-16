@@ -74,9 +74,6 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     protected static ResourceManagementClient resourceManagementClient;
     protected static NetworkResourceProviderClient networkResourceProviderClient;
 
-    private ImageReference windowsImageReference;
-    private ImageReference linuxImageReference;
-
     protected static Log log = LogFactory.getLog(ComputeTestBase.class);
 
     static {
@@ -274,43 +271,6 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         Assert.assertEquals(HttpStatus.SC_OK, getVMResponse.getStatusCode());
         validateVM(context.getVMInput(), getVMResponse.getVirtualMachine());
         return getVMResponse.getVirtualMachine();
-    }
-    
-    protected ImageReference getPlatformVmImage(boolean useWindowsImage) throws Exception {
-        if (useWindowsImage) {
-            if (windowsImageReference == null) {
-                log.info("Querying available Windows Server image from PIR...");
-                windowsImageReference = findVmImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter");
-            }
-
-            return windowsImageReference;
-        } else if (linuxImageReference == null) {
-            log.info("Querying available Ubuntu images from PIR...");
-            linuxImageReference = findVmImage("Canonical", "UbuntuServer", "15.04");
-            return linuxImageReference;
-        }
-
-        return linuxImageReference;
-    }
-
-    protected ImageReference findVmImage(String publisher, String offer, String sku) throws Exception {
-        VirtualMachineImageListParameters params = new VirtualMachineImageListParameters();
-        params.setLocation(m_location);
-        params.setPublisherName(publisher);
-        params.setOffer(offer);
-        params.setSkus(sku);
-        params.setFilterExpression("$top=1");
-
-        VirtualMachineImageResourceList images = computeManagementClient.getVirtualMachineImagesOperations().list(params);
-        VirtualMachineImageResource image = images.getResources().get(0);
-
-        ImageReference imageRef = new ImageReference();
-        imageRef.setPublisher(publisher);
-        imageRef.setOffer(offer);
-        imageRef.setVersion(image.getName());
-        imageRef.setSku(sku);
-
-        return imageRef;
     }
 
     protected static void validateVM(VirtualMachine vmInput, VirtualMachine vmOut) {
