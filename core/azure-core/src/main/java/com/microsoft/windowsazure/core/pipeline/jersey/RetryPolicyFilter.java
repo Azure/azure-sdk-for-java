@@ -19,10 +19,10 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
-import java.io.InputStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.io.InputStream;
 
 public class RetryPolicyFilter implements ServiceFilter {
     private static final Log LOG = LogFactory.getLog(RetryPolicyFilter.class);

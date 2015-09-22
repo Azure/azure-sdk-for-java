@@ -29,6 +29,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionCreateOrUpdateResponse;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionGetResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;

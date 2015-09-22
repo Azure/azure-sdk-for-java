@@ -15,22 +15,39 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.AdditionalUnattendContent;
+import com.microsoft.azure.management.compute.models.ComponentNames;
+import com.microsoft.azure.management.compute.models.LinuxConfiguration;
+import com.microsoft.azure.management.compute.models.OSProfile;
+import com.microsoft.azure.management.compute.models.PassNames;
+import com.microsoft.azure.management.compute.models.ProtocolTypes;
+import com.microsoft.azure.management.compute.models.SettingNames;
+import com.microsoft.azure.management.compute.models.SourceVaultReference;
+import com.microsoft.azure.management.compute.models.SshConfiguration;
+import com.microsoft.azure.management.compute.models.SshPublicKey;
+import com.microsoft.azure.management.compute.models.VaultCertificate;
+import com.microsoft.azure.management.compute.models.VaultSecretGroup;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.models.VirtualMachineGetResponse;
+import com.microsoft.azure.management.compute.models.WinRMConfiguration;
+import com.microsoft.azure.management.compute.models.WinRMListener;
+import com.microsoft.azure.management.compute.models.WindowsConfiguration;
 import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
-import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class VMOSProfileTests extends ComputeTestBase {
 

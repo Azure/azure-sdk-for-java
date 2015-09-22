@@ -14,9 +14,8 @@
  */
 package com.microsoft.windowsazure.core;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Date;
 
 /*
  * JAXB adapter for RFC 1123 date element

@@ -30,20 +30,20 @@ public enum ComputeOperationStatus {
     /**
     * Operation in progress.
     */
-    INPROGRESS,
+    InProgress,
     
     /**
     * Operation Failed.
     */
-    FAILED,
+    Failed,
     
     /**
     * Operation Succeeded.
     */
-    SUCCEEDED,
+    Succeeded,
     
     /**
     * Operation Preempted.
     */
-    PREEMPTED,
+    Preempted,
 }

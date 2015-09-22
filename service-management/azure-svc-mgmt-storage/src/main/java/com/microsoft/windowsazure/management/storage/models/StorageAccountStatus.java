@@ -30,20 +30,20 @@ public enum StorageAccountStatus {
     /**
     * The Storage Account has been created.
     */
-    CREATED,
+    Created,
     
     /**
     * The Storage Account is being created.
     */
-    CREATING,
+    Creating,
     
     /**
     * The DNS name for the storage account is being propagated.
     */
-    RESOLVINGDNS,
+    ResolvingDns,
     
     /**
     * The Storage Account is being deleted.
     */
-    DELETING,
+    Deleting,
 }

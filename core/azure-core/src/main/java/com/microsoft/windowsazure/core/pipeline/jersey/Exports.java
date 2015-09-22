@@ -15,15 +15,15 @@
 package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.Configuration;
-import static com.microsoft.windowsazure.core.utils.ExportUtils.getPropertyIfExists;
-
-import java.util.Map;
-
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Registry;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import java.util.Map;
+
+import static com.microsoft.windowsazure.core.utils.ExportUtils.getPropertyIfExists;
 
 public class Exports implements Builder.Exports {
 

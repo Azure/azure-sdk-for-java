@@ -25,10 +25,13 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.AdditionalUnattendContent;
 import com.microsoft.azure.management.compute.models.AvailabilitySetReference;
+import com.microsoft.azure.management.compute.models.BootDiagnostics;
+import com.microsoft.azure.management.compute.models.BootDiagnosticsInstanceView;
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
 import com.microsoft.azure.management.compute.models.ComputeOperationResponse;
 import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
+import com.microsoft.azure.management.compute.models.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.models.DiskInstanceView;
 import com.microsoft.azure.management.compute.models.HardwareProfile;
 import com.microsoft.azure.management.compute.models.ImageReference;
@@ -71,6 +74,19 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -87,18 +103,6 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing the virtual machines in compute management.
@@ -683,42 +687,40 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             if (parameters.getOSProfile().getSecrets() != null) {
-                if (parameters.getOSProfile().getSecrets() instanceof LazyCollection == false || ((LazyCollection) parameters.getOSProfile().getSecrets()).isInitialized()) {
-                    ArrayNode secretsArray = objectMapper.createArrayNode();
-                    for (VaultSecretGroup secretsItem : parameters.getOSProfile().getSecrets()) {
-                        ObjectNode vaultSecretGroupValue = objectMapper.createObjectNode();
-                        secretsArray.add(vaultSecretGroupValue);
+                ArrayNode secretsArray = objectMapper.createArrayNode();
+                for (VaultSecretGroup secretsItem : parameters.getOSProfile().getSecrets()) {
+                    ObjectNode vaultSecretGroupValue = objectMapper.createObjectNode();
+                    secretsArray.add(vaultSecretGroupValue);
+                    
+                    if (secretsItem.getSourceVault() != null) {
+                        ObjectNode sourceVaultValue = objectMapper.createObjectNode();
+                        ((ObjectNode) vaultSecretGroupValue).put("sourceVault", sourceVaultValue);
                         
-                        if (secretsItem.getSourceVault() != null) {
-                            ObjectNode sourceVaultValue = objectMapper.createObjectNode();
-                            ((ObjectNode) vaultSecretGroupValue).put("sourceVault", sourceVaultValue);
-                            
-                            if (secretsItem.getSourceVault().getReferenceUri() != null) {
-                                ((ObjectNode) sourceVaultValue).put("id", secretsItem.getSourceVault().getReferenceUri());
-                            }
-                        }
-                        
-                        if (secretsItem.getVaultCertificates() != null) {
-                            if (secretsItem.getVaultCertificates() instanceof LazyCollection == false || ((LazyCollection) secretsItem.getVaultCertificates()).isInitialized()) {
-                                ArrayNode vaultCertificatesArray = objectMapper.createArrayNode();
-                                for (VaultCertificate vaultCertificatesItem : secretsItem.getVaultCertificates()) {
-                                    ObjectNode vaultCertificateValue = objectMapper.createObjectNode();
-                                    vaultCertificatesArray.add(vaultCertificateValue);
-                                    
-                                    if (vaultCertificatesItem.getCertificateUrl() != null) {
-                                        ((ObjectNode) vaultCertificateValue).put("certificateUrl", vaultCertificatesItem.getCertificateUrl());
-                                    }
-                                    
-                                    if (vaultCertificatesItem.getCertificateStore() != null) {
-                                        ((ObjectNode) vaultCertificateValue).put("certificateStore", vaultCertificatesItem.getCertificateStore());
-                                    }
-                                }
-                                ((ObjectNode) vaultSecretGroupValue).put("vaultCertificates", vaultCertificatesArray);
-                            }
+                        if (secretsItem.getSourceVault().getReferenceUri() != null) {
+                            ((ObjectNode) sourceVaultValue).put("id", secretsItem.getSourceVault().getReferenceUri());
                         }
                     }
-                    ((ObjectNode) osProfileValue).put("secrets", secretsArray);
+                    
+                    if (secretsItem.getVaultCertificates() != null) {
+                        if (secretsItem.getVaultCertificates() instanceof LazyCollection == false || ((LazyCollection) secretsItem.getVaultCertificates()).isInitialized()) {
+                            ArrayNode vaultCertificatesArray = objectMapper.createArrayNode();
+                            for (VaultCertificate vaultCertificatesItem : secretsItem.getVaultCertificates()) {
+                                ObjectNode vaultCertificateValue = objectMapper.createObjectNode();
+                                vaultCertificatesArray.add(vaultCertificateValue);
+                                
+                                if (vaultCertificatesItem.getCertificateUrl() != null) {
+                                    ((ObjectNode) vaultCertificateValue).put("certificateUrl", vaultCertificatesItem.getCertificateUrl());
+                                }
+                                
+                                if (vaultCertificatesItem.getCertificateStore() != null) {
+                                    ((ObjectNode) vaultCertificateValue).put("certificateStore", vaultCertificatesItem.getCertificateStore());
+                                }
+                            }
+                            ((ObjectNode) vaultSecretGroupValue).put("vaultCertificates", vaultCertificatesArray);
+                        }
+                    }
                 }
+                ((ObjectNode) osProfileValue).put("secrets", secretsArray);
             }
         }
         
@@ -745,6 +747,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     ((ObjectNode) networkProfileValue).put("networkInterfaces", networkInterfacesArray);
+                }
+            }
+        }
+        
+        if (parameters.getDiagnosticsProfile() != null) {
+            ObjectNode diagnosticsProfileValue = objectMapper.createObjectNode();
+            ((ObjectNode) propertiesValue).put("diagnosticsProfile", diagnosticsProfileValue);
+            
+            if (parameters.getDiagnosticsProfile().getBootDiagnostics() != null) {
+                ObjectNode bootDiagnosticsValue = objectMapper.createObjectNode();
+                ((ObjectNode) diagnosticsProfileValue).put("bootDiagnostics", bootDiagnosticsValue);
+                
+                if (parameters.getDiagnosticsProfile().getBootDiagnostics().isEnabled() != null) {
+                    ((ObjectNode) bootDiagnosticsValue).put("enabled", parameters.getDiagnosticsProfile().getBootDiagnostics().isEnabled());
+                }
+                
+                if (parameters.getDiagnosticsProfile().getBootDiagnostics().getStorageUri() != null) {
+                    ((ObjectNode) bootDiagnosticsValue).put("storageUri", parameters.getDiagnosticsProfile().getBootDiagnostics().getStorageUri().toString());
                 }
             }
         }
@@ -994,6 +1014,19 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     ((ObjectNode) instanceViewValue).put("extensions", extensionsArray);
+                }
+            }
+            
+            if (parameters.getInstanceView().getBootDiagnostics() != null) {
+                ObjectNode bootDiagnosticsValue2 = objectMapper.createObjectNode();
+                ((ObjectNode) instanceViewValue).put("bootDiagnostics", bootDiagnosticsValue2);
+                
+                if (parameters.getInstanceView().getBootDiagnostics().getConsoleScreenshotBlobUri() != null) {
+                    ((ObjectNode) bootDiagnosticsValue2).put("consoleScreenshotBlobUri", parameters.getInstanceView().getBootDiagnostics().getConsoleScreenshotBlobUri().toString());
+                }
+                
+                if (parameters.getInstanceView().getBootDiagnostics().getSerialConsoleLogBlobUri() != null) {
+                    ((ObjectNode) bootDiagnosticsValue2).put("serialConsoleLogBlobUri", parameters.getInstanceView().getBootDiagnostics().getSerialConsoleLogBlobUri().toString());
                 }
             }
             
@@ -1702,6 +1735,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
+                        JsonNode diagnosticsProfileValue2 = propertiesValue4.get("diagnosticsProfile");
+                        if (diagnosticsProfileValue2 != null && diagnosticsProfileValue2 instanceof NullNode == false) {
+                            DiagnosticsProfile diagnosticsProfileInstance = new DiagnosticsProfile();
+                            virtualMachineInstance.setDiagnosticsProfile(diagnosticsProfileInstance);
+                            
+                            JsonNode bootDiagnosticsValue3 = diagnosticsProfileValue2.get("bootDiagnostics");
+                            if (bootDiagnosticsValue3 != null && bootDiagnosticsValue3 instanceof NullNode == false) {
+                                BootDiagnostics bootDiagnosticsInstance = new BootDiagnostics();
+                                diagnosticsProfileInstance.setBootDiagnostics(bootDiagnosticsInstance);
+                                
+                                JsonNode enabledValue = bootDiagnosticsValue3.get("enabled");
+                                if (enabledValue != null && enabledValue instanceof NullNode == false) {
+                                    boolean enabledInstance;
+                                    enabledInstance = enabledValue.getBooleanValue();
+                                    bootDiagnosticsInstance.setEnabled(enabledInstance);
+                                }
+                                
+                                JsonNode storageUriValue = bootDiagnosticsValue3.get("storageUri");
+                                if (storageUriValue != null && storageUriValue instanceof NullNode == false) {
+                                    URI storageUriInstance;
+                                    storageUriInstance = new URI(storageUriValue.getTextValue());
+                                    bootDiagnosticsInstance.setStorageUri(storageUriInstance);
+                                }
+                            }
+                        }
+                        
                         JsonNode availabilitySetValue2 = propertiesValue4.get("availabilitySet");
                         if (availabilitySetValue2 != null && availabilitySetValue2 instanceof NullNode == false) {
                             AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
@@ -2037,6 +2096,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             }
                                         }
                                     }
+                                }
+                            }
+                            
+                            JsonNode bootDiagnosticsValue4 = instanceViewValue3.get("bootDiagnostics");
+                            if (bootDiagnosticsValue4 != null && bootDiagnosticsValue4 instanceof NullNode == false) {
+                                BootDiagnosticsInstanceView bootDiagnosticsInstance2 = new BootDiagnosticsInstanceView();
+                                instanceViewInstance.setBootDiagnostics(bootDiagnosticsInstance2);
+                                
+                                JsonNode consoleScreenshotBlobUriValue = bootDiagnosticsValue4.get("consoleScreenshotBlobUri");
+                                if (consoleScreenshotBlobUriValue != null && consoleScreenshotBlobUriValue instanceof NullNode == false) {
+                                    URI consoleScreenshotBlobUriInstance;
+                                    consoleScreenshotBlobUriInstance = new URI(consoleScreenshotBlobUriValue.getTextValue());
+                                    bootDiagnosticsInstance2.setConsoleScreenshotBlobUri(consoleScreenshotBlobUriInstance);
+                                }
+                                
+                                JsonNode serialConsoleLogBlobUriValue = bootDiagnosticsValue4.get("serialConsoleLogBlobUri");
+                                if (serialConsoleLogBlobUriValue != null && serialConsoleLogBlobUriValue instanceof NullNode == false) {
+                                    URI serialConsoleLogBlobUriInstance;
+                                    serialConsoleLogBlobUriInstance = new URI(serialConsoleLogBlobUriValue.getTextValue());
+                                    bootDiagnosticsInstance2.setSerialConsoleLogBlobUri(serialConsoleLogBlobUriInstance);
                                 }
                             }
                             
@@ -2603,13 +2682,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.FAILED);
+                result.setStatus(OperationStatus.Failed);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             if (statusCode == HttpStatus.SC_NO_CONTENT) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -3068,7 +3147,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -3150,7 +3229,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -3230,7 +3309,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -3305,7 +3384,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             DeleteOperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(resourceGroupName, vmName).get();
-            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+            if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
             DeleteOperationResponse result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
@@ -3313,7 +3392,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -4048,6 +4127,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
+                        JsonNode diagnosticsProfileValue = propertiesValue.get("diagnosticsProfile");
+                        if (diagnosticsProfileValue != null && diagnosticsProfileValue instanceof NullNode == false) {
+                            DiagnosticsProfile diagnosticsProfileInstance = new DiagnosticsProfile();
+                            virtualMachineInstance.setDiagnosticsProfile(diagnosticsProfileInstance);
+                            
+                            JsonNode bootDiagnosticsValue = diagnosticsProfileValue.get("bootDiagnostics");
+                            if (bootDiagnosticsValue != null && bootDiagnosticsValue instanceof NullNode == false) {
+                                BootDiagnostics bootDiagnosticsInstance = new BootDiagnostics();
+                                diagnosticsProfileInstance.setBootDiagnostics(bootDiagnosticsInstance);
+                                
+                                JsonNode enabledValue = bootDiagnosticsValue.get("enabled");
+                                if (enabledValue != null && enabledValue instanceof NullNode == false) {
+                                    boolean enabledInstance;
+                                    enabledInstance = enabledValue.getBooleanValue();
+                                    bootDiagnosticsInstance.setEnabled(enabledInstance);
+                                }
+                                
+                                JsonNode storageUriValue = bootDiagnosticsValue.get("storageUri");
+                                if (storageUriValue != null && storageUriValue instanceof NullNode == false) {
+                                    URI storageUriInstance;
+                                    storageUriInstance = new URI(storageUriValue.getTextValue());
+                                    bootDiagnosticsInstance.setStorageUri(storageUriInstance);
+                                }
+                            }
+                        }
+                        
                         JsonNode availabilitySetValue = propertiesValue.get("availabilitySet");
                         if (availabilitySetValue != null && availabilitySetValue instanceof NullNode == false) {
                             AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
@@ -4386,6 +4491,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
+                            JsonNode bootDiagnosticsValue2 = instanceViewValue.get("bootDiagnostics");
+                            if (bootDiagnosticsValue2 != null && bootDiagnosticsValue2 instanceof NullNode == false) {
+                                BootDiagnosticsInstanceView bootDiagnosticsInstance2 = new BootDiagnosticsInstanceView();
+                                instanceViewInstance.setBootDiagnostics(bootDiagnosticsInstance2);
+                                
+                                JsonNode consoleScreenshotBlobUriValue = bootDiagnosticsValue2.get("consoleScreenshotBlobUri");
+                                if (consoleScreenshotBlobUriValue != null && consoleScreenshotBlobUriValue instanceof NullNode == false) {
+                                    URI consoleScreenshotBlobUriInstance;
+                                    consoleScreenshotBlobUriInstance = new URI(consoleScreenshotBlobUriValue.getTextValue());
+                                    bootDiagnosticsInstance2.setConsoleScreenshotBlobUri(consoleScreenshotBlobUriInstance);
+                                }
+                                
+                                JsonNode serialConsoleLogBlobUriValue = bootDiagnosticsValue2.get("serialConsoleLogBlobUri");
+                                if (serialConsoleLogBlobUriValue != null && serialConsoleLogBlobUriValue instanceof NullNode == false) {
+                                    URI serialConsoleLogBlobUriInstance;
+                                    serialConsoleLogBlobUriInstance = new URI(serialConsoleLogBlobUriValue.getTextValue());
+                                    bootDiagnosticsInstance2.setSerialConsoleLogBlobUri(serialConsoleLogBlobUriInstance);
+                                }
+                            }
+                            
                             JsonNode statusesArray4 = instanceViewValue.get("statuses");
                             if (statusesArray4 != null && statusesArray4 instanceof NullNode == false) {
                                 for (JsonNode statusesValue4 : ((ArrayNode) statusesArray4)) {
@@ -4471,14 +4596,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 JsonNode settingsValue = propertiesValue3.get("settings");
                                 if (settingsValue != null && settingsValue instanceof NullNode == false) {
                                     String settingsInstance;
-                                    settingsInstance = settingsValue.toString();
+                                    settingsInstance = settingsValue.getTextValue();
                                     virtualMachineExtensionJsonInstance.setSettings(settingsInstance);
                                 }
                                 
                                 JsonNode protectedSettingsValue = propertiesValue3.get("protectedSettings");
                                 if (protectedSettingsValue != null && protectedSettingsValue instanceof NullNode == false) {
                                     String protectedSettingsInstance;
-                                    protectedSettingsInstance = protectedSettingsValue.toString();
+                                    protectedSettingsInstance = protectedSettingsValue.getTextValue();
                                     virtualMachineExtensionJsonInstance.setProtectedSettings(protectedSettingsInstance);
                                 }
                                 
@@ -5288,6 +5413,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
+                        JsonNode diagnosticsProfileValue = propertiesValue.get("diagnosticsProfile");
+                        if (diagnosticsProfileValue != null && diagnosticsProfileValue instanceof NullNode == false) {
+                            DiagnosticsProfile diagnosticsProfileInstance = new DiagnosticsProfile();
+                            virtualMachineInstance.setDiagnosticsProfile(diagnosticsProfileInstance);
+                            
+                            JsonNode bootDiagnosticsValue = diagnosticsProfileValue.get("bootDiagnostics");
+                            if (bootDiagnosticsValue != null && bootDiagnosticsValue instanceof NullNode == false) {
+                                BootDiagnostics bootDiagnosticsInstance = new BootDiagnostics();
+                                diagnosticsProfileInstance.setBootDiagnostics(bootDiagnosticsInstance);
+                                
+                                JsonNode enabledValue = bootDiagnosticsValue.get("enabled");
+                                if (enabledValue != null && enabledValue instanceof NullNode == false) {
+                                    boolean enabledInstance;
+                                    enabledInstance = enabledValue.getBooleanValue();
+                                    bootDiagnosticsInstance.setEnabled(enabledInstance);
+                                }
+                                
+                                JsonNode storageUriValue = bootDiagnosticsValue.get("storageUri");
+                                if (storageUriValue != null && storageUriValue instanceof NullNode == false) {
+                                    URI storageUriInstance;
+                                    storageUriInstance = new URI(storageUriValue.getTextValue());
+                                    bootDiagnosticsInstance.setStorageUri(storageUriInstance);
+                                }
+                            }
+                        }
+                        
                         JsonNode availabilitySetValue = propertiesValue.get("availabilitySet");
                         if (availabilitySetValue != null && availabilitySetValue instanceof NullNode == false) {
                             AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
@@ -5623,6 +5774,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             }
                                         }
                                     }
+                                }
+                            }
+                            
+                            JsonNode bootDiagnosticsValue2 = instanceViewValue.get("bootDiagnostics");
+                            if (bootDiagnosticsValue2 != null && bootDiagnosticsValue2 instanceof NullNode == false) {
+                                BootDiagnosticsInstanceView bootDiagnosticsInstance2 = new BootDiagnosticsInstanceView();
+                                instanceViewInstance.setBootDiagnostics(bootDiagnosticsInstance2);
+                                
+                                JsonNode consoleScreenshotBlobUriValue = bootDiagnosticsValue2.get("consoleScreenshotBlobUri");
+                                if (consoleScreenshotBlobUriValue != null && consoleScreenshotBlobUriValue instanceof NullNode == false) {
+                                    URI consoleScreenshotBlobUriInstance;
+                                    consoleScreenshotBlobUriInstance = new URI(consoleScreenshotBlobUriValue.getTextValue());
+                                    bootDiagnosticsInstance2.setConsoleScreenshotBlobUri(consoleScreenshotBlobUriInstance);
+                                }
+                                
+                                JsonNode serialConsoleLogBlobUriValue = bootDiagnosticsValue2.get("serialConsoleLogBlobUri");
+                                if (serialConsoleLogBlobUriValue != null && serialConsoleLogBlobUriValue instanceof NullNode == false) {
+                                    URI serialConsoleLogBlobUriInstance;
+                                    serialConsoleLogBlobUriInstance = new URI(serialConsoleLogBlobUriValue.getTextValue());
+                                    bootDiagnosticsInstance2.setSerialConsoleLogBlobUri(serialConsoleLogBlobUriInstance);
                                 }
                             }
                             
@@ -6523,6 +6694,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     }
                                 }
                                 
+                                JsonNode diagnosticsProfileValue = propertiesValue.get("diagnosticsProfile");
+                                if (diagnosticsProfileValue != null && diagnosticsProfileValue instanceof NullNode == false) {
+                                    DiagnosticsProfile diagnosticsProfileInstance = new DiagnosticsProfile();
+                                    virtualMachineJsonInstance.setDiagnosticsProfile(diagnosticsProfileInstance);
+                                    
+                                    JsonNode bootDiagnosticsValue = diagnosticsProfileValue.get("bootDiagnostics");
+                                    if (bootDiagnosticsValue != null && bootDiagnosticsValue instanceof NullNode == false) {
+                                        BootDiagnostics bootDiagnosticsInstance = new BootDiagnostics();
+                                        diagnosticsProfileInstance.setBootDiagnostics(bootDiagnosticsInstance);
+                                        
+                                        JsonNode enabledValue = bootDiagnosticsValue.get("enabled");
+                                        if (enabledValue != null && enabledValue instanceof NullNode == false) {
+                                            boolean enabledInstance;
+                                            enabledInstance = enabledValue.getBooleanValue();
+                                            bootDiagnosticsInstance.setEnabled(enabledInstance);
+                                        }
+                                        
+                                        JsonNode storageUriValue = bootDiagnosticsValue.get("storageUri");
+                                        if (storageUriValue != null && storageUriValue instanceof NullNode == false) {
+                                            URI storageUriInstance;
+                                            storageUriInstance = new URI(storageUriValue.getTextValue());
+                                            bootDiagnosticsInstance.setStorageUri(storageUriInstance);
+                                        }
+                                    }
+                                }
+                                
                                 JsonNode availabilitySetValue = propertiesValue.get("availabilitySet");
                                 if (availabilitySetValue != null && availabilitySetValue instanceof NullNode == false) {
                                     AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
@@ -6861,6 +7058,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
+                                    JsonNode bootDiagnosticsValue2 = instanceViewValue.get("bootDiagnostics");
+                                    if (bootDiagnosticsValue2 != null && bootDiagnosticsValue2 instanceof NullNode == false) {
+                                        BootDiagnosticsInstanceView bootDiagnosticsInstance2 = new BootDiagnosticsInstanceView();
+                                        instanceViewInstance.setBootDiagnostics(bootDiagnosticsInstance2);
+                                        
+                                        JsonNode consoleScreenshotBlobUriValue = bootDiagnosticsValue2.get("consoleScreenshotBlobUri");
+                                        if (consoleScreenshotBlobUriValue != null && consoleScreenshotBlobUriValue instanceof NullNode == false) {
+                                            URI consoleScreenshotBlobUriInstance;
+                                            consoleScreenshotBlobUriInstance = new URI(consoleScreenshotBlobUriValue.getTextValue());
+                                            bootDiagnosticsInstance2.setConsoleScreenshotBlobUri(consoleScreenshotBlobUriInstance);
+                                        }
+                                        
+                                        JsonNode serialConsoleLogBlobUriValue = bootDiagnosticsValue2.get("serialConsoleLogBlobUri");
+                                        if (serialConsoleLogBlobUriValue != null && serialConsoleLogBlobUriValue instanceof NullNode == false) {
+                                            URI serialConsoleLogBlobUriInstance;
+                                            serialConsoleLogBlobUriInstance = new URI(serialConsoleLogBlobUriValue.getTextValue());
+                                            bootDiagnosticsInstance2.setSerialConsoleLogBlobUri(serialConsoleLogBlobUriInstance);
+                                        }
+                                    }
+                                    
                                     JsonNode statusesArray4 = instanceViewValue.get("statuses");
                                     if (statusesArray4 != null && statusesArray4 instanceof NullNode == false) {
                                         for (JsonNode statusesValue4 : ((ArrayNode) statusesArray4)) {
@@ -7160,11 +7377,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -7766,6 +7983,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     }
                                 }
                                 
+                                JsonNode diagnosticsProfileValue = propertiesValue.get("diagnosticsProfile");
+                                if (diagnosticsProfileValue != null && diagnosticsProfileValue instanceof NullNode == false) {
+                                    DiagnosticsProfile diagnosticsProfileInstance = new DiagnosticsProfile();
+                                    virtualMachineJsonInstance.setDiagnosticsProfile(diagnosticsProfileInstance);
+                                    
+                                    JsonNode bootDiagnosticsValue = diagnosticsProfileValue.get("bootDiagnostics");
+                                    if (bootDiagnosticsValue != null && bootDiagnosticsValue instanceof NullNode == false) {
+                                        BootDiagnostics bootDiagnosticsInstance = new BootDiagnostics();
+                                        diagnosticsProfileInstance.setBootDiagnostics(bootDiagnosticsInstance);
+                                        
+                                        JsonNode enabledValue = bootDiagnosticsValue.get("enabled");
+                                        if (enabledValue != null && enabledValue instanceof NullNode == false) {
+                                            boolean enabledInstance;
+                                            enabledInstance = enabledValue.getBooleanValue();
+                                            bootDiagnosticsInstance.setEnabled(enabledInstance);
+                                        }
+                                        
+                                        JsonNode storageUriValue = bootDiagnosticsValue.get("storageUri");
+                                        if (storageUriValue != null && storageUriValue instanceof NullNode == false) {
+                                            URI storageUriInstance;
+                                            storageUriInstance = new URI(storageUriValue.getTextValue());
+                                            bootDiagnosticsInstance.setStorageUri(storageUriInstance);
+                                        }
+                                    }
+                                }
+                                
                                 JsonNode availabilitySetValue = propertiesValue.get("availabilitySet");
                                 if (availabilitySetValue != null && availabilitySetValue instanceof NullNode == false) {
                                     AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
@@ -8104,6 +8347,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
+                                    JsonNode bootDiagnosticsValue2 = instanceViewValue.get("bootDiagnostics");
+                                    if (bootDiagnosticsValue2 != null && bootDiagnosticsValue2 instanceof NullNode == false) {
+                                        BootDiagnosticsInstanceView bootDiagnosticsInstance2 = new BootDiagnosticsInstanceView();
+                                        instanceViewInstance.setBootDiagnostics(bootDiagnosticsInstance2);
+                                        
+                                        JsonNode consoleScreenshotBlobUriValue = bootDiagnosticsValue2.get("consoleScreenshotBlobUri");
+                                        if (consoleScreenshotBlobUriValue != null && consoleScreenshotBlobUriValue instanceof NullNode == false) {
+                                            URI consoleScreenshotBlobUriInstance;
+                                            consoleScreenshotBlobUriInstance = new URI(consoleScreenshotBlobUriValue.getTextValue());
+                                            bootDiagnosticsInstance2.setConsoleScreenshotBlobUri(consoleScreenshotBlobUriInstance);
+                                        }
+                                        
+                                        JsonNode serialConsoleLogBlobUriValue = bootDiagnosticsValue2.get("serialConsoleLogBlobUri");
+                                        if (serialConsoleLogBlobUriValue != null && serialConsoleLogBlobUriValue instanceof NullNode == false) {
+                                            URI serialConsoleLogBlobUriInstance;
+                                            serialConsoleLogBlobUriInstance = new URI(serialConsoleLogBlobUriValue.getTextValue());
+                                            bootDiagnosticsInstance2.setSerialConsoleLogBlobUri(serialConsoleLogBlobUriInstance);
+                                        }
+                                    }
+                                    
                                     JsonNode statusesArray4 = instanceViewValue.get("statuses");
                                     if (statusesArray4 != null && statusesArray4 instanceof NullNode == false) {
                                         for (JsonNode statusesValue4 : ((ArrayNode) statusesArray4)) {
@@ -8403,11 +8666,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -9179,6 +9442,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     }
                                 }
                                 
+                                JsonNode diagnosticsProfileValue = propertiesValue.get("diagnosticsProfile");
+                                if (diagnosticsProfileValue != null && diagnosticsProfileValue instanceof NullNode == false) {
+                                    DiagnosticsProfile diagnosticsProfileInstance = new DiagnosticsProfile();
+                                    virtualMachineJsonInstance.setDiagnosticsProfile(diagnosticsProfileInstance);
+                                    
+                                    JsonNode bootDiagnosticsValue = diagnosticsProfileValue.get("bootDiagnostics");
+                                    if (bootDiagnosticsValue != null && bootDiagnosticsValue instanceof NullNode == false) {
+                                        BootDiagnostics bootDiagnosticsInstance = new BootDiagnostics();
+                                        diagnosticsProfileInstance.setBootDiagnostics(bootDiagnosticsInstance);
+                                        
+                                        JsonNode enabledValue = bootDiagnosticsValue.get("enabled");
+                                        if (enabledValue != null && enabledValue instanceof NullNode == false) {
+                                            boolean enabledInstance;
+                                            enabledInstance = enabledValue.getBooleanValue();
+                                            bootDiagnosticsInstance.setEnabled(enabledInstance);
+                                        }
+                                        
+                                        JsonNode storageUriValue = bootDiagnosticsValue.get("storageUri");
+                                        if (storageUriValue != null && storageUriValue instanceof NullNode == false) {
+                                            URI storageUriInstance;
+                                            storageUriInstance = new URI(storageUriValue.getTextValue());
+                                            bootDiagnosticsInstance.setStorageUri(storageUriInstance);
+                                        }
+                                    }
+                                }
+                                
                                 JsonNode availabilitySetValue = propertiesValue.get("availabilitySet");
                                 if (availabilitySetValue != null && availabilitySetValue instanceof NullNode == false) {
                                     AvailabilitySetReference availabilitySetInstance = new AvailabilitySetReference();
@@ -9517,6 +9806,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                     }
                                     
+                                    JsonNode bootDiagnosticsValue2 = instanceViewValue.get("bootDiagnostics");
+                                    if (bootDiagnosticsValue2 != null && bootDiagnosticsValue2 instanceof NullNode == false) {
+                                        BootDiagnosticsInstanceView bootDiagnosticsInstance2 = new BootDiagnosticsInstanceView();
+                                        instanceViewInstance.setBootDiagnostics(bootDiagnosticsInstance2);
+                                        
+                                        JsonNode consoleScreenshotBlobUriValue = bootDiagnosticsValue2.get("consoleScreenshotBlobUri");
+                                        if (consoleScreenshotBlobUriValue != null && consoleScreenshotBlobUriValue instanceof NullNode == false) {
+                                            URI consoleScreenshotBlobUriInstance;
+                                            consoleScreenshotBlobUriInstance = new URI(consoleScreenshotBlobUriValue.getTextValue());
+                                            bootDiagnosticsInstance2.setConsoleScreenshotBlobUri(consoleScreenshotBlobUriInstance);
+                                        }
+                                        
+                                        JsonNode serialConsoleLogBlobUriValue = bootDiagnosticsValue2.get("serialConsoleLogBlobUri");
+                                        if (serialConsoleLogBlobUriValue != null && serialConsoleLogBlobUriValue instanceof NullNode == false) {
+                                            URI serialConsoleLogBlobUriInstance;
+                                            serialConsoleLogBlobUriInstance = new URI(serialConsoleLogBlobUriValue.getTextValue());
+                                            bootDiagnosticsInstance2.setSerialConsoleLogBlobUri(serialConsoleLogBlobUriInstance);
+                                        }
+                                    }
+                                    
                                     JsonNode statusesArray4 = instanceViewValue.get("statuses");
                                     if (statusesArray4 != null && statusesArray4 instanceof NullNode == false) {
                                         for (JsonNode statusesValue4 : ((ArrayNode) statusesArray4)) {
@@ -9816,11 +10125,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -9898,7 +10207,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -9976,7 +10285,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -10054,7 +10363,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;

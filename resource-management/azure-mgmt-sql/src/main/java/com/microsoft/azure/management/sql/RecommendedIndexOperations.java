@@ -27,6 +27,7 @@ import com.microsoft.azure.management.sql.models.RecommendedIndexGetResponse;
 import com.microsoft.azure.management.sql.models.RecommendedIndexUpdateParameters;
 import com.microsoft.azure.management.sql.models.RecommendedIndexUpdateResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.util.concurrent.Future;
 

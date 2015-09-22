@@ -28,6 +28,7 @@ import com.microsoft.azure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.azure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -92,10 +93,18 @@ public interface FirewallRuleOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String serverName, String firewallRule) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * Deletes an Azure SQL Database Server Firewall rule.

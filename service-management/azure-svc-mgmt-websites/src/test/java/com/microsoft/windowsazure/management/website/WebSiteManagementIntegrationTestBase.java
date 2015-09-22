@@ -14,18 +14,12 @@
  */
 package com.microsoft.windowsazure.management.website;
 
-import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -33,6 +27,11 @@ import com.microsoft.windowsazure.management.websites.WebSiteManagementClient;
 import com.microsoft.windowsazure.management.websites.WebSiteManagementService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+
+import java.net.URI;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 public abstract class WebSiteManagementIntegrationTestBase extends MockIntegrationTestBase {
     protected static String testWebsitePrefix = "azuresdktestwebsite";

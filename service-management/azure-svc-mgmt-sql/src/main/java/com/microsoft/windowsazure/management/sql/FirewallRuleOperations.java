@@ -31,11 +31,12 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
-import java.io.IOException;
-import java.util.concurrent.Future;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.util.concurrent.Future;
 
 /**
 * The Azure SQL Database Management API includes operations for managing the

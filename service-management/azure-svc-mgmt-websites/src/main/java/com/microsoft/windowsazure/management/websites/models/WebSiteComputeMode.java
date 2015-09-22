@@ -27,7 +27,7 @@ package com.microsoft.windowsazure.management.websites.models;
 * The compute mode for a web site.
 */
 public enum WebSiteComputeMode {
-    SHARED,
+    Shared,
     
-    DEDICATED,
+    Dedicated,
 }

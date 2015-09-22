@@ -28,15 +28,15 @@ package com.microsoft.windowsazure.scheduler.models;
 * year.
 */
 public enum JobRecurrenceFrequency {
-    MINUTE,
+    Minute,
     
-    HOUR,
+    Hour,
     
-    DAY,
+    Day,
     
-    WEEK,
+    Week,
     
-    MONTH,
+    Month,
     
-    YEAR,
+    Year,
 }

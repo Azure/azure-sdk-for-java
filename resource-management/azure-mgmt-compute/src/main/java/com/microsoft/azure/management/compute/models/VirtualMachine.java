@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
+
 import java.util.ArrayList;
 
 /**
@@ -48,6 +49,24 @@ public class VirtualMachine extends ResourceBaseExtended {
     */
     public void setAvailabilitySetReference(final AvailabilitySetReference availabilitySetReferenceValue) {
         this.availabilitySetReference = availabilitySetReferenceValue;
+    }
+    
+    private DiagnosticsProfile diagnosticsProfile;
+    
+    /**
+    * Optional. Gets or sets the diagnostics profile.
+    * @return The DiagnosticsProfile value.
+    */
+    public DiagnosticsProfile getDiagnosticsProfile() {
+        return this.diagnosticsProfile;
+    }
+    
+    /**
+    * Optional. Gets or sets the diagnostics profile.
+    * @param diagnosticsProfileValue The DiagnosticsProfile value.
+    */
+    public void setDiagnosticsProfile(final DiagnosticsProfile diagnosticsProfileValue) {
+        this.diagnosticsProfile = diagnosticsProfileValue;
     }
     
     private ArrayList<VirtualMachineExtension> extensions;

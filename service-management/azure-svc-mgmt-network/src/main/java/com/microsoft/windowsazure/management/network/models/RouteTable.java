@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 public class RouteTable {

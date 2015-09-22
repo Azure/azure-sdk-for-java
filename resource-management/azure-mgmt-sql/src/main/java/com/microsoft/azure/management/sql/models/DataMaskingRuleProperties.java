@@ -27,26 +27,6 @@ package com.microsoft.azure.management.sql.models;
 * Represents the properties of an Azure SQL Database data masking rule.
 */
 public class DataMaskingRuleProperties {
-    private String aliasName;
-    
-    /**
-    * Optional. Gets or sets the alias name on which the data masking rule is
-    * applied.
-    * @return The AliasName value.
-    */
-    public String getAliasName() {
-        return this.aliasName;
-    }
-    
-    /**
-    * Optional. Gets or sets the alias name on which the data masking rule is
-    * applied.
-    * @param aliasNameValue The AliasName value.
-    */
-    public void setAliasName(final String aliasNameValue) {
-        this.aliasName = aliasNameValue;
-    }
-    
     private String columnName;
     
     /**
@@ -179,6 +159,26 @@ public class DataMaskingRuleProperties {
     */
     public void setReplacementString(final String replacementStringValue) {
         this.replacementString = replacementStringValue;
+    }
+    
+    private String schemaName;
+    
+    /**
+    * Optional. Gets or sets the schema name on which the data masking rule is
+    * applied.
+    * @return The SchemaName value.
+    */
+    public String getSchemaName() {
+        return this.schemaName;
+    }
+    
+    /**
+    * Optional. Gets or sets the schema name on which the data masking rule is
+    * applied.
+    * @param schemaNameValue The SchemaName value.
+    */
+    public void setSchemaName(final String schemaNameValue) {
+        this.schemaName = schemaNameValue;
     }
     
     private String suffixSize;

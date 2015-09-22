@@ -14,15 +14,13 @@
  */
 package com.microsoft.windowsazure.core.pipeline;
 
-import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class PipelineHelpersTest {
     @Test

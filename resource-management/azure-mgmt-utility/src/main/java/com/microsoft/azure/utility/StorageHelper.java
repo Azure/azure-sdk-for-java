@@ -16,22 +16,22 @@
 package com.microsoft.azure.utility;
 
 import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.models.*;
-import com.microsoft.windowsazure.core.OperationStatus;
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.management.storage.models.KeyName;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.windowsazure.Configuration;
+import com.microsoft.azure.management.storage.models.StorageAccountListResponse;
+import com.microsoft.azure.management.storage.models.StorageAccountRegenerateKeyResponse;
+import com.microsoft.azure.management.storage.models.StorageAccountUpdateParameters;
+import com.microsoft.azure.management.storage.models.StorageAccountUpdateResponse;
+import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import java.util.List;
-import java.util.HashMap;
 
 public class StorageHelper {
     /**
@@ -48,7 +48,7 @@ public class StorageHelper {
             StorageManagementClient storageManagementClient, ResourceContext context)
             throws Exception {
         //create storage account
-        StorageAccountCreateParameters stoInput = new StorageAccountCreateParameters(AccountType.STANDARDGRS,
+        StorageAccountCreateParameters stoInput = new StorageAccountCreateParameters(AccountType.StandardLRS,
                 context.getLocation());
         return createStorageAccount(storageManagementClient, context, stoInput);
     }

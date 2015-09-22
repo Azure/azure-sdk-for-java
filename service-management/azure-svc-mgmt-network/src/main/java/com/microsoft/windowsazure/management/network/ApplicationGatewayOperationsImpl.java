@@ -54,24 +54,6 @@ import com.microsoft.windowsazure.management.network.models.Protocol;
 import com.microsoft.windowsazure.management.network.models.UpdateApplicationGatewayParameters;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -81,6 +63,25 @@ import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
 * The Application Gateway Management API includes operations for managing
@@ -193,7 +194,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -206,7 +207,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1771,7 +1772,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -1784,7 +1785,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1894,7 +1895,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -1907,7 +1908,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2013,7 +2014,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2026,7 +2027,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2136,7 +2137,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -2149,7 +2150,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -2758,7 +2759,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element protocolElement = XmlUtility.getElementByTagNameNS(backendHttpSettingsListElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                             if (protocolElement != null && protocolElement.getTextContent() != null && !protocolElement.getTextContent().isEmpty()) {
                                 Protocol protocolInstance;
-                                protocolInstance = Protocol.valueOf(protocolElement.getTextContent().toUpperCase());
+                                protocolInstance = Protocol.valueOf(protocolElement.getTextContent());
                                 backendHttpSettingsInstance.setProtocol(protocolInstance);
                             }
                             
@@ -2802,7 +2803,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             Element protocolElement2 = XmlUtility.getElementByTagNameNS(httpListenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                             if (protocolElement2 != null && protocolElement2.getTextContent() != null && !protocolElement2.getTextContent().isEmpty()) {
                                 Protocol protocolInstance2;
-                                protocolInstance2 = Protocol.valueOf(protocolElement2.getTextContent().toUpperCase());
+                                protocolInstance2 = Protocol.valueOf(protocolElement2.getTextContent());
                                 httpListenerInstance.setProtocol(protocolInstance2);
                             }
                             
@@ -3021,14 +3022,14 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                     Element statusElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         AsyncOperationStatus statusInstance;
-                        statusInstance = AsyncOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = AsyncOperationStatus.valueOf(statusElement.getTextContent());
                         result.setStatus(statusInstance);
                     }
                     
                     Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(gatewayOperationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                     if (httpStatusCodeElement != null && httpStatusCodeElement.getTextContent() != null && !httpStatusCodeElement.getTextContent().isEmpty()) {
                         Integer httpStatusCodeInstance;
-                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent().toUpperCase());
+                        httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                         result.setHttpStatusCode(httpStatusCodeInstance);
                     }
                     
@@ -3516,7 +3517,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3529,7 +3530,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -3639,7 +3640,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != AsyncOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(AsyncOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getApplicationGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -3652,7 +3653,7 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != AsyncOperationStatus.SUCCESSFUL) {
+            if (result.getStatus() != AsyncOperationStatus.Successful) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

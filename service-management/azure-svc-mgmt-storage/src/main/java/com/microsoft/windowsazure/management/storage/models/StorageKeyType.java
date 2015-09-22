@@ -27,7 +27,7 @@ package com.microsoft.windowsazure.management.storage.models;
 * Describes the type of a storage key.
 */
 public enum StorageKeyType {
-    PRIMARY,
+    Primary,
     
-    SECONDARY,
+    Secondary,
 }

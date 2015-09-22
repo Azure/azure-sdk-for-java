@@ -15,22 +15,32 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.*;
-
+import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
+import com.microsoft.windowsazure.management.compute.models.ConfigurationSetTypes;
+import com.microsoft.windowsazure.management.compute.models.DeploymentGetResponse;
+import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceGetDetailedResponse;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceGetResponse;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse;
+import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
+import com.microsoft.windowsazure.management.compute.models.InputEndpointTransportProtocol;
+import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
+import com.microsoft.windowsazure.management.compute.models.PostShutdownAction;
+import com.microsoft.windowsazure.management.compute.models.Role;
+import com.microsoft.windowsazure.management.compute.models.VirtualHardDiskHostCaching;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateDeploymentParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineGetResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleType;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineShutdownParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateParameters;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -38,6 +48,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
 
@@ -263,7 +282,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required        
         role.setRoleName(roleName);
         //required
-        role.setRoleType(VirtualMachineRoleType.PERSISTENTVMROLE.toString());
+        role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
         role.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         role.setProvisionGuestAgent(true);
         role.setConfigurationSets(configurationSetList);
@@ -278,7 +297,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         ArrayList<Role> rolelist = createRoleList(); 
         
         VirtualMachineCreateDeploymentParameters deploymentParameters = new VirtualMachineCreateDeploymentParameters();
-        deploymentParameters.setDeploymentSlot(DeploymentSlot.STAGING);
+        deploymentParameters.setDeploymentSlot(DeploymentSlot.Staging);
         deploymentParameters.setName(deploymentName); 
         deploymentParameters.setLabel(deploymentLabel);        
         deploymentParameters.setRoles(rolelist);
@@ -315,7 +334,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                     Assert.assertNotNull(rolelist);
 
                     for (Role role : rolelist) {
-                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENTVMROLE.toString()))) {
+                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString()))) {
                              Assert.assertTrue(role.getRoleName().contains(testVMPrefix));
                              vmlist.add(role);
                         }
@@ -334,7 +353,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
         //vm always has VirtualMachineRoleType.PersistentVMRole property
-        Assert.assertEquals(VirtualMachineRoleType.PERSISTENTVMROLE, virtualMachinesGetResponse.getRoleType());
+        Assert.assertEquals(VirtualMachineRoleType.PersistentVMRole, virtualMachinesGetResponse.getRoleType());
 
         OSVirtualHardDisk osharddisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
         Assert.assertTrue(osharddisk.getOperatingSystem().contains("Window"));
@@ -355,7 +374,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String vmName = virtualMachinesGetResponse.getRoleName();
 
         VirtualMachineShutdownParameters stopParameters = new VirtualMachineShutdownParameters();
-        stopParameters.setPostShutdownAction(PostShutdownAction.STOPPED);
+        stopParameters.setPostShutdownAction(PostShutdownAction.Stopped);
         OperationStatusResponse shutdownresponse = computeManagementClient.getVirtualMachinesOperations().shutdown(hostedServiceName, deploymentName, vmName, stopParameters);
         Assert.assertEquals(200, shutdownresponse.getStatusCode());
         Assert.assertNotNull(shutdownresponse.getRequestId());
@@ -540,7 +559,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
                 e.printStackTrace();
             }
             
-            if ((operationStatus.getStatus() == OperationStatus.FAILED) || (operationStatus.getStatus() == OperationStatus.SUCCEEDED))
+            if ((operationStatus.getStatus() == OperationStatus.Failed) || (operationStatus.getStatus() == OperationStatus.Succeeded))
             {
                 operationCompleted = true;
             }else{

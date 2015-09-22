@@ -23,49 +23,10 @@
 
 package com.microsoft.azure.management.compute.models;
 
-import com.microsoft.windowsazure.core.LazyArrayList;
-import java.util.ArrayList;
-
 /**
 * Describes an OS profile.
 */
-public class OSProfile {
-    private String adminPassword;
-    
-    /**
-    * Optional. Gets or sets the admin user password.
-    * @return The AdminPassword value.
-    */
-    public String getAdminPassword() {
-        return this.adminPassword;
-    }
-    
-    /**
-    * Optional. Gets or sets the admin user password.
-    * @param adminPasswordValue The AdminPassword value.
-    */
-    public void setAdminPassword(final String adminPasswordValue) {
-        this.adminPassword = adminPasswordValue;
-    }
-    
-    private String adminUsername;
-    
-    /**
-    * Optional. Gets or sets the admin user name.
-    * @return The AdminUsername value.
-    */
-    public String getAdminUsername() {
-        return this.adminUsername;
-    }
-    
-    /**
-    * Optional. Gets or sets the admin user name.
-    * @param adminUsernameValue The AdminUsername value.
-    */
-    public void setAdminUsername(final String adminUsernameValue) {
-        this.adminUsername = adminUsernameValue;
-    }
-    
+public class OSProfile extends OSProfileBase {
     private String computerName;
     
     /**
@@ -84,83 +45,11 @@ public class OSProfile {
         this.computerName = computerNameValue;
     }
     
-    private String customData;
-    
-    /**
-    * Optional. Gets or sets a base-64 encoded string of custom data.
-    * @return The CustomData value.
-    */
-    public String getCustomData() {
-        return this.customData;
-    }
-    
-    /**
-    * Optional. Gets or sets a base-64 encoded string of custom data.
-    * @param customDataValue The CustomData value.
-    */
-    public void setCustomData(final String customDataValue) {
-        this.customData = customDataValue;
-    }
-    
-    private LinuxConfiguration linuxConfiguration;
-    
-    /**
-    * Optional. Gets or sets the Linux Configuration of the OS profile.
-    * @return The LinuxConfiguration value.
-    */
-    public LinuxConfiguration getLinuxConfiguration() {
-        return this.linuxConfiguration;
-    }
-    
-    /**
-    * Optional. Gets or sets the Linux Configuration of the OS profile.
-    * @param linuxConfigurationValue The LinuxConfiguration value.
-    */
-    public void setLinuxConfiguration(final LinuxConfiguration linuxConfigurationValue) {
-        this.linuxConfiguration = linuxConfigurationValue;
-    }
-    
-    private ArrayList<VaultSecretGroup> secrets;
-    
-    /**
-    * Optional. Gets or sets the List of certificates for addition to the VM.
-    * @return The Secrets value.
-    */
-    public ArrayList<VaultSecretGroup> getSecrets() {
-        return this.secrets;
-    }
-    
-    /**
-    * Optional. Gets or sets the List of certificates for addition to the VM.
-    * @param secretsValue The Secrets value.
-    */
-    public void setSecrets(final ArrayList<VaultSecretGroup> secretsValue) {
-        this.secrets = secretsValue;
-    }
-    
-    private WindowsConfiguration windowsConfiguration;
-    
-    /**
-    * Optional. Gets or sets the Windows Configuration of the OS profile.
-    * @return The WindowsConfiguration value.
-    */
-    public WindowsConfiguration getWindowsConfiguration() {
-        return this.windowsConfiguration;
-    }
-    
-    /**
-    * Optional. Gets or sets the Windows Configuration of the OS profile.
-    * @param windowsConfigurationValue The WindowsConfiguration value.
-    */
-    public void setWindowsConfiguration(final WindowsConfiguration windowsConfigurationValue) {
-        this.windowsConfiguration = windowsConfigurationValue;
-    }
-    
     /**
     * Initializes a new instance of the OSProfile class.
     *
     */
     public OSProfile() {
-        this.setSecrets(new LazyArrayList<VaultSecretGroup>());
+        super();
     }
 }

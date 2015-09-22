@@ -36,6 +36,22 @@ import com.microsoft.windowsazure.management.websites.models.ManagedPipelineMode
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -47,21 +63,6 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * The Web Sites Management API provides a RESTful set of web services that
@@ -283,16 +284,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
      static ConnectionStringType parseConnectionStringType(String value) {
         if ("0".equalsIgnoreCase(value)) {
-            return ConnectionStringType.MYSQL;
+            return ConnectionStringType.MySql;
         }
         if ("1".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SQLSERVER;
+            return ConnectionStringType.SqlServer;
         }
         if ("2".equalsIgnoreCase(value)) {
-            return ConnectionStringType.SQLAZURE;
+            return ConnectionStringType.SqlAzure;
         }
         if ("3".equalsIgnoreCase(value)) {
-            return ConnectionStringType.CUSTOM;
+            return ConnectionStringType.Custom;
         }
         throw new IllegalArgumentException("value");
     }
@@ -304,16 +305,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @return The enum value as a string.
     */
      static String connectionStringTypeToString(ConnectionStringType value) {
-        if (value == ConnectionStringType.MYSQL) {
+        if (value == ConnectionStringType.MySql) {
             return "0";
         }
-        if (value == ConnectionStringType.SQLSERVER) {
+        if (value == ConnectionStringType.SqlServer) {
             return "1";
         }
-        if (value == ConnectionStringType.SQLAZURE) {
+        if (value == ConnectionStringType.SqlAzure) {
             return "2";
         }
-        if (value == ConnectionStringType.CUSTOM) {
+        if (value == ConnectionStringType.Custom) {
             return "3";
         }
         throw new IllegalArgumentException("value");
@@ -327,10 +328,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     */
      static ManagedPipelineMode parseManagedPipelineMode(String value) {
         if ("0".equalsIgnoreCase(value)) {
-            return ManagedPipelineMode.INTEGRATED;
+            return ManagedPipelineMode.Integrated;
         }
         if ("1".equalsIgnoreCase(value)) {
-            return ManagedPipelineMode.CLASSIC;
+            return ManagedPipelineMode.Classic;
         }
         throw new IllegalArgumentException("value");
     }
@@ -342,10 +343,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @return The enum value as a string.
     */
      static String managedPipelineModeToString(ManagedPipelineMode value) {
-        if (value == ManagedPipelineMode.INTEGRATED) {
+        if (value == ManagedPipelineMode.Integrated) {
             return "0";
         }
-        if (value == ManagedPipelineMode.CLASSIC) {
+        if (value == ManagedPipelineMode.Classic) {
             return "1";
         }
         throw new IllegalArgumentException("value");
@@ -670,7 +671,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         WebSiteOperationStatus statusInstance;
-                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
                         result.setStatus(statusInstance);
                     }
                 }

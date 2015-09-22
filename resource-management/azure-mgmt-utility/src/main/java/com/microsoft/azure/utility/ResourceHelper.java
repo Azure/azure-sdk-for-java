@@ -2,8 +2,11 @@ package com.microsoft.azure.utility;
 
 import com.google.gson.Gson;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.models.*;
-import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.azure.management.resources.models.Deployment;
+import com.microsoft.azure.management.resources.models.DeploymentExtended;
+import com.microsoft.azure.management.resources.models.DeploymentMode;
+import com.microsoft.azure.management.resources.models.DeploymentProperties;
+import com.microsoft.azure.management.resources.models.TemplateLink;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import java.io.IOException;

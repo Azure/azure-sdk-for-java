@@ -15,16 +15,15 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.util.ArrayList;
-
+import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse;
+import com.microsoft.windowsazure.management.compute.models.OperatingSystemListResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse;
-import com.microsoft.windowsazure.management.compute.models.OperatingSystemListResponse;
+import java.util.ArrayList;
 
 public class OperationSystemOperationsTests extends ComputeManagementIntegrationTestBase {
     @BeforeClass

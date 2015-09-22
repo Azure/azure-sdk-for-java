@@ -18,7 +18,11 @@ package com.microsoft.azure.utility.compute;
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResponse;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class VMSizesTests extends ComputeTestBase {
     static {

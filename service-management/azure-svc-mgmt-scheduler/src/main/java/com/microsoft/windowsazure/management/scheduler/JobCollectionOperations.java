@@ -32,12 +32,13 @@ import com.microsoft.windowsazure.management.scheduler.models.JobCollectionGetRe
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionUpdateParameters;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionUpdateResponse;
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatusResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 public interface JobCollectionOperations {
     /**

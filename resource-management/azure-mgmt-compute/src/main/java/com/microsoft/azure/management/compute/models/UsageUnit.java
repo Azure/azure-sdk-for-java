@@ -30,5 +30,5 @@ public enum UsageUnit {
     /**
     * The count usage unit.
     */
-    COUNT,
+    Count,
 }

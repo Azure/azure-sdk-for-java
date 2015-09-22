@@ -36,12 +36,13 @@ import com.microsoft.windowsazure.management.network.models.ApplicationGatewaySe
 import com.microsoft.windowsazure.management.network.models.CreateApplicationGatewayParameters;
 import com.microsoft.windowsazure.management.network.models.GatewayOperationResponse;
 import com.microsoft.windowsazure.management.network.models.UpdateApplicationGatewayParameters;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * The Application Gateway Management API includes operations for managing

@@ -14,13 +14,6 @@
  */
 package com.microsoft.windowsazure.management;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.Builder;
@@ -34,6 +27,12 @@ import com.microsoft.windowsazure.management.models.LocationAvailableServiceName
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 public abstract class ManagementIntegrationTestBase extends MockIntegrationTestBase {
 

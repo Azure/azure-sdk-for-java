@@ -29,6 +29,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImag
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImageListVersionsParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResourceList;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

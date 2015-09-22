@@ -27,6 +27,7 @@ import com.microsoft.azure.management.resources.models.LongRunningOperationRespo
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
@@ -94,6 +95,12 @@ public interface ResourceManagementClient extends Closeable, FilterableService<R
     * @return The ProvidersOperations value.
     */
     ProviderOperations getProvidersOperations();
+    
+    /**
+    * Operations for getting provider operations metadata.
+    * @return The ProviderOperationsMetadataOperations value.
+    */
+    ProviderOperationsMetadataOperations getProviderOperationsMetadataOperations();
     
     /**
     * Operations for managing resource groups.

@@ -14,18 +14,6 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.junit.*;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.FirewallRule;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateParameters;
@@ -33,6 +21,21 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateRespon
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
     private static FirewallRuleOperations firewallRuleOperations;

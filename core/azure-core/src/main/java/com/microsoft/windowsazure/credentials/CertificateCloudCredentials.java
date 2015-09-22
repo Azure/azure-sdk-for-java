@@ -19,17 +19,17 @@ import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProper
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
 import com.microsoft.windowsazure.core.utils.SSLContextFactory;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.URI;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.net.ssl.SSLContext;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 
 /**
  * The Class CertificateCloudCredentials.

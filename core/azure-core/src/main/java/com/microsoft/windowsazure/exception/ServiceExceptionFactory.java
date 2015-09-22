@@ -14,12 +14,12 @@
  */
 package com.microsoft.windowsazure.exception;
 
-import java.net.SocketTimeoutException;
-
 import com.microsoft.windowsazure.core.ServiceTimeoutException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;
+
+import java.net.SocketTimeoutException;
 
 public abstract class ServiceExceptionFactory {
     public static ServiceException process(String serviceName,

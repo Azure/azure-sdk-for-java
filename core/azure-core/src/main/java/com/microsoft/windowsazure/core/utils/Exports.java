@@ -17,10 +17,10 @@
  */
 package com.microsoft.windowsazure.core.utils;
 
-import java.util.Map;
-
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+
+import java.util.Map;
 
 public class Exports implements Builder.Exports {
     @Override

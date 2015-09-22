@@ -24,12 +24,31 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
 * The instance view of a virtual machine.
 */
 public class VirtualMachineInstanceView extends ResourceInstanceView {
+    private BootDiagnosticsInstanceView bootDiagnostics;
+    
+    /**
+    * Optional. Gets or sets the boot diagnostics.
+    * @return The BootDiagnostics value.
+    */
+    public BootDiagnosticsInstanceView getBootDiagnostics() {
+        return this.bootDiagnostics;
+    }
+    
+    /**
+    * Optional. Gets or sets the boot diagnostics.
+    * @param bootDiagnosticsValue The BootDiagnostics value.
+    */
+    public void setBootDiagnostics(final BootDiagnosticsInstanceView bootDiagnosticsValue) {
+        this.bootDiagnostics = bootDiagnosticsValue;
+    }
+    
     private ArrayList<DiskInstanceView> disks;
     
     /**

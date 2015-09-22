@@ -15,16 +15,10 @@
 
 package com.microsoft.windowsazure.credentials;
 
-import java.net.MalformedURLException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 
-import javax.naming.ServiceUnavailableException;
+import java.util.concurrent.ExecutorService;
 
 public class AdalAuthFilter implements ServiceRequestFilter {
 	private String token;

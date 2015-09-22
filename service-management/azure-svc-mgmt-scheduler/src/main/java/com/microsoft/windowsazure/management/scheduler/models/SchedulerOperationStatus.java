@@ -30,15 +30,15 @@ public enum SchedulerOperationStatus {
     /**
     * The asynchronous request is in progress.
     */
-    INPROGRESS,
+    InProgress,
     
     /**
     * The asynchronous request succeeded.
     */
-    SUCCEEDED,
+    Succeeded,
     
     /**
     * The asynchronous request failed.
     */
-    FAILED,
+    Failed,
 }

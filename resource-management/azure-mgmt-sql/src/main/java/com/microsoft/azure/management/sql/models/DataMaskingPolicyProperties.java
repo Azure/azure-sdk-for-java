@@ -63,24 +63,6 @@ public class DataMaskingPolicyProperties {
         this.exemptPrincipals = exemptPrincipalsValue;
     }
     
-    private String maskingLevel;
-    
-    /**
-    * Required. Gets or sets the masking level
-    * @return The MaskingLevel value.
-    */
-    public String getMaskingLevel() {
-        return this.maskingLevel;
-    }
-    
-    /**
-    * Required. Gets or sets the masking level
-    * @param maskingLevelValue The MaskingLevel value.
-    */
-    public void setMaskingLevel(final String maskingLevelValue) {
-        this.maskingLevel = maskingLevelValue;
-    }
-    
     /**
     * Initializes a new instance of the DataMaskingPolicyProperties class.
     *
@@ -94,20 +76,15 @@ public class DataMaskingPolicyProperties {
     *
     * @param dataMaskingState Gets or sets the state of the data masking policy.
     * @param exemptPrincipals Gets or sets the list of the exempt principals
-    * @param maskingLevel Gets or sets the masking level
     */
-    public DataMaskingPolicyProperties(String dataMaskingState, String exemptPrincipals, String maskingLevel) {
+    public DataMaskingPolicyProperties(String dataMaskingState, String exemptPrincipals) {
         if (dataMaskingState == null) {
             throw new NullPointerException("dataMaskingState");
         }
         if (exemptPrincipals == null) {
             throw new NullPointerException("exemptPrincipals");
         }
-        if (maskingLevel == null) {
-            throw new NullPointerException("maskingLevel");
-        }
         this.setDataMaskingState(dataMaskingState);
         this.setExemptPrincipals(exemptPrincipals);
-        this.setMaskingLevel(maskingLevel);
     }
 }

@@ -15,12 +15,12 @@
 
 package com.microsoft.windowsazure.core;
 
-import com.microsoft.windowsazure.core.TimeSpan8601Converter;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class TimeSpan8601ConverterTests {
     @Test

@@ -24,11 +24,11 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public enum GatewayConnectivityState {
-    CONNECTED,
+    Connected,
     
-    CONNECTING,
+    Connecting,
     
-    NOTCONNECTED,
+    NotConnected,
     
-    UNKNOWN,
+    Unknown,
 }

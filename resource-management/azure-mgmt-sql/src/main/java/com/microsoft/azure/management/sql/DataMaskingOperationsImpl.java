@@ -38,16 +38,6 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -58,6 +48,18 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
 * Represents all the operations for operating on Azure SQL Database data
@@ -151,9 +153,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
         if (parameters.getProperties().getExemptPrincipals() == null) {
             throw new NullPointerException("parameters.Properties.ExemptPrincipals");
         }
-        if (parameters.getProperties().getMaskingLevel() == null) {
-            throw new NullPointerException("parameters.Properties.MaskingLevel");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -219,8 +218,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
         ((ObjectNode) propertiesValue).put("dataMaskingState", parameters.getProperties().getDataMaskingState());
         
         ((ObjectNode) propertiesValue).put("exemptPrincipals", parameters.getProperties().getExemptPrincipals());
-        
-        ((ObjectNode) propertiesValue).put("maskingLevel", parameters.getProperties().getMaskingLevel());
         
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
@@ -407,16 +404,16 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
         
         ((ObjectNode) propertiesValue).put("id", parameters.getProperties().getId());
         
+        if (parameters.getProperties().getSchemaName() != null) {
+            ((ObjectNode) propertiesValue).put("schemaName", parameters.getProperties().getSchemaName());
+        }
+        
         if (parameters.getProperties().getTableName() != null) {
             ((ObjectNode) propertiesValue).put("tableName", parameters.getProperties().getTableName());
         }
         
         if (parameters.getProperties().getColumnName() != null) {
             ((ObjectNode) propertiesValue).put("columnName", parameters.getProperties().getColumnName());
-        }
-        
-        if (parameters.getProperties().getAliasName() != null) {
-            ((ObjectNode) propertiesValue).put("aliasName", parameters.getProperties().getAliasName());
         }
         
         ((ObjectNode) propertiesValue).put("maskingFunction", parameters.getProperties().getMaskingFunction());
@@ -526,11 +523,19 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse delete(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -784,13 +789,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                             exemptPrincipalsInstance = exemptPrincipalsValue.getTextValue();
                             propertiesInstance.setExemptPrincipals(exemptPrincipalsInstance);
                         }
-                        
-                        JsonNode maskingLevelValue = propertiesValue.get("maskingLevel");
-                        if (maskingLevelValue != null && maskingLevelValue instanceof NullNode == false) {
-                            String maskingLevelInstance;
-                            maskingLevelInstance = maskingLevelValue.getTextValue();
-                            propertiesInstance.setMaskingLevel(maskingLevelInstance);
-                        }
                     }
                     
                     JsonNode idValue = responseDoc.get("id");
@@ -1003,6 +1001,13 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                             propertiesInstance.setId(idInstance);
                         }
                         
+                        JsonNode schemaNameValue = propertiesValue.get("schemaName");
+                        if (schemaNameValue != null && schemaNameValue instanceof NullNode == false) {
+                            String schemaNameInstance;
+                            schemaNameInstance = schemaNameValue.getTextValue();
+                            propertiesInstance.setSchemaName(schemaNameInstance);
+                        }
+                        
                         JsonNode tableNameValue = propertiesValue.get("tableName");
                         if (tableNameValue != null && tableNameValue instanceof NullNode == false) {
                             String tableNameInstance;
@@ -1015,13 +1020,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                             String columnNameInstance;
                             columnNameInstance = columnNameValue.getTextValue();
                             propertiesInstance.setColumnName(columnNameInstance);
-                        }
-                        
-                        JsonNode aliasNameValue = propertiesValue.get("aliasName");
-                        if (aliasNameValue != null && aliasNameValue instanceof NullNode == false) {
-                            String aliasNameInstance;
-                            aliasNameInstance = aliasNameValue.getTextValue();
-                            propertiesInstance.setAliasName(aliasNameInstance);
                         }
                         
                         JsonNode maskingFunctionValue = propertiesValue.get("maskingFunction");
@@ -1271,6 +1269,13 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                                     propertiesInstance.setId(idInstance);
                                 }
                                 
+                                JsonNode schemaNameValue = propertiesValue.get("schemaName");
+                                if (schemaNameValue != null && schemaNameValue instanceof NullNode == false) {
+                                    String schemaNameInstance;
+                                    schemaNameInstance = schemaNameValue.getTextValue();
+                                    propertiesInstance.setSchemaName(schemaNameInstance);
+                                }
+                                
                                 JsonNode tableNameValue = propertiesValue.get("tableName");
                                 if (tableNameValue != null && tableNameValue instanceof NullNode == false) {
                                     String tableNameInstance;
@@ -1283,13 +1288,6 @@ public class DataMaskingOperationsImpl implements ServiceOperations<SqlManagemen
                                     String columnNameInstance;
                                     columnNameInstance = columnNameValue.getTextValue();
                                     propertiesInstance.setColumnName(columnNameInstance);
-                                }
-                                
-                                JsonNode aliasNameValue = propertiesValue.get("aliasName");
-                                if (aliasNameValue != null && aliasNameValue instanceof NullNode == false) {
-                                    String aliasNameInstance;
-                                    aliasNameInstance = aliasNameValue.getTextValue();
-                                    propertiesInstance.setAliasName(aliasNameInstance);
                                 }
                                 
                                 JsonNode maskingFunctionValue = propertiesValue.get("maskingFunction");

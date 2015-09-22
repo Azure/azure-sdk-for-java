@@ -17,17 +17,19 @@
  */
 package com.microsoft.windowsazure.core;
 
-import com.microsoft.windowsazure.core.pipeline.apache.*;
+import com.microsoft.windowsazure.core.pipeline.apache.HttpRequestInterceptorBackAdapter;
+import com.microsoft.windowsazure.core.pipeline.apache.HttpRequestInterceptorFrontAdapter;
+import com.microsoft.windowsazure.core.pipeline.apache.HttpResponseInterceptorBackAdapter;
+import com.microsoft.windowsazure.core.pipeline.apache.HttpResponseInterceptorFrontAdapter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
+import org.apache.http.HttpHost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
-
-import org.apache.http.HttpHost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 public abstract class ServiceClient<TClient> implements
         FilterableService<TClient>, Closeable {

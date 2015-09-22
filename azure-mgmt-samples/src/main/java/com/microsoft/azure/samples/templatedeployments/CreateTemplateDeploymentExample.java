@@ -80,7 +80,7 @@ public class CreateTemplateDeploymentExample {
             DeploymentExtended deployment = ResourceHelper.createTemplateDeploymentFromURI(
                     resourceManagementClient,
                     resourceGroupName,
-                    DeploymentMode.INCREMENTAL,
+                    DeploymentMode.Incremental,
                     deploymentName,
                     TEMPLATE_URI,
                     "1.0.0.0",

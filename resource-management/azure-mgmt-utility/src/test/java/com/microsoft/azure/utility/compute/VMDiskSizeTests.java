@@ -15,11 +15,16 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.models.VirtualMachineGetResponse;
 import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class VMDiskSizeTests extends ComputeTestBase{
     static {

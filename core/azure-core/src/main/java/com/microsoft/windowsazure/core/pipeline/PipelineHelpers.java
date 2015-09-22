@@ -16,14 +16,15 @@ package com.microsoft.windowsazure.core.pipeline;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeaderType;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public final class PipelineHelpers {
     private PipelineHelpers() {

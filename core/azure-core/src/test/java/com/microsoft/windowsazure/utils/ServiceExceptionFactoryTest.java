@@ -14,19 +14,20 @@
  */
 package com.microsoft.windowsazure.utils;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
-import java.net.SocketTimeoutException;
-
-import org.junit.Test;
-
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.ServiceTimeoutException;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.net.SocketTimeoutException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class ServiceExceptionFactoryTest {
     @Test

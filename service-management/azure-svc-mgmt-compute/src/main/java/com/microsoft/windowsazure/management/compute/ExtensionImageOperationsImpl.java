@@ -39,6 +39,23 @@ import com.microsoft.windowsazure.management.compute.models.ExtensionImageUpdate
 import com.microsoft.windowsazure.management.compute.models.ExtensionLocalResourceConfiguration;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
@@ -50,22 +67,6 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Management API includes operations for managing the service and
@@ -152,11 +153,27 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         if (parameters.getExtensionEndpoints() != null) {
             if (parameters.getExtensionEndpoints().getInputEndpoints() != null) {
                 for (ExtensionEndpointConfiguration.InputEndpoint inputEndpointsParameterItem : parameters.getExtensionEndpoints().getInputEndpoints()) {
+                    if (inputEndpointsParameterItem.getLocalPort() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InputEndpoints.LocalPort");
+                    }
                     if (inputEndpointsParameterItem.getName() == null) {
                         throw new NullPointerException("parameters.ExtensionEndpoints.InputEndpoints.Name");
                     }
                     if (inputEndpointsParameterItem.getProtocol() == null) {
                         throw new NullPointerException("parameters.ExtensionEndpoints.InputEndpoints.Protocol");
+                    }
+                }
+            }
+            if (parameters.getExtensionEndpoints().getInstanceInputEndpoints() != null) {
+                for (ExtensionEndpointConfiguration.InstanceInputEndpoint instanceInputEndpointsParameterItem : parameters.getExtensionEndpoints().getInstanceInputEndpoints()) {
+                    if (instanceInputEndpointsParameterItem.getLocalPort() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InstanceInputEndpoints.LocalPort");
+                    }
+                    if (instanceInputEndpointsParameterItem.getName() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InstanceInputEndpoints.Name");
+                    }
+                    if (instanceInputEndpointsParameterItem.getProtocol() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InstanceInputEndpoints.Protocol");
                     }
                 }
             }
@@ -313,7 +330,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                         inputEndpointElement.appendChild(portElement);
                         
                         Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                        localPortElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLocalPort()));
                         inputEndpointElement.appendChild(localPortElement);
                     }
                     endpointsElement.appendChild(inputEndpointsSequenceElement);
@@ -340,6 +357,37 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                         internalEndpointElement.appendChild(portElement2);
                     }
                     endpointsElement.appendChild(internalEndpointsSequenceElement);
+                }
+            }
+            
+            if (parameters.getExtensionEndpoints().getInstanceInputEndpoints() != null) {
+                if (parameters.getExtensionEndpoints().getInstanceInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionEndpoints().getInstanceInputEndpoints()).isInitialized()) {
+                    Element instanceInputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InstanceInputEndpoints");
+                    for (ExtensionEndpointConfiguration.InstanceInputEndpoint instanceInputEndpointsItem : parameters.getExtensionEndpoints().getInstanceInputEndpoints()) {
+                        Element instanceInputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InstanceInputEndpoint");
+                        instanceInputEndpointsSequenceElement.appendChild(instanceInputEndpointElement);
+                        
+                        Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement3.appendChild(requestDoc.createTextNode(instanceInputEndpointsItem.getName()));
+                        instanceInputEndpointElement.appendChild(nameElement3);
+                        
+                        Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement3.appendChild(requestDoc.createTextNode(instanceInputEndpointsItem.getProtocol()));
+                        instanceInputEndpointElement.appendChild(protocolElement3);
+                        
+                        Element localPortElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                        localPortElement2.appendChild(requestDoc.createTextNode(instanceInputEndpointsItem.getLocalPort()));
+                        instanceInputEndpointElement.appendChild(localPortElement2);
+                        
+                        Element fixedPortMinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FixedPortMin");
+                        fixedPortMinElement.appendChild(requestDoc.createTextNode(Integer.toString(instanceInputEndpointsItem.getFixedPortMin())));
+                        instanceInputEndpointElement.appendChild(fixedPortMinElement);
+                        
+                        Element fixedPortMaxElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FixedPortMax");
+                        fixedPortMaxElement.appendChild(requestDoc.createTextNode(Integer.toString(instanceInputEndpointsItem.getFixedPortMax())));
+                        instanceInputEndpointElement.appendChild(fixedPortMaxElement);
+                    }
+                    endpointsElement.appendChild(instanceInputEndpointsSequenceElement);
                 }
             }
         }
@@ -382,9 +430,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 Element localResourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalResource");
                 localResourcesSequenceElement.appendChild(localResourceElement);
                 
-                Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                nameElement3.appendChild(requestDoc.createTextNode(localResourcesItem.getName()));
-                localResourceElement.appendChild(nameElement3);
+                Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                nameElement4.appendChild(requestDoc.createTextNode(localResourcesItem.getName()));
+                localResourceElement.appendChild(nameElement4);
                 
                 if (localResourcesItem.getSizeInMB() != null) {
                     Element sizeInMBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SizeInMB");
@@ -409,7 +457,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         
         if (parameters.getSampleConfig() != null) {
             Element sampleConfigElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SampleConfig");
-            sampleConfigElement.appendChild(requestDoc.createTextNode(parameters.getSampleConfig()));
+            sampleConfigElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getSampleConfig().getBytes())));
             extensionImageElement.appendChild(sampleConfigElement);
         }
         
@@ -725,11 +773,27 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         if (parameters.getExtensionEndpoints() != null) {
             if (parameters.getExtensionEndpoints().getInputEndpoints() != null) {
                 for (ExtensionEndpointConfiguration.InputEndpoint inputEndpointsParameterItem : parameters.getExtensionEndpoints().getInputEndpoints()) {
+                    if (inputEndpointsParameterItem.getLocalPort() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InputEndpoints.LocalPort");
+                    }
                     if (inputEndpointsParameterItem.getName() == null) {
                         throw new NullPointerException("parameters.ExtensionEndpoints.InputEndpoints.Name");
                     }
                     if (inputEndpointsParameterItem.getProtocol() == null) {
                         throw new NullPointerException("parameters.ExtensionEndpoints.InputEndpoints.Protocol");
+                    }
+                }
+            }
+            if (parameters.getExtensionEndpoints().getInstanceInputEndpoints() != null) {
+                for (ExtensionEndpointConfiguration.InstanceInputEndpoint instanceInputEndpointsParameterItem : parameters.getExtensionEndpoints().getInstanceInputEndpoints()) {
+                    if (instanceInputEndpointsParameterItem.getLocalPort() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InstanceInputEndpoints.LocalPort");
+                    }
+                    if (instanceInputEndpointsParameterItem.getName() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InstanceInputEndpoints.Name");
+                    }
+                    if (instanceInputEndpointsParameterItem.getProtocol() == null) {
+                        throw new NullPointerException("parameters.ExtensionEndpoints.InstanceInputEndpoints.Protocol");
                     }
                 }
             }
@@ -891,7 +955,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                         inputEndpointElement.appendChild(portElement);
                         
                         Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                        localPortElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLocalPort()));
                         inputEndpointElement.appendChild(localPortElement);
                     }
                     endpointsElement.appendChild(inputEndpointsSequenceElement);
@@ -918,6 +982,37 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                         internalEndpointElement.appendChild(portElement2);
                     }
                     endpointsElement.appendChild(internalEndpointsSequenceElement);
+                }
+            }
+            
+            if (parameters.getExtensionEndpoints().getInstanceInputEndpoints() != null) {
+                if (parameters.getExtensionEndpoints().getInstanceInputEndpoints() instanceof LazyCollection == false || ((LazyCollection) parameters.getExtensionEndpoints().getInstanceInputEndpoints()).isInitialized()) {
+                    Element instanceInputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InstanceInputEndpoints");
+                    for (ExtensionEndpointConfiguration.InstanceInputEndpoint instanceInputEndpointsItem : parameters.getExtensionEndpoints().getInstanceInputEndpoints()) {
+                        Element instanceInputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InstanceInputEndpoint");
+                        instanceInputEndpointsSequenceElement.appendChild(instanceInputEndpointElement);
+                        
+                        Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement3.appendChild(requestDoc.createTextNode(instanceInputEndpointsItem.getName()));
+                        instanceInputEndpointElement.appendChild(nameElement3);
+                        
+                        Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement3.appendChild(requestDoc.createTextNode(instanceInputEndpointsItem.getProtocol()));
+                        instanceInputEndpointElement.appendChild(protocolElement3);
+                        
+                        Element localPortElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                        localPortElement2.appendChild(requestDoc.createTextNode(instanceInputEndpointsItem.getLocalPort()));
+                        instanceInputEndpointElement.appendChild(localPortElement2);
+                        
+                        Element fixedPortMinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FixedPortMin");
+                        fixedPortMinElement.appendChild(requestDoc.createTextNode(Integer.toString(instanceInputEndpointsItem.getFixedPortMin())));
+                        instanceInputEndpointElement.appendChild(fixedPortMinElement);
+                        
+                        Element fixedPortMaxElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "FixedPortMax");
+                        fixedPortMaxElement.appendChild(requestDoc.createTextNode(Integer.toString(instanceInputEndpointsItem.getFixedPortMax())));
+                        instanceInputEndpointElement.appendChild(fixedPortMaxElement);
+                    }
+                    endpointsElement.appendChild(instanceInputEndpointsSequenceElement);
                 }
             }
         }
@@ -960,9 +1055,9 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 Element localResourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalResource");
                 localResourcesSequenceElement.appendChild(localResourceElement);
                 
-                Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                nameElement3.appendChild(requestDoc.createTextNode(localResourcesItem.getName()));
-                localResourceElement.appendChild(nameElement3);
+                Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                nameElement4.appendChild(requestDoc.createTextNode(localResourcesItem.getName()));
+                localResourceElement.appendChild(nameElement4);
                 
                 if (localResourcesItem.getSizeInMB() != null) {
                     Element sizeInMBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SizeInMB");
@@ -987,7 +1082,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
         
         if (parameters.getSampleConfig() != null) {
             Element sampleConfigElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SampleConfig");
-            sampleConfigElement.appendChild(requestDoc.createTextNode(parameters.getSampleConfig()));
+            sampleConfigElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getSampleConfig().getBytes())));
             extensionImageElement.appendChild(sampleConfigElement);
         }
         
@@ -1177,7 +1272,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1190,7 +1285,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1315,7 +1410,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1328,7 +1423,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1446,7 +1541,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1459,7 +1554,7 @@ public class ExtensionImageOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

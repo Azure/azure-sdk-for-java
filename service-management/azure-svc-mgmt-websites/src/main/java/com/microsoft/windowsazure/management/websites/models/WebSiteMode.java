@@ -30,10 +30,10 @@ public enum WebSiteMode {
     /**
     * This value is Limited for the Free offering. The default value is Limited.
     */
-    LIMITED,
+    Limited,
     
     /**
     * This value is Basic for the Paid and Shared offerings.
     */
-    BASIC,
+    Basic,
 }

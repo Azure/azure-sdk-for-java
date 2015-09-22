@@ -15,10 +15,21 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.ImageReference;
+import com.microsoft.azure.management.compute.models.VirtualMachineImage;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageGetParameters;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageListParameters;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResourceList;
 import com.microsoft.azure.utility.ComputeHelper;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.util.function.Predicate;
 
 public class VMImagesTests extends ComputeTestBase {

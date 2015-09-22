@@ -30,10 +30,10 @@ public enum AccountStatus {
     /**
     * Available.
     */
-    AVAILABLE,
+    Available,
     
     /**
     * Unavailable.
     */
-    UNAVAILABLE,
+    Unavailable,
 }

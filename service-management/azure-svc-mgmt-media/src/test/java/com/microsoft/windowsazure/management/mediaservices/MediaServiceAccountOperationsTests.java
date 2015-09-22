@@ -15,17 +15,19 @@
 
 package com.microsoft.windowsazure.management.mediaservices;
 
-import java.util.ArrayList;
-
-import com.microsoft.windowsazure.management.mediaservices.models.*;
+import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountCreateParameters;
+import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountCreateResponse;
+import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountGetResponse;
+import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountListResponse;
 import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesAccountListResponse.MediaServiceAccount;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 
 public class MediaServiceAccountOperationsTests extends MediaServiceManagementIntegrationTestBase {    

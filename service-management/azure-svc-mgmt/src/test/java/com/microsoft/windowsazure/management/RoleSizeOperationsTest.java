@@ -15,13 +15,12 @@
 
 package com.microsoft.windowsazure.management;
 
+import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 
 public class RoleSizeOperationsTest extends ManagementIntegrationTestBase { 
     @BeforeClass

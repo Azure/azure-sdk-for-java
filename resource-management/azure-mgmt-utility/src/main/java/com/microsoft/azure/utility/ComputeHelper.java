@@ -17,7 +17,26 @@
 package com.microsoft.azure.utility;
 
 import com.microsoft.azure.management.compute.ComputeManagementClient;
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.AvailabilitySet;
+import com.microsoft.azure.management.compute.models.AvailabilitySetReference;
+import com.microsoft.azure.management.compute.models.CachingTypes;
+import com.microsoft.azure.management.compute.models.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.models.HardwareProfile;
+import com.microsoft.azure.management.compute.models.ImageReference;
+import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.models.NetworkProfile;
+import com.microsoft.azure.management.compute.models.OSDisk;
+import com.microsoft.azure.management.compute.models.OSProfile;
+import com.microsoft.azure.management.compute.models.StorageProfile;
+import com.microsoft.azure.management.compute.models.VirtualHardDisk;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.models.VirtualMachineCreateOrUpdateResponse;
+import com.microsoft.azure.management.compute.models.VirtualMachineImage;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageGetParameters;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageListParameters;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResourceList;
+import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.NetworkResourceProviderClient;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.models.ResourceGroup;

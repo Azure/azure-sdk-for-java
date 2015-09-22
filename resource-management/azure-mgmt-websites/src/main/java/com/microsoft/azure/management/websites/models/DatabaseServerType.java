@@ -30,20 +30,20 @@ public enum DatabaseServerType {
     /**
     * My SQL Server
     */
-    MYSQL,
+    MySql,
     
     /**
     * MS SQL server
     */
-    SQLSERVER,
+    SQLServer,
     
     /**
     * SQL Azure
     */
-    SQLAZURE,
+    SQLAzure,
     
     /**
     * Custom SQL Server
     */
-    CUSTOM,
+    Custom,
 }

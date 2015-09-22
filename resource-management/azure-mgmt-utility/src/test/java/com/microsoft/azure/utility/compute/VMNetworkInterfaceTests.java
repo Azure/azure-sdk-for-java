@@ -21,12 +21,16 @@ import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.NetworkHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class VMNetworkInterfaceTests extends ComputeTestBase {
     static {

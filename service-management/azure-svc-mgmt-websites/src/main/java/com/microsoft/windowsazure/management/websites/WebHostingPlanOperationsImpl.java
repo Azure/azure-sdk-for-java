@@ -45,6 +45,26 @@ import com.microsoft.windowsazure.management.websites.models.WebHostingPlanUpdat
 import com.microsoft.windowsazure.management.websites.models.WebHostingPlanUpdateResponse;
 import com.microsoft.windowsazure.management.websites.models.WorkerSizeOptions;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -57,25 +77,6 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for managing web hosting plans beneath your subscription.
@@ -292,14 +293,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                     Element sKUElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement2 != null && sKUElement2.getTextContent() != null && !sKUElement2.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent().toUpperCase());
+                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent());
                         webHostingPlanInstance.setSKU(sKUInstance);
                     }
                     
                     Element workerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement2 != null && workerSizeElement2.getTextContent() != null && !workerSizeElement2.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent().toUpperCase());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent());
                         webHostingPlanInstance.setWorkerSize(workerSizeInstance);
                     }
                     
@@ -587,14 +588,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                     Element sKUElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
+                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
                         webHostingPlanInstance.setSKU(sKUInstance);
                     }
                     
                     Element workerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement != null && workerSizeElement.getTextContent() != null && !workerSizeElement.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent().toUpperCase());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent());
                         webHostingPlanInstance.setWorkerSize(workerSizeInstance);
                     }
                     
@@ -1066,14 +1067,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         Element sKUElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "SKU");
                         if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                             SkuOptions sKUInstance;
-                            sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
+                            sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
                             serverFarmInstance.setSKU(sKUInstance);
                         }
                         
                         Element workerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                         if (workerSizeElement != null && workerSizeElement.getTextContent() != null && !workerSizeElement.getTextContent().isEmpty()) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent().toUpperCase());
+                            workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent());
                             serverFarmInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -1296,14 +1297,14 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                     Element sKUElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement2 != null && sKUElement2.getTextContent() != null && !sKUElement2.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent().toUpperCase());
+                        sKUInstance = SkuOptions.valueOf(sKUElement2.getTextContent());
                         webHostingPlanInstance.setSKU(sKUInstance);
                     }
                     
                     Element workerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement2 != null && workerSizeElement2.getTextContent() != null && !workerSizeElement2.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent().toUpperCase());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement2.getTextContent());
                         webHostingPlanInstance.setWorkerSize(workerSizeInstance);
                     }
                     

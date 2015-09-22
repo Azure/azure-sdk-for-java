@@ -34,11 +34,12 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUsagesListResponse;
-import java.io.IOException;
-import java.util.concurrent.Future;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.util.concurrent.Future;
 
 /**
 * Represents all the operations for operating on Azure SQL Databases.  Contains

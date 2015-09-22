@@ -15,11 +15,18 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.ListUsagesResponse;
+import com.microsoft.azure.management.compute.models.Usage;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class VMUsageTests extends ComputeTestBase {
     static {

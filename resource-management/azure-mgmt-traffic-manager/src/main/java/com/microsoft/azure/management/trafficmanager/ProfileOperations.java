@@ -33,6 +33,7 @@ import com.microsoft.azure.management.trafficmanager.models.ProfileUpdateParamet
 import com.microsoft.azure.management.trafficmanager.models.ProfileUpdateResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.util.concurrent.Future;
 
