@@ -15,20 +15,37 @@
 
 package com.microsoft.windowsazure.management.website;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Random;
-import java.util.TimeZone;
-
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.websites.models.*;
-
+import com.microsoft.windowsazure.management.websites.models.GeoRegionNames;
+import com.microsoft.windowsazure.management.websites.models.SkuOptions;
+import com.microsoft.windowsazure.management.websites.models.WebHostingPlanCreateParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSite;
+import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSiteCreateResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteDeleteParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetConfigurationResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetHistoricalUsageMetricsParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetHistoricalUsageMetricsResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetRepositoryResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteGetResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteIsHostnameAvailableResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSpaceNames;
+import com.microsoft.windowsazure.management.websites.models.WebSpacePlanNames;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesListWebSitesResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
+import java.util.TimeZone;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
     private static String websiteName = testWebsitePrefix + "01";
@@ -91,7 +108,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
 
         WebHostingPlanCreateParameters params = new WebHostingPlanCreateParameters();
         params.setName("DefaultSF");
-        params.setSKU(SkuOptions.FREE);
+        params.setSKU(SkuOptions.Free);
         webSiteManagementClient.getWebHostingPlansOperations().create(webSpaceName, params);
 
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();

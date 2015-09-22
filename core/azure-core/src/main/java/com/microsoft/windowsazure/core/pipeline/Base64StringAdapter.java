@@ -14,9 +14,9 @@
  */
 package com.microsoft.windowsazure.core.pipeline;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import com.sun.jersey.core.util.Base64;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /*
  * JAXB adapter for a Base64 encoded string element

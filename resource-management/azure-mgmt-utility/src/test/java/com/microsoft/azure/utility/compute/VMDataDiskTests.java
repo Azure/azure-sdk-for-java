@@ -15,13 +15,25 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.CachingTypes;
+import com.microsoft.azure.management.compute.models.ComputeOperationResponse;
+import com.microsoft.azure.management.compute.models.DataDisk;
+import com.microsoft.azure.management.compute.models.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.models.VirtualHardDisk;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.models.VirtualMachineGetResponse;
+import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 

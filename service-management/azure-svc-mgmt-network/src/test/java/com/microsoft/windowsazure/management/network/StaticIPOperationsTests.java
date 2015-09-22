@@ -16,14 +16,13 @@
 package com.microsoft.windowsazure.management.network;
 
 import com.microsoft.windowsazure.exception.ServiceException;
-
-import java.net.InetAddress;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.net.InetAddress;
 
 public class StaticIPOperationsTests extends NetworkManagementIntegrationTestBase {
     

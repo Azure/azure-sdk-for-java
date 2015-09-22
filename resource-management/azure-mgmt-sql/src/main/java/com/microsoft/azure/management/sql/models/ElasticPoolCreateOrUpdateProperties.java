@@ -107,14 +107,14 @@ public class ElasticPoolCreateOrUpdateProperties {
         this.edition = editionValue;
     }
     
-    private Long storageMB;
+    private Integer storageMB;
     
     /**
     * Optional. Gets or sets storage limit for the Sql Azure Database Elastic
     * Pool in MB.This must agree with the Dtu if both are specified.
     * @return The StorageMB value.
     */
-    public Long getStorageMB() {
+    public Integer getStorageMB() {
         return this.storageMB;
     }
     
@@ -123,7 +123,7 @@ public class ElasticPoolCreateOrUpdateProperties {
     * Pool in MB.This must agree with the Dtu if both are specified.
     * @param storageMBValue The StorageMB value.
     */
-    public void setStorageMB(final Long storageMBValue) {
+    public void setStorageMB(final Integer storageMBValue) {
         this.storageMB = storageMBValue;
     }
 }

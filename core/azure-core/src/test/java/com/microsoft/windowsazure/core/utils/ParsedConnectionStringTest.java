@@ -15,15 +15,12 @@
 
 package com.microsoft.windowsazure.core.utils;
 
-import com.microsoft.windowsazure.core.utils.ConnectionStringSyntaxException;
-import com.microsoft.windowsazure.core.utils.ParsedConnectionString;
-import static org.junit.Assert.*;
-
+import com.microsoft.windowsazure.core.pipeline.ConnectionStringField;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.microsoft.windowsazure.core.pipeline.ConnectionStringField;
+import static org.junit.Assert.assertEquals;
 
 public class ParsedConnectionStringTest {
 

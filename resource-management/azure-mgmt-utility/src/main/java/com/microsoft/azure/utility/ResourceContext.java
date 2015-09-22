@@ -18,7 +18,9 @@ package com.microsoft.azure.utility;
 
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.VirtualMachine;
-import com.microsoft.azure.management.network.models.*;
+import com.microsoft.azure.management.network.models.NetworkInterface;
+import com.microsoft.azure.management.network.models.PublicIpAddress;
+import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 
 import java.util.HashMap;

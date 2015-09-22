@@ -16,12 +16,13 @@
 package com.microsoft.windowsazure.core.pipeline.apache;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
-import java.io.IOException;
-import java.io.InputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.protocol.HttpContext;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class HttpServiceResponseContext implements ServiceResponseContext {
     private HttpResponse clientResponse;

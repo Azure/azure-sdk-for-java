@@ -15,19 +15,9 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.junit.Assert;
-
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.OperationResponse;
@@ -48,9 +38,18 @@ import com.microsoft.windowsazure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.management.storage.StorageManagementService;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
-import com.microsoft.azure.storage.CloudStorageAccount;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.*;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.junit.Assert;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.Callable;
 
 public abstract class ComputeManagementIntegrationTestBase extends MockIntegrationTestBase{
     protected static String testVMPrefix = "aztst";

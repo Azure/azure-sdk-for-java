@@ -25,6 +25,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+
 import java.io.Closeable;
 import java.net.URI;
 

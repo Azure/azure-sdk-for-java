@@ -28,11 +28,12 @@ import com.microsoft.windowsazure.management.network.models.ClientRootCertificat
 import com.microsoft.windowsazure.management.network.models.ClientRootCertificateGetResponse;
 import com.microsoft.windowsazure.management.network.models.ClientRootCertificateListResponse;
 import com.microsoft.windowsazure.management.network.models.GatewayOperationResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
 * The Network Management API includes operations for managing the client root

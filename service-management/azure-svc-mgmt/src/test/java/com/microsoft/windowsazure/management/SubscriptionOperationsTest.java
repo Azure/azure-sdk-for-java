@@ -15,18 +15,17 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
+import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
+import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
+import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class SubscriptionOperationsTest extends ManagementIntegrationTestBase { 
     @BeforeClass

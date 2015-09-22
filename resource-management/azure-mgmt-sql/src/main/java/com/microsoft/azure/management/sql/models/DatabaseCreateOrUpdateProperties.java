@@ -49,6 +49,26 @@ public class DatabaseCreateOrUpdateProperties {
         this.collation = collationValue;
     }
     
+    private String createMode;
+    
+    /**
+    * Optional. Gets or sets the create Mode for the Azure Sql Database
+    * database being created.
+    * @return The CreateMode value.
+    */
+    public String getCreateMode() {
+        return this.createMode;
+    }
+    
+    /**
+    * Optional. Gets or sets the create Mode for the Azure Sql Database
+    * database being created.
+    * @param createModeValue The CreateMode value.
+    */
+    public void setCreateMode(final String createModeValue) {
+        this.createMode = createModeValue;
+    }
+    
     private String edition;
     
     /**
@@ -149,5 +169,25 @@ public class DatabaseCreateOrUpdateProperties {
     */
     public void setRequestedServiceObjectiveName(final String requestedServiceObjectiveNameValue) {
         this.requestedServiceObjectiveName = requestedServiceObjectiveNameValue;
+    }
+    
+    private String sourceDatabaseId;
+    
+    /**
+    * Optional. Gets or sets the resource id of the database to use as the
+    * source for the copy being created.
+    * @return The SourceDatabaseId value.
+    */
+    public String getSourceDatabaseId() {
+        return this.sourceDatabaseId;
+    }
+    
+    /**
+    * Optional. Gets or sets the resource id of the database to use as the
+    * source for the copy being created.
+    * @param sourceDatabaseIdValue The SourceDatabaseId value.
+    */
+    public void setSourceDatabaseId(final String sourceDatabaseIdValue) {
+        this.sourceDatabaseId = sourceDatabaseIdValue;
     }
 }

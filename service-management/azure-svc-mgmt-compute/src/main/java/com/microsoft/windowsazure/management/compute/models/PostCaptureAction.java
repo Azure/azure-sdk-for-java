@@ -30,11 +30,11 @@ public enum PostCaptureAction {
     /**
     * Causes the virtual machine to be deleted after the image has been captured
     */
-    DELETE,
+    Delete,
     
     /**
     * Causes the virtual machine to be redeployed after the image is captured
     * by using the specified information in ProvisioningConfiguration.
     */
-    REPROVISION,
+    Reprovision,
 }

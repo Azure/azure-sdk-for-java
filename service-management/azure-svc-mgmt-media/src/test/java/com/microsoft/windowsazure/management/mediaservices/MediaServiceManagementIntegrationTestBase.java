@@ -14,19 +14,6 @@
  */
 package com.microsoft.windowsazure.management.mediaservices;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.junit.Assert;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.OperationResponse;
@@ -46,6 +33,17 @@ import com.microsoft.windowsazure.management.storage.StorageManagementService;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.junit.Assert;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.Callable;
 
 public abstract class MediaServiceManagementIntegrationTestBase extends MockIntegrationTestBase {
     protected static String testMediaServicesAccountPrefix = "aztst" + "media"; 

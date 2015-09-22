@@ -18,15 +18,14 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.util.ArrayList;
-
-import com.microsoft.windowsazure.management.compute.models.*;
-
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineVMImageListResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class VirtualMachineVMImagesOperationsTests extends ComputeManagementIntegrationTestBase {    
     @BeforeClass

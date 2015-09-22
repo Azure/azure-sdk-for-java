@@ -26,12 +26,13 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
 * The Windows Azure SQL Database management API provides a RESTful set of web
@@ -120,6 +121,17 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     */
     public AuditingPolicyOperations getAuditingPolicyOperations() {
         return this.auditingPolicy;
+    }
+    
+    private CapabilitiesOperations capabilities;
+    
+    /**
+    * Represents all the operations for determining the set of capabilites
+    * available in a specified region.
+    * @return The CapabilitiesOperations value.
+    */
+    public CapabilitiesOperations getCapabilitiesOperations() {
+        return this.capabilities;
     }
     
     private DatabaseActivationOperations databaseActivation;
@@ -216,6 +228,18 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.recommendedIndexes;
     }
     
+    private ReplicationLinkOperations databaseReplicationLinks;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Database
+    * Replication Links.  Contains operations to: Delete and Retrieve
+    * replication links.
+    * @return The DatabaseReplicationLinksOperations value.
+    */
+    public ReplicationLinkOperations getDatabaseReplicationLinksOperations() {
+        return this.databaseReplicationLinks;
+    }
+    
     private SecureConnectionPolicyOperations secureConnection;
     
     /**
@@ -226,6 +250,18 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     */
     public SecureConnectionPolicyOperations getSecureConnectionOperations() {
         return this.secureConnection;
+    }
+    
+    private ServerAdministratorOperations serverAdministrators;
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Server Active
+    * Directory Administrators.  Contains operations to: Create, Retrieve,
+    * Update, and Delete Azure SQL Server Active Directory Administrators.
+    * @return The ServerAdministratorsOperations value.
+    */
+    public ServerAdministratorOperations getServerAdministratorsOperations() {
+        return this.serverAdministrators;
     }
     
     private ServerOperations servers;
@@ -293,6 +329,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.auditingPolicy = new AuditingPolicyOperationsImpl(this);
+        this.capabilities = new CapabilitiesOperationsImpl(this);
         this.databaseActivation = new DatabaseActivationOperationsImpl(this);
         this.databaseBackup = new DatabaseBackupOperationsImpl(this);
         this.databases = new DatabaseOperationsImpl(this);
@@ -301,7 +338,9 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         this.firewallRules = new FirewallRuleOperationsImpl(this);
         this.recommendedElasticPools = new RecommendedElasticPoolOperationsImpl(this);
         this.recommendedIndexes = new RecommendedIndexOperationsImpl(this);
+        this.databaseReplicationLinks = new ReplicationLinkOperationsImpl(this);
         this.secureConnection = new SecureConnectionPolicyOperationsImpl(this);
+        this.serverAdministrators = new ServerAdministratorOperationsImpl(this);
         this.servers = new ServerOperationsImpl(this);
         this.serverUpgrades = new ServerUpgradeOperationsImpl(this);
         this.serviceObjectives = new ServiceObjectiveOperationsImpl(this);

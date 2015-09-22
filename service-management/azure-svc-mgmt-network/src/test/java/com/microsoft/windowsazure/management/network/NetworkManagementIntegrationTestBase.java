@@ -14,13 +14,21 @@
  */
 package com.microsoft.windowsazure.management.network;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.URI;
-import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
+import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
+import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
+import org.junit.Assert;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,22 +39,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.junit.Assert;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import com.microsoft.windowsazure.core.ServiceClient;
-import com.microsoft.windowsazure.core.utils.BOMInputStream;
-import com.microsoft.windowsazure.core.utils.KeyStoreType;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.configuration.*;
-import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
-import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
-import com.microsoft.windowsazure.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URI;
+import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 public abstract class NetworkManagementIntegrationTestBase extends MockIntegrationTestBase {
 

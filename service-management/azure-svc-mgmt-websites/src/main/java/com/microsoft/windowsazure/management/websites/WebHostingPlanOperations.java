@@ -33,12 +33,13 @@ import com.microsoft.windowsazure.management.websites.models.WebHostingPlanGetRe
 import com.microsoft.windowsazure.management.websites.models.WebHostingPlanListResponse;
 import com.microsoft.windowsazure.management.websites.models.WebHostingPlanUpdateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebHostingPlanUpdateResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for managing web hosting plans beneath your subscription.

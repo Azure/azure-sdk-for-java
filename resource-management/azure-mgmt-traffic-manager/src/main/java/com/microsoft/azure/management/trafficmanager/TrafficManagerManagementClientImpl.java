@@ -26,12 +26,13 @@ package com.microsoft.azure.management.trafficmanager;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
 * Client for creating, updating, listing and deleting Azure Traffic Manager

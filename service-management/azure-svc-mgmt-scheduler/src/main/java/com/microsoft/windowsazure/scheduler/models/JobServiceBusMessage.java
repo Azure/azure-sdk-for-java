@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 import com.microsoft.windowsazure.core.LazyHashMap;
+
 import java.util.HashMap;
 
 /**

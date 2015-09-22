@@ -14,14 +14,11 @@
  */
 package com.microsoft.windowsazure.credentials;
 
-import java.util.Map;
-
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Registry;
-import com.microsoft.windowsazure.core.pipeline.jersey.ClientConfigSettings;
-import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.sun.jersey.api.client.config.ClientConfig;
+
+import java.util.Map;
 
 public class Exports implements Builder.Exports {
 

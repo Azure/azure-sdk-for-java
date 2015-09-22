@@ -15,16 +15,6 @@
 
 package com.microsoft.windowsazure.management.website;
 
-import java.util.ArrayList;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
@@ -36,6 +26,14 @@ import com.microsoft.windowsazure.management.websites.models.WebSpacesListGeoReg
 import com.microsoft.windowsazure.management.websites.models.WebSpacesListPublishingUsersResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesListResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesListWebSitesResponse;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBase {
     @BeforeClass
@@ -168,7 +166,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
         for (WebSite  webSite : webSiteslist) { 
              //Assert
-             Assert.assertEquals(WebSpaceAvailabilityState.NORMAL, webSite.getAvailabilityState());
+             Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
              Assert.assertNotNull(webSite.getName()); 
         }
     }

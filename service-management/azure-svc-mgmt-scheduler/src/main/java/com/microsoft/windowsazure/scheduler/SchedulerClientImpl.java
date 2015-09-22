@@ -36,12 +36,13 @@ import com.microsoft.windowsazure.scheduler.models.JobServiceBusAuthenticationTy
 import com.microsoft.windowsazure.scheduler.models.JobServiceBusTransportType;
 import com.microsoft.windowsazure.scheduler.models.JobState;
 import com.microsoft.windowsazure.scheduler.models.RetryType;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implements SchedulerClient {
     private String apiVersion;
@@ -288,16 +289,16 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static HttpAuthenticationType parseHttpAuthenticationType(String value) {
         if ("NotSpecified".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.NOTSPECIFIED;
+            return HttpAuthenticationType.NotSpecified;
         }
         if ("ClientCertificate".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.CLIENTCERTIFICATE;
+            return HttpAuthenticationType.ClientCertificate;
         }
         if ("ActiveDirectoryOAuth".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.ACTIVEDIRECTORYOAUTH;
+            return HttpAuthenticationType.ActiveDirectoryOAuth;
         }
         if ("Basic".equalsIgnoreCase(value)) {
-            return HttpAuthenticationType.BASIC;
+            return HttpAuthenticationType.Basic;
         }
         throw new IllegalArgumentException("value");
     }
@@ -309,16 +310,16 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String httpAuthenticationTypeToString(HttpAuthenticationType value) {
-        if (value == HttpAuthenticationType.NOTSPECIFIED) {
+        if (value == HttpAuthenticationType.NotSpecified) {
             return "NotSpecified";
         }
-        if (value == HttpAuthenticationType.CLIENTCERTIFICATE) {
+        if (value == HttpAuthenticationType.ClientCertificate) {
             return "ClientCertificate";
         }
-        if (value == HttpAuthenticationType.ACTIVEDIRECTORYOAUTH) {
+        if (value == HttpAuthenticationType.ActiveDirectoryOAuth) {
             return "ActiveDirectoryOAuth";
         }
-        if (value == HttpAuthenticationType.BASIC) {
+        if (value == HttpAuthenticationType.Basic) {
             return "Basic";
         }
         throw new IllegalArgumentException("value");
@@ -332,19 +333,19 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobActionType parseJobActionType(String value) {
         if ("http".equalsIgnoreCase(value)) {
-            return JobActionType.HTTP;
+            return JobActionType.Http;
         }
         if ("https".equalsIgnoreCase(value)) {
-            return JobActionType.HTTPS;
+            return JobActionType.Https;
         }
         if ("storageQueue".equalsIgnoreCase(value)) {
-            return JobActionType.STORAGEQUEUE;
+            return JobActionType.StorageQueue;
         }
         if ("serviceBusQueue".equalsIgnoreCase(value)) {
-            return JobActionType.SERVICEBUSQUEUE;
+            return JobActionType.ServiceBusQueue;
         }
         if ("serviceBusTopic".equalsIgnoreCase(value)) {
-            return JobActionType.SERVICEBUSTOPIC;
+            return JobActionType.ServiceBusTopic;
         }
         throw new IllegalArgumentException("value");
     }
@@ -356,19 +357,19 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobActionTypeToString(JobActionType value) {
-        if (value == JobActionType.HTTP) {
+        if (value == JobActionType.Http) {
             return "http";
         }
-        if (value == JobActionType.HTTPS) {
+        if (value == JobActionType.Https) {
             return "https";
         }
-        if (value == JobActionType.STORAGEQUEUE) {
+        if (value == JobActionType.StorageQueue) {
             return "storageQueue";
         }
-        if (value == JobActionType.SERVICEBUSQUEUE) {
+        if (value == JobActionType.ServiceBusQueue) {
             return "serviceBusQueue";
         }
-        if (value == JobActionType.SERVICEBUSTOPIC) {
+        if (value == JobActionType.ServiceBusTopic) {
             return "serviceBusTopic";
         }
         throw new IllegalArgumentException("value");
@@ -382,10 +383,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobHistoryActionName parseJobHistoryActionName(String value) {
         if ("MainAction".equalsIgnoreCase(value)) {
-            return JobHistoryActionName.MAINACTION;
+            return JobHistoryActionName.MainAction;
         }
         if ("ErrorAction".equalsIgnoreCase(value)) {
-            return JobHistoryActionName.ERRORACTION;
+            return JobHistoryActionName.ErrorAction;
         }
         throw new IllegalArgumentException("value");
     }
@@ -397,10 +398,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobHistoryActionNameToString(JobHistoryActionName value) {
-        if (value == JobHistoryActionName.MAINACTION) {
+        if (value == JobHistoryActionName.MainAction) {
             return "MainAction";
         }
-        if (value == JobHistoryActionName.ERRORACTION) {
+        if (value == JobHistoryActionName.ErrorAction) {
             return "ErrorAction";
         }
         throw new IllegalArgumentException("value");
@@ -414,13 +415,13 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobHistoryStatus parseJobHistoryStatus(String value) {
         if ("completed".equalsIgnoreCase(value)) {
-            return JobHistoryStatus.COMPLETED;
+            return JobHistoryStatus.Completed;
         }
         if ("failed".equalsIgnoreCase(value)) {
-            return JobHistoryStatus.FAILED;
+            return JobHistoryStatus.Failed;
         }
         if ("postponed".equalsIgnoreCase(value)) {
-            return JobHistoryStatus.POSTPONED;
+            return JobHistoryStatus.Postponed;
         }
         throw new IllegalArgumentException("value");
     }
@@ -432,13 +433,13 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobHistoryStatusToString(JobHistoryStatus value) {
-        if (value == JobHistoryStatus.COMPLETED) {
+        if (value == JobHistoryStatus.Completed) {
             return "completed";
         }
-        if (value == JobHistoryStatus.FAILED) {
+        if (value == JobHistoryStatus.Failed) {
             return "failed";
         }
-        if (value == JobHistoryStatus.POSTPONED) {
+        if (value == JobHistoryStatus.Postponed) {
             return "postponed";
         }
         throw new IllegalArgumentException("value");
@@ -452,22 +453,22 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobRecurrenceFrequency parseJobRecurrenceFrequency(String value) {
         if ("minute".equalsIgnoreCase(value)) {
-            return JobRecurrenceFrequency.MINUTE;
+            return JobRecurrenceFrequency.Minute;
         }
         if ("hour".equalsIgnoreCase(value)) {
-            return JobRecurrenceFrequency.HOUR;
+            return JobRecurrenceFrequency.Hour;
         }
         if ("day".equalsIgnoreCase(value)) {
-            return JobRecurrenceFrequency.DAY;
+            return JobRecurrenceFrequency.Day;
         }
         if ("week".equalsIgnoreCase(value)) {
-            return JobRecurrenceFrequency.WEEK;
+            return JobRecurrenceFrequency.Week;
         }
         if ("month".equalsIgnoreCase(value)) {
-            return JobRecurrenceFrequency.MONTH;
+            return JobRecurrenceFrequency.Month;
         }
         if ("year".equalsIgnoreCase(value)) {
-            return JobRecurrenceFrequency.YEAR;
+            return JobRecurrenceFrequency.Year;
         }
         throw new IllegalArgumentException("value");
     }
@@ -479,22 +480,22 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobRecurrenceFrequencyToString(JobRecurrenceFrequency value) {
-        if (value == JobRecurrenceFrequency.MINUTE) {
+        if (value == JobRecurrenceFrequency.Minute) {
             return "minute";
         }
-        if (value == JobRecurrenceFrequency.HOUR) {
+        if (value == JobRecurrenceFrequency.Hour) {
             return "hour";
         }
-        if (value == JobRecurrenceFrequency.DAY) {
+        if (value == JobRecurrenceFrequency.Day) {
             return "day";
         }
-        if (value == JobRecurrenceFrequency.WEEK) {
+        if (value == JobRecurrenceFrequency.Week) {
             return "week";
         }
-        if (value == JobRecurrenceFrequency.MONTH) {
+        if (value == JobRecurrenceFrequency.Month) {
             return "month";
         }
-        if (value == JobRecurrenceFrequency.YEAR) {
+        if (value == JobRecurrenceFrequency.Year) {
             return "year";
         }
         throw new IllegalArgumentException("value");
@@ -508,25 +509,25 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobScheduleDay parseJobScheduleDay(String value) {
         if ("monday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.MONDAY;
+            return JobScheduleDay.Monday;
         }
         if ("tuesday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.TUESDAY;
+            return JobScheduleDay.Tuesday;
         }
         if ("wednesday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.WEDNESDAY;
+            return JobScheduleDay.Wednesday;
         }
         if ("thursday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.THURSDAY;
+            return JobScheduleDay.Thursday;
         }
         if ("friday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.FRIDAY;
+            return JobScheduleDay.Friday;
         }
         if ("saturday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.SATURDAY;
+            return JobScheduleDay.Saturday;
         }
         if ("sunday".equalsIgnoreCase(value)) {
-            return JobScheduleDay.SUNDAY;
+            return JobScheduleDay.Sunday;
         }
         throw new IllegalArgumentException("value");
     }
@@ -538,25 +539,25 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobScheduleDayToString(JobScheduleDay value) {
-        if (value == JobScheduleDay.MONDAY) {
+        if (value == JobScheduleDay.Monday) {
             return "monday";
         }
-        if (value == JobScheduleDay.TUESDAY) {
+        if (value == JobScheduleDay.Tuesday) {
             return "tuesday";
         }
-        if (value == JobScheduleDay.WEDNESDAY) {
+        if (value == JobScheduleDay.Wednesday) {
             return "wednesday";
         }
-        if (value == JobScheduleDay.THURSDAY) {
+        if (value == JobScheduleDay.Thursday) {
             return "thursday";
         }
-        if (value == JobScheduleDay.FRIDAY) {
+        if (value == JobScheduleDay.Friday) {
             return "friday";
         }
-        if (value == JobScheduleDay.SATURDAY) {
+        if (value == JobScheduleDay.Saturday) {
             return "saturday";
         }
-        if (value == JobScheduleDay.SUNDAY) {
+        if (value == JobScheduleDay.Sunday) {
             return "sunday";
         }
         throw new IllegalArgumentException("value");
@@ -570,10 +571,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobServiceBusAuthenticationType parseJobServiceBusAuthenticationType(String value) {
         if ("NotSpecified".equalsIgnoreCase(value)) {
-            return JobServiceBusAuthenticationType.NOTSPECIFIED;
+            return JobServiceBusAuthenticationType.NotSpecified;
         }
         if ("SharedAccessKey".equalsIgnoreCase(value)) {
-            return JobServiceBusAuthenticationType.SHAREDACCESSKEY;
+            return JobServiceBusAuthenticationType.SharedAccessKey;
         }
         throw new IllegalArgumentException("value");
     }
@@ -585,10 +586,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobServiceBusAuthenticationTypeToString(JobServiceBusAuthenticationType value) {
-        if (value == JobServiceBusAuthenticationType.NOTSPECIFIED) {
+        if (value == JobServiceBusAuthenticationType.NotSpecified) {
             return "NotSpecified";
         }
-        if (value == JobServiceBusAuthenticationType.SHAREDACCESSKEY) {
+        if (value == JobServiceBusAuthenticationType.SharedAccessKey) {
             return "SharedAccessKey";
         }
         throw new IllegalArgumentException("value");
@@ -602,10 +603,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobServiceBusTransportType parseJobServiceBusTransportType(String value) {
         if ("NotSpecified".equalsIgnoreCase(value)) {
-            return JobServiceBusTransportType.NOTSPECIFIED;
+            return JobServiceBusTransportType.NotSpecified;
         }
         if ("NetMessaging".equalsIgnoreCase(value)) {
-            return JobServiceBusTransportType.NETMESSAGING;
+            return JobServiceBusTransportType.NetMessaging;
         }
         if ("AMQP".equalsIgnoreCase(value)) {
             return JobServiceBusTransportType.AMQP;
@@ -620,10 +621,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobServiceBusTransportTypeToString(JobServiceBusTransportType value) {
-        if (value == JobServiceBusTransportType.NOTSPECIFIED) {
+        if (value == JobServiceBusTransportType.NotSpecified) {
             return "NotSpecified";
         }
-        if (value == JobServiceBusTransportType.NETMESSAGING) {
+        if (value == JobServiceBusTransportType.NetMessaging) {
             return "NetMessaging";
         }
         if (value == JobServiceBusTransportType.AMQP) {
@@ -640,16 +641,16 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static JobState parseJobState(String value) {
         if ("enabled".equalsIgnoreCase(value)) {
-            return JobState.ENABLED;
+            return JobState.Enabled;
         }
         if ("disabled".equalsIgnoreCase(value)) {
-            return JobState.DISABLED;
+            return JobState.Disabled;
         }
         if ("faulted".equalsIgnoreCase(value)) {
-            return JobState.FAULTED;
+            return JobState.Faulted;
         }
         if ("completed".equalsIgnoreCase(value)) {
-            return JobState.COMPLETED;
+            return JobState.Completed;
         }
         throw new IllegalArgumentException("value");
     }
@@ -661,16 +662,16 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String jobStateToString(JobState value) {
-        if (value == JobState.ENABLED) {
+        if (value == JobState.Enabled) {
             return "enabled";
         }
-        if (value == JobState.DISABLED) {
+        if (value == JobState.Disabled) {
             return "disabled";
         }
-        if (value == JobState.FAULTED) {
+        if (value == JobState.Faulted) {
             return "faulted";
         }
-        if (value == JobState.COMPLETED) {
+        if (value == JobState.Completed) {
             return "completed";
         }
         throw new IllegalArgumentException("value");
@@ -684,10 +685,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     */
      static RetryType parseRetryType(String value) {
         if ("none".equalsIgnoreCase(value)) {
-            return RetryType.NONE;
+            return RetryType.None;
         }
         if ("fixed".equalsIgnoreCase(value)) {
-            return RetryType.FIXED;
+            return RetryType.Fixed;
         }
         throw new IllegalArgumentException("value");
     }
@@ -699,10 +700,10 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
     * @return The enum value as a string.
     */
      static String retryTypeToString(RetryType value) {
-        if (value == RetryType.NONE) {
+        if (value == RetryType.None) {
             return "none";
         }
-        if (value == RetryType.FIXED) {
+        if (value == RetryType.Fixed) {
             return "fixed";
         }
         throw new IllegalArgumentException("value");

@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 import com.microsoft.windowsazure.core.LazyHashMap;
+
 import java.net.URI;
 import java.util.HashMap;
 

@@ -25,6 +25,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ListUsagesResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

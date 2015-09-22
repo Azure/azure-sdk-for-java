@@ -15,12 +15,13 @@
 
 package com.microsoft.windowsazure.tracing;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 
 /**
  * Provides tracing utilities that insight into all aspects of client operations

@@ -15,14 +15,14 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
-import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;

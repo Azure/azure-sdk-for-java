@@ -26,10 +26,11 @@ package com.microsoft.windowsazure.management.sql;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveGetResponse;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
 * This class provides methods to get a specific service objective by using its

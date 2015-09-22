@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.GenericResource;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceExistsResult;
 import com.microsoft.azure.management.resources.models.ResourceGetResult;
@@ -33,6 +34,7 @@ import com.microsoft.azure.management.resources.models.ResourcesMoveInfo;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -42,6 +44,30 @@ import java.util.concurrent.Future;
 * Operations for managing resources.
 */
 public interface ResourceOperations {
+    /**
+    * Begin moving resources.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response for long running operations.
+    */
+    LongRunningOperationResponse beginMoving(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException;
+    
+    /**
+    * Begin moving resources.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @return A standard service response for long running operations.
+    */
+    Future<LongRunningOperationResponse> beginMovingAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters);
+    
     /**
     * Checks whether resource exists.
     *
@@ -206,14 +232,20 @@ public interface ResourceOperations {
     *
     * @param sourceResourceGroupName Required. Source resource group name.
     * @param parameters Required. move resources' parameters.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException;
+    OperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws InterruptedException, ExecutionException, IOException;
     
     /**
     * Move resources within or across subscriptions.

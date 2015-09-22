@@ -42,6 +42,18 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -56,17 +68,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing the Web Hosting Plans in a resource group. Web
@@ -304,7 +305,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode skuValue = propertiesValue2.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -318,7 +319,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode workerSizeValue = propertiesValue2.get("workerSize");
                         if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue().toUpperCase());
+                            workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue());
                             propertiesInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -647,7 +648,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode skuValue = propertiesValue.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -661,7 +662,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode workerSizeValue = propertiesValue.get("workerSize");
                         if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue().toUpperCase());
+                            workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue());
                             propertiesInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -1151,7 +1152,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                                 JsonNode skuValue = propertiesValue.get("sku");
                                 if (skuValue != null && skuValue instanceof NullNode == false) {
                                     SkuOptions skuInstance;
-                                    skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
+                                    skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue());
                                     propertiesInstance.setSku(skuInstance);
                                 }
                                 
@@ -1165,7 +1166,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                                 JsonNode workerSizeValue = propertiesValue.get("workerSize");
                                 if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                                     WorkerSizeOptions workerSizeInstance;
-                                    workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue().toUpperCase());
+                                    workerSizeInstance = Enum.valueOf(WorkerSizeOptions.class, workerSizeValue.getTextValue());
                                     propertiesInstance.setWorkerSize(workerSizeInstance);
                                 }
                                 

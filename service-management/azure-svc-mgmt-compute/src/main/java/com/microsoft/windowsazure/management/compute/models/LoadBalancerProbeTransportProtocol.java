@@ -28,7 +28,7 @@ package com.microsoft.windowsazure.management.compute.models;
 * availability status.
 */
 public enum LoadBalancerProbeTransportProtocol {
-    TCP,
+    Tcp,
     
-    HTTP,
+    Http,
 }

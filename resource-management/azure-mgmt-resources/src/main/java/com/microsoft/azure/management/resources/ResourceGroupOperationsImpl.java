@@ -41,6 +41,20 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -54,19 +68,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing resource groups.
@@ -209,10 +210,10 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.FAILED);
+                result.setStatus(OperationStatus.Failed);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -650,7 +651,7 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.windowsazure.core.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.windowsazure.core.OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1048,11 +1049,11 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -1227,11 +1228,11 @@ public class ResourceGroupOperationsImpl implements ServiceOperations<ResourceMa
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 

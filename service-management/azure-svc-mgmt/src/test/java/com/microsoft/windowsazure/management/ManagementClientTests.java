@@ -16,12 +16,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.net.URI;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
@@ -31,6 +25,11 @@ import com.microsoft.windowsazure.management.util.TestRequestFilter;
 import com.microsoft.windowsazure.management.util.TestResponseFilter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.net.URI;
+import java.util.Map;
 
 public class ManagementClientTests extends ManagementIntegrationTestBase { 
     @Test

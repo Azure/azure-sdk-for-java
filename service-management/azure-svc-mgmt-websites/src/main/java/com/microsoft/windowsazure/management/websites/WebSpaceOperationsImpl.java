@@ -46,6 +46,25 @@ import com.microsoft.windowsazure.management.websites.models.WebSpacesListRespon
 import com.microsoft.windowsazure.management.websites.models.WebSpacesListWebSitesResponse;
 import com.microsoft.windowsazure.management.websites.models.WorkerSizeOptions;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -58,24 +77,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for managing web spaces beneath your subscription.
@@ -423,7 +424,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     Element availabilityStateElement = XmlUtility.getElementByTagNameNS(webSpaceElement, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                     if (availabilityStateElement != null && availabilityStateElement.getTextContent() != null && !availabilityStateElement.getTextContent().isEmpty()) {
                         WebSpaceAvailabilityState availabilityStateInstance;
-                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent().toUpperCase());
+                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                         result.setAvailabilityState(availabilityStateInstance);
                     }
                     
@@ -450,7 +451,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         }
                         if (isNil2 == false) {
                             WorkerSizeOptions currentWorkerSizeInstance;
-                            currentWorkerSizeInstance = WorkerSizeOptions.valueOf(currentWorkerSizeElement.getTextContent().toUpperCase());
+                            currentWorkerSizeInstance = WorkerSizeOptions.valueOf(currentWorkerSizeElement.getTextContent());
                             result.setCurrentWorkerSize(currentWorkerSizeInstance);
                         }
                     }
@@ -486,7 +487,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     Element statusElement = XmlUtility.getElementByTagNameNS(webSpaceElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         WebSpaceStatus statusInstance;
-                        statusInstance = WebSpaceStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = WebSpaceStatus.valueOf(statusElement.getTextContent());
                         result.setStatus(statusInstance);
                     }
                     
@@ -500,7 +501,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     Element workerSizeElement = XmlUtility.getElementByTagNameNS(webSpaceElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement != null && workerSizeElement.getTextContent() != null && !workerSizeElement.getTextContent().isEmpty()) {
                         WorkerSizeOptions workerSizeInstance;
-                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent().toUpperCase());
+                        workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent());
                         result.setWorkerSize(workerSizeInstance);
                     }
                 }
@@ -755,7 +756,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         Element availabilityStateElement = XmlUtility.getElementByTagNameNS(webSpacesElement, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                         if (availabilityStateElement != null && availabilityStateElement.getTextContent() != null && !availabilityStateElement.getTextContent().isEmpty()) {
                             WebSpaceAvailabilityState availabilityStateInstance;
-                            availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent().toUpperCase());
+                            availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                             webSpaceInstance.setAvailabilityState(availabilityStateInstance);
                         }
                         
@@ -782,7 +783,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                             }
                             if (isNil2 == false) {
                                 WorkerSizeOptions currentWorkerSizeInstance;
-                                currentWorkerSizeInstance = WorkerSizeOptions.valueOf(currentWorkerSizeElement.getTextContent().toUpperCase());
+                                currentWorkerSizeInstance = WorkerSizeOptions.valueOf(currentWorkerSizeElement.getTextContent());
                                 webSpaceInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
                             }
                         }
@@ -818,7 +819,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         Element statusElement = XmlUtility.getElementByTagNameNS(webSpacesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                         if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                             WebSpaceStatus statusInstance;
-                            statusInstance = WebSpaceStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                            statusInstance = WebSpaceStatus.valueOf(statusElement.getTextContent());
                             webSpaceInstance.setStatus(statusInstance);
                         }
                         
@@ -832,7 +833,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         Element workerSizeElement = XmlUtility.getElementByTagNameNS(webSpacesElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                         if (workerSizeElement != null && workerSizeElement.getTextContent() != null && !workerSizeElement.getTextContent().isEmpty()) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent().toUpperCase());
+                            workerSizeInstance = WorkerSizeOptions.valueOf(workerSizeElement.getTextContent());
                             webSpaceInstance.setWorkerSize(workerSizeInstance);
                         }
                     }
@@ -1277,14 +1278,14 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         Element availabilityStateElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                         if (availabilityStateElement != null && availabilityStateElement.getTextContent() != null && !availabilityStateElement.getTextContent().isEmpty()) {
                             WebSpaceAvailabilityState availabilityStateInstance;
-                            availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent().toUpperCase());
+                            availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                             siteInstance.setAvailabilityState(availabilityStateInstance);
                         }
                         
                         Element sKUElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "SKU");
                         if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                             SkuOptions sKUInstance;
-                            sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
+                            sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
                             siteInstance.setSku(sKUInstance);
                         }
                         
@@ -1320,7 +1321,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 Element sslStateElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                                 if (sslStateElement != null && sslStateElement.getTextContent() != null && !sslStateElement.getTextContent().isEmpty()) {
                                     WebSiteSslState sslStateInstance;
-                                    sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent().toUpperCase());
+                                    sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
                                     hostNameSslStateInstance.setSslState(sslStateInstance);
                                 }
                                 
@@ -1386,7 +1387,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         Element runtimeAvailabilityStateElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                         if (runtimeAvailabilityStateElement != null && runtimeAvailabilityStateElement.getTextContent() != null && !runtimeAvailabilityStateElement.getTextContent().isEmpty()) {
                             WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                            runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent().toUpperCase());
+                            runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
                             siteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                         }
                         
@@ -1450,7 +1451,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         Element usageStateElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "UsageState");
                         if (usageStateElement != null && usageStateElement.getTextContent() != null && !usageStateElement.getTextContent().isEmpty()) {
                             WebSiteUsageState usageStateInstance;
-                            usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent().toUpperCase());
+                            usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
                             siteInstance.setUsageState(usageStateInstance);
                         }
                         

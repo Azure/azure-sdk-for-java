@@ -15,13 +15,13 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
+
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MockCloudBlobClient {
     public CloudBlobClient blobClient;

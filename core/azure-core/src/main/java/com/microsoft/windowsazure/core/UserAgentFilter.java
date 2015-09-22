@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.core;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

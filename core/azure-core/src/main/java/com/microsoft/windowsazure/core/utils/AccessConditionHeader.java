@@ -14,9 +14,9 @@
  */
 package com.microsoft.windowsazure.core.utils;
 
-import java.util.Date;
-
 import com.microsoft.windowsazure.core.RFC1123DateConverter;
+
+import java.util.Date;
 
 /**
  * Represents a set of access conditions for operations that use storage

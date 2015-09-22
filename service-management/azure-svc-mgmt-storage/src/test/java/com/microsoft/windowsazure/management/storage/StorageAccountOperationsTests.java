@@ -15,16 +15,18 @@
 
 package com.microsoft.windowsazure.management.storage;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.storage.models.*;
-
+import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccount;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountListResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysParameters;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
+import com.microsoft.windowsazure.management.storage.models.StorageKeyType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -32,6 +34,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class StorageAccountOperationsTests extends StorageManagementIntegrationTestBase {
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
@@ -169,7 +176,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     public void generateKeysSuccess() throws Exception {
         StorageAccountRegenerateKeysParameters storageAccountRegenerateKeysParameters = new StorageAccountRegenerateKeysParameters();        
         storageAccountRegenerateKeysParameters.setName(storageAccountName);
-        storageAccountRegenerateKeysParameters.setKeyType(StorageKeyType.PRIMARY);
+        storageAccountRegenerateKeysParameters.setKeyType(StorageKeyType.Primary);
         
         //Act   
         StorageAccountGetKeysResponse  storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountName);

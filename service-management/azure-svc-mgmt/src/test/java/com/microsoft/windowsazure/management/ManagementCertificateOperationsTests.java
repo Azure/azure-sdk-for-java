@@ -15,17 +15,15 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.util.ArrayList;
-
+import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
+import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
-import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
+import java.util.ArrayList;
 
 public class ManagementCertificateOperationsTests extends ManagementIntegrationTestBase {
     @BeforeClass

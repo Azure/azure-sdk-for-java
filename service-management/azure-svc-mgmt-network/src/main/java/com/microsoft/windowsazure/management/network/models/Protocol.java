@@ -27,7 +27,7 @@ package com.microsoft.windowsazure.management.network.models;
 * The protocol used to talk to Backend Servers
 */
 public enum Protocol {
-    HTTP,
+    Http,
     
-    HTTPS,
+    Https,
 }

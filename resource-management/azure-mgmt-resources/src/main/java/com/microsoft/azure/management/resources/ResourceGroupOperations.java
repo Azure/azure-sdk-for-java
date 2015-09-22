@@ -33,6 +33,7 @@ import com.microsoft.azure.management.resources.models.ResourceGroupListResult;
 import com.microsoft.azure.management.resources.models.ResourceGroupPatchResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;

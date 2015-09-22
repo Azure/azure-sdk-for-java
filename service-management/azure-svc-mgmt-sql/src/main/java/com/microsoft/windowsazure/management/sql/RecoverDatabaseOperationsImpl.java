@@ -31,13 +31,14 @@ import com.microsoft.windowsazure.management.sql.models.RecoverDatabaseOperation
 import com.microsoft.windowsazure.management.sql.models.RecoverDatabaseOperationCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.RecoverDatabaseOperationCreateResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,13 +47,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
 * Contains the operation to create recovery requests for Azure SQL Databases.

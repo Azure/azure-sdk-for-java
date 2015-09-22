@@ -31,11 +31,11 @@ public enum Reason {
     * This indicates that the name has syntactic errors (invalid characters,
     * string length, etc.)
     */
-    ACCOUNTNAMEINVALID,
+    AccountNameInvalid,
     
     /**
     * This indicates that the name has already been taken by an existing
     * storage account.
     */
-    ALREADYEXISTS,
+    AlreadyExists,
 }

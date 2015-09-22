@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.microsoft.windowsazure.core.OperationStatus;
+
 import java.util.Calendar;
 
 /**

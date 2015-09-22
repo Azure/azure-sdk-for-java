@@ -32,6 +32,7 @@ import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.azure.management.network.models.VirtualNetworkGatewayPutResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

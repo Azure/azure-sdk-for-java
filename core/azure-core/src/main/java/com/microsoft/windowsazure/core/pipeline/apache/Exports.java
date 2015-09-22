@@ -14,18 +14,16 @@
  */
 package com.microsoft.windowsazure.core.pipeline.apache;
 
-import java.util.Map;
-
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.credentials.CloudCredentials;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Exports implements Builder.Exports {
 

@@ -26,6 +26,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.models.BasicDependency;
 import com.microsoft.azure.management.resources.models.Dependency;
 import com.microsoft.azure.management.resources.models.Deployment;
+import com.microsoft.azure.management.resources.models.DeploymentExistsResult;
 import com.microsoft.azure.management.resources.models.DeploymentExtended;
 import com.microsoft.azure.management.resources.models.DeploymentGetResult;
 import com.microsoft.azure.management.resources.models.DeploymentListParameters;
@@ -34,6 +35,7 @@ import com.microsoft.azure.management.resources.models.DeploymentMode;
 import com.microsoft.azure.management.resources.models.DeploymentOperationsCreateResult;
 import com.microsoft.azure.management.resources.models.DeploymentPropertiesExtended;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResponse;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.ParametersLink;
 import com.microsoft.azure.management.resources.models.Provider;
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
@@ -41,10 +43,27 @@ import com.microsoft.azure.management.resources.models.ResourceManagementError;
 import com.microsoft.azure.management.resources.models.ResourceManagementErrorWithDetails;
 import com.microsoft.azure.management.resources.models.TemplateLink;
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -57,20 +76,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing deployments.
@@ -94,6 +102,151 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
     */
     public ResourceManagementClientImpl getClient() {
         return this.client;
+    }
+    
+    /**
+    * Begin deleting deployment.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @return A standard service response for long running operations.
+    */
+    @Override
+    public Future<LongRunningOperationResponse> beginDeletingAsync(final String resourceGroupName, final String deploymentName) {
+        return this.getClient().getExecutorService().submit(new Callable<LongRunningOperationResponse>() { 
+            @Override
+            public LongRunningOperationResponse call() throws Exception {
+                return beginDeleting(resourceGroupName, deploymentName);
+            }
+         });
+    }
+    
+    /**
+    * Begin deleting deployment.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response for long running operations.
+    */
+    @Override
+    public LongRunningOperationResponse beginDeleting(String resourceGroupName, String deploymentName) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (resourceGroupName != null && resourceGroupName.length() > 1000) {
+            throw new IllegalArgumentException("resourceGroupName");
+        }
+        if (Pattern.matches("^[-\\w\\._]+$", resourceGroupName) == false) {
+            throw new IllegalArgumentException("resourceGroupName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("deploymentName", deploymentName);
+            CloudTracing.enter(invocationId, this, "beginDeletingAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        CustomHttpDelete httpRequest = new CustomHttpDelete(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED && statusCode != HttpStatus.SC_NO_CONTENT) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            LongRunningOperationResponse result = null;
+            // Deserialize Response
+            result = new LongRunningOperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("Location").length > 0) {
+                result.setOperationStatusLink(httpResponse.getFirstHeader("Location").getValue());
+            }
+            if (httpResponse.getHeaders("Retry-After").length > 0) {
+                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("Retry-After").getValue()));
+            }
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_CONFLICT) {
+                result.setStatus(OperationStatus.Failed);
+            }
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                result.setStatus(OperationStatus.InProgress);
+            }
+            if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                result.setStatus(OperationStatus.Succeeded);
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**
@@ -213,6 +366,137 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Checks whether deployment exists.
+    *
+    * @param resourceGroupName Required. The name of the resource group to
+    * check. The name is case insensitive.
+    * @param deploymentName Required. The name of the deployment.
+    * @return Deployment information.
+    */
+    @Override
+    public Future<DeploymentExistsResult> checkExistenceAsync(final String resourceGroupName, final String deploymentName) {
+        return this.getClient().getExecutorService().submit(new Callable<DeploymentExistsResult>() { 
+            @Override
+            public DeploymentExistsResult call() throws Exception {
+                return checkExistence(resourceGroupName, deploymentName);
+            }
+         });
+    }
+    
+    /**
+    * Checks whether deployment exists.
+    *
+    * @param resourceGroupName Required. The name of the resource group to
+    * check. The name is case insensitive.
+    * @param deploymentName Required. The name of the deployment.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Deployment information.
+    */
+    @Override
+    public DeploymentExistsResult checkExistence(String resourceGroupName, String deploymentName) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (resourceGroupName != null && resourceGroupName.length() > 1000) {
+            throw new IllegalArgumentException("resourceGroupName");
+        }
+        if (Pattern.matches("^[-\\w\\._]+$", resourceGroupName) == false) {
+            throw new IllegalArgumentException("resourceGroupName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("deploymentName", deploymentName);
+            CloudTracing.enter(invocationId, this, "checkExistenceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourcegroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/deployments/";
+        url = url + URLEncoder.encode(deploymentName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpHead httpRequest = new HttpHead(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_NO_CONTENT && statusCode != HttpStatus.SC_NOT_FOUND) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DeploymentExistsResult result = null;
+            // Deserialize Response
+            result = new DeploymentExistsResult();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                result.setExists(true);
             }
             
             if (shouldTrace) {
@@ -656,7 +940,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                         JsonNode modeValue = propertiesValue2.get("mode");
                         if (modeValue != null && modeValue instanceof NullNode == false) {
                             DeploymentMode modeInstance;
-                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
+                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue());
                             propertiesInstance.setMode(modeInstance);
                         }
                     }
@@ -675,6 +959,95 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
         } finally {
             if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Delete deployment and all of its resources.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> deleteAsync(final String resourceGroupName, final String deploymentName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return delete(resourceGroupName, deploymentName);
+            }
+         });
+    }
+    
+    /**
+    * Delete deployment and all of its resources.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse delete(String resourceGroupName, String deploymentName) throws InterruptedException, ExecutionException, IOException, ServiceException {
+        ResourceManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("deploymentName", deploymentName);
+            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            LongRunningOperationResponse response = client2.getDeploymentsOperations().beginDeletingAsync(resourceGroupName, deploymentName).get();
+            LongRunningOperationResponse result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
+            int delayInSeconds = response.getRetryAfter();
+            if (delayInSeconds == 0) {
+                delayInSeconds = 30;
+            }
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.windowsazure.core.OperationStatus.InProgress)) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
+                delayInSeconds = result.getRetryAfter();
+                if (delayInSeconds == 0) {
+                    delayInSeconds = 15;
+                }
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            return result;
+        } finally {
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1036,7 +1409,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                         JsonNode modeValue = propertiesValue.get("mode");
                         if (modeValue != null && modeValue instanceof NullNode == false) {
                             DeploymentMode modeInstance;
-                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
+                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue());
                             propertiesInstance.setMode(modeInstance);
                         }
                     }
@@ -1421,18 +1794,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                                 JsonNode modeValue = propertiesValue.get("mode");
                                 if (modeValue != null && modeValue instanceof NullNode == false) {
                                     DeploymentMode modeInstance;
-                                    modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
+                                    modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue());
                                     propertiesInstance.setMode(modeInstance);
                                 }
                             }
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -1780,18 +2153,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                                 JsonNode modeValue = propertiesValue.get("mode");
                                 if (modeValue != null && modeValue instanceof NullNode == false) {
                                     DeploymentMode modeInstance;
-                                    modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
+                                    modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue());
                                     propertiesInstance.setMode(modeInstance);
                                 }
                             }
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -2280,7 +2653,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ResourceManag
                         JsonNode modeValue = propertiesValue2.get("mode");
                         if (modeValue != null && modeValue instanceof NullNode == false) {
                             DeploymentMode modeInstance;
-                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue().toUpperCase());
+                            modeInstance = Enum.valueOf(DeploymentMode.class, modeValue.getTextValue());
                             propertiesInstance.setMode(modeInstance);
                         }
                     }

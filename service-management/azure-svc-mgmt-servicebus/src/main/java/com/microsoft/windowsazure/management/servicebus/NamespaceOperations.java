@@ -33,12 +33,13 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespa
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespaceResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespacesResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusSharedAccessAuthorizationRule;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Bus Management API includes operations for managing Service Bus

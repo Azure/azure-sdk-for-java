@@ -18,15 +18,18 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.net.URI;
-import java.util.ArrayList;
-
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
-
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageOperatingSystemType;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageUpdateParameters;
 import org.junit.Assert;
 import org.junit.Ignore;
+
+import java.net.URI;
+import java.util.ArrayList;
 
 public class VirtualMachineOSImagesOperationsTests extends ComputeManagementIntegrationTestBase {
     static int random = (int)(Math.random()* 100);
