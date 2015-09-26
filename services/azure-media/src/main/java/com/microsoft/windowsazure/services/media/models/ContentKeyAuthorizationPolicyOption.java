@@ -152,10 +152,20 @@ public final class ContentKeyAuthorizationPolicyOption {
         return new DefaultDeleteOperation(ENTITY_SET, contentKeyAuthorizationPolicyOptionId);
     }
     
+    /**
+     * Create an operation that will update the given content key authorization policy option.
+     * 
+     * @param contentKeyAuthorizationPolicyOptionId
+     *            id of the acontent key authorization policy option to update
+     * @return the update operation
+     */
     public static Updater update(String contentKeyAuthorizationPolicyOptionId) {
         return new Updater(contentKeyAuthorizationPolicyOptionId);
     }
     
+    /**
+     * The Class Updater.
+     */
     public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
         
         private int keyDeliveryType;

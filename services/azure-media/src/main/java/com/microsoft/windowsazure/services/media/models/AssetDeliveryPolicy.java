@@ -173,10 +173,20 @@ public final class AssetDeliveryPolicy {
         return new DefaultDeleteOperation(ENTITY_SET, assetDeliveryPolicyId);
     }
     
+    /**
+     * Create an operation that will update the given asset delivery policy.
+     * 
+     * @param assetDeliveryPolicyId
+     *            id of the asset delivery policy to update
+     * @return the update operation
+     */
     public static Updater update(String assetDeliveryPolicyId) {
         return new Updater(assetDeliveryPolicyId);
     }
     
+    /**
+     * The Class Updater.
+     */
     public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
 
         private EnumSet<AssetDeliveryProtocol> assetDeliveryProtocol;
