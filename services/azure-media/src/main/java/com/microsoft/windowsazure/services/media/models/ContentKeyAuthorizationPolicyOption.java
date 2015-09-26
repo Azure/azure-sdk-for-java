@@ -24,7 +24,9 @@ import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOpe
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyOptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyAuthorizationPolicyRestrictionType;
 import com.sun.jersey.api.client.GenericType;
@@ -149,4 +151,72 @@ public final class ContentKeyAuthorizationPolicyOption {
     public static EntityDeleteOperation delete(String contentKeyAuthorizationPolicyOptionId) {
         return new DefaultDeleteOperation(ENTITY_SET, contentKeyAuthorizationPolicyOptionId);
     }
+    
+    public static Updater update(String contentKeyAuthorizationPolicyOptionId) {
+        return new Updater(contentKeyAuthorizationPolicyOptionId);
+    }
+    
+    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+        
+        private int keyDeliveryType;
+        private String keyDeliveryConfiguration;
+        private List<ContentKeyAuthorizationPolicyRestrictionType> restrictions;
+
+        protected Updater(String contentKeyAuthorizationPolicyOptionId) {
+          super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, 
+              contentKeyAuthorizationPolicyOptionId));
+
+        }
+
+        @Override
+        public Object getRequestContents() {
+          return new ContentKeyAuthorizationPolicyOptionType().setKeyDeliveryType(keyDeliveryType)
+              .setKeyDeliveryConfiguration(keyDeliveryConfiguration).setRestrictions(restrictions);
+
+        }
+
+        /**
+         * Set the protocol of the Asset Delivery Policy to be created.
+         * 
+         * @param assetDeliveryProtocol
+         *          The protocol
+         * @return The creator object (for call chaining)
+         */
+        public Updater setKeyDeliveryType(int keyDeliveryType) {
+          this.keyDeliveryType = keyDeliveryType;
+          return this;
+        }
+
+        /**
+         * Set the type of the Asset Delivery Policy to be created.
+         * 
+         * @param assetDeliveryPolicyType
+         *          The type
+         * @return The creator object (for call chaining)
+         */
+        public Updater setKeyDeliveryConfiguration(String keyDeliveryConfiguration) {
+          this.keyDeliveryConfiguration = keyDeliveryConfiguration;
+          return this;
+        }
+
+        /**
+         * Set the configuration of the Asset Delivery Policy to be created.
+         * 
+         * @param assetDeliveryPolicyConfiguration
+         *          The configuration
+         * @return The creator object (for call chaining)
+         */
+        public Updater setRestrictions(
+            List<ContentKeyAuthorizationPolicyRestriction> restrictions) {
+          
+          this.restrictions = new ArrayList<ContentKeyAuthorizationPolicyRestrictionType>();
+          for (ContentKeyAuthorizationPolicyRestriction restriction : restrictions) {
+            this.restrictions.add(new ContentKeyAuthorizationPolicyRestrictionType()
+                .setName(restriction.getName())
+                .setKeyRestrictionType(restriction.getKeyRestrictionType())
+                .setRequirements(restriction.getRequirements()));
+          }
+          return this;
+        }
+      }
 }
