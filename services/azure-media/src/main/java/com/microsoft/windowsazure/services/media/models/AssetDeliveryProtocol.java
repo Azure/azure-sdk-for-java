@@ -73,7 +73,7 @@ public enum AssetDeliveryProtocol {
                 .of(AssetDeliveryProtocol.None);
 
         for (AssetDeliveryProtocol p : AssetDeliveryProtocol.values()) {
-            if ((bits & p.getFlagValue()) != 0) {
+            if ((bits & p.getFlagValue()) !=  p.getFlagValue()) {
                 perms.remove(AssetDeliveryProtocol.None);
                 perms.add(p);
             }
