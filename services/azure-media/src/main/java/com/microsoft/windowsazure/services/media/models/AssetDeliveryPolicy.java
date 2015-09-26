@@ -24,8 +24,11 @@ import com.microsoft.windowsazure.services.media.entityoperations.DefaultListOpe
 import com.microsoft.windowsazure.services.media.entityoperations.EntityCreateOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityGetOperation;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
+import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetDeliveryPolicyRestType;
+import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyOption.Updater;
 import com.sun.jersey.api.client.GenericType;
 
 /**
@@ -169,4 +172,66 @@ public final class AssetDeliveryPolicy {
     public static EntityDeleteOperation delete(String assetDeliveryPolicyId) {
         return new DefaultDeleteOperation(ENTITY_SET, assetDeliveryPolicyId);
     }
+    
+    public static Updater update(String assetDeliveryPolicyId) {
+        return new Updater(assetDeliveryPolicyId);
+    }
+    
+    public static class Updater extends EntityOperationBase implements EntityUpdateOperation {
+
+        private EnumSet<AssetDeliveryProtocol> assetDeliveryProtocol;
+        private AssetDeliveryPolicyType assetDeliveryPolicyType;
+        private Map<AssetDeliveryPolicyConfigurationKey, String> assetDeliveryConfiguration;
+
+        protected Updater(String assetDeliveryPolicyId) {
+          super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET, assetDeliveryPolicyId));
+
+        }
+
+        @Override
+        public Object getRequestContents() {
+          return new AssetDeliveryPolicyRestType()
+              .setAssetDeliveryConfiguration(assetDeliveryConfiguration)
+              .setAssetDeliveryPolicyType(assetDeliveryPolicyType.getCode())
+              .setAssetDeliveryProtocol(AssetDeliveryProtocol.bitsFromProtocols(assetDeliveryProtocol));
+        }
+
+        /**
+         * Set the protocol of the Asset Delivery Policy to be created.
+         * 
+         * @param assetDeliveryProtocol
+         *          The protocol
+         * @return The creator object (for call chaining)
+         */
+        public Updater setAssetDeliveryProtocol(EnumSet<AssetDeliveryProtocol> assetDeliveryProtocol) {
+          this.assetDeliveryProtocol = assetDeliveryProtocol;
+          return this;
+        }
+
+        /**
+         * Set the type of the Asset Delivery Policy to be created.
+         * 
+         * @param assetDeliveryPolicyType
+         *          The type
+         * @return The creator object (for call chaining)
+         */
+        public Updater setAssetDeliveryPolicyType(AssetDeliveryPolicyType assetDeliveryPolicyType) {
+          this.assetDeliveryPolicyType = assetDeliveryPolicyType;
+          return this;
+        }
+
+        /**
+         * Set the configuration of the Asset Delivery Policy to be created.
+         * 
+         * @param assetDeliveryPolicyConfiguration
+         *          The configuration
+         * @return The creator object (for call chaining)
+         */
+        public Updater setAssetDeliveryConfiguration(
+            Map<AssetDeliveryPolicyConfigurationKey, String> assetDeliveryPolicyConfiguration) {
+          this.assetDeliveryConfiguration = assetDeliveryPolicyConfiguration;
+          return this;
+        }
+
+      }
 }
