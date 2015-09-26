@@ -28,7 +28,6 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityOperatio
 import com.microsoft.windowsazure.services.media.entityoperations.EntityOperationSingleResultBase;
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetDeliveryPolicyRestType;
-import com.microsoft.windowsazure.services.media.models.ContentKeyAuthorizationPolicyOption.Updater;
 import com.sun.jersey.api.client.GenericType;
 
 /**
