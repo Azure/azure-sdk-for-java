@@ -47,6 +47,7 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -460,8 +461,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new RecordSetCreateOrUpdateResponse();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1030,8 +1032,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetGetResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1457,8 +1460,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1890,8 +1894,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2278,8 +2283,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {

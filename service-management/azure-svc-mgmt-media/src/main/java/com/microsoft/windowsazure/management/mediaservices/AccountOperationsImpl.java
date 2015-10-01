@@ -37,6 +37,7 @@ import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesA
 import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesCreatedAccount;
 import com.microsoft.windowsazure.management.mediaservices.models.MediaServicesKeyType;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -281,8 +282,9 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
                 result = new MediaServicesAccountCreateResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -544,8 +546,9 @@ public class AccountOperationsImpl implements ServiceOperations<MediaServicesMan
                 result = new MediaServicesAccountGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {

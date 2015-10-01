@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
+import com.microsoft.azure.management.compute.models.ComputeOperationStatus;
 import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.InstanceViewStatus;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
@@ -38,6 +39,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -204,48 +206,48 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         requestDoc = virtualMachineExtensionJsonValue;
         
         ObjectNode propertiesValue = objectMapper.createObjectNode();
-        virtualMachineExtensionJsonValue.put("properties", propertiesValue);
+        ((ObjectNode) virtualMachineExtensionJsonValue).put("properties", propertiesValue);
         
         if (extensionParameters.getPublisher() != null) {
-            propertiesValue.put("publisher", extensionParameters.getPublisher());
+            ((ObjectNode) propertiesValue).put("publisher", extensionParameters.getPublisher());
         }
         
         if (extensionParameters.getExtensionType() != null) {
-            propertiesValue.put("type", extensionParameters.getExtensionType());
+            ((ObjectNode) propertiesValue).put("type", extensionParameters.getExtensionType());
         }
         
         if (extensionParameters.getTypeHandlerVersion() != null) {
-            propertiesValue.put("typeHandlerVersion", extensionParameters.getTypeHandlerVersion());
+            ((ObjectNode) propertiesValue).put("typeHandlerVersion", extensionParameters.getTypeHandlerVersion());
         }
         
-        propertiesValue.put("autoUpgradeMinorVersion", extensionParameters.isAutoUpgradeMinorVersion());
+        ((ObjectNode) propertiesValue).put("autoUpgradeMinorVersion", extensionParameters.isAutoUpgradeMinorVersion());
         
         if (extensionParameters.getSettings() != null) {
-            propertiesValue.put("settings", objectMapper.readTree(extensionParameters.getSettings()));
+            ((ObjectNode) propertiesValue).put("settings", objectMapper.readTree(extensionParameters.getSettings()));
         }
         
         if (extensionParameters.getProtectedSettings() != null) {
-            propertiesValue.put("protectedSettings", objectMapper.readTree(extensionParameters.getProtectedSettings()));
+            ((ObjectNode) propertiesValue).put("protectedSettings", objectMapper.readTree(extensionParameters.getProtectedSettings()));
         }
         
         if (extensionParameters.getProvisioningState() != null) {
-            propertiesValue.put("provisioningState", extensionParameters.getProvisioningState());
+            ((ObjectNode) propertiesValue).put("provisioningState", extensionParameters.getProvisioningState());
         }
         
         if (extensionParameters.getInstanceView() != null) {
             ObjectNode instanceViewValue = objectMapper.createObjectNode();
-            propertiesValue.put("instanceView", instanceViewValue);
+            ((ObjectNode) propertiesValue).put("instanceView", instanceViewValue);
             
             if (extensionParameters.getInstanceView().getName() != null) {
-                instanceViewValue.put("name", extensionParameters.getInstanceView().getName());
+                ((ObjectNode) instanceViewValue).put("name", extensionParameters.getInstanceView().getName());
             }
             
             if (extensionParameters.getInstanceView().getExtensionType() != null) {
-                instanceViewValue.put("type", extensionParameters.getInstanceView().getExtensionType());
+                ((ObjectNode) instanceViewValue).put("type", extensionParameters.getInstanceView().getExtensionType());
             }
             
             if (extensionParameters.getInstanceView().getTypeHandlerVersion() != null) {
-                instanceViewValue.put("typeHandlerVersion", extensionParameters.getInstanceView().getTypeHandlerVersion());
+                ((ObjectNode) instanceViewValue).put("typeHandlerVersion", extensionParameters.getInstanceView().getTypeHandlerVersion());
             }
             
             if (extensionParameters.getInstanceView().getSubStatuses() != null) {
@@ -256,28 +258,28 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         substatusesArray.add(instanceViewStatusValue);
                         
                         if (substatusesItem.getCode() != null) {
-                            instanceViewStatusValue.put("code", substatusesItem.getCode());
+                            ((ObjectNode) instanceViewStatusValue).put("code", substatusesItem.getCode());
                         }
                         
                         if (substatusesItem.getLevel() != null) {
-                            instanceViewStatusValue.put("level", substatusesItem.getLevel());
+                            ((ObjectNode) instanceViewStatusValue).put("level", substatusesItem.getLevel());
                         }
                         
                         if (substatusesItem.getDisplayStatus() != null) {
-                            instanceViewStatusValue.put("displayStatus", substatusesItem.getDisplayStatus());
+                            ((ObjectNode) instanceViewStatusValue).put("displayStatus", substatusesItem.getDisplayStatus());
                         }
                         
                         if (substatusesItem.getMessage() != null) {
-                            instanceViewStatusValue.put("message", substatusesItem.getMessage());
+                            ((ObjectNode) instanceViewStatusValue).put("message", substatusesItem.getMessage());
                         }
                         
                         if (substatusesItem.getTime() != null) {
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                            instanceViewStatusValue.put("time", simpleDateFormat.format(substatusesItem.getTime().getTime()));
+                            ((ObjectNode) instanceViewStatusValue).put("time", simpleDateFormat.format(substatusesItem.getTime().getTime()));
                         }
                     }
-                    instanceViewValue.put("substatuses", substatusesArray);
+                    ((ObjectNode) instanceViewValue).put("substatuses", substatusesArray);
                 }
             }
             
@@ -288,53 +290,53 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     statusesArray.add(instanceViewStatusValue2);
                     
                     if (statusesItem.getCode() != null) {
-                        instanceViewStatusValue2.put("code", statusesItem.getCode());
+                        ((ObjectNode) instanceViewStatusValue2).put("code", statusesItem.getCode());
                     }
                     
                     if (statusesItem.getLevel() != null) {
-                        instanceViewStatusValue2.put("level", statusesItem.getLevel());
+                        ((ObjectNode) instanceViewStatusValue2).put("level", statusesItem.getLevel());
                     }
                     
                     if (statusesItem.getDisplayStatus() != null) {
-                        instanceViewStatusValue2.put("displayStatus", statusesItem.getDisplayStatus());
+                        ((ObjectNode) instanceViewStatusValue2).put("displayStatus", statusesItem.getDisplayStatus());
                     }
                     
                     if (statusesItem.getMessage() != null) {
-                        instanceViewStatusValue2.put("message", statusesItem.getMessage());
+                        ((ObjectNode) instanceViewStatusValue2).put("message", statusesItem.getMessage());
                     }
                     
                     if (statusesItem.getTime() != null) {
                         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        instanceViewStatusValue2.put("time", simpleDateFormat2.format(statusesItem.getTime().getTime()));
+                        ((ObjectNode) instanceViewStatusValue2).put("time", simpleDateFormat2.format(statusesItem.getTime().getTime()));
                     }
                 }
-                instanceViewValue.put("statuses", statusesArray);
+                ((ObjectNode) instanceViewValue).put("statuses", statusesArray);
             }
         }
         
         if (extensionParameters.getId() != null) {
-            virtualMachineExtensionJsonValue.put("id", extensionParameters.getId());
+            ((ObjectNode) virtualMachineExtensionJsonValue).put("id", extensionParameters.getId());
         }
         
         if (extensionParameters.getName() != null) {
-            virtualMachineExtensionJsonValue.put("name", extensionParameters.getName());
+            ((ObjectNode) virtualMachineExtensionJsonValue).put("name", extensionParameters.getName());
         }
         
         if (extensionParameters.getType() != null) {
-            virtualMachineExtensionJsonValue.put("type", extensionParameters.getType());
+            ((ObjectNode) virtualMachineExtensionJsonValue).put("type", extensionParameters.getType());
         }
         
-        virtualMachineExtensionJsonValue.put("location", extensionParameters.getLocation());
+        ((ObjectNode) virtualMachineExtensionJsonValue).put("location", extensionParameters.getLocation());
         
         if (extensionParameters.getTags() != null) {
             ObjectNode tagsDictionary = objectMapper.createObjectNode();
             for (Map.Entry<String, String> entry : extensionParameters.getTags().entrySet()) {
                 String tagsKey = entry.getKey();
                 String tagsValue = entry.getValue();
-                tagsDictionary.put(tagsKey, tagsValue);
+                ((ObjectNode) tagsDictionary).put(tagsKey, tagsValue);
             }
-            virtualMachineExtensionJsonValue.put("tags", tagsDictionary);
+            ((ObjectNode) virtualMachineExtensionJsonValue).put("tags", tagsDictionary);
         }
         
         StringWriter stringWriter = new StringWriter();
@@ -370,8 +372,9 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualMachineExtensionCreateOrUpdateResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -457,7 +460,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                             
                             JsonNode substatusesArray2 = instanceViewValue2.get("substatuses");
                             if (substatusesArray2 != null && substatusesArray2 instanceof NullNode == false) {
-                                for (JsonNode substatusesValue : substatusesArray2) {
+                                for (JsonNode substatusesValue : ((ArrayNode) substatusesArray2)) {
                                     InstanceViewStatus instanceViewStatusInstance = new InstanceViewStatus();
                                     instanceViewInstance.getSubStatuses().add(instanceViewStatusInstance);
                                     
@@ -500,7 +503,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                             
                             JsonNode statusesArray2 = instanceViewValue2.get("statuses");
                             if (statusesArray2 != null && statusesArray2 instanceof NullNode == false) {
-                                for (JsonNode statusesValue : statusesArray2) {
+                                for (JsonNode statusesValue : ((ArrayNode) statusesArray2)) {
                                     InstanceViewStatus instanceViewStatusInstance2 = new InstanceViewStatus();
                                     instanceViewInstance.getStatuses().add(instanceViewStatusInstance2);
                                     
@@ -571,7 +574,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         virtualMachineExtensionInstance.setLocation(locationInstance);
                     }
                     
-                    JsonNode tagsSequenceElement = responseDoc.get("tags");
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
                     if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                         Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                         while (itr.hasNext()) {
@@ -817,7 +820,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while (result.getStatus() != null && result.getStatus().equals(com.microsoft.azure.management.compute.models.ComputeOperationStatus.InProgress)) {
+            while (result.getStatus() != null && result.getStatus().equals(ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -1052,8 +1055,9 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 result = new VirtualMachineExtensionGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1139,7 +1143,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                             
                             JsonNode substatusesArray = instanceViewValue.get("substatuses");
                             if (substatusesArray != null && substatusesArray instanceof NullNode == false) {
-                                for (JsonNode substatusesValue : substatusesArray) {
+                                for (JsonNode substatusesValue : ((ArrayNode) substatusesArray)) {
                                     InstanceViewStatus instanceViewStatusInstance = new InstanceViewStatus();
                                     instanceViewInstance.getSubStatuses().add(instanceViewStatusInstance);
                                     
@@ -1182,7 +1186,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                             
                             JsonNode statusesArray = instanceViewValue.get("statuses");
                             if (statusesArray != null && statusesArray instanceof NullNode == false) {
-                                for (JsonNode statusesValue : statusesArray) {
+                                for (JsonNode statusesValue : ((ArrayNode) statusesArray)) {
                                     InstanceViewStatus instanceViewStatusInstance2 = new InstanceViewStatus();
                                     instanceViewInstance.getStatuses().add(instanceViewStatusInstance2);
                                     
@@ -1253,7 +1257,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         virtualMachineExtensionInstance.setLocation(locationInstance);
                     }
                     
-                    JsonNode tagsSequenceElement = responseDoc.get("tags");
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
                     if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                         Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                         while (itr.hasNext()) {
@@ -1408,8 +1412,9 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 result = new VirtualMachineExtensionGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1495,7 +1500,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                             
                             JsonNode substatusesArray = instanceViewValue.get("substatuses");
                             if (substatusesArray != null && substatusesArray instanceof NullNode == false) {
-                                for (JsonNode substatusesValue : substatusesArray) {
+                                for (JsonNode substatusesValue : ((ArrayNode) substatusesArray)) {
                                     InstanceViewStatus instanceViewStatusInstance = new InstanceViewStatus();
                                     instanceViewInstance.getSubStatuses().add(instanceViewStatusInstance);
                                     
@@ -1538,7 +1543,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                             
                             JsonNode statusesArray = instanceViewValue.get("statuses");
                             if (statusesArray != null && statusesArray instanceof NullNode == false) {
-                                for (JsonNode statusesValue : statusesArray) {
+                                for (JsonNode statusesValue : ((ArrayNode) statusesArray)) {
                                     InstanceViewStatus instanceViewStatusInstance2 = new InstanceViewStatus();
                                     instanceViewInstance.getStatuses().add(instanceViewStatusInstance2);
                                     
@@ -1609,7 +1614,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         virtualMachineExtensionInstance.setLocation(locationInstance);
                     }
                     
-                    JsonNode tagsSequenceElement = responseDoc.get("tags");
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
                     if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                         Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                         while (itr.hasNext()) {

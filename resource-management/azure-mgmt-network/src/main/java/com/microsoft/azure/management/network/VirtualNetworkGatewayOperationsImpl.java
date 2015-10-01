@@ -42,6 +42,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -272,6 +273,10 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
         
         ((ObjectNode) propertiesValue).put("enableBgp", parameters.isEnableBgp());
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -337,8 +342,9 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualNetworkGatewayPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -445,6 +451,13 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                             boolean enableBgpInstance;
                             enableBgpInstance = enableBgpValue.getBooleanValue();
                             virtualNetworkGatewayInstance.setEnableBgp(enableBgpInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue3.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkGatewayInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue3.get("provisioningState");
@@ -907,6 +920,10 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
         
         ((ObjectNode) propertiesValue).put("enableBgp", parameters.isEnableBgp());
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -972,8 +989,9 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualNetworkGatewayPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1080,6 +1098,13 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                             boolean enableBgpInstance;
                             enableBgpInstance = enableBgpValue.getBooleanValue();
                             virtualNetworkGatewayInstance.setEnableBgp(enableBgpInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue3.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkGatewayInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue3.get("provisioningState");
@@ -1538,8 +1563,9 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                 result = new VirtualNetworkGatewayGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1646,6 +1672,13 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                             boolean enableBgpInstance;
                             enableBgpInstance = enableBgpValue.getBooleanValue();
                             virtualNetworkGatewayInstance.setEnableBgp(enableBgpInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkGatewayInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1824,8 +1857,9 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                 result = new VirtualNetworkGatewayListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1935,6 +1969,13 @@ public class VirtualNetworkGatewayOperationsImpl implements ServiceOperations<Ne
                                     boolean enableBgpInstance;
                                     enableBgpInstance = enableBgpValue.getBooleanValue();
                                     virtualNetworkGatewayJsonFormatInstance.setEnableBgp(enableBgpInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    virtualNetworkGatewayJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");

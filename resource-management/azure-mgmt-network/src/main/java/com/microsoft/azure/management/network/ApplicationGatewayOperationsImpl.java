@@ -52,6 +52,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -623,6 +624,10 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
             }
         }
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -688,8 +693,9 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new ApplicationGatewayPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1273,6 +1279,13 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                                     applicationGatewayRequestRoutingRuleJsonFormatInstance.setId(idInstance18);
                                 }
                             }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue10.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            applicationGatewayInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue9 = propertiesValue10.get("provisioningState");
@@ -2124,8 +2137,9 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 result = new ApplicationGatewayGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2711,6 +2725,13 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                             }
                         }
                         
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            applicationGatewayInstance.setResourceGuid(resourceGuidInstance);
+                        }
+                        
                         JsonNode provisioningStateValue9 = propertiesValue.get("provisioningState");
                         if (provisioningStateValue9 != null && provisioningStateValue9 instanceof NullNode == false) {
                             String provisioningStateInstance9;
@@ -2888,8 +2909,9 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 result = new ApplicationGatewayListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3476,6 +3498,13 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                                             applicationGatewayRequestRoutingRuleJsonFormatInstance.setId(idInstance18);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    applicationGatewayJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue9 = propertiesValue.get("provisioningState");
@@ -3656,8 +3685,9 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                 result = new ApplicationGatewayListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -4244,6 +4274,13 @@ public class ApplicationGatewayOperationsImpl implements ServiceOperations<Netwo
                                             applicationGatewayRequestRoutingRuleJsonFormatInstance.setId(idInstance18);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    applicationGatewayJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue9 = propertiesValue.get("provisioningState");
