@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -126,7 +127,7 @@ public class ProviderOperationsMetadataOperationsImpl implements ServiceOperatio
         url = url + "/providers/Microsoft.Authorization/providerOperations/";
         url = url + URLEncoder.encode(resourceProviderNamespace, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=2015-07-01-preview");
+        queryParameters.add("api-version=2015-07-01");
         queryParameters.add("$expand=resourceTypes");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
@@ -175,8 +176,9 @@ public class ProviderOperationsMetadataOperationsImpl implements ServiceOperatio
                 result = new ProviderOperationsMetadataGetResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -380,7 +382,7 @@ public class ProviderOperationsMetadataOperationsImpl implements ServiceOperatio
         String url = "";
         url = url + "/providers/Microsoft.Authorization/providerOperations";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=2015-07-01-preview");
+        queryParameters.add("api-version=2015-07-01");
         queryParameters.add("$expand=resourceTypes");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
@@ -429,8 +431,9 @@ public class ProviderOperationsMetadataOperationsImpl implements ServiceOperatio
                 result = new ProviderOperationsMetadataListResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {

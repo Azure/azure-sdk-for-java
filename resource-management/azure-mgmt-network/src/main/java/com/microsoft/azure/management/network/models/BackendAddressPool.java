@@ -67,6 +67,24 @@ public class BackendAddressPool extends ChildResource {
         this.loadBalancingRules = loadBalancingRulesValue;
     }
     
+    private ResourceId outboundNatRule;
+    
+    /**
+    * Optional. Gets outbound rules that use this Backend Address Pool
+    * @return The OutboundNatRule value.
+    */
+    public ResourceId getOutboundNatRule() {
+        return this.outboundNatRule;
+    }
+    
+    /**
+    * Optional. Gets outbound rules that use this Backend Address Pool
+    * @param outboundNatRuleValue The OutboundNatRule value.
+    */
+    public void setOutboundNatRule(final ResourceId outboundNatRuleValue) {
+        this.outboundNatRule = outboundNatRuleValue;
+    }
+    
     private String provisioningState;
     
     /**

@@ -42,6 +42,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -377,6 +378,10 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
             }
         }
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -442,8 +447,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new NetworkSecurityGroupPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -684,6 +690,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                                     resourceIdInstance2.setId(idInstance4);
                                 }
                             }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue4.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            networkSecurityGroupInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue3 = propertiesValue4.get("provisioningState");
@@ -1278,8 +1291,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 result = new NetworkSecurityGroupGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1522,6 +1536,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                             }
                         }
                         
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            networkSecurityGroupInstance.setResourceGuid(resourceGuidInstance);
+                        }
+                        
                         JsonNode provisioningStateValue3 = propertiesValue.get("provisioningState");
                         if (provisioningStateValue3 != null && provisioningStateValue3 instanceof NullNode == false) {
                             String provisioningStateInstance3;
@@ -1699,8 +1720,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 result = new NetworkSecurityGroupListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1944,6 +1966,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                                             resourceIdInstance2.setId(idInstance4);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    networkSecurityGroupJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue3 = propertiesValue.get("provisioningState");
@@ -2124,8 +2153,9 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                 result = new NetworkSecurityGroupListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2369,6 +2399,13 @@ public class NetworkSecurityGroupOperationsImpl implements ServiceOperations<Net
                                             resourceIdInstance2.setId(idInstance4);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    networkSecurityGroupJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue3 = propertiesValue.get("provisioningState");

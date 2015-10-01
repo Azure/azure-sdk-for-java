@@ -41,6 +41,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -237,6 +238,10 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
             ((ObjectNode) propertiesValue).put("idleTimeoutInMinutes", parameters.getIdleTimeoutInMinutes());
         }
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -302,8 +307,9 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new PublicIpAddressPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -371,6 +377,13 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                             int idleTimeoutInMinutesInstance;
                             idleTimeoutInMinutesInstance = idleTimeoutInMinutesValue.getIntValue();
                             publicIpAddressInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue2.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            publicIpAddressInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
@@ -959,8 +972,9 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                 result = new PublicIpAddressGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1028,6 +1042,13 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                             int idleTimeoutInMinutesInstance;
                             idleTimeoutInMinutesInstance = idleTimeoutInMinutesValue.getIntValue();
                             publicIpAddressInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            publicIpAddressInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
@@ -1206,8 +1227,9 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                 result = new PublicIpAddressListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1278,6 +1300,13 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                                     int idleTimeoutInMinutesInstance;
                                     idleTimeoutInMinutesInstance = idleTimeoutInMinutesValue.getIntValue();
                                     publicIpAddressJsonFormatInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    publicIpAddressJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
@@ -1457,8 +1486,9 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                 result = new PublicIpAddressListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1529,6 +1559,13 @@ public class PublicIpAddressOperationsImpl implements ServiceOperations<NetworkR
                                     int idleTimeoutInMinutesInstance;
                                     idleTimeoutInMinutesInstance = idleTimeoutInMinutesValue.getIntValue();
                                     publicIpAddressJsonFormatInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    publicIpAddressJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue = propertiesValue.get("provisioningState");

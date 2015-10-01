@@ -44,6 +44,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -302,6 +303,10 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
             }
         }
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -367,8 +372,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualNetworkPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -488,6 +494,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                     subnetJsonFormatInstance.setId(idInstance4);
                                 }
                             }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue3.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue3.get("provisioningState");
@@ -1070,8 +1083,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 result = new VirtualNetworkGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1191,6 +1205,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                     subnetJsonFormatInstance.setId(idInstance4);
                                 }
                             }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1368,8 +1389,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 result = new VirtualNetworkListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1492,6 +1514,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                             subnetJsonFormatInstance.setId(idInstance4);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    virtualNetworkJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1670,8 +1699,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 result = new VirtualNetworkListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1794,6 +1824,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                             subnetJsonFormatInstance.setId(idInstance4);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    virtualNetworkJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
