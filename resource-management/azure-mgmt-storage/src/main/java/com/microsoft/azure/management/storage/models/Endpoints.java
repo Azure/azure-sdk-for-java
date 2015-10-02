@@ -48,6 +48,24 @@ public class Endpoints {
         this.blob = blobValue;
     }
     
+    private URI file;
+    
+    /**
+    * Optional. Gets the file endpoint.
+    * @return The File value.
+    */
+    public URI getFile() {
+        return this.file;
+    }
+    
+    /**
+    * Optional. Gets the file endpoint.
+    * @param fileValue The File value.
+    */
+    public void setFile(final URI fileValue) {
+        this.file = fileValue;
+    }
+    
     private URI queue;
     
     /**
