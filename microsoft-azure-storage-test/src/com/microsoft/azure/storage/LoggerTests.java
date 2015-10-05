@@ -26,7 +26,6 @@ import java.security.InvalidKeyException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.LoggerFactory;
@@ -42,27 +41,6 @@ import com.microsoft.azure.storage.core.LogConstants;
 import com.microsoft.azure.storage.core.Logger;
 
 /*
- * To run pass these tests you must:
- * 
- * 1. Have the simple sl4j binding on your classpath. Add the following to the dependency section of your pom:
- * <dependency>
- * <groupId>org.slf4j</groupId>
- * <artifactId>slf4j-simple</artifactId>
- * <version>1.7.5</version>
- * <scope>test</scope>
- * </dependency>
- * 
- * 2. Create a "resources" directory under src/test. In src/test/resources create a "simplelogger.properties" file with
- * the following lines:
- * org.slf4j.simpleLogger.defaultLogLevel = trace
- * org.slf4j.simpleLogger.log.limited = error
- * org.slf4j.simpleLogger.showThreadName = false
- * 
- * 3. Remove or comment out the @Ignore annotation on the class
- * 
- * See http://www.slf4j.org/apidocs/org/slf4j/impl/SimpleLogger.html for more information.
- * 
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * If you'd like to use a different slf4j binding and/or not use Maven, you will need to add a different class path
  * dependency and set the properties for it accordingly. The dependency and the properties file will need to be put in
  * the appropriate locations for the logger implementation chosen.
@@ -75,7 +53,6 @@ import com.microsoft.azure.storage.core.Logger;
  * Then, you will need to modify the readAndCompareOutput method to parse the logs entries accordingly.
  */
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
-@Ignore
 public class LoggerTests {
 
     private final static String TRACE = "TRACE";

@@ -28,6 +28,10 @@ public class Tenant {
     private URI fileServiceSecondaryEndpoint;
     private URI queueServiceSecondaryEndpoint;
     private URI tableServiceSecondaryEndpoint;
+    private Integer blobHttpsPortOverride = null;
+    private Integer fileHttpsPortOverride = null;
+    private Integer queueHttpsPortOverride = null;
+    private Integer tableHttpsPortOverride = null;
 
     public String getTenantName() {
         return this.tenantName;
@@ -73,6 +77,22 @@ public class Tenant {
         return this.tableServiceSecondaryEndpoint;
     }
 
+    public Integer getBlobHttpsPortOverride() {
+        return this.blobHttpsPortOverride;
+    }
+
+    public Integer getFileHttpsPortOverride() {
+        return this.fileHttpsPortOverride;
+    }
+
+    public Integer getQueueHttpsPortOverride() {
+        return this.queueHttpsPortOverride;
+    }
+
+    public Integer getTableHttpsPortOverride() {
+        return this.tableHttpsPortOverride;
+    }
+    
     void setTenantName(String tenantName) {
         this.tenantName = tenantName;
     }
@@ -115,6 +135,22 @@ public class Tenant {
 
     void setTableServiceSecondaryEndpoint(URI tableServiceSecondaryEndpoint) {
         this.tableServiceSecondaryEndpoint = tableServiceSecondaryEndpoint;
+    }
+
+    void setBlobHttpsPortOverride(Integer blobHttpsPortOverride) {
+        this.blobHttpsPortOverride = blobHttpsPortOverride;
+    }
+
+    void setFileHttpsPortOverride(Integer fileHttpsPortOverride) {
+        this.fileHttpsPortOverride = fileHttpsPortOverride;
+    }
+
+    void setQueueHttpsPortOverride(Integer queueHttpsPortOverride) {
+        this.queueHttpsPortOverride = queueHttpsPortOverride;
+    }
+
+    void setTableHttpsPortOverride(Integer tableHttpsPortOverride) {
+        this.tableHttpsPortOverride = tableHttpsPortOverride;
     }
 
     public void assertSecondaryEndpoint() {

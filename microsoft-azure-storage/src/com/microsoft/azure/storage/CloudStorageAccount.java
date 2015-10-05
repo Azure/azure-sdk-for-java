@@ -26,7 +26,9 @@ import com.microsoft.azure.storage.analytics.CloudAnalyticsClient;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.SharedAccessSignatureHelper;
 import com.microsoft.azure.storage.core.StorageCredentialsHelper;
+import com.microsoft.azure.storage.core.UriQueryBuilder;
 import com.microsoft.azure.storage.core.Utility;
 import com.microsoft.azure.storage.file.CloudFileClient;
 import com.microsoft.azure.storage.queue.CloudQueue;
@@ -275,9 +277,9 @@ public final class CloudStorageAccount {
      * @return The {@link StorageUri}.
      * @throws URISyntaxException
      */
-    private static StorageUri getStorageUri(final Map<String, String> settings,
-            final String service, final String serviceEndpoint) throws URISyntaxException {
-        
+    private static StorageUri getStorageUri(
+            final Map<String, String> settings, final String service, final String serviceEndpoint)
+            throws URISyntaxException {
         // Explicit Endpoint Case
         if (settings.containsKey(serviceEndpoint)) {
             return new StorageUri(new URI(settings.get(serviceEndpoint)));
@@ -308,8 +310,8 @@ public final class CloudStorageAccount {
      *            A String that represents the service's base DNS name.
      * @return The default {@link StorageUri}.
      */
-    private static StorageUri getDefaultStorageUri(final String scheme, final String accountName,
-            final String service) throws URISyntaxException {
+    private static StorageUri getDefaultStorageUri(final String scheme, final String accountName, final String service)
+            throws URISyntaxException {
         if (Utility.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException(SR.SCHEME_NULL_OR_EMPTY);
         }
@@ -318,11 +320,9 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException(SR.ACCOUNT_NAME_NULL_OR_EMPTY);
         }
 
-        URI primaryUri = new URI(String.format(
-                PRIMARY_ENDPOINT_FORMAT, scheme, accountName, service));
-        URI secondaryUri = new URI(String.format(
-                SECONDARY_ENDPOINT_FORMAT,scheme, accountName,
-                SECONDARY_LOCATION_ACCOUNT_SUFFIX, service));
+        URI primaryUri = new URI(String.format(PRIMARY_ENDPOINT_FORMAT, scheme, accountName, service));
+        URI secondaryUri = new URI(
+                String.format(SECONDARY_ENDPOINT_FORMAT, scheme, accountName, SECONDARY_LOCATION_ACCOUNT_SUFFIX, service));
         return new StorageUri(primaryUri, secondaryUri);
     }
     
@@ -519,8 +519,7 @@ public final class CloudStorageAccount {
      * @throws URISyntaxException
      *             If <code>storageCredentials</code> specify an invalid account name.
      */
-    public CloudStorageAccount(final StorageCredentials storageCredentials)
-            throws URISyntaxException {
+    public CloudStorageAccount(final StorageCredentials storageCredentials) throws URISyntaxException {
         // Protocol defaults to HTTP unless otherwise specified
         this(storageCredentials, false, null);
     }
@@ -553,8 +552,8 @@ public final class CloudStorageAccount {
      * @throws URISyntaxException
      *             If <code>storageCredentials</code> specify an invalid account name.
      */
-    public CloudStorageAccount(final StorageCredentials storageCredentials,
-            final boolean useHttps) throws URISyntaxException {
+    public CloudStorageAccount(final StorageCredentials storageCredentials, final boolean useHttps)
+            throws URISyntaxException {
         this (storageCredentials, useHttps, null);
     }
     
@@ -582,20 +581,60 @@ public final class CloudStorageAccount {
      * @throws URISyntaxException
      *             If <code>storageCredentials</code> specify an invalid account name.
      */
-    public CloudStorageAccount(final StorageCredentials storageCredentials,
-            final boolean useHttps, final String endpointSuffix) throws URISyntaxException {
+    public CloudStorageAccount(
+            final StorageCredentials storageCredentials, final boolean useHttps, final String endpointSuffix)
+            throws URISyntaxException {
+        this(storageCredentials, useHttps, endpointSuffix, null);
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudStorageAccount</code> class using the specified
+     * account credentials.
+     * <p>
+     * With this constructor, the <code>CloudStorageAccount</code> object is constructed using the
+     * given HTTP storage service endpoint suffix (if any, otherwise the default is used).
+     * 
+     * The credentials provided when constructing the <code>CloudStorageAccount</code> object
+     * are used to authenticate all further requests against resources that are accessed via
+     * the <code>CloudStorageAccount</code> object or a client object created from it.
+     * A client object may be a {@link CloudBlobClient} object.
+     * 
+     * @param storageCredentials
+     *            A {@link StorageCredentials} object that represents the storage credentials
+     *            to use to authenticate this account.
+     * @param useHttps
+     *            <code>true</code> to use HTTPS to connect to the storage service endpoints;
+     *            otherwise, <code>false</code>.
+     * @param endpointSuffix
+     *            A String that represents the endpointSuffix to use, if any.
+     * @param accountName
+     *            A <code>String</code> that contains the account name.  This will be used in place of a
+     *            <code>null</code> {@link StorageCredentials#getAccountName()}, but the two must match if
+     *            both are not <code>null</code>.
+     * 
+     * @throws URISyntaxException
+     *             If <code>storageCredentials</code> specify an invalid account name.
+     */
+    public CloudStorageAccount(
+            final StorageCredentials storageCredentials, final boolean useHttps, final String endpointSuffix, String accountName)
+            throws URISyntaxException {
         Utility.assertNotNull("storageCredentials", storageCredentials);
+        if (Utility.isNullOrEmpty(accountName)) {
+            accountName = storageCredentials.getAccountName();
+        }
+        else if (!Utility.isNullOrEmpty(storageCredentials.getAccountName()) &&
+                !accountName.equals(storageCredentials.getAccountName())) {
+            
+            throw new IllegalArgumentException(SR.ACCOUNT_NAME_MISMATCH);
+        }
+        
         String protocol = useHttps ? Constants.HTTPS : Constants.HTTP;
         
         this.credentials = storageCredentials;
-        this.blobStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
-                getDNS(SR.BLOB, endpointSuffix));
-        this.fileStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
-                getDNS(SR.FILE, endpointSuffix));
-        this.queueStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
-                getDNS(SR.QUEUE, endpointSuffix));
-        this.tableStorageUri = getDefaultStorageUri(protocol, storageCredentials.getAccountName(),
-                getDNS(SR.TABLE, endpointSuffix));
+        this.blobStorageUri = getDefaultStorageUri(protocol, accountName, getDNS(SR.BLOB, endpointSuffix));
+        this.fileStorageUri = getDefaultStorageUri(protocol, accountName, getDNS(SR.FILE, endpointSuffix));
+        this.queueStorageUri = getDefaultStorageUri(protocol, accountName, getDNS(SR.QUEUE, endpointSuffix));
+        this.tableStorageUri = getDefaultStorageUri(protocol, accountName, getDNS(SR.TABLE, endpointSuffix));
         this.endpointSuffix = endpointSuffix;
         
         this.isBlobEndpointDefault = true;
@@ -726,7 +765,7 @@ public final class CloudStorageAccount {
         this.tableStorageUri = tableStorageUri;
         this.endpointSuffix = null;
     }
-    
+
     /**
      * Creates a new Analytics service client.
      * 
@@ -763,9 +802,6 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException(SR.MISSING_CREDENTIALS);
         }
 
-        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.credentials)) {
-            throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
-        }
         return new CloudBlobClient(this.getBlobStorageUri(), this.getCredentials());
     }
 
@@ -784,9 +820,11 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException(SR.MISSING_CREDENTIALS);
         }
 
-        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.credentials)) {
+        if (!StorageCredentialsHelper.canCredentialsGenerateClient(this.credentials)) {
+            
             throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
         }
+        
         return new CloudFileClient(this.getFileStorageUri(), this.getCredentials());
     }
 
@@ -804,9 +842,11 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException(SR.MISSING_CREDENTIALS);
         }
 
-        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.credentials)) {
+        if (!StorageCredentialsHelper.canCredentialsGenerateClient(this.credentials)) {
+            
             throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
         }
+        
         return new CloudQueueClient(this.getQueueStorageUri(), this.getCredentials());
     }
 
@@ -824,9 +864,11 @@ public final class CloudStorageAccount {
             throw new IllegalArgumentException(SR.MISSING_CREDENTIALS);
         }
 
-        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.credentials)) {
+        if (!StorageCredentialsHelper.canCredentialsGenerateClient(this.credentials)) {
+            
             throw new IllegalArgumentException(SR.CREDENTIALS_CANNOT_SIGN_REQUEST);
         }
+        
         return new CloudTableClient(this.getTableStorageUri(), this.getCredentials());
     }
 
@@ -837,10 +879,6 @@ public final class CloudStorageAccount {
      * @return A <code>java.net.URI</code> object that represents the Blob endpoint associated with this account.
      */
     public URI getBlobEndpoint() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         if (this.blobStorageUri == null) {
             return null;
         }
@@ -855,10 +893,6 @@ public final class CloudStorageAccount {
      * @return A {@link StorageUri} object that represents the Blob endpoint associated with this account.
      */
     public StorageUri getBlobStorageUri() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         return this.blobStorageUri;
     }
 
@@ -886,10 +920,6 @@ public final class CloudStorageAccount {
      * @return A <code>java.net.URI</code> object that represents the File endpoint associated with this account.
      */
     public URI getFileEndpoint() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         if (this.fileStorageUri == null) {
             return null;
         }
@@ -904,10 +934,6 @@ public final class CloudStorageAccount {
      * @return A {@link StorageUri} object that represents the File endpoint associated with this account.
      */
     public StorageUri getFileStorageUri() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         return this.fileStorageUri;
     }
 
@@ -917,10 +943,6 @@ public final class CloudStorageAccount {
      * @return A <code>java.net.URI</code> object that represents the queue endpoint associated with this account.
      */
     public URI getQueueEndpoint() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         if (this.queueStorageUri == null) {
             return null;
         }
@@ -934,10 +956,6 @@ public final class CloudStorageAccount {
      * @return A {@link StorageUri} object that represents the Queue endpoint associated with this account.
      */
     public StorageUri getQueueStorageUri() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         return this.queueStorageUri;
     }
 
@@ -947,10 +965,6 @@ public final class CloudStorageAccount {
      * @return A {@link StorageUri} object that represents the Table endpoint associated with this account.
      */
     public URI getTableEndpoint() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         if (this.tableStorageUri == null) {
             return null;
         }
@@ -964,11 +978,32 @@ public final class CloudStorageAccount {
      * @return A <code>java.net.URI</code> object that represents the Table endpoint associated with this account.
      */
     public StorageUri getTableStorageUri() {
-        if (this.getCredentials() instanceof StorageCredentialsSharedAccessSignature) {
-            throw new IllegalArgumentException(SR.ENDPOINT_INFORMATION_UNAVAILABLE);
-        }
-
         return this.tableStorageUri;
+    }
+    
+    /**
+     * Returns a shared access signature for the account.
+     * 
+     * @param policy
+     *            A {@link SharedAccessAccountPolicy} specifying the access policy for the shared access signature.
+     *            
+     * @return The query string returned includes the leading question mark.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws InvalidKeyException
+     *             If the key is invalid.
+     */
+    public String generateSharedAccessSignature(SharedAccessAccountPolicy policy)
+            throws InvalidKeyException, StorageException {
+        if (!StorageCredentialsHelper.canCredentialsSignRequest(this.getCredentials())) {
+            throw new IllegalArgumentException(SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY);
+        }
+        
+        final String sig = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForAccount(
+                this.credentials.getAccountName(), policy, this.getCredentials());
+        final UriQueryBuilder sasBuilder =
+                SharedAccessSignatureHelper.generateSharedAccessSignatureForAccount(policy, sig);
+        return sasBuilder.toString();
     }
 
     /**

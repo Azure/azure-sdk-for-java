@@ -20,7 +20,6 @@ import java.net.URI;
  * Represents credentials for anonymous access.
  */
 public final class StorageCredentialsAnonymous extends StorageCredentials {
-
     /**
      * Stores the singleton instance of this class.
      */
@@ -38,8 +37,8 @@ public final class StorageCredentialsAnonymous extends StorageCredentials {
     /**
      * Enforces the singleton pattern via a private constructor.
      */
-    protected StorageCredentialsAnonymous() {
-        // Empty Default Ctor
+    private StorageCredentialsAnonymous() {
+        // Empty Default Ctor 
     }
 
     /**

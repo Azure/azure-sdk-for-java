@@ -171,21 +171,12 @@ public class TableTests {
         assertEquals(EnumSet.of(SharedAccessTablePermissions.UPDATE), policy.getPermissions());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableCreateAndAttemptCreateOnceExists() throws StorageException, URISyntaxException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableCreateAndAttemptCreateOnceExists(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableCreateAndAttemptCreateOnceExists(tClient);
-    }
 
-    private void testTableCreateAndAttemptCreateOnceExists(CloudTableClient tClient) throws StorageException,
-            URISyntaxException {
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -209,20 +200,12 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableCreateExistsAndDelete() throws StorageException, URISyntaxException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableCreateExistsAndDelete(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableCreateExistsAndDelete(tClient);
-    }
 
-    private void testTableCreateExistsAndDelete(CloudTableClient tClient) throws StorageException, URISyntaxException {
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -237,20 +220,12 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableCreateIfNotExists() throws StorageException, URISyntaxException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableCreateIfNotExists(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableCreateIfNotExists(tClient);
-    }
 
-    private void testTableCreateIfNotExists(CloudTableClient tClient) throws StorageException, URISyntaxException {
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -265,20 +240,12 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableDeleteIfExists() throws StorageException, URISyntaxException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableDeleteIfExists(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableDeleteIfExists(tClient);
-    }
 
-    private void testTableDeleteIfExists(CloudTableClient tClient) throws StorageException, URISyntaxException {
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -324,21 +291,12 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableDeleteWhenExistAndNotExists() throws StorageException, URISyntaxException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableDeleteWhenExistAndNotExists(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableDeleteWhenExistAndNotExists(tClient);
-    }
 
-    private void testTableDeleteWhenExistAndNotExists(CloudTableClient tClient) throws StorageException,
-            URISyntaxException {
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -363,20 +321,12 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableDoesTableExist() throws StorageException, URISyntaxException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableDoesTableExist(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableDoesTableExist(tClient);
-    }
 
-    private void testTableDoesTableExist(CloudTableClient tClient) throws StorageException, URISyntaxException {
         String tableName = TableTestHelper.generateRandomTableName();
         CloudTable table = tClient.getTableReference(tableName);
 
@@ -391,22 +341,13 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Category(SlowTests.class)
     @Test
     public void testTableGetSetPermissionTest() throws StorageException, URISyntaxException, InterruptedException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableGetSetPermissionTest(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableGetSetPermissionTest(tClient);
-    }
 
-    private void testTableGetSetPermissionTest(CloudTableClient tClient) throws StorageException, URISyntaxException,
-            InterruptedException {
         String tableName = TableTestHelper.generateRandomTableName();
 
         CloudTable table = tClient.getTableReference(tableName);
@@ -450,22 +391,13 @@ public class TableTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Category(SlowTests.class)
     @Test
     public void testTableSas() throws StorageException, URISyntaxException, InvalidKeyException, InterruptedException {
 
         CloudTableClient tClient = TableTestHelper.createCloudTableClient();
-
-        tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableSas(tClient);
-
         tClient.getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableSas(tClient);
-    }
 
-    private void testTableSas(CloudTableClient tClient) throws InvalidKeyException, URISyntaxException,
-            StorageException, InterruptedException {
         // use capital letters to make sure SAS signature converts name to lower case correctly
         String name = "CAPS" + TableTestHelper.generateRandomTableName();
         CloudTable table = tClient.getTableReference(name);
@@ -507,7 +439,6 @@ public class TableTests {
                 new StorageCredentialsSharedAccessSignature(sasString));
 
         CloudTable policySasTable = tableClientFromPermission.getTableReference(name);
-        policySasTable.exists();
 
         // do not give the client and check that the new table's client has the correct perms
         CloudTable tableFromUri = new CloudTable(PathUtility.addToQuery(table.getStorageUri(), table

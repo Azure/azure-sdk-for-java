@@ -16,12 +16,8 @@ package com.microsoft.azure.storage.table;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.util.UUID;
-
-import javax.xml.stream.XMLStreamException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -58,33 +54,6 @@ public class TableSerializerTests {
     @After
     public void tableTestMethodTearDown() throws StorageException {
         this.table.deleteIfExists();
-    }
-
-    /**
-     * In some versions of Java, when more than 64000 XmlReaders are created with the same factory, bizarre
-     * error messages are thrown on every subsequent attempt to make an XmlReader: “Message: JAXP00010001: The parser
-     * has encountered more than "64000" entity expansions in this document; this is the limit imposed by the JDK.” This
-     * is an issue with our library as high concurrency, or even simply long running processes, will have every service
-     * request which must read a result fail after 64000 readers have been made. This tests that our workaround is
-     * functioning correctly. The JDK bug applies to, at least, versions 6u65 and 7u45 and will be fixed in future
-     * versions.
-     * 
-     * @see <a href="https://bugs.openjdk.java.net/browse/JDK-8028111">Oracle JDK Bug</a>
-     * @throws XMLStreamException
-     */
-    @Test
-    public void testStaxEntityExpansionExceptionHandling() throws XMLStreamException {
-        String testXML = "<?xml version=\"1.0\"?><microsoftazurestorage>javasdk</microsoftazurestorage>";
-
-        for (int i = 0; i < 64001; i++) {
-            ByteArrayInputStream stream = new ByteArrayInputStream(testXML.getBytes());
-            DeserializationHelper.createXMLStreamReaderFromStream(stream);
-        }
-
-        for (int i = 0; i < 64001; i++) {
-            StringReader reader = new StringReader(testXML);
-            DeserializationHelper.createXMLStreamReaderFromReader(reader);
-        }
     }
 
     @Test
@@ -174,13 +143,9 @@ public class TableSerializerTests {
         assertEquals(retrievedStoreAsRef.getStoreAsString(), null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testComplexEntityInsert() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testComplexEntityInsert(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testComplexEntityInsert(options, false);
@@ -215,13 +180,9 @@ public class TableSerializerTests {
         ref.assertEquality(retrievedComplexRef);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testDoubles() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testDoubles(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testDoubles(options, false);
@@ -256,13 +217,9 @@ public class TableSerializerTests {
         ref.assertEquality(retrievedComplexRef);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testWhitespaceTest() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testWhitespaceTest(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testWhitespaceTest(options, false);
@@ -299,13 +256,9 @@ public class TableSerializerTests {
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testWhitespaceOnEmptyKeysTest() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testWhitespaceOnEmptyKeysTest(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testWhitespaceOnEmptyKeysTest(options, false);
@@ -345,13 +298,9 @@ public class TableSerializerTests {
         this.table.execute(TableOperation.delete(ref), options, null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testNewLineTest() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testNewLineTest(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testNewLineTest(options, false);
@@ -388,13 +337,9 @@ public class TableSerializerTests {
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testNulls() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testNulls(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testNulls(options, false);

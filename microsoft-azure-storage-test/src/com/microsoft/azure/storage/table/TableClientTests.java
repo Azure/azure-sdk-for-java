@@ -55,7 +55,6 @@ import com.microsoft.azure.storage.table.TableTestHelper.Class2;
 /**
  * Table Client Tests
  */
-@SuppressWarnings("deprecation")
 public class TableClientTests {
 
     @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
@@ -63,8 +62,7 @@ public class TableClientTests {
     public void testListTablesSegmented() throws URISyntaxException, StorageException {
         TableRequestOptions options = new TableRequestOptions();
         TablePayloadFormat[] formats =
-                {TablePayloadFormat.AtomPub,
-                TablePayloadFormat.JsonFullMetadata,
+                {TablePayloadFormat.JsonFullMetadata,
                 TablePayloadFormat.Json,
                 TablePayloadFormat.JsonNoMetadata}; 
 
@@ -143,16 +141,8 @@ public class TableClientTests {
     @Test
     public void testListTablesSegmentedNoPrefix() throws URISyntaxException, StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testListTablesSegmentedNoPrefix(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testListTablesSegmentedNoPrefix(options);
-    }
 
-    private void testListTablesSegmentedNoPrefix(TableRequestOptions options) throws URISyntaxException,
-            StorageException {
         final CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         String tableBaseName = TableTestHelper.generateRandomTableName();
 
@@ -208,15 +198,8 @@ public class TableClientTests {
     @Test
     public void testListTablesWithIterator() throws URISyntaxException, StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testListTablesWithIterator(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testListTablesWithIterator(options);
-    }
 
-    private void testListTablesWithIterator(TableRequestOptions options) throws URISyntaxException, StorageException {
         final CloudTableClient tClient = TableTestHelper.createCloudTableClient();
         String tableBaseName = TableTestHelper.generateRandomTableName();
 
@@ -580,8 +563,8 @@ public class TableClientTests {
                 transformedTable.execute(TableOperation.insert(ent));
             }
             catch (StorageException e) {
-                assertEquals(404, e.getHttpStatusCode());
-                assertEquals("ResourceNotFound", e.getExtendedErrorInformation().getErrorCode());
+                assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.getHttpStatusCode());
+                assertEquals("AuthorizationFailure", e.getExtendedErrorInformation().getErrorCode());
             }
 
             ent = new Class1("javatables_batch_1", "05");
@@ -590,8 +573,8 @@ public class TableClientTests {
                 transformedTable.execute(TableOperation.insert(ent));
             }
             catch (StorageException e) {
-                assertEquals(404, e.getHttpStatusCode());
-                assertEquals("ResourceNotFound", e.getExtendedErrorInformation().getErrorCode());
+                assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.getHttpStatusCode());
+                assertEquals("AuthorizationFailure", e.getExtendedErrorInformation().getErrorCode());
             }
 
         }

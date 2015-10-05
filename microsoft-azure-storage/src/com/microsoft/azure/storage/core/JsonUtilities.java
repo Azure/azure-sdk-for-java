@@ -13,19 +13,18 @@
  * limitations under the License.
  */
 
-package com.microsoft.azure.storage.table;
+package com.microsoft.azure.storage.core;
 
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.microsoft.azure.storage.core.SR;
 
 /***
  * RESERVED FOR INTERNAL USE. A class to hold utility methods for parsing OData payloads
  */
-final class ODataUtilities {
+public final class JsonUtilities {
     /***
      * Reserved for internal use. Asserts that the current name of the parser equals the expected value
      * 
@@ -34,7 +33,7 @@ final class ODataUtilities {
      * @param expectedValue
      *            The expected current name of the parser's current token.
      */
-    protected static void assertIsExpectedFieldName(final JsonParser parser, final String expectedValue)
+    public static void assertIsExpectedFieldName(final JsonParser parser, final String expectedValue)
             throws JsonParseException, IOException {
         final String actualValue = parser.getCurrentName();
         if (expectedValue == null) {
@@ -57,7 +56,7 @@ final class ODataUtilities {
      * @param parser
      *            The {@link JsonParser} whose current token to check.
      */
-    protected static void assertIsFieldNameJsonToken(final JsonParser parser) throws JsonParseException {
+    public static void assertIsFieldNameJsonToken(final JsonParser parser) throws JsonParseException {
         if (!(parser.getCurrentToken() == JsonToken.FIELD_NAME)) {
             throw new JsonParseException(SR.EXPECTED_A_FIELD_NAME, parser.getCurrentLocation());
         }
@@ -69,7 +68,7 @@ final class ODataUtilities {
      * @param parser
      *            The {@link JsonParser} whose current token to check.
      */
-    protected static void assertIsStartObjectJsonToken(final JsonParser parser) throws JsonParseException {
+    public static void assertIsStartObjectJsonToken(final JsonParser parser) throws JsonParseException {
         if (!(parser.getCurrentToken() == JsonToken.START_OBJECT)) {
             throw new JsonParseException(SR.EXPECTED_START_OBJECT, parser.getCurrentLocation());
         }
@@ -81,7 +80,7 @@ final class ODataUtilities {
      * @param parser
      *            The {@link JsonParser} whose current token to check.
      */
-    protected static void assertIsEndObjectJsonToken(final JsonParser parser) throws JsonParseException {
+    public static void assertIsEndObjectJsonToken(final JsonParser parser) throws JsonParseException {
         if (!(parser.getCurrentToken() == JsonToken.END_OBJECT)) {
             throw new JsonParseException(SR.EXPECTED_END_OBJECT, parser.getCurrentLocation());
         }
@@ -93,7 +92,7 @@ final class ODataUtilities {
      * @param parser
      *            The {@link JsonParser} whose current token to check.
      */
-    protected static void assertIsStartArrayJsonToken(final JsonParser parser) throws JsonParseException {
+    public static void assertIsStartArrayJsonToken(final JsonParser parser) throws JsonParseException {
         if (!(parser.getCurrentToken() == JsonToken.START_ARRAY)) {
             throw new JsonParseException(SR.EXPECTED_START_ARRAY, parser.getCurrentLocation());
         }
@@ -105,7 +104,7 @@ final class ODataUtilities {
      * @param parser
      *            The {@link JsonParser} whose current token to check.
      */
-    protected static void assertIsEndArrayJsonToken(final JsonParser parser) throws JsonParseException {
+    public static void assertIsEndArrayJsonToken(final JsonParser parser) throws JsonParseException {
         if (!(parser.getCurrentToken() == JsonToken.END_ARRAY)) {
             throw new JsonParseException(SR.EXPECTED_END_ARRAY, parser.getCurrentLocation());
         }

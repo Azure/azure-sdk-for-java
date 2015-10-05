@@ -34,8 +34,10 @@ import java.util.HashMap;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.SharedAccessPolicy;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -110,108 +112,33 @@ public abstract class CloudBlob implements ListBlobItem {
      * Represents the blob client.
      */
     protected CloudBlobClient blobServiceClient;
-
-    /**
-     * Creates an instance of the <code>CloudBlob</code> class.
-     *
-     * @param type
-     *            A {@link BlobType} value which represents the type of the blob.
-     */
-    protected CloudBlob(final BlobType type) {
-        this.properties = new BlobProperties(type);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlob</code> class using the specified URI and cloud blob client.
-     *
-     * @param type
-     *            A {@link BlobType} value which represents the type of the blob.
-     * @param uri
-     *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    protected CloudBlob(final BlobType type, final StorageUri uri, final CloudBlobClient client)
-            throws StorageException {
-        this(type);
-        this.parseQueryAndVerify(uri, client == null ? null : client.getCredentials());
-
-        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
-        if (client != null) {
-            this.blobServiceClient = client;
-        }
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlob</code> class using the specified URI, cloud blob client, and cloud
-     * blob container.
-     *
-     * @param type
-     *            A {@link BlobType} value which represents the type of the blob.
-     * @param uri
-     *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * @param container
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    protected CloudBlob(final BlobType type, final StorageUri uri, final CloudBlobClient client,
-            final CloudBlobContainer container) throws StorageException {
-        this(type, uri, client);
-        this.container = container;
-    }
     
     /**
-     * Creates an instance of the <code>CloudBlob</code> class using the specified URI, snapshot ID, and cloud blob
-     * client.
+     * Creates an instance of the <code>CloudBlob</code> class using the specified type, name, snapshot ID, and
+     * container.
      *
      * @param type
      *            A {@link BlobType} value which represents the type of the blob.
-     * @param uri
-     *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
+     * @param blobName
+     *            Name of the blob.
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot version, if applicable.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
+     * @param container
+     *            The reference to the parent container.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    protected CloudBlob(final BlobType type, final StorageUri uri, final String snapshotID, final CloudBlobClient client)
-            throws StorageException {
-        this(type, uri, client);
-        if (snapshotID != null) {
-            if (this.snapshotID != null) {
-                throw new IllegalArgumentException(SR.SNAPSHOT_QUERY_OPTION_ALREADY_DEFINED);
-            }
-            else {
-                this.snapshotID = snapshotID;
-            }
-        }
-    }
-    
-    /**
-     * Creates an instance of the <code>CloudBlob</code> class using the specified URI and cloud blob client.
-     *
-     * @param type
-     *            A {@link BlobType} value which represents the type of the blob.
-     * @param uri
-     *            A {@link StorageUri} object that represents the URI to the blob, beginning with the container name.
-     * @param credentials
-     *            A {@link StorageCredentials} object used to authenticate access.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    protected CloudBlob(final BlobType type, final StorageUri uri, final StorageCredentials credentials)
-            throws StorageException {
-        this(type, uri, null /* snapshotID */, credentials);
+    protected CloudBlob(final BlobType type, String blobName, String snapshotID, CloudBlobContainer container)
+            throws URISyntaxException {
+        Utility.assertNotNullOrEmpty("blobName", blobName);
+        Utility.assertNotNull("container", container);
+
+        this.storageUri = PathUtility.appendPathToUri(container.getStorageUri(), blobName);
+        this.name = blobName;
+        this.blobServiceClient = container.getServiceClient();
+        this.container = container;
+        this.snapshotID = snapshotID;
+        this.properties = new BlobProperties(type);
     }
     
     /**
@@ -231,7 +158,7 @@ public abstract class CloudBlob implements ListBlobItem {
      */
     protected CloudBlob(final BlobType type, final StorageUri uri, final String snapshotID,
             final StorageCredentials credentials) throws StorageException {
-        this(type);
+        this.properties = new BlobProperties(type);
         this.parseQueryAndVerify(uri, credentials);
 
         if (snapshotID != null) {
@@ -709,123 +636,6 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob.
-     *
-     * @param sourceBlob
-     *            A <code>CloudBlob</code> object that represents the source blob to copy.
-     *
-     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     * 
-     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(URI)} instead.
-     */
-    @Deprecated
-    @DoesServiceRequest
-    public final String startCopyFromBlob(final CloudBlob sourceBlob) throws StorageException, URISyntaxException {
-        return this.startCopyFromBlob(sourceBlob, null /* sourceAccessCondition */,
-                null /* destinationAccessCondition */, null /* options */, null /* opContext */);
-    }
-
-    /**
-     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
-     * specified access conditions, lease ID, request options, and operation context.
-     *
-     * @param sourceBlob
-     *            A <code>CloudBlob</code> object that represents the source blob to copy.
-     * @param sourceAccessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the source blob.
-     * @param destinationAccessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
-     * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
-     *            <code>null</code> will use the default request options from the associated service client (
-     *            {@link CloudBlobClient}).
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     *
-     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     * 
-     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(
-     *             URI, AccessCondition, AccessCondition, BlobRequestOptions, OperationContext)} instead.
-     */
-    @Deprecated
-    @DoesServiceRequest
-    public final String startCopyFromBlob(final CloudBlob sourceBlob, final AccessCondition sourceAccessCondition,
-            final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException, URISyntaxException {
-        Utility.assertNotNull("sourceBlob", sourceBlob);
-        return this.startCopy(
-                sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getQualifiedUri()),
-                sourceAccessCondition, destinationAccessCondition, options, opContext);
-    }
-
-    /**
-     * Requests the service to start copying a URI's contents, properties, and metadata to a new blob.
-     *
-     * @param source
-     *            A <code>java.net.URI</code> The source URI.  URIs for resources outside of Azure
-     *            may only be copied into block blobs.
-     *
-     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     *
-     * @throws StorageException
-     *            If a storage service error occurred.
-     * 
-     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(URI)} instead.
-     */
-    @Deprecated
-    @DoesServiceRequest
-    public final String startCopyFromBlob(final URI source) throws StorageException {
-        return this.startCopy(source, null /* sourceAccessCondition */, null /* destinationAccessCondition */,
-                null /* options */, null /* opContext */);
-    }
-
-    /**
-     * Requests the service to start copying a URI's contents, properties, and metadata to a new blob, using the
-     * specified access conditions, lease ID, request options, and operation context.
-     *
-     * @param source
-     *            A <code>java.net.URI</code> The source URI.  URIs for resources outside of Azure
-     *            may only be copied into block blobs.
-     * @param sourceAccessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the source.
-     * @param destinationAccessCondition
-     *            An {@link AccessCondition} object that represents the access conditions for the destination.
-     * @param options
-     *            A {@link BlobRequestOptions} object that specifies any additional options for the request.
-     *            Specifying <code>null</code> will use the default request options from the associated
-     *            service client ({@link CloudBlobClient}).
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation.
-     *            This object is used to track requests to the storage service, and to provide additional
-     *            runtime information about the operation.
-     *
-     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
-     *
-     * @throws StorageException
-     *            If a storage service error occurred.
-     * 
-     * @deprecated as of 3.0.0. Use {@link CloudBlob#startCopy(
-     *            URI, AccessCondition, AccessCondition, BlobRequestOptions, OperationContext)} instead.
-     */
-    @Deprecated
-    @DoesServiceRequest
-    public final String startCopyFromBlob(final URI source, final AccessCondition sourceAccessCondition,
-            final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
-            throws StorageException {
-        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
-    }
-
-    /**
      * Requests the service to start copying a URI's contents, properties, and metadata to a new blob.
      *
      * @param source
@@ -1035,7 +845,6 @@ public abstract class CloudBlob implements ListBlobItem {
                 StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
             }
 
-            @SuppressWarnings("deprecation")
             @Override
             public CloudBlob preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
                     throws Exception {
@@ -1046,13 +855,13 @@ public abstract class CloudBlob implements ListBlobItem {
                 CloudBlob snapshot = null;
                 final String snapshotTime = BlobResponse.getSnapshotTime(this.getConnection());
                 if (blob instanceof CloudBlockBlob) {
-                    snapshot = new CloudBlockBlob(blob.getStorageUri(), snapshotTime, client);
+                    snapshot = new CloudBlockBlob(blob.getName(), snapshotTime, CloudBlob.this.getContainer());
                 }
                 else if (blob instanceof CloudPageBlob) {
-                    snapshot = new CloudPageBlob(blob.getStorageUri(), snapshotTime, client);
+                    snapshot = new CloudPageBlob(blob.getName(), snapshotTime, CloudBlob.this.getContainer());
                 }
                 else if (blob instanceof CloudAppendBlob) {
-                    snapshot = new CloudAppendBlob(blob.getStorageUri(), snapshotTime, client);
+                    snapshot = new CloudAppendBlob(blob.getName(), snapshotTime, CloudBlob.this.getContainer());
                 }
                 snapshot.setProperties(blob.properties);
 
@@ -2060,14 +1869,13 @@ public abstract class CloudBlob implements ListBlobItem {
 
         return this.generateSharedAccessSignature(policy, null /* headers */, groupPolicyIdentifier);
     }
-
+    
     /**
      * Returns a shared access signature for the blob using the specified group policy identifier and operation context.
      * Note this does not contain the leading "?".
      *
      * @param policy
-     *            A <code>{@link SharedAccessPolicy}</code> object that represents the access policy for the shared
-     *            access
+     *            A <code>SharedAccessPolicy</code> object that represents the access policy for the shared access
      *            signature.
      * @param headers
      *            A <code>{@link SharedAccessBlobHeaders}</code> object that represents the optional header values to
@@ -2084,25 +1892,60 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy,
-            final SharedAccessBlobHeaders headers, final String groupPolicyIdentifier) throws InvalidKeyException,
-            StorageException {
+    public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy, final SharedAccessBlobHeaders headers,
+            final String groupPolicyIdentifier)
+            throws InvalidKeyException, StorageException {
+
+        return this.generateSharedAccessSignature(policy, headers, groupPolicyIdentifier,
+                null /* IP range */, null /* protocols */);
+    }
+    
+    /**
+     * Returns a shared access signature for the blob using the specified group policy identifier and operation context.
+     * Note this does not contain the leading "?".
+     *
+     * @param policy
+     *            A <code>{@link SharedAccessPolicy}</code> object that represents the access policy for the shared
+     *            access signature.
+     * @param headers
+     *            A <code>{@link SharedAccessBlobHeaders}</code> object that represents the optional header values to
+     *            set for a blob accessed with this shared access signature.
+     * @param groupPolicyIdentifier
+     *            A <code>String</code> that represents the container-level access policy.
+     * @param ipRange
+     *            A {@link IPRange} object containing the range of allowed IP addresses.
+     * @param protocols
+     *            A {@link SharedAccessProtocols} representing the allowed Internet protocols.
+     *
+     * @return A <code>String</code> that represents the shared access signature.
+     *
+     * @throws IllegalArgumentException
+     *             If the credentials are invalid or the blob is a snapshot.
+     * @throws InvalidKeyException
+     *             If the credentials are invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public String generateSharedAccessSignature(
+            final SharedAccessBlobPolicy policy, final SharedAccessBlobHeaders headers,
+            final String groupPolicyIdentifier, final IPRange ipRange, final SharedAccessProtocols protocols)
+            throws InvalidKeyException, StorageException {
         
         if (!StorageCredentialsHelper.canCredentialsSignRequest(this.blobServiceClient.getCredentials())) {
             throw new IllegalArgumentException(SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY);
         }
-
+        
         if (this.isSnapshot()) {
             throw new IllegalArgumentException(SR.CANNOT_CREATE_SAS_FOR_SNAPSHOTS);
         }
 
         final String resourceName = this.getCanonicalName(true);
 
-        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(policy, headers,
-                groupPolicyIdentifier, resourceName, this.blobServiceClient);
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(
+                policy, headers, groupPolicyIdentifier, resourceName, ipRange, protocols, this.blobServiceClient);
 
-        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlobAndFile(policy,
-                headers, groupPolicyIdentifier, "b", signature);
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlobAndFile(
+                policy, headers, groupPolicyIdentifier, "b", ipRange, protocols, signature);
 
         return builder.toString();
     }
@@ -2148,13 +1991,12 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     @Override
     public final CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
         if (this.container == null) {
             final StorageUri containerURI = PathUtility.getContainerURI(this.getStorageUri(),
                     this.blobServiceClient.isUsePathStyleUris());
-            this.container = new CloudBlobContainer(containerURI, this.blobServiceClient);
+            this.container = new CloudBlobContainer(containerURI, this.blobServiceClient.getCredentials());
         }
 
         return this.container;

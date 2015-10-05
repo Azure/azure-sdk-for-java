@@ -145,123 +145,23 @@ public final class CloudPageBlob extends CloudBlob {
             throws StorageException {
         super(BlobType.PAGE_BLOB, blobAbsoluteUri, snapshotID, credentials);
     }
-
+    
     /**
-     * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI and cloud blob client.
-     * 
-     * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudPageBlob#CloudPageBlob(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudPageBlob(final URI blobAbsoluteUri, final CloudBlobClient client) throws StorageException {
-        this(new StorageUri(blobAbsoluteUri), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI and cloud blob client.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object which represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudPageBlob#CloudPageBlob(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudPageBlob(final StorageUri blobAbsoluteUri, final CloudBlobClient client) throws StorageException {
-        super(BlobType.PAGE_BLOB, blobAbsoluteUri, client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI, cloud blob client, and cloud
-     * blob container.
-     * 
-     * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * @param container
-     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudPageBlob#CloudPageBlob(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudPageBlob(final URI blobAbsoluteUri, final CloudBlobClient client, final CloudBlobContainer container)
-            throws StorageException {
-        this(new StorageUri(blobAbsoluteUri), client, container);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI, cloud blob client, and cloud
-     * blob container.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object which represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * @param container
-     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudPageBlob#CloudPageBlob(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudPageBlob(final StorageUri blobAbsoluteUri, final CloudBlobClient client,
-            final CloudBlobContainer container) throws StorageException {
-        super(BlobType.PAGE_BLOB, blobAbsoluteUri, client, container);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI, snapshot ID, and cloud blob
-     * client.
-     * 
-     * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object which represents the absolute URI to the blob.
+     * Creates an instance of the <code>CloudPageBlob</code> class using the specified type, name, snapshot ID, and
+     * container.
+     *
+     * @param blobName
+     *            Name of the blob.
      * @param snapshotID
-     *            A <code>String</code> which represents the snapshot version, if applicable.
-     * @param client
-     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudPageBlob#CloudPageBlob(URI, String, StorageCredentials)}
+     *            A <code>String</code> that represents the snapshot version, if applicable.
+     * @param container
+     *            The reference to the parent container.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    @Deprecated
-    public CloudPageBlob(final URI blobAbsoluteUri, final String snapshotID, final CloudBlobClient client)
-            throws StorageException {
-        this(new StorageUri(blobAbsoluteUri), snapshotID, client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudPageBlob</code> class using the specified URI, snapshot ID, and cloud blob
-     * client.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object which represents the absolute URI to the blob.
-     * @param snapshotID
-     *            A <code>String</code> which represents the snapshot version, if applicable.
-     * @param client
-     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudPageBlob#CloudPageBlob(StorageUri, String, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudPageBlob(final StorageUri blobAbsoluteUri, final String snapshotID, final CloudBlobClient client)
-            throws StorageException {
-        super(BlobType.PAGE_BLOB, blobAbsoluteUri, snapshotID, client);
+    protected CloudPageBlob(String blobName, String snapshotID, CloudBlobContainer container)
+            throws URISyntaxException {
+        super(BlobType.PAGE_BLOB, blobName, snapshotID, container);
     }
     
     /**

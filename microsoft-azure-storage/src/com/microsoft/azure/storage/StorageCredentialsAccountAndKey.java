@@ -15,6 +15,11 @@
 package com.microsoft.azure.storage;
 
 import java.net.URI;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import com.microsoft.azure.storage.core.Base64;
 import com.microsoft.azure.storage.core.SR;
@@ -27,10 +32,19 @@ import com.microsoft.azure.storage.core.Utility;
 public final class StorageCredentialsAccountAndKey extends StorageCredentials {
 
     /**
-     * The internal Credentials associated with the StorageCredentials.
+     * Stores the Account name for the credentials.
      */
-    @SuppressWarnings("deprecation")
-    private Credentials credentials;
+    private String accountName;
+
+    /**
+     * Stores a reference to the hmacsha256 Mac.
+     */
+    private Mac hmacSha256;
+
+    /**
+     * Stores the key.
+     */
+    private byte[] key;
 
     /**
      * Creates an instance of the <code>StorageCredentialsAccountAndKey</code> class, using the specified storage
@@ -41,9 +55,17 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * @param key
      *            An array of bytes that represent the account access key.
      */
-    @SuppressWarnings("deprecation")
     public StorageCredentialsAccountAndKey(final String accountName, final byte[] key) {
-        this.credentials = new Credentials(accountName, key);
+        if (Utility.isNullOrEmptyOrWhitespace(accountName)) {
+            throw new IllegalArgumentException(SR.INVALID_ACCOUNT_NAME);
+        }
+
+        if (key == null || key.length == 0) {
+            throw new IllegalArgumentException(SR.INVALID_KEY);
+        }
+
+        this.accountName = accountName;
+        this.key = key;
     }
 
     /**
@@ -55,9 +77,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * @param key
      *            A <code>String</code> that represents the Base-64-encoded account access key.
      */
-    @SuppressWarnings("deprecation")
     public StorageCredentialsAccountAndKey(final String accountName, final String key) {
-        this.credentials = new Credentials(accountName, key);
+        this(accountName, Base64.decode(key));
     }
 
     /**
@@ -65,10 +86,9 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * 
      * @return A <code>String</code> that contains the account name.
      */
-    @SuppressWarnings("deprecation")
     @Override
     public String getAccountName() {
-        return this.credentials.getAccountName();
+        return this.accountName;
     }
     
     /**
@@ -76,9 +96,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * 
      * @return A <code>String</code> that represents the Base64-encoded access key.
      */
-    @SuppressWarnings("deprecation")
     public String exportBase64EncodedKey() {
-        return this.credentials.getKey().getBase64EncodedKey();
+        return Base64.encode(this.key);
     }
 
     /**
@@ -86,9 +105,9 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * 
      * @return A byte array that represents the access key.
      */
-    @SuppressWarnings("deprecation")
     public byte[] exportKey() {
-        return this.credentials.getKey().getKey();
+        final byte[] copy = this.key.clone();
+        return copy;
     }
     
     /**
@@ -97,9 +116,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * @param accountName
      *          A <code>String</code> that contains the account name.
      */
-    @SuppressWarnings("deprecation")
     public void setAccountName(String accountName) {
-        this.credentials.setAccountName(accountName);
+        this.accountName = accountName;
     }
     
     /**
@@ -108,13 +126,8 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * @param key
      *        A <code>String</code> that represents the name of the access key to be used when signing the request.
      */
-    @SuppressWarnings("deprecation")
-    public void updateKey(final String key) {
-        if (Utility.isNullOrEmptyOrWhitespace(key) || !Base64.validateIsBase64String(key)) {
-            throw new IllegalArgumentException(SR.INVALID_KEY);
-        }
-
-        this.credentials.setKey(new StorageKey(Base64.decode(key)));
+    public synchronized void updateKey(final String key) {
+        this.updateKey(Base64.decode(key));
     }
     
     /**
@@ -123,49 +136,13 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * @param key
      *        A <code>String</code> that represents the name of the access key to be used when signing the request.
      */
-    @SuppressWarnings("deprecation")
-    public void updateKey(final byte[] key) {
+    public synchronized void updateKey(final byte[] key) {
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException(SR.INVALID_KEY);
         }
 
-        this.credentials.setKey(new StorageKey(key));
-    }
-
-    /**
-     * Gets the name of the key used by these credentials.
-     * @deprecated as of 3.0.0. The key name property is only useful internally.
-     */
-    @Deprecated
-    public String getAccountKeyName() {
-        return this.credentials.getKeyName();
-    }
-
-    /**
-     * Returns the internal credentials associated with the storage credentials.
-     * 
-     * @return A <code>Credentials</code> object that contains the internal credentials associated with this instance of
-     *         the <code>StorageCredentialsAccountAndKey</code> class.
-     * @deprecated as of 3.0.0. Please use {@link #getAccountName()}, {@link #exportKey()}, or 
-     *          {@link #exportBase64EncodedKey()}
-     */
-    @Deprecated
-    public Credentials getCredentials() {
-        return this.credentials;
-    }
-
-    /**
-     * Sets the credentials.
-     * 
-     * @param credentials
-     *            A <code>Credentials</code> object that represents the credentials to set for this instance of the
-     *            <code>StorageCredentialsAccountAndKey</code> class.
-     * @deprecated as of 3.0.0. Please use {@link #setAccountName(String)}, {@link #updateKey(String)}, or 
-     *          {@link #updateKey(byte[])}
-     */
-    @Deprecated
-    public void setCredentials(final Credentials credentials) {
-        this.credentials = credentials;
+        this.key = key;
+        this.hmacSha256 = null;
     }
 
     /**
@@ -176,11 +153,10 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
      * 
      * @return A <code>String</code> that represents this object, optionally including sensitive data.
      */
-    @SuppressWarnings("deprecation")
     @Override
     public String toString(final boolean exportSecrets) {
         return String.format("%s=%s;%s=%s", CloudStorageAccount.ACCOUNT_NAME_NAME, this.getAccountName(),
-                CloudStorageAccount.ACCOUNT_KEY_NAME, exportSecrets ? this.credentials.getKey().getBase64EncodedKey()
+                CloudStorageAccount.ACCOUNT_KEY_NAME, exportSecrets ? this.exportBase64EncodedKey()
                         : "[key hidden]");
     }
 
@@ -192,5 +168,27 @@ public final class StorageCredentialsAccountAndKey extends StorageCredentials {
     @Override
     public StorageUri transformUri(StorageUri resourceUri, OperationContext opContext) {
         return resourceUri;
+    }
+    
+    /**
+     * Gets the HmacSha256 associated with the account key.
+     * 
+     * @return A <code>MAC</code> created with the account key.
+     * 
+     * @throws InvalidKeyException
+     *             If the key is not a valid storage key.
+     */
+    public synchronized Mac getHmac256() throws InvalidKeyException {
+        if (this.hmacSha256 == null) {
+            // Initializes the HMAC-SHA256 Mac and SecretKey.
+            try {
+                this.hmacSha256 = Mac.getInstance("HmacSHA256");
+            }
+            catch (final NoSuchAlgorithmException e) {
+                throw new IllegalArgumentException();
+            }
+            this.hmacSha256.init(new SecretKeySpec(this.key, "HmacSHA256"));
+        }
+        return this.hmacSha256;
     }
 }

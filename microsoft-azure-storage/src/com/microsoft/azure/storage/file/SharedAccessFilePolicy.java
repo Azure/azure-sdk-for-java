@@ -53,7 +53,7 @@ public final class SharedAccessFilePolicy extends SharedAccessPolicy {
     /**
      * Converts this policy's permissions to a string.
      * 
-     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format,
+     * @return A <code>String</code> that represents the shared access permissions in the "rcwdl" format,
      *         which is described at {@link #setPermissionsFromString(String)}.
      */
     @Override
@@ -62,11 +62,15 @@ public final class SharedAccessFilePolicy extends SharedAccessPolicy {
             return Constants.EMPTY_STRING;
         }
 
-        // The service supports a fixed order => rwdl
+        // The service supports a fixed order => rcwdl
         final StringBuilder builder = new StringBuilder();
 
         if (this.permissions.contains(SharedAccessFilePermissions.READ)) {
             builder.append("r");
+        }
+
+        if (this.permissions.contains(SharedAccessFilePermissions.CREATE)) {
+            builder.append("c");
         }
 
         if (this.permissions.contains(SharedAccessFilePermissions.WRITE)) {
@@ -89,13 +93,13 @@ public final class SharedAccessFilePolicy extends SharedAccessPolicy {
      * 
      * @param value
      *            A <code>String</code> that represents the shared access permissions. The string must contain one or
-     *            more of the following values. Note they must be lowercase, and the order that they are specified must
-     *            be in the order of "rwdl".
+     *            more of the following values. Note they must all be lowercase.
      *            <ul>
+     *            <li><code>r</code>: Read access.</li>
+     *            <li><code>c</code>: Create access.</li>
+     *            <li><code>w</code>: Write access.</li>
      *            <li><code>d</code>: Delete access.</li>
      *            <li><code>l</code>: List access.</li>
-     *            <li><code>r</code>: Read access.</li>
-     *            <li><code>w</code>: Write access.</li>
      *            </ul>
      */
     public void setPermissionsFromString(final String value) {
@@ -104,6 +108,9 @@ public final class SharedAccessFilePolicy extends SharedAccessPolicy {
             switch (c) {
                 case 'r':
                     initial.add(SharedAccessFilePermissions.READ);
+                    break;
+                case 'c':
+                    initial.add(SharedAccessFilePermissions.CREATE);
                     break;
                 case 'w':
                     initial.add(SharedAccessFilePermissions.WRITE);

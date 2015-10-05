@@ -89,8 +89,9 @@ public class TestRunners {
 
     // Test suites
     @RunWith(Suite.class)
-    @SuiteClasses({ EventFiringTests.class, GenericTests.class, LoggerTests.class, MaximumExecutionTimeTests.class,
-        SecondaryTests.class,  ServicePropertiesTests.class, StorageAccountTests.class, StorageUriTests.class })
+    @SuiteClasses({ AccountSasTests.class, EventFiringTests.class, GenericTests.class, LoggerTests.class,
+        MaximumExecutionTimeTests.class, SecondaryTests.class,  ServicePropertiesTests.class, StorageAccountTests.class,
+        StorageUriTests.class })
     public static class CoreTestSuite {
     }
 

@@ -31,12 +31,14 @@ import javax.xml.stream.XMLStreamException;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultContinuationType;
 import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.SharedAccessPolicyHandler;
 import com.microsoft.azure.storage.SharedAccessPolicySerializer;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -75,10 +77,10 @@ public final class CloudBlobContainer {
 
         if (!Utility.isNullOrEmpty(aclString)) {
             final String lowerAclString = aclString.toLowerCase();
-            if ("container".equals(lowerAclString)) {
+            if (SR.CONTAINER.equals(lowerAclString)) {
                 accessType = BlobContainerPublicAccessType.CONTAINER;
             }
-            else if ("blob".equals(lowerAclString)) {
+            else if (SR.BLOB.equals(lowerAclString)) {
                 accessType = BlobContainerPublicAccessType.BLOB;
             }
             else {
@@ -196,10 +198,8 @@ public final class CloudBlobContainer {
      * 
      * @see <a href="http://msdn.microsoft.com/library/azure/dd135715.aspx">Naming and Referencing Containers, Blobs,
      *      and Metadata</a>
-     * @deprecated as of 3.0.0. Please use {@link CloudBlobClient#getContainerReference(String)}
      */
-    @Deprecated
-    public CloudBlobContainer(final String containerName, final CloudBlobClient client) throws URISyntaxException,
+    protected CloudBlobContainer(final String containerName, final CloudBlobClient client) throws URISyntaxException,
             StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("containerName", containerName);
@@ -207,52 +207,6 @@ public final class CloudBlobContainer {
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), containerName);
         this.name = containerName;
         this.blobServiceClient = client;
-    }
-    
-    /**
-     * Creates an instance of the <code>CloudBlobContainer</code> class using the specified URI and client.
-     * 
-     * @param uri
-     *            A <code>java.net.URI</code> object that represents the absolute URI of the container.
-     * @param client
-     *            A {@link CloudBlobClient} object that represents the associated service client, and that specifies the
-     *            endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlobContainer#CloudBlobContainer(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlobContainer(final URI uri, final CloudBlobClient client) throws URISyntaxException, StorageException {
-        this(new StorageUri(uri), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlobContainer</code> class using the specified URI and client.
-     * 
-     * @param storageUri
-     *            A {@link StorageUri} object which represents the absolute URI of the container.
-     * @param client
-     *            A {@link CloudBlobClient} object that represents the associated service client, and that specifies the
-     *            endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlobContainer#CloudBlobContainer(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlobContainer(final StorageUri storageUri, final CloudBlobClient client) throws URISyntaxException,
-            StorageException {
-        this.parseQueryAndVerify(storageUri, client == null ? null : client.getCredentials());
-
-        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
-        if (client != null) {
-            this.blobServiceClient = client;
-        }
     }
 
     /**
@@ -434,15 +388,15 @@ public final class CloudBlobContainer {
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlobContainer, Void> deleteImpl(final AccessCondition accessCondition,
-            final BlobRequestOptions options) {
-        final StorageRequest<CloudBlobClient, CloudBlobContainer, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlobContainer, Void>(
-                options, this.getStorageUri()) {
+    private StorageRequest<CloudBlobClient, CloudBlobContainer, Void> deleteImpl(
+            final AccessCondition accessCondition, final BlobRequestOptions options) {
+        final StorageRequest<CloudBlobClient, CloudBlobContainer, Void> putRequest =
+                new StorageRequest<CloudBlobClient, CloudBlobContainer, Void>(options, this.getStorageUri()) {
             @Override
-            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
-                    OperationContext context) throws Exception {
-                return BlobRequest.deleteContainer(container.getStorageUri().getPrimaryUri(), options, context,
-                        accessCondition);
+            public HttpURLConnection buildRequest(
+                    CloudBlobClient client, CloudBlobContainer container, OperationContext context) throws Exception {
+                return BlobRequest.deleteContainer(
+                        container.getTransformedAddress().getPrimaryUri(), options, context, accessCondition);
             }
 
             @Override
@@ -452,8 +406,8 @@ public final class CloudBlobContainer {
             }
 
             @Override
-            public Void preProcessResponse(CloudBlobContainer container, CloudBlobClient client,
-                    OperationContext context) throws Exception {
+            public Void preProcessResponse(CloudBlobContainer container, CloudBlobClient client, OperationContext context)
+                    throws Exception {
                 if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_ACCEPTED) {
                     this.setNonExceptionedRetryableFailure(true);
                 }
@@ -829,18 +783,46 @@ public final class CloudBlobContainer {
     public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy, final String groupPolicyIdentifier)
             throws InvalidKeyException, StorageException {
 
+        return this.generateSharedAccessSignature(
+                policy, groupPolicyIdentifier, null /* IP range */, null /* protocols */);
+    }
+    
+    /**
+     * Returns a shared access signature for the container. Note this does not contain the leading "?".
+     * 
+     * @param policy
+     *            An {@link SharedAccessBlobPolicy} object that represents the access policy for the shared access
+     *            signature.
+     * @param groupPolicyIdentifier
+     *            A <code>String</code> which represents the container-level access policy.
+     * @param ipRange
+     *            A {@link IPRange} object containing the range of allowed IP addresses.
+     * @param protocols
+     *            A {@link SharedAccessProtocols} representing the allowed Internet protocols.
+     * 
+     * @return A <code>String</code> which represents a shared access signature for the container.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws InvalidKeyException
+     *             If the key is invalid.
+     */
+    public String generateSharedAccessSignature(final SharedAccessBlobPolicy policy,
+            final String groupPolicyIdentifier, final IPRange ipRange, final SharedAccessProtocols protocols)
+            throws InvalidKeyException, StorageException {
         if (!StorageCredentialsHelper.canCredentialsSignRequest(this.blobServiceClient.getCredentials())) {
             final String errorMessage = SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY;
             throw new IllegalArgumentException(errorMessage);
         }
-
+        
         final String resourceName = this.getSharedAccessCanonicalName();
 
-        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(policy,
-                null /* SharedAccessBlobHeaders */, groupPolicyIdentifier, resourceName, this.blobServiceClient);
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(
+                policy, null /* SharedAccessBlobHeaders */, groupPolicyIdentifier, resourceName,
+                ipRange, protocols, this.blobServiceClient);
 
         final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlobAndFile(policy,
-                null /* SharedAccessBlobHeaders */, groupPolicyIdentifier, "c", signature);
+                null /* SharedAccessBlobHeaders */, groupPolicyIdentifier, "c", ipRange, protocols, signature);
 
         return builder.toString();
     }
@@ -880,13 +862,7 @@ public final class CloudBlobContainer {
      */
     public CloudAppendBlob getAppendBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobName", blobName);
-
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
-
-        final CloudAppendBlob retBlob = new CloudAppendBlob(address, snapshotID, this.blobServiceClient);
-        retBlob.setContainer(this);
-        return retBlob;
+        return new CloudAppendBlob(blobName, snapshotID, this);
     }
     
     /**
@@ -922,16 +898,9 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     public CloudBlockBlob getBlockBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobName", blobName);
-
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
-
-        final CloudBlockBlob retBlob = new CloudBlockBlob(address, snapshotID, this.blobServiceClient);
-        retBlob.setContainer(this);
-        return retBlob;
+        return new CloudBlockBlob(blobName, snapshotID, this);
     }
 
     /**
@@ -1019,16 +988,9 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     public CloudPageBlob getPageBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobName", blobName);
-
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
-
-        final CloudPageBlob retBlob = new CloudPageBlob(address, snapshotID, this.blobServiceClient);
-        retBlob.setContainer(this);
-        return retBlob;
+        return new CloudPageBlob(blobName, snapshotID, this);
     }
 
     /**
@@ -1611,8 +1573,8 @@ public final class CloudBlobContainer {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
                     OperationContext context) throws Exception {
                 return BlobRequest.setContainerMetadata(
-                        container.getTransformedAddress().getUri(this.getCurrentLocation()), options, context,
-                        accessCondition);
+                        container.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition);
             }
 
             @Override

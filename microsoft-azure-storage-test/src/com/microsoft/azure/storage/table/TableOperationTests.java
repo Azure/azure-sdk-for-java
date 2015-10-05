@@ -88,19 +88,11 @@ public class TableOperationTests {
         }
     }
     
-    @SuppressWarnings("deprecation")
     @Test
     public void testEntityWithSingleQuote() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testEntityWithSingleQuote(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testEntityWithSingleQuote(options);
-    }
 
-    private void testEntityWithSingleQuote(TableRequestOptions options) throws StorageException {
         EmptyClass ref = new EmptyClass();
         ref.setPartitionKey("partition'key");
         ref.setRowKey("row'key");
@@ -114,19 +106,11 @@ public class TableOperationTests {
        this.table.execute(TableOperation.delete(ref), options, null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertEntityWithoutPartitionKeyRowKey() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertEntityWithoutPartitionKeyRowKey(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testInsertEntityWithoutPartitionKeyRowKey(options);
-    }
 
-    private void testInsertEntityWithoutPartitionKeyRowKey(TableRequestOptions options) {
         EmptyClass ref = new EmptyClass();
         ref.setPartitionKey("jxscl_odata");
 
@@ -155,19 +139,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertEntityWithPropertyMoreThan255chars() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertEntityWithPropertyMoreThan255chars(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testInsertEntityWithPropertyMoreThan255chars(options);
-    }
 
-    private void testInsertEntityWithPropertyMoreThan255chars(TableRequestOptions options) throws StorageException {
         DynamicTableEntity ref = new DynamicTableEntity();
 
         String propName = "";
@@ -191,19 +167,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertEntityOver1MB() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertEntityOver1MB(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testInsertEntityOver1MB(options);
-    }
 
-    private void testInsertEntityOver1MB(TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -225,20 +193,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertEntityWithNumericProperty() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertEntityWithNumericProperty(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testInsertEntityWithNumericProperty(options);
-    }
 
-    @SuppressWarnings("deprecation")
-    private void testInsertEntityWithNumericProperty(TableRequestOptions options) throws StorageException {
         DynamicTableEntity ref = new DynamicTableEntity();
 
         String propName = "";
@@ -255,36 +214,17 @@ public class TableOperationTests {
             fail();
         }
         catch (TableServiceException ex) {
-            // OData handles AtomPub and Json differently when properties start with a number. 
-            // Hence, a different error code is returned. This may be fixed later.
-            if (options.getTablePayloadFormat() == TablePayloadFormat.AtomPub) {
-                assertEquals(ex.getMessage(), "Bad Request");
-                assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                        .startsWith("One of the request inputs is not valid."));
-                assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "InvalidInput");
-            }
-            else {
-                assertEquals(ex.getMessage(), "Bad Request");
-                assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                        .startsWith("The property name is invalid."));
-                assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "PropertyNameInvalid");
-            }
+            assertEquals(ex.getMessage(), "Bad Request");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage().startsWith("The property name is invalid."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "PropertyNameInvalid");
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testDeleteFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testDeleteFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testDeleteFail(options);
-    }
 
-    private void testDeleteFail(TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -333,19 +273,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testMergeFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testMergeFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testMergeFail(options);
-    }
 
-    private void testMergeFail(TableRequestOptions options) throws StorageException {
         // Insert base entity
         Class1 baseEntity = new Class1();
         baseEntity.setA("foo_A");
@@ -402,19 +334,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testInsertFail(options);
-    }
 
-    private void testInsertFail(TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -438,19 +362,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testReplaceFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testReplaceFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testReplaceFail(options);
-    }
 
-    private void testReplaceFail(TableRequestOptions options) throws StorageException {
         Class1 baseEntity = new Class1();
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
@@ -510,19 +426,11 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testEmptyRetrieve() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testEmptyRetrieve(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testEmptyRetrieve(options);
-    }
-
-    private void testEmptyRetrieve(TableRequestOptions options) throws StorageException {
+        
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -538,19 +446,11 @@ public class TableOperationTests {
         assertEquals(res.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertEmptyEntity() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertEmptyEntity(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testInsertEmptyEntity(options);
-    }
 
-    private void testInsertEmptyEntity(TableRequestOptions options) throws StorageException {
         EmptyClass ref = new EmptyClass();
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey("echo_default" + UUID.randomUUID().toString());
@@ -566,13 +466,9 @@ public class TableOperationTests {
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testDelete() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testDelete(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testDelete(options);
@@ -604,14 +500,10 @@ public class TableOperationTests {
         assertTrue(res2.getResult() == null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertOrMerge() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertOrMerge(options, false);
-
+        
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testInsertOrMerge(options, false);
 
@@ -690,13 +582,9 @@ public class TableOperationTests {
         assertEquals(secondEntity.getO(), retrievedEntity.getProperties().get("O").getValueAsString());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertOrReplace() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsertOrReplace(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testInsertOrReplace(options);
@@ -762,13 +650,9 @@ public class TableOperationTests {
         assertEquals(secondEntity.getO(), retrievedEntity.getProperties().get("O").getValueAsString());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testMerge() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testMerge(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testMerge(options, false);
@@ -844,13 +728,9 @@ public class TableOperationTests {
         assertEquals(secondEntity.getO(), mergedEntity.getProperties().get("O").getValueAsString());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testReplace() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testReplace(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testReplace(options);
@@ -910,13 +790,9 @@ public class TableOperationTests {
         assertTrue(retrievedEntity.getProperties().get("D") == null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsert() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testInsert(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testInsert(options);
@@ -950,13 +826,9 @@ public class TableOperationTests {
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testRetrieveWithoutEntityResolver() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testRetrieveWithoutEntityResolver(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testRetrieveWithoutEntityResolver(options, false);
@@ -1012,13 +884,9 @@ public class TableOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testRetrieveWithEntityResolver() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testRetrieveWithEntityResolver(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testRetrieveWithEntityResolver(options, false);

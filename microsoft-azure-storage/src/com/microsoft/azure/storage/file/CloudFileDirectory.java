@@ -141,45 +141,6 @@ public final class CloudFileDirectory implements ListFileItem {
     }
     
     /**
-     * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory.
-     * 
-     * @param directoryAbsoluteUri
-     *            A {@link URI} that represents the file directory's address.
-     * @param client
-     *            A {@link CloudFileClient} object that represents the associated service client.
-     * @throws StorageException
-     * @throws URISyntaxException
-     * @deprecated as of 3.0.0. Please use {@link CloudFileDirectory#CloudFileDirectory(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudFileDirectory(final URI directoryAbsoluteUri, final CloudFileClient client) throws StorageException,
-            URISyntaxException {
-        this(new StorageUri(directoryAbsoluteUri), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudFileDirectory</code> class using an absolute URI to the directory.
-     * 
-     * @param directoryAbsoluteUri
-     *            A {@link StorageUri} that represents the file directory's address.
-     * @param client
-     *            A {@link CloudFileClient} object that represents the associated service client.
-     * @throws StorageException
-     * @throws URISyntaxException
-     * @deprecated as of 3.0.0. Please use {@link CloudFileDirectory#CloudFileDirectory(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudFileDirectory(final StorageUri directoryAbsoluteUri, final CloudFileClient client)
-            throws StorageException, URISyntaxException {
-        this.parseQueryAndVerify(directoryAbsoluteUri, client == null ? null : client.getCredentials());
-
-        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
-        if (client != null) {
-            this.fileServiceClient = client;
-        }
-    }
-
-    /**
      * Creates an instance of the <code>CloudFileDirectory</code> class using the specified address, share,
      * and client.
      * 
@@ -935,13 +896,11 @@ public final class CloudFileDirectory implements ListFileItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     public CloudFile getFileReference(final String fileName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("fileName", fileName);
 
         StorageUri subdirectoryUri = PathUtility.appendPathToUri(this.storageUri, fileName);
-
-        return new CloudFile(subdirectoryUri, this.fileServiceClient, this.getShare());
+        return new CloudFile(subdirectoryUri, fileName, this.getShare());
     }
     
     /**
@@ -1036,7 +995,7 @@ public final class CloudFileDirectory implements ListFileItem {
 
             if (parentName != null) {
                 StorageUri parentURI = PathUtility.appendPathToUri(this.getShare().getStorageUri(), parentName);
-                this.parent = new CloudFileDirectory(parentURI, this.getServiceClient());
+                this.parent = new CloudFileDirectory(parentURI, this.getServiceClient().getCredentials());
             }
         }
         return this.parent;

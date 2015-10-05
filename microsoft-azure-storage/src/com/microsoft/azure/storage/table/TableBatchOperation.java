@@ -25,8 +25,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import javax.xml.stream.XMLStreamException;
-
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -557,11 +555,6 @@ public class TableBatchOperation extends ArrayList<TableOperation> {
             throw translatedException;
         }
         catch (URISyntaxException e) {
-            // The request was not even made. There was an error while trying to read the batch contents. Just throw.
-            StorageException translatedException = StorageException.translateClientException(e);
-            throw translatedException;
-        }
-        catch (XMLStreamException e) {
             // The request was not even made. There was an error while trying to read the batch contents. Just throw.
             StorageException translatedException = StorageException.translateClientException(e);
             throw translatedException;

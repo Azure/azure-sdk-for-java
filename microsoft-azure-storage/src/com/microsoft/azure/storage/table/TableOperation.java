@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
-import javax.xml.stream.XMLStreamException;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
@@ -453,11 +451,6 @@ public class TableOperation {
 
             return putRequest;
         }
-        catch (XMLStreamException e) {
-            // The request was not even made. There was an error while trying to read the entity. Just throw.
-            StorageException translatedException = StorageException.translateClientException(e);
-            throw translatedException;
-        }
         catch (IOException e) {
             // The request was not even made. There was an error while trying to read the entity. Just throw.
             StorageException translatedException = StorageException.translateClientException(e);
@@ -552,11 +545,6 @@ public class TableOperation {
 
             return putRequest;
         }
-        catch (XMLStreamException e) {
-            // The request was not even made. There was an error while trying to read the entity. Just throw.
-            StorageException translatedException = StorageException.translateClientException(e);
-            throw translatedException;
-        }
         catch (IOException e) {
             // The request was not even made. There was an error while trying to read the entity. Just throw.
             StorageException translatedException = StorageException.translateClientException(e);
@@ -649,11 +637,6 @@ public class TableOperation {
             };
 
             return putRequest;
-        }
-        catch (XMLStreamException e) {
-            // The request was not even made. There was an error while trying to read the entity. Just throw.
-            StorageException translatedException = StorageException.translateClientException(e);
-            throw translatedException;
         }
         catch (IOException e) {
             // The request was not even made. There was an error while trying to read the entity. Just throw.
@@ -812,8 +795,6 @@ public class TableOperation {
      * @return
      *         The {@link TableResult} representing the result of the operation.
      * 
-     * @throws XMLStreamException
-     *             if an error occurs accessing the {@link InputStream} with AtomPub.
      * @throws InstantiationException
      *             if an error occurs in object construction.
      * @throws IllegalAccessException
@@ -826,8 +807,8 @@ public class TableOperation {
      *             if an error occurs while parsing the Json, if Json is used.
      */
     protected TableResult parseResponse(final InputStream inStream, final int httpStatusCode, String etagFromHeader,
-            final OperationContext opContext, final TableRequestOptions options) throws XMLStreamException,
-            InstantiationException, IllegalAccessException, StorageException, JsonParseException, IOException {
+            final OperationContext opContext, final TableRequestOptions options) throws InstantiationException,
+            IllegalAccessException, StorageException, JsonParseException, IOException {
         TableResult resObj;
 
         if (this.opType == TableOperationType.INSERT && this.echoContent) {

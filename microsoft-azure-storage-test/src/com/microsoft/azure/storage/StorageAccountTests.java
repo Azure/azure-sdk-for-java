@@ -47,7 +47,7 @@ public class StorageAccountTests {
 
     @Test
     public void testStorageCredentialsAnonymous() throws URISyntaxException, StorageException {
-        StorageCredentialsAnonymous cred = new StorageCredentialsAnonymous();
+        StorageCredentials cred = StorageCredentialsAnonymous.ANONYMOUS;
 
         assertNull(cred.getAccountName());
 
@@ -150,7 +150,7 @@ public class StorageAccountTests {
             fail("Did not hit expected exception");
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(SR.INVALID_KEY, ex.getMessage());
+            assertEquals(SR.STRING_NOT_VALID, ex.getMessage());
         }
 
         StorageCredentialsAccountAndKey credentials2 = new StorageCredentialsAccountAndKey(ACCOUNT_NAME, ACCOUNT_KEY);

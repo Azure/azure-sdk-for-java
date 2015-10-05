@@ -103,13 +103,9 @@ public class TableQueryTests {
         }
     }
     
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableWithSelectOnMissingFields() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableWithSelectOnMissingFields(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.Json);
         testTableWithSelectOnMissingFields(options);
@@ -134,7 +130,6 @@ public class TableQueryTests {
         assertEquals(EdmType.STRING, ent.getProperties().get("F").getEdmType());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryProjectionWithNull() throws URISyntaxException, StorageException {
         CloudTable table = TableTestHelper.getRandomTableReference();
@@ -147,15 +142,13 @@ public class TableQueryTests {
                     .toString());
             table.execute(TableOperation.insert(entity));
 
-            testTableQueryProjectionWithSpecialCases(table, TablePayloadFormat.Json);
-            testTableQueryProjectionWithSpecialCases(table, TablePayloadFormat.AtomPub);
+            testTableQueryProjectionWithSpecialCases(table);
         }
         finally {
             table.deleteIfExists();
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryProjectionWithIncorrectTypes() throws URISyntaxException, StorageException {
         CloudTable table = TableTestHelper.getRandomTableReference();
@@ -170,16 +163,15 @@ public class TableQueryTests {
             entity.getProperties().put("IntegerPrimitive", new EntityProperty(true));
             table.execute(TableOperation.insert(entity));
 
-            testTableQueryProjectionWithSpecialCases(table, TablePayloadFormat.Json);
-            testTableQueryProjectionWithSpecialCases(table, TablePayloadFormat.AtomPub);
+            testTableQueryProjectionWithSpecialCases(table);
         }
         finally {
             table.deleteIfExists();
         }
     }
 
-    private void testTableQueryProjectionWithSpecialCases(CloudTable table, TablePayloadFormat format) {
-        table.getServiceClient().getDefaultRequestOptions().setTablePayloadFormat(format);
+    private void testTableQueryProjectionWithSpecialCases(CloudTable table) {
+        table.getServiceClient().getDefaultRequestOptions().setTablePayloadFormat(TablePayloadFormat.Json);
 
         // Query on String and IntegerPrimitive
         TableQuery<ComplexEntity> query = TableQuery.from(ComplexEntity.class).select(
@@ -233,19 +225,10 @@ public class TableQueryTests {
         assertEquals(partitionKey, seg.getResults().get(0).getPartitionKey());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableInvalidQuery() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableInvalidQuery(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testTableInvalidQuery(options);
-    }
-
-    private void testTableInvalidQuery(TableRequestOptions options) throws StorageException {
 
         TableQuery<Class1> query = TableQuery.from(Class1.class).where(
                 String.format("(PartitionKey ) and (RowKey ge '%s')", "000050"));
@@ -261,13 +244,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testQueryOnSupportedTypes() throws StorageException, InterruptedException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testQueryOnSupportedTypes(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testQueryOnSupportedTypes(options, false);
@@ -436,13 +415,9 @@ public class TableQueryTests {
         assertEquals(expectedResults, count);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryIterateTwice() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryIterateTwice(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryIterateTwice(options);
@@ -500,13 +475,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithDynamicEntity() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithDynamicEntity(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithDynamicEntity(options);
@@ -535,13 +506,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithProjection() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithProjection(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithProjection(options, false);
@@ -582,13 +549,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testSelectOnlySendsReservedColumnsOnce() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testSelectOnlySendsReservedColumnsOnce(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testSelectOnlySendsReservedColumnsOnce(options, false);
@@ -639,13 +602,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithReflection() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithReflection(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithReflection(options, false);
@@ -679,13 +638,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithEntityResolver() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithEntityResolver(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithEntityResolver(options, false);
@@ -732,13 +687,9 @@ public class TableQueryTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithTake() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithTake(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithTake(options, false);
@@ -778,14 +729,10 @@ public class TableQueryTests {
         assertEquals(count, 25);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithFilter() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithFilter(options, false);
-
+        
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithFilter(options, false);
 
@@ -823,13 +770,9 @@ public class TableQueryTests {
         assertEquals(count, 50);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testTableQueryWithContinuation() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testTableQueryWithContinuation(options, false);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testTableQueryWithContinuation(options, false);

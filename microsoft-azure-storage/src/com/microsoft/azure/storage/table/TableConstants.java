@@ -56,32 +56,6 @@ final class TableConstants {
      */
     public static class HeaderConstants {
         /**
-         * The Accept header value to send.
-         * 
-         * @deprecated use {@link AtomAcceptType}
-         */
-        @Deprecated
-        public static final String ACCEPT_TYPE = "application/atom+xml,application/xml";
-
-        /**
-         * The Accept header value to send for AtomPub.
-         */
-        public static final String ATOM_ACCEPT_TYPE = "application/atom+xml,application/atomsvc+xml,application/xml";
-
-        /**
-         * The Content-Type header value to send for AtomPub.
-         */
-        public static final String ATOM_CONTENT_TYPE = "application/atom+xml";
-
-        /**
-         * The Content-Type header value to send for single operations.
-         * 
-         * @deprecated use {@link AtomContentType}
-         */
-        @Deprecated
-        public static final String ATOMPUB_TYPE = "application/atom+xml";
-
-        /**
          * The Content-ID header value to send for batch operations.
          */
         public static final String CONTENT_ID = "Content-ID";

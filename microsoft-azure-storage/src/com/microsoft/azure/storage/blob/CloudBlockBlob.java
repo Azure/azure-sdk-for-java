@@ -148,125 +148,23 @@ public final class CloudBlockBlob extends CloudBlob {
             throws StorageException {
         super(BlobType.BLOCK_BLOB, blobAbsoluteUri, snapshotID, credentials);
     }
-
+    
     /**
-     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute URI and storage service
-     * client.
-     * 
-     * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlockBlob#CloudBlockBlob(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlockBlob(final URI blobAbsoluteUri, final CloudBlobClient client) throws StorageException {
-        this(new StorageUri(blobAbsoluteUri), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute StorageUri and storage
-     * service client.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object that represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlockBlob#CloudBlockBlob(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlockBlob(final StorageUri blobAbsoluteUri, final CloudBlobClient client) throws StorageException {
-        super(BlobType.BLOCK_BLOB, blobAbsoluteUri, client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute URI, storage service
-     * client and container.
-     * 
-     * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * @param container
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlockBlob#CloudBlockBlob(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlockBlob(final URI blobAbsoluteUri, final CloudBlobClient client, final CloudBlobContainer container)
-            throws StorageException {
-        this(new StorageUri(blobAbsoluteUri), client, container);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute StorageUri, storage
-     * service client and container.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object that represents the absolute URI to the blob.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * @param container
-     *            A {@link CloudBlobContainer} object that represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlockBlob#CloudBlockBlob(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlockBlob(final StorageUri blobAbsoluteUri, final CloudBlobClient client,
-            final CloudBlobContainer container) throws StorageException {
-        super(BlobType.BLOCK_BLOB, blobAbsoluteUri, client, container);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute URI, snapshot ID, and
-     * storage service client.
-     * 
-     * @param blobAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the blob.
+     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified type, name, snapshot ID, and
+     * container.
+     *
+     * @param blobName
+     *            Name of the blob.
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot version, if applicable.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlockBlob#CloudBlockBlob(URI, String, StorageCredentials)}
+     * @param container
+     *            The reference to the parent container.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    @Deprecated
-    public CloudBlockBlob(final URI blobAbsoluteUri, final String snapshotID, final CloudBlobClient client)
-            throws StorageException {
-        this(new StorageUri(blobAbsoluteUri), snapshotID, client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudBlockBlob</code> class using the specified absolute StorageUri, snapshot
-     * ID, and storage service client.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object that represents the absolute URI to the blob.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot version, if applicable.
-     * @param client
-     *            A {@link CloudBlobClient} object that specifies the endpoint for the Blob service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @deprecated as of 3.0.0. Please use {@link CloudBlockBlob#CloudBlockBlob(StorageUri, String, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudBlockBlob(final StorageUri blobAbsoluteUri, final String snapshotID, final CloudBlobClient client)
-            throws StorageException {
-        super(BlobType.BLOCK_BLOB, blobAbsoluteUri, snapshotID, client);
+    protected CloudBlockBlob(String blobName, String snapshotID, CloudBlobContainer container)
+            throws URISyntaxException {
+        super(BlobType.BLOCK_BLOB, blobName, snapshotID, container);
     }
     
     /**

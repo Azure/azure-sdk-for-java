@@ -12,25 +12,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.microsoft.azure.storage.table;
+package com.microsoft.azure.storage;
 
 /**
- * Describes the payload formats supported for Tables.
+ * Specifies the set of possible permissions for a shared access protocol.
  */
-public enum TablePayloadFormat {
+public enum SharedAccessProtocols {
     /**
-     * Use JSON with full metadata.
+     * Permission to use SAS only through https granted.
      */
-    JsonFullMetadata,
+    HTTPS_ONLY(Constants.HTTPS),
 
     /**
-     * Use JSON with minimal metadata.
+     * Permission to use SAS only through https or http granted.
      */
-    Json,
-
-    /**
-     * Use JSON with no metadata.
-     */
-    JsonNoMetadata
+    HTTPS_HTTP(Constants.HTTPS_HTTP);
+    
+    private final String protocols;
+    
+    private SharedAccessProtocols(String p) {
+        this.protocols = p;
+    }
+    
+    @Override
+    public String toString() {
+        return this.protocols;
+    }
 }

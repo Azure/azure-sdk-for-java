@@ -59,7 +59,6 @@ public class TableDateTests {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testRoundTripDateJsonAtom() throws URISyntaxException, StorageException {
         // JSON
         // 2014-12-07T09:15:12.123Z  from Java
@@ -95,27 +94,9 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false, TablePayloadFormat.JsonNoMetadata);
-        
-        // ATOM PUB
-        // 2014-12-07T09:15:12.123Z  from Java
-        testTableQueryRoundTripDate(
-                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, false, TablePayloadFormat.AtomPub);
-
-        // 2015-01-14T14:53:32.800Z  from Java
-        testTableQueryRoundTripDate(
-                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, false, TablePayloadFormat.AtomPub);
-
-        // 2014-11-29T22:55:21.9876543Z  from .Net
-        testTableQueryRoundTripDate(
-                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, false, TablePayloadFormat.AtomPub);
-
-        // 2015-02-14T03:11:13.0000229Z  from .Net
-        testTableQueryRoundTripDate(
-                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false, TablePayloadFormat.AtomPub);
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testRoundTripDateJsonAtomCrossVersion()
             throws URISyntaxException, StorageException {
         // JSON
@@ -151,27 +132,9 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false, TablePayloadFormat.JsonNoMetadata);
-        
-        // ATOM PUB
-        // 2014-12-07T09:15:12.123Z  from Java
-        testTableQueryRoundTripDate(
-                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, false, TablePayloadFormat.AtomPub);
-
-        // 2015-01-14T14:53:32.800Z  from Java
-        testTableQueryRoundTripDate(
-                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, false, TablePayloadFormat.AtomPub);
-
-        // 2014-11-29T22:55:21.9876543Z  from .Net
-        testTableQueryRoundTripDate(
-                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, false, TablePayloadFormat.AtomPub);
-
-        // 2015-02-14T03:11:13.0000229Z  from .Net
-        testTableQueryRoundTripDate(
-                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false, TablePayloadFormat.AtomPub);
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testRoundTripDateJsonAtomWithBackwardCompatibility()
             throws URISyntaxException, StorageException {
         // JSON
@@ -207,27 +170,9 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, true, TablePayloadFormat.JsonNoMetadata);
-        
-        // ATOM PUB
-        // 2014-12-07T09:15:12.123Z  from Java
-        testTableQueryRoundTripDate(
-                "2014-12-07T09:15:12.123Z", 1417943712123L, 0, false, true, TablePayloadFormat.AtomPub);
-
-        // 2015-01-14T14:53:32.800Z  from Java
-        testTableQueryRoundTripDate(
-                "2015-01-14T14:53:32.800Z", 1421247212800L, 0, false, true, TablePayloadFormat.AtomPub);
-
-        // 2014-11-29T22:55:21.9876543Z  from .Net
-        testTableQueryRoundTripDate(
-                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, false, true, TablePayloadFormat.AtomPub);
-
-        // 2015-02-14T03:11:13.0000229Z  from .Net
-        testTableQueryRoundTripDate(
-                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, true, TablePayloadFormat.AtomPub);
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testRoundTripDateJsonAtomCrossVersionWithBackwardCompatibility()
             throws URISyntaxException, StorageException {
         // JSON
@@ -263,23 +208,6 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true, TablePayloadFormat.JsonNoMetadata);
-        
-        // ATOM PUB
-        // 2014-12-07T09:15:12.123Z  from Java
-        testTableQueryRoundTripDate(
-                "2014-12-07T09:15:12.0000123Z", 1417943712123L, 0, true, true, TablePayloadFormat.AtomPub);
-
-        // 2015-01-14T14:53:32.800Z  from Java
-        testTableQueryRoundTripDate(
-                "2015-01-14T14:53:32.0000800Z", 1421247212800L, 0, true, true, TablePayloadFormat.AtomPub);
-
-        // 2014-11-29T22:55:21.9876543Z  from .Net
-        testTableQueryRoundTripDate(
-                "2014-11-29T22:55:21.9876543Z", 1417301721987L, 6543, true, true, TablePayloadFormat.AtomPub);
-
-        // 2015-02-14T03:11:13.0000229Z  from .Net
-        testTableQueryRoundTripDate(
-                "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true, TablePayloadFormat.AtomPub);
     }
 
     private void testRoundTripDate(final Date date) throws URISyntaxException, StorageException {

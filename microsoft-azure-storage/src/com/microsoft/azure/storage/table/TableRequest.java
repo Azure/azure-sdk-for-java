@@ -156,7 +156,8 @@ final class TableRequest {
                 opContext);
 
         setAcceptHeaderForHttpWebRequest(retConnection, tableOptions.getTablePayloadFormat());
-        setContentTypeForHttpWebRequest(retConnection, tableOptions.getTablePayloadFormat());
+        retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_TYPE,
+                TableConstants.HeaderConstants.JSON_CONTENT_TYPE);
 
         retConnection.setRequestProperty(TableConstants.HeaderConstants.MAX_DATA_SERVICE_VERSION,
                 TableConstants.HeaderConstants.MAX_DATA_SERVICE_VERSION_VALUE);
@@ -455,14 +456,9 @@ final class TableRequest {
         return retConnection;
     }
 
-    @SuppressWarnings("deprecation")
     private static void setAcceptHeaderForHttpWebRequest(HttpURLConnection retConnection,
             TablePayloadFormat payloadFormat) {
-        if (payloadFormat == TablePayloadFormat.AtomPub) {
-            retConnection.setRequestProperty(Constants.HeaderConstants.ACCEPT,
-                    TableConstants.HeaderConstants.ATOM_ACCEPT_TYPE);
-        }
-        else if (payloadFormat == TablePayloadFormat.JsonFullMetadata) {
+        if (payloadFormat == TablePayloadFormat.JsonFullMetadata) {
             retConnection.setRequestProperty(Constants.HeaderConstants.ACCEPT,
                     TableConstants.HeaderConstants.JSON_FULL_METADATA_ACCEPT_TYPE);
         }
@@ -473,19 +469,6 @@ final class TableRequest {
         else if (payloadFormat == TablePayloadFormat.JsonNoMetadata) {
             retConnection.setRequestProperty(Constants.HeaderConstants.ACCEPT,
                     TableConstants.HeaderConstants.JSON_NO_METADATA_ACCEPT_TYPE);
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static void setContentTypeForHttpWebRequest(HttpURLConnection retConnection,
-            TablePayloadFormat payloadFormat) {
-        if (payloadFormat == TablePayloadFormat.AtomPub) {
-            retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_TYPE,
-                    TableConstants.HeaderConstants.ATOM_CONTENT_TYPE);
-        }
-        else {
-            retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_TYPE,
-                    TableConstants.HeaderConstants.JSON_CONTENT_TYPE);
         }
     }
 
