@@ -76,7 +76,7 @@ public class ServicePropertiesTests {
 
         props.getCors().getCorsRules().clear();
 
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
@@ -107,29 +107,29 @@ public class ServicePropertiesTests {
             throws StorageException, InterruptedException {
         if (client.getClass().equals(CloudBlobClient.class)) {
             props.setDefaultServiceVersion("2009-09-19");
-            callUploadServiceProps(client, props);
+            callUploadServiceProps(client, props, null);
 
             assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
             props.setDefaultServiceVersion("2011-08-18");
-            callUploadServiceProps(client, props);
+            callUploadServiceProps(client, props, null);
 
             assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
             props.setDefaultServiceVersion("2012-02-12");
-            callUploadServiceProps(client, props);
+            callUploadServiceProps(client, props, null);
 
             assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
             props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-            callUploadServiceProps(client, props);
+            callUploadServiceProps(client, props, null);
 
             assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
         }
         else {
             try {
                 props.setDefaultServiceVersion("2009-09-19");
-                callUploadServiceProps(client, props);
+                callUploadServiceProps(client, props, null);
                 fail("Should not be able to set default Service Version for non Blob Client");
             }
             catch (IllegalArgumentException e) {
@@ -170,13 +170,13 @@ public class ServicePropertiesTests {
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setVersion("1.0");
 
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // None
         props.getLogging().setLogOperationTypes(EnumSet.allOf(LoggingOperations.class));
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
@@ -188,42 +188,65 @@ public class ServicePropertiesTests {
      * @throws InterruptedException
      */
     @Test
-    public void testAnalyticsMetricsLevel() throws StorageException, InterruptedException {
+    public void testAnalyticsHourMetricsLevel() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-        testAnalyticsMetricsLevel(client, props);
+        testAnalyticsHourMetricsLevel(client, props, null);
 
         client = TestHelper.createCloudQueueClient();
         props = new ServiceProperties();
-        testAnalyticsMetricsLevel(client, props);
+        testAnalyticsHourMetricsLevel(client, props, null);
 
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
-        testAnalyticsMetricsLevel(client, props);
+        testAnalyticsHourMetricsLevel(client, props, null);
+        
+        client = TestHelper.createCloudFileClient();
+        FileServiceProperties fileProps = new FileServiceProperties();
+        testAnalyticsHourMetricsLevel(client, null, fileProps);
     }
 
-    private void testAnalyticsMetricsLevel(ServiceClient client, ServiceProperties props) throws StorageException,
-            InterruptedException {
-        // None
-        props.getHourMetrics().setMetricsLevel(MetricsLevel.DISABLED);
-        props.getHourMetrics().setRetentionIntervalInDays(null);
-        props.getHourMetrics().setVersion("1.0");
-        callUploadServiceProps(client, props);
+    private void testAnalyticsHourMetricsLevel(
+            ServiceClient client, ServiceProperties props, FileServiceProperties fileProps)
+            throws StorageException, InterruptedException {
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        final MetricsProperties hours = (props == null) ? fileProps.getHourMetrics() : props.getHourMetrics();
+        
+        // None
+        hours.setMetricsLevel(MetricsLevel.DISABLED);
+        hours.setRetentionIntervalInDays(null);
+        hours.setVersion("1.0");
+        callUploadServiceProps(client, props, fileProps);
+
+        if (props == null) {
+            assertFileServicePropertiesAreEqual(fileProps, ((CloudFileClient) client).downloadServiceProperties());
+        }
+        else {
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        }
 
         // Service
-        props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE);
-        callUploadServiceProps(client, props);
+        hours.setMetricsLevel(MetricsLevel.SERVICE);
+        callUploadServiceProps(client, props, fileProps);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        if (props == null) {
+            assertFileServicePropertiesAreEqual(fileProps, ((CloudFileClient) client).downloadServiceProperties());
+        }
+        else {
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        }
 
         // ServiceAndAPI
-        props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
-        callUploadServiceProps(client, props);
+        hours.setMetricsLevel(MetricsLevel.SERVICE_AND_API);
+        callUploadServiceProps(client, props, fileProps);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        if (props == null) {
+            assertFileServicePropertiesAreEqual(fileProps, ((CloudFileClient) client).downloadServiceProperties());
+        }
+        else {
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        }
     }
 
     /**
@@ -237,38 +260,61 @@ public class ServicePropertiesTests {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-        testAnalyticsMinuteMetricsLevel(client, props);
+        testAnalyticsMinuteMetricsLevel(client, props, null);
 
         client = TestHelper.createCloudQueueClient();
         props = new ServiceProperties();
-        testAnalyticsMinuteMetricsLevel(client, props);
+        testAnalyticsMinuteMetricsLevel(client, props, null);
 
         client = TestHelper.createCloudTableClient();
         props = new ServiceProperties();
-        testAnalyticsMinuteMetricsLevel(client, props);
+        testAnalyticsMinuteMetricsLevel(client, props, null);
+        
+        client = TestHelper.createCloudFileClient();
+        FileServiceProperties fileProps = new FileServiceProperties();
+        testAnalyticsMinuteMetricsLevel(client, null, fileProps);
     }
 
-    private void testAnalyticsMinuteMetricsLevel(ServiceClient client, ServiceProperties props)
+    private void testAnalyticsMinuteMetricsLevel(
+            final ServiceClient client, final ServiceProperties props, final FileServiceProperties fileProps)
             throws StorageException, InterruptedException {
+        
+        final MetricsProperties minutes = (props == null) ? fileProps.getMinuteMetrics() : props.getMinuteMetrics();
+        
         // None
-        props.getMinuteMetrics().setMetricsLevel(MetricsLevel.DISABLED);
-        props.getMinuteMetrics().setRetentionIntervalInDays(null);
-        props.getMinuteMetrics().setVersion("1.0");
-        callUploadServiceProps(client, props);
+        minutes.setMetricsLevel(MetricsLevel.DISABLED);
+        minutes.setRetentionIntervalInDays(null);
+        minutes.setVersion("1.0");
+        callUploadServiceProps(client, props, fileProps);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        if (props == null) {
+            assertFileServicePropertiesAreEqual(fileProps, ((CloudFileClient) client).downloadServiceProperties());
+        }
+        else {
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        }
 
         // Service
-        props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE);
-        callUploadServiceProps(client, props);
+        minutes.setMetricsLevel(MetricsLevel.SERVICE);
+        callUploadServiceProps(client, props, fileProps);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        if (props == null) {
+            assertFileServicePropertiesAreEqual(fileProps, ((CloudFileClient) client).downloadServiceProperties());
+        }
+        else {
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        }
 
         // ServiceAndAPI
-        props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
-        callUploadServiceProps(client, props);
+        minutes.setMetricsLevel(MetricsLevel.SERVICE_AND_API);
+        callUploadServiceProps(client, props, fileProps);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        if (props == null) {
+            assertFileServicePropertiesAreEqual(fileProps, ((CloudFileClient) client).downloadServiceProperties());
+        }
+        else {
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+        }
     }
 
     /**
@@ -300,7 +346,7 @@ public class ServicePropertiesTests {
         props.getHourMetrics().setRetentionIntervalInDays(null);
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.DISABLED);
         props.getMinuteMetrics().setRetentionIntervalInDays(null);
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
@@ -309,7 +355,7 @@ public class ServicePropertiesTests {
         props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE);
         props.getMinuteMetrics().setRetentionIntervalInDays(1);
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE);
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
@@ -318,35 +364,35 @@ public class ServicePropertiesTests {
         props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
         props.getMinuteMetrics().setRetentionIntervalInDays(2);
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy null with logging disabled.
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setLogOperationTypes(EnumSet.noneOf(LoggingOperations.class));
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy not null with logging disabled.
         props.getLogging().setRetentionIntervalInDays(3);
         props.getLogging().setLogOperationTypes(EnumSet.noneOf(LoggingOperations.class));
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy null with logging enabled.
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setLogOperationTypes(EnumSet.allOf(LoggingOperations.class));
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy not null with logging enabled.
         props.getLogging().setRetentionIntervalInDays(4);
         props.getLogging().setLogOperationTypes(EnumSet.allOf(LoggingOperations.class));
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
@@ -732,7 +778,7 @@ public class ServicePropertiesTests {
 
         props.getCors().getCorsRules().clear();
 
-        callUploadServiceProps(client, props);
+        callUploadServiceProps(client, props, null);
 
         ServiceProperties newProps = new ServiceProperties();
 
@@ -750,7 +796,7 @@ public class ServicePropertiesTests {
         ruleBasic.setMaxAgeInSeconds(500);
         newProps.getCors().getCorsRules().add(ruleBasic);
 
-        callUploadServiceProps(client, newProps);
+        callUploadServiceProps(client, newProps, null);
 
         props.setCors(newProps.getCors());
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
@@ -759,31 +805,32 @@ public class ServicePropertiesTests {
         newProps.setHourMetrics(props.getHourMetrics());
         newProps.setMinuteMetrics(props.getMinuteMetrics());
         newProps.setCors(null);
-        callUploadServiceProps(client, newProps);
+        callUploadServiceProps(client, newProps, null);
 
         assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
-    private void callUploadServiceProps(ServiceClient client, ServiceProperties props) throws StorageException,
-            InterruptedException {
+    private void callUploadServiceProps(
+            ServiceClient client, ServiceProperties props, FileServiceProperties fileProps)
+            throws StorageException, InterruptedException {
+        
         if (client.getClass().equals(CloudBlobClient.class)) {
-            CloudBlobClient blobClient = (CloudBlobClient) client;
-            blobClient.uploadServiceProperties(props);
-            Thread.sleep(30000);
+            ((CloudBlobClient) client).uploadServiceProperties(props);
         }
         else if (client.getClass().equals(CloudTableClient.class)) {
-            CloudTableClient tableClient = (CloudTableClient) client;
-            tableClient.uploadServiceProperties(props);
-            Thread.sleep(30000);
+            ((CloudTableClient) client).uploadServiceProperties(props);
         }
         else if (client.getClass().equals(CloudQueueClient.class)) {
-            CloudQueueClient queueClient = (CloudQueueClient) client;
-            queueClient.uploadServiceProperties(props);
-            Thread.sleep(30000);
+            ((CloudQueueClient) client).uploadServiceProperties(props);
+        }
+        else if (client.getClass().equals(CloudFileClient.class)) {
+            ((CloudFileClient) client).uploadServiceProperties(fileProps);
         }
         else {
             fail();
         }
+        
+        // Thread.sleep(30000);
     }
 
     private ServiceProperties callDownloadServiceProperties(ServiceClient client) throws StorageException {
@@ -815,7 +862,7 @@ public class ServicePropertiesTests {
         cors.getCorsRules().add(rule);
 
         if (fileServiceProperties == null) {
-            callUploadServiceProps(client, properties);
+            callUploadServiceProps(client, properties, null);
             assertServicePropertiesAreEqual(properties, callDownloadServiceProperties(client));
         } else {
             CloudFileClient fileClient = ((CloudFileClient) client);
@@ -839,7 +886,7 @@ public class ServicePropertiesTests {
         }
 
         if (fileServiceProperties == null) {
-            callUploadServiceProps(client, properties);
+            callUploadServiceProps(client, properties, null);
             assertServicePropertiesAreEqual(properties, callDownloadServiceProperties(client));
         } else {
             CloudFileClient fileClient = ((CloudFileClient) client);

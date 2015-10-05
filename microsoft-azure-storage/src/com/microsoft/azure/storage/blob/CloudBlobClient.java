@@ -128,7 +128,6 @@ public final class CloudBlobClient extends ServiceClient {
      * @see <a href="http://msdn.microsoft.com/library/azure/dd135715.aspx">Naming and Referencing Containers, Blobs,
      *      and Metadata</a>
      */
-    @SuppressWarnings("deprecation")
     public CloudBlobContainer getContainerReference(final String containerName) throws URISyntaxException,
             StorageException {
         return new CloudBlobContainer(containerName, this);

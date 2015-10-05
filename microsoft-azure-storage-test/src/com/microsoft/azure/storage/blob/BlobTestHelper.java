@@ -28,6 +28,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
 
@@ -55,6 +56,54 @@ public class BlobTestHelper extends TestHelper {
         }
         String blobName = prefix + UUID.randomUUID().toString();
         return blobName.replace("-", "");
+    }
+    
+    public static CloudBlob getBlobReference(BlobType type, CloudBlobContainer container, String name)
+            throws URISyntaxException, StorageException {
+        CloudBlob blob = null;
+        
+        switch (type) {
+            case APPEND_BLOB:
+                blob = container.getAppendBlobReference(name);
+                break;
+    
+            case BLOCK_BLOB:
+                blob = container.getBlockBlobReference(name);
+                break;
+                
+            case PAGE_BLOB:
+                blob = container.getPageBlobReference(name);
+                break;
+                
+            case UNSPECIFIED:
+                fail();
+        }
+        
+        return blob;
+    }
+    
+    public static CloudBlob getBlobReference(BlobType type, StorageCredentials credentials, URI uri)
+            throws StorageException, URISyntaxException {
+        CloudBlob blob = null;
+        
+        switch (type) {
+            case APPEND_BLOB:
+                blob = new CloudAppendBlob(credentials.transformUri(uri));
+                break;
+    
+            case BLOCK_BLOB:
+                blob = new CloudBlockBlob(credentials.transformUri(uri));
+                break;
+                
+            case PAGE_BLOB:
+                blob = new CloudPageBlob(credentials.transformUri(uri));
+                break;
+                
+            case UNSPECIFIED:
+                fail();
+        }
+        
+        return blob;
     }
 
     public static List<String> uploadNewBlobs(CloudBlobContainer container, BlobType type, int count, int length,
@@ -97,18 +146,34 @@ public class BlobTestHelper extends TestHelper {
 
         CloudBlob blob = null;
 
-        if (type == BlobType.BLOCK_BLOB) {
-            blob = container.getBlockBlobReference(name);
-            blob.upload(getRandomDataStream(length), length, null, null, context);
+        switch (type) {
+            case BLOCK_BLOB:
+                blob = container.getBlockBlobReference(name);
+                blob.upload(getRandomDataStream(length), length, null, null, context);
+                break;
+                
+            case PAGE_BLOB:
+                blob = container.getPageBlobReference(name);
+                if (length == 0) {
+                    ((CloudPageBlob) blob).create(length, null, null, context);
+                } else {
+                    blob.upload(getRandomDataStream(length), length, null, null, context);
+                }
+                break;
+                
+            case APPEND_BLOB:
+                blob = container.getAppendBlobReference(name);
+                if (length == 0) {
+                    ((CloudAppendBlob) blob).createOrReplace(null, null, context);
+                } else {
+                    blob.upload(getRandomDataStream(length), length, null, null, context);
+                }
+                break;
+                    
+            default:
+                fail();
         }
-        else if (type == BlobType.PAGE_BLOB) {
-            blob = container.getPageBlobReference(name);
-            blob.upload(getRandomDataStream(length), length, null, null, context);
-        }
-        else if (type == BlobType.APPEND_BLOB) {
-            blob = container.getAppendBlobReference(name);
-            blob.upload(getRandomDataStream(length), length, null, null, context);
-        }
+        
         return blob;
     }
 

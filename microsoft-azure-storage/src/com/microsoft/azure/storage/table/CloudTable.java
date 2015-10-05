@@ -29,11 +29,13 @@ import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.SharedAccessPolicyHandler;
 import com.microsoft.azure.storage.SharedAccessPolicySerializer;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -182,10 +184,8 @@ public final class CloudTable {
      *             If a storage service error occurred.
      * @see <a href="http://msdn.microsoft.com/library/azure/dd179338.aspx">Understanding the Table Service Data
      *      Model</a>
-     * @deprecated as of 3.0.0. Please use {@link CloudTableClient#getTableReference(String)}
      */
-    @Deprecated
-    public CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException,
+    protected CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException,
     StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("tableName", tableName);
@@ -193,51 +193,6 @@ public final class CloudTable {
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), tableName);
         this.name = tableName;
         this.tableServiceClient = client;
-    }
-
-    /**
-     * Creates an instance of the <code>CloudTable</code> class using the specified table URI and client.
-     *
-     * @param uri
-     *            A <code>java.net.URI</code> object that represents the absolute URI of the table.
-     * @param client
-     *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
-     *            the endpoint for the Table service.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @deprecated as of 3.0.0. Please use {@link CloudTable#CloudTable(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudTable(final URI uri, final CloudTableClient client) throws URISyntaxException, StorageException {
-        this(new StorageUri(uri, null), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudTable</code> class using the specified table StorageUri and client.
-     *
-     * @param uri
-     *            A {@link StorageUri} object that represents the absolute StorageUri of the table.
-     * @param client
-     *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
-     *            the endpoint for the Table service.
-     *
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @deprecated as of 3.0.0. Please use {@link CloudTable#CloudTable(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudTable(final StorageUri uri, final CloudTableClient client) throws URISyntaxException, StorageException {
-        this.parseQueryAndVerify(uri, client == null ? null : client.getCredentials());
-
-        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
-        if (client != null) {
-            this.tableServiceClient = client;
-        }
     }
 
     /**
@@ -1175,6 +1130,46 @@ public final class CloudTable {
     public String generateSharedAccessSignature(final SharedAccessTablePolicy policy,
             final String accessPolicyIdentifier, final String startPartitionKey, final String startRowKey,
             final String endPartitionKey, final String endRowKey) throws InvalidKeyException, StorageException {
+        
+        return generateSharedAccessSignature(policy, accessPolicyIdentifier,
+                startPartitionKey, startRowKey, endPartitionKey, endRowKey, null /* IP Range */, null /* Protocols */);
+    }
+
+    /**
+     * Creates a shared access signature for the table.
+     *
+     * @param policy
+     *            A {@link SharedAccessTablePolicy} object which represents the access policy for the shared access
+     *            signature.
+     * @param accessPolicyIdentifier
+     *            A <code>String</code> which represents a table-level access policy.
+     * @param startPartitionKey
+     *            A <code>String</code> which represents the starting partition key.
+     * @param startRowKey
+     *            A <code>String</code> which represents the starting row key.
+     * @param endPartitionKey
+     *            A <code>String</code> which represents the ending partition key.
+     * @param endRowKey
+     *            A <code>String</code> which represents the ending end key.
+     * @param ipRange
+     *            A {@link IPRange} object containing the range of allowed IP addresses.
+     * @param protocols
+     *            A {@link SharedAccessProtocols} representing the allowed Internet protocols.
+     *
+     * @return A <code>String</code> containing the shared access signature for the table.
+     *
+     * @throws InvalidKeyException
+     *             If an invalid key was passed.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws IllegalArgumentException
+     *             If an unexpected value is passed.
+     */
+    public String generateSharedAccessSignature(
+            final SharedAccessTablePolicy policy, final String accessPolicyIdentifier, final String startPartitionKey,
+            final String startRowKey, final String endPartitionKey, final String endRowKey, final IPRange ipRange,
+            final SharedAccessProtocols protocols)
+            throws InvalidKeyException, StorageException {
 
         if (!StorageCredentialsHelper.canCredentialsSignRequest(this.tableServiceClient.getCredentials())) {
             throw new IllegalArgumentException(SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY);
@@ -1182,13 +1177,13 @@ public final class CloudTable {
 
         final String resourceName = this.getSharedAccessCanonicalName();
 
-        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForTable(policy,
-                accessPolicyIdentifier, resourceName, startPartitionKey, startRowKey, endPartitionKey, endRowKey,
-                this.tableServiceClient);
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForTable(
+                policy, accessPolicyIdentifier, resourceName, ipRange, protocols,
+                startPartitionKey, startRowKey, endPartitionKey, endRowKey, this.tableServiceClient);
 
-        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForTable(policy,
-                startPartitionKey, startRowKey, endPartitionKey, endRowKey, accessPolicyIdentifier, this.name,
-                signature);
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForTable(
+                policy, startPartitionKey, startRowKey, endPartitionKey, endRowKey, accessPolicyIdentifier,
+                ipRange, protocols, this.name,  signature);
 
         return builder.toString();
     }

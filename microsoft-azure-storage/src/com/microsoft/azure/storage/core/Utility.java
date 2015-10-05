@@ -54,10 +54,6 @@ import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RequestOptions;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultContinuationType;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
-import com.microsoft.azure.storage.StorageCredentialsAnonymous;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCode;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
@@ -220,42 +216,6 @@ public final class Utility {
         }
 
         return retVal;
-    }
-
-    /**
-     * Returns a value that indicates whether the specified credentials are equal.
-     * 
-     * @param thisCred
-     *            An object derived from {@link StorageCredentials} that represents the first set of credentials being
-     *            compared for equality.
-     * @param thatCred
-     *            An object derived from <code>StorageCredentials</code> that represents the second set of credentials
-     *            being compared for equality.
-     * 
-     * @return <code>true</code> if the credentials are equal; otherwise, <code>false</code>.
-     */
-    public static boolean areCredentialsEqual(final StorageCredentials thisCred, final StorageCredentials thatCred) {
-        if (thisCred == thatCred) {
-            return true;
-        }
-
-        if (thisCred == null || thatCred == null || thisCred.getClass() != thatCred.getClass()) {
-            return false;
-        }
-
-        if (thisCred instanceof StorageCredentialsAccountAndKey) {
-            return ((StorageCredentialsAccountAndKey) thisCred).toString(true).equals(
-                    ((StorageCredentialsAccountAndKey) thatCred).toString(true));
-        }
-        else if (thisCred instanceof StorageCredentialsSharedAccessSignature) {
-            return ((StorageCredentialsSharedAccessSignature) thisCred).getToken().equals(
-                    ((StorageCredentialsSharedAccessSignature) thatCred).getToken());
-        }
-        else if (thisCred instanceof StorageCredentialsAnonymous) {
-            return true;
-        }
-
-        return thisCred.equals(thatCred);
     }
 
     /**
@@ -489,24 +449,6 @@ public final class Utility {
     }
 
     /**
-     * Returns a byte array that represents the data of a <code>long</code> value.
-     * 
-     * @param value
-     *            The value from which the byte array will be returned.
-     * 
-     * @return A byte array that represents the data of the specified <code>long</code> value.
-     */
-    public static byte[] getBytesFromLong(final long value) {
-        final byte[] tempArray = new byte[8];
-
-        for (int m = 0; m < 8; m++) {
-            tempArray[7 - m] = (byte) ((value >> (8 * m)) & 0xFF);
-        }
-
-        return tempArray;
-    }
-
-    /**
      * Returns the current GMT date/time String using the RFC1123 pattern.
      * 
      * @return A <code>String</code> that represents the current GMT date/time using the RFC1123 pattern.
@@ -613,22 +555,6 @@ public final class Utility {
      */
     public static XMLStreamWriter createXMLStreamWriter(StringWriter outWriter) throws XMLStreamException {
         return xmlOutputFactory.createXMLStreamWriter(outWriter);
-    }
-
-    /**
-     * Returns a <code>XMLStreamWriter</code> with the specified <code>OutputStream</code> and charset.
-     * 
-     * @param outStream
-     *            The <code>OutputStream</code> to use to create the <code>XMLStreamWriter</code> instance.
-     * @param charset
-     *            The charset to use to create the <code>XMLStreamWriter</code> instance.
-     * @return A <code>XMLStreamWriter</code> instance
-     * 
-     * @throws XMLStreamException
-     */
-    public static XMLStreamWriter createXMLStreamWriter(OutputStream outStream, String charset)
-            throws XMLStreamException {
-        return xmlOutputFactory.createXMLStreamWriter(outStream, charset);
     }
 
     /**

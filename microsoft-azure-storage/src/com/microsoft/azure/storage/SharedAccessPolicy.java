@@ -31,14 +31,14 @@ public abstract class SharedAccessPolicy {
      * The start time for a shared access signature associated with this shared access policy.
      */
     private Date sharedAccessStartTime;
-
+    
     /**
      * Creates an instance of the <code>SharedAccessPolicy</code> class.
-     * */
+     */
     public SharedAccessPolicy() {
         // Empty Default Constructor.
     }
-
+    
     /**
      * Gets the expiry time for a shared access signature associated with this shared access policy.
      * 

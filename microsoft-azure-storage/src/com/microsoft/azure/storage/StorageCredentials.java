@@ -51,14 +51,14 @@ public abstract class StorageCredentials {
      */
     protected static StorageCredentials tryParseCredentials(final Map<String, String> settings)
             throws InvalidKeyException {
-        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ? settings
-                .get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
+        final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) != null ?
+                settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME) : null;
 
-        final String accountKey = settings.get(CloudStorageAccount.ACCOUNT_KEY_NAME) != null ? settings
-                .get(CloudStorageAccount.ACCOUNT_KEY_NAME) : null;
+        final String accountKey = settings.get(CloudStorageAccount.ACCOUNT_KEY_NAME) != null ?
+                settings.get(CloudStorageAccount.ACCOUNT_KEY_NAME) : null;
 
-        final String sasSignature = settings.get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) != null ? settings
-                .get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) : null;
+        final String sasSignature = settings.get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) != null ?
+                settings.get(CloudStorageAccount.SHARED_ACCESS_SIGNATURE_NAME) : null;
 
         if (accountName != null && accountKey != null && sasSignature == null) {
             if (Base64.validateIsBase64String(accountKey)) {
@@ -94,9 +94,27 @@ public abstract class StorageCredentials {
      * 
      * @throws InvalidKeyException
      *             If the account key specified in <code>connectionString</code> is not valid.
+     * @throws StorageException 
      */
-    public static StorageCredentials tryParseCredentials(final String connectionString) throws InvalidKeyException {
+    public static StorageCredentials tryParseCredentials(final String connectionString)
+            throws InvalidKeyException, StorageException {
+        
         return tryParseCredentials(Utility.parseAccountString(connectionString));
+    }
+    
+    /**
+     * A <code>boolean</code> representing whether this <code>StorageCredentials</code> object only allows access via HTTPS.
+     */
+    private boolean httpsOnly = false;
+    
+    /**
+     * Gets whether this <code>StorageCredentials</code> object only allows access via HTTPS.
+     * 
+     * @return A <code>boolean</code> representing whether this <code>StorageCredentials</code>
+     *         object only allows access via HTTPS.
+     */
+    public boolean isHttpsOnly() {
+        return this.httpsOnly;
     }
 
     /**
@@ -107,6 +125,16 @@ public abstract class StorageCredentials {
      */
     public String getAccountName() {
         return null;
+    }
+    
+    /**
+     * Sets whether this <code>StorageCredentials</code> object only allows access via HTTPS.
+     * @param httpsOnly
+     *            A <code>boolean</code> representing whether this <code>StorageCredentials</code>
+     *            object only allows access via HTTPS.
+     */
+    protected void setHttpsOnly(boolean httpsOnly) {
+        this.httpsOnly = httpsOnly;
     }
 
     /**

@@ -98,7 +98,6 @@ public final class CloudFileClient extends ServiceClient {
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
      *      Directories, Files, and Metadata</a>
      */
-    @SuppressWarnings("deprecation")
     public CloudFileShare getShareReference(final String shareName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("shareName", shareName);
         return new CloudFileShare(shareName, this);

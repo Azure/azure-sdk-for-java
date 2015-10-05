@@ -16,8 +16,10 @@ package com.microsoft.azure.storage;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
 
 /**
  * Represents storage credentials for delegated access to Blob service resources via a shared access signature.
@@ -38,6 +40,20 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      */
     public StorageCredentialsSharedAccessSignature(final String token) {
         this.token = token;
+        
+        if (token == null) {
+            this.setHttpsOnly(false);
+        }
+        else {
+            try {
+                Map<String, String[]> queryParams = PathUtility.parseQueryString(token);
+                final String[] protocols = queryParams.get(Constants.QueryConstants.SIGNED_PROTOCOLS);
+                this.setHttpsOnly((protocols != null) && Constants.HTTPS.equals(protocols[0]));
+            }
+            catch (StorageException e) {
+                this.setHttpsOnly(false);
+            }
+        }
     }
 
     /**
@@ -82,12 +98,16 @@ public final class StorageCredentialsSharedAccessSignature extends StorageCreden
      *             If the resource URI is not properly formatted.
      */
     @Override
-    public URI transformUri(final URI resourceUri, final OperationContext opContext) throws URISyntaxException,
-            StorageException {
+    public URI transformUri(final URI resourceUri, final OperationContext opContext)
+            throws URISyntaxException, StorageException {
         if (resourceUri == null) {
             return null;
         }
-
+        
+        if(this.isHttpsOnly() && !resourceUri.getScheme().equals(Constants.HTTPS)) {
+            throw new IllegalArgumentException(SR.CANNOT_TRANSFORM_NON_HTTPS_URI_WITH_HTTPS_ONLY_CREDENTIALS);
+        }
+            
         // append the sas token to the resource uri
         URI sasUri = PathUtility.addToQuery(resourceUri, this.token);
         

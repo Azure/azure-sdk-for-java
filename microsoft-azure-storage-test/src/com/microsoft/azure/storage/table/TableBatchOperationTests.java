@@ -410,19 +410,11 @@ public class TableBatchOperationTests {
         this.table.execute(batch, options, null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchOver100Entities() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchOver100Entities(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchOver100Entities(options);
-    }
-
-    private void testBatchOver100Entities(TableRequestOptions options) throws StorageException {
+        
         TableBatchOperation batch = new TableBatchOperation();
         try {
             for (int m = 0; m < 101; m++) {
@@ -441,19 +433,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchInsertEntityOver1MB() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchInsertEntityOver1MB(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchInsertEntityOver1MB(options);
-    }
 
-    private void testBatchInsertEntityOver1MB(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         Class1 bigEnt = new Class1();
 
@@ -490,19 +474,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchInsertEntityWithPropertyMoreThan255chars() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchInsertEntityWithPropertyMoreThan255chars(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchInsertEntityWithPropertyMoreThan255chars(options);
-    }
 
-    private void testBatchInsertEntityWithPropertyMoreThan255chars(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         DynamicTableEntity bigEnt = new DynamicTableEntity();
 
@@ -540,19 +516,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchSizeOver4mb() {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchSizeOver4mb(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchSizeOver4mb(options);
-    }
 
-    private void testBatchSizeOver4mb(TableRequestOptions options) {
         TableBatchOperation batch = new TableBatchOperation();
         byte[] datArr = new byte[1024 * 128];
         Random rand = new Random();
@@ -583,19 +551,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchDeleteFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchDeleteFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchDeleteFail(options);
-    }
 
-    private void testBatchDeleteFail(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
 
         // Insert entity to delete
@@ -623,19 +583,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchInsertFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchInsertFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchInsertFail(options);
-    }
-
-    private void testBatchInsertFail(TableRequestOptions options) throws StorageException {
+        
         // insert entity
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
         this.table.execute(TableOperation.insert(ref), options, null);
@@ -653,19 +605,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchReplaceFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchReplaceFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchReplaceFail(options);
-    }
-
-    private void testBatchReplaceFail(TableRequestOptions options) throws StorageException {
+        
         TableBatchOperation batch = new TableBatchOperation();
 
         // Insert entity to merge
@@ -693,19 +637,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchMergeFail() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchMergeFail(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchMergeFail(options);
-    }
 
-    private void testBatchMergeFail(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         addInsertBatch(batch);
 
@@ -736,19 +672,11 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchEmptyQuery() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchEmptyQuery(options);
-
         options.setTablePayloadFormat(TablePayloadFormat.Json);
-        testBatchEmptyQuery(options);
-    }
 
-    private void testBatchEmptyQuery(TableRequestOptions options) throws StorageException {
         // insert entity
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
 
@@ -762,13 +690,9 @@ public class TableBatchOperationTests {
         assertEquals(results.get(0).getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchWithAllOperations() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchWithAllOperations(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchWithAllOperations(options);
@@ -845,13 +769,9 @@ public class TableBatchOperationTests {
 
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchDelete() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchDelete(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchDelete(options);
@@ -886,13 +806,9 @@ public class TableBatchOperationTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchRetrieve() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchRetrieve(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchRetrieve(options);
@@ -930,13 +846,9 @@ public class TableBatchOperationTests {
         this.table.execute(TableOperation.delete(ref), options, null);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void tableBatchRetrieveWithEntityResolver() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        tableBatchRetrieveWithEntityResolver(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         tableBatchRetrieveWithEntityResolver(options);
@@ -984,13 +896,9 @@ public class TableBatchOperationTests {
         assertTrue(Arrays.equals(ent.getD(), randEnt.getD()));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchInsert() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchInsert(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchInsert(options);
@@ -1033,13 +941,9 @@ public class TableBatchOperationTests {
         assertEquals(iter.next().getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchMerge() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchMerge(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchMerge(options);
@@ -1080,13 +984,9 @@ public class TableBatchOperationTests {
         assertEquals(iter.next().getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchReplace() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchReplace(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchReplace(options);
@@ -1127,13 +1027,9 @@ public class TableBatchOperationTests {
         assertEquals(iter.next().getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchInsertOrMerge() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchInsertOrMerge(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchInsertOrMerge(options);
@@ -1174,13 +1070,9 @@ public class TableBatchOperationTests {
         assertEquals(iter.next().getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testBatchInsertOrReplace() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        testBatchInsertOrReplace(options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         testBatchInsertOrReplace(options);
@@ -1221,14 +1113,10 @@ public class TableBatchOperationTests {
         assertEquals(iter.next().getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertBatch1() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
 
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        insertAndDeleteBatchWithX(1, options);
-
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         insertAndDeleteBatchWithX(1, options);
 
@@ -1239,14 +1127,10 @@ public class TableBatchOperationTests {
         insertAndDeleteBatchWithX(1, options);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertBatch10() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
 
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        insertAndDeleteBatchWithX(10, options);
-
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         insertAndDeleteBatchWithX(10, options);
 
@@ -1257,14 +1141,10 @@ public class TableBatchOperationTests {
         insertAndDeleteBatchWithX(10, options);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testInsertBatch100() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
 
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        insertAndDeleteBatchWithX(100, options);
-
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         insertAndDeleteBatchWithX(100, options);
 
@@ -1275,14 +1155,10 @@ public class TableBatchOperationTests {
         insertAndDeleteBatchWithX(100, options);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testUpsertBatch1() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
 
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        upsertAndDeleteBatchWithX(1, options);
-
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         upsertAndDeleteBatchWithX(1, options);
 
@@ -1293,14 +1169,10 @@ public class TableBatchOperationTests {
         upsertAndDeleteBatchWithX(1, options);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testUpsertBatch10() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
 
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        upsertAndDeleteBatchWithX(10, options);
-
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         upsertAndDeleteBatchWithX(10, options);
 
@@ -1311,13 +1183,9 @@ public class TableBatchOperationTests {
         upsertAndDeleteBatchWithX(10, options);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testUpsertBatch100() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        upsertAndDeleteBatchWithX(100, options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         upsertAndDeleteBatchWithX(100, options);

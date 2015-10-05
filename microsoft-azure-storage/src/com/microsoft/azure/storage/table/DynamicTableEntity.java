@@ -15,7 +15,6 @@
 
 package com.microsoft.azure.storage.table;
 
-import java.util.Date;
 import java.util.HashMap;
 
 import com.microsoft.azure.storage.OperationContext;
@@ -91,35 +90,7 @@ public class DynamicTableEntity extends TableServiceEntity {
      */
     public DynamicTableEntity(String partitionKey, String rowKey, String etag,
             final HashMap<String, EntityProperty> properties) {
-        this(partitionKey, rowKey, null /* timestamp */, etag, properties);
-    }
-
-    /**
-     * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
-     * 
-     * @param partitionKey
-     *            The partition key of the {@link DynamicTableEntity} to be initialized.
-     * @param rowKey
-     *            A <code>String</code> which represents the row key of the {@link DynamicTableEntity} to be initialized.
-     * @param etag
-     *            A <code>String</code> which represents the ETag of the {@link DynamicTableEntity} to be initialized.
-     * @param timestamp
-     *            A <code>java.util.Date</code> object which represents the timestamp of the {@link DynamicTableEntity} to be initialized.
-     * @param properties
-     *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
-     *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
-     * @deprecated as of 3.0.0. The timestamp property is read-only, set by the service only. Please use 
-     *            {@link DynamicTableEntity#DynamicTableEntity(String, String, String, HashMap)} instead.
-     */
-    @Deprecated
-    public DynamicTableEntity(String partitionKey, String rowKey, Date timestamp, String etag,
-            final HashMap<String, EntityProperty> properties) {
         super(partitionKey, rowKey);
-
-        // only set if timestamp is not null; otherwise default to new Date()
-        if (timestamp != null) {
-            this.timeStamp = timestamp;
-        }
 
         this.etag = etag;
         this.setProperties(properties);

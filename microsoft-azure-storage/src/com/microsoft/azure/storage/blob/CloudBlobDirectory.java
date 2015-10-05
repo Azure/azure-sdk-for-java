@@ -74,14 +74,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      */
     protected CloudBlobDirectory(final StorageUri uri, final String prefix, final CloudBlobClient client,
             final CloudBlobContainer container) {
-        Utility.assertNotNull("uri", uri);
-        Utility.assertNotNull("client", client);
-        Utility.assertNotNull("container", container);
-
-        this.blobServiceClient = client;
-        this.container = container;
-        this.prefix = prefix;
-        this.storageUri = uri;
+        this(uri, prefix, client, container, null);
     }
 
     /**
@@ -146,14 +139,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
     public CloudAppendBlob getAppendBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobName", blobName);
-
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName,
-                this.blobServiceClient.getDirectoryDelimiter());
-
-        final CloudAppendBlob retBlob = new CloudAppendBlob(address, snapshotID, this.blobServiceClient);
-        retBlob.setContainer(this.container);
-
-        return retBlob;
+        return new CloudAppendBlob(this.getPrefix().concat(blobName), snapshotID, this.getContainer());
     }
     
     /**
@@ -189,17 +175,10 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     public CloudBlockBlob getBlockBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobName", blobName);
-
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName,
-                this.blobServiceClient.getDirectoryDelimiter());
-
-        final CloudBlockBlob retBlob = new CloudBlockBlob(address, snapshotID, this.blobServiceClient);
-        retBlob.setContainer(this.container);
-        return retBlob;
+        return new CloudBlockBlob(this.getPrefix().concat(blobName), snapshotID, this.getContainer());
     }
 
     /**
@@ -250,18 +229,10 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     public CloudPageBlob getPageBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("blobName", blobName);
-
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName,
-                this.blobServiceClient.getDirectoryDelimiter());
-
-        final CloudPageBlob retBlob = new CloudPageBlob(address, snapshotID, this.blobServiceClient);
-        retBlob.setContainer(this.container);
-
-        return retBlob;
+        return new CloudPageBlob(this.getPrefix().concat(blobName), snapshotID, this.getContainer());
     }
 
     /**

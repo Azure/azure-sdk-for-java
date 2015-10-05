@@ -428,13 +428,12 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
-     * Sets the <code>timeStamp</code> value for the entity.
+     * Sets the <code>timeStamp</code> value for the entity. Note that the timestamp property is a read-only property,
+     * set by the service only.
      * 
      * @param timeStamp
      *            A <code>java.util.Date</code> containing the <code>timeStamp</code> value for the entity.
-     * @deprecated as of 3.0.0. The timestamp property is a read-only property, set by the service only.
      */
-    @Deprecated
     @Override
     public void setTimestamp(final Date timeStamp) {
         this.timeStamp = timeStamp;

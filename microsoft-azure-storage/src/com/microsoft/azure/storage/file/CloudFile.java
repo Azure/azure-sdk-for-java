@@ -36,7 +36,9 @@ import java.util.HashMap;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCode;
@@ -65,7 +67,7 @@ import com.microsoft.azure.storage.core.WrappedByteArrayOutputStream;
 /**
  * Represents a Microsoft Azure File.
  */
-public class CloudFile implements ListFileItem {
+public final class CloudFile implements ListFileItem {
     /**
      * Holds the number of bytes to buffer when writing to a {@link FileOutputStream}.
      */
@@ -119,8 +121,10 @@ public class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    public CloudFile(final URI fileAbsoluteUri) throws StorageException {
+    public CloudFile(final URI fileAbsoluteUri) throws StorageException, URISyntaxException {
         this(new StorageUri(fileAbsoluteUri));
     }
 
@@ -132,9 +136,11 @@ public class CloudFile implements ListFileItem {
      * 
      * @throws StorageException
      *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    public CloudFile(final StorageUri fileAbsoluteUri) throws StorageException {
-        this(fileAbsoluteUri, (StorageCredentials)null);
+    public CloudFile(final StorageUri fileAbsoluteUri) throws StorageException, URISyntaxException {
+        this(fileAbsoluteUri, null);
     }
     
     /**
@@ -168,95 +174,6 @@ public class CloudFile implements ListFileItem {
     public CloudFile(final StorageUri fileAbsoluteUri, final StorageCredentials credentials) throws StorageException {    
         this.parseQueryAndVerify(fileAbsoluteUri, credentials);
     }
-    
-    /**
-     * Creates an instance of the <code>CloudFile</code> class using the specified absolute URI and storage service
-     * client.
-     * 
-     * @param fileAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the file.
-     * @param client
-     *            A {@link CloudFileClient} object that specifies the endpoint for the file service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     * @deprecated as of 3.0.0. Please use {@link CloudFile#CloudFile(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudFile(final URI fileAbsoluteUri, final CloudFileClient client) throws StorageException,
-            URISyntaxException {
-        this(new StorageUri(fileAbsoluteUri), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudFile</code> class using the specified URI and storage service client.
-     * 
-     * @param fileAbsoluteUri
-     *            A {@link StorageUri} object that represents the absolute URI to the file.
-     * @param client
-     *            A {@link CloudFileClient} object that specifies the endpoint for the file service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     * @deprecated as of 3.0.0. Please use {@link CloudFile#CloudFile(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudFile(final StorageUri fileAbsoluteUri, final CloudFileClient client) throws StorageException,
-            URISyntaxException {
-        this.parseQueryAndVerify(fileAbsoluteUri, client == null ? null : client.getCredentials());
-        
-        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
-        if (client != null) {
-            this.fileServiceClient = client;
-        }
-    }
-
-    /**
-     * Creates an instance of the <code>CloudFile</code> class using the specified absolute URI, storage service
-     * client and share.
-     * 
-     * @param fileAbsoluteUri
-     *            A <code>java.net.URI</code> object that represents the absolute URI to the file.
-     * @param client
-     *            A {@link CloudFileClient} object that specifies the endpoint for the file service.
-     * @param share
-     *            A {@link CloudFileShare} object that represents the share to use for the file.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     * @deprecated as of 3.0.0. Please use {@link CloudFile#CloudFile(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudFile(final URI fileAbsoluteUri, final CloudFileClient client, final CloudFileShare share)
-            throws StorageException, URISyntaxException {
-        this(new StorageUri(fileAbsoluteUri), client, share);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudFile</code> class using the specified absolute StorageUri, storage
-     * service client and share.
-     * 
-     * @param fileAbsoluteUri
-     *            A {@link StorageUri} object that represents the absolute URI to the file.
-     * @param client
-     *            A {@link CloudFileClient} object that specifies the endpoint for the file service.
-     * @param share
-     *            A {@link CloudFileShare} object that represents the share to use for the file.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     * @deprecated as of 3.0.0. Please use {@link CloudFile#CloudFile(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudFile(final StorageUri fileAbsoluteUri, final CloudFileClient client, final CloudFileShare share)
-            throws StorageException, URISyntaxException {
-        this(fileAbsoluteUri, client);
-        this.share = share;
-    }
 
     /**
      * Creates an instance of the <code>CloudFile</code> class by copying values from another cloud file.
@@ -280,6 +197,28 @@ public class CloudFile implements ListFileItem {
         this.name = otherFile.name;
         this.setStreamMinimumReadSizeInBytes(otherFile.getStreamMinimumReadSizeInBytes());
         this.setStreamWriteSizeInBytes(otherFile.getStreamWriteSizeInBytes());
+    }
+    
+    /**
+     * Creates an instance of the <code>CloudFile</code> class using the specified address, share,
+     * and client.
+     * 
+     * @param uri
+     *            A {@link StorageUri} that represents the file directory's address.
+     * @param fileName
+     *            A <code>String</code> that represents the name of the file.
+     * @param share
+     *            A {@link CloudFileShare} object that represents the associated file share.
+     */
+    protected CloudFile(final StorageUri uri, final String fileName, final CloudFileShare share) {
+        Utility.assertNotNull("uri", uri);
+        Utility.assertNotNull("fileName", fileName);
+        Utility.assertNotNull("share", share);
+
+        this.name = fileName;
+        this.fileServiceClient = share.getServiceClient();
+        this.share = share;
+        this.storageUri = uri;
     }
 
     /**
@@ -1744,18 +1683,55 @@ public class CloudFile implements ListFileItem {
      * @throws StorageException
      *             If a storage service error occurred.
      */
-    public String generateSharedAccessSignature(final SharedAccessFilePolicy policy,
-            final SharedAccessFileHeaders headers, final String groupPolicyIdentifier)
+    public String generateSharedAccessSignature(
+            final SharedAccessFilePolicy policy, final SharedAccessFileHeaders headers, final String groupPolicyIdentifier)
             throws InvalidKeyException, StorageException {
+
+        return this.generateSharedAccessSignature(policy, headers, groupPolicyIdentifier,
+                null /* IP range */, null /* protocols */);
+    }
+    
+    /**
+     * Returns a shared access signature for the file using the specified group policy identifier and
+     * shared access file headers. Note this does not contain the leading "?".
+     *
+     * @param policy
+     *            A <code>{@link SharedAccessFilePolicy}</code> object that represents the access policy for the shared
+     *            access signature.
+     * @param headers
+     *            A <code>{@link SharedAccessFileHeaders}</code> object that represents the optional header values to
+     *            set for a file accessed with this shared access signature.
+     * @param groupPolicyIdentifier
+     *            A <code>String</code> that represents the share-level access policy.
+     * @param ipRange
+     *            A {@link IPRange} object containing the range of allowed IP addresses.
+     * @param protocols
+     *            A {@link SharedAccessProtocols} representing the allowed Internet protocols.
+     *
+     * @return A <code>String</code> that represents the shared access signature.
+     *
+     * @throws IllegalArgumentException
+     *             If the credentials are invalid.
+     * @throws InvalidKeyException
+     *             If the credentials are invalid.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public String generateSharedAccessSignature(
+            final SharedAccessFilePolicy policy, final SharedAccessFileHeaders headers,
+            final String groupPolicyIdentifier, final IPRange ipRange, final SharedAccessProtocols protocols)
+            throws InvalidKeyException, StorageException {
+
         if (!StorageCredentialsHelper.canCredentialsSignRequest(this.fileServiceClient.getCredentials())) {
             throw new IllegalArgumentException(SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY);
         }
 
         final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForBlobAndFile(
-                policy, headers, groupPolicyIdentifier, this.getCanonicalName(), this.fileServiceClient);
+                policy, headers, groupPolicyIdentifier, this.getCanonicalName(),
+                ipRange, protocols, this.fileServiceClient);
 
         final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForBlobAndFile(
-                policy, headers, groupPolicyIdentifier, "f", signature);
+                policy, headers, groupPolicyIdentifier, "f", ipRange, protocols, signature);
 
         return builder.toString();
     }
@@ -2753,13 +2729,12 @@ public class CloudFile implements ListFileItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     @Override
     public final CloudFileShare getShare() throws StorageException, URISyntaxException {
         if (this.share == null) {
             final StorageUri shareUri = PathUtility.getShareURI(this.getStorageUri(),
                     this.fileServiceClient.isUsePathStyleUris());
-            this.share = new CloudFileShare(shareUri, this.fileServiceClient);
+            this.share = new CloudFileShare(shareUri, this.fileServiceClient.getCredentials());
         }
 
         return this.share;
@@ -2793,7 +2768,6 @@ public class CloudFile implements ListFileItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    @SuppressWarnings("deprecation")
     @Override
     public final CloudFileDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
@@ -2801,7 +2775,7 @@ public class CloudFile implements ListFileItem {
 
             if (parentName != null) {
                 StorageUri parentURI = PathUtility.appendPathToUri(this.share.getStorageUri(), parentName);
-                this.parent = new CloudFileDirectory(parentURI, this.getServiceClient());
+                this.parent = new CloudFileDirectory(parentURI, this.getServiceClient().getCredentials());
             }
         }
         return this.parent;

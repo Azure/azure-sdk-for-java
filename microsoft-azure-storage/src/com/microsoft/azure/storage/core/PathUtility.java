@@ -383,21 +383,6 @@ public final class PathUtility {
     }
 
     /**
-     * Get the queue name from address from the URI.
-     * 
-     * @param resourceAddress
-     *            The queue Uri.
-     * @param usePathStyleUris
-     *            a value indicating if the address is a path style uri.
-     * @return container name from address from the URI.
-     * @throws IllegalArgumentException
-     */
-    public static String getQueueNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
-        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
-                String.format("Invalid queue URI '%s'.", resourceAddress));
-    }
-
-    /**
      * Get the service client address from a complete Uri.
      * 
      * @param address
@@ -433,25 +418,6 @@ public final class PathUtility {
         }
     }
 
-    /**
-     * Get the service client address from a complete Uri.
-     * 
-     * @param address
-     *            Complete address of the resource.
-     * @param usePathStyleUris
-     *            a value indicating if the address is a path style uri.
-     * @return the service client address from a complete Uri.
-     * @throws StorageException
-     */
-    public static StorageUri getServiceClientBaseAddress(final StorageUri addressUri) throws StorageException {
-        boolean usePathStyleUris = Utility.determinePathStyleFromUri(addressUri.getPrimaryUri());
-        try {
-            return getServiceClientBaseAddress(addressUri, usePathStyleUris);
-        } catch (final URISyntaxException e) {
-            throw Utility.generateNewUnexpectedStorageException(e);
-        }
-    }
-    
     /**
      * Get the service client address from a complete Uri.
      * 

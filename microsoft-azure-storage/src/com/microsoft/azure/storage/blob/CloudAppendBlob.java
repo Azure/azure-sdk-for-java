@@ -146,24 +146,23 @@ public final class CloudAppendBlob extends CloudBlob {
             throws StorageException {
         super(BlobType.APPEND_BLOB, blobAbsoluteUri, snapshotID, credentials);
     }
-
+    
     /**
-     * Creates an instance of the <code>CloudAppendBlob</code> class using the specified URI, snapshot ID, and cloud blob
-     * client.
-     * 
-     * @param blobAbsoluteUri
-     *            A {@link StorageUri} object which represents the absolute URI to the blob.
+     * Creates an instance of the <code>CloudAppendBlob</code> class using the specified type, name, snapshot ID, and
+     * container.
+     *
+     * @param blobName
+     *            Name of the blob.
      * @param snapshotID
-     *            A <code>String</code> which represents the snapshot version, if applicable.
-     * @param client
-     *            A {@link CloudBlobContainer} object which represents the container to use for the blob.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
+     *            A <code>String</code> that represents the snapshot version, if applicable.
+     * @param container
+     *            The reference to the parent container.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
      */
-    protected CloudAppendBlob(final StorageUri blobAbsoluteUri, final String snapshotID, final CloudBlobClient client)
-            throws StorageException {
-        super(BlobType.APPEND_BLOB, blobAbsoluteUri, snapshotID, client);
+    protected CloudAppendBlob(String blobName, String snapshotID, CloudBlobContainer container)
+            throws URISyntaxException {
+        super(BlobType.APPEND_BLOB, blobName, snapshotID, container);
     }
     
     /**

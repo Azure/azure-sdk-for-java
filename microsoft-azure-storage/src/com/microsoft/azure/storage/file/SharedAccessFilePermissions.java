@@ -24,12 +24,17 @@ public enum SharedAccessFilePermissions {
     READ,
 
     /**
+     * Specifies Create access granted.
+     */
+    CREATE,
+
+    /**
      * Specifies Write access granted.
      */
     WRITE,
 
     /**
-     * Specifies Delete access granted for files.
+     * Specifies Delete access granted.
      */
     DELETE,
 

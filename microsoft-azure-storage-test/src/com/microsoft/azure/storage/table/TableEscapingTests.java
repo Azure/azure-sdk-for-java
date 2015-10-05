@@ -155,12 +155,8 @@ public class TableEscapingTests {
         doEscapeTest(data, useBatch, false);
     }
 
-    @SuppressWarnings("deprecation")
     private void doEscapeTest(String data, boolean useBatch, boolean includeInKey) throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        doEscapeTestHelper(data, useBatch, includeInKey, options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         doEscapeTestHelper(data, useBatch, includeInKey, options);
@@ -273,12 +269,8 @@ public class TableEscapingTests {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void doQueryEscapeTest(String data) throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
-
-        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
-        doQueryEscapeTestHelper(data, options);
 
         options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
         doQueryEscapeTestHelper(data, options);

@@ -258,7 +258,7 @@ public class CloudBlobContainerTests {
 
         permissions.setPublicAccess(BlobContainerPublicAccessType.CONTAINER);
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
-        policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.LIST));
+        policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.CREATE));
         policy.setSharedAccessStartTime(start);
         policy.setSharedAccessExpiryTime(expiry);
         permissions.getSharedAccessPolicies().put("key1", policy);
@@ -288,6 +288,17 @@ public class CloudBlobContainerTests {
     public void testCloudBlobContainerPermissionsFromString() {
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
 
+        policy.setPermissionsFromString("racwdl");
+        assertEquals(EnumSet.of(
+                SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.ADD, SharedAccessBlobPermissions.CREATE,
+                SharedAccessBlobPermissions.WRITE, SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST),
+                policy.getPermissions());
+
+        policy.setPermissionsFromString("rawdl");
+        assertEquals(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.ADD,
+                SharedAccessBlobPermissions.WRITE, SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST),
+                policy.getPermissions());
+
         policy.setPermissionsFromString("rwdl");
         assertEquals(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST), policy.getPermissions());
@@ -311,6 +322,15 @@ public class CloudBlobContainerTests {
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testCloudBlobContainerPermissionsToString() {
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+
+        policy.setPermissions(EnumSet.of(
+                SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.ADD, SharedAccessBlobPermissions.CREATE,
+                SharedAccessBlobPermissions.WRITE, SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST));
+        assertEquals("racwdl", policy.permissionsToString());
+
+        policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.ADD,
+                SharedAccessBlobPermissions.WRITE, SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST));
+        assertEquals("rawdl", policy.permissionsToString());
 
         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST));
@@ -619,7 +639,7 @@ public class CloudBlobContainerTests {
      */
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
-    public void testCloudBlobContainerSharedKeyLite() throws StorageException, InterruptedException {
+    public void testCloudBlobContainerSharedKey() throws StorageException, InterruptedException {
         BlobContainerPermissions expectedPermissions;
         BlobContainerPermissions testPermissions;
 
@@ -642,7 +662,7 @@ public class CloudBlobContainerTests {
         now.add(Calendar.MINUTE, 10);
         policy1.setSharedAccessExpiryTime(now.getTime());
 
-        policy1.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.DELETE,
+        policy1.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.CREATE,
                 SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE));
         expectedPermissions.getSharedAccessPolicies().put(UUID.randomUUID().toString(), policy1);
 

@@ -18,7 +18,6 @@ import java.util.EnumSet;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.SharedAccessPolicy;
-import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
@@ -29,7 +28,7 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
      * The permissions for a shared access signature associated with this shared access policy.
      */
     private EnumSet<SharedAccessBlobPermissions> permissions;
-    
+
     /**
      * Gets the permissions for a shared access signature associated with this shared access policy.
      * 
@@ -50,11 +49,11 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
     public void setPermissions(final EnumSet<SharedAccessBlobPermissions> permissions) {
         this.permissions = permissions;
     }
-    
+
     /**
      * Converts this policy's permissions to a string.
      * 
-     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format,
+     * @return A <code>String</code> that represents the shared access permissions in the "racwdl" format,
      *         which is described at {@link #setPermissionsFromString(String)}.
      */
     @Override
@@ -63,11 +62,19 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
             return Constants.EMPTY_STRING;
         }
 
-        // The service supports a fixed order => rwdl
+        // The service supports a fixed order => racwdl
         final StringBuilder builder = new StringBuilder();
 
         if (this.permissions.contains(SharedAccessBlobPermissions.READ)) {
             builder.append("r");
+        }
+
+        if (this.permissions.contains(SharedAccessBlobPermissions.ADD)) {
+            builder.append("a");
+        }
+
+        if (this.permissions.contains(SharedAccessBlobPermissions.CREATE)) {
+            builder.append("c");
         }
 
         if (this.permissions.contains(SharedAccessBlobPermissions.WRITE)) {
@@ -90,36 +97,50 @@ public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
      * 
      * @param value
      *            A <code>String</code> that represents the shared access permissions. The string must contain one or
-     *            more of the following values. Note they must be lowercase, and the order that they are specified must
-     *            be in the order of "rwdl".
+     *            more of the following values. Note they must all be lowercase.
      *            <ul>
+     *            <li><code>r</code>: Read access.</li>
+     *            <li><code>a</code>: Add access.</li>
+     *            <li><code>c</code>: Create access.</li>
+     *            <li><code>w</code>: Write access.</li>
      *            <li><code>d</code>: Delete access.</li>
      *            <li><code>l</code>: List access.</li>
-     *            <li><code>r</code>: Read access.</li>
-     *            <li><code>w</code>: Write access.</li>
      *            </ul>
      */
+    @Override
     public void setPermissionsFromString(final String value) {
-        EnumSet<SharedAccessBlobPermissions> initial = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+        final EnumSet<SharedAccessBlobPermissions> initial = EnumSet.noneOf(SharedAccessBlobPermissions.class);
         for (final char c : value.toCharArray()) {
             switch (c) {
                 case 'r':
                     initial.add(SharedAccessBlobPermissions.READ);
                     break;
+
+                case 'a':
+                    initial.add(SharedAccessBlobPermissions.ADD);
+                    break;
+
+                case 'c':
+                    initial.add(SharedAccessBlobPermissions.CREATE);
+                    break;
+
                 case 'w':
                     initial.add(SharedAccessBlobPermissions.WRITE);
                     break;
+
                 case 'd':
                     initial.add(SharedAccessBlobPermissions.DELETE);
                     break;
+
                 case 'l':
                     initial.add(SharedAccessBlobPermissions.LIST);
                     break;
+
                 default:
                     throw new IllegalArgumentException("value");
             }
         }
-        
+
         this.permissions = initial;
     }
 }

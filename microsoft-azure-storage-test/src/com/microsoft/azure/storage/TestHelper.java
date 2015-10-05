@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -56,20 +57,79 @@ public class TestHelper {
         return client;
     }
 
+    public static CloudBlobClient createCloudBlobClient(SharedAccessAccountPolicy policy, boolean useHttps)
+            throws StorageException, InvalidKeyException, URISyntaxException {
+        
+        CloudStorageAccount sasAccount = getAccount();
+        final String token = sasAccount.generateSharedAccessSignature(policy);
+        final StorageCredentials creds =
+                new StorageCredentialsSharedAccessSignature(token);
+        
+        sasAccount = new CloudStorageAccount(
+                creds, TestHelper.securePortUri(sasAccount.getBlobEndpoint(), useHttps, 'b'),
+                sasAccount.getQueueEndpoint(), sasAccount.getTableEndpoint(), sasAccount.getFileEndpoint());
+        return sasAccount.createCloudBlobClient();
+    }
+
     public static CloudFileClient createCloudFileClient() throws StorageException {
         CloudFileClient client = getAccount().createCloudFileClient();
         return client;
     }
+
+    public static CloudFileClient createCloudFileClient(SharedAccessAccountPolicy policy, boolean useHttps)
+            throws StorageException, InvalidKeyException, URISyntaxException {
+
+        CloudStorageAccount sasAccount = getAccount();
+        final String token = sasAccount.generateSharedAccessSignature(policy);
+        final StorageCredentials creds =
+                new StorageCredentialsSharedAccessSignature(token);
+        
+        sasAccount = new CloudStorageAccount(
+                creds, sasAccount.getBlobEndpoint(), sasAccount.getQueueEndpoint(), sasAccount.getTableEndpoint(),
+                TestHelper.securePortUri(sasAccount.getFileEndpoint(), useHttps, 'f'));
+        return sasAccount.createCloudFileClient();
+    }
+
 
     public static CloudQueueClient createCloudQueueClient() throws StorageException {
         CloudQueueClient client = getAccount().createCloudQueueClient();
         return client;
     }
 
+    public static CloudQueueClient createCloudQueueClient(SharedAccessAccountPolicy policy, boolean useHttps)
+            throws StorageException, InvalidKeyException, URISyntaxException {
+
+        CloudStorageAccount sasAccount = getAccount();
+        final String token = sasAccount.generateSharedAccessSignature(policy);
+        final StorageCredentials creds =
+                new StorageCredentialsSharedAccessSignature(token);
+        
+        sasAccount = new CloudStorageAccount(
+                creds, sasAccount.getBlobEndpoint(), TestHelper.securePortUri(sasAccount.getQueueEndpoint(), useHttps, 'q'),
+                sasAccount.getTableEndpoint(), sasAccount.getFileEndpoint());
+        return sasAccount.createCloudQueueClient();
+    }
+
+
     public static CloudTableClient createCloudTableClient() throws StorageException {
         CloudTableClient client = getAccount().createCloudTableClient();
         return client;
     }
+
+    public static CloudTableClient createCloudTableClient(SharedAccessAccountPolicy policy, boolean useHttps)
+            throws StorageException, InvalidKeyException, URISyntaxException {
+
+        CloudStorageAccount sasAccount = getAccount();
+        final String token = sasAccount.generateSharedAccessSignature(policy);
+        final StorageCredentials creds =
+                new StorageCredentialsSharedAccessSignature(token);
+        
+        sasAccount = new CloudStorageAccount(
+                creds, sasAccount.getBlobEndpoint(), sasAccount.getQueueEndpoint(),
+                TestHelper.securePortUri(sasAccount.getTableEndpoint(), useHttps, 't'), sasAccount.getFileEndpoint());
+        return sasAccount.createCloudTableClient();
+    }
+
 
     public static CloudAnalyticsClient createCloudAnalyticsClient() throws StorageException {
         CloudAnalyticsClient client = getAccount().createCloudAnalyticsClient();
@@ -90,6 +150,47 @@ public class TestHelper {
 
     public static ByteArrayInputStream getRandomDataStream(int length) {
         return new ByteArrayInputStream(getRandomBuffer(length));
+    }
+    
+    public static URI securePortUri(URI uri, boolean useHttps, char service) throws URISyntaxException {
+        Integer port = null;
+        String scheme;
+        
+        if (useHttps) {
+            if (TestHelper.tenant != null) {
+                switch(service) {
+                    case 'b' :
+                        port = TestHelper.tenant.getBlobHttpsPortOverride();
+                        break;
+    
+                    case 'f' :
+                        port = TestHelper.tenant.getFileHttpsPortOverride();
+                        break;
+                        
+                    case 't' :
+                        port = TestHelper.tenant.getTableHttpsPortOverride();
+                        break;
+                        
+                    case 'q' :
+                        port = TestHelper.tenant.getQueueHttpsPortOverride();
+                        break;
+                        
+                    default :
+                        fail();
+                }
+            }
+
+            scheme = Constants.HTTPS;
+            if (port == null) {
+                port = 443;
+            }
+        }
+        else {
+            scheme = Constants.HTTP;
+            port = uri.getPort();
+        }
+        
+        return new URI(scheme, uri.getUserInfo(), uri.getHost(), port, uri.getPath(), uri.getQuery(), uri.getFragment());
     }
 
     public static void assertStreamsAreEqual(ByteArrayInputStream src, ByteArrayInputStream dst) {
@@ -251,12 +352,14 @@ public class TestHelper {
                 Node parent = tenantNodes.item(i).getParentNode();
                 final NodeList childNodes = parent.getChildNodes();
                 for (int j = 0; j < childNodes.getLength(); j++) {
-                    Node node = childNodes.item(j);
+                    final Node node = childNodes.item(j);
+                    
                     if (node.getNodeType() != Node.ELEMENT_NODE) {
                         // do nothing
                     }
                     else {
                         final String name = node.getNodeName();
+                        
                         if (name.equals("TenantName")) {
                             tenant.setTenantName(node.getTextContent());
                         }
@@ -273,25 +376,37 @@ public class TestHelper {
                             tenant.setBlobServiceEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("QueueServiceEndpoint")) {
-                            tenant.setQueueServiceEndpoint(new URI(node.getTextContent()));;
+                            tenant.setQueueServiceEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("TableServiceEndpoint")) {
-                            tenant.setTableServiceEndpoint(new URI(node.getTextContent()));;
+                            tenant.setTableServiceEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("FileServiceEndpoint")) {
-                            tenant.setFileServiceEndpoint(new URI(node.getTextContent()));;
+                            tenant.setFileServiceEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("BlobServiceSecondaryEndpoint")) {
-                            tenant.setBlobServiceSecondaryEndpoint(new URI(node.getTextContent()));;
+                            tenant.setBlobServiceSecondaryEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("QueueServiceSecondaryEndpoint")) {
-                            tenant.setQueueServiceSecondaryEndpoint(new URI(node.getTextContent()));;
+                            tenant.setQueueServiceSecondaryEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("TableServiceSecondaryEndpoint")) {
-                            tenant.setTableServiceSecondaryEndpoint(new URI(node.getTextContent()));;
+                            tenant.setTableServiceSecondaryEndpoint(new URI(node.getTextContent()));
                         }
                         else if (name.equals("FileServiceSecondaryEndpoint")) {
-                            tenant.setFileServiceSecondaryEndpoint(new URI(node.getTextContent()));;
+                            tenant.setFileServiceSecondaryEndpoint(new URI(node.getTextContent()));
+                        }
+                        else if (name.equals("BlobHttpsPortOverride")) {
+                            tenant.setBlobHttpsPortOverride(Integer.parseInt(node.getTextContent()));
+                        }
+                        else if (name.equals("QueueHttpsPortOverride")) {
+                            tenant.setQueueHttpsPortOverride(Integer.parseInt(node.getTextContent()));
+                        }
+                        else if (name.equals("TableHttpsPortOverride")) {
+                            tenant.setTableHttpsPortOverride(Integer.parseInt(node.getTextContent()));
+                        }
+                        else if (name.equals("FileHttpsPortOverride")) {
+                            tenant.setFileHttpsPortOverride(Integer.parseInt(node.getTextContent()));
                         }
                         else {
                             throw new IllegalArgumentException(String.format(

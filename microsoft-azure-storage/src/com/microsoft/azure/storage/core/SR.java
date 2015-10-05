@@ -20,6 +20,7 @@ package com.microsoft.azure.storage.core;
  */
 public class SR {
     public static final String ACCOUNT_NAME_NULL_OR_EMPTY = "The account name is null or empty.";
+    public static final String ACCOUNT_NAME_MISMATCH = "The account name does not match the existing account name on the credentials.";
     public static final String APPEND_BLOB_MD5_NOT_POSSIBLE = "MD5 cannot be calculated for an existing append blob because it would require reading the existing data. Please disable StoreFileContentMD5.";
     public static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
     public static final String ARGUMENT_OUT_OF_RANGE_ERROR = "The argument is out of range. Argument name: %s, Value passed: %s.";
@@ -33,6 +34,7 @@ public class SR {
     public static final String CANNOT_CREATE_SAS_FOR_GIVEN_CREDENTIALS = "Cannot create Shared Access Signature as the credentials does not have account name information. Please check that the credentials provided support creating Shared Access Signature.";
     public static final String CANNOT_CREATE_SAS_FOR_SNAPSHOTS = "Cannot create Shared Access Signature via references to blob snapshots. Please perform the given operation on the root blob instead.";
     public static final String CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY = "Cannot create Shared Access Signature unless the Account Key credentials are used by the ServiceClient.";
+    public static final String CANNOT_TRANSFORM_NON_HTTPS_URI_WITH_HTTPS_ONLY_CREDENTIALS = "Cannot use HTTP with credentials that only support HTTPS.";
     public static final String CONTAINER = "container";
     public static final String CONTENT_LENGTH_MISMATCH = "An incorrect number of bytes was read from the connection. The connection may have been closed.";
     public static final String CREATING_NETWORK_STREAM = "Creating a NetworkInputStream and expecting to read %s bytes.";
@@ -49,6 +51,7 @@ public class SR {
     public static final String ETAG_INVALID_FOR_DELETE = "Delete requires a valid ETag (which may be the '*' wildcard).";
     public static final String ETAG_INVALID_FOR_MERGE = "Merge requires a valid ETag (which may be the '*' wildcard).";
     public static final String ETAG_INVALID_FOR_UPDATE = "Replace requires a valid ETag (which may be the '*' wildcard).";
+    public static final String ENUM_COULD_NOT_BE_PARSED = "%s could not be parsed from '%s'.";
     public static final String EXCEPTION_THROWN_DURING_DESERIALIZATION = "The entity threw an exception during deserialization.";
     public static final String EXCEPTION_THROWN_DURING_SERIALIZATION = "The entity threw an exception during serialization.";
     public static final String EXPECTED_A_FIELD_NAME = "Expected a field name.";
@@ -79,6 +82,7 @@ public class SR {
     public static final String INVALID_EDMTYPE_VALUE = "Invalid value '%s' for EdmType.";
     public static final String INVALID_FILE_LENGTH = "File length must be greater than 0 bytes.";
     public static final String INVALID_GEO_REPLICATION_STATUS = "Null or Invalid geo-replication status in response: %s.";
+    public static final String INVALID_IP_ADDRESS = "Error when parsing IPv4 address: IP address '%s' is invalid.";
     public static final String INVALID_KEY = "Storage Key is not a valid base64 encoded string.";
     public static final String INVALID_LISTING_DETAILS = "Invalid blob listing details specified.";
     public static final String INVALID_LOGGING_LEVEL = "Invalid logging operations specified.";
@@ -122,7 +126,6 @@ public class SR {
     public static final String PARTITIONKEY_MISSING_FOR_UPDATE = "Replace requires a partition key.";
     public static final String PARTITIONKEY_MISSING_FOR_INSERT = "Insert requires a partition key.";
     public static final String PATH_STYLE_URI_MISSING_ACCOUNT_INFORMATION = "Missing account name information inside path style URI. Path style URIs should be of the form http://<IPAddress:Port>/<accountName>";
-    public static final String PERMISSIONS_COULD_NOT_BE_PARSED = "Permissions could not be parsed from '%s'.";
     public static final String PRIMARY_ONLY_COMMAND = "This operation can only be executed against the primary storage location.";
     public static final String PROPERTY_CANNOT_BE_SERIALIZED_AS_GIVEN_EDMTYPE = "Property %s with Edm Type %s cannot be de-serialized.";
     public static final String PRECONDITION_FAILURE_IGNORED = "Pre-condition failure on a retry is being ignored since the request should have succeeded in the first attempt.";

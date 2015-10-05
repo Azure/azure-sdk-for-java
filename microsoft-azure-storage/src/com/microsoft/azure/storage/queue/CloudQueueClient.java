@@ -99,7 +99,6 @@ public final class CloudQueueClient extends ServiceClient {
      *             If a storage service error occurred.
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179349.aspx">Naming Queues and Metadata</a>
      */
-    @SuppressWarnings("deprecation")
     public CloudQueue getQueueReference(final String queueName) throws URISyntaxException, StorageException {
         return new CloudQueue(queueName, this);
     }
@@ -277,8 +276,9 @@ public final class CloudQueueClient extends ServiceClient {
                     throws Exception {
                 listingContext.setMarker(segmentedRequest.getToken() != null ? segmentedRequest.getToken()
                         .getNextMarker() : null);
-                return QueueRequest.list(client.getStorageUri().getUri(this.getCurrentLocation()), options, context,
-                        listingContext, detailsIncluded);
+                return QueueRequest.list(
+                        credentials.transformUri(client.getStorageUri().getUri(this.getCurrentLocation())),
+                        options, context, listingContext, detailsIncluded);
             }
 
             @Override

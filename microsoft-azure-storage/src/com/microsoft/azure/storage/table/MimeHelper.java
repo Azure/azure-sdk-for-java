@@ -26,8 +26,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import javax.xml.stream.XMLStreamException;
-
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -125,13 +123,11 @@ final class MimeHelper {
      *             if an invalid URI is used.
      * @throws StorageException
      *             if an error occurs accessing the Storage service.
-     * @throws XMLStreamException
-     *             if an error occurs accessing the stream.
      */
     static void writeBatchToStream(final OutputStream outStream, final TableRequestOptions options,
             final String tableName, final URI baseUri, final TableBatchOperation batch, final String batchID,
             final String changeSet, final OperationContext opContext) throws IOException, URISyntaxException,
-            StorageException, XMLStreamException {
+            StorageException {
         final OutputStreamWriter outWriter = new OutputStreamWriter(outStream, Constants.UTF8_CHARSET);
 
         MimePart mimePart;
@@ -207,7 +203,7 @@ final class MimeHelper {
 
                 if (op.getOperationType() != TableOperationType.DELETE) {
                     mimePart.headers.put(Constants.HeaderConstants.CONTENT_TYPE,
-                            generateContentTypeHeaderValue(options.getTablePayloadFormat()));
+                            TableConstants.HeaderConstants.JSON_CONTENT_TYPE);
                     mimePart.payload = writeStringForOperation(op, options.getTablePayloadFormat(), opContext);
                     mimePart.headers.put(Constants.HeaderConstants.CONTENT_LENGTH,
                             Integer.toString(mimePart.payload.getBytes(Constants.UTF8_CHARSET).length));
@@ -440,7 +436,7 @@ final class MimeHelper {
 
     /**
      * Reserved for internal use. Generates a <code>String</code> containing the entity associated with an operation in
-     * AtomPub format.
+     * Json format.
      * 
      * @param operation
      *            A {@link TableOperation} containing the entity to write to the returned <code>String</code>.
@@ -448,15 +444,13 @@ final class MimeHelper {
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
      * @return
-     *         A <code>String</code> containing the entity associated with the operation in AtomPub format
+     *         A <code>String</code> containing the entity associated with the operation in Json format
      * @throws StorageException
      *             if a Storage error occurs.
-     * @throws XMLStreamException
-     *             if an error occurs creating or writing to the output string.
      * @throws IOException
      */
     private static String writeStringForOperation(final TableOperation operation, TablePayloadFormat format,
-            final OperationContext opContext) throws StorageException, XMLStreamException, IOException {
+            final OperationContext opContext) throws StorageException, IOException {
         Utility.assertNotNull("entity", operation.getEntity());
         final StringWriter outWriter = new StringWriter();
 
@@ -466,12 +460,8 @@ final class MimeHelper {
         return outWriter.toString();
     }
 
-    @SuppressWarnings("deprecation")
     private static String generateAcceptHeaderValue(TablePayloadFormat payloadFormat) {
-        if (payloadFormat == TablePayloadFormat.AtomPub) {
-            return TableConstants.HeaderConstants.ATOM_ACCEPT_TYPE;
-        }
-        else if (payloadFormat == TablePayloadFormat.JsonFullMetadata) {
+        if (payloadFormat == TablePayloadFormat.JsonFullMetadata) {
             return TableConstants.HeaderConstants.JSON_FULL_METADATA_ACCEPT_TYPE;
         }
         else if (payloadFormat == TablePayloadFormat.Json) {
@@ -479,16 +469,6 @@ final class MimeHelper {
         }
         else {
             return TableConstants.HeaderConstants.JSON_NO_METADATA_ACCEPT_TYPE;
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static String generateContentTypeHeaderValue(TablePayloadFormat payloadFormat) {
-        if (payloadFormat == TablePayloadFormat.AtomPub) {
-            return TableConstants.HeaderConstants.ATOM_CONTENT_TYPE;
-        }
-        else {
-            return TableConstants.HeaderConstants.JSON_CONTENT_TYPE;
         }
     }
 

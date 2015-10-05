@@ -24,12 +24,22 @@ public enum SharedAccessBlobPermissions {
     READ,
 
     /**
+     * Specifies Add access granted.
+     */
+    ADD,
+
+    /**
+     * Specifies Create access granted.
+     */
+    CREATE,
+
+    /**
      * Specifies Write access granted.
      */
     WRITE,
 
     /**
-     * Specifies Delete access granted for blobs.
+     * Specifies Delete access granted.
      */
     DELETE,
 

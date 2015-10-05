@@ -74,47 +74,41 @@ public class CloudAnalyticsClientTests {
     public void testCloudAnalyticsClientGetTables() throws URISyntaxException, StorageException {
         CloudTable blobHourPrimary = this.client.getHourMetricsTable(StorageService.BLOB);
         CloudTable blobHourSecondary = this.client.getHourMetricsTable(StorageService.BLOB, StorageLocation.SECONDARY);
+        CloudTable fileHourPrimary = this.client.getHourMetricsTable(StorageService.FILE);
+        CloudTable fileHourSecondary = this.client.getHourMetricsTable(StorageService.FILE, StorageLocation.SECONDARY);
         CloudTable queueHourPrimary = this.client.getHourMetricsTable(StorageService.QUEUE, StorageLocation.PRIMARY);
-        CloudTable queueHourSecondary = this.client
-                .getHourMetricsTable(StorageService.QUEUE, StorageLocation.SECONDARY);
+        CloudTable queueHourSecondary = this.client.getHourMetricsTable(StorageService.QUEUE, StorageLocation.SECONDARY);
         CloudTable tableHourPrimary = this.client.getHourMetricsTable(StorageService.TABLE, StorageLocation.PRIMARY);
-        CloudTable tableHourSecondary = this.client
-                .getHourMetricsTable(StorageService.TABLE, StorageLocation.SECONDARY);
+        CloudTable tableHourSecondary = this.client.getHourMetricsTable(StorageService.TABLE, StorageLocation.SECONDARY);
 
         CloudTable blobMinutePrimary = this.client.getMinuteMetricsTable(StorageService.BLOB);
-        CloudTable blobMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.BLOB,
-                StorageLocation.SECONDARY);
-        CloudTable queueMinutePrimary = this.client
-                .getMinuteMetricsTable(StorageService.QUEUE, StorageLocation.PRIMARY);
-        CloudTable queueMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.QUEUE,
-                StorageLocation.SECONDARY);
-        CloudTable tableMinutePrimary = this.client
-                .getMinuteMetricsTable(StorageService.TABLE, StorageLocation.PRIMARY);
-        CloudTable tableMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.TABLE,
-                StorageLocation.SECONDARY);
+        CloudTable blobMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.BLOB, StorageLocation.SECONDARY);
+        CloudTable fileMinutePrimary = this.client.getMinuteMetricsTable(StorageService.FILE);
+        CloudTable fileMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.FILE, StorageLocation.SECONDARY);
+        CloudTable queueMinutePrimary = this.client.getMinuteMetricsTable(StorageService.QUEUE, StorageLocation.PRIMARY);
+        CloudTable queueMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.QUEUE, StorageLocation.SECONDARY);
+        CloudTable tableMinutePrimary = this.client.getMinuteMetricsTable(StorageService.TABLE, StorageLocation.PRIMARY);
+        CloudTable tableMinuteSecondary = this.client.getMinuteMetricsTable(StorageService.TABLE, StorageLocation.SECONDARY);
 
         CloudTable capacity = this.client.getCapacityTable();
 
         assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_PRIMARY_TRANSACTIONS_BLOB, blobHourPrimary.getName());
         assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_SECONDARY_TRANSACTIONS_BLOB, blobHourSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_PRIMARY_TRANSACTIONS_FILE, fileHourPrimary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_SECONDARY_TRANSACTIONS_FILE, fileHourSecondary.getName());
         assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_PRIMARY_TRANSACTIONS_QUEUE, queueHourPrimary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_SECONDARY_TRANSACTIONS_QUEUE,
-                queueHourSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_SECONDARY_TRANSACTIONS_QUEUE, queueHourSecondary.getName());
         assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_PRIMARY_TRANSACTIONS_TABLE, tableHourPrimary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_SECONDARY_TRANSACTIONS_TABLE,
-                tableHourSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_HOUR_SECONDARY_TRANSACTIONS_TABLE, tableHourSecondary.getName());
 
         assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_PRIMARY_TRANSACTIONS_BLOB, blobMinutePrimary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_BLOB,
-                blobMinuteSecondary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_PRIMARY_TRANSACTIONS_QUEUE,
-                queueMinutePrimary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_QUEUE,
-                queueMinuteSecondary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_PRIMARY_TRANSACTIONS_TABLE,
-                tableMinutePrimary.getName());
-        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_TABLE,
-                tableMinuteSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_BLOB, blobMinuteSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_PRIMARY_TRANSACTIONS_FILE, fileMinutePrimary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_FILE, fileMinuteSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_PRIMARY_TRANSACTIONS_QUEUE, queueMinutePrimary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_QUEUE, queueMinuteSecondary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_PRIMARY_TRANSACTIONS_TABLE, tableMinutePrimary.getName());
+        assertEquals(Constants.AnalyticsConstants.METRICS_MINUTE_SECONDARY_TRANSACTIONS_TABLE, tableMinuteSecondary.getName());
 
         assertEquals(Constants.AnalyticsConstants.METRICS_CAPACITY_BLOB, capacity.getName());
     }

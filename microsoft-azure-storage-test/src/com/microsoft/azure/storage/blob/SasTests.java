@@ -22,11 +22,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
@@ -36,23 +39,27 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResponseReceivedEvent;
 import com.microsoft.azure.storage.SecondaryTests;
 import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class SasTests {
-
     protected CloudBlobContainer container;
     protected CloudBlockBlob blob;
 
@@ -61,40 +68,155 @@ public class SasTests {
         this.container = BlobTestHelper.getRandomContainerReference();
         this.container.create();
 
-        this.blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "test", 100,
-                null);
+        this.blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "test", 100, null);
     }
 
     @After
     public void blobSasTestMethodTearDown() throws StorageException {
         this.container.deleteIfExists();
     }
-    
+
     @Test
     public void testApiVersion() throws InvalidKeyException, StorageException, URISyntaxException {
         SharedAccessBlobPolicy sp1 = createSharedAccessPolicy(
                 EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                         SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE), 300);
-    	String sas = this.blob.generateSharedAccessSignature(sp1, null);
-    	
-    	// should not be appended before signing
-    	assertEquals(-1, sas.indexOf(Constants.QueryConstants.API_VERSION));
-    	
+        String sas = this.blob.generateSharedAccessSignature(sp1, null);
+
+        // should not be appended before signing
+        assertEquals(-1, sas.indexOf(Constants.QueryConstants.API_VERSION));
+
         OperationContext ctx = new OperationContext();
         ctx.getResponseReceivedEventHandler().addListener(new StorageEvent<ResponseReceivedEvent>() {
 
             @Override
             public void eventOccurred(ResponseReceivedEvent eventArg) {
-            	// should be appended after signing
-            	HttpURLConnection conn = (HttpURLConnection) eventArg.getConnectionObject();
-            	assertTrue(conn.getURL().toString().indexOf(Constants.QueryConstants.API_VERSION) != -1);
+                // should be appended after signing
+                HttpURLConnection conn = (HttpURLConnection) eventArg.getConnectionObject();
+                assertTrue(conn.getURL().toString().indexOf(Constants.QueryConstants.API_VERSION) != -1);
             }
         });
 
         CloudBlockBlob sasBlob = new CloudBlockBlob(new URI(this.blob.getUri().toString() + "?" + sas));
-        sasBlob.uploadMetadata(null, null, ctx);	    	
+        sasBlob.uploadMetadata(null, null, ctx);
     }
 
+    @Test
+    @Category({ SecondaryTests.class })
+    public void testIpAcl()
+            throws StorageException, URISyntaxException, InvalidKeyException, InterruptedException, UnknownHostException {
+        
+        // Generate policies
+        SharedAccessBlobPolicy sp = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.LIST), 300);
+        IPRange range1 = new IPRange("0.0.0.0", "255.255.255.255");
+        IPRange range2 = new IPRange("0.0.0.0");
+        
+        // Ensure access attempt from invalid IP fails
+        IPRange sourceIP = null;
+        try {
+            String containerSasNone = this.container.generateSharedAccessSignature(sp, null, range2, null);
+            CloudBlobContainer noneContainer =
+                    new CloudBlobContainer(PathUtility.addToQuery(this.container.getUri(), containerSasNone));
+    
+            assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                    noneContainer.getServiceClient().getCredentials().getClass().toString());
+    
+            CloudBlockBlob noneBlob = noneContainer.getBlockBlobReference(this.blob.getName());
+            noneBlob.download(new ByteArrayOutputStream());
+            fail();
+        }
+        catch (StorageException ex) {
+            assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
+            
+            final String[] words = ex.getMessage().split(" ");
+            // final word
+            String lastWord = words[words.length - 1];
+            // strip trailing period
+            lastWord = lastWord.substring(0, lastWord.length() - 1);
+            
+            sourceIP = new IPRange(lastWord);
+        }
+        
+        // Ensure access attempt from the single allowed IP succeeds
+        String containerSasOne = this.container.generateSharedAccessSignature(sp, null, sourceIP, null);
+        CloudBlobContainer oneContainer =
+                new CloudBlobContainer(PathUtility.addToQuery(this.container.getUri(), containerSasOne));
+
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                oneContainer.getServiceClient().getCredentials().getClass().toString());
+
+        CloudBlockBlob oneBlob = oneContainer.getBlockBlobReference(this.blob.getName());
+        oneBlob.download(new ByteArrayOutputStream());
+
+        // Ensure access attempt from one of many valid IPs succeeds
+        String containerSasAll = this.container.generateSharedAccessSignature(sp, null, range1, null);
+        CloudBlobContainer allContainer =
+                new CloudBlobContainer(PathUtility.addToQuery(this.container.getUri(), containerSasAll));
+
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                allContainer.getServiceClient().getCredentials().getClass().toString());
+
+        CloudBlockBlob allBlob = allContainer.getBlockBlobReference(this.blob.getName());
+        allBlob.download(new ByteArrayOutputStream());
+    }
+
+    @Test
+    @Category({ SecondaryTests.class })
+    public void testProtocolRestrictions()
+            throws StorageException, URISyntaxException, InvalidKeyException, InterruptedException {
+        
+        // Generate policy
+        SharedAccessBlobPolicy sp = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.LIST), 300);
+        
+        // Generate container SAS and URI
+        String containerSasHttps = this.container.generateSharedAccessSignature(
+                sp, null, null, SharedAccessProtocols.HTTPS_ONLY);
+        String containerSasHttp = this.container.generateSharedAccessSignature(
+                sp, null, null, SharedAccessProtocols.HTTPS_HTTP);
+        final URI uri = this.container.getUri();
+        
+        // Ensure attempt from http fails against HTTPS_ONLY
+        try {
+            CloudBlobContainer httpContainer = new CloudBlobContainer(
+                    PathUtility.addToQuery(TestHelper.securePortUri(uri, false, 'b'), containerSasHttps));
+            assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                    httpContainer.getServiceClient().getCredentials().getClass().toString());
+            CloudBlockBlob httpBlob = httpContainer.getBlockBlobReference(this.blob.getName());
+            httpBlob.download(new ByteArrayOutputStream());
+            
+            fail();
+        }
+        catch (StorageException ex) {
+            assertEquals(Constants.HeaderConstants.HTTP_UNUSED_306, ex.getHttpStatusCode());
+            assertEquals(SR.CANNOT_TRANSFORM_NON_HTTPS_URI_WITH_HTTPS_ONLY_CREDENTIALS, ex.getMessage());
+        }
+
+        // Ensure attempt from https succeeds against HTTPS_ONLY
+        CloudBlobContainer httpsContainer = new CloudBlobContainer(
+                PathUtility.addToQuery(TestHelper.securePortUri(uri, true, 'b'), containerSasHttps));
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                httpsContainer.getServiceClient().getCredentials().getClass().toString());
+        CloudBlockBlob httpsBlob = httpsContainer.getBlockBlobReference(this.blob.getName());
+        httpsBlob.download(new ByteArrayOutputStream());
+        
+        //Ensure attempts from both https and http succeed against HTTPS_HTTP
+        CloudBlobContainer httpContainer = new CloudBlobContainer(
+                PathUtility.addToQuery(TestHelper.securePortUri(uri, false, 'b'), containerSasHttp));
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                httpContainer.getServiceClient().getCredentials().getClass().toString());
+        CloudBlockBlob httpBlob = httpContainer.getBlockBlobReference(this.blob.getName());
+        httpBlob.download(new ByteArrayOutputStream());
+        
+        httpsContainer = new CloudBlobContainer(
+                PathUtility.addToQuery(TestHelper.securePortUri(uri, true, 'b'), containerSasHttp));
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                httpsContainer.getServiceClient().getCredentials().getClass().toString());
+        httpsBlob = httpsContainer.getBlockBlobReference(this.blob.getName());
+        httpsBlob.download(new ByteArrayOutputStream());
+    }
+    
     @Test
     @Category({ SecondaryTests.class, SlowTests.class })
     public void testContainerSaS() throws IllegalArgumentException, StorageException, URISyntaxException,
@@ -176,51 +298,56 @@ public class SasTests {
             fail();
         }
         catch (StorageException ex) {
-            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+            assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
         }
     }
 
     @Test
     @Category(SlowTests.class)
-    public void testContainerSASCombinations() throws StorageException, URISyntaxException, IOException,
-            InvalidKeyException, InterruptedException {
-        for (int i = 1; i < 16; i++) {
-            final EnumSet<SharedAccessBlobPermissions> permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+    public void testContainerSASCombinations()
+            throws StorageException, URISyntaxException, IOException, InvalidKeyException, InterruptedException {
 
-            if ((i & 0x1) == 0x1) {
-                permissions.add(SharedAccessBlobPermissions.READ);
+        EnumSet<SharedAccessBlobPermissions> permissions;
+        Map<Integer, CloudBlobContainer> containers = new HashMap<Integer, CloudBlobContainer>();
+
+        try{
+            for (int bits = 0x1; bits < 0x40; bits++) {
+                containers.put(bits, BlobTestHelper.getRandomContainerReference());
+                containers.get(bits).createIfNotExists();
+
+                permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+                addPermissions(permissions, bits);
+
+                BlobContainerPermissions perms = new BlobContainerPermissions();
+
+                perms.getSharedAccessPolicies().put("readwrite" + bits, createSharedAccessPolicy(permissions, 300));
+                containers.get(bits).uploadPermissions(perms);
             }
 
-            if ((i & 0x2) == 0x2) {
-                permissions.add(SharedAccessBlobPermissions.WRITE);
-            }
-
-            if ((i & 0x4) == 0x4) {
-                permissions.add(SharedAccessBlobPermissions.DELETE);
-            }
-
-            if ((i & 0x8) == 0x8) {
-                permissions.add(SharedAccessBlobPermissions.LIST);
-            }
-
-            SharedAccessBlobPolicy policy = createSharedAccessPolicy(permissions, 300);
-
-            BlobContainerPermissions perms = new BlobContainerPermissions();
-
-            perms.getSharedAccessPolicies().put("readwrite" + i, policy);
-            this.container.uploadPermissions(perms);
             Thread.sleep(30000);
 
-            String sasToken = this.container.generateSharedAccessSignature(policy, null);
+            for (int bits = 0x1; bits < 0x40; bits++) {
+                String sasToken = containers.get(bits).generateSharedAccessSignature(null, "readwrite" + bits);
+                permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+                addPermissions(permissions, bits);
+                
+                CloudAppendBlob testAppendBlob = (CloudAppendBlob) BlobTestHelper.uploadNewBlob(
+                        containers.get(bits), BlobType.APPEND_BLOB, "appendblob", 64, null);
+                testAccess(sasToken, permissions, null, containers.get(bits), testAppendBlob);
 
-            CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container,
-                    BlobType.BLOCK_BLOB, "blockblob", 64, null);
-            testAccess(sasToken, permissions, null, this.container, testBlockBlob);
+                CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(
+                        containers.get(bits), BlobType.BLOCK_BLOB, "blockblob", 64, null);
+                testAccess(sasToken, permissions, null, containers.get(bits), testBlockBlob);
 
-            CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container,
-                    BlobType.PAGE_BLOB, "pageblob", 512, null);
-
-            testAccess(sasToken, permissions, null, this.container, testPageBlob);
+                CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(
+                        containers.get(bits), BlobType.PAGE_BLOB, "pageblob", 512, null);
+                testAccess(sasToken, permissions, null, containers.get(bits), testPageBlob);
+            }
+        }
+        finally {
+            for (int bits = 0x1; bits < containers.size(); bits++) {
+                containers.get(bits).deleteIfExists();
+            }
         }
     }
 
@@ -228,10 +355,10 @@ public class SasTests {
     @Category(SlowTests.class)
     public void testContainerPublicAccess() throws StorageException, IOException, URISyntaxException,
             InterruptedException {
-        CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container,
-                BlobType.BLOCK_BLOB, "blockblob", 64, null);
-        CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.PAGE_BLOB,
-                "pageblob", 512, null);
+        CloudBlockBlob testBlockBlob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(
+                this.container, BlobType.BLOCK_BLOB, "blockblob", 64, null);
+        CloudPageBlob testPageBlob = (CloudPageBlob) BlobTestHelper.uploadNewBlob(
+                this.container, BlobType.PAGE_BLOB, "pageblob", 512, null);
 
         BlobContainerPermissions permissions = new BlobContainerPermissions();
 
@@ -252,21 +379,31 @@ public class SasTests {
     }
 
     @Test
-    public void testBlockBlobSASCombinations() throws URISyntaxException, StorageException, InvalidKeyException,
-            IOException {
-        for (int i = 1; i < 8; i++) {
+    public void testAppendBlobSASCombinations()
+            throws URISyntaxException, StorageException, InvalidKeyException, IOException {
+        for (int bits = 0x1; bits < 0x20; bits++) {
             final EnumSet<SharedAccessBlobPermissions> permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
-            addPermissions(permissions, i);
+            addPermissions(permissions, bits);
+            testBlobAccess(this.container, BlobType.APPEND_BLOB, permissions, null);
+        }
+    }
+
+    @Test
+    public void testBlockBlobSASCombinations()
+            throws URISyntaxException, StorageException, InvalidKeyException, IOException {
+        for (int bits = 0x1; bits < 0x20; bits++) {
+            final EnumSet<SharedAccessBlobPermissions> permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
+            addPermissions(permissions, bits);
             testBlobAccess(this.container, BlobType.BLOCK_BLOB, permissions, null);
         }
     }
 
     @Test
-    public void testPageBlobSASCombinations() throws InvalidKeyException, StorageException, IOException,
-            URISyntaxException {
-        for (int i = 1; i < 8; i++) {
+    public void testPageBlobSASCombinations()
+            throws InvalidKeyException, StorageException, IOException, URISyntaxException {
+        for (int bits = 0x1; bits < 0x20; bits++) {
             final EnumSet<SharedAccessBlobPermissions> permissions = EnumSet.noneOf(SharedAccessBlobPermissions.class);
-            addPermissions(permissions, i);
+            addPermissions(permissions, bits);
             testBlobAccess(this.container, BlobType.PAGE_BLOB, permissions, null);
         }
     }
@@ -361,26 +498,25 @@ public class SasTests {
 
     @SuppressWarnings("unused")
     private static void testAccess(String sasToken, EnumSet<SharedAccessBlobPermissions> permissions,
-            SharedAccessBlobHeaders headers, CloudBlobContainer container, CloudBlob blob) throws StorageException,
-            URISyntaxException {
-        StorageCredentials credentials = new StorageCredentialsSharedAccessSignature(sasToken);
-
+            SharedAccessBlobHeaders headers, CloudBlobContainer container, CloudBlob blob)
+            throws StorageException, URISyntaxException, IOException {
+        
+        final StorageCredentials credentials;
+        final int permissionsErrorCode;
+        if (sasToken == null) {
+            credentials = StorageCredentialsAnonymous.ANONYMOUS;
+            permissionsErrorCode = HttpURLConnection.HTTP_NOT_FOUND;
+        } else {
+            credentials = new StorageCredentialsSharedAccessSignature(sasToken);
+            permissionsErrorCode = HttpURLConnection.HTTP_FORBIDDEN;
+        }
+        
         if (container != null) {
             container = new CloudBlobContainer(credentials.transformUri(container.getUri()));
-            if (blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB) {
-                blob = container.getBlockBlobReference(blob.getName());
-            }
-            else {
-                blob = container.getPageBlobReference(blob.getName());
-            }
+            blob = BlobTestHelper.getBlobReference(blob.getProperties().getBlobType(), container, blob.getName());
         }
         else {
-            if (blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB) {
-                blob = new CloudBlockBlob(credentials.transformUri(blob.getUri()));
-            }
-            else {
-                blob = new CloudPageBlob(credentials.transformUri(blob.getUri()));
-            }
+            blob = BlobTestHelper.getBlobReference(blob.getProperties().getBlobType(), credentials, blob.getUri());
         }
 
         if (container != null) {
@@ -393,8 +529,43 @@ public class SasTests {
                     fail();
                 }
                 catch (NoSuchElementException ex) {
-                    assertEquals(HttpURLConnection.HTTP_NOT_FOUND,
-                            ((StorageException) ex.getCause()).getHttpStatusCode());
+                    assertEquals(permissionsErrorCode, ((StorageException) ex.getCause()).getHttpStatusCode());
+                }
+            }
+        }
+
+        if (container != null) {
+            int uploadSize = (blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB) ? 512 : 0;
+            
+            if (permissions.contains(SharedAccessBlobPermissions.CREATE) ||
+                    permissions.contains(SharedAccessBlobPermissions.WRITE)) {
+                BlobTestHelper.uploadNewBlob(container, blob.getProperties().getBlobType(), "", uploadSize, null);
+            }
+            else {
+                try {
+                    BlobTestHelper.uploadNewBlob(container, blob.getProperties().getBlobType(), "", uploadSize, null);
+                    fail();
+                }
+                catch (StorageException ex) {
+                    assertEquals(permissionsErrorCode, ex.getHttpStatusCode());
+                }
+            }
+        }
+
+        if (container != null && blob instanceof CloudAppendBlob) {
+            if (permissions.contains(SharedAccessBlobPermissions.ADD) ||
+                    permissions.contains(SharedAccessBlobPermissions.WRITE)) {
+                final CloudAppendBlob appBlob = (CloudAppendBlob) blob;
+                appBlob.appendBlock(BlobTestHelper.getRandomDataStream(512), 512);
+            }
+            else {
+                try {
+                    final CloudAppendBlob appBlob = (CloudAppendBlob) blob;
+                    appBlob.appendBlock(BlobTestHelper.getRandomDataStream(512), 512);
+                    fail();
+                }
+                catch (StorageException ex) {
+                    assertEquals(permissionsErrorCode, ex.getHttpStatusCode());
                 }
             }
         }
@@ -431,7 +602,7 @@ public class SasTests {
                 fail();
             }
             catch (StorageException ex) {
-                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(permissionsErrorCode, ex.getHttpStatusCode());
             }
         }
 
@@ -444,7 +615,7 @@ public class SasTests {
                 fail();
             }
             catch (StorageException ex) {
-                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(permissionsErrorCode, ex.getHttpStatusCode());
             }
         }
 
@@ -457,7 +628,7 @@ public class SasTests {
                 fail();
             }
             catch (StorageException ex) {
-                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(permissionsErrorCode, ex.getHttpStatusCode());
             }
         }
     }
@@ -465,7 +636,7 @@ public class SasTests {
     private static void testBlobAccess(CloudBlobContainer container, BlobType type,
             EnumSet<SharedAccessBlobPermissions> permissions, SharedAccessBlobHeaders headers) throws StorageException,
             IOException, URISyntaxException, InvalidKeyException {
-        CloudBlob blob = BlobTestHelper.uploadNewBlob(container, type, "blob", 512, null);
+        CloudBlob blob = BlobTestHelper.uploadNewBlob(container, type, SR.BLOB, 512, null);
 
         SharedAccessBlobPolicy policy = createSharedAccessPolicy(permissions, 300);
 
@@ -479,11 +650,23 @@ public class SasTests {
         }
 
         if ((i & 0x2) == 0x2) {
-            permissions.add(SharedAccessBlobPermissions.WRITE);
+            permissions.add(SharedAccessBlobPermissions.ADD);
         }
 
         if ((i & 0x4) == 0x4) {
+            permissions.add(SharedAccessBlobPermissions.CREATE);
+        }
+
+        if ((i & 0x8) == 0x8) {
+            permissions.add(SharedAccessBlobPermissions.WRITE);
+        }
+
+        if ((i & 0x10) == 0x10) {
             permissions.add(SharedAccessBlobPermissions.DELETE);
+        }
+
+        if ((i & 0x20) == 0x20) {
+            permissions.add(SharedAccessBlobPermissions.LIST);
         }
     }
 }

@@ -22,11 +22,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
@@ -36,24 +39,27 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResponseReceivedEvent;
 import com.microsoft.azure.storage.SecondaryTests;
 import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class FileSasTests {
-
     protected static CloudFileClient fileClient = null;
     protected CloudFileShare share;
     protected CloudFile file;
@@ -129,8 +135,124 @@ public class FileSasTests {
     }
 
     @Test
+    @Category({ SecondaryTests.class })
+    public void testIpAcl()
+            throws StorageException, URISyntaxException, InvalidKeyException, InterruptedException, UnknownHostException {
+        
+        // Generate policies
+        SharedAccessFilePolicy policy = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.LIST), 300);
+        IPRange range1 = new IPRange("0.0.0.0", "255.255.255.255");
+        IPRange range2 = new IPRange("0.0.0.0");
+        
+        // Ensure access attempt from invalid IP fails
+        IPRange sourceIP = null;
+        try {
+            String shareSasNone = this.share.generateSharedAccessSignature(policy, null, range2, null);
+            CloudFileShare noneShare =
+                    new CloudFileShare(PathUtility.addToQuery(this.share.getUri(), shareSasNone));
+    
+            assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                    noneShare.getServiceClient().getCredentials().getClass().toString());
+    
+            CloudFile noneFile = noneShare.getRootDirectoryReference().getFileReference(this.file.getName());
+            noneFile.download(new ByteArrayOutputStream());
+            fail();
+        }
+        catch (StorageException ex) {
+            assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
+            
+            final String[] words = ex.getMessage().split(" ");
+            // final word
+            String lastWord = words[words.length - 1];
+            // strip trailing period
+            lastWord = lastWord.substring(0, lastWord.length() - 1);
+            
+            sourceIP = new IPRange(lastWord);
+        }
+        
+        // Ensure access attempt from the single allowed IP succeeds
+        String shareSasOne = this.share.generateSharedAccessSignature(policy, null, sourceIP, null);
+        CloudFileShare oneShare =
+                new CloudFileShare(PathUtility.addToQuery(this.share.getUri(), shareSasOne));
+
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                oneShare.getServiceClient().getCredentials().getClass().toString());
+
+        CloudFile oneFile = oneShare.getRootDirectoryReference().getFileReference(this.file.getName());
+        oneFile.download(new ByteArrayOutputStream());
+
+        // Ensure access attempt from one of many valid IPs succeeds
+        String shareSasAll = this.share.generateSharedAccessSignature(policy, null, range1, null);
+        CloudFileShare allShare =
+                new CloudFileShare(PathUtility.addToQuery(this.share.getUri(), shareSasAll));
+
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                allShare.getServiceClient().getCredentials().getClass().toString());
+
+        CloudFile allFile = allShare.getRootDirectoryReference().getFileReference(this.file.getName());
+        allFile.download(new ByteArrayOutputStream());
+    }
+    
+    @Test
+    @Category({ SecondaryTests.class })
+    public void testProtocolRestrictions()
+            throws StorageException, URISyntaxException, InvalidKeyException, InterruptedException {
+        
+        // Generate policy
+        SharedAccessFilePolicy policy = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.LIST), 300);
+        
+        // Generate share SAS and URI
+        String shareSasHttps =
+                this.share.generateSharedAccessSignature(policy, null, null, SharedAccessProtocols.HTTPS_ONLY);
+        String shareSasHttp =
+                this.share.generateSharedAccessSignature(policy, null, null, SharedAccessProtocols.HTTPS_HTTP);
+        final URI uri = this.share.getUri();
+        
+        // Ensure attempt from http fails against HTTPS_ONLY
+        try {
+            CloudFileShare httpShare =
+                    new CloudFileShare(PathUtility.addToQuery(TestHelper.securePortUri(uri, false, 'f'), shareSasHttps));
+            assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                    httpShare.getServiceClient().getCredentials().getClass().toString());
+            CloudFile httpFile = httpShare.getRootDirectoryReference().getFileReference(this.file.getName());
+            httpFile.download(new ByteArrayOutputStream());
+            
+            fail();
+        }
+        catch (StorageException ex) {
+            assertEquals(Constants.HeaderConstants.HTTP_UNUSED_306, ex.getHttpStatusCode());
+            assertEquals(SR.CANNOT_TRANSFORM_NON_HTTPS_URI_WITH_HTTPS_ONLY_CREDENTIALS, ex.getMessage());
+        }
+
+        // Ensure attempt from https succeeds against HTTPS_ONLY
+        CloudFileShare httpsShare =
+                new CloudFileShare(PathUtility.addToQuery(TestHelper.securePortUri(uri, true, 'f'), shareSasHttps));
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                httpsShare.getServiceClient().getCredentials().getClass().toString());
+        CloudFile httpsFile = httpsShare.getRootDirectoryReference().getFileReference(this.file.getName());
+        httpsFile.download(new ByteArrayOutputStream());
+        
+        // Ensure attempt from both http and https succeed against HTTPS_HTTP
+        CloudFileShare httpShare =
+                new CloudFileShare(PathUtility.addToQuery(TestHelper.securePortUri(uri, false, 'f'), shareSasHttp));
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                httpShare.getServiceClient().getCredentials().getClass().toString());
+        CloudFile httpFile = httpShare.getRootDirectoryReference().getFileReference(this.file.getName());
+        httpFile.download(new ByteArrayOutputStream());
+        
+        httpsShare =
+                new CloudFileShare(PathUtility.addToQuery(TestHelper.securePortUri(uri, true, 'f'), shareSasHttp));
+        assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
+                httpsShare.getServiceClient().getCredentials().getClass().toString());
+        httpsFile = httpsShare.getRootDirectoryReference().getFileReference(this.file.getName());
+        httpsFile.download(new ByteArrayOutputStream());
+    }
+
+    @Test
     @Category({ SecondaryTests.class, SlowTests.class })
-    public void testShareSAS()throws IllegalArgumentException, StorageException, URISyntaxException,
+    public void testShareSAS() throws IllegalArgumentException, StorageException, URISyntaxException,
             InvalidKeyException, InterruptedException {
         SharedAccessFilePolicy policy1 = createSharedAccessPolicy(
                 EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.WRITE,
@@ -138,19 +260,19 @@ public class FileSasTests {
         SharedAccessFilePolicy policy2 = createSharedAccessPolicy(
                 EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.LIST), 300);
         FileSharePermissions permissions = new FileSharePermissions();
-
+    
         permissions.getSharedAccessPolicies().put("full", policy1);
         permissions.getSharedAccessPolicies().put("readlist", policy2);
         this.share.uploadPermissions(permissions);
         Thread.sleep(30000);
-
+    
         String shareReadListSas = this.share.generateSharedAccessSignature(policy2, null);
         CloudFileShare readListShare =
                 new CloudFileShare(PathUtility.addToQuery(this.share.getUri(), shareReadListSas));
-
+    
         assertEquals(StorageCredentialsSharedAccessSignature.class.toString(),
                 readListShare.getServiceClient().getCredentials().getClass().toString());
-
+    
         CloudFile fileFromSasShare = readListShare.getRootDirectoryReference().getFileReference(this.file.getName());
         fileFromSasShare.download(new ByteArrayOutputStream());
 
@@ -187,8 +309,8 @@ public class FileSasTests {
         String sasToken = this.share.generateSharedAccessSignature(policy, null);
 
         CloudFile file = FileTestHelper.uploadNewFile(this.share, 64, null);
-        testAccess(sasToken, EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.WRITE),
-                this.share, file);
+        testAccess(sasToken,
+                EnumSet.of(SharedAccessFilePermissions.READ, SharedAccessFilePermissions.WRITE), this.share, file);
 
         //Change the policy to only read and update SAS.
         SharedAccessFilePolicy policy2 = createSharedAccessPolicy(EnumSet.of(SharedAccessFilePermissions.READ), 300);
@@ -207,7 +329,7 @@ public class FileSasTests {
             fail();
         }
         catch (StorageException ex) {
-            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+            assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
         }
     }
 
@@ -215,65 +337,54 @@ public class FileSasTests {
     @Category(SlowTests.class)
     public void testShareSASCombinations()
             throws StorageException, URISyntaxException, IOException, InvalidKeyException, InterruptedException {
-        for (int bits = 1; bits < 16; bits++) {
-            final EnumSet<SharedAccessFilePermissions> permissionSet = EnumSet.noneOf(SharedAccessFilePermissions.class);
 
-            if ((bits & 0x1) == 0x1) {
-                permissionSet.add(SharedAccessFilePermissions.READ);
+        EnumSet<SharedAccessFilePermissions> permissionSet = null;
+        Map<Integer, CloudFileShare> shares = new HashMap<Integer, CloudFileShare>();
+
+        try {
+            for (int bits = 0x1; bits < 0x40; bits++) {
+                shares.put(bits, FileTestHelper.getRandomShareReference());
+                shares.get(bits).createIfNotExists();
+
+                permissionSet = getPermissions(bits);
+                FileSharePermissions perms = new FileSharePermissions();
+
+                perms.getSharedAccessPolicies().put("readwrite" + bits, createSharedAccessPolicy(permissionSet, 300));
+                shares.get(bits).uploadPermissions(perms);
             }
 
-            if ((bits & 0x2) == 0x2) {
-                permissionSet.add(SharedAccessFilePermissions.WRITE);
-            }
-
-            if ((bits & 0x4) == 0x4) {
-                permissionSet.add(SharedAccessFilePermissions.DELETE);
-            }
-
-            if ((bits & 0x8) == 0x8) {
-                permissionSet.add(SharedAccessFilePermissions.LIST);
-            }
-
-            SharedAccessFilePolicy policy = createSharedAccessPolicy(permissionSet, 300);
-
-            FileSharePermissions permissions = new FileSharePermissions();
-
-            permissions.getSharedAccessPolicies().put("readwrite" + bits, policy);
-            this.share.uploadPermissions(permissions);
             Thread.sleep(30000);
 
-            String sasToken = this.share.generateSharedAccessSignature(policy, null);
+            for (int bits = 0x1; bits < 0x20; bits++) {
+                permissionSet = getPermissions(bits);
+                String sasToken = shares.get(bits).generateSharedAccessSignature(null, "readwrite" + bits);
 
-            CloudFile testFile = FileTestHelper.uploadNewFile(this.share, 64, null);
-            testAccess(sasToken, permissionSet, this.share, testFile);
+                CloudFile testFile = FileTestHelper.uploadNewFile(shares.get(bits), 64, null);
+                testAccess(sasToken, permissionSet, shares.get(bits), testFile);
+            }
+        }
+        finally {
+            for (int bits = 0x1; bits < shares.size(); bits++) {
+                shares.get(bits).deleteIfExists();
+            }
         }
     }
 
     @Test
     public void testFileSASCombinations() throws URISyntaxException, StorageException, InvalidKeyException, IOException {
-        for (int bits = 1; bits < 8; bits++) {
-            EnumSet<SharedAccessFilePermissions> permissionSet = EnumSet.noneOf(SharedAccessFilePermissions.class);
-            
-            if ((bits & 0x1) == 0x1) {
-                permissionSet.add(SharedAccessFilePermissions.READ);
-            }
-            
-            if ((bits & 0x2) == 0x2) {
-                permissionSet.add(SharedAccessFilePermissions.WRITE);
-            }
-            
-            if ((bits & 0x4) == 0x4) {
-                permissionSet.add(SharedAccessFilePermissions.DELETE);
-            }
-            
-            CloudFile testFile = FileTestHelper.uploadNewFile(this.share, 512, null);
+        EnumSet<SharedAccessFilePermissions> permissionSet = null;
+
+        for (int bits = 0x1; bits < 0x10; bits++) {
+            permissionSet = getPermissions(bits);
             SharedAccessFilePolicy policy = createSharedAccessPolicy(permissionSet, 300);
+
+            CloudFile testFile = FileTestHelper.uploadNewFile(this.share, 512, null);
             String sasToken = testFile.generateSharedAccessSignature(policy, null, null);
 
             testAccess(sasToken, permissionSet, null, testFile);
         }
     }
-    
+
     @Test
     public void testFileSAS() throws InvalidKeyException, IllegalArgumentException, StorageException,
             URISyntaxException, InterruptedException {
@@ -361,9 +472,9 @@ public class FileSasTests {
     @SuppressWarnings("unused")
     private static void testAccess(
             String sasToken, EnumSet<SharedAccessFilePermissions> permissions, CloudFileShare share, CloudFile file)
-            throws StorageException, URISyntaxException {
+            throws StorageException, URISyntaxException, IOException {
+        
         StorageCredentials credentials = new StorageCredentialsSharedAccessSignature(sasToken);
-
         if (share != null) {
             share = new CloudFileShare(credentials.transformUri(share.getUri()));
             file = share.getRootDirectoryReference().getFileReference(file.getName());
@@ -383,7 +494,7 @@ public class FileSasTests {
                 }
                 catch (NoSuchElementException ex) {
                     assertEquals(
-                            HttpURLConnection.HTTP_NOT_FOUND, ((StorageException) ex.getCause()).getHttpStatusCode());
+                            HttpURLConnection.HTTP_FORBIDDEN, ((StorageException) ex.getCause()).getHttpStatusCode());
                 }
             }
         }
@@ -397,20 +508,75 @@ public class FileSasTests {
                 fail();
             }
             catch (StorageException ex) {
-                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
             }
         }
 
-        if (permissions.contains(SharedAccessFilePermissions.WRITE)) {
+        if (share != null) {
+            if (permissions.contains(SharedAccessFilePermissions.LIST)) {
+                for (ListFileItem listedFile : share.getRootDirectoryReference().listFilesAndDirectories());
+            }
+            else {
+                try {
+                    for (ListFileItem listedFile : share.getRootDirectoryReference().listFilesAndDirectories());
+                    fail();
+                }
+                catch (NoSuchElementException ex) {
+                    assertEquals(
+                            HttpURLConnection.HTTP_FORBIDDEN, ((StorageException) ex.getCause()).getHttpStatusCode());
+                }
+            }
+        }
+
+        if (permissions.contains(SharedAccessFilePermissions.READ)) {
+            file.downloadAttributes();
+        }
+        else {
+            try {
+                file.downloadAttributes();
+                fail();
+            }
+            catch (StorageException ex) {
+                assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
+            }
+        }
+
+        if (share != null) {
+            final StorageUri uri = PathUtility.appendPathToUri(
+                share.getStorageUri(), FileTestHelper.generateRandomFileName());
+            final CloudFile upFile = new CloudFile(credentials.transformUri(uri));
+            
+            if(permissions.contains(SharedAccessFilePermissions.WRITE)) {
+                upFile.upload(FileTestHelper.getRandomDataStream(512), 512, null, null, null);
+            }
+            else {
+                if (permissions.contains(SharedAccessFilePermissions.CREATE)) {
+                    upFile.create(0);
+                }
+                
+                try {
+                    upFile.upload(FileTestHelper.getRandomDataStream(512), 512, null, null, null);
+                    fail();
+                }
+                catch (StorageException ex) {
+                    assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
+                }
+            }
+        }
+
+        if (permissions.contains(SharedAccessFilePermissions.WRITE) && 
+                permissions.contains(SharedAccessFilePermissions.READ)) {
+            file.downloadAttributes();
             file.uploadMetadata();
         }
         else {
             try {
+                file.downloadAttributes();
                 file.uploadMetadata();
                 fail();
             }
             catch (StorageException ex) {
-                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
             }
         }
 
@@ -423,8 +589,33 @@ public class FileSasTests {
                 fail();
             }
             catch (StorageException ex) {
-                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
+                assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
             }
         }
+    }
+
+    private EnumSet<SharedAccessFilePermissions> getPermissions(int bits) {
+        EnumSet<SharedAccessFilePermissions> permissionSet = EnumSet.noneOf(SharedAccessFilePermissions.class);
+        if ((bits & 0x1) == 0x1) {
+            permissionSet.add(SharedAccessFilePermissions.READ);
+        }
+
+        if ((bits & 0x2) == 0x2) {
+            permissionSet.add(SharedAccessFilePermissions.CREATE);
+        }
+
+        if ((bits & 0x4) == 0x4) {
+            permissionSet.add(SharedAccessFilePermissions.WRITE);
+        }
+
+        if ((bits & 0x8) == 0x8) {
+            permissionSet.add(SharedAccessFilePermissions.DELETE);
+        }
+
+        if ((bits & 0x10) == 0x10) {
+            permissionSet.add(SharedAccessFilePermissions.LIST);
+        }
+
+        return permissionSet;
     }
 }

@@ -76,7 +76,8 @@ public abstract class ServiceClient {
             @Override
             public HttpURLConnection buildRequest(ServiceClient client, Void parentObject, OperationContext context)
                     throws Exception {
-                return BaseRequest.getServiceProperties(client.getEndpoint(), options, null, context);
+                return BaseRequest.getServiceProperties(
+                        credentials.transformUri(client.getEndpoint()), options, null, context);
             }
 
             @Override
@@ -124,8 +125,9 @@ public abstract class ServiceClient {
             @Override
             public HttpURLConnection buildRequest(ServiceClient client, Void parentObject, OperationContext context)
                     throws Exception {
-                return BaseRequest.getServiceStats(client.getStorageUri().getUri(this.getCurrentLocation()), options,
-                        null, context);
+                return BaseRequest.getServiceStats(
+                        credentials.transformUri(client.getStorageUri().getUri(this.getCurrentLocation())),
+                        options, null, context);
             }
 
             @Override
@@ -234,7 +236,8 @@ public abstract class ServiceClient {
                         throws Exception {
                     this.setSendStream(sendStream);
                     this.setLength(descriptor.getLength());
-                    return BaseRequest.setServiceProperties(client.getEndpoint(), options, null, context);
+                    return BaseRequest.setServiceProperties(
+                            credentials.transformUri(client.getEndpoint()), options, null, context);
                 }
 
                 @Override

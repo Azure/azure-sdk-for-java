@@ -114,6 +114,11 @@ public final class Constants {
         public static final String METRICS_HOUR_PRIMARY_TRANSACTIONS_BLOB = "$MetricsHourPrimaryTransactionsBlob";
 
         /**
+         * Constant for the file service primary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_PRIMARY_TRANSACTIONS_FILE = "$MetricsHourPrimaryTransactionsFile";
+
+        /**
          * Constant for the table service primary location hourly metrics table.
          */
         public static final String METRICS_HOUR_PRIMARY_TRANSACTIONS_TABLE = "$MetricsHourPrimaryTransactionsTable";
@@ -127,6 +132,11 @@ public final class Constants {
          * Constant for the blob service primary location minute metrics table.
          */
         public static final String METRICS_MINUTE_PRIMARY_TRANSACTIONS_BLOB = "$MetricsMinutePrimaryTransactionsBlob";
+
+        /**
+         * Constant for the file service primary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_PRIMARY_TRANSACTIONS_FILE = "$MetricsMinutePrimaryTransactionsFile";
 
         /**
          * Constant for the table service primary location minute metrics table.
@@ -144,6 +154,11 @@ public final class Constants {
         public static final String METRICS_HOUR_SECONDARY_TRANSACTIONS_BLOB = "$MetricsHourSecondaryTransactionsBlob";
 
         /**
+         * Constant for the file service secondary location hourly metrics table.
+         */
+        public static final String METRICS_HOUR_SECONDARY_TRANSACTIONS_FILE = "$MetricsHourSecondaryTransactionsFile";
+
+        /**
          * Constant for the table service secondary location hourly metrics table.
          */
         public static final String METRICS_HOUR_SECONDARY_TRANSACTIONS_TABLE = "$MetricsHourSecondaryTransactionsTable";
@@ -157,6 +172,11 @@ public final class Constants {
          * Constant for the blob service secondary location minute metrics table.
          */
         public static final String METRICS_MINUTE_SECONDARY_TRANSACTIONS_BLOB = "$MetricsMinuteSecondaryTransactionsBlob";
+
+        /**
+         * Constant for the file service secondary location minute metrics table.
+         */
+        public static final String METRICS_MINUTE_SECONDARY_TRANSACTIONS_FILE = "$MetricsMinuteSecondaryTransactionsFile";
 
         /**
          * Constant for the table service secondary location minute metrics table.
@@ -530,7 +550,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2015-02-21";
+        public static final String TARGET_STORAGE_VERSION = "2015-04-05";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -550,7 +570,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "3.1.0";
+        public static final String USER_AGENT_VERSION = "4.0.0";
 
         /**
          * The default type for content-type and accept
@@ -562,6 +582,10 @@ public final class Constants {
      * Defines constants for use with query strings.
      */
     public static class QueryConstants {
+        /**
+         * The query component for the api version.
+         */
+        public static final String API_VERSION = "api-version";
 
         /**
          * Query component for SAS cache control.
@@ -627,11 +651,6 @@ public final class Constants {
          * Query component for resource type.
          */
         public static final String RESOURCETYPE = "restype";
-        
-        /**
-         * The query component for the api version.
-         */
-        public static final String API_VERSION = "api-version";
 
         /**
          * The query component for the SAS table name.
@@ -654,6 +673,11 @@ public final class Constants {
         public static final String SIGNED_IDENTIFIER = "si";
 
         /**
+         * The query component for the signed SAS IP address.
+         */
+        public static final String SIGNED_IP = "sip";
+
+        /**
          * The query component for the signing SAS key.
          */
         public static final String SIGNED_KEY = "sk";
@@ -664,9 +688,24 @@ public final class Constants {
         public static final String SIGNED_PERMISSIONS = "sp";
 
         /**
+         * The query component for the signed SAS Internet protocols.
+         */
+        public static final String SIGNED_PROTOCOLS = "spr";
+
+        /**
          * The query component for the signed SAS resource.
          */
         public static final String SIGNED_RESOURCE = "sr";
+
+        /**
+         * The query component for the signed SAS resource type.
+         */
+        public static final String SIGNED_RESOURCE_TYPE = "srt";
+
+        /**
+         * The query component for the signed SAS service.
+         */
+        public static final String SIGNED_SERVICE = "ss";
 
         /**
          * The query component for the signed SAS start time.
@@ -908,6 +947,11 @@ public final class Constants {
      * Specifies HTTPS.
      */
     public static final String HTTPS = "https";
+
+    /**
+     * Specifies both HTTPS and HTTP.
+     */
+    public static final String HTTPS_HTTP = "https,http";
 
     /**
      * XML attribute for IDs.

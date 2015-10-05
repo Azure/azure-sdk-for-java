@@ -35,8 +35,6 @@ import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.StorageUri;
-import com.microsoft.azure.storage.blob.BlobRequestOptions;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.LazySegmentedIterable;
 import com.microsoft.azure.storage.core.SR;
@@ -132,9 +130,7 @@ public final class CloudTableClient extends ServiceClient {
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179338.aspx">Understanding the Table Service Data
      *      Model</a>
      */
-    @SuppressWarnings("deprecation")
     public CloudTable getTableReference(final String tableName) throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("tableName", tableName);
         return new CloudTable(tableName, this);
     }
 

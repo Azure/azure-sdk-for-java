@@ -22,6 +22,11 @@ public enum StorageService {
      * Blob service.
      */
     BLOB,
+    
+    /**
+     * File service.
+     */
+    FILE,
 
     /**
      * Queue Service.

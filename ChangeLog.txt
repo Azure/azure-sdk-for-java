@@ -1,3 +1,14 @@
+2015.10.05 Version 4.0.0
+ * Removed deprecated table AtomPub support.
+ * Removed deprecated constructors which take service clients in favor of constructors which take credentials.
+ * Added support for "Add" permissions on Blob SAS.
+ * Added support for "Create" permissions on Blob and File SAS.
+ * Added support for IP Restricted SAS and Protocol SAS.
+ * Added support for Account SAS to all services.
+ * Added support for Minute and Hour Metrics to FileServiceProperties and added support for File Metrics to CloudAnalyticsClient.
+ * Removed deprecated startCopyFromBlob() on CloudBlob. Use startCopy() instead.
+ * Removed deprecated Credentials and StorageKey classes. Please use the appropriate methods on StorageCredentialsAccountAndKey instead.
+
 2015.09.16 Version 3.1.0
  * Fixed a bug in table where a select on a non-existent field resulted in a null reference exception if the corresponding field in the TableEntity was not nullable.
  * Fixed a bug in table where JsonParser was automatically closing the response stream before it was completely drained causing socket exhaustion.

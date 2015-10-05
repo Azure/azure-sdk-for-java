@@ -30,9 +30,11 @@ import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
+import com.microsoft.azure.storage.IPRange;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.SharedAccessPolicyHandler;
 import com.microsoft.azure.storage.SharedAccessPolicySerializer;
+import com.microsoft.azure.storage.SharedAccessProtocols;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -184,10 +186,8 @@ public final class CloudQueue {
      * @throws StorageException
      *             If a storage service error occurred.
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dd179349.aspx">Naming Queues and Metadata</a>
-     * @deprecated as of 3.0.0. Please use {@link CloudQueueClient#getQueueReference(String)}
      */
-    @Deprecated
-    public CloudQueue(final String queueName, final CloudQueueClient client) throws URISyntaxException,
+    protected CloudQueue(final String queueName, final CloudQueueClient client) throws URISyntaxException,
             StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("queueName", queueName);
@@ -196,53 +196,6 @@ public final class CloudQueue {
         this.name = queueName;
         this.queueServiceClient = client;
         this.shouldEncodeMessage = true;
-    }
-
-    /**
-     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI and client. If the 
-     * <code>URI</code> contains a SAS token, the service client must be <code>null</code>.
-     * 
-     * @param uri
-     *            A <code>java.net.URI</code> object that represents the absolute URI of the queue.
-     * @param client
-     *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
-     *            the endpoint for the Queue service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @deprecated as of 3.0.0. Please use {@link CloudQueue#CloudQueue(URI, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudQueue(final URI uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
-        this(new StorageUri(uri, null), client);
-    }
-
-    /**
-     * Creates an instance of the <code>CloudQueue</code> class using the specified queue URI and client.
-     * 
-     * @param uri
-     *            A <code>StorageUri</code> object that represents the absolute URI of the queue.
-     * @param client
-     *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
-     *            the endpoint for the Queue service.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
-     * @deprecated as of 3.0.0. Please use {@link CloudQueue#CloudQueue(StorageUri, StorageCredentials)}
-     */
-    @Deprecated
-    public CloudQueue(final StorageUri uri, final CloudQueueClient client) throws URISyntaxException, StorageException {
-        this.shouldEncodeMessage = true;
-        this.parseQueryAndVerify(uri, client == null ? null : client.getCredentials());
-        
-        // Override the client set in parseQueryAndVerify to make sure request options are propagated.
-        if (client != null) {
-            this.queueServiceClient = client;
-        }
     }
 
     /**
@@ -1762,7 +1715,9 @@ public final class CloudQueue {
      *            The access policy for the shared access signature.
      * @param groupPolicyIdentifier
      *            A queue-level access policy.
+     *            
      * @return A shared access signature for the queue.
+     * 
      * @throws InvalidKeyException
      *             If an invalid key was passed.
      * @throws StorageException
@@ -1773,6 +1728,35 @@ public final class CloudQueue {
     public String generateSharedAccessSignature(final SharedAccessQueuePolicy policy, final String groupPolicyIdentifier)
             throws InvalidKeyException, StorageException {
 
+        return this.generateSharedAccessSignature(policy, groupPolicyIdentifier, null /* IP range */, null /* protocols */);
+    }
+
+    /**
+     * Returns a shared access signature for the queue.
+     * 
+     * @param policy
+     *            The access policy for the shared access signature.
+     * @param groupPolicyIdentifier
+     *            A queue-level access policy.
+     * @param ipRange
+     *            A {@link IPRange} object containing the range of allowed IP addresses.
+     * @param protocols
+     *            A {@link SharedAccessProtocols} representing the allowed Internet protocols.
+     *            
+     * @return A shared access signature for the queue.
+     * 
+     * @throws InvalidKeyException
+     *             If an invalid key was passed.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws IllegalArgumentException
+     *             If an unexpected value is passed.
+     */
+    public String generateSharedAccessSignature(
+            final SharedAccessQueuePolicy policy, final String groupPolicyIdentifier, final IPRange ipRange,
+            final SharedAccessProtocols protocols)
+            throws InvalidKeyException, StorageException {
+
         if (!StorageCredentialsHelper.canCredentialsSignRequest(this.queueServiceClient.getCredentials())) {
             final String errorMessage = SR.CANNOT_CREATE_SAS_WITHOUT_ACCOUNT_KEY;
             throw new IllegalArgumentException(errorMessage);
@@ -1780,11 +1764,11 @@ public final class CloudQueue {
 
         final String resourceName = this.getSharedAccessCanonicalName();
 
-        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForQueue(policy,
-                groupPolicyIdentifier, resourceName, this.queueServiceClient);
+        final String signature = SharedAccessSignatureHelper.generateSharedAccessSignatureHashForQueue(
+                policy, groupPolicyIdentifier, resourceName, ipRange, protocols, this.queueServiceClient);
 
-        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForQueue(policy,
-                groupPolicyIdentifier, signature);
+        final UriQueryBuilder builder = SharedAccessSignatureHelper.generateSharedAccessSignatureForQueue(
+                policy, groupPolicyIdentifier, ipRange, protocols, signature);
 
         return builder.toString();
     }

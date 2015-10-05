@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
@@ -38,19 +39,26 @@ public class FileTestHelper extends TestHelper {
         return shareName.replace("-", "");
     }
 
-    protected static String generateRandomFileName() {
+    public static String generateRandomFileName() {
         String shareName = "file" + UUID.randomUUID().toString();
         return shareName.replace("-", "");
     }
     
     public static CloudFile uploadNewFile(CloudFileShare share, int length, OperationContext context)
             throws StorageException, IOException, URISyntaxException {
+        
+        return uploadNewFile(share, getRandomDataStream(length), length, context);
+    }
+    
+    public static CloudFile uploadNewFile(
+            CloudFileShare share, InputStream stream, int length, OperationContext context)
+            throws StorageException, IOException, URISyntaxException {
         String name = generateRandomFileName();
 
         CloudFile file = null;
 
         file = share.getRootDirectoryReference().getFileReference(name);
-        file.upload(getRandomDataStream(length), length, null, null, context);
+        file.upload(stream, length, null, null, context);
         return file;
     }
 

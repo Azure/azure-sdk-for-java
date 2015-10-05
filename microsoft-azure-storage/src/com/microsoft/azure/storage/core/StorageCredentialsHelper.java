@@ -14,18 +14,19 @@
  */
 package com.microsoft.azure.storage.core;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 
+import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.StorageKey;
 
 /**
  * RESERVED FOR INTERNAL USE. A helper method for StorageCredentials.
  */
-@SuppressWarnings("deprecation")
 public final class StorageCredentialsHelper {
 
     /**
@@ -37,12 +38,18 @@ public final class StorageCredentialsHelper {
      *  credentials; otherwise, <Code>false</Code>
      */
     public static boolean canCredentialsSignRequest(final StorageCredentials creds) {
-        if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return creds.getClass().equals(StorageCredentialsAccountAndKey.class);
+    }
+
+    /**
+     *  RESERVED, for internal use only. Gets a value indicating whether a
+     *  client can be generated under the Shared Key or Shared Access Signature
+     *  authentication schemes using the specified credentials.
+     *  @return <Code>true</Code> if a client can be generated with these
+     *  credentials; otherwise, <Code>false</Code>
+     */
+    public static boolean canCredentialsGenerateClient(final StorageCredentials creds) {
+        return canCredentialsSignRequest(creds) || creds.getClass().equals(StorageCredentialsSharedAccessSignature.class);
     }
 
     /**
@@ -56,33 +63,20 @@ public final class StorageCredentialsHelper {
      * @throws InvalidKeyException
      *             If the key is not a valid Base64-encoded string.
      */
-    public static String computeHmac256(final StorageCredentials creds, final String value) throws InvalidKeyException {
+    public static synchronized String computeHmac256(final StorageCredentials creds, final String value) throws InvalidKeyException {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
-            return StorageKey.computeMacSha256(((StorageCredentialsAccountAndKey) creds).getCredentials().getKey(),
-                    value);
+            byte[] utf8Bytes = null;
+            try {
+                utf8Bytes = value.getBytes(Constants.UTF8_CHARSET);
+            }
+            catch (final UnsupportedEncodingException e) {
+                throw new IllegalArgumentException(e);
+            }
+            return Base64.encode(((StorageCredentialsAccountAndKey) creds).getHmac256().doFinal(utf8Bytes));
         }
         else {
             return null;
         }
-    }
-
-    /**
-     * Signs a request under the Shared Key authentication scheme.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * 
-     * @throws InvalidKeyException
-     *             If the given key is invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public static void signBlobAndQueueRequest(final StorageCredentials creds,
-            final java.net.HttpURLConnection request, final long contentLength) throws InvalidKeyException,
-            StorageException {
-        signBlobQueueAndFileRequest(creds, request, contentLength, null);
     }
 
     /**
@@ -108,29 +102,20 @@ public final class StorageCredentialsHelper {
         
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             opContext = opContext == null ? new OperationContext() : opContext;
-            BaseRequest.signRequestForBlobAndQueue(
-                    request, (StorageCredentialsAccountAndKey) creds, contentLength, opContext);
+            request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
+            final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueFileCanonicalizer(request);
+
+            final String stringToSign = canonicalizer.canonicalize(request, creds.getAccountName(), contentLength);
+
+            final String computedBase64Signature = StorageCredentialsHelper.computeHmac256(creds, stringToSign);
+
+            Logger.trace(opContext, LogConstants.SIGNING, stringToSign);
+            
+            request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
+                    String.format("%s %s:%s", "SharedKey", creds.getAccountName(), computedBase64Signature));
         }
     }
-
-    /**
-     * Signs a request under the Shared Key authentication scheme.
-     * 
-     * @param request
-     *            An <code>HttpURLConnection</code> object that represents the request to sign.
-     * @param contentLength
-     *            The length of the content written to the output stream. If unknown, specify -1.
-     * 
-     * @throws InvalidKeyException
-     *             If the given key is invalid.
-     * @throws StorageException
-     *             If a storage service error occurred.
-     */
-    public static void signTableRequest(final StorageCredentials creds, final java.net.HttpURLConnection request,
-            final long contentLength) throws InvalidKeyException, StorageException {
-        signTableRequest(creds, request, contentLength, null);
-    }
-
+    
     /**
      * Signs a request using the specified operation context under the Shared Key authentication scheme.
      * 
@@ -152,8 +137,18 @@ public final class StorageCredentialsHelper {
             final long contentLength, OperationContext opContext) throws InvalidKeyException, StorageException {
         if (creds.getClass().equals(StorageCredentialsAccountAndKey.class)) {
             opContext = opContext == null ? new OperationContext() : opContext;
-            BaseRequest.signRequestForTableSharedKey(request,
-                    (StorageCredentialsAccountAndKey) creds, contentLength, opContext);
+            request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
+
+            final Canonicalizer canonicalizer = CanonicalizerFactory.getTableCanonicalizer(request);
+
+            final String stringToSign = canonicalizer.canonicalize(request, creds.getAccountName(), contentLength);
+
+            final String computedBase64Signature = StorageCredentialsHelper.computeHmac256(creds, stringToSign);
+            
+            Logger.trace(opContext, LogConstants.SIGNING, stringToSign);
+
+            request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
+                    String.format("%s %s:%s", "SharedKey", creds.getAccountName(), computedBase64Signature));
         }
     }
     

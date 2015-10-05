@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.file;
 
 import com.microsoft.azure.storage.CorsProperties;
+import com.microsoft.azure.storage.MetricsProperties;
 import com.microsoft.azure.storage.ServiceProperties;
 
 /**
@@ -37,11 +38,9 @@ public class FileServiceProperties {
      *          The <code>ServiceProperties</code> to use
      */
     FileServiceProperties(ServiceProperties properties) {
-        serviceProperties = properties;
-        serviceProperties.setHourMetrics(null);
-        serviceProperties.setMinuteMetrics(null);
-        serviceProperties.setLogging(null);
-        serviceProperties.setDefaultServiceVersion(null);
+        this.serviceProperties = properties;
+        this.serviceProperties.setLogging(null);
+        this.serviceProperties.setDefaultServiceVersion(null);
     }
 
     /**
@@ -50,7 +49,7 @@ public class FileServiceProperties {
      * @return A {@link CorsProperties} object which represents the CORS properties.
      */
     public CorsProperties getCors() {
-        return serviceProperties.getCors();
+        return this.serviceProperties.getCors();
     }
     
     /**
@@ -60,15 +59,53 @@ public class FileServiceProperties {
      *        A {@link CorsProperties} object which represents the CORS properties.
      */
     public void setCors(CorsProperties cors) {
-        serviceProperties.setCors(cors);
+        this.serviceProperties.setCors(cors);
     }
     
+    /**
+     * Gets the hour metrics properties.
+     * 
+     * @return A {@link MetricsProperties} object which represents the hour metrics properties.
+     */
+    public MetricsProperties getHourMetrics() {
+        return this.serviceProperties.getHourMetrics();
+    }
+
+    /**
+     * Sets the hour metrics properties.
+     * 
+     * @param metrics
+     *        A {@link MetricsProperties} object which represents the hour metrics properties.
+     */
+    public void setHourMetrics(final MetricsProperties metrics) {
+        this.serviceProperties.setHourMetrics(metrics);
+    }
+
+    /**
+     * Gets the minute metrics properties.
+     * 
+     * @return A {@link MetricsProperties} object which represents the minute metrics properties.
+     */
+    public MetricsProperties getMinuteMetrics() {
+        return this.serviceProperties.getMinuteMetrics();
+    }
+
+    /**
+     * Sets the minute metrics properties.
+     * 
+     * @param metrics
+     *        A {@link MetricsProperties} object which represents the minute metrics properties.
+     */
+    public void setMinuteMetrics(final MetricsProperties metrics) {
+        this.serviceProperties.setMinuteMetrics(metrics);
+    }
+
     /**
      * Gets the <code>ServiceProperties</code> for use by the service.
      * 
      * @return The <code>ServiceProperties</code>
      */
     ServiceProperties getServiceProperties() {
-        return serviceProperties;
+        return this.serviceProperties;
     }
 }
