@@ -19,14 +19,22 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,6 +45,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.microsoft.azure.keyvault.extensions.RsaKey;
+import com.microsoft.azure.keyvault.extensions.SymmetricKey;
 import com.microsoft.azure.storage.analytics.CloudAnalyticsClient;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.file.CloudFileClient;
@@ -193,16 +203,21 @@ public class TestHelper {
         return new URI(scheme, uri.getUserInfo(), uri.getHost(), port, uri.getPath(), uri.getQuery(), uri.getFragment());
     }
 
-    public static void assertStreamsAreEqual(ByteArrayInputStream src, ByteArrayInputStream dst) {
+    public static void assertStreamsAreEqual(InputStream src, InputStream dst) throws IOException {
         dst.reset();
         src.reset();
-        assertEquals(src.available(), dst.available());
 
-        while (src.available() > 0) {
-            assertEquals(src.read(), dst.read());
+        int next = src.read();
+        while (next != -1) {
+            assertEquals(next, dst.read());
+            next = src.read();
         }
 
-        assertFalse(dst.available() > 0);
+        next = dst.read();
+        while (next != -1) {
+            assertEquals(0, next);
+            next = dst.read();
+        }
     }
 
     public static void assertStreamsAreEqualAtIndex(ByteArrayInputStream src, ByteArrayInputStream dst, int srcIndex,
@@ -212,10 +227,6 @@ public class TestHelper {
 
         dst.skip(dstIndex);
         src.skip(srcIndex);
-        byte[] srcBuffer = new byte[bufferSize];
-        byte[] destBuffer = new byte[bufferSize];
-        src.read(srcBuffer);
-        dst.read(destBuffer);
 
         for (int i = 0; i < length; i++) {
             assertEquals(src.read(), dst.read());
@@ -254,6 +265,23 @@ public class TestHelper {
         else {
             return uri;
         }
+    }
+    
+    public static SymmetricKey getSymmetricKey() throws NoSuchAlgorithmException, NoSuchPaddingException,
+            InvalidKeyException {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(128);
+        SecretKey wrapKey = keyGen.generateKey();
+
+        return new SymmetricKey("symmKey1", wrapKey.getEncoded());
+    }
+    
+    public static RsaKey getRSAKey() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
+        final KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(1024);
+        final KeyPair wrapKey = keyGen.generateKeyPair();
+
+        return new RsaKey("rsaKey1", wrapKey);
     }
 
     public static void verifyServiceStats(ServiceStats stats) {

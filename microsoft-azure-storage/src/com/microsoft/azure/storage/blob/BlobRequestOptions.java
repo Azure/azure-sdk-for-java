@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.RequestOptions;
+import com.microsoft.azure.storage.ServiceClient;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
 
@@ -61,6 +62,17 @@ public final class BlobRequestOptions extends RequestOptions {
     private Integer singleBlobPutThresholdInBytes = null;
 
     /**
+     * The encryption policy to use for the request.
+     */
+    private BlobEncryptionPolicy encryptionPolicy;  
+
+    /**
+     * Stores a value indicating whether to validate the presence of the encryption policy. 
+     * Default is true.
+     */
+    private boolean validateEncryptionPolicy = true;
+    
+    /**
      * Creates an instance of the <code>BlobRequestOptions</code> class.
      */
     public BlobRequestOptions() {
@@ -83,6 +95,8 @@ public final class BlobRequestOptions extends RequestOptions {
             this.setStoreBlobContentMD5(other.getStoreBlobContentMD5());
             this.setDisableContentMD5Validation(other.getDisableContentMD5Validation());
             this.setSingleBlobPutThresholdInBytes(other.getSingleBlobPutThresholdInBytes());
+            this.setEncryptionPolicy(other.getEncryptionPolicy());
+            this.setValidateEncryptionPolicy(other.getValidateEncryptionPolicy());
         }
     }
 
@@ -199,6 +213,10 @@ public final class BlobRequestOptions extends RequestOptions {
         if (modifiedOptions.getDisableContentMD5Validation() == null) {
             modifiedOptions.setDisableContentMD5Validation(clientOptions.getDisableContentMD5Validation());
         }
+        
+        if (modifiedOptions.getEncryptionPolicy() == null) {
+            modifiedOptions.setEncryptionPolicy(clientOptions.getEncryptionPolicy());
+        }
     }
 
     /**
@@ -263,6 +281,25 @@ public final class BlobRequestOptions extends RequestOptions {
      */
     public Integer getSingleBlobPutThresholdInBytes() {
         return this.singleBlobPutThresholdInBytes;
+    }
+    
+    /**
+     * Gets the encryption policy to use for this request. For more information about the encryption policy defaults,
+     * see {@link #setEncryptionPolicy(BlobEncryptionPolicy)}.
+     * 
+     * @return An {@link BlobEncryptionPolicy} object that represents the current encryption policy.
+     */
+    public BlobEncryptionPolicy getEncryptionPolicy() {
+        return this.encryptionPolicy;
+    }
+    
+    /**
+     * Gets a value to indicating whether the presence of the encryption policy should validated.
+     * 
+     * @return <code>true</code> if validation is required; otherwise, <code>false</code>.
+     */
+    protected boolean getValidateEncryptionPolicy() {
+        return this.validateEncryptionPolicy;
     }
 
     /**
@@ -366,5 +403,55 @@ public final class BlobRequestOptions extends RequestOptions {
         }
 
         this.singleBlobPutThresholdInBytes = singleBlobPutThresholdInBytes;
+    }
+
+    /**
+     * Sets the BlobEncryptionPolicy object to use for this request.
+     * <p>
+     * The default BlobEncryptionPolicy is set in the client and is by default null, indicating no encryption. You can
+     * change the BlobEncryptionPolicy on this request by setting this property. You can also change the value on the
+     * {@link ServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
+     * client will use that BlobEncryptionPolicy.
+     * 
+     * @param encryptionPolicy
+     *            the BlobEncryptionPolicy object to use when making service requests.
+     */
+    public void setEncryptionPolicy(BlobEncryptionPolicy encryptionPolicy) {
+        this.encryptionPolicy = encryptionPolicy;
+    }
+
+    /**
+     * Sets a value to indicate whether the presence of the encryption policy should validated.
+     * 
+     * @param validateEncryptionPolicy
+     *            Use <code>true</code> to require validation; otherwise, <code>false</code>.
+     */
+    protected void setValidateEncryptionPolicy(boolean validateEncryptionPolicy) {
+        this.validateEncryptionPolicy = validateEncryptionPolicy;
+    }
+    
+    /**
+     * Assert that if validation is on, an encryption policy is not specified.
+     */
+    protected void assertNoEncryptionPolicyOrStrictMode()
+    {
+        // Throw if an encryption policy is set and encryption validation is on
+        if (this.getEncryptionPolicy() != null && this.getValidateEncryptionPolicy())
+        {
+            throw new IllegalArgumentException(SR.ENCRYPTION_NOT_SUPPORTED_FOR_OPERATION);
+        }
+        
+        this.assertPolicyIfRequired();
+    }
+    
+    /**
+     * Assert that if strict mode is on, an encryption policy is specified.
+     */
+    protected void assertPolicyIfRequired()
+    {
+        if (this.requireEncryption() != null && this.requireEncryption() && this.getEncryptionPolicy() == null)
+        {
+            throw new IllegalArgumentException(SR.ENCRYPTION_POLICY_MISSING_IN_STRICT_MODE);
+        }
     }
 }

@@ -194,6 +194,23 @@ public class StorageException extends Exception {
     private final int httpStatusCode;
 
     /**
+     * Creates an instance of the <code>StorageException</code> class using the specified parameters. The
+     * status code will be 306 to represent a client side exception with null for the extended error information.
+     * 
+     * @param errorCode
+     *            A <code>String</code> that represents the error code returned by the operation.
+     * @param message
+     *            A <code>String</code> that represents the error message returned by the operation.
+     * @param innerException
+     *            An <code>Exception</code> object that represents a reference to the initial exception, if one exists.
+     * 
+     * @see StorageExtendedErrorInformation
+     */
+    public StorageException(final String errorCode, final String message, final Exception innerException) {
+        this(errorCode, message, Constants.HeaderConstants.HTTP_UNUSED_306, null, innerException);
+    }
+    
+    /**
      * Creates an instance of the <code>StorageException</code> class using the specified parameters.
      * 
      * @param errorCode

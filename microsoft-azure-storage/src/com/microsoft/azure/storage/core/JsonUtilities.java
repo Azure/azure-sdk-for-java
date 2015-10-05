@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 /***
- * RESERVED FOR INTERNAL USE. A class to hold utility methods for parsing OData payloads
+ * RESERVED FOR INTERNAL USE. A class to hold utility methods for parsing Json payloads
  */
 public final class JsonUtilities {
     /***

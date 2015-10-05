@@ -49,6 +49,10 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.RequestOptions;
@@ -105,6 +109,11 @@ public final class Utility {
     private static final List<Integer> pathStylePorts = Arrays.asList(10000, 10001, 10002, 10003, 10004, 10100, 10101,
             10102, 10103, 10104, 11000, 11001, 11002, 11003, 11004, 11100, 11101, 11102, 11103, 11104);
 
+    /**
+     * Used to create Json parsers and generators.
+     */
+    private static final JsonFactory jsonFactory = new JsonFactory();
+    
     /**
      * A factory to create SAXParser instances.
      */
@@ -311,6 +320,24 @@ public final class Utility {
     }
 
     /**
+     * Appends 2 byte arrays.
+     * @param arr1
+     *          First array.
+     * @param arr2
+     *          Second array.
+     * @return The result byte array.
+     */
+    public static byte[] binaryAppend(byte[] arr1, byte[] arr2)
+    {
+        byte[] result = new byte[arr1.length + arr2.length];
+        
+        System.arraycopy(arr1, 0, result, 0, arr1.length);
+        System.arraycopy(arr2, 0, result, arr1.length, arr2.length);
+
+        return result;
+    }
+    
+    /**
      * Returns a value representing whether the maximum execution time would be surpassed.
      * 
      * @param operationExpiryTimeInMs
@@ -490,7 +517,67 @@ public final class Utility {
         formatter.setTimeZone(UTC_ZONE);
         return formatter.format(date);
     }
-    
+
+    /**
+     * Returns a <code>JsonGenerator</code> with the specified <code>StringWriter</code>.
+     * 
+     * @param strWriter
+     *            The <code>StringWriter</code> to use to create the <code>JsonGenerator</code> instance.
+     * @return A <code>JsonGenerator</code> instance
+     * 
+     * @throws IOException
+     */
+    public static JsonGenerator getJsonGenerator(StringWriter strWriter) throws IOException {
+        return jsonFactory.createGenerator(strWriter);
+    }
+
+    /**
+     * Returns a <code>JsonGenerator</code> with the specified <code>OutputStream</code>.
+     * 
+     * @param outStream
+     *            The <code>OutputStream</code> to use to create the <code>JsonGenerator</code> instance.
+     * @return A <code>JsonGenerator</code> instance
+     * 
+     * @throws IOException
+     */
+    public static JsonGenerator getJsonGenerator(OutputStream outStream) throws IOException {
+        return jsonFactory.createGenerator(outStream);
+    }
+
+    /**
+     * Returns a <code>JsonParser</code> with the specified <code>String</code>. This JsonParser
+     * will allow non-numeric numbers.
+     * 
+     * @param jsonString
+     *            The <code>String</code> to use to create the <code>JsonGenerator</code> instance.
+     * @return A <code>JsonGenerator</code> instance.
+     * 
+     * @throws IOException
+     */
+    public static JsonParser getJsonParser(final String jsonString) throws JsonParseException, IOException {
+        JsonParser parser = jsonFactory.createParser(jsonString);
+
+        // allows handling of infinity, -infinity, and NaN for Doubles
+        return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    }
+
+    /**
+     * Returns a <code>JsonParser</code> with the specified <code>InputStream</code>. This JsonParser
+     * will allow non-numeric numbers.
+     * 
+     * @param inStream
+     *            The <code>InputStream</code> to use to create the <code>JsonGenerator</code> instance.
+     * @return A <code>JsonGenerator</code> instance.
+     * 
+     * @throws IOException
+     */
+    public static JsonParser getJsonParser(final InputStream inStream) throws JsonParseException, IOException {
+        JsonParser parser = jsonFactory.createParser(inStream);
+
+        // allows handling of infinity, -infinity, and NaN for Doubles
+        return parser.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    }
+
     /**
      * Returns a namespace aware <code>SAXParser</code>.
      * 
@@ -1049,7 +1136,43 @@ public final class Utility {
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
             final RequestOptions options) throws IOException, StorageException {
         return writeToOutputStream(sourceStream, outStream, writeLength, rewindSourceStream, calculateMD5, opContext,
-                options, null /*StorageRequest*/);
+                options, true);
+    }
+
+    /**
+     * Reads data from an input stream and writes it to an output stream, calculates the length of the data written, and
+     * optionally calculates the MD5 hash for the data.
+     * 
+     * @param sourceStream
+     *            An <code>InputStream</code> object that represents the input stream to use as the source.
+     * @param outStream
+     *            An <code>OutputStream</code> object that represents the output stream to use as the destination.
+     * @param writeLength
+     *            The number of bytes to read from the stream.
+     * @param rewindSourceStream
+     *            <code>true</code> if the input stream should be rewound <strong>before</strong> it is read; otherwise,
+     *            <code>false</code>
+     * @param calculateMD5
+     *            <code>true</code> if an MD5 hash will be calculated; otherwise, <code>false</code>.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param options
+     *            A {@link RequestOptions} object that specifies any additional options for the request. Namely, the
+     *            maximum execution time.
+     * @return A {@link StreamMd5AndLength} object that contains the output stream length, and optionally the MD5 hash.
+     * 
+     * @throws IOException
+     *             If an I/O error occurs.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
+            long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
+            final RequestOptions options, final Boolean shouldFlush) throws IOException, StorageException {
+        return writeToOutputStream(sourceStream, outStream, writeLength, rewindSourceStream, calculateMD5, opContext,
+                options, shouldFlush, null /*StorageRequest*/);
     }
 
     /**
@@ -1085,7 +1208,8 @@ public final class Utility {
      */
     public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
             long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
-            final RequestOptions options, StorageRequest<?, ?, Integer> request) throws IOException, StorageException {
+            final RequestOptions options, final Boolean shouldFlush, StorageRequest<?, ?, Integer> request)
+            throws IOException, StorageException {
         if (rewindSourceStream && sourceStream.markSupported()) {
             sourceStream.reset();
             sourceStream.mark(Constants.MAX_MARK_LENGTH);
@@ -1139,7 +1263,7 @@ public final class Utility {
             count = sourceStream.read(retrievedBuff, 0, nextCopy);
         }
 
-        if (outStream != null) {
+        if (outStream != null && shouldFlush) {
             outStream.flush();
         }
 

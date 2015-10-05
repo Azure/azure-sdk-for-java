@@ -41,6 +41,7 @@ public final class EntityProperty {
     private String value;
     private Class<?> type;
     private EdmType edmType = EdmType.NULL;
+    private boolean isEncrypted = false;
     
     /**
      * Flag that specifies whether the client should look to correct Date values stored on a {@link TableEntity}
@@ -59,6 +60,7 @@ public final class EntityProperty {
     protected EntityProperty(final String value, final Class<?> type) {
         this.type = type;
         this.value = value;
+
         if (type.equals(byte[].class)) {
             this.getValueAsByteArray();
             this.edmType = EdmType.BINARY;
@@ -124,7 +126,7 @@ public final class EntityProperty {
      * @param edmType
      *            The <code>Class<?></code> type of the value to construct.
      */
-    protected EntityProperty(final Object value, final Class<?> type) {
+    protected EntityProperty(final Object value, final Class<?> type) {        
         if (type.equals(byte[].class)) {
             setValue((byte[]) value);
             this.type = type;
@@ -194,7 +196,7 @@ public final class EntityProperty {
     protected EntityProperty(final String value, final EdmType edmType) {
         this.edmType = edmType;
         this.value = value;
-
+        
         // validate data is encoded correctly
         if (edmType == EdmType.STRING) {
             this.type = String.class;
@@ -395,6 +397,16 @@ public final class EntityProperty {
      */
     public Class<?> getType() {
         return this.type;
+    }
+    
+    /**
+     * Gets a flag indicating whether the {@link EntityProperty} value is encrypted.
+     * 
+     * @return
+     *         A <code>boolean</code> flag indicating whether the {@link EntityProperty} value is encrypted.
+     */
+    protected boolean isEncrypted() {
+        return this.isEncrypted;
     }
     
     /**
@@ -777,5 +789,15 @@ public final class EntityProperty {
      */
     void setDateBackwardCompatibility(boolean dateBackwardCompatibility) {
         this.dateBackwardCompatibility = dateBackwardCompatibility;
+    }
+    
+    /**
+     * Sets a flag indicating whether the {@link EntityProperty} value is encrypted.
+     * 
+     * @param isEncrypted
+     *         A <code>boolean</code> flag indicating whether the {@link EntityProperty} value is encrypted.
+     */
+    protected void setIsEncrypted(boolean isEncrypted) {
+        this.isEncrypted = isEncrypted;
     }
 }

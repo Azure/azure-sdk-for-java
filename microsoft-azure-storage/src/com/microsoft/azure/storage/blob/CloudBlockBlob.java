@@ -23,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import javax.crypto.Cipher;
 import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.azure.storage.AccessCondition;
@@ -322,7 +323,7 @@ public final class CloudBlockBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient);
-
+        
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
                 this.commitBlockListImpl(blockList, accessCondition, options, opContext),
                 options.getRetryPolicyFactory(), opContext);
@@ -566,10 +567,16 @@ public final class CloudBlockBlob extends CloudBlob {
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient, 
                 false /* setStartTime */);
+        options.assertPolicyIfRequired();
         
         // TODO: Apply any conditional access conditions up front
 
-        return new BlobOutputStream(this, accessCondition, options, opContext);
+        if(options.getEncryptionPolicy() != null) {
+            Cipher cipher = options.getEncryptionPolicy().createAndSetEncryptionContext(this.getMetadata(), false /* noPadding */);
+            return new BlobEncryptStream(this, accessCondition, options, opContext, cipher);
+        } else {
+            return new BlobOutputStreamInternal(this, accessCondition, options, opContext);
+        }
     }
 
     /**
@@ -632,6 +639,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
         opContext.initialize();
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient);
+        options.assertPolicyIfRequired();
 
         StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
@@ -664,7 +672,8 @@ public final class CloudBlockBlob extends CloudBlob {
         // If the stream is rewindable, and the length is known and less than
         // threshold the upload in a single put, otherwise use a stream.
         if (sourceStream.markSupported() && descriptor.getLength() != -1
-                && descriptor.getLength() < options.getSingleBlobPutThresholdInBytes() + 1) {
+                && descriptor.getLength() < options.getSingleBlobPutThresholdInBytes() + 1
+                && options.getEncryptionPolicy() == null) {
             this.uploadFullBlob(sourceStream, descriptor.getLength(), accessCondition, options, opContext);
         }
         else {
@@ -839,6 +848,9 @@ public final class CloudBlockBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient);
+
+        // Assert no encryption policy as this is not supported for partial uploads
+        options.assertNoEncryptionPolicyOrStrictMode();
 
         // Assert block length
         if (Utility.isNullOrEmpty(blockId) || !Base64.validateIsBase64String(blockId)) {

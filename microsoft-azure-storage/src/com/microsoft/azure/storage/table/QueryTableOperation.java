@@ -173,6 +173,8 @@ public class QueryTableOperation extends TableOperation {
     protected TableResult performRetrieve(final CloudTableClient client, final String tableName,
             final TableRequestOptions options, final OperationContext opContext) throws StorageException {
 
+        options.assertPolicyIfRequired();
+        
         return ExecutionEngine.executeWithRetry(client, this, this.retrieveImpl(client, tableName, options),
                 options.getRetryPolicyFactory(), opContext);
     }
