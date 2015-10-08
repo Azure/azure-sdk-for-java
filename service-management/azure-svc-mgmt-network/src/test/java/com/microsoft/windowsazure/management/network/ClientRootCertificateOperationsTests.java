@@ -15,14 +15,11 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
-
+import com.microsoft.windowsazure.management.network.models.ClientRootCertificateCreateParameters;
+import com.microsoft.windowsazure.management.network.models.ClientRootCertificateGetResponse;
+import com.microsoft.windowsazure.management.network.models.ClientRootCertificateListResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -30,6 +27,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertNotNull;
 
 public class ClientRootCertificateOperationsTests extends NetworkManagementIntegrationTestBase {
     @BeforeClass

@@ -27,6 +27,7 @@ import com.microsoft.azure.management.resources.models.DeploymentOperationsGetRe
 import com.microsoft.azure.management.resources.models.DeploymentOperationsListParameters;
 import com.microsoft.azure.management.resources.models.DeploymentOperationsListResult;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

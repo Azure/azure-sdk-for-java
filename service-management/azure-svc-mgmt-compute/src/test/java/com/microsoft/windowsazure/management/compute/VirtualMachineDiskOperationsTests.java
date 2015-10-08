@@ -18,14 +18,19 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import java.net.URI;
-import java.util.ArrayList;
-
-import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
-
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskListResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageOperatingSystemType;
 import org.junit.Assert;
 import org.junit.Ignore;
+
+import java.net.URI;
+import java.util.ArrayList;
 
 public class VirtualMachineDiskOperationsTests extends ComputeManagementIntegrationTestBase {
     static int random = (int)(Math.random()* 100);

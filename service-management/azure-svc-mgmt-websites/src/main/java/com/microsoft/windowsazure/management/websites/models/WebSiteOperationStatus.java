@@ -30,25 +30,25 @@ public enum WebSiteOperationStatus {
     /**
     * The asynchronous request is in progress.
     */
-    INPROGRESS,
+    InProgress,
     
     /**
     * The asynchronous request failed.
     */
-    FAILED,
+    Failed,
     
     /**
     * The asynchronous request succeeded.
     */
-    SUCCEEDED,
+    Succeeded,
     
     /**
     * The asynchronous request timed out.
     */
-    TIMEDOUT,
+    TimedOut,
     
     /**
     * The asynchronous request was created.
     */
-    CREATED,
+    Created,
 }

@@ -24,13 +24,13 @@
 package com.microsoft.windowsazure.management.network.models;
 
 public enum RouteTableState {
-    CREATED,
+    Created,
     
-    CREATING,
+    Creating,
     
-    UPDATING,
+    Updating,
     
-    DELETING,
+    Deleting,
     
-    UNAVAILABLE,
+    Unavailable,
 }

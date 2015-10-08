@@ -15,9 +15,19 @@
 
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImageGetParameters;
+import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImageGetResponse;
+import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImageListVersionsParameters;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResourceList;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 

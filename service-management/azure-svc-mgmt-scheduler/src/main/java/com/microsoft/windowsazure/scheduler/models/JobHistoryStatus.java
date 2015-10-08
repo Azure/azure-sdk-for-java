@@ -30,15 +30,15 @@ public enum JobHistoryStatus {
     /**
     * A completed execution attempt.
     */
-    COMPLETED,
+    Completed,
     
     /**
     * A failed execution attempt.
     */
-    FAILED,
+    Failed,
     
     /**
     * Execution has been postponed.
     */
-    POSTPONED,
+    Postponed,
 }

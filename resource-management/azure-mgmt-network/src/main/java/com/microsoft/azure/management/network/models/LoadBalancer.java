@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.network.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
@@ -66,6 +67,24 @@ public class LoadBalancer extends TopLevelResource {
         this.frontendIpConfigurations = frontendIpConfigurationsValue;
     }
     
+    private ArrayList<InboundNatPool> inboundNatPools;
+    
+    /**
+    * Optional. Gets or sets inbound NAT pools
+    * @return The InboundNatPools value.
+    */
+    public ArrayList<InboundNatPool> getInboundNatPools() {
+        return this.inboundNatPools;
+    }
+    
+    /**
+    * Optional. Gets or sets inbound NAT pools
+    * @param inboundNatPoolsValue The InboundNatPools value.
+    */
+    public void setInboundNatPools(final ArrayList<InboundNatPool> inboundNatPoolsValue) {
+        this.inboundNatPools = inboundNatPoolsValue;
+    }
+    
     private ArrayList<InboundNatRule> inboundNatRules;
     
     /**
@@ -100,6 +119,24 @@ public class LoadBalancer extends TopLevelResource {
     */
     public void setLoadBalancingRules(final ArrayList<LoadBalancingRule> loadBalancingRulesValue) {
         this.loadBalancingRules = loadBalancingRulesValue;
+    }
+    
+    private ArrayList<OutboundNatRule> outboundNatRules;
+    
+    /**
+    * Optional. Gets or sets outbound NAT rules
+    * @return The OutboundNatRules value.
+    */
+    public ArrayList<OutboundNatRule> getOutboundNatRules() {
+        return this.outboundNatRules;
+    }
+    
+    /**
+    * Optional. Gets or sets outbound NAT rules
+    * @param outboundNatRulesValue The OutboundNatRules value.
+    */
+    public void setOutboundNatRules(final ArrayList<OutboundNatRule> outboundNatRulesValue) {
+        this.outboundNatRules = outboundNatRulesValue;
     }
     
     private ArrayList<Probe> probes;
@@ -140,6 +177,26 @@ public class LoadBalancer extends TopLevelResource {
         this.provisioningState = provisioningStateValue;
     }
     
+    private String resourceGuid;
+    
+    /**
+    * Optional. Gets or sets resource guid property of the Load balancer
+    * resource
+    * @return The ResourceGuid value.
+    */
+    public String getResourceGuid() {
+        return this.resourceGuid;
+    }
+    
+    /**
+    * Optional. Gets or sets resource guid property of the Load balancer
+    * resource
+    * @param resourceGuidValue The ResourceGuid value.
+    */
+    public void setResourceGuid(final String resourceGuidValue) {
+        this.resourceGuid = resourceGuidValue;
+    }
+    
     /**
     * Initializes a new instance of the LoadBalancer class.
     *
@@ -148,8 +205,10 @@ public class LoadBalancer extends TopLevelResource {
         super();
         this.setBackendAddressPools(new LazyArrayList<BackendAddressPool>());
         this.setFrontendIpConfigurations(new LazyArrayList<FrontendIpConfiguration>());
+        this.setInboundNatPools(new LazyArrayList<InboundNatPool>());
         this.setInboundNatRules(new LazyArrayList<InboundNatRule>());
         this.setLoadBalancingRules(new LazyArrayList<LoadBalancingRule>());
+        this.setOutboundNatRules(new LazyArrayList<OutboundNatRule>());
         this.setProbes(new LazyArrayList<Probe>());
     }
     

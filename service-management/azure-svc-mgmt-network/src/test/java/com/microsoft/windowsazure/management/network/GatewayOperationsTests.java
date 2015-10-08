@@ -15,19 +15,12 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.network.models.*;
 import com.microsoft.windowsazure.exception.ServiceException;
-
-import java.util.concurrent.ExecutionException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.microsoft.windowsazure.management.network.models.GatewayCreateParameters;
+import com.microsoft.windowsazure.management.network.models.GatewayGetResponse;
+import com.microsoft.windowsazure.management.network.models.GatewayListConnectionsResponse;
+import com.microsoft.windowsazure.management.network.models.GatewayType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -35,6 +28,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import static org.junit.Assert.assertNotNull;
 
 public class GatewayOperationsTests extends NetworkManagementIntegrationTestBase {
     

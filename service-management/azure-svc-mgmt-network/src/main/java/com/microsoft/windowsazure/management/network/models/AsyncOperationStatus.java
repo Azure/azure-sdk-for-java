@@ -27,11 +27,11 @@ package com.microsoft.windowsazure.management.network.models;
 * The status of the async operation
 */
 public enum AsyncOperationStatus {
-    UNKNOWN,
+    Unknown,
     
-    INPROGRESS,
+    InProgress,
     
-    SUCCESSFUL,
+    Successful,
     
-    FAILED,
+    Failed,
 }

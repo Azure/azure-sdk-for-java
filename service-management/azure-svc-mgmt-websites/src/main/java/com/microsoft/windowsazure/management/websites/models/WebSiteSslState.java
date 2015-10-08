@@ -27,9 +27,9 @@ package com.microsoft.windowsazure.management.websites.models;
 * A web site's SSL state.
 */
 public enum WebSiteSslState {
-    DISABLED,
+    Disabled,
     
-    SNIENABLED,
+    SniEnabled,
     
-    IPBASEDENABLED,
+    IpBasedEnabled,
 }

@@ -48,15 +48,15 @@ import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperation
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,14 +66,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerManagementClientImpl>, JobCollectionOperations {
     /**
@@ -913,7 +914,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(SchedulerOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -926,7 +927,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
+            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1031,7 +1032,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(SchedulerOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1044,7 +1045,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
+            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1203,7 +1204,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     Element stateElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "State");
                     if (stateElement != null && stateElement.getTextContent() != null && !stateElement.getTextContent().isEmpty()) {
                         JobCollectionState stateInstance;
-                        stateInstance = JobCollectionState.valueOf(stateElement.getTextContent().toUpperCase());
+                        stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
                         result.setState(stateInstance);
                     }
                     
@@ -1229,7 +1230,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         Element planElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
                         if (planElement != null && planElement.getTextContent() != null && !planElement.getTextContent().isEmpty()) {
                             JobCollectionPlan planInstance;
-                            planInstance = JobCollectionPlan.valueOf(planElement.getTextContent().toUpperCase());
+                            planInstance = JobCollectionPlan.valueOf(planElement.getTextContent());
                             intrinsicSettingsInstance.setPlan(planInstance);
                         }
                         
@@ -1260,7 +1261,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                                 Element frequencyElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Frequency");
                                 if (frequencyElement != null && frequencyElement.getTextContent() != null && !frequencyElement.getTextContent().isEmpty()) {
                                     JobCollectionRecurrenceFrequency frequencyInstance;
-                                    frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent().toUpperCase());
+                                    frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
                                     maxRecurrenceInstance.setFrequency(frequencyInstance);
                                 }
                                 
@@ -1294,7 +1295,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                             Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
                             if (httpCodeElement != null && httpCodeElement.getTextContent() != null && !httpCodeElement.getTextContent().isEmpty()) {
                                 Integer httpCodeInstance;
-                                httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent().toUpperCase());
+                                httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
                                 errorInstance.setStatusCode(httpCodeInstance);
                             }
                             
@@ -1309,7 +1310,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
                         if (resultElement != null && resultElement.getTextContent() != null && !resultElement.getTextContent().isEmpty()) {
                             SchedulerOperationStatus resultInstance;
-                            resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent().toUpperCase());
+                            resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());
                             operationStatusInstance.setStatus(resultInstance);
                         }
                     }
@@ -1416,7 +1417,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != SchedulerOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(SchedulerOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
@@ -1429,7 +1430,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.SUCCEEDED) {
+            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

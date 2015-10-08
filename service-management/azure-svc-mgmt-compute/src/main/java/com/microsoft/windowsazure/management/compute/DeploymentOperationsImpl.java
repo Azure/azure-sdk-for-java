@@ -36,6 +36,8 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
+import com.microsoft.windowsazure.management.compute.models.AdditionalUnattendContentSettings;
+import com.microsoft.windowsazure.management.compute.models.ComponentSetting;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
 import com.microsoft.windowsazure.management.compute.models.DataDiskConfiguration;
 import com.microsoft.windowsazure.management.compute.models.DataVirtualHardDisk;
@@ -89,6 +91,8 @@ import com.microsoft.windowsazure.management.compute.models.SshSettingKeyPair;
 import com.microsoft.windowsazure.management.compute.models.SshSettingPublicKey;
 import com.microsoft.windowsazure.management.compute.models.SshSettings;
 import com.microsoft.windowsazure.management.compute.models.StoredCertificateSettings;
+import com.microsoft.windowsazure.management.compute.models.UnattendComponent;
+import com.microsoft.windowsazure.management.compute.models.UnattendPassSettings;
 import com.microsoft.windowsazure.management.compute.models.UpgradeDomainState;
 import com.microsoft.windowsazure.management.compute.models.UpgradeStatus;
 import com.microsoft.windowsazure.management.compute.models.VMImageInput;
@@ -98,6 +102,24 @@ import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagem
 import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementSettings;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -114,23 +136,6 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Management API includes operations for managing the deployments
@@ -4683,7 +4688,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -4696,7 +4701,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -4821,7 +4826,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -4834,7 +4839,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -4964,7 +4969,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -4977,7 +4982,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5096,7 +5101,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5109,7 +5114,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5221,7 +5226,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5234,7 +5239,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5343,7 +5348,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5356,7 +5361,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5465,7 +5470,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5478,7 +5483,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5635,7 +5640,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                     if (deploymentSlotElement != null && deploymentSlotElement.getTextContent() != null && !deploymentSlotElement.getTextContent().isEmpty()) {
                         DeploymentSlot deploymentSlotInstance;
-                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent().toUpperCase());
+                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                         result.setDeploymentSlot(deploymentSlotInstance);
                     }
                     
@@ -5649,7 +5654,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element statusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         DeploymentStatus statusInstance;
-                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                         result.setStatus(statusInstance);
                     }
                     
@@ -6118,7 +6123,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                             if (powerStateElement != null && powerStateElement.getTextContent() != null && !powerStateElement.getTextContent().isEmpty()) {
                                 RoleInstancePowerState powerStateInstance;
-                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent().toUpperCase());
+                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
                                 roleInstanceInstance.setPowerState(powerStateInstance);
                             }
                             
@@ -6237,14 +6242,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                         if (upgradeTypeElement != null && upgradeTypeElement.getTextContent() != null && !upgradeTypeElement.getTextContent().isEmpty()) {
                             DeploymentUpgradeType upgradeTypeInstance;
-                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent().toUpperCase());
+                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
                             upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                         }
                         
                         Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                         if (currentUpgradeDomainStateElement != null && currentUpgradeDomainStateElement.getTextContent() != null && !currentUpgradeDomainStateElement.getTextContent().isEmpty()) {
                             UpgradeDomainState currentUpgradeDomainStateInstance;
-                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent().toUpperCase());
+                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
                             upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                         }
                         
@@ -6724,7 +6729,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                                 if (protocolElement4 != null && protocolElement4.getTextContent() != null && !protocolElement4.getTextContent().isEmpty()) {
                                                     VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent().toUpperCase());
+                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
                                                     listenerInstance.setListenerType(protocolInstance4);
                                                 }
                                                 
@@ -6743,6 +6748,67 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         String adminUsernameInstance;
                                         adminUsernameInstance = adminUsernameElement.getTextContent();
                                         configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                                    }
+                                    
+                                    Element additionalUnattendContentElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                                    if (additionalUnattendContentElement != null) {
+                                        AdditionalUnattendContentSettings additionalUnattendContentInstance = new AdditionalUnattendContentSettings();
+                                        configurationSetInstance.setAdditionalUnattendContent(additionalUnattendContentInstance);
+                                        
+                                        Element passesSequenceElement = XmlUtility.getElementByTagNameNS(additionalUnattendContentElement, "http://schemas.microsoft.com/windowsazure", "Passes");
+                                        if (passesSequenceElement != null) {
+                                            for (int i23 = 0; i23 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(passesSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendPass").size(); i23 = i23 + 1) {
+                                                org.w3c.dom.Element passesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(passesSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendPass").get(i23));
+                                                UnattendPassSettings unattendPassInstance = new UnattendPassSettings();
+                                                additionalUnattendContentInstance.getUnattendPasses().add(unattendPassInstance);
+                                                
+                                                Element passNameElement = XmlUtility.getElementByTagNameNS(passesElement, "http://schemas.microsoft.com/windowsazure", "PassName");
+                                                if (passNameElement != null) {
+                                                    String passNameInstance;
+                                                    passNameInstance = passNameElement.getTextContent();
+                                                    unattendPassInstance.setPassName(passNameInstance);
+                                                }
+                                                
+                                                Element componentsSequenceElement = XmlUtility.getElementByTagNameNS(passesElement, "http://schemas.microsoft.com/windowsazure", "Components");
+                                                if (componentsSequenceElement != null) {
+                                                    for (int i24 = 0; i24 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentsSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendComponent").size(); i24 = i24 + 1) {
+                                                        org.w3c.dom.Element componentsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentsSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendComponent").get(i24));
+                                                        UnattendComponent unattendComponentInstance = new UnattendComponent();
+                                                        unattendPassInstance.getUnattendComponents().add(unattendComponentInstance);
+                                                        
+                                                        Element componentNameElement = XmlUtility.getElementByTagNameNS(componentsElement, "http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                                        if (componentNameElement != null) {
+                                                            String componentNameInstance;
+                                                            componentNameInstance = componentNameElement.getTextContent();
+                                                            unattendComponentInstance.setComponentName(componentNameInstance);
+                                                        }
+                                                        
+                                                        Element componentSettingsSequenceElement = XmlUtility.getElementByTagNameNS(componentsElement, "http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                        if (componentSettingsSequenceElement != null) {
+                                                            for (int i25 = 0; i25 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ComponentSetting").size(); i25 = i25 + 1) {
+                                                                org.w3c.dom.Element componentSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ComponentSetting").get(i25));
+                                                                ComponentSetting componentSettingInstance = new ComponentSetting();
+                                                                unattendComponentInstance.getUnattendComponentSettings().add(componentSettingInstance);
+                                                                
+                                                                Element settingNameElement = XmlUtility.getElementByTagNameNS(componentSettingsElement, "http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                                if (settingNameElement != null) {
+                                                                    String settingNameInstance;
+                                                                    settingNameInstance = settingNameElement.getTextContent();
+                                                                    componentSettingInstance.setSettingName(settingNameInstance);
+                                                                }
+                                                                
+                                                                Element contentElement = XmlUtility.getElementByTagNameNS(componentSettingsElement, "http://schemas.microsoft.com/windowsazure", "Content");
+                                                                if (contentElement != null) {
+                                                                    String contentInstance;
+                                                                    contentInstance = contentElement.getTextContent() != null ? new String(Base64.decode(contentElement.getTextContent())) : null;
+                                                                    componentSettingInstance.setContent(contentInstance);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                     
                                     Element hostNameElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "HostName");
@@ -6780,8 +6846,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         
                                         Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                         if (publicKeysSequenceElement != null) {
-                                            for (int i23 = 0; i23 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i23 = i23 + 1) {
-                                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i23));
+                                            for (int i26 = 0; i26 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i26 = i26 + 1) {
+                                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i26));
                                                 SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                                 sSHInstance.getPublicKeys().add(publicKeyInstance);
                                                 
@@ -6803,8 +6869,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         
                                         Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                         if (keyPairsSequenceElement != null) {
-                                            for (int i24 = 0; i24 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i24 = i24 + 1) {
-                                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i24));
+                                            for (int i27 = 0; i27 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i27 = i27 + 1) {
+                                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i27));
                                                 SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                                 sSHInstance.getKeyPairs().add(keyPairInstance);
                                                 
@@ -6836,8 +6902,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                             if (resourceExtensionReferencesSequenceElement != null) {
-                                for (int i25 = 0; i25 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i25 = i25 + 1) {
-                                    org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i25));
+                                for (int i28 = 0; i28 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i28 = i28 + 1) {
+                                    org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i28));
                                     ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                     roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                     
@@ -6871,8 +6937,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                     if (resourceExtensionParameterValuesSequenceElement != null) {
-                                        for (int i26 = 0; i26 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i26 = i26 + 1) {
-                                            org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i26));
+                                        for (int i29 = 0; i29 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i29 = i29 + 1) {
+                                            org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i29));
                                             ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                             resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                             
@@ -6938,8 +7004,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                             if (dataVirtualHardDisksSequenceElement != null) {
-                                for (int i27 = 0; i27 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i27 = i27 + 1) {
-                                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i27));
+                                for (int i30 = 0; i30 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i30 = i30 + 1) {
+                                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i30));
                                     DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                     roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                     
@@ -7118,8 +7184,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element dataDiskConfigurationsSequenceElement = XmlUtility.getElementByTagNameNS(vMImageInputElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfigurations");
                                 if (dataDiskConfigurationsSequenceElement != null) {
-                                    for (int i28 = 0; i28 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").size(); i28 = i28 + 1) {
-                                        org.w3c.dom.Element dataDiskConfigurationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").get(i28));
+                                    for (int i31 = 0; i31 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").size(); i31 = i31 + 1) {
+                                        org.w3c.dom.Element dataDiskConfigurationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").get(i31));
                                         DataDiskConfiguration dataDiskConfigurationInstance = new DataDiskConfiguration();
                                         vMImageInputInstance.getDataDiskConfigurations().add(dataDiskConfigurationInstance);
                                         
@@ -7186,8 +7252,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                     if (extendedPropertiesSequenceElement != null) {
-                        for (int i29 = 0; i29 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i29 = i29 + 1) {
-                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i29));
+                        for (int i32 = 0; i32 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i32 = i32 + 1) {
+                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i32));
                             String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                             String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                             result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
@@ -7201,8 +7267,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                         if (dnsServersSequenceElement != null) {
-                            for (int i30 = 0; i30 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i30 = i30 + 1) {
-                                org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i30));
+                            for (int i33 = 0; i33 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i33 = i33 + 1) {
+                                org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i33));
                                 DnsServer dnsServerInstance = new DnsServer();
                                 dnsInstance.getDnsServers().add(dnsServerInstance);
                                 
@@ -7252,8 +7318,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                     if (virtualIPsSequenceElement != null) {
-                        for (int i31 = 0; i31 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i31 = i31 + 1) {
-                            org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i31));
+                        for (int i34 = 0; i34 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i34 = i34 + 1) {
+                            org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i34));
                             VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                             result.getVirtualIPAddresses().add(virtualIPInstance);
                             
@@ -7294,8 +7360,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                         if (allRolesSequenceElement != null) {
-                            for (int i32 = 0; i32 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i32 = i32 + 1) {
-                                org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i32));
+                            for (int i35 = 0; i35 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i35 = i35 + 1) {
+                                org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i35));
                                 ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                                 extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                                 
@@ -7310,8 +7376,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                         if (namedRolesSequenceElement != null) {
-                            for (int i33 = 0; i33 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i33 = i33 + 1) {
-                                org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i33));
+                            for (int i36 = 0; i36 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i36 = i36 + 1) {
+                                org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i36));
                                 ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                                 extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                                 
@@ -7324,8 +7390,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                                 if (extensionsSequenceElement != null) {
-                                    for (int i34 = 0; i34 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i34 = i34 + 1) {
-                                        org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i34));
+                                    for (int i37 = 0; i37 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i37 = i37 + 1) {
+                                        org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i37));
                                         ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                         roleInstance2.getExtensions().add(extensionInstance2);
                                         
@@ -7350,8 +7416,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element loadBalancersSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancers");
                     if (loadBalancersSequenceElement != null) {
-                        for (int i35 = 0; i35 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").size(); i35 = i35 + 1) {
-                            org.w3c.dom.Element loadBalancersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").get(i35));
+                        for (int i38 = 0; i38 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").size(); i38 = i38 + 1) {
+                            org.w3c.dom.Element loadBalancersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").get(i38));
                             LoadBalancer loadBalancerInstance = new LoadBalancer();
                             result.getLoadBalancers().add(loadBalancerInstance);
                             
@@ -7539,7 +7605,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                     if (deploymentSlotElement != null && deploymentSlotElement.getTextContent() != null && !deploymentSlotElement.getTextContent().isEmpty()) {
                         DeploymentSlot deploymentSlotInstance;
-                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent().toUpperCase());
+                        deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                         result.setDeploymentSlot(deploymentSlotInstance);
                     }
                     
@@ -7553,7 +7619,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     Element statusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         DeploymentStatus statusInstance;
-                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                         result.setStatus(statusInstance);
                     }
                     
@@ -8022,7 +8088,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                             if (powerStateElement != null && powerStateElement.getTextContent() != null && !powerStateElement.getTextContent().isEmpty()) {
                                 RoleInstancePowerState powerStateInstance;
-                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent().toUpperCase());
+                                powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
                                 roleInstanceInstance.setPowerState(powerStateInstance);
                             }
                             
@@ -8141,14 +8207,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                         if (upgradeTypeElement != null && upgradeTypeElement.getTextContent() != null && !upgradeTypeElement.getTextContent().isEmpty()) {
                             DeploymentUpgradeType upgradeTypeInstance;
-                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent().toUpperCase());
+                            upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
                             upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                         }
                         
                         Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                         if (currentUpgradeDomainStateElement != null && currentUpgradeDomainStateElement.getTextContent() != null && !currentUpgradeDomainStateElement.getTextContent().isEmpty()) {
                             UpgradeDomainState currentUpgradeDomainStateInstance;
-                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent().toUpperCase());
+                            currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
                             upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                         }
                         
@@ -8628,7 +8694,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                                 if (protocolElement4 != null && protocolElement4.getTextContent() != null && !protocolElement4.getTextContent().isEmpty()) {
                                                     VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent().toUpperCase());
+                                                    protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
                                                     listenerInstance.setListenerType(protocolInstance4);
                                                 }
                                                 
@@ -8647,6 +8713,67 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         String adminUsernameInstance;
                                         adminUsernameInstance = adminUsernameElement.getTextContent();
                                         configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                                    }
+                                    
+                                    Element additionalUnattendContentElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                                    if (additionalUnattendContentElement != null) {
+                                        AdditionalUnattendContentSettings additionalUnattendContentInstance = new AdditionalUnattendContentSettings();
+                                        configurationSetInstance.setAdditionalUnattendContent(additionalUnattendContentInstance);
+                                        
+                                        Element passesSequenceElement = XmlUtility.getElementByTagNameNS(additionalUnattendContentElement, "http://schemas.microsoft.com/windowsazure", "Passes");
+                                        if (passesSequenceElement != null) {
+                                            for (int i23 = 0; i23 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(passesSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendPass").size(); i23 = i23 + 1) {
+                                                org.w3c.dom.Element passesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(passesSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendPass").get(i23));
+                                                UnattendPassSettings unattendPassInstance = new UnattendPassSettings();
+                                                additionalUnattendContentInstance.getUnattendPasses().add(unattendPassInstance);
+                                                
+                                                Element passNameElement = XmlUtility.getElementByTagNameNS(passesElement, "http://schemas.microsoft.com/windowsazure", "PassName");
+                                                if (passNameElement != null) {
+                                                    String passNameInstance;
+                                                    passNameInstance = passNameElement.getTextContent();
+                                                    unattendPassInstance.setPassName(passNameInstance);
+                                                }
+                                                
+                                                Element componentsSequenceElement = XmlUtility.getElementByTagNameNS(passesElement, "http://schemas.microsoft.com/windowsazure", "Components");
+                                                if (componentsSequenceElement != null) {
+                                                    for (int i24 = 0; i24 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentsSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendComponent").size(); i24 = i24 + 1) {
+                                                        org.w3c.dom.Element componentsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentsSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendComponent").get(i24));
+                                                        UnattendComponent unattendComponentInstance = new UnattendComponent();
+                                                        unattendPassInstance.getUnattendComponents().add(unattendComponentInstance);
+                                                        
+                                                        Element componentNameElement = XmlUtility.getElementByTagNameNS(componentsElement, "http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                                        if (componentNameElement != null) {
+                                                            String componentNameInstance;
+                                                            componentNameInstance = componentNameElement.getTextContent();
+                                                            unattendComponentInstance.setComponentName(componentNameInstance);
+                                                        }
+                                                        
+                                                        Element componentSettingsSequenceElement = XmlUtility.getElementByTagNameNS(componentsElement, "http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                        if (componentSettingsSequenceElement != null) {
+                                                            for (int i25 = 0; i25 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ComponentSetting").size(); i25 = i25 + 1) {
+                                                                org.w3c.dom.Element componentSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ComponentSetting").get(i25));
+                                                                ComponentSetting componentSettingInstance = new ComponentSetting();
+                                                                unattendComponentInstance.getUnattendComponentSettings().add(componentSettingInstance);
+                                                                
+                                                                Element settingNameElement = XmlUtility.getElementByTagNameNS(componentSettingsElement, "http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                                if (settingNameElement != null) {
+                                                                    String settingNameInstance;
+                                                                    settingNameInstance = settingNameElement.getTextContent();
+                                                                    componentSettingInstance.setSettingName(settingNameInstance);
+                                                                }
+                                                                
+                                                                Element contentElement = XmlUtility.getElementByTagNameNS(componentSettingsElement, "http://schemas.microsoft.com/windowsazure", "Content");
+                                                                if (contentElement != null) {
+                                                                    String contentInstance;
+                                                                    contentInstance = contentElement.getTextContent() != null ? new String(Base64.decode(contentElement.getTextContent())) : null;
+                                                                    componentSettingInstance.setContent(contentInstance);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                     
                                     Element hostNameElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "HostName");
@@ -8684,8 +8811,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         
                                         Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                         if (publicKeysSequenceElement != null) {
-                                            for (int i23 = 0; i23 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i23 = i23 + 1) {
-                                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i23));
+                                            for (int i26 = 0; i26 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i26 = i26 + 1) {
+                                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i26));
                                                 SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                                 sSHInstance.getPublicKeys().add(publicKeyInstance);
                                                 
@@ -8707,8 +8834,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         
                                         Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                         if (keyPairsSequenceElement != null) {
-                                            for (int i24 = 0; i24 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i24 = i24 + 1) {
-                                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i24));
+                                            for (int i27 = 0; i27 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i27 = i27 + 1) {
+                                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i27));
                                                 SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                                 sSHInstance.getKeyPairs().add(keyPairInstance);
                                                 
@@ -8740,8 +8867,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                             if (resourceExtensionReferencesSequenceElement != null) {
-                                for (int i25 = 0; i25 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i25 = i25 + 1) {
-                                    org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i25));
+                                for (int i28 = 0; i28 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i28 = i28 + 1) {
+                                    org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i28));
                                     ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                     roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                     
@@ -8775,8 +8902,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                     if (resourceExtensionParameterValuesSequenceElement != null) {
-                                        for (int i26 = 0; i26 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i26 = i26 + 1) {
-                                            org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i26));
+                                        for (int i29 = 0; i29 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i29 = i29 + 1) {
+                                            org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i29));
                                             ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                             resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                             
@@ -8842,8 +8969,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                             if (dataVirtualHardDisksSequenceElement != null) {
-                                for (int i27 = 0; i27 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i27 = i27 + 1) {
-                                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i27));
+                                for (int i30 = 0; i30 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i30 = i30 + 1) {
+                                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i30));
                                     DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                     roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                     
@@ -9022,8 +9149,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element dataDiskConfigurationsSequenceElement = XmlUtility.getElementByTagNameNS(vMImageInputElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfigurations");
                                 if (dataDiskConfigurationsSequenceElement != null) {
-                                    for (int i28 = 0; i28 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").size(); i28 = i28 + 1) {
-                                        org.w3c.dom.Element dataDiskConfigurationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").get(i28));
+                                    for (int i31 = 0; i31 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").size(); i31 = i31 + 1) {
+                                        org.w3c.dom.Element dataDiskConfigurationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataDiskConfigurationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataDiskConfiguration").get(i31));
                                         DataDiskConfiguration dataDiskConfigurationInstance = new DataDiskConfiguration();
                                         vMImageInputInstance.getDataDiskConfigurations().add(dataDiskConfigurationInstance);
                                         
@@ -9090,8 +9217,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                     if (extendedPropertiesSequenceElement != null) {
-                        for (int i29 = 0; i29 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i29 = i29 + 1) {
-                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i29));
+                        for (int i32 = 0; i32 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i32 = i32 + 1) {
+                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i32));
                             String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                             String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                             result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
@@ -9105,8 +9232,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                         if (dnsServersSequenceElement != null) {
-                            for (int i30 = 0; i30 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i30 = i30 + 1) {
-                                org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i30));
+                            for (int i33 = 0; i33 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i33 = i33 + 1) {
+                                org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i33));
                                 DnsServer dnsServerInstance = new DnsServer();
                                 dnsInstance.getDnsServers().add(dnsServerInstance);
                                 
@@ -9156,8 +9283,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                     if (virtualIPsSequenceElement != null) {
-                        for (int i31 = 0; i31 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i31 = i31 + 1) {
-                            org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i31));
+                        for (int i34 = 0; i34 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i34 = i34 + 1) {
+                            org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i34));
                             VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                             result.getVirtualIPAddresses().add(virtualIPInstance);
                             
@@ -9198,8 +9325,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                         if (allRolesSequenceElement != null) {
-                            for (int i32 = 0; i32 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i32 = i32 + 1) {
-                                org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i32));
+                            for (int i35 = 0; i35 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i35 = i35 + 1) {
+                                org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i35));
                                 ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                                 extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                                 
@@ -9214,8 +9341,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                         if (namedRolesSequenceElement != null) {
-                            for (int i33 = 0; i33 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i33 = i33 + 1) {
-                                org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i33));
+                            for (int i36 = 0; i36 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i36 = i36 + 1) {
+                                org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i36));
                                 ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                                 extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                                 
@@ -9228,8 +9355,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                                 if (extensionsSequenceElement != null) {
-                                    for (int i34 = 0; i34 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i34 = i34 + 1) {
-                                        org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i34));
+                                    for (int i37 = 0; i37 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i37 = i37 + 1) {
+                                        org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i37));
                                         ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                         roleInstance2.getExtensions().add(extensionInstance2);
                                         
@@ -9254,8 +9381,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element loadBalancersSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancers");
                     if (loadBalancersSequenceElement != null) {
-                        for (int i35 = 0; i35 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").size(); i35 = i35 + 1) {
-                            org.w3c.dom.Element loadBalancersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").get(i35));
+                        for (int i38 = 0; i38 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").size(); i38 = i38 + 1) {
+                            org.w3c.dom.Element loadBalancersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(loadBalancersSequenceElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancer").get(i38));
                             LoadBalancer loadBalancerInstance = new LoadBalancer();
                             result.getLoadBalancers().add(loadBalancerInstance);
                             
@@ -9407,7 +9534,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -9420,7 +9547,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -9541,7 +9668,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -9554,7 +9681,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10071,7 +10198,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10084,7 +10211,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10203,7 +10330,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10216,7 +10343,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10342,7 +10469,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10355,7 +10482,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10481,7 +10608,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10494,7 +10621,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10613,7 +10740,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10626,7 +10753,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -10745,7 +10872,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -10758,7 +10885,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11250,7 +11377,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11263,7 +11390,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11386,7 +11513,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11399,7 +11526,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11522,7 +11649,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11535,7 +11662,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11706,7 +11833,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11719,7 +11846,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -11890,7 +12017,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -11903,7 +12030,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -12066,7 +12193,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -12079,7 +12206,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -12242,7 +12369,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -12255,7 +12382,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

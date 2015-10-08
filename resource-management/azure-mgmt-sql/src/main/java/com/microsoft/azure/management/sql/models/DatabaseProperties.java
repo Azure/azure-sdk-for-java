@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.sql.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -105,6 +106,24 @@ public class DatabaseProperties {
     */
     public void setDatabaseId(final String databaseIdValue) {
         this.databaseId = databaseIdValue;
+    }
+    
+    private String defaultSecondaryLocation;
+    
+    /**
+    * Optional. Gets the default secondary region for this database.
+    * @return The DefaultSecondaryLocation value.
+    */
+    public String getDefaultSecondaryLocation() {
+        return this.defaultSecondaryLocation;
+    }
+    
+    /**
+    * Optional. Gets the default secondary region for this database.
+    * @param defaultSecondaryLocationValue The DefaultSecondaryLocation value.
+    */
+    public void setDefaultSecondaryLocation(final String defaultSecondaryLocationValue) {
+        this.defaultSecondaryLocation = defaultSecondaryLocationValue;
     }
     
     private Calendar earliestRestoreDate;

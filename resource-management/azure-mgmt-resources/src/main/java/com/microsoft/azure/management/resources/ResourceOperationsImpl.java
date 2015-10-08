@@ -25,6 +25,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.GenericResource;
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.azure.management.resources.models.Plan;
 import com.microsoft.azure.management.resources.models.ResourceCreateOrUpdateResult;
 import com.microsoft.azure.management.resources.models.ResourceExistsResult;
@@ -32,14 +33,29 @@ import com.microsoft.azure.management.resources.models.ResourceGetResult;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.management.resources.models.ResourceListResult;
 import com.microsoft.azure.management.resources.models.ResourcesMoveInfo;
-import com.microsoft.windowsazure.core.LazyCollection;
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -53,17 +69,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing resources.
@@ -87,6 +92,148 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
     */
     public ResourceManagementClientImpl getClient() {
         return this.client;
+    }
+    
+    /**
+    * Begin moving resources.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @return A standard service response for long running operations.
+    */
+    @Override
+    public Future<LongRunningOperationResponse> beginMovingAsync(final String sourceResourceGroupName, final ResourcesMoveInfo parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<LongRunningOperationResponse>() { 
+            @Override
+            public LongRunningOperationResponse call() throws Exception {
+                return beginMoving(sourceResourceGroupName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Begin moving resources.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param sourceResourceGroupName Required. Source resource group name.
+    * @param parameters Required. move resources' parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response for long running operations.
+    */
+    @Override
+    public LongRunningOperationResponse beginMoving(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException {
+        // Validate
+        if (sourceResourceGroupName == null) {
+            throw new NullPointerException("sourceResourceGroupName");
+        }
+        if (sourceResourceGroupName != null && sourceResourceGroupName.length() > 1000) {
+            throw new IllegalArgumentException("sourceResourceGroupName");
+        }
+        if (Pattern.matches("^[-\\w\\._]+$", sourceResourceGroupName) == false) {
+            throw new IllegalArgumentException("sourceResourceGroupName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("sourceResourceGroupName", sourceResourceGroupName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginMovingAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(sourceResourceGroupName, "UTF-8");
+        url = url + "/moveResources";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2014-04-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED && statusCode != HttpStatus.SC_NO_CONTENT) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            LongRunningOperationResponse result = null;
+            // Deserialize Response
+            result = new LongRunningOperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("Location").length > 0) {
+                result.setOperationStatusLink(httpResponse.getFirstHeader("Location").getValue());
+            }
+            if (httpResponse.getHeaders("Retry-After").length > 0) {
+                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("Retry-After").getValue()));
+            }
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            if (statusCode == HttpStatus.SC_CONFLICT) {
+                result.setStatus(OperationStatus.Failed);
+            }
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
+                result.setStatus(OperationStatus.InProgress);
+            }
+            if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                result.setStatus(OperationStatus.Succeeded);
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**
@@ -444,8 +591,9 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new ResourceCreateOrUpdateResult();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -862,8 +1010,9 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 result = new ResourceGetResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1105,8 +1254,9 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 result = new ResourceListResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1215,11 +1365,11 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -1325,8 +1475,9 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                 result = new ResourceListResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1435,11 +1586,11 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -1483,24 +1634,22 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
     *
     * @param sourceResourceGroupName Required. Source resource group name.
     * @param parameters Required. move resources' parameters.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws IOException, ServiceException {
-        // Validate
-        if (sourceResourceGroupName == null) {
-            throw new NullPointerException("sourceResourceGroupName");
-        }
-        if (parameters == null) {
-            throw new NullPointerException("parameters");
-        }
-        
-        // Tracing
+    public OperationResponse moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws InterruptedException, ExecutionException, IOException {
+        ResourceManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
@@ -1510,102 +1659,40 @@ public class ResourceOperationsImpl implements ServiceOperations<ResourceManagem
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "moveResourcesAsync", tracingParameters);
         }
-        
-        // Construct URL
-        String url = "";
-        url = url + "/subscriptions/";
-        if (this.getClient().getCredentials().getSubscriptionId() != null) {
-            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
-        }
-        url = url + "/resourceGroups/";
-        url = url + URLEncoder.encode(sourceResourceGroupName, "UTF-8");
-        url = url + "/moveResources";
-        ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2014-04-01-preview");
-        if (queryParameters.size() > 0) {
-            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
-        }
-        String baseUrl = this.getClient().getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpPost httpRequest = new HttpPost(url);
-        
-        // Set Headers
-        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
-        
-        // Serialize Request
-        String requestContent = null;
-        JsonNode requestDoc = null;
-        
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode resourcesMoveInfoValue = objectMapper.createObjectNode();
-        requestDoc = resourcesMoveInfoValue;
-        
-        if (parameters.getResources() != null) {
-            if (parameters.getResources() instanceof LazyCollection == false || ((LazyCollection) parameters.getResources()).isInitialized()) {
-                ArrayNode resourcesArray = objectMapper.createArrayNode();
-                for (String resourcesItem : parameters.getResources()) {
-                    resourcesArray.add(resourcesItem);
-                }
-                ((ObjectNode) resourcesMoveInfoValue).put("resources", resourcesArray);
-            }
-        }
-        
-        if (parameters.getTargetResourceGroup() != null) {
-            ((ObjectNode) resourcesMoveInfoValue).put("targetResourceGroup", parameters.getTargetResourceGroup());
-        }
-        
-        StringWriter stringWriter = new StringWriter();
-        objectMapper.writeValue(stringWriter, requestDoc);
-        requestContent = stringWriter.toString();
-        StringEntity entity = new StringEntity(requestContent);
-        httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/json; charset=utf-8");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            // Create Result
-            OperationResponse result = null;
-            // Deserialize Response
-            result = new OperationResponse();
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            LongRunningOperationResponse response = client2.getResourcesOperations().beginMovingAsync(sourceResourceGroupName, parameters).get();
+            LongRunningOperationResponse result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
+            int delayInSeconds = response.getRetryAfter();
+            if (delayInSeconds == 0) {
+                delayInSeconds = 30;
+            }
+            if (client2.getLongRunningOperationInitialTimeout() >= 0) {
+                delayInSeconds = client2.getLongRunningOperationInitialTimeout();
+            }
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getLongRunningOperationStatusAsync(response.getOperationStatusLink()).get();
+                delayInSeconds = result.getRetryAfter();
+                if (delayInSeconds == 0) {
+                    delayInSeconds = 15;
+                }
+                if (client2.getLongRunningOperationRetryTimeout() >= 0) {
+                    delayInSeconds = client2.getLongRunningOperationRetryTimeout();
+                }
             }
             
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
+            
             return result;
         } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

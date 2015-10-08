@@ -18,15 +18,14 @@
 
 package com.microsoft.windowsazure.core.tracing.util;
 
+import com.microsoft.windowsazure.tracing.CloudTracingInterceptor;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-
-import com.microsoft.windowsazure.tracing.CloudTracingInterceptor;
 
 /// <summary>
 /// Implementation for CloudTracingInterceptor that works using log4net framework.

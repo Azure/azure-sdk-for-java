@@ -15,6 +15,11 @@
 
 package com.microsoft.windowsazure.core.utils;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,12 +31,6 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.X509Certificate;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 /**
  * A factory for creating SSLContext instance.

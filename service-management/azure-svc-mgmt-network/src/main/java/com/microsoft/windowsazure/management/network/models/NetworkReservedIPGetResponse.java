@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.network.models;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+
 import java.net.InetAddress;
 
 /**

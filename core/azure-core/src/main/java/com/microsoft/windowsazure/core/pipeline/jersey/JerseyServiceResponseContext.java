@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.sun.jersey.api.client.ClientResponse;
+
 import java.io.InputStream;
 import java.util.List;
 

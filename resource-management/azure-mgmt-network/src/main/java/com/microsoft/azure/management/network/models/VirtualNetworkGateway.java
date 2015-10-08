@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.network.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
@@ -102,6 +103,26 @@ public class VirtualNetworkGateway extends TopLevelResource {
     */
     public void setProvisioningState(final String provisioningStateValue) {
         this.provisioningState = provisioningStateValue;
+    }
+    
+    private String resourceGuid;
+    
+    /**
+    * Optional. Gets or sets resource guid property of the
+    * VirtualNetworkGateway resource
+    * @return The ResourceGuid value.
+    */
+    public String getResourceGuid() {
+        return this.resourceGuid;
+    }
+    
+    /**
+    * Optional. Gets or sets resource guid property of the
+    * VirtualNetworkGateway resource
+    * @param resourceGuidValue The ResourceGuid value.
+    */
+    public void setResourceGuid(final String resourceGuidValue) {
+        this.resourceGuid = resourceGuidValue;
     }
     
     private String vpnType;

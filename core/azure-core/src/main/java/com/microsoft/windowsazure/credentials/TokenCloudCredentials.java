@@ -15,14 +15,13 @@
 
 package com.microsoft.windowsazure.credentials;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Map;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * The Class CertificateCloudCredentials.

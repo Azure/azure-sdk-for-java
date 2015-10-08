@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
@@ -53,6 +54,30 @@ public class ExtensionEndpointConfiguration {
     */
     public void setInputEndpoints(final ArrayList<ExtensionEndpointConfiguration.InputEndpoint> inputEndpointsValue) {
         this.inputEndpoints = inputEndpointsValue;
+    }
+    
+    private ArrayList<ExtensionEndpointConfiguration.InstanceInputEndpoint> instanceInputEndpoints;
+    
+    /**
+    * Optional. Optional. A list of instance input endpoints required by this
+    * extension. Supported on WebRole or WorkerRole, but ignored on VmRole.
+    * Each instance input endpoint will be automatically added to the service
+    * definition of the deployment utilizing this extension.
+    * @return The InstanceInputEndpoints value.
+    */
+    public ArrayList<ExtensionEndpointConfiguration.InstanceInputEndpoint> getInstanceInputEndpoints() {
+        return this.instanceInputEndpoints;
+    }
+    
+    /**
+    * Optional. Optional. A list of instance input endpoints required by this
+    * extension. Supported on WebRole or WorkerRole, but ignored on VmRole.
+    * Each instance input endpoint will be automatically added to the service
+    * definition of the deployment utilizing this extension.
+    * @param instanceInputEndpointsValue The InstanceInputEndpoints value.
+    */
+    public void setInstanceInputEndpoints(final ArrayList<ExtensionEndpointConfiguration.InstanceInputEndpoint> instanceInputEndpointsValue) {
+        this.instanceInputEndpoints = instanceInputEndpointsValue;
     }
     
     private ArrayList<ExtensionEndpointConfiguration.InternalEndpoint> internalEndpoints;
@@ -85,6 +110,7 @@ public class ExtensionEndpointConfiguration {
     */
     public ExtensionEndpointConfiguration() {
         this.setInputEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InputEndpoint>());
+        this.setInstanceInputEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InstanceInputEndpoint>());
         this.setInternalEndpoints(new LazyArrayList<ExtensionEndpointConfiguration.InternalEndpoint>());
     }
     
@@ -92,7 +118,7 @@ public class ExtensionEndpointConfiguration {
     * The extension's input endpoint configuration.
     */
     public static class InputEndpoint {
-        private int localPort;
+        private String localPort;
         
         /**
         * Required. Required for each input endpoint. Specifies a port used for
@@ -101,7 +127,7 @@ public class ExtensionEndpointConfiguration {
         * allocated by Windows Azure.
         * @return The LocalPort value.
         */
-        public int getLocalPort() {
+        public String getLocalPort() {
             return this.localPort;
         }
         
@@ -112,7 +138,7 @@ public class ExtensionEndpointConfiguration {
         * allocated by Windows Azure.
         * @param localPortValue The LocalPort value.
         */
-        public void setLocalPort(final int localPortValue) {
+        public void setLocalPort(final String localPortValue) {
             this.localPort = localPortValue;
         }
         
@@ -178,6 +204,129 @@ public class ExtensionEndpointConfiguration {
         * Required. Required for each input endpoint. Transport protocol for
         * the endpoint. Its value has to be one of the following: 'tcp',
         * 'udp', 'http', 'https'.
+        * @param protocolValue The Protocol value.
+        */
+        public void setProtocol(final String protocolValue) {
+            this.protocol = protocolValue;
+        }
+    }
+    
+    /**
+    * The extension's instance input endpoint configuration.
+    */
+    public static class InstanceInputEndpoint {
+        private int fixedPortMax;
+        
+        /**
+        * Required. Required for each instance input endpoint. Specifies a max
+        * port valuefor the instance input endpoint port range used for
+        * instance endpointdistribution by. Its value has to be between
+        * 1-65535 inclusiveand should be unique range that can be injected
+        * without conflict.Should also be equal or higher than FixedPortMin.
+        * @return The FixedPortMax value.
+        */
+        public int getFixedPortMax() {
+            return this.fixedPortMax;
+        }
+        
+        /**
+        * Required. Required for each instance input endpoint. Specifies a max
+        * port valuefor the instance input endpoint port range used for
+        * instance endpointdistribution by. Its value has to be between
+        * 1-65535 inclusiveand should be unique range that can be injected
+        * without conflict.Should also be equal or higher than FixedPortMin.
+        * @param fixedPortMaxValue The FixedPortMax value.
+        */
+        public void setFixedPortMax(final int fixedPortMaxValue) {
+            this.fixedPortMax = fixedPortMaxValue;
+        }
+        
+        private int fixedPortMin;
+        
+        /**
+        * Required. Required for each instance input endpoint. Specifies a min
+        * port valuefor the instance input endpoint port range used for
+        * instance endpointdistribution by. Its value has to be between
+        * 1-65535 inclusiveand should be unique range that can be injected
+        * without conflict.
+        * @return The FixedPortMin value.
+        */
+        public int getFixedPortMin() {
+            return this.fixedPortMin;
+        }
+        
+        /**
+        * Required. Required for each instance input endpoint. Specifies a min
+        * port valuefor the instance input endpoint port range used for
+        * instance endpointdistribution by. Its value has to be between
+        * 1-65535 inclusiveand should be unique range that can be injected
+        * without conflict.
+        * @param fixedPortMinValue The FixedPortMin value.
+        */
+        public void setFixedPortMin(final int fixedPortMinValue) {
+            this.fixedPortMin = fixedPortMinValue;
+        }
+        
+        private String localPort;
+        
+        /**
+        * Required. Required for each instance input endpoint. Specifies a port
+        * used for internal connections on the endpoint. Its value has to be
+        * between 1-65535 inclusive, or '*' indicating any port number
+        * automatically allocated by Windows Azure.
+        * @return The LocalPort value.
+        */
+        public String getLocalPort() {
+            return this.localPort;
+        }
+        
+        /**
+        * Required. Required for each instance input endpoint. Specifies a port
+        * used for internal connections on the endpoint. Its value has to be
+        * between 1-65535 inclusive, or '*' indicating any port number
+        * automatically allocated by Windows Azure.
+        * @param localPortValue The LocalPort value.
+        */
+        public void setLocalPort(final String localPortValue) {
+            this.localPort = localPortValue;
+        }
+        
+        private String name;
+        
+        /**
+        * Required. Required for each instance input endpoint. A unique name
+        * for the instance input endpoint.
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * Required. Required for each instance input endpoint. A unique name
+        * for the instance input endpoint.
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
+        
+        private String protocol;
+        
+        /**
+        * Required. Required for each instance input endpoint. Transport
+        * protocol for the endpoint. Its value has to be one of the following:
+        * 'tcp', 'udp', 'http', 'https'.
+        * @return The Protocol value.
+        */
+        public String getProtocol() {
+            return this.protocol;
+        }
+        
+        /**
+        * Required. Required for each instance input endpoint. Transport
+        * protocol for the endpoint. Its value has to be one of the following:
+        * 'tcp', 'udp', 'http', 'https'.
         * @param protocolValue The Protocol value.
         */
         public void setProtocol(final String protocolValue) {

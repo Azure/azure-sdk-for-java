@@ -47,13 +47,13 @@ public class ElasticPoolProperties {
         this.creationDate = creationDateValue;
     }
     
-    private long databaseDtuMax;
+    private int databaseDtuMax;
     
     /**
     * Optional. Gets the maximum DTU any one Sql Azure Database can consume.
     * @return The DatabaseDtuMax value.
     */
-    public long getDatabaseDtuMax() {
+    public int getDatabaseDtuMax() {
         return this.databaseDtuMax;
     }
     
@@ -61,17 +61,17 @@ public class ElasticPoolProperties {
     * Optional. Gets the maximum DTU any one Sql Azure Database can consume.
     * @param databaseDtuMaxValue The DatabaseDtuMax value.
     */
-    public void setDatabaseDtuMax(final long databaseDtuMaxValue) {
+    public void setDatabaseDtuMax(final int databaseDtuMaxValue) {
         this.databaseDtuMax = databaseDtuMaxValue;
     }
     
-    private long databaseDtuMin;
+    private int databaseDtuMin;
     
     /**
     * Optional. Gets the minimum DTU all Sql Azure Databases are guaranteed.
     * @return The DatabaseDtuMin value.
     */
-    public long getDatabaseDtuMin() {
+    public int getDatabaseDtuMin() {
         return this.databaseDtuMin;
     }
     
@@ -79,18 +79,18 @@ public class ElasticPoolProperties {
     * Optional. Gets the minimum DTU all Sql Azure Databases are guaranteed.
     * @param databaseDtuMinValue The DatabaseDtuMin value.
     */
-    public void setDatabaseDtuMin(final long databaseDtuMinValue) {
+    public void setDatabaseDtuMin(final int databaseDtuMinValue) {
         this.databaseDtuMin = databaseDtuMinValue;
     }
     
-    private long dtu;
+    private int dtu;
     
     /**
     * Optional. Gets the total shared DTU for the Sql Azure Database Elastic
     * Pool.
     * @return The Dtu value.
     */
-    public long getDtu() {
+    public int getDtu() {
         return this.dtu;
     }
     
@@ -99,7 +99,7 @@ public class ElasticPoolProperties {
     * Pool.
     * @param dtuValue The Dtu value.
     */
-    public void setDtu(final long dtuValue) {
+    public void setDtu(final int dtuValue) {
         this.dtu = dtuValue;
     }
     
@@ -141,14 +141,14 @@ public class ElasticPoolProperties {
         this.state = stateValue;
     }
     
-    private long storageMB;
+    private int storageMB;
     
     /**
     * Optional. Gets storage limit for the Sql Azure Database Elastic Pool in
     * MB.
     * @return The StorageMB value.
     */
-    public long getStorageMB() {
+    public int getStorageMB() {
         return this.storageMB;
     }
     
@@ -157,7 +157,7 @@ public class ElasticPoolProperties {
     * MB.
     * @param storageMBValue The StorageMB value.
     */
-    public void setStorageMB(final long storageMBValue) {
+    public void setStorageMB(final int storageMBValue) {
         this.storageMB = storageMBValue;
     }
 }

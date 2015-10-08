@@ -15,23 +15,26 @@
 package com.microsoft.windowsazure.management.sql;
 
 
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.Server;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
-
-import java.io.IOException;
-import java.util.Iterator;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.util.Iterator;
 
-import org.junit.*;
-import org.xml.sax.SAXException;
-
-import static org.junit.Assert.*;
-
-import com.microsoft.windowsazure.exception.ServiceException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 

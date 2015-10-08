@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.network.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
@@ -64,6 +65,24 @@ public class BackendAddressPool extends ChildResource {
     */
     public void setLoadBalancingRules(final ArrayList<ResourceId> loadBalancingRulesValue) {
         this.loadBalancingRules = loadBalancingRulesValue;
+    }
+    
+    private ResourceId outboundNatRule;
+    
+    /**
+    * Optional. Gets outbound rules that use this Backend Address Pool
+    * @return The OutboundNatRule value.
+    */
+    public ResourceId getOutboundNatRule() {
+        return this.outboundNatRule;
+    }
+    
+    /**
+    * Optional. Gets outbound rules that use this Backend Address Pool
+    * @param outboundNatRuleValue The OutboundNatRule value.
+    */
+    public void setOutboundNatRule(final ResourceId outboundNatRuleValue) {
+        this.outboundNatRule = outboundNatRuleValue;
     }
     
     private String provisioningState;

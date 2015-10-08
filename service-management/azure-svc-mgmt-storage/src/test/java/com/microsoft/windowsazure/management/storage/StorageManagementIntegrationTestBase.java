@@ -14,23 +14,22 @@
  */
 package com.microsoft.windowsazure.management.storage;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.management.ManagementClient;
 import com.microsoft.windowsazure.management.ManagementService;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.Callable;
 
 public abstract class StorageManagementIntegrationTestBase extends MockIntegrationTestBase {
 

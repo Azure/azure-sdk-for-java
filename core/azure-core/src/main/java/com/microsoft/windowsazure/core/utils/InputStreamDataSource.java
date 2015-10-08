@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.core.utils;
 
+import javax.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import javax.activation.DataSource;
 
 public class InputStreamDataSource implements DataSource {
     private final InputStream stream;

@@ -26,11 +26,12 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse;
 import com.microsoft.windowsazure.management.compute.models.OperatingSystemListResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for determining the version of the Azure Guest Operating System on

@@ -17,7 +17,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>0.8.2-SNAPSHOT</version>
+    <version>0.8.4-SNAPSHOT</version>
     <relativePath>../../azure/pom.xml</relativePath>
   </parent>
 
@@ -59,6 +59,10 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-core</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
     </dependency>
   </dependencies>
   <build>

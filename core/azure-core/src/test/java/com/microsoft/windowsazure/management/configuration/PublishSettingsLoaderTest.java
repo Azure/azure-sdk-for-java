@@ -14,12 +14,13 @@
  */
 package com.microsoft.windowsazure.management.configuration;
 
-import static org.junit.Assert.*;
+import com.microsoft.windowsazure.Configuration;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import org.junit.Test;
-import com.microsoft.windowsazure.Configuration;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * The certificate used in the test publishsettings file is a dummy one

@@ -37,6 +37,8 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.CloudError;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
+import com.microsoft.windowsazure.management.compute.models.AdditionalUnattendContentSettings;
+import com.microsoft.windowsazure.management.compute.models.ComponentSetting;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
 import com.microsoft.windowsazure.management.compute.models.DataDiskConfiguration;
 import com.microsoft.windowsazure.management.compute.models.DataVirtualHardDisk;
@@ -59,6 +61,8 @@ import com.microsoft.windowsazure.management.compute.models.SshSettingKeyPair;
 import com.microsoft.windowsazure.management.compute.models.SshSettingPublicKey;
 import com.microsoft.windowsazure.management.compute.models.SshSettings;
 import com.microsoft.windowsazure.management.compute.models.StoredCertificateSettings;
+import com.microsoft.windowsazure.management.compute.models.UnattendComponent;
+import com.microsoft.windowsazure.management.compute.models.UnattendPassSettings;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureOSImageParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureVMImageParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateDeploymentParameters;
@@ -76,6 +80,25 @@ import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagem
 import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementSettings;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -88,24 +111,6 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Management API includes operations for managing the virtual
@@ -223,6 +228,29 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             throw new NullPointerException("parameters.PostCaptureAction");
         }
         if (parameters.getProvisioningConfiguration() != null) {
+            if (parameters.getProvisioningConfiguration().getAdditionalUnattendContent() != null) {
+                if (parameters.getProvisioningConfiguration().getAdditionalUnattendContent().getUnattendPasses() != null) {
+                    for (UnattendPassSettings unattendPassesParameterItem : parameters.getProvisioningConfiguration().getAdditionalUnattendContent().getUnattendPasses()) {
+                        if (unattendPassesParameterItem.getPassName() == null) {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.AdditionalUnattendContent.UnattendPasses.PassName");
+                        }
+                        if (unattendPassesParameterItem.getUnattendComponents() != null) {
+                            for (UnattendComponent unattendComponentsParameterItem : unattendPassesParameterItem.getUnattendComponents()) {
+                                if (unattendComponentsParameterItem.getComponentName() == null) {
+                                    throw new NullPointerException("parameters.ProvisioningConfiguration.AdditionalUnattendContent.UnattendPasses.UnattendComponents.ComponentName");
+                                }
+                                if (unattendComponentsParameterItem.getUnattendComponentSettings() != null) {
+                                    for (ComponentSetting unattendComponentSettingsParameterItem : unattendComponentsParameterItem.getUnattendComponentSettings()) {
+                                        if (unattendComponentSettingsParameterItem.getSettingName() == null) {
+                                            throw new NullPointerException("parameters.ProvisioningConfiguration.AdditionalUnattendContent.UnattendPasses.UnattendComponents.UnattendComponentSettings.SettingName");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (parameters.getProvisioningConfiguration().getDomainJoin() != null) {
                 if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null) {
                     if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null) {
@@ -764,6 +792,62 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(adminUsernameElement);
             }
             
+            if (parameters.getProvisioningConfiguration().getAdditionalUnattendContent() != null) {
+                Element additionalUnattendContentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                provisioningConfigurationElement.appendChild(additionalUnattendContentElement);
+                
+                if (parameters.getProvisioningConfiguration().getAdditionalUnattendContent().getUnattendPasses() != null) {
+                    if (parameters.getProvisioningConfiguration().getAdditionalUnattendContent().getUnattendPasses() instanceof LazyCollection == false || ((LazyCollection) parameters.getProvisioningConfiguration().getAdditionalUnattendContent().getUnattendPasses()).isInitialized()) {
+                        Element passesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Passes");
+                        for (UnattendPassSettings passesItem : parameters.getProvisioningConfiguration().getAdditionalUnattendContent().getUnattendPasses()) {
+                            Element unattendPassElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendPass");
+                            passesSequenceElement.appendChild(unattendPassElement);
+                            
+                            Element passNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PassName");
+                            passNameElement.appendChild(requestDoc.createTextNode(passesItem.getPassName()));
+                            unattendPassElement.appendChild(passNameElement);
+                            
+                            if (passesItem.getUnattendComponents() != null) {
+                                if (passesItem.getUnattendComponents() instanceof LazyCollection == false || ((LazyCollection) passesItem.getUnattendComponents()).isInitialized()) {
+                                    Element componentsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Components");
+                                    for (UnattendComponent componentsItem : passesItem.getUnattendComponents()) {
+                                        Element unattendComponentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendComponent");
+                                        componentsSequenceElement.appendChild(unattendComponentElement);
+                                        
+                                        Element componentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                        componentNameElement.appendChild(requestDoc.createTextNode(componentsItem.getComponentName()));
+                                        unattendComponentElement.appendChild(componentNameElement);
+                                        
+                                        if (componentsItem.getUnattendComponentSettings() != null) {
+                                            if (componentsItem.getUnattendComponentSettings() instanceof LazyCollection == false || ((LazyCollection) componentsItem.getUnattendComponentSettings()).isInitialized()) {
+                                                Element componentSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                for (ComponentSetting componentSettingsItem : componentsItem.getUnattendComponentSettings()) {
+                                                    Element componentSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSetting");
+                                                    componentSettingsSequenceElement.appendChild(componentSettingElement);
+                                                    
+                                                    Element settingNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                    settingNameElement.appendChild(requestDoc.createTextNode(componentSettingsItem.getSettingName()));
+                                                    componentSettingElement.appendChild(settingNameElement);
+                                                    
+                                                    if (componentSettingsItem.getContent() != null) {
+                                                        Element contentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Content");
+                                                        contentElement.appendChild(requestDoc.createTextNode(Base64.encode(componentSettingsItem.getContent().getBytes())));
+                                                        componentSettingElement.appendChild(contentElement);
+                                                    }
+                                                }
+                                                unattendComponentElement.appendChild(componentSettingsSequenceElement);
+                                            }
+                                        }
+                                    }
+                                    unattendPassElement.appendChild(componentsSequenceElement);
+                                }
+                            }
+                        }
+                        additionalUnattendContentElement.appendChild(passesSequenceElement);
+                    }
+                }
+            }
+            
             if (parameters.getProvisioningConfiguration().getHostName() != null) {
                 Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
                 hostNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getHostName()));
@@ -1159,6 +1243,29 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
+                if (configurationSetsParameterItem.getAdditionalUnattendContent() != null) {
+                    if (configurationSetsParameterItem.getAdditionalUnattendContent().getUnattendPasses() != null) {
+                        for (UnattendPassSettings unattendPassesParameterItem : configurationSetsParameterItem.getAdditionalUnattendContent().getUnattendPasses()) {
+                            if (unattendPassesParameterItem.getPassName() == null) {
+                                throw new NullPointerException("parameters.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.PassName");
+                            }
+                            if (unattendPassesParameterItem.getUnattendComponents() != null) {
+                                for (UnattendComponent unattendComponentsParameterItem : unattendPassesParameterItem.getUnattendComponents()) {
+                                    if (unattendComponentsParameterItem.getComponentName() == null) {
+                                        throw new NullPointerException("parameters.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.UnattendComponents.ComponentName");
+                                    }
+                                    if (unattendComponentsParameterItem.getUnattendComponentSettings() != null) {
+                                        for (ComponentSetting unattendComponentSettingsParameterItem : unattendComponentsParameterItem.getUnattendComponentSettings()) {
+                                            if (unattendComponentSettingsParameterItem.getSettingName() == null) {
+                                                throw new NullPointerException("parameters.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.UnattendComponents.UnattendComponentSettings.SettingName");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -1698,6 +1805,62 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(adminUsernameElement);
                     }
                     
+                    if (configurationSetsItem.getAdditionalUnattendContent() != null) {
+                        Element additionalUnattendContentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                        configurationSetElement.appendChild(additionalUnattendContentElement);
+                        
+                        if (configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses() != null) {
+                            if (configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses()).isInitialized()) {
+                                Element passesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Passes");
+                                for (UnattendPassSettings passesItem : configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses()) {
+                                    Element unattendPassElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendPass");
+                                    passesSequenceElement.appendChild(unattendPassElement);
+                                    
+                                    Element passNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PassName");
+                                    passNameElement.appendChild(requestDoc.createTextNode(passesItem.getPassName()));
+                                    unattendPassElement.appendChild(passNameElement);
+                                    
+                                    if (passesItem.getUnattendComponents() != null) {
+                                        if (passesItem.getUnattendComponents() instanceof LazyCollection == false || ((LazyCollection) passesItem.getUnattendComponents()).isInitialized()) {
+                                            Element componentsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Components");
+                                            for (UnattendComponent componentsItem : passesItem.getUnattendComponents()) {
+                                                Element unattendComponentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendComponent");
+                                                componentsSequenceElement.appendChild(unattendComponentElement);
+                                                
+                                                Element componentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                                componentNameElement.appendChild(requestDoc.createTextNode(componentsItem.getComponentName()));
+                                                unattendComponentElement.appendChild(componentNameElement);
+                                                
+                                                if (componentsItem.getUnattendComponentSettings() != null) {
+                                                    if (componentsItem.getUnattendComponentSettings() instanceof LazyCollection == false || ((LazyCollection) componentsItem.getUnattendComponentSettings()).isInitialized()) {
+                                                        Element componentSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                        for (ComponentSetting componentSettingsItem : componentsItem.getUnattendComponentSettings()) {
+                                                            Element componentSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSetting");
+                                                            componentSettingsSequenceElement.appendChild(componentSettingElement);
+                                                            
+                                                            Element settingNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                            settingNameElement.appendChild(requestDoc.createTextNode(componentSettingsItem.getSettingName()));
+                                                            componentSettingElement.appendChild(settingNameElement);
+                                                            
+                                                            if (componentSettingsItem.getContent() != null) {
+                                                                Element contentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Content");
+                                                                contentElement.appendChild(requestDoc.createTextNode(Base64.encode(componentSettingsItem.getContent().getBytes())));
+                                                                componentSettingElement.appendChild(contentElement);
+                                                            }
+                                                        }
+                                                        unattendComponentElement.appendChild(componentSettingsSequenceElement);
+                                                    }
+                                                }
+                                            }
+                                            unattendPassElement.appendChild(componentsSequenceElement);
+                                        }
+                                    }
+                                }
+                                additionalUnattendContentElement.appendChild(passesSequenceElement);
+                            }
+                        }
+                    }
+                    
                     if (configurationSetsItem.getHostName() != null) {
                         Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
                         hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
@@ -2136,6 +2299,29 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             for (Role rolesParameterItem : parameters.getRoles()) {
                 if (rolesParameterItem.getConfigurationSets() != null) {
                     for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets()) {
+                        if (configurationSetsParameterItem.getAdditionalUnattendContent() != null) {
+                            if (configurationSetsParameterItem.getAdditionalUnattendContent().getUnattendPasses() != null) {
+                                for (UnattendPassSettings unattendPassesParameterItem : configurationSetsParameterItem.getAdditionalUnattendContent().getUnattendPasses()) {
+                                    if (unattendPassesParameterItem.getPassName() == null) {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.PassName");
+                                    }
+                                    if (unattendPassesParameterItem.getUnattendComponents() != null) {
+                                        for (UnattendComponent unattendComponentsParameterItem : unattendPassesParameterItem.getUnattendComponents()) {
+                                            if (unattendComponentsParameterItem.getComponentName() == null) {
+                                                throw new NullPointerException("parameters.Roles.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.UnattendComponents.ComponentName");
+                                            }
+                                            if (unattendComponentsParameterItem.getUnattendComponentSettings() != null) {
+                                                for (ComponentSetting unattendComponentSettingsParameterItem : unattendComponentsParameterItem.getUnattendComponentSettings()) {
+                                                    if (unattendComponentSettingsParameterItem.getSettingName() == null) {
+                                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.UnattendComponents.UnattendComponentSettings.SettingName");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         if (configurationSetsParameterItem.getDomainJoin() != null) {
                             if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                                 if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -2697,6 +2883,62 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                                 adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
                                 configurationSetElement.appendChild(adminUsernameElement);
+                            }
+                            
+                            if (configurationSetsItem.getAdditionalUnattendContent() != null) {
+                                Element additionalUnattendContentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                                configurationSetElement.appendChild(additionalUnattendContentElement);
+                                
+                                if (configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses() != null) {
+                                    if (configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses()).isInitialized()) {
+                                        Element passesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Passes");
+                                        for (UnattendPassSettings passesItem : configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses()) {
+                                            Element unattendPassElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendPass");
+                                            passesSequenceElement.appendChild(unattendPassElement);
+                                            
+                                            Element passNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PassName");
+                                            passNameElement.appendChild(requestDoc.createTextNode(passesItem.getPassName()));
+                                            unattendPassElement.appendChild(passNameElement);
+                                            
+                                            if (passesItem.getUnattendComponents() != null) {
+                                                if (passesItem.getUnattendComponents() instanceof LazyCollection == false || ((LazyCollection) passesItem.getUnattendComponents()).isInitialized()) {
+                                                    Element componentsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Components");
+                                                    for (UnattendComponent componentsItem : passesItem.getUnattendComponents()) {
+                                                        Element unattendComponentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendComponent");
+                                                        componentsSequenceElement.appendChild(unattendComponentElement);
+                                                        
+                                                        Element componentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                                        componentNameElement.appendChild(requestDoc.createTextNode(componentsItem.getComponentName()));
+                                                        unattendComponentElement.appendChild(componentNameElement);
+                                                        
+                                                        if (componentsItem.getUnattendComponentSettings() != null) {
+                                                            if (componentsItem.getUnattendComponentSettings() instanceof LazyCollection == false || ((LazyCollection) componentsItem.getUnattendComponentSettings()).isInitialized()) {
+                                                                Element componentSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                                for (ComponentSetting componentSettingsItem : componentsItem.getUnattendComponentSettings()) {
+                                                                    Element componentSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSetting");
+                                                                    componentSettingsSequenceElement.appendChild(componentSettingElement);
+                                                                    
+                                                                    Element settingNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                                    settingNameElement.appendChild(requestDoc.createTextNode(componentSettingsItem.getSettingName()));
+                                                                    componentSettingElement.appendChild(settingNameElement);
+                                                                    
+                                                                    if (componentSettingsItem.getContent() != null) {
+                                                                        Element contentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Content");
+                                                                        contentElement.appendChild(requestDoc.createTextNode(Base64.encode(componentSettingsItem.getContent().getBytes())));
+                                                                        componentSettingElement.appendChild(contentElement);
+                                                                    }
+                                                                }
+                                                                unattendComponentElement.appendChild(componentSettingsSequenceElement);
+                                                            }
+                                                        }
+                                                    }
+                                                    unattendPassElement.appendChild(componentsSequenceElement);
+                                                }
+                                            }
+                                        }
+                                        additionalUnattendContentElement.appendChild(passesSequenceElement);
+                                    }
+                                }
                             }
                             
                             if (configurationSetsItem.getHostName() != null) {
@@ -4203,6 +4445,29 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
+                if (configurationSetsParameterItem.getAdditionalUnattendContent() != null) {
+                    if (configurationSetsParameterItem.getAdditionalUnattendContent().getUnattendPasses() != null) {
+                        for (UnattendPassSettings unattendPassesParameterItem : configurationSetsParameterItem.getAdditionalUnattendContent().getUnattendPasses()) {
+                            if (unattendPassesParameterItem.getPassName() == null) {
+                                throw new NullPointerException("parameters.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.PassName");
+                            }
+                            if (unattendPassesParameterItem.getUnattendComponents() != null) {
+                                for (UnattendComponent unattendComponentsParameterItem : unattendPassesParameterItem.getUnattendComponents()) {
+                                    if (unattendComponentsParameterItem.getComponentName() == null) {
+                                        throw new NullPointerException("parameters.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.UnattendComponents.ComponentName");
+                                    }
+                                    if (unattendComponentsParameterItem.getUnattendComponentSettings() != null) {
+                                        for (ComponentSetting unattendComponentSettingsParameterItem : unattendComponentsParameterItem.getUnattendComponentSettings()) {
+                                            if (unattendComponentSettingsParameterItem.getSettingName() == null) {
+                                                throw new NullPointerException("parameters.ConfigurationSets.AdditionalUnattendContent.UnattendPasses.UnattendComponents.UnattendComponentSettings.SettingName");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -4745,6 +5010,62 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                         adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
                         configurationSetElement.appendChild(adminUsernameElement);
+                    }
+                    
+                    if (configurationSetsItem.getAdditionalUnattendContent() != null) {
+                        Element additionalUnattendContentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                        configurationSetElement.appendChild(additionalUnattendContentElement);
+                        
+                        if (configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses() != null) {
+                            if (configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses() instanceof LazyCollection == false || ((LazyCollection) configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses()).isInitialized()) {
+                                Element passesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Passes");
+                                for (UnattendPassSettings passesItem : configurationSetsItem.getAdditionalUnattendContent().getUnattendPasses()) {
+                                    Element unattendPassElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendPass");
+                                    passesSequenceElement.appendChild(unattendPassElement);
+                                    
+                                    Element passNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PassName");
+                                    passNameElement.appendChild(requestDoc.createTextNode(passesItem.getPassName()));
+                                    unattendPassElement.appendChild(passNameElement);
+                                    
+                                    if (passesItem.getUnattendComponents() != null) {
+                                        if (passesItem.getUnattendComponents() instanceof LazyCollection == false || ((LazyCollection) passesItem.getUnattendComponents()).isInitialized()) {
+                                            Element componentsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Components");
+                                            for (UnattendComponent componentsItem : passesItem.getUnattendComponents()) {
+                                                Element unattendComponentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UnattendComponent");
+                                                componentsSequenceElement.appendChild(unattendComponentElement);
+                                                
+                                                Element componentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                                componentNameElement.appendChild(requestDoc.createTextNode(componentsItem.getComponentName()));
+                                                unattendComponentElement.appendChild(componentNameElement);
+                                                
+                                                if (componentsItem.getUnattendComponentSettings() != null) {
+                                                    if (componentsItem.getUnattendComponentSettings() instanceof LazyCollection == false || ((LazyCollection) componentsItem.getUnattendComponentSettings()).isInitialized()) {
+                                                        Element componentSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                        for (ComponentSetting componentSettingsItem : componentsItem.getUnattendComponentSettings()) {
+                                                            Element componentSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComponentSetting");
+                                                            componentSettingsSequenceElement.appendChild(componentSettingElement);
+                                                            
+                                                            Element settingNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                            settingNameElement.appendChild(requestDoc.createTextNode(componentSettingsItem.getSettingName()));
+                                                            componentSettingElement.appendChild(settingNameElement);
+                                                            
+                                                            if (componentSettingsItem.getContent() != null) {
+                                                                Element contentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Content");
+                                                                contentElement.appendChild(requestDoc.createTextNode(Base64.encode(componentSettingsItem.getContent().getBytes())));
+                                                                componentSettingElement.appendChild(contentElement);
+                                                            }
+                                                        }
+                                                        unattendComponentElement.appendChild(componentSettingsSequenceElement);
+                                                    }
+                                                }
+                                            }
+                                            unattendPassElement.appendChild(componentsSequenceElement);
+                                        }
+                                    }
+                                }
+                                additionalUnattendContentElement.appendChild(passesSequenceElement);
+                            }
+                        }
                     }
                     
                     if (configurationSetsItem.getHostName() != null) {
@@ -5511,7 +5832,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5524,7 +5845,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5634,7 +5955,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5647,7 +5968,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5785,7 +6106,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5798,7 +6119,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -5916,7 +6237,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -5929,7 +6250,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -6045,7 +6366,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -6058,7 +6379,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -6230,7 +6551,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     Element roleTypeElement = XmlUtility.getElementByTagNameNS(persistentVMRoleElement, "http://schemas.microsoft.com/windowsazure", "RoleType");
                     if (roleTypeElement != null && roleTypeElement.getTextContent() != null && !roleTypeElement.getTextContent().isEmpty()) {
                         VirtualMachineRoleType roleTypeInstance;
-                        roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent().toUpperCase());
+                        roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
                         result.setRoleType(roleTypeInstance);
                     }
                     
@@ -6688,7 +7009,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         Element protocolElement3 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                         if (protocolElement3 != null && protocolElement3.getTextContent() != null && !protocolElement3.getTextContent().isEmpty()) {
                                             VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
-                                            protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent().toUpperCase());
+                                            protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
                                             listenerInstance.setListenerType(protocolInstance3);
                                         }
                                         
@@ -6707,6 +7028,67 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 String adminUsernameInstance;
                                 adminUsernameInstance = adminUsernameElement.getTextContent();
                                 configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                            }
+                            
+                            Element additionalUnattendContentElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdditionalUnattendContent");
+                            if (additionalUnattendContentElement != null) {
+                                AdditionalUnattendContentSettings additionalUnattendContentInstance = new AdditionalUnattendContentSettings();
+                                configurationSetInstance.setAdditionalUnattendContent(additionalUnattendContentInstance);
+                                
+                                Element passesSequenceElement = XmlUtility.getElementByTagNameNS(additionalUnattendContentElement, "http://schemas.microsoft.com/windowsazure", "Passes");
+                                if (passesSequenceElement != null) {
+                                    for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(passesSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendPass").size(); i10 = i10 + 1) {
+                                        org.w3c.dom.Element passesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(passesSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendPass").get(i10));
+                                        UnattendPassSettings unattendPassInstance = new UnattendPassSettings();
+                                        additionalUnattendContentInstance.getUnattendPasses().add(unattendPassInstance);
+                                        
+                                        Element passNameElement = XmlUtility.getElementByTagNameNS(passesElement, "http://schemas.microsoft.com/windowsazure", "PassName");
+                                        if (passNameElement != null) {
+                                            String passNameInstance;
+                                            passNameInstance = passNameElement.getTextContent();
+                                            unattendPassInstance.setPassName(passNameInstance);
+                                        }
+                                        
+                                        Element componentsSequenceElement = XmlUtility.getElementByTagNameNS(passesElement, "http://schemas.microsoft.com/windowsazure", "Components");
+                                        if (componentsSequenceElement != null) {
+                                            for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentsSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendComponent").size(); i11 = i11 + 1) {
+                                                org.w3c.dom.Element componentsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentsSequenceElement, "http://schemas.microsoft.com/windowsazure", "UnattendComponent").get(i11));
+                                                UnattendComponent unattendComponentInstance = new UnattendComponent();
+                                                unattendPassInstance.getUnattendComponents().add(unattendComponentInstance);
+                                                
+                                                Element componentNameElement = XmlUtility.getElementByTagNameNS(componentsElement, "http://schemas.microsoft.com/windowsazure", "ComponentName");
+                                                if (componentNameElement != null) {
+                                                    String componentNameInstance;
+                                                    componentNameInstance = componentNameElement.getTextContent();
+                                                    unattendComponentInstance.setComponentName(componentNameInstance);
+                                                }
+                                                
+                                                Element componentSettingsSequenceElement = XmlUtility.getElementByTagNameNS(componentsElement, "http://schemas.microsoft.com/windowsazure", "ComponentSettings");
+                                                if (componentSettingsSequenceElement != null) {
+                                                    for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ComponentSetting").size(); i12 = i12 + 1) {
+                                                        org.w3c.dom.Element componentSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(componentSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ComponentSetting").get(i12));
+                                                        ComponentSetting componentSettingInstance = new ComponentSetting();
+                                                        unattendComponentInstance.getUnattendComponentSettings().add(componentSettingInstance);
+                                                        
+                                                        Element settingNameElement = XmlUtility.getElementByTagNameNS(componentSettingsElement, "http://schemas.microsoft.com/windowsazure", "SettingName");
+                                                        if (settingNameElement != null) {
+                                                            String settingNameInstance;
+                                                            settingNameInstance = settingNameElement.getTextContent();
+                                                            componentSettingInstance.setSettingName(settingNameInstance);
+                                                        }
+                                                        
+                                                        Element contentElement = XmlUtility.getElementByTagNameNS(componentSettingsElement, "http://schemas.microsoft.com/windowsazure", "Content");
+                                                        if (contentElement != null) {
+                                                            String contentInstance;
+                                                            contentInstance = contentElement.getTextContent() != null ? new String(Base64.decode(contentElement.getTextContent())) : null;
+                                                            componentSettingInstance.setContent(contentInstance);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             
                             Element hostNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "HostName");
@@ -6744,8 +7126,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                 if (publicKeysSequenceElement != null) {
-                                    for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
-                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
+                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i13));
                                         SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                         sSHInstance.getPublicKeys().add(publicKeyInstance);
                                         
@@ -6767,8 +7149,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                 if (keyPairsSequenceElement != null) {
-                                    for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
-                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
+                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i14 = i14 + 1) {
+                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i14));
                                         SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                         sSHInstance.getKeyPairs().add(keyPairInstance);
                                         
@@ -6800,8 +7182,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(persistentVMRoleElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                     if (dataVirtualHardDisksSequenceElement != null) {
-                        for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i12 = i12 + 1) {
-                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i12));
+                        for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i15 = i15 + 1) {
+                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i15));
                             DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                             result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                             
@@ -7172,7 +7554,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7185,7 +7567,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7299,7 +7681,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7312,7 +7694,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7417,7 +7799,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7430,7 +7812,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7539,7 +7921,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7552,7 +7934,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7657,7 +8039,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7670,7 +8052,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7793,7 +8175,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7806,7 +8188,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -7917,7 +8299,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -7930,7 +8312,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

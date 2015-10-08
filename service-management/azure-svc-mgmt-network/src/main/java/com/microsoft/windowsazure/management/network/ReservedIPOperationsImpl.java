@@ -38,15 +38,15 @@ import com.microsoft.windowsazure.management.network.models.NetworkReservedIPLis
 import com.microsoft.windowsazure.management.network.models.NetworkReservedIPMobilityParameters;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.InetAddress;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,14 +56,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.InetAddress;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
 * The Network Management API includes operations for managing the reserved IPs
@@ -162,7 +163,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             OperationStatusResponse response = client2.getReservedIPsOperations().beginAssociatingAsync(reservedIpName, parameters).get();
-            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+            if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -170,7 +171,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -183,7 +184,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -945,7 +946,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             OperationStatusResponse response = client2.getReservedIPsOperations().beginCreatingAsync(parameters).get();
-            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+            if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -953,7 +954,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -966,7 +967,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1072,7 +1073,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1085,7 +1086,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());
@@ -1186,7 +1187,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             }
             
             OperationStatusResponse response = client2.getReservedIPsOperations().beginDisassociatingAsync(reservedIpName, parameters).get();
-            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+            if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
@@ -1194,7 +1195,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
@@ -1207,7 +1208,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.SUCCEEDED) {
+            if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setError(new CloudError());

@@ -14,20 +14,21 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.junit.*;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DacExportParameters;
 import com.microsoft.windowsazure.management.sql.models.DacImportParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccount;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 

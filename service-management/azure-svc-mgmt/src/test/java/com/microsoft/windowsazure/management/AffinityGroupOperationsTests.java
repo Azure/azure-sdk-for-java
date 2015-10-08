@@ -15,8 +15,12 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.util.ArrayList;
-
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
+import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
+import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
+import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -24,12 +28,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
+import java.util.ArrayList;
 
 public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase { 
     private static final String affinityGroupName1 = "testAffinityGroup1";

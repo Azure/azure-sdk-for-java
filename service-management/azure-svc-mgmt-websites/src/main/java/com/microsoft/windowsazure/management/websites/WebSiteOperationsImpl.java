@@ -90,6 +90,32 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteUsageState;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -106,30 +132,6 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for managing the web sites in a web space.  (see
@@ -549,7 +551,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element statusElement = XmlUtility.getElementByTagNameNS(backupItemElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         BackupItemStatus statusInstance;
-                        statusInstance = BackupItemStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = BackupItemStatus.valueOf(statusElement.getTextContent());
                         backupItemInstance.setStatus(statusInstance);
                     }
                     
@@ -975,7 +977,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                         WebSiteOperationStatus statusInstance;
-                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                        statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
                         result.setStatus(statusInstance);
                     }
                 }
@@ -1196,14 +1198,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element availabilityStateElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                     if (availabilityStateElement != null && availabilityStateElement.getTextContent() != null && !availabilityStateElement.getTextContent().isEmpty()) {
                         WebSpaceAvailabilityState availabilityStateInstance;
-                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent().toUpperCase());
+                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                         webSiteInstance.setAvailabilityState(availabilityStateInstance);
                     }
                     
                     Element sKUElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
+                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
                         webSiteInstance.setSku(sKUInstance);
                     }
                     
@@ -1239,7 +1241,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Element sslStateElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                             if (sslStateElement != null && sslStateElement.getTextContent() != null && !sslStateElement.getTextContent().isEmpty()) {
                                 WebSiteSslState sslStateInstance;
-                                sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent().toUpperCase());
+                                sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
                                 hostNameSslStateInstance.setSslState(sslStateInstance);
                             }
                             
@@ -1305,7 +1307,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element runtimeAvailabilityStateElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                     if (runtimeAvailabilityStateElement != null && runtimeAvailabilityStateElement.getTextContent() != null && !runtimeAvailabilityStateElement.getTextContent().isEmpty()) {
                         WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                        runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent().toUpperCase());
+                        runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
                         webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                     }
                     
@@ -1369,7 +1371,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element usageStateElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "UsageState");
                     if (usageStateElement != null && usageStateElement.getTextContent() != null && !usageStateElement.getTextContent().isEmpty()) {
                         WebSiteUsageState usageStateInstance;
-                        usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent().toUpperCase());
+                        usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
                         webSiteInstance.setUsageState(usageStateInstance);
                     }
                     
@@ -2774,14 +2776,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element availabilityStateElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                     if (availabilityStateElement != null && availabilityStateElement.getTextContent() != null && !availabilityStateElement.getTextContent().isEmpty()) {
                         WebSpaceAvailabilityState availabilityStateInstance;
-                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent().toUpperCase());
+                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                         webSiteInstance.setAvailabilityState(availabilityStateInstance);
                     }
                     
                     Element sKUElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
+                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
                         webSiteInstance.setSku(sKUInstance);
                     }
                     
@@ -2817,7 +2819,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Element sslStateElement = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                             if (sslStateElement != null && sslStateElement.getTextContent() != null && !sslStateElement.getTextContent().isEmpty()) {
                                 WebSiteSslState sslStateInstance;
-                                sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent().toUpperCase());
+                                sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
                                 hostNameSslStateInstance.setSslState(sslStateInstance);
                             }
                             
@@ -2883,7 +2885,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element runtimeAvailabilityStateElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                     if (runtimeAvailabilityStateElement != null && runtimeAvailabilityStateElement.getTextContent() != null && !runtimeAvailabilityStateElement.getTextContent().isEmpty()) {
                         WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                        runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent().toUpperCase());
+                        runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
                         webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                     }
                     
@@ -2947,7 +2949,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element usageStateElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "UsageState");
                     if (usageStateElement != null && usageStateElement.getTextContent() != null && !usageStateElement.getTextContent().isEmpty()) {
                         WebSiteUsageState usageStateInstance;
-                        usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent().toUpperCase());
+                        usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
                         webSiteInstance.setUsageState(usageStateInstance);
                     }
                     
@@ -3118,7 +3120,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         Element frequencyUnitElement = XmlUtility.getElementByTagNameNS(backupScheduleElement, "http://schemas.microsoft.com/windowsazure", "FrequencyUnit");
                         if (frequencyUnitElement != null && frequencyUnitElement.getTextContent() != null && !frequencyUnitElement.getTextContent().isEmpty()) {
                             FrequencyUnit frequencyUnitInstance;
-                            frequencyUnitInstance = FrequencyUnit.valueOf(frequencyUnitElement.getTextContent().toUpperCase());
+                            frequencyUnitInstance = FrequencyUnit.valueOf(frequencyUnitElement.getTextContent());
                             backupScheduleInstance.setFrequencyUnit(frequencyUnitInstance);
                         }
                         
@@ -3324,8 +3326,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetConfigurationResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3492,7 +3495,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     JsonNode remoteDebuggingVersionValue = responseDoc.get("RemoteDebuggingVersion");
                     if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                         RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                        remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
+                        remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue());
                         result.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                     }
                     
@@ -4834,8 +4837,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new SlotConfigNames();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -5005,7 +5009,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Element computeModeElement = XmlUtility.getElementByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "ComputeMode");
                             if (computeModeElement != null && computeModeElement.getTextContent() != null && !computeModeElement.getTextContent().isEmpty()) {
                                 WebSiteComputeMode computeModeInstance;
-                                computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent().toUpperCase());
+                                computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent());
                                 usageInstance.setComputeMode(computeModeInstance);
                             }
                             
@@ -5054,7 +5058,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Element siteModeElement = XmlUtility.getElementByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "SiteMode");
                             if (siteModeElement != null && siteModeElement.getTextContent() != null && !siteModeElement.getTextContent().isEmpty()) {
                                 WebSiteMode siteModeInstance;
-                                siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent().toUpperCase());
+                                siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent());
                                 usageInstance.setSiteMode(siteModeInstance);
                             }
                             
@@ -5358,7 +5362,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Element statusElement = XmlUtility.getElementByTagNameNS(backupItemsElement2, "http://schemas.microsoft.com/windowsazure", "Status");
                             if (statusElement != null && statusElement.getTextContent() != null && !statusElement.getTextContent().isEmpty()) {
                                 BackupItemStatus statusInstance;
-                                statusInstance = BackupItemStatus.valueOf(statusElement.getTextContent().toUpperCase());
+                                statusInstance = BackupItemStatus.valueOf(statusElement.getTextContent());
                                 backupItemInstance.setStatus(statusInstance);
                             }
                             
@@ -6196,7 +6200,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             WebSiteOperationStatusResponse response = client2.getWebSitesOperations().beginSwappingSlotsAsync(webSpaceName, webSiteName, sourceSlotName, targetSlotName).get();
-            if (response.getStatus() == WebSiteOperationStatus.SUCCEEDED) {
+            if (response.getStatus() == WebSiteOperationStatus.Succeeded) {
                 return response;
             }
             WebSiteOperationStatusResponse result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
@@ -6204,7 +6208,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != WebSiteOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(WebSiteOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
                 delayInSeconds = 30;
@@ -6217,7 +6221,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != WebSiteOperationStatus.SUCCEEDED) {
+            if (result.getStatus() != WebSiteOperationStatus.Succeeded) {
                 if (result.getErrors() != null && result.getErrors().size() > 0) {
                     ServiceException ex = new ServiceException(result.getErrors().get(0).getCode() + " : " + result.getErrors().get(0).getMessage());
                     ex.setError(new CloudError());
@@ -6610,14 +6614,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element availabilityStateElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                     if (availabilityStateElement != null && availabilityStateElement.getTextContent() != null && !availabilityStateElement.getTextContent().isEmpty()) {
                         WebSpaceAvailabilityState availabilityStateInstance;
-                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent().toUpperCase());
+                        availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                         webSiteInstance.setAvailabilityState(availabilityStateInstance);
                     }
                     
                     Element sKUElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SKU");
                     if (sKUElement != null && sKUElement.getTextContent() != null && !sKUElement.getTextContent().isEmpty()) {
                         SkuOptions sKUInstance;
-                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent().toUpperCase());
+                        sKUInstance = SkuOptions.valueOf(sKUElement.getTextContent());
                         webSiteInstance.setSku(sKUInstance);
                     }
                     
@@ -6653,7 +6657,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Element sslStateElement2 = XmlUtility.getElementByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                             if (sslStateElement2 != null && sslStateElement2.getTextContent() != null && !sslStateElement2.getTextContent().isEmpty()) {
                                 WebSiteSslState sslStateInstance;
-                                sslStateInstance = WebSiteSslState.valueOf(sslStateElement2.getTextContent().toUpperCase());
+                                sslStateInstance = WebSiteSslState.valueOf(sslStateElement2.getTextContent());
                                 hostNameSslStateInstance.setSslState(sslStateInstance);
                             }
                             
@@ -6719,7 +6723,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element runtimeAvailabilityStateElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                     if (runtimeAvailabilityStateElement != null && runtimeAvailabilityStateElement.getTextContent() != null && !runtimeAvailabilityStateElement.getTextContent().isEmpty()) {
                         WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                        runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent().toUpperCase());
+                        runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
                         webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                     }
                     
@@ -6783,7 +6787,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Element usageStateElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "UsageState");
                     if (usageStateElement != null && usageStateElement.getTextContent() != null && !usageStateElement.getTextContent().isEmpty()) {
                         WebSiteUsageState usageStateInstance;
-                        usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent().toUpperCase());
+                        usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
                         webSiteInstance.setUsageState(usageStateInstance);
                     }
                     

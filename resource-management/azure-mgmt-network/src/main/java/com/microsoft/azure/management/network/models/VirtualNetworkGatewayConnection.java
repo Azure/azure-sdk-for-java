@@ -83,6 +83,26 @@ public class VirtualNetworkGatewayConnection extends TopLevelResource {
         this.provisioningState = provisioningStateValue;
     }
     
+    private String resourceGuid;
+    
+    /**
+    * Optional. Gets or sets resource guid property of the
+    * VirtualNetworkGatewayConnection resource
+    * @return The ResourceGuid value.
+    */
+    public String getResourceGuid() {
+        return this.resourceGuid;
+    }
+    
+    /**
+    * Optional. Gets or sets resource guid property of the
+    * VirtualNetworkGatewayConnection resource
+    * @param resourceGuidValue The ResourceGuid value.
+    */
+    public void setResourceGuid(final String resourceGuidValue) {
+        this.resourceGuid = resourceGuidValue;
+    }
+    
     private int routingWeight;
     
     /**

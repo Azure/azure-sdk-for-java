@@ -14,13 +14,6 @@
  */
 package com.microsoft.windowsazure.management.scheduler;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.ServiceClient;
@@ -33,6 +26,12 @@ import com.microsoft.windowsazure.management.models.LocationAvailableServiceName
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.microsoft.windowsazure.scheduler.SchedulerClient;
 import com.microsoft.windowsazure.scheduler.SchedulerService;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.Callable;
 
 public abstract class SchedulerIntegrationTestBase extends MockIntegrationTestBase {
     protected static String testSchedulerPrefix = "aztstsch";

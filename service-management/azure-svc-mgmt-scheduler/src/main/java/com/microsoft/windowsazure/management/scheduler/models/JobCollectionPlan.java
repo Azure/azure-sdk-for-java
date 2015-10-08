@@ -24,9 +24,9 @@
 package com.microsoft.windowsazure.management.scheduler.models;
 
 public enum JobCollectionPlan {
-    STANDARD,
+    Standard,
     
-    FREE,
+    Free,
     
-    PREMIUM,
+    Premium,
 }

@@ -66,8 +66,8 @@ def main(argv):
             os.system(cmd)
         else:
             os.system(cmd + " -Dfile=%s-%s.jar -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
-            os.system(cmd + " -Dfile=%s-%s-javadoc.jar -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
-            os.system(cmd + " -Dfile=%s-%s-sources.jar -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
+            os.system(cmd + " -Dfile=%s-%s-javadoc.jar -Dclassifier=javadoc -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
+            os.system(cmd + " -Dfile=%s-%s-sources.jar -Dclassifier=sources -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
     print "Finished."
 
 

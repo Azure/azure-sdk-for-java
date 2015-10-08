@@ -14,7 +14,12 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseInterceptor;
+import org.apache.http.HttpStatus;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
@@ -29,14 +34,25 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.patch;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 public class MockIntegrationTestBase {
     protected final static Boolean  IS_MOCKED = System.getenv(ManagementConfiguration.AZURE_TEST_MODE) == null ||

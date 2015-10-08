@@ -15,9 +15,10 @@
 
 package com.microsoft.windowsazure.tracing;
 
-import java.util.HashMap;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+
+import java.util.HashMap;
 
 /**
  * The CloudTracingInterceptor provides useful information about cloud

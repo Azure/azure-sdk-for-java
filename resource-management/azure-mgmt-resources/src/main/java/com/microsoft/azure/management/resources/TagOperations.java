@@ -28,6 +28,7 @@ import com.microsoft.azure.management.resources.models.TagCreateValueResult;
 import com.microsoft.azure.management.resources.models.TagsListResult;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;

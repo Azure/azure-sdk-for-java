@@ -34,13 +34,14 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountListRe
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Management API includes operations for managing the storage

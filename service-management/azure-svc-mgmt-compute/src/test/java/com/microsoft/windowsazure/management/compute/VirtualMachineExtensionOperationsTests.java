@@ -15,17 +15,16 @@
 
 package com.microsoft.windowsazure.management.compute;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import com.microsoft.windowsazure.management.compute.models.*;
-
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineExtensionListResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertTrue;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementIntegrationTestBase {
     @BeforeClass

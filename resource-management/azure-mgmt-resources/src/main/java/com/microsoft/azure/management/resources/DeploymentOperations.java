@@ -24,21 +24,51 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.Deployment;
+import com.microsoft.azure.management.resources.models.DeploymentExistsResult;
 import com.microsoft.azure.management.resources.models.DeploymentGetResult;
 import com.microsoft.azure.management.resources.models.DeploymentListParameters;
 import com.microsoft.azure.management.resources.models.DeploymentListResult;
 import com.microsoft.azure.management.resources.models.DeploymentOperationsCreateResult;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResponse;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
 * Operations for managing deployments.
 */
 public interface DeploymentOperations {
+    /**
+    * Begin deleting deployment.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response for long running operations.
+    */
+    LongRunningOperationResponse beginDeleting(String resourceGroupName, String deploymentName) throws IOException, ServiceException;
+    
+    /**
+    * Begin deleting deployment.To determine whether the operation has finished
+    * processing the request, call GetLongRunningOperationStatus.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @return A standard service response for long running operations.
+    */
+    Future<LongRunningOperationResponse> beginDeletingAsync(String resourceGroupName, String deploymentName);
+    
     /**
     * Cancel a currently running template deployment.
     *
@@ -64,6 +94,30 @@ public interface DeploymentOperations {
     * request ID.
     */
     Future<OperationResponse> cancelAsync(String resourceGroupName, String deploymentName);
+    
+    /**
+    * Checks whether deployment exists.
+    *
+    * @param resourceGroupName Required. The name of the resource group to
+    * check. The name is case insensitive.
+    * @param deploymentName Required. The name of the deployment.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Deployment information.
+    */
+    DeploymentExistsResult checkExistence(String resourceGroupName, String deploymentName) throws IOException, ServiceException;
+    
+    /**
+    * Checks whether deployment exists.
+    *
+    * @param resourceGroupName Required. The name of the resource group to
+    * check. The name is case insensitive.
+    * @param deploymentName Required. The name of the deployment.
+    * @return Deployment information.
+    */
+    Future<DeploymentExistsResult> checkExistenceAsync(String resourceGroupName, String deploymentName);
     
     /**
     * Create a named template deployment using a template.
@@ -94,6 +148,39 @@ public interface DeploymentOperations {
     * @return Template deployment operation create result.
     */
     Future<DeploymentOperationsCreateResult> createOrUpdateAsync(String resourceGroupName, String deploymentName, Deployment parameters);
+    
+    /**
+    * Delete deployment and all of its resources.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse delete(String resourceGroupName, String deploymentName) throws InterruptedException, ExecutionException, IOException, ServiceException;
+    
+    /**
+    * Delete deployment and all of its resources.
+    *
+    * @param resourceGroupName Required. The name of the resource group. The
+    * name is case insensitive.
+    * @param deploymentName Required. The name of the deployment to be deleted.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> deleteAsync(String resourceGroupName, String deploymentName);
     
     /**
     * Get a deployment.

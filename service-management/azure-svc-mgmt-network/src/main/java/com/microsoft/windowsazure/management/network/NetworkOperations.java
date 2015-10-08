@@ -29,11 +29,12 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
 * The Network Management API includes operations for managing the virtual

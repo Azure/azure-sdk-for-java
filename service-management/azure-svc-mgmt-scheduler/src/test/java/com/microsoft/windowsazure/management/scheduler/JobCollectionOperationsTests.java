@@ -15,18 +15,18 @@
 
 package com.microsoft.windowsazure.management.scheduler;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.scheduler.models.*;
-
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceCreateParameters;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetResponse;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceListResponse;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatus;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatusResponse;
+import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCheckNameAvailabilityResponse;
+import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCreateParameters;
+import com.microsoft.windowsazure.management.scheduler.models.JobCollectionGetResponse;
+import com.microsoft.windowsazure.management.scheduler.models.JobCollectionUpdateParameters;
+import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatusResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -34,6 +34,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
     private static String jobCollectionName;
@@ -210,7 +217,7 @@ public class JobCollectionOperationsTests extends SchedulerIntegrationTestBase {
                 e.printStackTrace();
             }
 
-            if ((operationStatus.getStatus() == CloudServiceOperationStatus.FAILED) || (operationStatus.getStatus() == CloudServiceOperationStatus.SUCCEEDED))
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
             {
                 operationCompleted = true;
             }else{

@@ -30,6 +30,7 @@ import com.microsoft.azure.management.compute.models.AvailabilitySetListResponse
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;

@@ -28,15 +28,15 @@ package com.microsoft.windowsazure.management.scheduler.models;
 * Subset of acceptable frequencies is dependent on the plan.
 */
 public enum JobCollectionRecurrenceFrequency {
-    MINUTE,
+    Minute,
     
-    HOUR,
+    Hour,
     
-    DAY,
+    Day,
     
-    WEEK,
+    Week,
     
-    MONTH,
+    Month,
     
-    YEAR,
+    Year,
 }

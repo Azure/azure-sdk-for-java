@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
+import com.microsoft.azure.management.compute.models.ComputeOperationStatus;
 import com.microsoft.azure.management.compute.models.DeleteOperationResponse;
 import com.microsoft.azure.management.compute.models.InstanceViewStatus;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
@@ -38,6 +39,19 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -53,17 +67,6 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing the virtual machine extensions in compute management.
@@ -369,8 +372,9 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualMachineExtensionCreateOrUpdateResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -410,14 +414,14 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         JsonNode settingsValue = propertiesValue2.get("settings");
                         if (settingsValue != null && settingsValue instanceof NullNode == false) {
                             String settingsInstance;
-                            settingsInstance = settingsValue.toString();
+                            settingsInstance = settingsValue.getTextValue();
                             virtualMachineExtensionInstance.setSettings(settingsInstance);
                         }
                         
                         JsonNode protectedSettingsValue = propertiesValue2.get("protectedSettings");
                         if (protectedSettingsValue != null && protectedSettingsValue instanceof NullNode == false) {
                             String protectedSettingsInstance;
-                            protectedSettingsInstance = protectedSettingsValue.toString();
+                            protectedSettingsInstance = protectedSettingsValue.getTextValue();
                             virtualMachineExtensionInstance.setProtectedSettings(protectedSettingsInstance);
                         }
                         
@@ -730,13 +734,13 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.FAILED);
+                result.setStatus(OperationStatus.Failed);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             if (statusCode == HttpStatus.SC_NO_CONTENT) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -816,7 +820,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.compute.models.ComputeOperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(ComputeOperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -896,7 +900,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             }
             
             DeleteOperationResponse response = client2.getVirtualMachineExtensionsOperations().beginDeletingAsync(resourceGroupName, vmName, vmExtensionName).get();
-            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+            if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
             DeleteOperationResponse result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
@@ -904,7 +908,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getDeleteOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = 30;
@@ -1051,8 +1055,9 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 result = new VirtualMachineExtensionGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1092,14 +1097,14 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         JsonNode settingsValue = propertiesValue.get("settings");
                         if (settingsValue != null && settingsValue instanceof NullNode == false) {
                             String settingsInstance;
-                            settingsInstance = settingsValue.toString();
+                            settingsInstance = settingsValue.getTextValue();
                             virtualMachineExtensionInstance.setSettings(settingsInstance);
                         }
                         
                         JsonNode protectedSettingsValue = propertiesValue.get("protectedSettings");
                         if (protectedSettingsValue != null && protectedSettingsValue instanceof NullNode == false) {
                             String protectedSettingsInstance;
-                            protectedSettingsInstance = protectedSettingsValue.toString();
+                            protectedSettingsInstance = protectedSettingsValue.getTextValue();
                             virtualMachineExtensionInstance.setProtectedSettings(protectedSettingsInstance);
                         }
                         
@@ -1407,8 +1412,9 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                 result = new VirtualMachineExtensionGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {

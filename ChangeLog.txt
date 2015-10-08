@@ -1,3 +1,10 @@
+2015.9.22 Version 0.8.3
+* Fix unexpected exceptions thrown in some long running operations
+
+2015.9.22 Version 0.8.2
+* Revert a previous breaking change on enum casing
+* Fix string comparison on long running operation status
+
 2015.9.15 Version 0.8.1
 * Use commons library for Base64 encoding
 

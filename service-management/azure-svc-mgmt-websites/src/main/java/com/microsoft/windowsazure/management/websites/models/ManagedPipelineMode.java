@@ -30,10 +30,10 @@ public enum ManagedPipelineMode {
     /**
     * Integrated Managed Pipeline Mode.
     */
-    INTEGRATED,
+    Integrated,
     
     /**
     * Classic Managed Pipeline Mode.
     */
-    CLASSIC,
+    Classic,
 }

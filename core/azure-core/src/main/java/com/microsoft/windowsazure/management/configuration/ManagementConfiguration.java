@@ -14,17 +14,16 @@
  */
 package com.microsoft.windowsazure.management.configuration;
 
+import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;
-import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.credentials.TokenCloudCredentials;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 
 import java.io.IOException;
 import java.net.URI;
-
-import com.microsoft.windowsazure.credentials.TokenCloudCredentials;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 
 /**
  * Provides functionality to create a service management configuration.

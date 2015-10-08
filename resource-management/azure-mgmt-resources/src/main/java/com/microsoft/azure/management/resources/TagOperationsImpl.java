@@ -35,6 +35,16 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -44,14 +54,6 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
 
 /**
 * Operations for managing tags.
@@ -179,8 +181,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 result = new TagCreateResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -389,8 +392,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 result = new TagCreateValueResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -787,8 +791,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 result = new TagsListResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -876,11 +881,11 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -986,8 +991,9 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                 result = new TagsListResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1075,11 +1081,11 @@ public class TagOperationsImpl implements ServiceOperations<ResourceManagementCl
                         }
                     }
                     
-                    JsonNode odatanextLinkValue = responseDoc.get("@odata.nextLink");
-                    if (odatanextLinkValue != null && odatanextLinkValue instanceof NullNode == false) {
-                        String odatanextLinkInstance;
-                        odatanextLinkInstance = odatanextLinkValue.getTextValue();
-                        result.setNextLink(odatanextLinkInstance);
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 

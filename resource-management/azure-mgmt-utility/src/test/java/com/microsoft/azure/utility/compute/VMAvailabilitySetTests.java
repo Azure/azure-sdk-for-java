@@ -1,13 +1,23 @@
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.AvailabilitySet;
+import com.microsoft.azure.management.compute.models.AvailabilitySetCreateOrUpdateResponse;
+import com.microsoft.azure.management.compute.models.AvailabilitySetGetResponse;
+import com.microsoft.azure.management.compute.models.AvailabilitySetListResponse;
+import com.microsoft.azure.management.compute.models.InstanceViewStatus;
+import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResponse;
 import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

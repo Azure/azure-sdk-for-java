@@ -14,22 +14,24 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.junit.*;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperation;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationGetResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class DatabaseOperationOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 

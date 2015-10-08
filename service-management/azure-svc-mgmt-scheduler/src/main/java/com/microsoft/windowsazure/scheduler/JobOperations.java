@@ -40,6 +40,7 @@ import com.microsoft.windowsazure.scheduler.models.JobListResponse;
 import com.microsoft.windowsazure.scheduler.models.JobListWithFilterParameters;
 import com.microsoft.windowsazure.scheduler.models.JobUpdateStateParameters;
 import com.microsoft.windowsazure.scheduler.models.JobUpdateStateResponse;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

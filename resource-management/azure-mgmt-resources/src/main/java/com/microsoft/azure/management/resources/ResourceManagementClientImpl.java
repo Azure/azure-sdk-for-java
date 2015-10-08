@@ -30,6 +30,13 @@ import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,12 +44,6 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 public class ResourceManagementClientImpl extends ServiceClient<ResourceManagementClient> implements ResourceManagementClient {
     private String apiVersion;
@@ -145,6 +146,16 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
         return this.providers;
     }
     
+    private ProviderOperationsMetadataOperations providerOperationsMetadata;
+    
+    /**
+    * Operations for getting provider operations metadata.
+    * @return The ProviderOperationsMetadataOperations value.
+    */
+    public ProviderOperationsMetadataOperations getProviderOperationsMetadataOperations() {
+        return this.providerOperationsMetadata;
+    }
+    
     private ResourceGroupOperations resourceGroups;
     
     /**
@@ -196,6 +207,7 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
         this.deploymentOperations = new DeploymentOperationOperationsImpl(this);
         this.deployments = new DeploymentOperationsImpl(this);
         this.providers = new ProviderOperationsImpl(this);
+        this.providerOperationsMetadata = new ProviderOperationsMetadataOperationsImpl(this);
         this.resourceGroups = new ResourceGroupOperationsImpl(this);
         this.resources = new ResourceOperationsImpl(this);
         this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsOperationsImpl(this);
@@ -363,7 +375,7 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED && statusCode != HttpStatus.SC_NO_CONTENT) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
@@ -380,10 +392,13 @@ public class ResourceManagementClientImpl extends ServiceClient<ResourceManageme
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.FAILED);
+                result.setStatus(OperationStatus.Failed);
+            }
+            if (statusCode == HttpStatus.SC_NO_CONTENT) {
+                result.setStatus(OperationStatus.Succeeded);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {

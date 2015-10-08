@@ -14,17 +14,15 @@
  */
 package com.microsoft.windowsazure.configuration.builder;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
+import com.microsoft.windowsazure.core.DefaultBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.microsoft.windowsazure.core.DefaultBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefaultBuilderTest {
 

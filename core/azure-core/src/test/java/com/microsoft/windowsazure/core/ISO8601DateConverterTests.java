@@ -14,14 +14,14 @@
  */
 package com.microsoft.windowsazure.core;
 
-import com.microsoft.windowsazure.core.ISO8601DateConverter;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ISO8601DateConverterTests {
     @Test
