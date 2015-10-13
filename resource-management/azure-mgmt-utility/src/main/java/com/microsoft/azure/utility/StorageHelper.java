@@ -17,7 +17,6 @@ package com.microsoft.azure.utility;
 
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.KeyName;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountListResponse;
@@ -203,12 +202,12 @@ public class StorageHelper {
      *
      * @param storageManagementClient       the storage management client object on which operations are performed
      * @param context                       information necessary for creating the storage account
-     * @param keyName                       storage account specific parameters
+     * @param keyName                       string identifying which key to regenerate
      * @return StorageAccount               the storage account created, null if operation failed
      * @throws Exception                    in the advent of a problem, the exception is thrown
      */
     public static StorageAccountRegenerateKeyResponse regenerateStorageAccountKey(
-            StorageManagementClient storageManagementClient, ResourceContext context, KeyName keyName) throws Exception {
+            StorageManagementClient storageManagementClient, ResourceContext context, String keyName) throws Exception {
 
         String storageAccountName = context.getStorageAccountName();
         StorageAccountRegenerateKeyResponse response = null;

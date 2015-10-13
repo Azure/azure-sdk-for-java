@@ -24,7 +24,6 @@
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResponse;
-import com.microsoft.azure.management.storage.models.KeyName;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateResponse;
 import com.microsoft.azure.management.storage.models.StorageAccountGetPropertiesResponse;
@@ -35,7 +34,6 @@ import com.microsoft.azure.management.storage.models.StorageAccountUpdateParamet
 import com.microsoft.azure.management.storage.models.StorageAccountUpdateResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -53,7 +51,7 @@ public interface StorageAccountOperations {
     * properties, then HTTP 200 would be returned.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -77,7 +75,7 @@ public interface StorageAccountOperations {
     * properties, then HTTP 200 would be returned.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -117,10 +115,10 @@ public interface StorageAccountOperations {
     * instead use the Update Storage Account API. If an account is already
     * created and subsequent create request is issued with exact same set of
     * properties, the request succeeds.The max number of storage accounts that
-    * can be created per subscription is limited to 20.
+    * can be created per subscription is limited to 100.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -146,10 +144,10 @@ public interface StorageAccountOperations {
     * instead use the Update Storage Account API. If an account is already
     * created and subsequent create request is issued with exact same set of
     * properties, the request succeeds.The max number of storage accounts that
-    * can be created per subscription is limited to 20.
+    * can be created per subscription is limited to 100.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -163,7 +161,7 @@ public interface StorageAccountOperations {
     * Deletes a storage account in Microsoft Azure.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -180,7 +178,7 @@ public interface StorageAccountOperations {
     * Deletes a storage account in Microsoft Azure.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -195,7 +193,7 @@ public interface StorageAccountOperations {
     * ListKeys operation should be used to retrieve storage keys.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -215,7 +213,7 @@ public interface StorageAccountOperations {
     * ListKeys operation should be used to retrieve storage keys.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -251,7 +249,7 @@ public interface StorageAccountOperations {
     * this.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -268,7 +266,7 @@ public interface StorageAccountOperations {
     * this.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @return The list storage accounts operation response.
     */
     Future<StorageAccountListResponse> listByResourceGroupAsync(String resourceGroupName);
@@ -299,48 +297,51 @@ public interface StorageAccountOperations {
     * Regenerates the access keys for the specified storage account.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
     * @param regenerateKey Required. Specifies name of the key which should be
-    * regenerated.
+    * regenerated. key1 or key2 for the default keys
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
     * @return The RegenerateKey operation response.
     */
-    StorageAccountRegenerateKeyResponse regenerateKey(String resourceGroupName, String accountName, KeyName regenerateKey) throws IOException, ServiceException;
+    StorageAccountRegenerateKeyResponse regenerateKey(String resourceGroupName, String accountName, String regenerateKey) throws IOException, ServiceException;
     
     /**
     * Regenerates the access keys for the specified storage account.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
     * @param regenerateKey Required. Specifies name of the key which should be
-    * regenerated.
+    * regenerated. key1 or key2 for the default keys
     * @return The RegenerateKey operation response.
     */
-    Future<StorageAccountRegenerateKeyResponse> regenerateKeyAsync(String resourceGroupName, String accountName, KeyName regenerateKey);
+    Future<StorageAccountRegenerateKeyResponse> regenerateKeyAsync(String resourceGroupName, String accountName, String regenerateKey);
     
     /**
     * Updates the account type or tags for a storage account. It can also be
     * used to add a custom domain (note that custom domains cannot be added
     * via the Create operation). Only one custom domain is supported per
-    * storage account. This API can only be used to update one of tags,
-    * accountType, or customDomain per call. To update multiple of these
-    * properties, call the API multiple times with one change per call. This
-    * call does not change the storage keys for the account. If you want to
-    * change storage account keys, use the RegenerateKey operation. The
-    * location and name of the storage account cannot be changed after
-    * creation.
+    * storage account. In order to replace a custom domain, the old value must
+    * be cleared before a new value may be set. To clear a custom domain,
+    * simply update the custom domain with empty string. Then call update
+    * again with the new cutsom domain name. The update API can only be used
+    * to update one of tags, accountType, or customDomain per call. To update
+    * multiple of these properties, call the API multiple times with one
+    * change per call. This call does not change the storage keys for the
+    * account. If you want to change storage account keys, use the
+    * RegenerateKey operation. The location and name of the storage account
+    * cannot be changed after creation.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -360,16 +361,19 @@ public interface StorageAccountOperations {
     * Updates the account type or tags for a storage account. It can also be
     * used to add a custom domain (note that custom domains cannot be added
     * via the Create operation). Only one custom domain is supported per
-    * storage account. This API can only be used to update one of tags,
-    * accountType, or customDomain per call. To update multiple of these
-    * properties, call the API multiple times with one change per call. This
-    * call does not change the storage keys for the account. If you want to
-    * change storage account keys, use the RegenerateKey operation. The
-    * location and name of the storage account cannot be changed after
-    * creation.
+    * storage account. In order to replace a custom domain, the old value must
+    * be cleared before a new value may be set. To clear a custom domain,
+    * simply update the custom domain with empty string. Then call update
+    * again with the new cutsom domain name. The update API can only be used
+    * to update one of tags, accountType, or customDomain per call. To update
+    * multiple of these properties, call the API multiple times with one
+    * change per call. This call does not change the storage keys for the
+    * account. If you want to change storage account keys, use the
+    * RegenerateKey operation. The location and name of the storage account
+    * cannot be changed after creation.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.

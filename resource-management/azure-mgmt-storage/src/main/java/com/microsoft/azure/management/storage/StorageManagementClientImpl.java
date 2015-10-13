@@ -27,7 +27,6 @@ import com.microsoft.azure.management.storage.models.AccountStatus;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.management.storage.models.Endpoints;
-import com.microsoft.azure.management.storage.models.KeyName;
 import com.microsoft.azure.management.storage.models.ProvisioningState;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateResponse;
@@ -37,18 +36,6 @@ import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.NullNode;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -61,6 +48,17 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.NullNode;
 
 /**
 * The Storage Management Client.
@@ -146,6 +144,16 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
         return this.storageAccounts;
     }
     
+    private UsageOperations usage;
+    
+    /**
+    * Operations for listing usage.
+    * @return The UsageOperations value.
+    */
+    public UsageOperations getUsageOperations() {
+        return this.usage;
+    }
+    
     /**
     * Initializes a new instance of the StorageManagementClientImpl class.
     *
@@ -155,7 +163,8 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     public StorageManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.storageAccounts = new StorageAccountOperationsImpl(this);
-        this.apiVersion = "2015-05-01-preview";
+        this.usage = new UsageOperationsImpl(this);
+        this.apiVersion = "2015-06-15";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }
@@ -291,38 +300,6 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
         }
         if (value == AccountType.PremiumLRS) {
             return "Premium_LRS";
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Parse enum values for type KeyName.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static KeyName parseKeyName(String value) {
-        if ("key1".equalsIgnoreCase(value)) {
-            return KeyName.Key1;
-        }
-        if ("key2".equalsIgnoreCase(value)) {
-            return KeyName.Key2;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type KeyName to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String keyNameToString(KeyName value) {
-        if (value == KeyName.Key1) {
-            return "key1";
-        }
-        if (value == KeyName.Key2) {
-            return "key2";
         }
         throw new IllegalArgumentException("value");
     }
@@ -507,6 +484,13 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                                 tableInstance = new URI(tableValue.getTextValue());
                                 primaryEndpointsInstance.setTable(tableInstance);
                             }
+                            
+                            JsonNode fileValue = primaryEndpointsValue.get("file");
+                            if (fileValue != null && fileValue instanceof NullNode == false) {
+                                URI fileInstance;
+                                fileInstance = new URI(fileValue.getTextValue());
+                                primaryEndpointsInstance.setFile(fileInstance);
+                            }
                         }
                         
                         JsonNode primaryLocationValue = propertiesValue.get("primaryLocation");
@@ -596,14 +580,24 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                                 tableInstance2 = new URI(tableValue2.getTextValue());
                                 secondaryEndpointsInstance.setTable(tableInstance2);
                             }
+                            
+                            JsonNode fileValue2 = secondaryEndpointsValue.get("file");
+                            if (fileValue2 != null && fileValue2 instanceof NullNode == false) {
+                                URI fileInstance2;
+                                fileInstance2 = new URI(fileValue2.getTextValue());
+                                secondaryEndpointsInstance.setFile(fileInstance2);
+                            }
                         }
                     }
                 }
                 
             }
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("RetryAfter").length > 0) {
-                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("RetryAfter").getValue()));
+            if (httpResponse.getHeaders("Location").length > 0) {
+                result.setOperationStatusLink(httpResponse.getFirstHeader("Location").getValue());
+            }
+            if (httpResponse.getHeaders("Retry-After").length > 0) {
+                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("Retry-After").getValue()));
             }
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -611,10 +605,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             if (statusCode == HttpStatus.SC_CONFLICT) {
                 result.setStatus(OperationStatus.Failed);
             }
-            if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+            if (statusCode == HttpStatus.SC_ACCEPTED) {
                 result.setStatus(OperationStatus.InProgress);
             }
-            if (statusCode == HttpStatus.SC_ACCEPTED) {
+            if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                 result.setStatus(OperationStatus.InProgress);
             }
             if (statusCode == HttpStatus.SC_OK) {

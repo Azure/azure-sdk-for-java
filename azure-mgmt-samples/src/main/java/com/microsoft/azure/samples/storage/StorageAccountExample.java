@@ -19,7 +19,6 @@ package com.microsoft.azure.samples.storage;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.KeyName;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountKeys;
@@ -130,17 +129,7 @@ public class StorageAccountExample {
             if (args.length != 4) {
                 result = -1;
             } else {
-                KeyName keyName = null;
-                if (args[3].toLowerCase().equals("primary")) {
-                    keyName = KeyName.Key1;
-                } else if (args[3].toLowerCase().equals("secondary")) {
-                    keyName = KeyName.Key2;
-                }
-                if (keyName == null) {
-                    result = -1;
-                } else {
-                    result = regenerateStorageAccountKey(storageManagementClient, args[1], args[2], keyName);
-                }
+                result = regenerateStorageAccountKey(storageManagementClient, args[1], args[2], args[3]);
             }
         } else if(args[0].equals("listAccounts")) {
             if (args.length > 2) {
@@ -330,7 +319,7 @@ public class StorageAccountExample {
      */
     private static int regenerateStorageAccountKey(StorageManagementClient client,
                                                    String resourceGroup, String accountName,
-                                                   KeyName keyName)
+                                                   String keyName)
             throws Exception {
         ResourceContext context = new ResourceContext(null, resourceGroup,
                 getPropertyElseEnvironment(ManagementConfiguration.SUBSCRIPTION_ID),
@@ -339,9 +328,9 @@ public class StorageAccountExample {
         StorageAccountRegenerateKeyResponse response = StorageHelper.regenerateStorageAccountKey(client, context,
                 keyName);
         if(response != null) {
-            System.out.println("Key " + (keyName == KeyName.Key1 ? "Primary" : "Secondary") + " regenerated.");
+            System.out.println("Key " + keyName + " regenerated.");
             StorageAccountKeys keys = response.getStorageAccountKeys();
-            System.out.println("Key Value: " + (keyName == KeyName.Key1 ? keys.getKey1() : keys.getKey2()));
+            System.out.println("Key Value: " + (keyName.equals("key1") ? keys.getKey1() : keys.getKey2()));
         }
 
         return (response == null ? 1 : 0);
