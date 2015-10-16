@@ -27,7 +27,6 @@ import com.microsoft.azure.management.storage.models.StorageAccountCreateRespons
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
@@ -87,6 +86,12 @@ public interface StorageManagementClient extends Closeable, FilterableService<St
     * @return The StorageAccountsOperations value.
     */
     StorageAccountOperations getStorageAccountsOperations();
+    
+    /**
+    * Operations for listing usage.
+    * @return The UsageOperations value.
+    */
+    UsageOperations getUsageOperations();
     
     /**
     * The Get Create Operation Status operation returns the status of the

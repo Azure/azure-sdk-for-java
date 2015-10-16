@@ -29,41 +29,41 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The list storage accounts operation response.
+* The List Usages operation response.
 */
-public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccount> {
-    private ArrayList<StorageAccount> storageAccounts;
+public class UsageListResponse extends OperationResponse implements Iterable<Usage> {
+    private ArrayList<Usage> usages;
     
     /**
-    * Optional. Gets the list of storage accounts and their properties.
-    * @return The StorageAccounts value.
+    * Optional. Gets or sets the list Storage Resource Usages.
+    * @return The Usages value.
     */
-    public ArrayList<StorageAccount> getStorageAccounts() {
-        return this.storageAccounts;
+    public ArrayList<Usage> getUsages() {
+        return this.usages;
     }
     
     /**
-    * Optional. Gets the list of storage accounts and their properties.
-    * @param storageAccountsValue The StorageAccounts value.
+    * Optional. Gets or sets the list Storage Resource Usages.
+    * @param usagesValue The Usages value.
     */
-    public void setStorageAccounts(final ArrayList<StorageAccount> storageAccountsValue) {
-        this.storageAccounts = storageAccountsValue;
+    public void setUsages(final ArrayList<Usage> usagesValue) {
+        this.usages = usagesValue;
     }
     
     /**
-    * Initializes a new instance of the StorageAccountListResponse class.
+    * Initializes a new instance of the UsageListResponse class.
     *
     */
-    public StorageAccountListResponse() {
+    public UsageListResponse() {
         super();
-        this.setStorageAccounts(new LazyArrayList<StorageAccount>());
+        this.setUsages(new LazyArrayList<Usage>());
     }
     
     /**
-    * Gets the sequence of StorageAccounts.
+    * Gets the sequence of Usages.
     *
     */
-    public Iterator<StorageAccount> iterator() {
-        return this.getStorageAccounts().iterator();
+    public Iterator<Usage> iterator() {
+        return this.getUsages().iterator();
     }
 }

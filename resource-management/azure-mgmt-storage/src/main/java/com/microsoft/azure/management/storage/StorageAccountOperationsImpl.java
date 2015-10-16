@@ -28,7 +28,6 @@ import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.management.storage.models.Endpoints;
-import com.microsoft.azure.management.storage.models.KeyName;
 import com.microsoft.azure.management.storage.models.ProvisioningState;
 import com.microsoft.azure.management.storage.models.Reason;
 import com.microsoft.azure.management.storage.models.StorageAccount;
@@ -47,24 +46,10 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
+import com.microsoft.windowsazure.core.utils.EnumUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
-
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -80,6 +65,20 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Operations for managing storage accounts.
@@ -113,7 +112,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * properties, then HTTP 200 would be returned.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -139,7 +138,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * properties, then HTTP 200 would be returned.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -206,7 +205,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + "/providers/Microsoft.Storage/storageAccounts/";
         url = url + URLEncoder.encode(accountName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -341,7 +340,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue());
+                            provisioningStateInstance = EnumUtility.fromString(ProvisioningState.class, provisioningStateValue.getTextValue());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -377,6 +376,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 tableInstance = new URI(tableValue.getTextValue());
                                 primaryEndpointsInstance.setTable(tableInstance);
                             }
+                            
+                            JsonNode fileValue = primaryEndpointsValue.get("file");
+                            if (fileValue != null && fileValue instanceof NullNode == false) {
+                                URI fileInstance;
+                                fileInstance = new URI(fileValue.getTextValue());
+                                primaryEndpointsInstance.setFile(fileInstance);
+                            }
                         }
                         
                         JsonNode primaryLocationValue = propertiesValue2.get("primaryLocation");
@@ -389,7 +395,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfPrimaryValue = propertiesValue2.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue());
+                            statusOfPrimaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfPrimaryValue.getTextValue());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -410,7 +416,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfSecondaryValue = propertiesValue2.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue());
+                            statusOfSecondaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfSecondaryValue.getTextValue());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -466,6 +472,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 tableInstance2 = new URI(tableValue2.getTextValue());
                                 secondaryEndpointsInstance.setTable(tableInstance2);
                             }
+                            
+                            JsonNode fileValue2 = secondaryEndpointsValue.get("file");
+                            if (fileValue2 != null && fileValue2 instanceof NullNode == false) {
+                                URI fileInstance2;
+                                fileInstance2 = new URI(fileValue2.getTextValue());
+                                secondaryEndpointsInstance.setFile(fileInstance2);
+                            }
                         }
                     }
                 }
@@ -475,8 +488,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             if (httpResponse.getHeaders("Location").length > 0) {
                 result.setOperationStatusLink(httpResponse.getFirstHeader("Location").getValue());
             }
-            if (httpResponse.getHeaders("RetryAfter").length > 0) {
-                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("RetryAfter").getValue()));
+            if (httpResponse.getHeaders("Retry-After").length > 0) {
+                result.setRetryAfter(DatatypeConverter.parseInt(httpResponse.getFirstHeader("Retry-After").getValue()));
             }
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -554,7 +567,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         url = url + "/providers/Microsoft.Storage/checkNameAvailability";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -637,7 +650,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     JsonNode reasonValue = responseDoc.get("reason");
                     if (reasonValue != null && reasonValue instanceof NullNode == false) {
                         Reason reasonInstance;
-                        reasonInstance = Enum.valueOf(Reason.class, reasonValue.getTextValue());
+                        reasonInstance = EnumUtility.fromString(Reason.class, reasonValue.getTextValue());
                         result.setReason(reasonInstance);
                     }
                     
@@ -672,10 +685,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * instead use the Update Storage Account API. If an account is already
     * created and subsequent create request is issued with exact same set of
     * properties, the request succeeds.The max number of storage accounts that
-    * can be created per subscription is limited to 20.
+    * can be created per subscription is limited to 100.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -699,10 +712,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * instead use the Update Storage Account API. If an account is already
     * created and subsequent create request is issued with exact same set of
     * properties, the request succeeds.The max number of storage accounts that
-    * can be created per subscription is limited to 20.
+    * can be created per subscription is limited to 100.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -778,7 +791,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Deletes a storage account in Microsoft Azure.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -799,7 +812,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Deletes a storage account in Microsoft Azure.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -853,7 +866,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + "/providers/Microsoft.Storage/storageAccounts/";
         url = url + URLEncoder.encode(accountName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -919,7 +932,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * ListKeys operation should be used to retrieve storage keys.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -941,7 +954,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * ListKeys operation should be used to retrieve storage keys.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -996,7 +1009,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + "/providers/Microsoft.Storage/storageAccounts/";
         url = url + URLEncoder.encode(accountName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1097,7 +1110,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue());
+                            provisioningStateInstance = EnumUtility.fromString(ProvisioningState.class, provisioningStateValue.getTextValue());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -1133,6 +1146,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 tableInstance = new URI(tableValue.getTextValue());
                                 primaryEndpointsInstance.setTable(tableInstance);
                             }
+                            
+                            JsonNode fileValue = primaryEndpointsValue.get("file");
+                            if (fileValue != null && fileValue instanceof NullNode == false) {
+                                URI fileInstance;
+                                fileInstance = new URI(fileValue.getTextValue());
+                                primaryEndpointsInstance.setFile(fileInstance);
+                            }
                         }
                         
                         JsonNode primaryLocationValue = propertiesValue.get("primaryLocation");
@@ -1145,7 +1165,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue());
+                            statusOfPrimaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfPrimaryValue.getTextValue());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -1166,7 +1186,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue());
+                            statusOfSecondaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfSecondaryValue.getTextValue());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -1221,6 +1241,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 URI tableInstance2;
                                 tableInstance2 = new URI(tableValue2.getTextValue());
                                 secondaryEndpointsInstance.setTable(tableInstance2);
+                            }
+                            
+                            JsonNode fileValue2 = secondaryEndpointsValue.get("file");
+                            if (fileValue2 != null && fileValue2 instanceof NullNode == false) {
+                                URI fileInstance2;
+                                fileInstance2 = new URI(fileValue2.getTextValue());
+                                secondaryEndpointsInstance.setFile(fileInstance2);
                             }
                         }
                     }
@@ -1292,7 +1319,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         url = url + "/providers/Microsoft.Storage/storageAccounts";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1396,7 +1423,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                                 if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                     ProvisioningState provisioningStateInstance;
-                                    provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue());
+                                    provisioningStateInstance = EnumUtility.fromString(ProvisioningState.class, provisioningStateValue.getTextValue());
                                     storageAccountJsonInstance.setProvisioningState(provisioningStateInstance);
                                 }
                                 
@@ -1432,6 +1459,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                         tableInstance = new URI(tableValue.getTextValue());
                                         primaryEndpointsInstance.setTable(tableInstance);
                                     }
+                                    
+                                    JsonNode fileValue = primaryEndpointsValue.get("file");
+                                    if (fileValue != null && fileValue instanceof NullNode == false) {
+                                        URI fileInstance;
+                                        fileInstance = new URI(fileValue.getTextValue());
+                                        primaryEndpointsInstance.setFile(fileInstance);
+                                    }
                                 }
                                 
                                 JsonNode primaryLocationValue = propertiesValue.get("primaryLocation");
@@ -1444,7 +1478,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                                 if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfPrimaryInstance;
-                                    statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue());
+                                    statusOfPrimaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfPrimaryValue.getTextValue());
                                     storageAccountJsonInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                                 }
                                 
@@ -1465,7 +1499,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                                 if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfSecondaryInstance;
-                                    statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue());
+                                    statusOfSecondaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfSecondaryValue.getTextValue());
                                     storageAccountJsonInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                                 }
                                 
@@ -1521,16 +1555,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                         tableInstance2 = new URI(tableValue2.getTextValue());
                                         secondaryEndpointsInstance.setTable(tableInstance2);
                                     }
+                                    
+                                    JsonNode fileValue2 = secondaryEndpointsValue.get("file");
+                                    if (fileValue2 != null && fileValue2 instanceof NullNode == false) {
+                                        URI fileInstance2;
+                                        fileInstance2 = new URI(fileValue2.getTextValue());
+                                        secondaryEndpointsInstance.setFile(fileInstance2);
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    JsonNode nextLinkValue = responseDoc.get("nextLink");
-                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
-                        String nextLinkInstance;
-                        nextLinkInstance = nextLinkValue.getTextValue();
-                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -1557,7 +1591,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * this.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @return The list storage accounts operation response.
     */
     @Override
@@ -1576,7 +1610,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * this.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1612,7 +1646,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
         url = url + "/providers/Microsoft.Storage/storageAccounts";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1716,7 +1750,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                                 if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                     ProvisioningState provisioningStateInstance;
-                                    provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue());
+                                    provisioningStateInstance = EnumUtility.fromString(ProvisioningState.class, provisioningStateValue.getTextValue());
                                     storageAccountJsonInstance.setProvisioningState(provisioningStateInstance);
                                 }
                                 
@@ -1752,6 +1786,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                         tableInstance = new URI(tableValue.getTextValue());
                                         primaryEndpointsInstance.setTable(tableInstance);
                                     }
+                                    
+                                    JsonNode fileValue = primaryEndpointsValue.get("file");
+                                    if (fileValue != null && fileValue instanceof NullNode == false) {
+                                        URI fileInstance;
+                                        fileInstance = new URI(fileValue.getTextValue());
+                                        primaryEndpointsInstance.setFile(fileInstance);
+                                    }
                                 }
                                 
                                 JsonNode primaryLocationValue = propertiesValue.get("primaryLocation");
@@ -1764,7 +1805,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                                 if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfPrimaryInstance;
-                                    statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue());
+                                    statusOfPrimaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfPrimaryValue.getTextValue());
                                     storageAccountJsonInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                                 }
                                 
@@ -1785,7 +1826,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                                 if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                                     AccountStatus statusOfSecondaryInstance;
-                                    statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue());
+                                    statusOfSecondaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfSecondaryValue.getTextValue());
                                     storageAccountJsonInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                                 }
                                 
@@ -1841,16 +1882,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                         tableInstance2 = new URI(tableValue2.getTextValue());
                                         secondaryEndpointsInstance.setTable(tableInstance2);
                                     }
+                                    
+                                    JsonNode fileValue2 = secondaryEndpointsValue.get("file");
+                                    if (fileValue2 != null && fileValue2 instanceof NullNode == false) {
+                                        URI fileInstance2;
+                                        fileInstance2 = new URI(fileValue2.getTextValue());
+                                        secondaryEndpointsInstance.setFile(fileInstance2);
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    JsonNode nextLinkValue = responseDoc.get("nextLink");
-                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
-                        String nextLinkInstance;
-                        nextLinkInstance = nextLinkValue.getTextValue();
-                        result.setNextLink(nextLinkInstance);
                     }
                 }
                 
@@ -1943,7 +1984,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + URLEncoder.encode(accountName, "UTF-8");
         url = url + "/listKeys";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2036,16 +2077,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Regenerates the access keys for the specified storage account.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
     * @param regenerateKey Required. Specifies name of the key which should be
-    * regenerated.
+    * regenerated. key1 or key2 for the default keys
     * @return The RegenerateKey operation response.
     */
     @Override
-    public Future<StorageAccountRegenerateKeyResponse> regenerateKeyAsync(final String resourceGroupName, final String accountName, final KeyName regenerateKey) {
+    public Future<StorageAccountRegenerateKeyResponse> regenerateKeyAsync(final String resourceGroupName, final String accountName, final String regenerateKey) {
         return this.getClient().getExecutorService().submit(new Callable<StorageAccountRegenerateKeyResponse>() { 
             @Override
             public StorageAccountRegenerateKeyResponse call() throws Exception {
@@ -2058,12 +2099,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Regenerates the access keys for the specified storage account.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
     * @param regenerateKey Required. Specifies name of the key which should be
-    * regenerated.
+    * regenerated. key1 or key2 for the default keys
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2071,7 +2112,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The RegenerateKey operation response.
     */
     @Override
-    public StorageAccountRegenerateKeyResponse regenerateKey(String resourceGroupName, String accountName, KeyName regenerateKey) throws IOException, ServiceException {
+    public StorageAccountRegenerateKeyResponse regenerateKey(String resourceGroupName, String accountName, String regenerateKey) throws IOException, ServiceException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -2118,7 +2159,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + URLEncoder.encode(accountName, "UTF-8");
         url = url + "/regenerateKey";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2148,7 +2189,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         ObjectNode storageAccountRegenerateKeyParametersValue = objectMapper.createObjectNode();
         requestDoc = storageAccountRegenerateKeyParametersValue;
         
-        ((ObjectNode) storageAccountRegenerateKeyParametersValue).put("keyName", StorageManagementClientImpl.keyNameToString(regenerateKey));
+        ((ObjectNode) storageAccountRegenerateKeyParametersValue).put("keyName", regenerateKey);
         
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
@@ -2228,16 +2269,19 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Updates the account type or tags for a storage account. It can also be
     * used to add a custom domain (note that custom domains cannot be added
     * via the Create operation). Only one custom domain is supported per
-    * storage account. This API can only be used to update one of tags,
-    * accountType, or customDomain per call. To update multiple of these
-    * properties, call the API multiple times with one change per call. This
-    * call does not change the storage keys for the account. If you want to
-    * change storage account keys, use the RegenerateKey operation. The
-    * location and name of the storage account cannot be changed after
-    * creation.
+    * storage account. In order to replace a custom domain, the old value must
+    * be cleared before a new value may be set. To clear a custom domain,
+    * simply update the custom domain with empty string. Then call update
+    * again with the new cutsom domain name. The update API can only be used
+    * to update one of tags, accountType, or customDomain per call. To update
+    * multiple of these properties, call the API multiple times with one
+    * change per call. This call does not change the storage keys for the
+    * account. If you want to change storage account keys, use the
+    * RegenerateKey operation. The location and name of the storage account
+    * cannot be changed after creation.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -2259,16 +2303,19 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Updates the account type or tags for a storage account. It can also be
     * used to add a custom domain (note that custom domains cannot be added
     * via the Create operation). Only one custom domain is supported per
-    * storage account. This API can only be used to update one of tags,
-    * accountType, or customDomain per call. To update multiple of these
-    * properties, call the API multiple times with one change per call. This
-    * call does not change the storage keys for the account. If you want to
-    * change storage account keys, use the RegenerateKey operation. The
-    * location and name of the storage account cannot be changed after
-    * creation.
+    * storage account. In order to replace a custom domain, the old value must
+    * be cleared before a new value may be set. To clear a custom domain,
+    * simply update the custom domain with empty string. Then call update
+    * again with the new cutsom domain name. The update API can only be used
+    * to update one of tags, accountType, or customDomain per call. To update
+    * multiple of these properties, call the API multiple times with one
+    * change per call. This call does not change the storage keys for the
+    * account. If you want to change storage account keys, use the
+    * RegenerateKey operation. The location and name of the storage account
+    * cannot be changed after creation.
     *
     * @param resourceGroupName Required. The name of the resource group within
-    * the user’s subscription.
+    * the user's subscription.
     * @param accountName Required. The name of the storage account within the
     * specified resource group. Storage account names must be between 3 and 24
     * characters in length and use numbers and lower-case letters only.
@@ -2334,7 +2381,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         url = url + "/providers/Microsoft.Storage/storageAccounts/";
         url = url + URLEncoder.encode(accountName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-05-01-preview");
+        queryParameters.add("api-version=" + "2015-06-15");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2480,7 +2527,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue());
+                            provisioningStateInstance = EnumUtility.fromString(ProvisioningState.class, provisioningStateValue.getTextValue());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -2516,6 +2563,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 tableInstance = new URI(tableValue.getTextValue());
                                 primaryEndpointsInstance.setTable(tableInstance);
                             }
+                            
+                            JsonNode fileValue = primaryEndpointsValue.get("file");
+                            if (fileValue != null && fileValue instanceof NullNode == false) {
+                                URI fileInstance;
+                                fileInstance = new URI(fileValue.getTextValue());
+                                primaryEndpointsInstance.setFile(fileInstance);
+                            }
                         }
                         
                         JsonNode primaryLocationValue = propertiesValue2.get("primaryLocation");
@@ -2528,7 +2582,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfPrimaryValue = propertiesValue2.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue());
+                            statusOfPrimaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfPrimaryValue.getTextValue());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -2549,7 +2603,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         JsonNode statusOfSecondaryValue = propertiesValue2.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue());
+                            statusOfSecondaryInstance = EnumUtility.fromString(AccountStatus.class, statusOfSecondaryValue.getTextValue());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -2604,6 +2658,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                                 URI tableInstance2;
                                 tableInstance2 = new URI(tableValue2.getTextValue());
                                 secondaryEndpointsInstance.setTable(tableInstance2);
+                            }
+                            
+                            JsonNode fileValue2 = secondaryEndpointsValue.get("file");
+                            if (fileValue2 != null && fileValue2 instanceof NullNode == false) {
+                                URI fileInstance2;
+                                fileInstance2 = new URI(fileValue2.getTextValue());
+                                secondaryEndpointsInstance.setFile(fileInstance2);
                             }
                         }
                     }
