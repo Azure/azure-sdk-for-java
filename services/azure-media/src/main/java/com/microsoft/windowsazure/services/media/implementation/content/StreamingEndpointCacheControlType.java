@@ -11,7 +11,7 @@ public class StreamingEndpointCacheControlType {
     private Integer maxAge;
 
     public int getMaxAge() {
-        return maxAge;
+        return maxAge == null ? 0 : maxAge.intValue();
     }
 
     public void setMaxAge(int maxRange) {

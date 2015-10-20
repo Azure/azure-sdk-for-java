@@ -15,6 +15,43 @@
 
 package com.microsoft.azure.utility.compute;
 
+import com.microsoft.azure.management.compute.ComputeManagementClient;
+import com.microsoft.azure.management.compute.ComputeManagementService;
+import com.microsoft.azure.management.compute.models.ComputeLongRunningOperationResponse;
+import com.microsoft.azure.management.compute.models.DataDisk;
+import com.microsoft.azure.management.compute.models.DiskInstanceView;
+import com.microsoft.azure.management.compute.models.InstanceViewStatus;
+import com.microsoft.azure.management.compute.models.Plan;
+import com.microsoft.azure.management.compute.models.VaultCertificate;
+import com.microsoft.azure.management.compute.models.VaultSecretGroup;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.models.VirtualMachineCreateOrUpdateResponse;
+import com.microsoft.azure.management.compute.models.VirtualMachineGetResponse;
+import com.microsoft.azure.management.compute.models.VirtualMachineInstanceView;
+import com.microsoft.azure.management.network.NetworkResourceProviderClient;
+import com.microsoft.azure.management.network.NetworkResourceProviderService;
+import com.microsoft.azure.management.resources.ResourceManagementClient;
+import com.microsoft.azure.management.resources.ResourceManagementService;
+import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.storage.StorageManagementClient;
+import com.microsoft.azure.management.storage.StorageManagementService;
+import com.microsoft.azure.utility.AuthHelper;
+import com.microsoft.azure.utility.ComputeHelper;
+import com.microsoft.azure.utility.ConsumerWrapper;
+import com.microsoft.azure.utility.ResourceContext;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.MockIntegrationTestBase;
+import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpStatus;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.junit.Assert;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,39 +61,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.function.Predicate;
-
-
-import com.microsoft.azure.management.compute.ComputeManagementClient;
-import com.microsoft.azure.management.compute.ComputeManagementService;
-import com.microsoft.azure.management.compute.models.*;
-
-import com.microsoft.azure.management.resources.models.LongRunningOperationResponse;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.utility.AuthHelper;
-import com.microsoft.azure.utility.ComputeHelper;
-import com.microsoft.azure.utility.ConsumerWrapper;
-import com.microsoft.azure.utility.ResourceContext;
-import com.microsoft.windowsazure.exception.ServiceException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpStatus;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import com.microsoft.azure.management.network.NetworkResourceProviderClient;
-import com.microsoft.azure.management.network.NetworkResourceProviderService;
-
-import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.MockIntegrationTestBase;
-import com.microsoft.windowsazure.core.ServiceClient;
-import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
-import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.ResourceManagementService;
-
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-
-import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.StorageManagementService;
-import org.junit.*;
 
 public abstract class ComputeTestBase extends MockIntegrationTestBase{
     //protected static final String m_location = "SouthEastAsia";
@@ -73,9 +77,6 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
     protected static StorageManagementClient storageManagementClient;
     protected static ResourceManagementClient resourceManagementClient;
     protected static NetworkResourceProviderClient networkResourceProviderClient;
-
-    private ImageReference windowsImageReference;
-    private ImageReference linuxImageReference;
 
     protected static Log log = LogFactory.getLog(ComputeTestBase.class);
 
@@ -274,43 +275,6 @@ public abstract class ComputeTestBase extends MockIntegrationTestBase{
         Assert.assertEquals(HttpStatus.SC_OK, getVMResponse.getStatusCode());
         validateVM(context.getVMInput(), getVMResponse.getVirtualMachine());
         return getVMResponse.getVirtualMachine();
-    }
-    
-    protected ImageReference getPlatformVmImage(boolean useWindowsImage) throws Exception {
-        if (useWindowsImage) {
-            if (windowsImageReference == null) {
-                log.info("Querying available Windows Server image from PIR...");
-                windowsImageReference = findVmImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter");
-            }
-
-            return windowsImageReference;
-        } else if (linuxImageReference == null) {
-            log.info("Querying available Ubuntu images from PIR...");
-            linuxImageReference = findVmImage("Canonical", "UbuntuServer", "15.04");
-            return linuxImageReference;
-        }
-
-        return linuxImageReference;
-    }
-
-    protected ImageReference findVmImage(String publisher, String offer, String sku) throws Exception {
-        VirtualMachineImageListParameters params = new VirtualMachineImageListParameters();
-        params.setLocation(m_location);
-        params.setPublisherName(publisher);
-        params.setOffer(offer);
-        params.setSkus(sku);
-        params.setFilterExpression("$top=1");
-
-        VirtualMachineImageResourceList images = computeManagementClient.getVirtualMachineImagesOperations().list(params);
-        VirtualMachineImageResource image = images.getResources().get(0);
-
-        ImageReference imageRef = new ImageReference();
-        imageRef.setPublisher(publisher);
-        imageRef.setOffer(offer);
-        imageRef.setVersion(image.getName());
-        imageRef.setSku(sku);
-
-        return imageRef;
     }
 
     protected static void validateVM(VirtualMachine vmInput, VirtualMachine vmOut) {

@@ -24,6 +24,7 @@
 package com.microsoft.azure.management.network.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
@@ -201,6 +202,26 @@ public class ApplicationGateway extends TopLevelResource {
     */
     public void setRequestRoutingRules(final ArrayList<ApplicationGatewayRequestRoutingRule> requestRoutingRulesValue) {
         this.requestRoutingRules = requestRoutingRulesValue;
+    }
+    
+    private String resourceGuid;
+    
+    /**
+    * Optional. Gets or sets resource guid property of the ApplicationGateway
+    * resource
+    * @return The ResourceGuid value.
+    */
+    public String getResourceGuid() {
+        return this.resourceGuid;
+    }
+    
+    /**
+    * Optional. Gets or sets resource guid property of the ApplicationGateway
+    * resource
+    * @param resourceGuidValue The ResourceGuid value.
+    */
+    public void setResourceGuid(final String resourceGuidValue) {
+        this.resourceGuid = resourceGuidValue;
     }
     
     private ApplicationGatewaySku sku;

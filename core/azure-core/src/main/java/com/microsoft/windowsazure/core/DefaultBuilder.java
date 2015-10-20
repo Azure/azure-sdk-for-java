@@ -15,6 +15,9 @@
 package com.microsoft.windowsazure.core;
 
 import com.microsoft.windowsazure.ConfigurationException;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -25,9 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 public class DefaultBuilder implements Builder, Builder.Registry {
     private Map<Class<?>, Factory<?>> factories;

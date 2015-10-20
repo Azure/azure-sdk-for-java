@@ -37,6 +37,18 @@ import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.NullNode;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -49,16 +61,6 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.NullNode;
 
 /**
 * The Storage Management Client.
@@ -251,19 +253,19 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     */
      static AccountType parseAccountType(String value) {
         if ("Standard_LRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARDLRS;
+            return AccountType.StandardLRS;
         }
         if ("Standard_ZRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARDZRS;
+            return AccountType.StandardZRS;
         }
         if ("Standard_GRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARDGRS;
+            return AccountType.StandardGRS;
         }
         if ("Standard_RAGRS".equalsIgnoreCase(value)) {
-            return AccountType.STANDARDRAGRS;
+            return AccountType.StandardRAGRS;
         }
         if ("Premium_LRS".equalsIgnoreCase(value)) {
-            return AccountType.PREMIUMLRS;
+            return AccountType.PremiumLRS;
         }
         throw new IllegalArgumentException("value");
     }
@@ -275,19 +277,19 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * @return The enum value as a string.
     */
      static String accountTypeToString(AccountType value) {
-        if (value == AccountType.STANDARDLRS) {
+        if (value == AccountType.StandardLRS) {
             return "Standard_LRS";
         }
-        if (value == AccountType.STANDARDZRS) {
+        if (value == AccountType.StandardZRS) {
             return "Standard_ZRS";
         }
-        if (value == AccountType.STANDARDGRS) {
+        if (value == AccountType.StandardGRS) {
             return "Standard_GRS";
         }
-        if (value == AccountType.STANDARDRAGRS) {
+        if (value == AccountType.StandardRAGRS) {
             return "Standard_RAGRS";
         }
-        if (value == AccountType.PREMIUMLRS) {
+        if (value == AccountType.PremiumLRS) {
             return "Premium_LRS";
         }
         throw new IllegalArgumentException("value");
@@ -301,10 +303,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     */
      static KeyName parseKeyName(String value) {
         if ("key1".equalsIgnoreCase(value)) {
-            return KeyName.KEY1;
+            return KeyName.Key1;
         }
         if ("key2".equalsIgnoreCase(value)) {
-            return KeyName.KEY2;
+            return KeyName.Key2;
         }
         throw new IllegalArgumentException("value");
     }
@@ -316,10 +318,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * @return The enum value as a string.
     */
      static String keyNameToString(KeyName value) {
-        if (value == KeyName.KEY1) {
+        if (value == KeyName.Key1) {
             return "key1";
         }
-        if (value == KeyName.KEY2) {
+        if (value == KeyName.Key2) {
             return "key2";
         }
         throw new IllegalArgumentException("value");
@@ -416,8 +418,9 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                 result = new StorageAccountCreateResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -468,7 +471,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         JsonNode provisioningStateValue = propertiesValue.get("provisioningState");
                         if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                             ProvisioningState provisioningStateInstance;
-                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue().toUpperCase());
+                            provisioningStateInstance = Enum.valueOf(ProvisioningState.class, provisioningStateValue.getTextValue());
                             storageAccountInstance.setProvisioningState(provisioningStateInstance);
                         }
                         
@@ -516,7 +519,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         JsonNode statusOfPrimaryValue = propertiesValue.get("statusOfPrimary");
                         if (statusOfPrimaryValue != null && statusOfPrimaryValue instanceof NullNode == false) {
                             AccountStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue().toUpperCase());
+                            statusOfPrimaryInstance = Enum.valueOf(AccountStatus.class, statusOfPrimaryValue.getTextValue());
                             storageAccountInstance.setStatusOfPrimary(statusOfPrimaryInstance);
                         }
                         
@@ -537,7 +540,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         JsonNode statusOfSecondaryValue = propertiesValue.get("statusOfSecondary");
                         if (statusOfSecondaryValue != null && statusOfSecondaryValue instanceof NullNode == false) {
                             AccountStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue().toUpperCase());
+                            statusOfSecondaryInstance = Enum.valueOf(AccountStatus.class, statusOfSecondaryValue.getTextValue());
                             storageAccountInstance.setStatusOfSecondary(statusOfSecondaryInstance);
                         }
                         
@@ -606,16 +609,16 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CONFLICT) {
-                result.setStatus(OperationStatus.FAILED);
+                result.setStatus(OperationStatus.Failed);
             }
             if (statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                result.setStatus(OperationStatus.INPROGRESS);
+                result.setStatus(OperationStatus.InProgress);
             }
             if (statusCode == HttpStatus.SC_ACCEPTED) {
-                result.setStatus(OperationStatus.INPROGRESS);
+                result.setStatus(OperationStatus.InProgress);
             }
             if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {

@@ -1,13 +1,23 @@
 package com.microsoft.azure.utility.compute;
 
-import com.microsoft.azure.management.compute.models.*;
+import com.microsoft.azure.management.compute.models.AvailabilitySet;
+import com.microsoft.azure.management.compute.models.AvailabilitySetCreateOrUpdateResponse;
+import com.microsoft.azure.management.compute.models.AvailabilitySetGetResponse;
+import com.microsoft.azure.management.compute.models.AvailabilitySetListResponse;
+import com.microsoft.azure.management.compute.models.InstanceViewStatus;
+import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResponse;
 import com.microsoft.azure.utility.ComputeHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,7 +161,8 @@ public class VMAvailabilitySetTests extends ComputeTestBase {
         return availabilitySet;
     }
 
-    private void verifyAvailabilitySetInResourceGroup(AvailabilitySet expectedAvailabilitySet, String rgName) throws Exception {
+    private void verifyAvailabilitySetInResourceGroup(AvailabilitySet expectedAvailabilitySet, String rgName)
+            throws Exception {
         AvailabilitySetListResponse response = computeManagementClient.getAvailabilitySetsOperations().list(rgName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
 
@@ -195,18 +206,23 @@ public class VMAvailabilitySetTests extends ComputeTestBase {
     }
 
     private void verifyGetAvailabilitySet(AvailabilitySet expectedAvailabilitySet, String rgName) throws Exception {
-        AvailabilitySetGetResponse response = computeManagementClient.getAvailabilitySetsOperations().get(rgName, expectedAvailabilitySet.getName());
+        AvailabilitySetGetResponse response =
+                computeManagementClient.getAvailabilitySetsOperations().get(rgName, expectedAvailabilitySet.getName());
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
         validateGetAvailabilitySetResponse(response, expectedAvailabilitySet);
     }
 
     private void deleteAvailabilitySet(String availabilitySetName) throws Exception {
-        OperationResponse response = computeManagementClient.getAvailabilitySetsOperations().delete(m_rgName, availabilitySetName);
+        OperationResponse response =
+                computeManagementClient.getAvailabilitySetsOperations().delete(m_rgName, availabilitySetName);
         Assert.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
     }
 
     private void verifyGetVmSizeInAvailabilitySet(AvailabilitySet availabilitySet) throws Exception {
-        VirtualMachineSizeListResponse listVmSizesResponse = computeManagementClient.getAvailabilitySetsOperations().listAvailableSizes(m_rgName, availabilitySet.getName());
+        VirtualMachineSizeListResponse listVmSizesResponse =
+                computeManagementClient.getAvailabilitySetsOperations()
+                        .listAvailableSizes(m_rgName, availabilitySet.getName());
+
         Assert.assertEquals(listVmSizesResponse.getStatusCode(), HttpStatus.SC_OK);
         ComputeTestHelper.validateVirtualMachineSizeListResponse(listVmSizesResponse);
     }

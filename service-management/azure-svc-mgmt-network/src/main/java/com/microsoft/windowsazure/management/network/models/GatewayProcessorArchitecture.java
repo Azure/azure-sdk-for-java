@@ -27,7 +27,7 @@ package com.microsoft.windowsazure.management.network.models;
 * The processor architecture for the generated VPN client package.
 */
 public enum GatewayProcessorArchitecture {
-    AMD64,
+    Amd64,
     
     X86,
 }

@@ -24,12 +24,31 @@
 package com.microsoft.azure.management.network.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
 * Frontend IP address of the load balancer
 */
 public class FrontendIpConfiguration extends ChildResource {
+    private ArrayList<ResourceId> inboundNatPools;
+    
+    /**
+    * Optional. Read only.Inbound pools URIs that use this frontend IP
+    * @return The InboundNatPools value.
+    */
+    public ArrayList<ResourceId> getInboundNatPools() {
+        return this.inboundNatPools;
+    }
+    
+    /**
+    * Optional. Read only.Inbound pools URIs that use this frontend IP
+    * @param inboundNatPoolsValue The InboundNatPools value.
+    */
+    public void setInboundNatPools(final ArrayList<ResourceId> inboundNatPoolsValue) {
+        this.inboundNatPools = inboundNatPoolsValue;
+    }
+    
     private ArrayList<ResourceId> inboundNatRules;
     
     /**
@@ -64,6 +83,24 @@ public class FrontendIpConfiguration extends ChildResource {
     */
     public void setLoadBalancingRules(final ArrayList<ResourceId> loadBalancingRulesValue) {
         this.loadBalancingRules = loadBalancingRulesValue;
+    }
+    
+    private ArrayList<ResourceId> outboundNatRules;
+    
+    /**
+    * Optional. Read only.Outbound rules URIs that use this frontend IP
+    * @return The OutboundNatRules value.
+    */
+    public ArrayList<ResourceId> getOutboundNatRules() {
+        return this.outboundNatRules;
+    }
+    
+    /**
+    * Optional. Read only.Outbound rules URIs that use this frontend IP
+    * @param outboundNatRulesValue The OutboundNatRules value.
+    */
+    public void setOutboundNatRules(final ArrayList<ResourceId> outboundNatRulesValue) {
+        this.outboundNatRules = outboundNatRulesValue;
     }
     
     private String privateIpAddress;
@@ -170,7 +207,9 @@ public class FrontendIpConfiguration extends ChildResource {
     */
     public FrontendIpConfiguration() {
         super();
+        this.setInboundNatPools(new LazyArrayList<ResourceId>());
         this.setInboundNatRules(new LazyArrayList<ResourceId>());
         this.setLoadBalancingRules(new LazyArrayList<ResourceId>());
+        this.setOutboundNatRules(new LazyArrayList<ResourceId>());
     }
 }

@@ -15,13 +15,13 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.CloudPageBlob;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudPageBlob;
 
 public class MockCloudPageBlob {
     public CloudPageBlob pageBlob;

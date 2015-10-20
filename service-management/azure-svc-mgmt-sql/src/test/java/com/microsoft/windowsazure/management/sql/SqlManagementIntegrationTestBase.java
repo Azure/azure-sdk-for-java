@@ -14,28 +14,12 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.Callable;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.MockIntegrationTestBase;
 import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
+import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProperties;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -56,6 +40,20 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKey
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Callable;
 
 public abstract class SqlManagementIntegrationTestBase extends MockIntegrationTestBase {
 

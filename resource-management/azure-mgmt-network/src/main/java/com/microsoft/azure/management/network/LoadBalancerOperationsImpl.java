@@ -28,12 +28,15 @@ import com.microsoft.azure.management.network.models.BackendAddressPool;
 import com.microsoft.azure.management.network.models.Error;
 import com.microsoft.azure.management.network.models.ErrorDetails;
 import com.microsoft.azure.management.network.models.FrontendIpConfiguration;
+import com.microsoft.azure.management.network.models.InboundNatPool;
 import com.microsoft.azure.management.network.models.InboundNatRule;
 import com.microsoft.azure.management.network.models.LoadBalancer;
 import com.microsoft.azure.management.network.models.LoadBalancerGetResponse;
 import com.microsoft.azure.management.network.models.LoadBalancerListResponse;
 import com.microsoft.azure.management.network.models.LoadBalancerPutResponse;
 import com.microsoft.azure.management.network.models.LoadBalancingRule;
+import com.microsoft.azure.management.network.models.OperationStatus;
+import com.microsoft.azure.management.network.models.OutboundNatRule;
 import com.microsoft.azure.management.network.models.Probe;
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
@@ -45,6 +48,19 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -56,17 +72,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * The Network Resource Provider API includes operations for managing the load
@@ -137,6 +142,13 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
+        if (parameters.getInboundNatPools() != null) {
+            for (InboundNatPool inboundNatPoolsParameterItem : parameters.getInboundNatPools()) {
+                if (inboundNatPoolsParameterItem.getProtocol() == null) {
+                    throw new NullPointerException("parameters.InboundNatPools.Protocol");
+                }
+            }
+        }
         if (parameters.getInboundNatRules() != null) {
             for (InboundNatRule inboundNatRulesParameterItem : parameters.getInboundNatRules()) {
                 if (inboundNatRulesParameterItem.getProtocol() == null) {
@@ -156,6 +168,13 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
         }
         if (parameters.getLocation() == null) {
             throw new NullPointerException("parameters.Location");
+        }
+        if (parameters.getOutboundNatRules() != null) {
+            for (OutboundNatRule outboundNatRulesParameterItem : parameters.getOutboundNatRules()) {
+                if (outboundNatRulesParameterItem.getBackendAddressPool() == null) {
+                    throw new NullPointerException("parameters.OutboundNatRules.BackendAddressPool");
+                }
+            }
         }
         if (parameters.getProbes() != null) {
             for (Probe probesParameterItem : parameters.getProbes()) {
@@ -273,15 +292,45 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                         }
                     }
                     
+                    if (frontendIPConfigurationsItem.getInboundNatPools() != null) {
+                        if (frontendIPConfigurationsItem.getInboundNatPools() instanceof LazyCollection == false || ((LazyCollection) frontendIPConfigurationsItem.getInboundNatPools()).isInitialized()) {
+                            ArrayNode inboundNatPoolsArray = objectMapper.createArrayNode();
+                            for (ResourceId inboundNatPoolsItem : frontendIPConfigurationsItem.getInboundNatPools()) {
+                                ObjectNode resourceIdValue2 = objectMapper.createObjectNode();
+                                inboundNatPoolsArray.add(resourceIdValue2);
+                                
+                                if (inboundNatPoolsItem.getId() != null) {
+                                    ((ObjectNode) resourceIdValue2).put("id", inboundNatPoolsItem.getId());
+                                }
+                            }
+                            ((ObjectNode) propertiesValue2).put("inboundNatPools", inboundNatPoolsArray);
+                        }
+                    }
+                    
+                    if (frontendIPConfigurationsItem.getOutboundNatRules() != null) {
+                        if (frontendIPConfigurationsItem.getOutboundNatRules() instanceof LazyCollection == false || ((LazyCollection) frontendIPConfigurationsItem.getOutboundNatRules()).isInitialized()) {
+                            ArrayNode outboundNatRulesArray = objectMapper.createArrayNode();
+                            for (ResourceId outboundNatRulesItem : frontendIPConfigurationsItem.getOutboundNatRules()) {
+                                ObjectNode resourceIdValue3 = objectMapper.createObjectNode();
+                                outboundNatRulesArray.add(resourceIdValue3);
+                                
+                                if (outboundNatRulesItem.getId() != null) {
+                                    ((ObjectNode) resourceIdValue3).put("id", outboundNatRulesItem.getId());
+                                }
+                            }
+                            ((ObjectNode) propertiesValue2).put("outboundNatRules", outboundNatRulesArray);
+                        }
+                    }
+                    
                     if (frontendIPConfigurationsItem.getLoadBalancingRules() != null) {
                         if (frontendIPConfigurationsItem.getLoadBalancingRules() instanceof LazyCollection == false || ((LazyCollection) frontendIPConfigurationsItem.getLoadBalancingRules()).isInitialized()) {
                             ArrayNode loadBalancingRulesArray = objectMapper.createArrayNode();
                             for (ResourceId loadBalancingRulesItem : frontendIPConfigurationsItem.getLoadBalancingRules()) {
-                                ObjectNode resourceIdValue2 = objectMapper.createObjectNode();
-                                loadBalancingRulesArray.add(resourceIdValue2);
+                                ObjectNode resourceIdValue4 = objectMapper.createObjectNode();
+                                loadBalancingRulesArray.add(resourceIdValue4);
                                 
                                 if (loadBalancingRulesItem.getId() != null) {
-                                    ((ObjectNode) resourceIdValue2).put("id", loadBalancingRulesItem.getId());
+                                    ((ObjectNode) resourceIdValue4).put("id", loadBalancingRulesItem.getId());
                                 }
                             }
                             ((ObjectNode) propertiesValue2).put("loadBalancingRules", loadBalancingRulesArray);
@@ -322,11 +371,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                         if (backendAddressPoolsItem.getBackendIpConfigurations() instanceof LazyCollection == false || ((LazyCollection) backendAddressPoolsItem.getBackendIpConfigurations()).isInitialized()) {
                             ArrayNode backendIPConfigurationsArray = objectMapper.createArrayNode();
                             for (ResourceId backendIPConfigurationsItem : backendAddressPoolsItem.getBackendIpConfigurations()) {
-                                ObjectNode resourceIdValue3 = objectMapper.createObjectNode();
-                                backendIPConfigurationsArray.add(resourceIdValue3);
+                                ObjectNode resourceIdValue5 = objectMapper.createObjectNode();
+                                backendIPConfigurationsArray.add(resourceIdValue5);
                                 
                                 if (backendIPConfigurationsItem.getId() != null) {
-                                    ((ObjectNode) resourceIdValue3).put("id", backendIPConfigurationsItem.getId());
+                                    ((ObjectNode) resourceIdValue5).put("id", backendIPConfigurationsItem.getId());
                                 }
                             }
                             ((ObjectNode) propertiesValue3).put("backendIPConfigurations", backendIPConfigurationsArray);
@@ -337,14 +386,23 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                         if (backendAddressPoolsItem.getLoadBalancingRules() instanceof LazyCollection == false || ((LazyCollection) backendAddressPoolsItem.getLoadBalancingRules()).isInitialized()) {
                             ArrayNode loadBalancingRulesArray2 = objectMapper.createArrayNode();
                             for (ResourceId loadBalancingRulesItem2 : backendAddressPoolsItem.getLoadBalancingRules()) {
-                                ObjectNode resourceIdValue4 = objectMapper.createObjectNode();
-                                loadBalancingRulesArray2.add(resourceIdValue4);
+                                ObjectNode resourceIdValue6 = objectMapper.createObjectNode();
+                                loadBalancingRulesArray2.add(resourceIdValue6);
                                 
                                 if (loadBalancingRulesItem2.getId() != null) {
-                                    ((ObjectNode) resourceIdValue4).put("id", loadBalancingRulesItem2.getId());
+                                    ((ObjectNode) resourceIdValue6).put("id", loadBalancingRulesItem2.getId());
                                 }
                             }
                             ((ObjectNode) propertiesValue3).put("loadBalancingRules", loadBalancingRulesArray2);
+                        }
+                    }
+                    
+                    if (backendAddressPoolsItem.getOutboundNatRule() != null) {
+                        ObjectNode outboundNatRuleValue = objectMapper.createObjectNode();
+                        ((ObjectNode) propertiesValue3).put("outboundNatRule", outboundNatRuleValue);
+                        
+                        if (backendAddressPoolsItem.getOutboundNatRule().getId() != null) {
+                            ((ObjectNode) outboundNatRuleValue).put("id", backendAddressPoolsItem.getOutboundNatRule().getId());
                         }
                     }
                     
@@ -453,11 +511,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                         if (probesItem.getLoadBalancingRules() instanceof LazyCollection == false || ((LazyCollection) probesItem.getLoadBalancingRules()).isInitialized()) {
                             ArrayNode loadBalancingRulesArray4 = objectMapper.createArrayNode();
                             for (ResourceId loadBalancingRulesItem4 : probesItem.getLoadBalancingRules()) {
-                                ObjectNode resourceIdValue5 = objectMapper.createObjectNode();
-                                loadBalancingRulesArray4.add(resourceIdValue5);
+                                ObjectNode resourceIdValue7 = objectMapper.createObjectNode();
+                                loadBalancingRulesArray4.add(resourceIdValue7);
                                 
                                 if (loadBalancingRulesItem4.getId() != null) {
-                                    ((ObjectNode) resourceIdValue5).put("id", loadBalancingRulesItem4.getId());
+                                    ((ObjectNode) resourceIdValue7).put("id", loadBalancingRulesItem4.getId());
                                 }
                             }
                             ((ObjectNode) propertiesValue5).put("loadBalancingRules", loadBalancingRulesArray4);
@@ -556,6 +614,111 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
             }
         }
         
+        if (parameters.getInboundNatPools() != null) {
+            if (parameters.getInboundNatPools() instanceof LazyCollection == false || ((LazyCollection) parameters.getInboundNatPools()).isInitialized()) {
+                ArrayNode inboundNatPoolsArray2 = objectMapper.createArrayNode();
+                for (InboundNatPool inboundNatPoolsItem2 : parameters.getInboundNatPools()) {
+                    ObjectNode inboundNatPoolJsonFormatValue = objectMapper.createObjectNode();
+                    inboundNatPoolsArray2.add(inboundNatPoolJsonFormatValue);
+                    
+                    ObjectNode propertiesValue7 = objectMapper.createObjectNode();
+                    ((ObjectNode) inboundNatPoolJsonFormatValue).put("properties", propertiesValue7);
+                    
+                    if (inboundNatPoolsItem2.getFrontendIPConfiguration() != null) {
+                        ObjectNode frontendIPConfigurationValue3 = objectMapper.createObjectNode();
+                        ((ObjectNode) propertiesValue7).put("frontendIPConfiguration", frontendIPConfigurationValue3);
+                        
+                        if (inboundNatPoolsItem2.getFrontendIPConfiguration().getId() != null) {
+                            ((ObjectNode) frontendIPConfigurationValue3).put("id", inboundNatPoolsItem2.getFrontendIPConfiguration().getId());
+                        }
+                    }
+                    
+                    ((ObjectNode) propertiesValue7).put("protocol", inboundNatPoolsItem2.getProtocol());
+                    
+                    ((ObjectNode) propertiesValue7).put("frontendPortRangeStart", inboundNatPoolsItem2.getFrontendPortRangeStart());
+                    
+                    ((ObjectNode) propertiesValue7).put("frontendPortRangeEnd", inboundNatPoolsItem2.getFrontendPortRangeEnd());
+                    
+                    ((ObjectNode) propertiesValue7).put("backendPort", inboundNatPoolsItem2.getBackendPort());
+                    
+                    if (inboundNatPoolsItem2.getProvisioningState() != null) {
+                        ((ObjectNode) propertiesValue7).put("provisioningState", inboundNatPoolsItem2.getProvisioningState());
+                    }
+                    
+                    if (inboundNatPoolsItem2.getName() != null) {
+                        ((ObjectNode) inboundNatPoolJsonFormatValue).put("name", inboundNatPoolsItem2.getName());
+                    }
+                    
+                    if (inboundNatPoolsItem2.getEtag() != null) {
+                        ((ObjectNode) inboundNatPoolJsonFormatValue).put("etag", inboundNatPoolsItem2.getEtag());
+                    }
+                    
+                    if (inboundNatPoolsItem2.getId() != null) {
+                        ((ObjectNode) inboundNatPoolJsonFormatValue).put("id", inboundNatPoolsItem2.getId());
+                    }
+                }
+                ((ObjectNode) propertiesValue).put("inboundNatPools", inboundNatPoolsArray2);
+            }
+        }
+        
+        if (parameters.getOutboundNatRules() != null) {
+            if (parameters.getOutboundNatRules() instanceof LazyCollection == false || ((LazyCollection) parameters.getOutboundNatRules()).isInitialized()) {
+                ArrayNode outboundNatRulesArray2 = objectMapper.createArrayNode();
+                for (OutboundNatRule outboundNatRulesItem2 : parameters.getOutboundNatRules()) {
+                    ObjectNode outboundNatRuleJsonFormatValue = objectMapper.createObjectNode();
+                    outboundNatRulesArray2.add(outboundNatRuleJsonFormatValue);
+                    
+                    ObjectNode propertiesValue8 = objectMapper.createObjectNode();
+                    ((ObjectNode) outboundNatRuleJsonFormatValue).put("properties", propertiesValue8);
+                    
+                    ((ObjectNode) propertiesValue8).put("allocatedOutboundPorts", outboundNatRulesItem2.getAllocatedOutboundPorts());
+                    
+                    if (outboundNatRulesItem2.getFrontendIpConfigurations() != null) {
+                        if (outboundNatRulesItem2.getFrontendIpConfigurations() instanceof LazyCollection == false || ((LazyCollection) outboundNatRulesItem2.getFrontendIpConfigurations()).isInitialized()) {
+                            ArrayNode frontendIPConfigurationsArray2 = objectMapper.createArrayNode();
+                            for (ResourceId frontendIPConfigurationsItem2 : outboundNatRulesItem2.getFrontendIpConfigurations()) {
+                                ObjectNode resourceIdValue8 = objectMapper.createObjectNode();
+                                frontendIPConfigurationsArray2.add(resourceIdValue8);
+                                
+                                if (frontendIPConfigurationsItem2.getId() != null) {
+                                    ((ObjectNode) resourceIdValue8).put("id", frontendIPConfigurationsItem2.getId());
+                                }
+                            }
+                            ((ObjectNode) propertiesValue8).put("frontendIPConfigurations", frontendIPConfigurationsArray2);
+                        }
+                    }
+                    
+                    ObjectNode backendAddressPoolValue2 = objectMapper.createObjectNode();
+                    ((ObjectNode) propertiesValue8).put("backendAddressPool", backendAddressPoolValue2);
+                    
+                    if (outboundNatRulesItem2.getBackendAddressPool().getId() != null) {
+                        ((ObjectNode) backendAddressPoolValue2).put("id", outboundNatRulesItem2.getBackendAddressPool().getId());
+                    }
+                    
+                    if (outboundNatRulesItem2.getProvisioningState() != null) {
+                        ((ObjectNode) propertiesValue8).put("provisioningState", outboundNatRulesItem2.getProvisioningState());
+                    }
+                    
+                    if (outboundNatRulesItem2.getName() != null) {
+                        ((ObjectNode) outboundNatRuleJsonFormatValue).put("name", outboundNatRulesItem2.getName());
+                    }
+                    
+                    if (outboundNatRulesItem2.getEtag() != null) {
+                        ((ObjectNode) outboundNatRuleJsonFormatValue).put("etag", outboundNatRulesItem2.getEtag());
+                    }
+                    
+                    if (outboundNatRulesItem2.getId() != null) {
+                        ((ObjectNode) outboundNatRuleJsonFormatValue).put("id", outboundNatRulesItem2.getId());
+                    }
+                }
+                ((ObjectNode) propertiesValue).put("outboundNatRules", outboundNatRulesArray2);
+            }
+        }
+        
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -621,39 +784,40 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new LoadBalancerPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
                     LoadBalancer loadBalancerInstance = new LoadBalancer();
                     result.setLoadBalancer(loadBalancerInstance);
                     
-                    JsonNode propertiesValue7 = responseDoc.get("properties");
-                    if (propertiesValue7 != null && propertiesValue7 instanceof NullNode == false) {
-                        JsonNode frontendIPConfigurationsArray2 = propertiesValue7.get("frontendIPConfigurations");
-                        if (frontendIPConfigurationsArray2 != null && frontendIPConfigurationsArray2 instanceof NullNode == false) {
-                            for (JsonNode frontendIPConfigurationsValue : ((ArrayNode) frontendIPConfigurationsArray2)) {
+                    JsonNode propertiesValue9 = responseDoc.get("properties");
+                    if (propertiesValue9 != null && propertiesValue9 instanceof NullNode == false) {
+                        JsonNode frontendIPConfigurationsArray3 = propertiesValue9.get("frontendIPConfigurations");
+                        if (frontendIPConfigurationsArray3 != null && frontendIPConfigurationsArray3 instanceof NullNode == false) {
+                            for (JsonNode frontendIPConfigurationsValue : ((ArrayNode) frontendIPConfigurationsArray3)) {
                                 FrontendIpConfiguration frontendIpConfigurationJsonFormatInstance = new FrontendIpConfiguration();
                                 loadBalancerInstance.getFrontendIpConfigurations().add(frontendIpConfigurationJsonFormatInstance);
                                 
-                                JsonNode propertiesValue8 = frontendIPConfigurationsValue.get("properties");
-                                if (propertiesValue8 != null && propertiesValue8 instanceof NullNode == false) {
-                                    JsonNode privateIPAddressValue = propertiesValue8.get("privateIPAddress");
+                                JsonNode propertiesValue10 = frontendIPConfigurationsValue.get("properties");
+                                if (propertiesValue10 != null && propertiesValue10 instanceof NullNode == false) {
+                                    JsonNode privateIPAddressValue = propertiesValue10.get("privateIPAddress");
                                     if (privateIPAddressValue != null && privateIPAddressValue instanceof NullNode == false) {
                                         String privateIPAddressInstance;
                                         privateIPAddressInstance = privateIPAddressValue.getTextValue();
                                         frontendIpConfigurationJsonFormatInstance.setPrivateIpAddress(privateIPAddressInstance);
                                     }
                                     
-                                    JsonNode privateIPAllocationMethodValue = propertiesValue8.get("privateIPAllocationMethod");
+                                    JsonNode privateIPAllocationMethodValue = propertiesValue10.get("privateIPAllocationMethod");
                                     if (privateIPAllocationMethodValue != null && privateIPAllocationMethodValue instanceof NullNode == false) {
                                         String privateIPAllocationMethodInstance;
                                         privateIPAllocationMethodInstance = privateIPAllocationMethodValue.getTextValue();
                                         frontendIpConfigurationJsonFormatInstance.setPrivateIpAllocationMethod(privateIPAllocationMethodInstance);
                                     }
                                     
-                                    JsonNode subnetValue2 = propertiesValue8.get("subnet");
+                                    JsonNode subnetValue2 = propertiesValue10.get("subnet");
                                     if (subnetValue2 != null && subnetValue2 instanceof NullNode == false) {
                                         ResourceId subnetInstance = new ResourceId();
                                         frontendIpConfigurationJsonFormatInstance.setSubnet(subnetInstance);
@@ -666,7 +830,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         }
                                     }
                                     
-                                    JsonNode publicIPAddressValue2 = propertiesValue8.get("publicIPAddress");
+                                    JsonNode publicIPAddressValue2 = propertiesValue10.get("publicIPAddress");
                                     if (publicIPAddressValue2 != null && publicIPAddressValue2 instanceof NullNode == false) {
                                         ResourceId publicIPAddressInstance = new ResourceId();
                                         frontendIpConfigurationJsonFormatInstance.setPublicIpAddress(publicIPAddressInstance);
@@ -679,7 +843,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         }
                                     }
                                     
-                                    JsonNode inboundNatRulesArray3 = propertiesValue8.get("inboundNatRules");
+                                    JsonNode inboundNatRulesArray3 = propertiesValue10.get("inboundNatRules");
                                     if (inboundNatRulesArray3 != null && inboundNatRulesArray3 instanceof NullNode == false) {
                                         for (JsonNode inboundNatRulesValue : ((ArrayNode) inboundNatRulesArray3)) {
                                             ResourceId resourceIdInstance = new ResourceId();
@@ -694,13 +858,13 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         }
                                     }
                                     
-                                    JsonNode loadBalancingRulesArray5 = propertiesValue8.get("loadBalancingRules");
-                                    if (loadBalancingRulesArray5 != null && loadBalancingRulesArray5 instanceof NullNode == false) {
-                                        for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray5)) {
+                                    JsonNode inboundNatPoolsArray3 = propertiesValue10.get("inboundNatPools");
+                                    if (inboundNatPoolsArray3 != null && inboundNatPoolsArray3 instanceof NullNode == false) {
+                                        for (JsonNode inboundNatPoolsValue : ((ArrayNode) inboundNatPoolsArray3)) {
                                             ResourceId resourceIdInstance2 = new ResourceId();
-                                            frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance2);
+                                            frontendIpConfigurationJsonFormatInstance.getInboundNatPools().add(resourceIdInstance2);
                                             
-                                            JsonNode idValue4 = loadBalancingRulesValue.get("id");
+                                            JsonNode idValue4 = inboundNatPoolsValue.get("id");
                                             if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                                 String idInstance4;
                                                 idInstance4 = idValue4.getTextValue();
@@ -709,7 +873,37 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         }
                                     }
                                     
-                                    JsonNode provisioningStateValue = propertiesValue8.get("provisioningState");
+                                    JsonNode outboundNatRulesArray3 = propertiesValue10.get("outboundNatRules");
+                                    if (outboundNatRulesArray3 != null && outboundNatRulesArray3 instanceof NullNode == false) {
+                                        for (JsonNode outboundNatRulesValue : ((ArrayNode) outboundNatRulesArray3)) {
+                                            ResourceId resourceIdInstance3 = new ResourceId();
+                                            frontendIpConfigurationJsonFormatInstance.getOutboundNatRules().add(resourceIdInstance3);
+                                            
+                                            JsonNode idValue5 = outboundNatRulesValue.get("id");
+                                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                                String idInstance5;
+                                                idInstance5 = idValue5.getTextValue();
+                                                resourceIdInstance3.setId(idInstance5);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode loadBalancingRulesArray5 = propertiesValue10.get("loadBalancingRules");
+                                    if (loadBalancingRulesArray5 != null && loadBalancingRulesArray5 instanceof NullNode == false) {
+                                        for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray5)) {
+                                            ResourceId resourceIdInstance4 = new ResourceId();
+                                            frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                            
+                                            JsonNode idValue6 = loadBalancingRulesValue.get("id");
+                                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
+                                                String idInstance6;
+                                                idInstance6 = idValue6.getTextValue();
+                                                resourceIdInstance4.setId(idInstance6);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode provisioningStateValue = propertiesValue10.get("provisioningState");
                                     if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
                                         String provisioningStateInstance;
                                         provisioningStateInstance = provisioningStateValue.getTextValue();
@@ -731,54 +925,67 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     frontendIpConfigurationJsonFormatInstance.setEtag(etagInstance);
                                 }
                                 
-                                JsonNode idValue5 = frontendIPConfigurationsValue.get("id");
-                                if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                    String idInstance5;
-                                    idInstance5 = idValue5.getTextValue();
-                                    frontendIpConfigurationJsonFormatInstance.setId(idInstance5);
+                                JsonNode idValue7 = frontendIPConfigurationsValue.get("id");
+                                if (idValue7 != null && idValue7 instanceof NullNode == false) {
+                                    String idInstance7;
+                                    idInstance7 = idValue7.getTextValue();
+                                    frontendIpConfigurationJsonFormatInstance.setId(idInstance7);
                                 }
                             }
                         }
                         
-                        JsonNode backendAddressPoolsArray2 = propertiesValue7.get("backendAddressPools");
+                        JsonNode backendAddressPoolsArray2 = propertiesValue9.get("backendAddressPools");
                         if (backendAddressPoolsArray2 != null && backendAddressPoolsArray2 instanceof NullNode == false) {
                             for (JsonNode backendAddressPoolsValue : ((ArrayNode) backendAddressPoolsArray2)) {
                                 BackendAddressPool backendAddressPoolJsonFormatInstance = new BackendAddressPool();
                                 loadBalancerInstance.getBackendAddressPools().add(backendAddressPoolJsonFormatInstance);
                                 
-                                JsonNode propertiesValue9 = backendAddressPoolsValue.get("properties");
-                                if (propertiesValue9 != null && propertiesValue9 instanceof NullNode == false) {
-                                    JsonNode backendIPConfigurationsArray2 = propertiesValue9.get("backendIPConfigurations");
+                                JsonNode propertiesValue11 = backendAddressPoolsValue.get("properties");
+                                if (propertiesValue11 != null && propertiesValue11 instanceof NullNode == false) {
+                                    JsonNode backendIPConfigurationsArray2 = propertiesValue11.get("backendIPConfigurations");
                                     if (backendIPConfigurationsArray2 != null && backendIPConfigurationsArray2 instanceof NullNode == false) {
                                         for (JsonNode backendIPConfigurationsValue : ((ArrayNode) backendIPConfigurationsArray2)) {
-                                            ResourceId resourceIdInstance3 = new ResourceId();
-                                            backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance3);
+                                            ResourceId resourceIdInstance5 = new ResourceId();
+                                            backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance5);
                                             
-                                            JsonNode idValue6 = backendIPConfigurationsValue.get("id");
-                                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                                String idInstance6;
-                                                idInstance6 = idValue6.getTextValue();
-                                                resourceIdInstance3.setId(idInstance6);
+                                            JsonNode idValue8 = backendIPConfigurationsValue.get("id");
+                                            if (idValue8 != null && idValue8 instanceof NullNode == false) {
+                                                String idInstance8;
+                                                idInstance8 = idValue8.getTextValue();
+                                                resourceIdInstance5.setId(idInstance8);
                                             }
                                         }
                                     }
                                     
-                                    JsonNode loadBalancingRulesArray6 = propertiesValue9.get("loadBalancingRules");
+                                    JsonNode loadBalancingRulesArray6 = propertiesValue11.get("loadBalancingRules");
                                     if (loadBalancingRulesArray6 != null && loadBalancingRulesArray6 instanceof NullNode == false) {
                                         for (JsonNode loadBalancingRulesValue2 : ((ArrayNode) loadBalancingRulesArray6)) {
-                                            ResourceId resourceIdInstance4 = new ResourceId();
-                                            backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                            ResourceId resourceIdInstance6 = new ResourceId();
+                                            backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance6);
                                             
-                                            JsonNode idValue7 = loadBalancingRulesValue2.get("id");
-                                            if (idValue7 != null && idValue7 instanceof NullNode == false) {
-                                                String idInstance7;
-                                                idInstance7 = idValue7.getTextValue();
-                                                resourceIdInstance4.setId(idInstance7);
+                                            JsonNode idValue9 = loadBalancingRulesValue2.get("id");
+                                            if (idValue9 != null && idValue9 instanceof NullNode == false) {
+                                                String idInstance9;
+                                                idInstance9 = idValue9.getTextValue();
+                                                resourceIdInstance6.setId(idInstance9);
                                             }
                                         }
                                     }
                                     
-                                    JsonNode provisioningStateValue2 = propertiesValue9.get("provisioningState");
+                                    JsonNode outboundNatRuleValue2 = propertiesValue11.get("outboundNatRule");
+                                    if (outboundNatRuleValue2 != null && outboundNatRuleValue2 instanceof NullNode == false) {
+                                        ResourceId outboundNatRuleInstance = new ResourceId();
+                                        backendAddressPoolJsonFormatInstance.setOutboundNatRule(outboundNatRuleInstance);
+                                        
+                                        JsonNode idValue10 = outboundNatRuleValue2.get("id");
+                                        if (idValue10 != null && idValue10 instanceof NullNode == false) {
+                                            String idInstance10;
+                                            idInstance10 = idValue10.getTextValue();
+                                            outboundNatRuleInstance.setId(idInstance10);
+                                        }
+                                    }
+                                    
+                                    JsonNode provisioningStateValue2 = propertiesValue11.get("provisioningState");
                                     if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                                         String provisioningStateInstance2;
                                         provisioningStateInstance2 = provisioningStateValue2.getTextValue();
@@ -800,105 +1007,105 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     backendAddressPoolJsonFormatInstance.setEtag(etagInstance2);
                                 }
                                 
-                                JsonNode idValue8 = backendAddressPoolsValue.get("id");
-                                if (idValue8 != null && idValue8 instanceof NullNode == false) {
-                                    String idInstance8;
-                                    idInstance8 = idValue8.getTextValue();
-                                    backendAddressPoolJsonFormatInstance.setId(idInstance8);
+                                JsonNode idValue11 = backendAddressPoolsValue.get("id");
+                                if (idValue11 != null && idValue11 instanceof NullNode == false) {
+                                    String idInstance11;
+                                    idInstance11 = idValue11.getTextValue();
+                                    backendAddressPoolJsonFormatInstance.setId(idInstance11);
                                 }
                             }
                         }
                         
-                        JsonNode loadBalancingRulesArray7 = propertiesValue7.get("loadBalancingRules");
+                        JsonNode loadBalancingRulesArray7 = propertiesValue9.get("loadBalancingRules");
                         if (loadBalancingRulesArray7 != null && loadBalancingRulesArray7 instanceof NullNode == false) {
                             for (JsonNode loadBalancingRulesValue3 : ((ArrayNode) loadBalancingRulesArray7)) {
                                 LoadBalancingRule loadBalancingRuleJsonFormatInstance = new LoadBalancingRule();
                                 loadBalancerInstance.getLoadBalancingRules().add(loadBalancingRuleJsonFormatInstance);
                                 
-                                JsonNode propertiesValue10 = loadBalancingRulesValue3.get("properties");
-                                if (propertiesValue10 != null && propertiesValue10 instanceof NullNode == false) {
-                                    JsonNode frontendIPConfigurationValue3 = propertiesValue10.get("frontendIPConfiguration");
-                                    if (frontendIPConfigurationValue3 != null && frontendIPConfigurationValue3 instanceof NullNode == false) {
+                                JsonNode propertiesValue12 = loadBalancingRulesValue3.get("properties");
+                                if (propertiesValue12 != null && propertiesValue12 instanceof NullNode == false) {
+                                    JsonNode frontendIPConfigurationValue4 = propertiesValue12.get("frontendIPConfiguration");
+                                    if (frontendIPConfigurationValue4 != null && frontendIPConfigurationValue4 instanceof NullNode == false) {
                                         ResourceId frontendIPConfigurationInstance = new ResourceId();
                                         loadBalancingRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance);
                                         
-                                        JsonNode idValue9 = frontendIPConfigurationValue3.get("id");
-                                        if (idValue9 != null && idValue9 instanceof NullNode == false) {
-                                            String idInstance9;
-                                            idInstance9 = idValue9.getTextValue();
-                                            frontendIPConfigurationInstance.setId(idInstance9);
+                                        JsonNode idValue12 = frontendIPConfigurationValue4.get("id");
+                                        if (idValue12 != null && idValue12 instanceof NullNode == false) {
+                                            String idInstance12;
+                                            idInstance12 = idValue12.getTextValue();
+                                            frontendIPConfigurationInstance.setId(idInstance12);
                                         }
                                     }
                                     
-                                    JsonNode backendAddressPoolValue2 = propertiesValue10.get("backendAddressPool");
-                                    if (backendAddressPoolValue2 != null && backendAddressPoolValue2 instanceof NullNode == false) {
+                                    JsonNode backendAddressPoolValue3 = propertiesValue12.get("backendAddressPool");
+                                    if (backendAddressPoolValue3 != null && backendAddressPoolValue3 instanceof NullNode == false) {
                                         ResourceId backendAddressPoolInstance = new ResourceId();
                                         loadBalancingRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance);
                                         
-                                        JsonNode idValue10 = backendAddressPoolValue2.get("id");
-                                        if (idValue10 != null && idValue10 instanceof NullNode == false) {
-                                            String idInstance10;
-                                            idInstance10 = idValue10.getTextValue();
-                                            backendAddressPoolInstance.setId(idInstance10);
+                                        JsonNode idValue13 = backendAddressPoolValue3.get("id");
+                                        if (idValue13 != null && idValue13 instanceof NullNode == false) {
+                                            String idInstance13;
+                                            idInstance13 = idValue13.getTextValue();
+                                            backendAddressPoolInstance.setId(idInstance13);
                                         }
                                     }
                                     
-                                    JsonNode probeValue2 = propertiesValue10.get("probe");
+                                    JsonNode probeValue2 = propertiesValue12.get("probe");
                                     if (probeValue2 != null && probeValue2 instanceof NullNode == false) {
                                         ResourceId probeInstance = new ResourceId();
                                         loadBalancingRuleJsonFormatInstance.setProbe(probeInstance);
                                         
-                                        JsonNode idValue11 = probeValue2.get("id");
-                                        if (idValue11 != null && idValue11 instanceof NullNode == false) {
-                                            String idInstance11;
-                                            idInstance11 = idValue11.getTextValue();
-                                            probeInstance.setId(idInstance11);
+                                        JsonNode idValue14 = probeValue2.get("id");
+                                        if (idValue14 != null && idValue14 instanceof NullNode == false) {
+                                            String idInstance14;
+                                            idInstance14 = idValue14.getTextValue();
+                                            probeInstance.setId(idInstance14);
                                         }
                                     }
                                     
-                                    JsonNode protocolValue = propertiesValue10.get("protocol");
+                                    JsonNode protocolValue = propertiesValue12.get("protocol");
                                     if (protocolValue != null && protocolValue instanceof NullNode == false) {
                                         String protocolInstance;
                                         protocolInstance = protocolValue.getTextValue();
                                         loadBalancingRuleJsonFormatInstance.setProtocol(protocolInstance);
                                     }
                                     
-                                    JsonNode loadDistributionValue = propertiesValue10.get("loadDistribution");
+                                    JsonNode loadDistributionValue = propertiesValue12.get("loadDistribution");
                                     if (loadDistributionValue != null && loadDistributionValue instanceof NullNode == false) {
                                         String loadDistributionInstance;
                                         loadDistributionInstance = loadDistributionValue.getTextValue();
                                         loadBalancingRuleJsonFormatInstance.setLoadDistribution(loadDistributionInstance);
                                     }
                                     
-                                    JsonNode frontendPortValue = propertiesValue10.get("frontendPort");
+                                    JsonNode frontendPortValue = propertiesValue12.get("frontendPort");
                                     if (frontendPortValue != null && frontendPortValue instanceof NullNode == false) {
                                         int frontendPortInstance;
                                         frontendPortInstance = frontendPortValue.getIntValue();
                                         loadBalancingRuleJsonFormatInstance.setFrontendPort(frontendPortInstance);
                                     }
                                     
-                                    JsonNode backendPortValue = propertiesValue10.get("backendPort");
+                                    JsonNode backendPortValue = propertiesValue12.get("backendPort");
                                     if (backendPortValue != null && backendPortValue instanceof NullNode == false) {
                                         int backendPortInstance;
                                         backendPortInstance = backendPortValue.getIntValue();
                                         loadBalancingRuleJsonFormatInstance.setBackendPort(backendPortInstance);
                                     }
                                     
-                                    JsonNode idleTimeoutInMinutesValue = propertiesValue10.get("idleTimeoutInMinutes");
+                                    JsonNode idleTimeoutInMinutesValue = propertiesValue12.get("idleTimeoutInMinutes");
                                     if (idleTimeoutInMinutesValue != null && idleTimeoutInMinutesValue instanceof NullNode == false) {
                                         int idleTimeoutInMinutesInstance;
                                         idleTimeoutInMinutesInstance = idleTimeoutInMinutesValue.getIntValue();
                                         loadBalancingRuleJsonFormatInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance);
                                     }
                                     
-                                    JsonNode enableFloatingIPValue = propertiesValue10.get("enableFloatingIP");
+                                    JsonNode enableFloatingIPValue = propertiesValue12.get("enableFloatingIP");
                                     if (enableFloatingIPValue != null && enableFloatingIPValue instanceof NullNode == false) {
                                         boolean enableFloatingIPInstance;
                                         enableFloatingIPInstance = enableFloatingIPValue.getBooleanValue();
                                         loadBalancingRuleJsonFormatInstance.setEnableFloatingIP(enableFloatingIPInstance);
                                     }
                                     
-                                    JsonNode provisioningStateValue3 = propertiesValue10.get("provisioningState");
+                                    JsonNode provisioningStateValue3 = propertiesValue12.get("provisioningState");
                                     if (provisioningStateValue3 != null && provisioningStateValue3 instanceof NullNode == false) {
                                         String provisioningStateInstance3;
                                         provisioningStateInstance3 = provisioningStateValue3.getTextValue();
@@ -920,74 +1127,74 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     loadBalancingRuleJsonFormatInstance.setEtag(etagInstance3);
                                 }
                                 
-                                JsonNode idValue12 = loadBalancingRulesValue3.get("id");
-                                if (idValue12 != null && idValue12 instanceof NullNode == false) {
-                                    String idInstance12;
-                                    idInstance12 = idValue12.getTextValue();
-                                    loadBalancingRuleJsonFormatInstance.setId(idInstance12);
+                                JsonNode idValue15 = loadBalancingRulesValue3.get("id");
+                                if (idValue15 != null && idValue15 instanceof NullNode == false) {
+                                    String idInstance15;
+                                    idInstance15 = idValue15.getTextValue();
+                                    loadBalancingRuleJsonFormatInstance.setId(idInstance15);
                                 }
                             }
                         }
                         
-                        JsonNode probesArray2 = propertiesValue7.get("probes");
+                        JsonNode probesArray2 = propertiesValue9.get("probes");
                         if (probesArray2 != null && probesArray2 instanceof NullNode == false) {
                             for (JsonNode probesValue : ((ArrayNode) probesArray2)) {
                                 Probe probeJsonFormatInstance = new Probe();
                                 loadBalancerInstance.getProbes().add(probeJsonFormatInstance);
                                 
-                                JsonNode propertiesValue11 = probesValue.get("properties");
-                                if (propertiesValue11 != null && propertiesValue11 instanceof NullNode == false) {
-                                    JsonNode loadBalancingRulesArray8 = propertiesValue11.get("loadBalancingRules");
+                                JsonNode propertiesValue13 = probesValue.get("properties");
+                                if (propertiesValue13 != null && propertiesValue13 instanceof NullNode == false) {
+                                    JsonNode loadBalancingRulesArray8 = propertiesValue13.get("loadBalancingRules");
                                     if (loadBalancingRulesArray8 != null && loadBalancingRulesArray8 instanceof NullNode == false) {
                                         for (JsonNode loadBalancingRulesValue4 : ((ArrayNode) loadBalancingRulesArray8)) {
-                                            ResourceId resourceIdInstance5 = new ResourceId();
-                                            probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance5);
+                                            ResourceId resourceIdInstance7 = new ResourceId();
+                                            probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance7);
                                             
-                                            JsonNode idValue13 = loadBalancingRulesValue4.get("id");
-                                            if (idValue13 != null && idValue13 instanceof NullNode == false) {
-                                                String idInstance13;
-                                                idInstance13 = idValue13.getTextValue();
-                                                resourceIdInstance5.setId(idInstance13);
+                                            JsonNode idValue16 = loadBalancingRulesValue4.get("id");
+                                            if (idValue16 != null && idValue16 instanceof NullNode == false) {
+                                                String idInstance16;
+                                                idInstance16 = idValue16.getTextValue();
+                                                resourceIdInstance7.setId(idInstance16);
                                             }
                                         }
                                     }
                                     
-                                    JsonNode protocolValue2 = propertiesValue11.get("protocol");
+                                    JsonNode protocolValue2 = propertiesValue13.get("protocol");
                                     if (protocolValue2 != null && protocolValue2 instanceof NullNode == false) {
                                         String protocolInstance2;
                                         protocolInstance2 = protocolValue2.getTextValue();
                                         probeJsonFormatInstance.setProtocol(protocolInstance2);
                                     }
                                     
-                                    JsonNode portValue = propertiesValue11.get("port");
+                                    JsonNode portValue = propertiesValue13.get("port");
                                     if (portValue != null && portValue instanceof NullNode == false) {
                                         int portInstance;
                                         portInstance = portValue.getIntValue();
                                         probeJsonFormatInstance.setPort(portInstance);
                                     }
                                     
-                                    JsonNode intervalInSecondsValue = propertiesValue11.get("intervalInSeconds");
+                                    JsonNode intervalInSecondsValue = propertiesValue13.get("intervalInSeconds");
                                     if (intervalInSecondsValue != null && intervalInSecondsValue instanceof NullNode == false) {
                                         int intervalInSecondsInstance;
                                         intervalInSecondsInstance = intervalInSecondsValue.getIntValue();
                                         probeJsonFormatInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                     }
                                     
-                                    JsonNode numberOfProbesValue = propertiesValue11.get("numberOfProbes");
+                                    JsonNode numberOfProbesValue = propertiesValue13.get("numberOfProbes");
                                     if (numberOfProbesValue != null && numberOfProbesValue instanceof NullNode == false) {
                                         int numberOfProbesInstance;
                                         numberOfProbesInstance = numberOfProbesValue.getIntValue();
                                         probeJsonFormatInstance.setNumberOfProbes(numberOfProbesInstance);
                                     }
                                     
-                                    JsonNode requestPathValue = propertiesValue11.get("requestPath");
+                                    JsonNode requestPathValue = propertiesValue13.get("requestPath");
                                     if (requestPathValue != null && requestPathValue instanceof NullNode == false) {
                                         String requestPathInstance;
                                         requestPathInstance = requestPathValue.getTextValue();
                                         probeJsonFormatInstance.setRequestPath(requestPathInstance);
                                     }
                                     
-                                    JsonNode provisioningStateValue4 = propertiesValue11.get("provisioningState");
+                                    JsonNode provisioningStateValue4 = propertiesValue13.get("provisioningState");
                                     if (provisioningStateValue4 != null && provisioningStateValue4 instanceof NullNode == false) {
                                         String provisioningStateInstance4;
                                         provisioningStateInstance4 = provisioningStateValue4.getTextValue();
@@ -1009,85 +1216,85 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     probeJsonFormatInstance.setEtag(etagInstance4);
                                 }
                                 
-                                JsonNode idValue14 = probesValue.get("id");
-                                if (idValue14 != null && idValue14 instanceof NullNode == false) {
-                                    String idInstance14;
-                                    idInstance14 = idValue14.getTextValue();
-                                    probeJsonFormatInstance.setId(idInstance14);
+                                JsonNode idValue17 = probesValue.get("id");
+                                if (idValue17 != null && idValue17 instanceof NullNode == false) {
+                                    String idInstance17;
+                                    idInstance17 = idValue17.getTextValue();
+                                    probeJsonFormatInstance.setId(idInstance17);
                                 }
                             }
                         }
                         
-                        JsonNode inboundNatRulesArray4 = propertiesValue7.get("inboundNatRules");
+                        JsonNode inboundNatRulesArray4 = propertiesValue9.get("inboundNatRules");
                         if (inboundNatRulesArray4 != null && inboundNatRulesArray4 instanceof NullNode == false) {
                             for (JsonNode inboundNatRulesValue2 : ((ArrayNode) inboundNatRulesArray4)) {
                                 InboundNatRule inboundNatRuleJsonFormatInstance = new InboundNatRule();
                                 loadBalancerInstance.getInboundNatRules().add(inboundNatRuleJsonFormatInstance);
                                 
-                                JsonNode propertiesValue12 = inboundNatRulesValue2.get("properties");
-                                if (propertiesValue12 != null && propertiesValue12 instanceof NullNode == false) {
-                                    JsonNode frontendIPConfigurationValue4 = propertiesValue12.get("frontendIPConfiguration");
-                                    if (frontendIPConfigurationValue4 != null && frontendIPConfigurationValue4 instanceof NullNode == false) {
+                                JsonNode propertiesValue14 = inboundNatRulesValue2.get("properties");
+                                if (propertiesValue14 != null && propertiesValue14 instanceof NullNode == false) {
+                                    JsonNode frontendIPConfigurationValue5 = propertiesValue14.get("frontendIPConfiguration");
+                                    if (frontendIPConfigurationValue5 != null && frontendIPConfigurationValue5 instanceof NullNode == false) {
                                         ResourceId frontendIPConfigurationInstance2 = new ResourceId();
                                         inboundNatRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance2);
                                         
-                                        JsonNode idValue15 = frontendIPConfigurationValue4.get("id");
-                                        if (idValue15 != null && idValue15 instanceof NullNode == false) {
-                                            String idInstance15;
-                                            idInstance15 = idValue15.getTextValue();
-                                            frontendIPConfigurationInstance2.setId(idInstance15);
+                                        JsonNode idValue18 = frontendIPConfigurationValue5.get("id");
+                                        if (idValue18 != null && idValue18 instanceof NullNode == false) {
+                                            String idInstance18;
+                                            idInstance18 = idValue18.getTextValue();
+                                            frontendIPConfigurationInstance2.setId(idInstance18);
                                         }
                                     }
                                     
-                                    JsonNode backendIPConfigurationValue2 = propertiesValue12.get("backendIPConfiguration");
+                                    JsonNode backendIPConfigurationValue2 = propertiesValue14.get("backendIPConfiguration");
                                     if (backendIPConfigurationValue2 != null && backendIPConfigurationValue2 instanceof NullNode == false) {
                                         ResourceId backendIPConfigurationInstance = new ResourceId();
                                         inboundNatRuleJsonFormatInstance.setBackendIPConfiguration(backendIPConfigurationInstance);
                                         
-                                        JsonNode idValue16 = backendIPConfigurationValue2.get("id");
-                                        if (idValue16 != null && idValue16 instanceof NullNode == false) {
-                                            String idInstance16;
-                                            idInstance16 = idValue16.getTextValue();
-                                            backendIPConfigurationInstance.setId(idInstance16);
+                                        JsonNode idValue19 = backendIPConfigurationValue2.get("id");
+                                        if (idValue19 != null && idValue19 instanceof NullNode == false) {
+                                            String idInstance19;
+                                            idInstance19 = idValue19.getTextValue();
+                                            backendIPConfigurationInstance.setId(idInstance19);
                                         }
                                     }
                                     
-                                    JsonNode protocolValue3 = propertiesValue12.get("protocol");
+                                    JsonNode protocolValue3 = propertiesValue14.get("protocol");
                                     if (protocolValue3 != null && protocolValue3 instanceof NullNode == false) {
                                         String protocolInstance3;
                                         protocolInstance3 = protocolValue3.getTextValue();
                                         inboundNatRuleJsonFormatInstance.setProtocol(protocolInstance3);
                                     }
                                     
-                                    JsonNode frontendPortValue2 = propertiesValue12.get("frontendPort");
+                                    JsonNode frontendPortValue2 = propertiesValue14.get("frontendPort");
                                     if (frontendPortValue2 != null && frontendPortValue2 instanceof NullNode == false) {
                                         int frontendPortInstance2;
                                         frontendPortInstance2 = frontendPortValue2.getIntValue();
                                         inboundNatRuleJsonFormatInstance.setFrontendPort(frontendPortInstance2);
                                     }
                                     
-                                    JsonNode backendPortValue2 = propertiesValue12.get("backendPort");
+                                    JsonNode backendPortValue2 = propertiesValue14.get("backendPort");
                                     if (backendPortValue2 != null && backendPortValue2 instanceof NullNode == false) {
                                         int backendPortInstance2;
                                         backendPortInstance2 = backendPortValue2.getIntValue();
                                         inboundNatRuleJsonFormatInstance.setBackendPort(backendPortInstance2);
                                     }
                                     
-                                    JsonNode idleTimeoutInMinutesValue2 = propertiesValue12.get("idleTimeoutInMinutes");
+                                    JsonNode idleTimeoutInMinutesValue2 = propertiesValue14.get("idleTimeoutInMinutes");
                                     if (idleTimeoutInMinutesValue2 != null && idleTimeoutInMinutesValue2 instanceof NullNode == false) {
                                         int idleTimeoutInMinutesInstance2;
                                         idleTimeoutInMinutesInstance2 = idleTimeoutInMinutesValue2.getIntValue();
                                         inboundNatRuleJsonFormatInstance.setIdleTimeoutInMinutes(idleTimeoutInMinutesInstance2);
                                     }
                                     
-                                    JsonNode enableFloatingIPValue2 = propertiesValue12.get("enableFloatingIP");
+                                    JsonNode enableFloatingIPValue2 = propertiesValue14.get("enableFloatingIP");
                                     if (enableFloatingIPValue2 != null && enableFloatingIPValue2 instanceof NullNode == false) {
                                         boolean enableFloatingIPInstance2;
                                         enableFloatingIPInstance2 = enableFloatingIPValue2.getBooleanValue();
                                         inboundNatRuleJsonFormatInstance.setEnableFloatingIP(enableFloatingIPInstance2);
                                     }
                                     
-                                    JsonNode provisioningStateValue5 = propertiesValue12.get("provisioningState");
+                                    JsonNode provisioningStateValue5 = propertiesValue14.get("provisioningState");
                                     if (provisioningStateValue5 != null && provisioningStateValue5 instanceof NullNode == false) {
                                         String provisioningStateInstance5;
                                         provisioningStateInstance5 = provisioningStateValue5.getTextValue();
@@ -1109,42 +1316,203 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     inboundNatRuleJsonFormatInstance.setEtag(etagInstance5);
                                 }
                                 
-                                JsonNode idValue17 = inboundNatRulesValue2.get("id");
-                                if (idValue17 != null && idValue17 instanceof NullNode == false) {
-                                    String idInstance17;
-                                    idInstance17 = idValue17.getTextValue();
-                                    inboundNatRuleJsonFormatInstance.setId(idInstance17);
+                                JsonNode idValue20 = inboundNatRulesValue2.get("id");
+                                if (idValue20 != null && idValue20 instanceof NullNode == false) {
+                                    String idInstance20;
+                                    idInstance20 = idValue20.getTextValue();
+                                    inboundNatRuleJsonFormatInstance.setId(idInstance20);
                                 }
                             }
                         }
                         
-                        JsonNode provisioningStateValue6 = propertiesValue7.get("provisioningState");
-                        if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
-                            String provisioningStateInstance6;
-                            provisioningStateInstance6 = provisioningStateValue6.getTextValue();
-                            loadBalancerInstance.setProvisioningState(provisioningStateInstance6);
+                        JsonNode inboundNatPoolsArray4 = propertiesValue9.get("inboundNatPools");
+                        if (inboundNatPoolsArray4 != null && inboundNatPoolsArray4 instanceof NullNode == false) {
+                            for (JsonNode inboundNatPoolsValue2 : ((ArrayNode) inboundNatPoolsArray4)) {
+                                InboundNatPool inboundNatPoolJsonFormatInstance = new InboundNatPool();
+                                loadBalancerInstance.getInboundNatPools().add(inboundNatPoolJsonFormatInstance);
+                                
+                                JsonNode propertiesValue15 = inboundNatPoolsValue2.get("properties");
+                                if (propertiesValue15 != null && propertiesValue15 instanceof NullNode == false) {
+                                    JsonNode frontendIPConfigurationValue6 = propertiesValue15.get("frontendIPConfiguration");
+                                    if (frontendIPConfigurationValue6 != null && frontendIPConfigurationValue6 instanceof NullNode == false) {
+                                        ResourceId frontendIPConfigurationInstance3 = new ResourceId();
+                                        inboundNatPoolJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance3);
+                                        
+                                        JsonNode idValue21 = frontendIPConfigurationValue6.get("id");
+                                        if (idValue21 != null && idValue21 instanceof NullNode == false) {
+                                            String idInstance21;
+                                            idInstance21 = idValue21.getTextValue();
+                                            frontendIPConfigurationInstance3.setId(idInstance21);
+                                        }
+                                    }
+                                    
+                                    JsonNode protocolValue4 = propertiesValue15.get("protocol");
+                                    if (protocolValue4 != null && protocolValue4 instanceof NullNode == false) {
+                                        String protocolInstance4;
+                                        protocolInstance4 = protocolValue4.getTextValue();
+                                        inboundNatPoolJsonFormatInstance.setProtocol(protocolInstance4);
+                                    }
+                                    
+                                    JsonNode frontendPortRangeStartValue = propertiesValue15.get("frontendPortRangeStart");
+                                    if (frontendPortRangeStartValue != null && frontendPortRangeStartValue instanceof NullNode == false) {
+                                        int frontendPortRangeStartInstance;
+                                        frontendPortRangeStartInstance = frontendPortRangeStartValue.getIntValue();
+                                        inboundNatPoolJsonFormatInstance.setFrontendPortRangeStart(frontendPortRangeStartInstance);
+                                    }
+                                    
+                                    JsonNode frontendPortRangeEndValue = propertiesValue15.get("frontendPortRangeEnd");
+                                    if (frontendPortRangeEndValue != null && frontendPortRangeEndValue instanceof NullNode == false) {
+                                        int frontendPortRangeEndInstance;
+                                        frontendPortRangeEndInstance = frontendPortRangeEndValue.getIntValue();
+                                        inboundNatPoolJsonFormatInstance.setFrontendPortRangeEnd(frontendPortRangeEndInstance);
+                                    }
+                                    
+                                    JsonNode backendPortValue3 = propertiesValue15.get("backendPort");
+                                    if (backendPortValue3 != null && backendPortValue3 instanceof NullNode == false) {
+                                        int backendPortInstance3;
+                                        backendPortInstance3 = backendPortValue3.getIntValue();
+                                        inboundNatPoolJsonFormatInstance.setBackendPort(backendPortInstance3);
+                                    }
+                                    
+                                    JsonNode provisioningStateValue6 = propertiesValue15.get("provisioningState");
+                                    if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
+                                        String provisioningStateInstance6;
+                                        provisioningStateInstance6 = provisioningStateValue6.getTextValue();
+                                        inboundNatPoolJsonFormatInstance.setProvisioningState(provisioningStateInstance6);
+                                    }
+                                }
+                                
+                                JsonNode nameValue6 = inboundNatPoolsValue2.get("name");
+                                if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
+                                    String nameInstance6;
+                                    nameInstance6 = nameValue6.getTextValue();
+                                    inboundNatPoolJsonFormatInstance.setName(nameInstance6);
+                                }
+                                
+                                JsonNode etagValue6 = inboundNatPoolsValue2.get("etag");
+                                if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
+                                    String etagInstance6;
+                                    etagInstance6 = etagValue6.getTextValue();
+                                    inboundNatPoolJsonFormatInstance.setEtag(etagInstance6);
+                                }
+                                
+                                JsonNode idValue22 = inboundNatPoolsValue2.get("id");
+                                if (idValue22 != null && idValue22 instanceof NullNode == false) {
+                                    String idInstance22;
+                                    idInstance22 = idValue22.getTextValue();
+                                    inboundNatPoolJsonFormatInstance.setId(idInstance22);
+                                }
+                            }
+                        }
+                        
+                        JsonNode outboundNatRulesArray4 = propertiesValue9.get("outboundNatRules");
+                        if (outboundNatRulesArray4 != null && outboundNatRulesArray4 instanceof NullNode == false) {
+                            for (JsonNode outboundNatRulesValue2 : ((ArrayNode) outboundNatRulesArray4)) {
+                                OutboundNatRule outboundNatRuleJsonFormatInstance = new OutboundNatRule();
+                                loadBalancerInstance.getOutboundNatRules().add(outboundNatRuleJsonFormatInstance);
+                                
+                                JsonNode propertiesValue16 = outboundNatRulesValue2.get("properties");
+                                if (propertiesValue16 != null && propertiesValue16 instanceof NullNode == false) {
+                                    JsonNode allocatedOutboundPortsValue = propertiesValue16.get("allocatedOutboundPorts");
+                                    if (allocatedOutboundPortsValue != null && allocatedOutboundPortsValue instanceof NullNode == false) {
+                                        int allocatedOutboundPortsInstance;
+                                        allocatedOutboundPortsInstance = allocatedOutboundPortsValue.getIntValue();
+                                        outboundNatRuleJsonFormatInstance.setAllocatedOutboundPorts(allocatedOutboundPortsInstance);
+                                    }
+                                    
+                                    JsonNode frontendIPConfigurationsArray4 = propertiesValue16.get("frontendIPConfigurations");
+                                    if (frontendIPConfigurationsArray4 != null && frontendIPConfigurationsArray4 instanceof NullNode == false) {
+                                        for (JsonNode frontendIPConfigurationsValue2 : ((ArrayNode) frontendIPConfigurationsArray4)) {
+                                            ResourceId resourceIdInstance8 = new ResourceId();
+                                            outboundNatRuleJsonFormatInstance.getFrontendIpConfigurations().add(resourceIdInstance8);
+                                            
+                                            JsonNode idValue23 = frontendIPConfigurationsValue2.get("id");
+                                            if (idValue23 != null && idValue23 instanceof NullNode == false) {
+                                                String idInstance23;
+                                                idInstance23 = idValue23.getTextValue();
+                                                resourceIdInstance8.setId(idInstance23);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode backendAddressPoolValue4 = propertiesValue16.get("backendAddressPool");
+                                    if (backendAddressPoolValue4 != null && backendAddressPoolValue4 instanceof NullNode == false) {
+                                        ResourceId backendAddressPoolInstance2 = new ResourceId();
+                                        outboundNatRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance2);
+                                        
+                                        JsonNode idValue24 = backendAddressPoolValue4.get("id");
+                                        if (idValue24 != null && idValue24 instanceof NullNode == false) {
+                                            String idInstance24;
+                                            idInstance24 = idValue24.getTextValue();
+                                            backendAddressPoolInstance2.setId(idInstance24);
+                                        }
+                                    }
+                                    
+                                    JsonNode provisioningStateValue7 = propertiesValue16.get("provisioningState");
+                                    if (provisioningStateValue7 != null && provisioningStateValue7 instanceof NullNode == false) {
+                                        String provisioningStateInstance7;
+                                        provisioningStateInstance7 = provisioningStateValue7.getTextValue();
+                                        outboundNatRuleJsonFormatInstance.setProvisioningState(provisioningStateInstance7);
+                                    }
+                                }
+                                
+                                JsonNode nameValue7 = outboundNatRulesValue2.get("name");
+                                if (nameValue7 != null && nameValue7 instanceof NullNode == false) {
+                                    String nameInstance7;
+                                    nameInstance7 = nameValue7.getTextValue();
+                                    outboundNatRuleJsonFormatInstance.setName(nameInstance7);
+                                }
+                                
+                                JsonNode etagValue7 = outboundNatRulesValue2.get("etag");
+                                if (etagValue7 != null && etagValue7 instanceof NullNode == false) {
+                                    String etagInstance7;
+                                    etagInstance7 = etagValue7.getTextValue();
+                                    outboundNatRuleJsonFormatInstance.setEtag(etagInstance7);
+                                }
+                                
+                                JsonNode idValue25 = outboundNatRulesValue2.get("id");
+                                if (idValue25 != null && idValue25 instanceof NullNode == false) {
+                                    String idInstance25;
+                                    idInstance25 = idValue25.getTextValue();
+                                    outboundNatRuleJsonFormatInstance.setId(idInstance25);
+                                }
+                            }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue9.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            loadBalancerInstance.setResourceGuid(resourceGuidInstance);
+                        }
+                        
+                        JsonNode provisioningStateValue8 = propertiesValue9.get("provisioningState");
+                        if (provisioningStateValue8 != null && provisioningStateValue8 instanceof NullNode == false) {
+                            String provisioningStateInstance8;
+                            provisioningStateInstance8 = provisioningStateValue8.getTextValue();
+                            loadBalancerInstance.setProvisioningState(provisioningStateInstance8);
                         }
                     }
                     
-                    JsonNode etagValue6 = responseDoc.get("etag");
-                    if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
-                        String etagInstance6;
-                        etagInstance6 = etagValue6.getTextValue();
-                        loadBalancerInstance.setEtag(etagInstance6);
+                    JsonNode etagValue8 = responseDoc.get("etag");
+                    if (etagValue8 != null && etagValue8 instanceof NullNode == false) {
+                        String etagInstance8;
+                        etagInstance8 = etagValue8.getTextValue();
+                        loadBalancerInstance.setEtag(etagInstance8);
                     }
                     
-                    JsonNode idValue18 = responseDoc.get("id");
-                    if (idValue18 != null && idValue18 instanceof NullNode == false) {
-                        String idInstance18;
-                        idInstance18 = idValue18.getTextValue();
-                        loadBalancerInstance.setId(idInstance18);
+                    JsonNode idValue26 = responseDoc.get("id");
+                    if (idValue26 != null && idValue26 instanceof NullNode == false) {
+                        String idInstance26;
+                        idInstance26 = idValue26.getTextValue();
+                        loadBalancerInstance.setId(idInstance26);
                     }
                     
-                    JsonNode nameValue6 = responseDoc.get("name");
-                    if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
-                        String nameInstance6;
-                        nameInstance6 = nameValue6.getTextValue();
-                        loadBalancerInstance.setName(nameInstance6);
+                    JsonNode nameValue8 = responseDoc.get("name");
+                    if (nameValue8 != null && nameValue8 instanceof NullNode == false) {
+                        String nameInstance8;
+                        nameInstance8 = nameValue8.getTextValue();
+                        loadBalancerInstance.setName(nameInstance8);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -1471,7 +1839,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1555,7 +1923,7 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1691,8 +2059,9 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                 result = new LoadBalancerGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1764,17 +2133,47 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         }
                                     }
                                     
-                                    JsonNode loadBalancingRulesArray = propertiesValue2.get("loadBalancingRules");
-                                    if (loadBalancingRulesArray != null && loadBalancingRulesArray instanceof NullNode == false) {
-                                        for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray)) {
+                                    JsonNode inboundNatPoolsArray = propertiesValue2.get("inboundNatPools");
+                                    if (inboundNatPoolsArray != null && inboundNatPoolsArray instanceof NullNode == false) {
+                                        for (JsonNode inboundNatPoolsValue : ((ArrayNode) inboundNatPoolsArray)) {
                                             ResourceId resourceIdInstance2 = new ResourceId();
-                                            frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance2);
+                                            frontendIpConfigurationJsonFormatInstance.getInboundNatPools().add(resourceIdInstance2);
                                             
-                                            JsonNode idValue4 = loadBalancingRulesValue.get("id");
+                                            JsonNode idValue4 = inboundNatPoolsValue.get("id");
                                             if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                                 String idInstance4;
                                                 idInstance4 = idValue4.getTextValue();
                                                 resourceIdInstance2.setId(idInstance4);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode outboundNatRulesArray = propertiesValue2.get("outboundNatRules");
+                                    if (outboundNatRulesArray != null && outboundNatRulesArray instanceof NullNode == false) {
+                                        for (JsonNode outboundNatRulesValue : ((ArrayNode) outboundNatRulesArray)) {
+                                            ResourceId resourceIdInstance3 = new ResourceId();
+                                            frontendIpConfigurationJsonFormatInstance.getOutboundNatRules().add(resourceIdInstance3);
+                                            
+                                            JsonNode idValue5 = outboundNatRulesValue.get("id");
+                                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                                String idInstance5;
+                                                idInstance5 = idValue5.getTextValue();
+                                                resourceIdInstance3.setId(idInstance5);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode loadBalancingRulesArray = propertiesValue2.get("loadBalancingRules");
+                                    if (loadBalancingRulesArray != null && loadBalancingRulesArray instanceof NullNode == false) {
+                                        for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray)) {
+                                            ResourceId resourceIdInstance4 = new ResourceId();
+                                            frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                            
+                                            JsonNode idValue6 = loadBalancingRulesValue.get("id");
+                                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
+                                                String idInstance6;
+                                                idInstance6 = idValue6.getTextValue();
+                                                resourceIdInstance4.setId(idInstance6);
                                             }
                                         }
                                     }
@@ -1801,11 +2200,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     frontendIpConfigurationJsonFormatInstance.setEtag(etagInstance);
                                 }
                                 
-                                JsonNode idValue5 = frontendIPConfigurationsValue.get("id");
-                                if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                    String idInstance5;
-                                    idInstance5 = idValue5.getTextValue();
-                                    frontendIpConfigurationJsonFormatInstance.setId(idInstance5);
+                                JsonNode idValue7 = frontendIPConfigurationsValue.get("id");
+                                if (idValue7 != null && idValue7 instanceof NullNode == false) {
+                                    String idInstance7;
+                                    idInstance7 = idValue7.getTextValue();
+                                    frontendIpConfigurationJsonFormatInstance.setId(idInstance7);
                                 }
                             }
                         }
@@ -1821,14 +2220,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     JsonNode backendIPConfigurationsArray = propertiesValue3.get("backendIPConfigurations");
                                     if (backendIPConfigurationsArray != null && backendIPConfigurationsArray instanceof NullNode == false) {
                                         for (JsonNode backendIPConfigurationsValue : ((ArrayNode) backendIPConfigurationsArray)) {
-                                            ResourceId resourceIdInstance3 = new ResourceId();
-                                            backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance3);
+                                            ResourceId resourceIdInstance5 = new ResourceId();
+                                            backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance5);
                                             
-                                            JsonNode idValue6 = backendIPConfigurationsValue.get("id");
-                                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                                String idInstance6;
-                                                idInstance6 = idValue6.getTextValue();
-                                                resourceIdInstance3.setId(idInstance6);
+                                            JsonNode idValue8 = backendIPConfigurationsValue.get("id");
+                                            if (idValue8 != null && idValue8 instanceof NullNode == false) {
+                                                String idInstance8;
+                                                idInstance8 = idValue8.getTextValue();
+                                                resourceIdInstance5.setId(idInstance8);
                                             }
                                         }
                                     }
@@ -1836,15 +2235,28 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     JsonNode loadBalancingRulesArray2 = propertiesValue3.get("loadBalancingRules");
                                     if (loadBalancingRulesArray2 != null && loadBalancingRulesArray2 instanceof NullNode == false) {
                                         for (JsonNode loadBalancingRulesValue2 : ((ArrayNode) loadBalancingRulesArray2)) {
-                                            ResourceId resourceIdInstance4 = new ResourceId();
-                                            backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                            ResourceId resourceIdInstance6 = new ResourceId();
+                                            backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance6);
                                             
-                                            JsonNode idValue7 = loadBalancingRulesValue2.get("id");
-                                            if (idValue7 != null && idValue7 instanceof NullNode == false) {
-                                                String idInstance7;
-                                                idInstance7 = idValue7.getTextValue();
-                                                resourceIdInstance4.setId(idInstance7);
+                                            JsonNode idValue9 = loadBalancingRulesValue2.get("id");
+                                            if (idValue9 != null && idValue9 instanceof NullNode == false) {
+                                                String idInstance9;
+                                                idInstance9 = idValue9.getTextValue();
+                                                resourceIdInstance6.setId(idInstance9);
                                             }
+                                        }
+                                    }
+                                    
+                                    JsonNode outboundNatRuleValue = propertiesValue3.get("outboundNatRule");
+                                    if (outboundNatRuleValue != null && outboundNatRuleValue instanceof NullNode == false) {
+                                        ResourceId outboundNatRuleInstance = new ResourceId();
+                                        backendAddressPoolJsonFormatInstance.setOutboundNatRule(outboundNatRuleInstance);
+                                        
+                                        JsonNode idValue10 = outboundNatRuleValue.get("id");
+                                        if (idValue10 != null && idValue10 instanceof NullNode == false) {
+                                            String idInstance10;
+                                            idInstance10 = idValue10.getTextValue();
+                                            outboundNatRuleInstance.setId(idInstance10);
                                         }
                                     }
                                     
@@ -1870,11 +2282,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     backendAddressPoolJsonFormatInstance.setEtag(etagInstance2);
                                 }
                                 
-                                JsonNode idValue8 = backendAddressPoolsValue.get("id");
-                                if (idValue8 != null && idValue8 instanceof NullNode == false) {
-                                    String idInstance8;
-                                    idInstance8 = idValue8.getTextValue();
-                                    backendAddressPoolJsonFormatInstance.setId(idInstance8);
+                                JsonNode idValue11 = backendAddressPoolsValue.get("id");
+                                if (idValue11 != null && idValue11 instanceof NullNode == false) {
+                                    String idInstance11;
+                                    idInstance11 = idValue11.getTextValue();
+                                    backendAddressPoolJsonFormatInstance.setId(idInstance11);
                                 }
                             }
                         }
@@ -1892,11 +2304,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         ResourceId frontendIPConfigurationInstance = new ResourceId();
                                         loadBalancingRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance);
                                         
-                                        JsonNode idValue9 = frontendIPConfigurationValue.get("id");
-                                        if (idValue9 != null && idValue9 instanceof NullNode == false) {
-                                            String idInstance9;
-                                            idInstance9 = idValue9.getTextValue();
-                                            frontendIPConfigurationInstance.setId(idInstance9);
+                                        JsonNode idValue12 = frontendIPConfigurationValue.get("id");
+                                        if (idValue12 != null && idValue12 instanceof NullNode == false) {
+                                            String idInstance12;
+                                            idInstance12 = idValue12.getTextValue();
+                                            frontendIPConfigurationInstance.setId(idInstance12);
                                         }
                                     }
                                     
@@ -1905,11 +2317,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         ResourceId backendAddressPoolInstance = new ResourceId();
                                         loadBalancingRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance);
                                         
-                                        JsonNode idValue10 = backendAddressPoolValue.get("id");
-                                        if (idValue10 != null && idValue10 instanceof NullNode == false) {
-                                            String idInstance10;
-                                            idInstance10 = idValue10.getTextValue();
-                                            backendAddressPoolInstance.setId(idInstance10);
+                                        JsonNode idValue13 = backendAddressPoolValue.get("id");
+                                        if (idValue13 != null && idValue13 instanceof NullNode == false) {
+                                            String idInstance13;
+                                            idInstance13 = idValue13.getTextValue();
+                                            backendAddressPoolInstance.setId(idInstance13);
                                         }
                                     }
                                     
@@ -1918,11 +2330,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         ResourceId probeInstance = new ResourceId();
                                         loadBalancingRuleJsonFormatInstance.setProbe(probeInstance);
                                         
-                                        JsonNode idValue11 = probeValue.get("id");
-                                        if (idValue11 != null && idValue11 instanceof NullNode == false) {
-                                            String idInstance11;
-                                            idInstance11 = idValue11.getTextValue();
-                                            probeInstance.setId(idInstance11);
+                                        JsonNode idValue14 = probeValue.get("id");
+                                        if (idValue14 != null && idValue14 instanceof NullNode == false) {
+                                            String idInstance14;
+                                            idInstance14 = idValue14.getTextValue();
+                                            probeInstance.setId(idInstance14);
                                         }
                                     }
                                     
@@ -1990,11 +2402,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     loadBalancingRuleJsonFormatInstance.setEtag(etagInstance3);
                                 }
                                 
-                                JsonNode idValue12 = loadBalancingRulesValue3.get("id");
-                                if (idValue12 != null && idValue12 instanceof NullNode == false) {
-                                    String idInstance12;
-                                    idInstance12 = idValue12.getTextValue();
-                                    loadBalancingRuleJsonFormatInstance.setId(idInstance12);
+                                JsonNode idValue15 = loadBalancingRulesValue3.get("id");
+                                if (idValue15 != null && idValue15 instanceof NullNode == false) {
+                                    String idInstance15;
+                                    idInstance15 = idValue15.getTextValue();
+                                    loadBalancingRuleJsonFormatInstance.setId(idInstance15);
                                 }
                             }
                         }
@@ -2010,14 +2422,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     JsonNode loadBalancingRulesArray4 = propertiesValue5.get("loadBalancingRules");
                                     if (loadBalancingRulesArray4 != null && loadBalancingRulesArray4 instanceof NullNode == false) {
                                         for (JsonNode loadBalancingRulesValue4 : ((ArrayNode) loadBalancingRulesArray4)) {
-                                            ResourceId resourceIdInstance5 = new ResourceId();
-                                            probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance5);
+                                            ResourceId resourceIdInstance7 = new ResourceId();
+                                            probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance7);
                                             
-                                            JsonNode idValue13 = loadBalancingRulesValue4.get("id");
-                                            if (idValue13 != null && idValue13 instanceof NullNode == false) {
-                                                String idInstance13;
-                                                idInstance13 = idValue13.getTextValue();
-                                                resourceIdInstance5.setId(idInstance13);
+                                            JsonNode idValue16 = loadBalancingRulesValue4.get("id");
+                                            if (idValue16 != null && idValue16 instanceof NullNode == false) {
+                                                String idInstance16;
+                                                idInstance16 = idValue16.getTextValue();
+                                                resourceIdInstance7.setId(idInstance16);
                                             }
                                         }
                                     }
@@ -2079,11 +2491,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     probeJsonFormatInstance.setEtag(etagInstance4);
                                 }
                                 
-                                JsonNode idValue14 = probesValue.get("id");
-                                if (idValue14 != null && idValue14 instanceof NullNode == false) {
-                                    String idInstance14;
-                                    idInstance14 = idValue14.getTextValue();
-                                    probeJsonFormatInstance.setId(idInstance14);
+                                JsonNode idValue17 = probesValue.get("id");
+                                if (idValue17 != null && idValue17 instanceof NullNode == false) {
+                                    String idInstance17;
+                                    idInstance17 = idValue17.getTextValue();
+                                    probeJsonFormatInstance.setId(idInstance17);
                                 }
                             }
                         }
@@ -2101,11 +2513,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         ResourceId frontendIPConfigurationInstance2 = new ResourceId();
                                         inboundNatRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance2);
                                         
-                                        JsonNode idValue15 = frontendIPConfigurationValue2.get("id");
-                                        if (idValue15 != null && idValue15 instanceof NullNode == false) {
-                                            String idInstance15;
-                                            idInstance15 = idValue15.getTextValue();
-                                            frontendIPConfigurationInstance2.setId(idInstance15);
+                                        JsonNode idValue18 = frontendIPConfigurationValue2.get("id");
+                                        if (idValue18 != null && idValue18 instanceof NullNode == false) {
+                                            String idInstance18;
+                                            idInstance18 = idValue18.getTextValue();
+                                            frontendIPConfigurationInstance2.setId(idInstance18);
                                         }
                                     }
                                     
@@ -2114,11 +2526,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                         ResourceId backendIPConfigurationInstance = new ResourceId();
                                         inboundNatRuleJsonFormatInstance.setBackendIPConfiguration(backendIPConfigurationInstance);
                                         
-                                        JsonNode idValue16 = backendIPConfigurationValue.get("id");
-                                        if (idValue16 != null && idValue16 instanceof NullNode == false) {
-                                            String idInstance16;
-                                            idInstance16 = idValue16.getTextValue();
-                                            backendIPConfigurationInstance.setId(idInstance16);
+                                        JsonNode idValue19 = backendIPConfigurationValue.get("id");
+                                        if (idValue19 != null && idValue19 instanceof NullNode == false) {
+                                            String idInstance19;
+                                            idInstance19 = idValue19.getTextValue();
+                                            backendIPConfigurationInstance.setId(idInstance19);
                                         }
                                     }
                                     
@@ -2179,42 +2591,203 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                     inboundNatRuleJsonFormatInstance.setEtag(etagInstance5);
                                 }
                                 
-                                JsonNode idValue17 = inboundNatRulesValue2.get("id");
-                                if (idValue17 != null && idValue17 instanceof NullNode == false) {
-                                    String idInstance17;
-                                    idInstance17 = idValue17.getTextValue();
-                                    inboundNatRuleJsonFormatInstance.setId(idInstance17);
+                                JsonNode idValue20 = inboundNatRulesValue2.get("id");
+                                if (idValue20 != null && idValue20 instanceof NullNode == false) {
+                                    String idInstance20;
+                                    idInstance20 = idValue20.getTextValue();
+                                    inboundNatRuleJsonFormatInstance.setId(idInstance20);
                                 }
                             }
                         }
                         
-                        JsonNode provisioningStateValue6 = propertiesValue.get("provisioningState");
-                        if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
-                            String provisioningStateInstance6;
-                            provisioningStateInstance6 = provisioningStateValue6.getTextValue();
-                            loadBalancerInstance.setProvisioningState(provisioningStateInstance6);
+                        JsonNode inboundNatPoolsArray2 = propertiesValue.get("inboundNatPools");
+                        if (inboundNatPoolsArray2 != null && inboundNatPoolsArray2 instanceof NullNode == false) {
+                            for (JsonNode inboundNatPoolsValue2 : ((ArrayNode) inboundNatPoolsArray2)) {
+                                InboundNatPool inboundNatPoolJsonFormatInstance = new InboundNatPool();
+                                loadBalancerInstance.getInboundNatPools().add(inboundNatPoolJsonFormatInstance);
+                                
+                                JsonNode propertiesValue7 = inboundNatPoolsValue2.get("properties");
+                                if (propertiesValue7 != null && propertiesValue7 instanceof NullNode == false) {
+                                    JsonNode frontendIPConfigurationValue3 = propertiesValue7.get("frontendIPConfiguration");
+                                    if (frontendIPConfigurationValue3 != null && frontendIPConfigurationValue3 instanceof NullNode == false) {
+                                        ResourceId frontendIPConfigurationInstance3 = new ResourceId();
+                                        inboundNatPoolJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance3);
+                                        
+                                        JsonNode idValue21 = frontendIPConfigurationValue3.get("id");
+                                        if (idValue21 != null && idValue21 instanceof NullNode == false) {
+                                            String idInstance21;
+                                            idInstance21 = idValue21.getTextValue();
+                                            frontendIPConfigurationInstance3.setId(idInstance21);
+                                        }
+                                    }
+                                    
+                                    JsonNode protocolValue4 = propertiesValue7.get("protocol");
+                                    if (protocolValue4 != null && protocolValue4 instanceof NullNode == false) {
+                                        String protocolInstance4;
+                                        protocolInstance4 = protocolValue4.getTextValue();
+                                        inboundNatPoolJsonFormatInstance.setProtocol(protocolInstance4);
+                                    }
+                                    
+                                    JsonNode frontendPortRangeStartValue = propertiesValue7.get("frontendPortRangeStart");
+                                    if (frontendPortRangeStartValue != null && frontendPortRangeStartValue instanceof NullNode == false) {
+                                        int frontendPortRangeStartInstance;
+                                        frontendPortRangeStartInstance = frontendPortRangeStartValue.getIntValue();
+                                        inboundNatPoolJsonFormatInstance.setFrontendPortRangeStart(frontendPortRangeStartInstance);
+                                    }
+                                    
+                                    JsonNode frontendPortRangeEndValue = propertiesValue7.get("frontendPortRangeEnd");
+                                    if (frontendPortRangeEndValue != null && frontendPortRangeEndValue instanceof NullNode == false) {
+                                        int frontendPortRangeEndInstance;
+                                        frontendPortRangeEndInstance = frontendPortRangeEndValue.getIntValue();
+                                        inboundNatPoolJsonFormatInstance.setFrontendPortRangeEnd(frontendPortRangeEndInstance);
+                                    }
+                                    
+                                    JsonNode backendPortValue3 = propertiesValue7.get("backendPort");
+                                    if (backendPortValue3 != null && backendPortValue3 instanceof NullNode == false) {
+                                        int backendPortInstance3;
+                                        backendPortInstance3 = backendPortValue3.getIntValue();
+                                        inboundNatPoolJsonFormatInstance.setBackendPort(backendPortInstance3);
+                                    }
+                                    
+                                    JsonNode provisioningStateValue6 = propertiesValue7.get("provisioningState");
+                                    if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
+                                        String provisioningStateInstance6;
+                                        provisioningStateInstance6 = provisioningStateValue6.getTextValue();
+                                        inboundNatPoolJsonFormatInstance.setProvisioningState(provisioningStateInstance6);
+                                    }
+                                }
+                                
+                                JsonNode nameValue6 = inboundNatPoolsValue2.get("name");
+                                if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
+                                    String nameInstance6;
+                                    nameInstance6 = nameValue6.getTextValue();
+                                    inboundNatPoolJsonFormatInstance.setName(nameInstance6);
+                                }
+                                
+                                JsonNode etagValue6 = inboundNatPoolsValue2.get("etag");
+                                if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
+                                    String etagInstance6;
+                                    etagInstance6 = etagValue6.getTextValue();
+                                    inboundNatPoolJsonFormatInstance.setEtag(etagInstance6);
+                                }
+                                
+                                JsonNode idValue22 = inboundNatPoolsValue2.get("id");
+                                if (idValue22 != null && idValue22 instanceof NullNode == false) {
+                                    String idInstance22;
+                                    idInstance22 = idValue22.getTextValue();
+                                    inboundNatPoolJsonFormatInstance.setId(idInstance22);
+                                }
+                            }
+                        }
+                        
+                        JsonNode outboundNatRulesArray2 = propertiesValue.get("outboundNatRules");
+                        if (outboundNatRulesArray2 != null && outboundNatRulesArray2 instanceof NullNode == false) {
+                            for (JsonNode outboundNatRulesValue2 : ((ArrayNode) outboundNatRulesArray2)) {
+                                OutboundNatRule outboundNatRuleJsonFormatInstance = new OutboundNatRule();
+                                loadBalancerInstance.getOutboundNatRules().add(outboundNatRuleJsonFormatInstance);
+                                
+                                JsonNode propertiesValue8 = outboundNatRulesValue2.get("properties");
+                                if (propertiesValue8 != null && propertiesValue8 instanceof NullNode == false) {
+                                    JsonNode allocatedOutboundPortsValue = propertiesValue8.get("allocatedOutboundPorts");
+                                    if (allocatedOutboundPortsValue != null && allocatedOutboundPortsValue instanceof NullNode == false) {
+                                        int allocatedOutboundPortsInstance;
+                                        allocatedOutboundPortsInstance = allocatedOutboundPortsValue.getIntValue();
+                                        outboundNatRuleJsonFormatInstance.setAllocatedOutboundPorts(allocatedOutboundPortsInstance);
+                                    }
+                                    
+                                    JsonNode frontendIPConfigurationsArray2 = propertiesValue8.get("frontendIPConfigurations");
+                                    if (frontendIPConfigurationsArray2 != null && frontendIPConfigurationsArray2 instanceof NullNode == false) {
+                                        for (JsonNode frontendIPConfigurationsValue2 : ((ArrayNode) frontendIPConfigurationsArray2)) {
+                                            ResourceId resourceIdInstance8 = new ResourceId();
+                                            outboundNatRuleJsonFormatInstance.getFrontendIpConfigurations().add(resourceIdInstance8);
+                                            
+                                            JsonNode idValue23 = frontendIPConfigurationsValue2.get("id");
+                                            if (idValue23 != null && idValue23 instanceof NullNode == false) {
+                                                String idInstance23;
+                                                idInstance23 = idValue23.getTextValue();
+                                                resourceIdInstance8.setId(idInstance23);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode backendAddressPoolValue2 = propertiesValue8.get("backendAddressPool");
+                                    if (backendAddressPoolValue2 != null && backendAddressPoolValue2 instanceof NullNode == false) {
+                                        ResourceId backendAddressPoolInstance2 = new ResourceId();
+                                        outboundNatRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance2);
+                                        
+                                        JsonNode idValue24 = backendAddressPoolValue2.get("id");
+                                        if (idValue24 != null && idValue24 instanceof NullNode == false) {
+                                            String idInstance24;
+                                            idInstance24 = idValue24.getTextValue();
+                                            backendAddressPoolInstance2.setId(idInstance24);
+                                        }
+                                    }
+                                    
+                                    JsonNode provisioningStateValue7 = propertiesValue8.get("provisioningState");
+                                    if (provisioningStateValue7 != null && provisioningStateValue7 instanceof NullNode == false) {
+                                        String provisioningStateInstance7;
+                                        provisioningStateInstance7 = provisioningStateValue7.getTextValue();
+                                        outboundNatRuleJsonFormatInstance.setProvisioningState(provisioningStateInstance7);
+                                    }
+                                }
+                                
+                                JsonNode nameValue7 = outboundNatRulesValue2.get("name");
+                                if (nameValue7 != null && nameValue7 instanceof NullNode == false) {
+                                    String nameInstance7;
+                                    nameInstance7 = nameValue7.getTextValue();
+                                    outboundNatRuleJsonFormatInstance.setName(nameInstance7);
+                                }
+                                
+                                JsonNode etagValue7 = outboundNatRulesValue2.get("etag");
+                                if (etagValue7 != null && etagValue7 instanceof NullNode == false) {
+                                    String etagInstance7;
+                                    etagInstance7 = etagValue7.getTextValue();
+                                    outboundNatRuleJsonFormatInstance.setEtag(etagInstance7);
+                                }
+                                
+                                JsonNode idValue25 = outboundNatRulesValue2.get("id");
+                                if (idValue25 != null && idValue25 instanceof NullNode == false) {
+                                    String idInstance25;
+                                    idInstance25 = idValue25.getTextValue();
+                                    outboundNatRuleJsonFormatInstance.setId(idInstance25);
+                                }
+                            }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            loadBalancerInstance.setResourceGuid(resourceGuidInstance);
+                        }
+                        
+                        JsonNode provisioningStateValue8 = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue8 != null && provisioningStateValue8 instanceof NullNode == false) {
+                            String provisioningStateInstance8;
+                            provisioningStateInstance8 = provisioningStateValue8.getTextValue();
+                            loadBalancerInstance.setProvisioningState(provisioningStateInstance8);
                         }
                     }
                     
-                    JsonNode etagValue6 = responseDoc.get("etag");
-                    if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
-                        String etagInstance6;
-                        etagInstance6 = etagValue6.getTextValue();
-                        loadBalancerInstance.setEtag(etagInstance6);
+                    JsonNode etagValue8 = responseDoc.get("etag");
+                    if (etagValue8 != null && etagValue8 instanceof NullNode == false) {
+                        String etagInstance8;
+                        etagInstance8 = etagValue8.getTextValue();
+                        loadBalancerInstance.setEtag(etagInstance8);
                     }
                     
-                    JsonNode idValue18 = responseDoc.get("id");
-                    if (idValue18 != null && idValue18 instanceof NullNode == false) {
-                        String idInstance18;
-                        idInstance18 = idValue18.getTextValue();
-                        loadBalancerInstance.setId(idInstance18);
+                    JsonNode idValue26 = responseDoc.get("id");
+                    if (idValue26 != null && idValue26 instanceof NullNode == false) {
+                        String idInstance26;
+                        idInstance26 = idValue26.getTextValue();
+                        loadBalancerInstance.setId(idInstance26);
                     }
                     
-                    JsonNode nameValue6 = responseDoc.get("name");
-                    if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
-                        String nameInstance6;
-                        nameInstance6 = nameValue6.getTextValue();
-                        loadBalancerInstance.setName(nameInstance6);
+                    JsonNode nameValue8 = responseDoc.get("name");
+                    if (nameValue8 != null && nameValue8 instanceof NullNode == false) {
+                        String nameInstance8;
+                        nameInstance8 = nameValue8.getTextValue();
+                        loadBalancerInstance.setName(nameInstance8);
                     }
                     
                     JsonNode typeValue = responseDoc.get("type");
@@ -2365,8 +2938,9 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                 result = new LoadBalancerListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2441,17 +3015,47 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 }
                                             }
                                             
-                                            JsonNode loadBalancingRulesArray = propertiesValue2.get("loadBalancingRules");
-                                            if (loadBalancingRulesArray != null && loadBalancingRulesArray instanceof NullNode == false) {
-                                                for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray)) {
+                                            JsonNode inboundNatPoolsArray = propertiesValue2.get("inboundNatPools");
+                                            if (inboundNatPoolsArray != null && inboundNatPoolsArray instanceof NullNode == false) {
+                                                for (JsonNode inboundNatPoolsValue : ((ArrayNode) inboundNatPoolsArray)) {
                                                     ResourceId resourceIdInstance2 = new ResourceId();
-                                                    frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance2);
+                                                    frontendIpConfigurationJsonFormatInstance.getInboundNatPools().add(resourceIdInstance2);
                                                     
-                                                    JsonNode idValue4 = loadBalancingRulesValue.get("id");
+                                                    JsonNode idValue4 = inboundNatPoolsValue.get("id");
                                                     if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                                         String idInstance4;
                                                         idInstance4 = idValue4.getTextValue();
                                                         resourceIdInstance2.setId(idInstance4);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode outboundNatRulesArray = propertiesValue2.get("outboundNatRules");
+                                            if (outboundNatRulesArray != null && outboundNatRulesArray instanceof NullNode == false) {
+                                                for (JsonNode outboundNatRulesValue : ((ArrayNode) outboundNatRulesArray)) {
+                                                    ResourceId resourceIdInstance3 = new ResourceId();
+                                                    frontendIpConfigurationJsonFormatInstance.getOutboundNatRules().add(resourceIdInstance3);
+                                                    
+                                                    JsonNode idValue5 = outboundNatRulesValue.get("id");
+                                                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                                        String idInstance5;
+                                                        idInstance5 = idValue5.getTextValue();
+                                                        resourceIdInstance3.setId(idInstance5);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode loadBalancingRulesArray = propertiesValue2.get("loadBalancingRules");
+                                            if (loadBalancingRulesArray != null && loadBalancingRulesArray instanceof NullNode == false) {
+                                                for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray)) {
+                                                    ResourceId resourceIdInstance4 = new ResourceId();
+                                                    frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                                    
+                                                    JsonNode idValue6 = loadBalancingRulesValue.get("id");
+                                                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
+                                                        String idInstance6;
+                                                        idInstance6 = idValue6.getTextValue();
+                                                        resourceIdInstance4.setId(idInstance6);
                                                     }
                                                 }
                                             }
@@ -2478,11 +3082,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             frontendIpConfigurationJsonFormatInstance.setEtag(etagInstance);
                                         }
                                         
-                                        JsonNode idValue5 = frontendIPConfigurationsValue.get("id");
-                                        if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                            String idInstance5;
-                                            idInstance5 = idValue5.getTextValue();
-                                            frontendIpConfigurationJsonFormatInstance.setId(idInstance5);
+                                        JsonNode idValue7 = frontendIPConfigurationsValue.get("id");
+                                        if (idValue7 != null && idValue7 instanceof NullNode == false) {
+                                            String idInstance7;
+                                            idInstance7 = idValue7.getTextValue();
+                                            frontendIpConfigurationJsonFormatInstance.setId(idInstance7);
                                         }
                                     }
                                 }
@@ -2498,14 +3102,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             JsonNode backendIPConfigurationsArray = propertiesValue3.get("backendIPConfigurations");
                                             if (backendIPConfigurationsArray != null && backendIPConfigurationsArray instanceof NullNode == false) {
                                                 for (JsonNode backendIPConfigurationsValue : ((ArrayNode) backendIPConfigurationsArray)) {
-                                                    ResourceId resourceIdInstance3 = new ResourceId();
-                                                    backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance3);
+                                                    ResourceId resourceIdInstance5 = new ResourceId();
+                                                    backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance5);
                                                     
-                                                    JsonNode idValue6 = backendIPConfigurationsValue.get("id");
-                                                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                                        String idInstance6;
-                                                        idInstance6 = idValue6.getTextValue();
-                                                        resourceIdInstance3.setId(idInstance6);
+                                                    JsonNode idValue8 = backendIPConfigurationsValue.get("id");
+                                                    if (idValue8 != null && idValue8 instanceof NullNode == false) {
+                                                        String idInstance8;
+                                                        idInstance8 = idValue8.getTextValue();
+                                                        resourceIdInstance5.setId(idInstance8);
                                                     }
                                                 }
                                             }
@@ -2513,15 +3117,28 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             JsonNode loadBalancingRulesArray2 = propertiesValue3.get("loadBalancingRules");
                                             if (loadBalancingRulesArray2 != null && loadBalancingRulesArray2 instanceof NullNode == false) {
                                                 for (JsonNode loadBalancingRulesValue2 : ((ArrayNode) loadBalancingRulesArray2)) {
-                                                    ResourceId resourceIdInstance4 = new ResourceId();
-                                                    backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                                    ResourceId resourceIdInstance6 = new ResourceId();
+                                                    backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance6);
                                                     
-                                                    JsonNode idValue7 = loadBalancingRulesValue2.get("id");
-                                                    if (idValue7 != null && idValue7 instanceof NullNode == false) {
-                                                        String idInstance7;
-                                                        idInstance7 = idValue7.getTextValue();
-                                                        resourceIdInstance4.setId(idInstance7);
+                                                    JsonNode idValue9 = loadBalancingRulesValue2.get("id");
+                                                    if (idValue9 != null && idValue9 instanceof NullNode == false) {
+                                                        String idInstance9;
+                                                        idInstance9 = idValue9.getTextValue();
+                                                        resourceIdInstance6.setId(idInstance9);
                                                     }
+                                                }
+                                            }
+                                            
+                                            JsonNode outboundNatRuleValue = propertiesValue3.get("outboundNatRule");
+                                            if (outboundNatRuleValue != null && outboundNatRuleValue instanceof NullNode == false) {
+                                                ResourceId outboundNatRuleInstance = new ResourceId();
+                                                backendAddressPoolJsonFormatInstance.setOutboundNatRule(outboundNatRuleInstance);
+                                                
+                                                JsonNode idValue10 = outboundNatRuleValue.get("id");
+                                                if (idValue10 != null && idValue10 instanceof NullNode == false) {
+                                                    String idInstance10;
+                                                    idInstance10 = idValue10.getTextValue();
+                                                    outboundNatRuleInstance.setId(idInstance10);
                                                 }
                                             }
                                             
@@ -2547,11 +3164,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             backendAddressPoolJsonFormatInstance.setEtag(etagInstance2);
                                         }
                                         
-                                        JsonNode idValue8 = backendAddressPoolsValue.get("id");
-                                        if (idValue8 != null && idValue8 instanceof NullNode == false) {
-                                            String idInstance8;
-                                            idInstance8 = idValue8.getTextValue();
-                                            backendAddressPoolJsonFormatInstance.setId(idInstance8);
+                                        JsonNode idValue11 = backendAddressPoolsValue.get("id");
+                                        if (idValue11 != null && idValue11 instanceof NullNode == false) {
+                                            String idInstance11;
+                                            idInstance11 = idValue11.getTextValue();
+                                            backendAddressPoolJsonFormatInstance.setId(idInstance11);
                                         }
                                     }
                                 }
@@ -2569,11 +3186,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId frontendIPConfigurationInstance = new ResourceId();
                                                 loadBalancingRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance);
                                                 
-                                                JsonNode idValue9 = frontendIPConfigurationValue.get("id");
-                                                if (idValue9 != null && idValue9 instanceof NullNode == false) {
-                                                    String idInstance9;
-                                                    idInstance9 = idValue9.getTextValue();
-                                                    frontendIPConfigurationInstance.setId(idInstance9);
+                                                JsonNode idValue12 = frontendIPConfigurationValue.get("id");
+                                                if (idValue12 != null && idValue12 instanceof NullNode == false) {
+                                                    String idInstance12;
+                                                    idInstance12 = idValue12.getTextValue();
+                                                    frontendIPConfigurationInstance.setId(idInstance12);
                                                 }
                                             }
                                             
@@ -2582,11 +3199,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId backendAddressPoolInstance = new ResourceId();
                                                 loadBalancingRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance);
                                                 
-                                                JsonNode idValue10 = backendAddressPoolValue.get("id");
-                                                if (idValue10 != null && idValue10 instanceof NullNode == false) {
-                                                    String idInstance10;
-                                                    idInstance10 = idValue10.getTextValue();
-                                                    backendAddressPoolInstance.setId(idInstance10);
+                                                JsonNode idValue13 = backendAddressPoolValue.get("id");
+                                                if (idValue13 != null && idValue13 instanceof NullNode == false) {
+                                                    String idInstance13;
+                                                    idInstance13 = idValue13.getTextValue();
+                                                    backendAddressPoolInstance.setId(idInstance13);
                                                 }
                                             }
                                             
@@ -2595,11 +3212,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId probeInstance = new ResourceId();
                                                 loadBalancingRuleJsonFormatInstance.setProbe(probeInstance);
                                                 
-                                                JsonNode idValue11 = probeValue.get("id");
-                                                if (idValue11 != null && idValue11 instanceof NullNode == false) {
-                                                    String idInstance11;
-                                                    idInstance11 = idValue11.getTextValue();
-                                                    probeInstance.setId(idInstance11);
+                                                JsonNode idValue14 = probeValue.get("id");
+                                                if (idValue14 != null && idValue14 instanceof NullNode == false) {
+                                                    String idInstance14;
+                                                    idInstance14 = idValue14.getTextValue();
+                                                    probeInstance.setId(idInstance14);
                                                 }
                                             }
                                             
@@ -2667,11 +3284,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             loadBalancingRuleJsonFormatInstance.setEtag(etagInstance3);
                                         }
                                         
-                                        JsonNode idValue12 = loadBalancingRulesValue3.get("id");
-                                        if (idValue12 != null && idValue12 instanceof NullNode == false) {
-                                            String idInstance12;
-                                            idInstance12 = idValue12.getTextValue();
-                                            loadBalancingRuleJsonFormatInstance.setId(idInstance12);
+                                        JsonNode idValue15 = loadBalancingRulesValue3.get("id");
+                                        if (idValue15 != null && idValue15 instanceof NullNode == false) {
+                                            String idInstance15;
+                                            idInstance15 = idValue15.getTextValue();
+                                            loadBalancingRuleJsonFormatInstance.setId(idInstance15);
                                         }
                                     }
                                 }
@@ -2687,14 +3304,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             JsonNode loadBalancingRulesArray4 = propertiesValue5.get("loadBalancingRules");
                                             if (loadBalancingRulesArray4 != null && loadBalancingRulesArray4 instanceof NullNode == false) {
                                                 for (JsonNode loadBalancingRulesValue4 : ((ArrayNode) loadBalancingRulesArray4)) {
-                                                    ResourceId resourceIdInstance5 = new ResourceId();
-                                                    probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance5);
+                                                    ResourceId resourceIdInstance7 = new ResourceId();
+                                                    probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance7);
                                                     
-                                                    JsonNode idValue13 = loadBalancingRulesValue4.get("id");
-                                                    if (idValue13 != null && idValue13 instanceof NullNode == false) {
-                                                        String idInstance13;
-                                                        idInstance13 = idValue13.getTextValue();
-                                                        resourceIdInstance5.setId(idInstance13);
+                                                    JsonNode idValue16 = loadBalancingRulesValue4.get("id");
+                                                    if (idValue16 != null && idValue16 instanceof NullNode == false) {
+                                                        String idInstance16;
+                                                        idInstance16 = idValue16.getTextValue();
+                                                        resourceIdInstance7.setId(idInstance16);
                                                     }
                                                 }
                                             }
@@ -2756,11 +3373,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             probeJsonFormatInstance.setEtag(etagInstance4);
                                         }
                                         
-                                        JsonNode idValue14 = probesValue.get("id");
-                                        if (idValue14 != null && idValue14 instanceof NullNode == false) {
-                                            String idInstance14;
-                                            idInstance14 = idValue14.getTextValue();
-                                            probeJsonFormatInstance.setId(idInstance14);
+                                        JsonNode idValue17 = probesValue.get("id");
+                                        if (idValue17 != null && idValue17 instanceof NullNode == false) {
+                                            String idInstance17;
+                                            idInstance17 = idValue17.getTextValue();
+                                            probeJsonFormatInstance.setId(idInstance17);
                                         }
                                     }
                                 }
@@ -2778,11 +3395,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId frontendIPConfigurationInstance2 = new ResourceId();
                                                 inboundNatRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance2);
                                                 
-                                                JsonNode idValue15 = frontendIPConfigurationValue2.get("id");
-                                                if (idValue15 != null && idValue15 instanceof NullNode == false) {
-                                                    String idInstance15;
-                                                    idInstance15 = idValue15.getTextValue();
-                                                    frontendIPConfigurationInstance2.setId(idInstance15);
+                                                JsonNode idValue18 = frontendIPConfigurationValue2.get("id");
+                                                if (idValue18 != null && idValue18 instanceof NullNode == false) {
+                                                    String idInstance18;
+                                                    idInstance18 = idValue18.getTextValue();
+                                                    frontendIPConfigurationInstance2.setId(idInstance18);
                                                 }
                                             }
                                             
@@ -2791,11 +3408,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId backendIPConfigurationInstance = new ResourceId();
                                                 inboundNatRuleJsonFormatInstance.setBackendIPConfiguration(backendIPConfigurationInstance);
                                                 
-                                                JsonNode idValue16 = backendIPConfigurationValue.get("id");
-                                                if (idValue16 != null && idValue16 instanceof NullNode == false) {
-                                                    String idInstance16;
-                                                    idInstance16 = idValue16.getTextValue();
-                                                    backendIPConfigurationInstance.setId(idInstance16);
+                                                JsonNode idValue19 = backendIPConfigurationValue.get("id");
+                                                if (idValue19 != null && idValue19 instanceof NullNode == false) {
+                                                    String idInstance19;
+                                                    idInstance19 = idValue19.getTextValue();
+                                                    backendIPConfigurationInstance.setId(idInstance19);
                                                 }
                                             }
                                             
@@ -2856,42 +3473,203 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             inboundNatRuleJsonFormatInstance.setEtag(etagInstance5);
                                         }
                                         
-                                        JsonNode idValue17 = inboundNatRulesValue2.get("id");
-                                        if (idValue17 != null && idValue17 instanceof NullNode == false) {
-                                            String idInstance17;
-                                            idInstance17 = idValue17.getTextValue();
-                                            inboundNatRuleJsonFormatInstance.setId(idInstance17);
+                                        JsonNode idValue20 = inboundNatRulesValue2.get("id");
+                                        if (idValue20 != null && idValue20 instanceof NullNode == false) {
+                                            String idInstance20;
+                                            idInstance20 = idValue20.getTextValue();
+                                            inboundNatRuleJsonFormatInstance.setId(idInstance20);
                                         }
                                     }
                                 }
                                 
-                                JsonNode provisioningStateValue6 = propertiesValue.get("provisioningState");
-                                if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
-                                    String provisioningStateInstance6;
-                                    provisioningStateInstance6 = provisioningStateValue6.getTextValue();
-                                    loadBalancerJsonFormatInstance.setProvisioningState(provisioningStateInstance6);
+                                JsonNode inboundNatPoolsArray2 = propertiesValue.get("inboundNatPools");
+                                if (inboundNatPoolsArray2 != null && inboundNatPoolsArray2 instanceof NullNode == false) {
+                                    for (JsonNode inboundNatPoolsValue2 : ((ArrayNode) inboundNatPoolsArray2)) {
+                                        InboundNatPool inboundNatPoolJsonFormatInstance = new InboundNatPool();
+                                        loadBalancerJsonFormatInstance.getInboundNatPools().add(inboundNatPoolJsonFormatInstance);
+                                        
+                                        JsonNode propertiesValue7 = inboundNatPoolsValue2.get("properties");
+                                        if (propertiesValue7 != null && propertiesValue7 instanceof NullNode == false) {
+                                            JsonNode frontendIPConfigurationValue3 = propertiesValue7.get("frontendIPConfiguration");
+                                            if (frontendIPConfigurationValue3 != null && frontendIPConfigurationValue3 instanceof NullNode == false) {
+                                                ResourceId frontendIPConfigurationInstance3 = new ResourceId();
+                                                inboundNatPoolJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance3);
+                                                
+                                                JsonNode idValue21 = frontendIPConfigurationValue3.get("id");
+                                                if (idValue21 != null && idValue21 instanceof NullNode == false) {
+                                                    String idInstance21;
+                                                    idInstance21 = idValue21.getTextValue();
+                                                    frontendIPConfigurationInstance3.setId(idInstance21);
+                                                }
+                                            }
+                                            
+                                            JsonNode protocolValue4 = propertiesValue7.get("protocol");
+                                            if (protocolValue4 != null && protocolValue4 instanceof NullNode == false) {
+                                                String protocolInstance4;
+                                                protocolInstance4 = protocolValue4.getTextValue();
+                                                inboundNatPoolJsonFormatInstance.setProtocol(protocolInstance4);
+                                            }
+                                            
+                                            JsonNode frontendPortRangeStartValue = propertiesValue7.get("frontendPortRangeStart");
+                                            if (frontendPortRangeStartValue != null && frontendPortRangeStartValue instanceof NullNode == false) {
+                                                int frontendPortRangeStartInstance;
+                                                frontendPortRangeStartInstance = frontendPortRangeStartValue.getIntValue();
+                                                inboundNatPoolJsonFormatInstance.setFrontendPortRangeStart(frontendPortRangeStartInstance);
+                                            }
+                                            
+                                            JsonNode frontendPortRangeEndValue = propertiesValue7.get("frontendPortRangeEnd");
+                                            if (frontendPortRangeEndValue != null && frontendPortRangeEndValue instanceof NullNode == false) {
+                                                int frontendPortRangeEndInstance;
+                                                frontendPortRangeEndInstance = frontendPortRangeEndValue.getIntValue();
+                                                inboundNatPoolJsonFormatInstance.setFrontendPortRangeEnd(frontendPortRangeEndInstance);
+                                            }
+                                            
+                                            JsonNode backendPortValue3 = propertiesValue7.get("backendPort");
+                                            if (backendPortValue3 != null && backendPortValue3 instanceof NullNode == false) {
+                                                int backendPortInstance3;
+                                                backendPortInstance3 = backendPortValue3.getIntValue();
+                                                inboundNatPoolJsonFormatInstance.setBackendPort(backendPortInstance3);
+                                            }
+                                            
+                                            JsonNode provisioningStateValue6 = propertiesValue7.get("provisioningState");
+                                            if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
+                                                String provisioningStateInstance6;
+                                                provisioningStateInstance6 = provisioningStateValue6.getTextValue();
+                                                inboundNatPoolJsonFormatInstance.setProvisioningState(provisioningStateInstance6);
+                                            }
+                                        }
+                                        
+                                        JsonNode nameValue6 = inboundNatPoolsValue2.get("name");
+                                        if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
+                                            String nameInstance6;
+                                            nameInstance6 = nameValue6.getTextValue();
+                                            inboundNatPoolJsonFormatInstance.setName(nameInstance6);
+                                        }
+                                        
+                                        JsonNode etagValue6 = inboundNatPoolsValue2.get("etag");
+                                        if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
+                                            String etagInstance6;
+                                            etagInstance6 = etagValue6.getTextValue();
+                                            inboundNatPoolJsonFormatInstance.setEtag(etagInstance6);
+                                        }
+                                        
+                                        JsonNode idValue22 = inboundNatPoolsValue2.get("id");
+                                        if (idValue22 != null && idValue22 instanceof NullNode == false) {
+                                            String idInstance22;
+                                            idInstance22 = idValue22.getTextValue();
+                                            inboundNatPoolJsonFormatInstance.setId(idInstance22);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode outboundNatRulesArray2 = propertiesValue.get("outboundNatRules");
+                                if (outboundNatRulesArray2 != null && outboundNatRulesArray2 instanceof NullNode == false) {
+                                    for (JsonNode outboundNatRulesValue2 : ((ArrayNode) outboundNatRulesArray2)) {
+                                        OutboundNatRule outboundNatRuleJsonFormatInstance = new OutboundNatRule();
+                                        loadBalancerJsonFormatInstance.getOutboundNatRules().add(outboundNatRuleJsonFormatInstance);
+                                        
+                                        JsonNode propertiesValue8 = outboundNatRulesValue2.get("properties");
+                                        if (propertiesValue8 != null && propertiesValue8 instanceof NullNode == false) {
+                                            JsonNode allocatedOutboundPortsValue = propertiesValue8.get("allocatedOutboundPorts");
+                                            if (allocatedOutboundPortsValue != null && allocatedOutboundPortsValue instanceof NullNode == false) {
+                                                int allocatedOutboundPortsInstance;
+                                                allocatedOutboundPortsInstance = allocatedOutboundPortsValue.getIntValue();
+                                                outboundNatRuleJsonFormatInstance.setAllocatedOutboundPorts(allocatedOutboundPortsInstance);
+                                            }
+                                            
+                                            JsonNode frontendIPConfigurationsArray2 = propertiesValue8.get("frontendIPConfigurations");
+                                            if (frontendIPConfigurationsArray2 != null && frontendIPConfigurationsArray2 instanceof NullNode == false) {
+                                                for (JsonNode frontendIPConfigurationsValue2 : ((ArrayNode) frontendIPConfigurationsArray2)) {
+                                                    ResourceId resourceIdInstance8 = new ResourceId();
+                                                    outboundNatRuleJsonFormatInstance.getFrontendIpConfigurations().add(resourceIdInstance8);
+                                                    
+                                                    JsonNode idValue23 = frontendIPConfigurationsValue2.get("id");
+                                                    if (idValue23 != null && idValue23 instanceof NullNode == false) {
+                                                        String idInstance23;
+                                                        idInstance23 = idValue23.getTextValue();
+                                                        resourceIdInstance8.setId(idInstance23);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode backendAddressPoolValue2 = propertiesValue8.get("backendAddressPool");
+                                            if (backendAddressPoolValue2 != null && backendAddressPoolValue2 instanceof NullNode == false) {
+                                                ResourceId backendAddressPoolInstance2 = new ResourceId();
+                                                outboundNatRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance2);
+                                                
+                                                JsonNode idValue24 = backendAddressPoolValue2.get("id");
+                                                if (idValue24 != null && idValue24 instanceof NullNode == false) {
+                                                    String idInstance24;
+                                                    idInstance24 = idValue24.getTextValue();
+                                                    backendAddressPoolInstance2.setId(idInstance24);
+                                                }
+                                            }
+                                            
+                                            JsonNode provisioningStateValue7 = propertiesValue8.get("provisioningState");
+                                            if (provisioningStateValue7 != null && provisioningStateValue7 instanceof NullNode == false) {
+                                                String provisioningStateInstance7;
+                                                provisioningStateInstance7 = provisioningStateValue7.getTextValue();
+                                                outboundNatRuleJsonFormatInstance.setProvisioningState(provisioningStateInstance7);
+                                            }
+                                        }
+                                        
+                                        JsonNode nameValue7 = outboundNatRulesValue2.get("name");
+                                        if (nameValue7 != null && nameValue7 instanceof NullNode == false) {
+                                            String nameInstance7;
+                                            nameInstance7 = nameValue7.getTextValue();
+                                            outboundNatRuleJsonFormatInstance.setName(nameInstance7);
+                                        }
+                                        
+                                        JsonNode etagValue7 = outboundNatRulesValue2.get("etag");
+                                        if (etagValue7 != null && etagValue7 instanceof NullNode == false) {
+                                            String etagInstance7;
+                                            etagInstance7 = etagValue7.getTextValue();
+                                            outboundNatRuleJsonFormatInstance.setEtag(etagInstance7);
+                                        }
+                                        
+                                        JsonNode idValue25 = outboundNatRulesValue2.get("id");
+                                        if (idValue25 != null && idValue25 instanceof NullNode == false) {
+                                            String idInstance25;
+                                            idInstance25 = idValue25.getTextValue();
+                                            outboundNatRuleJsonFormatInstance.setId(idInstance25);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    loadBalancerJsonFormatInstance.setResourceGuid(resourceGuidInstance);
+                                }
+                                
+                                JsonNode provisioningStateValue8 = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue8 != null && provisioningStateValue8 instanceof NullNode == false) {
+                                    String provisioningStateInstance8;
+                                    provisioningStateInstance8 = provisioningStateValue8.getTextValue();
+                                    loadBalancerJsonFormatInstance.setProvisioningState(provisioningStateInstance8);
                                 }
                             }
                             
-                            JsonNode etagValue6 = valueValue.get("etag");
-                            if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
-                                String etagInstance6;
-                                etagInstance6 = etagValue6.getTextValue();
-                                loadBalancerJsonFormatInstance.setEtag(etagInstance6);
+                            JsonNode etagValue8 = valueValue.get("etag");
+                            if (etagValue8 != null && etagValue8 instanceof NullNode == false) {
+                                String etagInstance8;
+                                etagInstance8 = etagValue8.getTextValue();
+                                loadBalancerJsonFormatInstance.setEtag(etagInstance8);
                             }
                             
-                            JsonNode idValue18 = valueValue.get("id");
-                            if (idValue18 != null && idValue18 instanceof NullNode == false) {
-                                String idInstance18;
-                                idInstance18 = idValue18.getTextValue();
-                                loadBalancerJsonFormatInstance.setId(idInstance18);
+                            JsonNode idValue26 = valueValue.get("id");
+                            if (idValue26 != null && idValue26 instanceof NullNode == false) {
+                                String idInstance26;
+                                idInstance26 = idValue26.getTextValue();
+                                loadBalancerJsonFormatInstance.setId(idInstance26);
                             }
                             
-                            JsonNode nameValue6 = valueValue.get("name");
-                            if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
-                                String nameInstance6;
-                                nameInstance6 = nameValue6.getTextValue();
-                                loadBalancerJsonFormatInstance.setName(nameInstance6);
+                            JsonNode nameValue8 = valueValue.get("name");
+                            if (nameValue8 != null && nameValue8 instanceof NullNode == false) {
+                                String nameInstance8;
+                                nameInstance8 = nameValue8.getTextValue();
+                                loadBalancerJsonFormatInstance.setName(nameInstance8);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");
@@ -3043,8 +3821,9 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                 result = new LoadBalancerListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3119,17 +3898,47 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 }
                                             }
                                             
-                                            JsonNode loadBalancingRulesArray = propertiesValue2.get("loadBalancingRules");
-                                            if (loadBalancingRulesArray != null && loadBalancingRulesArray instanceof NullNode == false) {
-                                                for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray)) {
+                                            JsonNode inboundNatPoolsArray = propertiesValue2.get("inboundNatPools");
+                                            if (inboundNatPoolsArray != null && inboundNatPoolsArray instanceof NullNode == false) {
+                                                for (JsonNode inboundNatPoolsValue : ((ArrayNode) inboundNatPoolsArray)) {
                                                     ResourceId resourceIdInstance2 = new ResourceId();
-                                                    frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance2);
+                                                    frontendIpConfigurationJsonFormatInstance.getInboundNatPools().add(resourceIdInstance2);
                                                     
-                                                    JsonNode idValue4 = loadBalancingRulesValue.get("id");
+                                                    JsonNode idValue4 = inboundNatPoolsValue.get("id");
                                                     if (idValue4 != null && idValue4 instanceof NullNode == false) {
                                                         String idInstance4;
                                                         idInstance4 = idValue4.getTextValue();
                                                         resourceIdInstance2.setId(idInstance4);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode outboundNatRulesArray = propertiesValue2.get("outboundNatRules");
+                                            if (outboundNatRulesArray != null && outboundNatRulesArray instanceof NullNode == false) {
+                                                for (JsonNode outboundNatRulesValue : ((ArrayNode) outboundNatRulesArray)) {
+                                                    ResourceId resourceIdInstance3 = new ResourceId();
+                                                    frontendIpConfigurationJsonFormatInstance.getOutboundNatRules().add(resourceIdInstance3);
+                                                    
+                                                    JsonNode idValue5 = outboundNatRulesValue.get("id");
+                                                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                                        String idInstance5;
+                                                        idInstance5 = idValue5.getTextValue();
+                                                        resourceIdInstance3.setId(idInstance5);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode loadBalancingRulesArray = propertiesValue2.get("loadBalancingRules");
+                                            if (loadBalancingRulesArray != null && loadBalancingRulesArray instanceof NullNode == false) {
+                                                for (JsonNode loadBalancingRulesValue : ((ArrayNode) loadBalancingRulesArray)) {
+                                                    ResourceId resourceIdInstance4 = new ResourceId();
+                                                    frontendIpConfigurationJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                                    
+                                                    JsonNode idValue6 = loadBalancingRulesValue.get("id");
+                                                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
+                                                        String idInstance6;
+                                                        idInstance6 = idValue6.getTextValue();
+                                                        resourceIdInstance4.setId(idInstance6);
                                                     }
                                                 }
                                             }
@@ -3156,11 +3965,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             frontendIpConfigurationJsonFormatInstance.setEtag(etagInstance);
                                         }
                                         
-                                        JsonNode idValue5 = frontendIPConfigurationsValue.get("id");
-                                        if (idValue5 != null && idValue5 instanceof NullNode == false) {
-                                            String idInstance5;
-                                            idInstance5 = idValue5.getTextValue();
-                                            frontendIpConfigurationJsonFormatInstance.setId(idInstance5);
+                                        JsonNode idValue7 = frontendIPConfigurationsValue.get("id");
+                                        if (idValue7 != null && idValue7 instanceof NullNode == false) {
+                                            String idInstance7;
+                                            idInstance7 = idValue7.getTextValue();
+                                            frontendIpConfigurationJsonFormatInstance.setId(idInstance7);
                                         }
                                     }
                                 }
@@ -3176,14 +3985,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             JsonNode backendIPConfigurationsArray = propertiesValue3.get("backendIPConfigurations");
                                             if (backendIPConfigurationsArray != null && backendIPConfigurationsArray instanceof NullNode == false) {
                                                 for (JsonNode backendIPConfigurationsValue : ((ArrayNode) backendIPConfigurationsArray)) {
-                                                    ResourceId resourceIdInstance3 = new ResourceId();
-                                                    backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance3);
+                                                    ResourceId resourceIdInstance5 = new ResourceId();
+                                                    backendAddressPoolJsonFormatInstance.getBackendIpConfigurations().add(resourceIdInstance5);
                                                     
-                                                    JsonNode idValue6 = backendIPConfigurationsValue.get("id");
-                                                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
-                                                        String idInstance6;
-                                                        idInstance6 = idValue6.getTextValue();
-                                                        resourceIdInstance3.setId(idInstance6);
+                                                    JsonNode idValue8 = backendIPConfigurationsValue.get("id");
+                                                    if (idValue8 != null && idValue8 instanceof NullNode == false) {
+                                                        String idInstance8;
+                                                        idInstance8 = idValue8.getTextValue();
+                                                        resourceIdInstance5.setId(idInstance8);
                                                     }
                                                 }
                                             }
@@ -3191,15 +4000,28 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             JsonNode loadBalancingRulesArray2 = propertiesValue3.get("loadBalancingRules");
                                             if (loadBalancingRulesArray2 != null && loadBalancingRulesArray2 instanceof NullNode == false) {
                                                 for (JsonNode loadBalancingRulesValue2 : ((ArrayNode) loadBalancingRulesArray2)) {
-                                                    ResourceId resourceIdInstance4 = new ResourceId();
-                                                    backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance4);
+                                                    ResourceId resourceIdInstance6 = new ResourceId();
+                                                    backendAddressPoolJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance6);
                                                     
-                                                    JsonNode idValue7 = loadBalancingRulesValue2.get("id");
-                                                    if (idValue7 != null && idValue7 instanceof NullNode == false) {
-                                                        String idInstance7;
-                                                        idInstance7 = idValue7.getTextValue();
-                                                        resourceIdInstance4.setId(idInstance7);
+                                                    JsonNode idValue9 = loadBalancingRulesValue2.get("id");
+                                                    if (idValue9 != null && idValue9 instanceof NullNode == false) {
+                                                        String idInstance9;
+                                                        idInstance9 = idValue9.getTextValue();
+                                                        resourceIdInstance6.setId(idInstance9);
                                                     }
+                                                }
+                                            }
+                                            
+                                            JsonNode outboundNatRuleValue = propertiesValue3.get("outboundNatRule");
+                                            if (outboundNatRuleValue != null && outboundNatRuleValue instanceof NullNode == false) {
+                                                ResourceId outboundNatRuleInstance = new ResourceId();
+                                                backendAddressPoolJsonFormatInstance.setOutboundNatRule(outboundNatRuleInstance);
+                                                
+                                                JsonNode idValue10 = outboundNatRuleValue.get("id");
+                                                if (idValue10 != null && idValue10 instanceof NullNode == false) {
+                                                    String idInstance10;
+                                                    idInstance10 = idValue10.getTextValue();
+                                                    outboundNatRuleInstance.setId(idInstance10);
                                                 }
                                             }
                                             
@@ -3225,11 +4047,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             backendAddressPoolJsonFormatInstance.setEtag(etagInstance2);
                                         }
                                         
-                                        JsonNode idValue8 = backendAddressPoolsValue.get("id");
-                                        if (idValue8 != null && idValue8 instanceof NullNode == false) {
-                                            String idInstance8;
-                                            idInstance8 = idValue8.getTextValue();
-                                            backendAddressPoolJsonFormatInstance.setId(idInstance8);
+                                        JsonNode idValue11 = backendAddressPoolsValue.get("id");
+                                        if (idValue11 != null && idValue11 instanceof NullNode == false) {
+                                            String idInstance11;
+                                            idInstance11 = idValue11.getTextValue();
+                                            backendAddressPoolJsonFormatInstance.setId(idInstance11);
                                         }
                                     }
                                 }
@@ -3247,11 +4069,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId frontendIPConfigurationInstance = new ResourceId();
                                                 loadBalancingRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance);
                                                 
-                                                JsonNode idValue9 = frontendIPConfigurationValue.get("id");
-                                                if (idValue9 != null && idValue9 instanceof NullNode == false) {
-                                                    String idInstance9;
-                                                    idInstance9 = idValue9.getTextValue();
-                                                    frontendIPConfigurationInstance.setId(idInstance9);
+                                                JsonNode idValue12 = frontendIPConfigurationValue.get("id");
+                                                if (idValue12 != null && idValue12 instanceof NullNode == false) {
+                                                    String idInstance12;
+                                                    idInstance12 = idValue12.getTextValue();
+                                                    frontendIPConfigurationInstance.setId(idInstance12);
                                                 }
                                             }
                                             
@@ -3260,11 +4082,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId backendAddressPoolInstance = new ResourceId();
                                                 loadBalancingRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance);
                                                 
-                                                JsonNode idValue10 = backendAddressPoolValue.get("id");
-                                                if (idValue10 != null && idValue10 instanceof NullNode == false) {
-                                                    String idInstance10;
-                                                    idInstance10 = idValue10.getTextValue();
-                                                    backendAddressPoolInstance.setId(idInstance10);
+                                                JsonNode idValue13 = backendAddressPoolValue.get("id");
+                                                if (idValue13 != null && idValue13 instanceof NullNode == false) {
+                                                    String idInstance13;
+                                                    idInstance13 = idValue13.getTextValue();
+                                                    backendAddressPoolInstance.setId(idInstance13);
                                                 }
                                             }
                                             
@@ -3273,11 +4095,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId probeInstance = new ResourceId();
                                                 loadBalancingRuleJsonFormatInstance.setProbe(probeInstance);
                                                 
-                                                JsonNode idValue11 = probeValue.get("id");
-                                                if (idValue11 != null && idValue11 instanceof NullNode == false) {
-                                                    String idInstance11;
-                                                    idInstance11 = idValue11.getTextValue();
-                                                    probeInstance.setId(idInstance11);
+                                                JsonNode idValue14 = probeValue.get("id");
+                                                if (idValue14 != null && idValue14 instanceof NullNode == false) {
+                                                    String idInstance14;
+                                                    idInstance14 = idValue14.getTextValue();
+                                                    probeInstance.setId(idInstance14);
                                                 }
                                             }
                                             
@@ -3345,11 +4167,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             loadBalancingRuleJsonFormatInstance.setEtag(etagInstance3);
                                         }
                                         
-                                        JsonNode idValue12 = loadBalancingRulesValue3.get("id");
-                                        if (idValue12 != null && idValue12 instanceof NullNode == false) {
-                                            String idInstance12;
-                                            idInstance12 = idValue12.getTextValue();
-                                            loadBalancingRuleJsonFormatInstance.setId(idInstance12);
+                                        JsonNode idValue15 = loadBalancingRulesValue3.get("id");
+                                        if (idValue15 != null && idValue15 instanceof NullNode == false) {
+                                            String idInstance15;
+                                            idInstance15 = idValue15.getTextValue();
+                                            loadBalancingRuleJsonFormatInstance.setId(idInstance15);
                                         }
                                     }
                                 }
@@ -3365,14 +4187,14 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             JsonNode loadBalancingRulesArray4 = propertiesValue5.get("loadBalancingRules");
                                             if (loadBalancingRulesArray4 != null && loadBalancingRulesArray4 instanceof NullNode == false) {
                                                 for (JsonNode loadBalancingRulesValue4 : ((ArrayNode) loadBalancingRulesArray4)) {
-                                                    ResourceId resourceIdInstance5 = new ResourceId();
-                                                    probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance5);
+                                                    ResourceId resourceIdInstance7 = new ResourceId();
+                                                    probeJsonFormatInstance.getLoadBalancingRules().add(resourceIdInstance7);
                                                     
-                                                    JsonNode idValue13 = loadBalancingRulesValue4.get("id");
-                                                    if (idValue13 != null && idValue13 instanceof NullNode == false) {
-                                                        String idInstance13;
-                                                        idInstance13 = idValue13.getTextValue();
-                                                        resourceIdInstance5.setId(idInstance13);
+                                                    JsonNode idValue16 = loadBalancingRulesValue4.get("id");
+                                                    if (idValue16 != null && idValue16 instanceof NullNode == false) {
+                                                        String idInstance16;
+                                                        idInstance16 = idValue16.getTextValue();
+                                                        resourceIdInstance7.setId(idInstance16);
                                                     }
                                                 }
                                             }
@@ -3434,11 +4256,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             probeJsonFormatInstance.setEtag(etagInstance4);
                                         }
                                         
-                                        JsonNode idValue14 = probesValue.get("id");
-                                        if (idValue14 != null && idValue14 instanceof NullNode == false) {
-                                            String idInstance14;
-                                            idInstance14 = idValue14.getTextValue();
-                                            probeJsonFormatInstance.setId(idInstance14);
+                                        JsonNode idValue17 = probesValue.get("id");
+                                        if (idValue17 != null && idValue17 instanceof NullNode == false) {
+                                            String idInstance17;
+                                            idInstance17 = idValue17.getTextValue();
+                                            probeJsonFormatInstance.setId(idInstance17);
                                         }
                                     }
                                 }
@@ -3456,11 +4278,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId frontendIPConfigurationInstance2 = new ResourceId();
                                                 inboundNatRuleJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance2);
                                                 
-                                                JsonNode idValue15 = frontendIPConfigurationValue2.get("id");
-                                                if (idValue15 != null && idValue15 instanceof NullNode == false) {
-                                                    String idInstance15;
-                                                    idInstance15 = idValue15.getTextValue();
-                                                    frontendIPConfigurationInstance2.setId(idInstance15);
+                                                JsonNode idValue18 = frontendIPConfigurationValue2.get("id");
+                                                if (idValue18 != null && idValue18 instanceof NullNode == false) {
+                                                    String idInstance18;
+                                                    idInstance18 = idValue18.getTextValue();
+                                                    frontendIPConfigurationInstance2.setId(idInstance18);
                                                 }
                                             }
                                             
@@ -3469,11 +4291,11 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                                 ResourceId backendIPConfigurationInstance = new ResourceId();
                                                 inboundNatRuleJsonFormatInstance.setBackendIPConfiguration(backendIPConfigurationInstance);
                                                 
-                                                JsonNode idValue16 = backendIPConfigurationValue.get("id");
-                                                if (idValue16 != null && idValue16 instanceof NullNode == false) {
-                                                    String idInstance16;
-                                                    idInstance16 = idValue16.getTextValue();
-                                                    backendIPConfigurationInstance.setId(idInstance16);
+                                                JsonNode idValue19 = backendIPConfigurationValue.get("id");
+                                                if (idValue19 != null && idValue19 instanceof NullNode == false) {
+                                                    String idInstance19;
+                                                    idInstance19 = idValue19.getTextValue();
+                                                    backendIPConfigurationInstance.setId(idInstance19);
                                                 }
                                             }
                                             
@@ -3534,42 +4356,203 @@ public class LoadBalancerOperationsImpl implements ServiceOperations<NetworkReso
                                             inboundNatRuleJsonFormatInstance.setEtag(etagInstance5);
                                         }
                                         
-                                        JsonNode idValue17 = inboundNatRulesValue2.get("id");
-                                        if (idValue17 != null && idValue17 instanceof NullNode == false) {
-                                            String idInstance17;
-                                            idInstance17 = idValue17.getTextValue();
-                                            inboundNatRuleJsonFormatInstance.setId(idInstance17);
+                                        JsonNode idValue20 = inboundNatRulesValue2.get("id");
+                                        if (idValue20 != null && idValue20 instanceof NullNode == false) {
+                                            String idInstance20;
+                                            idInstance20 = idValue20.getTextValue();
+                                            inboundNatRuleJsonFormatInstance.setId(idInstance20);
                                         }
                                     }
                                 }
                                 
-                                JsonNode provisioningStateValue6 = propertiesValue.get("provisioningState");
-                                if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
-                                    String provisioningStateInstance6;
-                                    provisioningStateInstance6 = provisioningStateValue6.getTextValue();
-                                    loadBalancerJsonFormatInstance.setProvisioningState(provisioningStateInstance6);
+                                JsonNode inboundNatPoolsArray2 = propertiesValue.get("inboundNatPools");
+                                if (inboundNatPoolsArray2 != null && inboundNatPoolsArray2 instanceof NullNode == false) {
+                                    for (JsonNode inboundNatPoolsValue2 : ((ArrayNode) inboundNatPoolsArray2)) {
+                                        InboundNatPool inboundNatPoolJsonFormatInstance = new InboundNatPool();
+                                        loadBalancerJsonFormatInstance.getInboundNatPools().add(inboundNatPoolJsonFormatInstance);
+                                        
+                                        JsonNode propertiesValue7 = inboundNatPoolsValue2.get("properties");
+                                        if (propertiesValue7 != null && propertiesValue7 instanceof NullNode == false) {
+                                            JsonNode frontendIPConfigurationValue3 = propertiesValue7.get("frontendIPConfiguration");
+                                            if (frontendIPConfigurationValue3 != null && frontendIPConfigurationValue3 instanceof NullNode == false) {
+                                                ResourceId frontendIPConfigurationInstance3 = new ResourceId();
+                                                inboundNatPoolJsonFormatInstance.setFrontendIPConfiguration(frontendIPConfigurationInstance3);
+                                                
+                                                JsonNode idValue21 = frontendIPConfigurationValue3.get("id");
+                                                if (idValue21 != null && idValue21 instanceof NullNode == false) {
+                                                    String idInstance21;
+                                                    idInstance21 = idValue21.getTextValue();
+                                                    frontendIPConfigurationInstance3.setId(idInstance21);
+                                                }
+                                            }
+                                            
+                                            JsonNode protocolValue4 = propertiesValue7.get("protocol");
+                                            if (protocolValue4 != null && protocolValue4 instanceof NullNode == false) {
+                                                String protocolInstance4;
+                                                protocolInstance4 = protocolValue4.getTextValue();
+                                                inboundNatPoolJsonFormatInstance.setProtocol(protocolInstance4);
+                                            }
+                                            
+                                            JsonNode frontendPortRangeStartValue = propertiesValue7.get("frontendPortRangeStart");
+                                            if (frontendPortRangeStartValue != null && frontendPortRangeStartValue instanceof NullNode == false) {
+                                                int frontendPortRangeStartInstance;
+                                                frontendPortRangeStartInstance = frontendPortRangeStartValue.getIntValue();
+                                                inboundNatPoolJsonFormatInstance.setFrontendPortRangeStart(frontendPortRangeStartInstance);
+                                            }
+                                            
+                                            JsonNode frontendPortRangeEndValue = propertiesValue7.get("frontendPortRangeEnd");
+                                            if (frontendPortRangeEndValue != null && frontendPortRangeEndValue instanceof NullNode == false) {
+                                                int frontendPortRangeEndInstance;
+                                                frontendPortRangeEndInstance = frontendPortRangeEndValue.getIntValue();
+                                                inboundNatPoolJsonFormatInstance.setFrontendPortRangeEnd(frontendPortRangeEndInstance);
+                                            }
+                                            
+                                            JsonNode backendPortValue3 = propertiesValue7.get("backendPort");
+                                            if (backendPortValue3 != null && backendPortValue3 instanceof NullNode == false) {
+                                                int backendPortInstance3;
+                                                backendPortInstance3 = backendPortValue3.getIntValue();
+                                                inboundNatPoolJsonFormatInstance.setBackendPort(backendPortInstance3);
+                                            }
+                                            
+                                            JsonNode provisioningStateValue6 = propertiesValue7.get("provisioningState");
+                                            if (provisioningStateValue6 != null && provisioningStateValue6 instanceof NullNode == false) {
+                                                String provisioningStateInstance6;
+                                                provisioningStateInstance6 = provisioningStateValue6.getTextValue();
+                                                inboundNatPoolJsonFormatInstance.setProvisioningState(provisioningStateInstance6);
+                                            }
+                                        }
+                                        
+                                        JsonNode nameValue6 = inboundNatPoolsValue2.get("name");
+                                        if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
+                                            String nameInstance6;
+                                            nameInstance6 = nameValue6.getTextValue();
+                                            inboundNatPoolJsonFormatInstance.setName(nameInstance6);
+                                        }
+                                        
+                                        JsonNode etagValue6 = inboundNatPoolsValue2.get("etag");
+                                        if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
+                                            String etagInstance6;
+                                            etagInstance6 = etagValue6.getTextValue();
+                                            inboundNatPoolJsonFormatInstance.setEtag(etagInstance6);
+                                        }
+                                        
+                                        JsonNode idValue22 = inboundNatPoolsValue2.get("id");
+                                        if (idValue22 != null && idValue22 instanceof NullNode == false) {
+                                            String idInstance22;
+                                            idInstance22 = idValue22.getTextValue();
+                                            inboundNatPoolJsonFormatInstance.setId(idInstance22);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode outboundNatRulesArray2 = propertiesValue.get("outboundNatRules");
+                                if (outboundNatRulesArray2 != null && outboundNatRulesArray2 instanceof NullNode == false) {
+                                    for (JsonNode outboundNatRulesValue2 : ((ArrayNode) outboundNatRulesArray2)) {
+                                        OutboundNatRule outboundNatRuleJsonFormatInstance = new OutboundNatRule();
+                                        loadBalancerJsonFormatInstance.getOutboundNatRules().add(outboundNatRuleJsonFormatInstance);
+                                        
+                                        JsonNode propertiesValue8 = outboundNatRulesValue2.get("properties");
+                                        if (propertiesValue8 != null && propertiesValue8 instanceof NullNode == false) {
+                                            JsonNode allocatedOutboundPortsValue = propertiesValue8.get("allocatedOutboundPorts");
+                                            if (allocatedOutboundPortsValue != null && allocatedOutboundPortsValue instanceof NullNode == false) {
+                                                int allocatedOutboundPortsInstance;
+                                                allocatedOutboundPortsInstance = allocatedOutboundPortsValue.getIntValue();
+                                                outboundNatRuleJsonFormatInstance.setAllocatedOutboundPorts(allocatedOutboundPortsInstance);
+                                            }
+                                            
+                                            JsonNode frontendIPConfigurationsArray2 = propertiesValue8.get("frontendIPConfigurations");
+                                            if (frontendIPConfigurationsArray2 != null && frontendIPConfigurationsArray2 instanceof NullNode == false) {
+                                                for (JsonNode frontendIPConfigurationsValue2 : ((ArrayNode) frontendIPConfigurationsArray2)) {
+                                                    ResourceId resourceIdInstance8 = new ResourceId();
+                                                    outboundNatRuleJsonFormatInstance.getFrontendIpConfigurations().add(resourceIdInstance8);
+                                                    
+                                                    JsonNode idValue23 = frontendIPConfigurationsValue2.get("id");
+                                                    if (idValue23 != null && idValue23 instanceof NullNode == false) {
+                                                        String idInstance23;
+                                                        idInstance23 = idValue23.getTextValue();
+                                                        resourceIdInstance8.setId(idInstance23);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode backendAddressPoolValue2 = propertiesValue8.get("backendAddressPool");
+                                            if (backendAddressPoolValue2 != null && backendAddressPoolValue2 instanceof NullNode == false) {
+                                                ResourceId backendAddressPoolInstance2 = new ResourceId();
+                                                outboundNatRuleJsonFormatInstance.setBackendAddressPool(backendAddressPoolInstance2);
+                                                
+                                                JsonNode idValue24 = backendAddressPoolValue2.get("id");
+                                                if (idValue24 != null && idValue24 instanceof NullNode == false) {
+                                                    String idInstance24;
+                                                    idInstance24 = idValue24.getTextValue();
+                                                    backendAddressPoolInstance2.setId(idInstance24);
+                                                }
+                                            }
+                                            
+                                            JsonNode provisioningStateValue7 = propertiesValue8.get("provisioningState");
+                                            if (provisioningStateValue7 != null && provisioningStateValue7 instanceof NullNode == false) {
+                                                String provisioningStateInstance7;
+                                                provisioningStateInstance7 = provisioningStateValue7.getTextValue();
+                                                outboundNatRuleJsonFormatInstance.setProvisioningState(provisioningStateInstance7);
+                                            }
+                                        }
+                                        
+                                        JsonNode nameValue7 = outboundNatRulesValue2.get("name");
+                                        if (nameValue7 != null && nameValue7 instanceof NullNode == false) {
+                                            String nameInstance7;
+                                            nameInstance7 = nameValue7.getTextValue();
+                                            outboundNatRuleJsonFormatInstance.setName(nameInstance7);
+                                        }
+                                        
+                                        JsonNode etagValue7 = outboundNatRulesValue2.get("etag");
+                                        if (etagValue7 != null && etagValue7 instanceof NullNode == false) {
+                                            String etagInstance7;
+                                            etagInstance7 = etagValue7.getTextValue();
+                                            outboundNatRuleJsonFormatInstance.setEtag(etagInstance7);
+                                        }
+                                        
+                                        JsonNode idValue25 = outboundNatRulesValue2.get("id");
+                                        if (idValue25 != null && idValue25 instanceof NullNode == false) {
+                                            String idInstance25;
+                                            idInstance25 = idValue25.getTextValue();
+                                            outboundNatRuleJsonFormatInstance.setId(idInstance25);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    loadBalancerJsonFormatInstance.setResourceGuid(resourceGuidInstance);
+                                }
+                                
+                                JsonNode provisioningStateValue8 = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue8 != null && provisioningStateValue8 instanceof NullNode == false) {
+                                    String provisioningStateInstance8;
+                                    provisioningStateInstance8 = provisioningStateValue8.getTextValue();
+                                    loadBalancerJsonFormatInstance.setProvisioningState(provisioningStateInstance8);
                                 }
                             }
                             
-                            JsonNode etagValue6 = valueValue.get("etag");
-                            if (etagValue6 != null && etagValue6 instanceof NullNode == false) {
-                                String etagInstance6;
-                                etagInstance6 = etagValue6.getTextValue();
-                                loadBalancerJsonFormatInstance.setEtag(etagInstance6);
+                            JsonNode etagValue8 = valueValue.get("etag");
+                            if (etagValue8 != null && etagValue8 instanceof NullNode == false) {
+                                String etagInstance8;
+                                etagInstance8 = etagValue8.getTextValue();
+                                loadBalancerJsonFormatInstance.setEtag(etagInstance8);
                             }
                             
-                            JsonNode idValue18 = valueValue.get("id");
-                            if (idValue18 != null && idValue18 instanceof NullNode == false) {
-                                String idInstance18;
-                                idInstance18 = idValue18.getTextValue();
-                                loadBalancerJsonFormatInstance.setId(idInstance18);
+                            JsonNode idValue26 = valueValue.get("id");
+                            if (idValue26 != null && idValue26 instanceof NullNode == false) {
+                                String idInstance26;
+                                idInstance26 = idValue26.getTextValue();
+                                loadBalancerJsonFormatInstance.setId(idInstance26);
                             }
                             
-                            JsonNode nameValue6 = valueValue.get("name");
-                            if (nameValue6 != null && nameValue6 instanceof NullNode == false) {
-                                String nameInstance6;
-                                nameInstance6 = nameValue6.getTextValue();
-                                loadBalancerJsonFormatInstance.setName(nameInstance6);
+                            JsonNode nameValue8 = valueValue.get("name");
+                            if (nameValue8 != null && nameValue8 instanceof NullNode == false) {
+                                String nameInstance8;
+                                nameInstance8 = nameValue8.getTextValue();
+                                loadBalancerJsonFormatInstance.setName(nameInstance8);
                             }
                             
                             JsonNode typeValue = valueValue.get("type");

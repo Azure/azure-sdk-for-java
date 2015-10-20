@@ -26,6 +26,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.models.ResourceProviderOperationDetailListResult;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

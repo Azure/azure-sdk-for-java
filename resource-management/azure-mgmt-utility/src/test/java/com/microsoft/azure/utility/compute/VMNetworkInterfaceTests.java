@@ -25,7 +25,12 @@ import com.microsoft.azure.utility.ConsumerWrapper;
 import com.microsoft.azure.utility.NetworkHelper;
 import com.microsoft.azure.utility.ResourceContext;
 import org.apache.commons.logging.LogFactory;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class VMNetworkInterfaceTests extends ComputeTestBase {
     static {
@@ -83,17 +88,21 @@ public class VMNetworkInterfaceTests extends ComputeTestBase {
             }
         });
 
+        log.info("wait for the vm creation...");
+        computeManagementClient.getVirtualMachinesOperations().createOrUpdate(context.getResourceGroupName(), vm);
+
+        log.info("nic1: " + context.getNetworkInterface().getName() +
+                " nic2: " + context2.getNetworkInterface().getName());
         NetworkInterfaceGetResponse getNic1Response = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(m_rgName, context.getNetworkInterface().getName());
-        // TODO get MAC address/isPrimary has shaky behavior in certain regions
-        // Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
-        // Assert.assertNotNull("nic1response isPrimary is null", getNic1Response.getNetworkInterface().isPrimary());
-        // Assert.assertFalse("nic1response isPrimary should be false", getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertNotNull(getNic1Response.getNetworkInterface().getMacAddress());
+        Assert.assertNotNull("nic1response isPrimary is null", getNic1Response.getNetworkInterface().isPrimary());
+        Assert.assertFalse("nic1response isPrimary should be false", getNic1Response.getNetworkInterface().isPrimary());
 
         NetworkInterfaceGetResponse getNic2Response = networkResourceProviderClient.getNetworkInterfacesOperations()
                 .get(m_rgName, context2.getNetworkInterface().getName());
-        // Assert.assertNotNull(getNic2Response.getNetworkInterface().getMacAddress());
-        // Assert.assertNotNull("nic2response isPrimary is null", getNic2Response.getNetworkInterface().isPrimary());
-        // Assert.assertTrue("nic2response isPrimary should be true", getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertNotNull(getNic2Response.getNetworkInterface().getMacAddress());
+        Assert.assertNotNull("nic2response isPrimary is null", getNic2Response.getNetworkInterface().isPrimary());
+        Assert.assertTrue("nic2response isPrimary should be true", getNic2Response.getNetworkInterface().isPrimary());
     }
 }

@@ -34,6 +34,18 @@ import com.microsoft.windowsazure.management.models.SubscriptionListOperationsPa
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionStatus;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -46,17 +58,6 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for listing subscription details.  (see
@@ -205,7 +206,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     Element subscriptionStatusElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionStatus");
                     if (subscriptionStatusElement != null && subscriptionStatusElement.getTextContent() != null && !subscriptionStatusElement.getTextContent().isEmpty()) {
                         SubscriptionStatus subscriptionStatusInstance;
-                        subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent().toUpperCase());
+                        subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent());
                         result.setSubscriptionStatus(subscriptionStatusInstance);
                     }
                     

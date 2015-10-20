@@ -18,9 +18,7 @@
 
 package com.microsoft.windowsazure.core.pipeline.apache;
 
-import java.util.ArrayList;
-import java.util.Map;
-
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -28,7 +26,8 @@ import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ApacheConfigSettings {
     private final String profile;

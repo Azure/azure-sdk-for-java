@@ -108,6 +108,27 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -124,25 +145,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * Operations for managing the web sites in a web space.
@@ -406,8 +408,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteBackupResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -443,7 +446,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode statusValue = propertiesValue2.get("status");
                         if (statusValue != null && statusValue instanceof NullNode == false) {
                             BackupItemStatus statusInstance;
-                            statusInstance = Enum.valueOf(BackupItemStatus.class, statusValue.getTextValue().toUpperCase());
+                            statusInstance = Enum.valueOf(BackupItemStatus.class, statusValue.getTextValue());
                             propertiesInstance.setStatus(statusInstance);
                         }
                         
@@ -817,8 +820,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteAsyncOperationResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1050,8 +1054,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteCreateResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1073,7 +1078,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode availabilityStateValue = propertiesValue2.get("availabilityState");
                         if (availabilityStateValue != null && availabilityStateValue instanceof NullNode == false) {
                             WebSpaceAvailabilityState availabilityStateInstance;
-                            availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue().toUpperCase());
+                            availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue());
                             propertiesInstance.setAvailabilityState(availabilityStateInstance);
                         }
                         
@@ -1107,7 +1112,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode sslStateValue = hostNameSslStatesValue.get("sslState");
                                 if (sslStateValue != null && sslStateValue instanceof NullNode == false) {
                                     WebSiteSslState sslStateInstance;
-                                    sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue().toUpperCase());
+                                    sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue());
                                     webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                                 }
                                 
@@ -1149,7 +1154,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode hostTypeValue = hostNameSslStatesValue.get("hostType");
                                 if (hostTypeValue != null && hostTypeValue instanceof NullNode == false) {
                                     HostType hostTypeInstance;
-                                    hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue().toUpperCase());
+                                    hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue());
                                     webSiteHostNameSslStateInstance.setHostType(hostTypeInstance);
                                 }
                             }
@@ -1179,7 +1184,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode runtimeAvailabilityStateValue = propertiesValue2.get("runtimeAvailabilityState");
                         if (runtimeAvailabilityStateValue != null && runtimeAvailabilityStateValue instanceof NullNode == false) {
                             WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                            runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue().toUpperCase());
+                            runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue());
                             propertiesInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                         }
                         
@@ -1214,7 +1219,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode skuValue = propertiesValue2.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -1296,7 +1301,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode typeValue = connectionStringsValue.get("type");
                                     if (typeValue != null && typeValue instanceof NullNode == false) {
                                         DatabaseServerType typeInstance;
-                                        typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
+                                        typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue());
                                         connStringInfoInstance.setType(typeInstance);
                                     }
                                 }
@@ -1369,7 +1374,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode managedPipelineModeValue = siteConfigValue.get("managedPipelineMode");
                             if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                                 ManagedPipelineMode managedPipelineModeInstance;
-                                managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
+                                managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue());
                                 siteConfigInstance.setManagedPipelineMode(managedPipelineModeInstance);
                             }
                             
@@ -1436,7 +1441,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode remoteDebuggingVersionValue = siteConfigValue.get("remoteDebuggingVersion");
                             if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                                 RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                                remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
+                                remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue());
                                 siteConfigInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                             }
                             
@@ -1513,14 +1518,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode stateValue = propertiesValue2.get("state");
                         if (stateValue != null && stateValue instanceof NullNode == false) {
                             WebSiteState stateInstance;
-                            stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue().toUpperCase());
+                            stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue());
                             propertiesInstance.setState(stateInstance);
                         }
                         
                         JsonNode usageStateValue = propertiesValue2.get("usageState");
                         if (usageStateValue != null && usageStateValue instanceof NullNode == false) {
                             WebSiteUsageState usageStateInstance;
-                            usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue().toUpperCase());
+                            usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue());
                             propertiesInstance.setUsageState(usageStateInstance);
                         }
                         
@@ -2012,8 +2017,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteDeleteRepositoryResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2403,8 +2409,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteRestoreDiscoverResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2822,8 +2829,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2845,7 +2853,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode availabilityStateValue = propertiesValue.get("availabilityState");
                         if (availabilityStateValue != null && availabilityStateValue instanceof NullNode == false) {
                             WebSpaceAvailabilityState availabilityStateInstance;
-                            availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue().toUpperCase());
+                            availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue());
                             propertiesInstance.setAvailabilityState(availabilityStateInstance);
                         }
                         
@@ -2879,7 +2887,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode sslStateValue = hostNameSslStatesValue.get("sslState");
                                 if (sslStateValue != null && sslStateValue instanceof NullNode == false) {
                                     WebSiteSslState sslStateInstance;
-                                    sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue().toUpperCase());
+                                    sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue());
                                     webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                                 }
                                 
@@ -2921,7 +2929,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode hostTypeValue = hostNameSslStatesValue.get("hostType");
                                 if (hostTypeValue != null && hostTypeValue instanceof NullNode == false) {
                                     HostType hostTypeInstance;
-                                    hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue().toUpperCase());
+                                    hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue());
                                     webSiteHostNameSslStateInstance.setHostType(hostTypeInstance);
                                 }
                             }
@@ -2951,7 +2959,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode runtimeAvailabilityStateValue = propertiesValue.get("runtimeAvailabilityState");
                         if (runtimeAvailabilityStateValue != null && runtimeAvailabilityStateValue instanceof NullNode == false) {
                             WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                            runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue().toUpperCase());
+                            runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue());
                             propertiesInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                         }
                         
@@ -2986,7 +2994,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode skuValue = propertiesValue.get("sku");
                         if (skuValue != null && skuValue instanceof NullNode == false) {
                             SkuOptions skuInstance;
-                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
+                            skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue());
                             propertiesInstance.setSku(skuInstance);
                         }
                         
@@ -3068,7 +3076,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode typeValue = connectionStringsValue.get("type");
                                     if (typeValue != null && typeValue instanceof NullNode == false) {
                                         DatabaseServerType typeInstance;
-                                        typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
+                                        typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue());
                                         connStringInfoInstance.setType(typeInstance);
                                     }
                                 }
@@ -3141,7 +3149,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode managedPipelineModeValue = siteConfigValue.get("managedPipelineMode");
                             if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                                 ManagedPipelineMode managedPipelineModeInstance;
-                                managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
+                                managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue());
                                 siteConfigInstance.setManagedPipelineMode(managedPipelineModeInstance);
                             }
                             
@@ -3208,7 +3216,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode remoteDebuggingVersionValue = siteConfigValue.get("remoteDebuggingVersion");
                             if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                                 RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                                remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
+                                remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue());
                                 siteConfigInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                             }
                             
@@ -3285,14 +3293,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode stateValue = propertiesValue.get("state");
                         if (stateValue != null && stateValue instanceof NullNode == false) {
                             WebSiteState stateInstance;
-                            stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue().toUpperCase());
+                            stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue());
                             propertiesInstance.setState(stateInstance);
                         }
                         
                         JsonNode usageStateValue = propertiesValue.get("usageState");
                         if (usageStateValue != null && usageStateValue instanceof NullNode == false) {
                             WebSiteUsageState usageStateInstance;
-                            usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue().toUpperCase());
+                            usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue());
                             propertiesInstance.setUsageState(usageStateInstance);
                         }
                         
@@ -3486,8 +3494,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteAppSettingsResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3692,8 +3701,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetBackupConfigurationResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3741,7 +3751,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode frequencyUnitValue = backupScheduleValue.get("frequencyUnit");
                             if (frequencyUnitValue != null && frequencyUnitValue instanceof NullNode == false) {
                                 FrequencyUnit frequencyUnitInstance;
-                                frequencyUnitInstance = Enum.valueOf(FrequencyUnit.class, frequencyUnitValue.getTextValue().toUpperCase());
+                                frequencyUnitInstance = Enum.valueOf(FrequencyUnit.class, frequencyUnitValue.getTextValue());
                                 backupScheduleInstance2.setFrequencyUnit(frequencyUnitInstance);
                             }
                             
@@ -4000,8 +4010,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetConfigurationResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -4047,7 +4058,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode typeValue = connectionStringsValue.get("type");
                                 if (typeValue != null && typeValue instanceof NullNode == false) {
                                     DatabaseServerType typeInstance;
-                                    typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
+                                    typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue());
                                     connStringInfoInstance.setType(typeInstance);
                                 }
                             }
@@ -4120,7 +4131,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode managedPipelineModeValue = propertiesValue.get("managedPipelineMode");
                         if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                             ManagedPipelineMode managedPipelineModeInstance;
-                            managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
+                            managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue());
                             propertiesInstance.setManagedPipelineMode(managedPipelineModeInstance);
                         }
                         
@@ -4187,7 +4198,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         JsonNode remoteDebuggingVersionValue = propertiesValue.get("remoteDebuggingVersion");
                         if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                             RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                            remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
+                            remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue());
                             propertiesInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                         }
                         
@@ -4436,8 +4447,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteConnectionStringsResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -4467,7 +4479,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode typeValue = propertiesValue.get("type");
                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                 DatabaseServerType typeInstance;
-                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
+                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue());
                                 connStringInfoInstance.setType(typeInstance);
                             }
                         }
@@ -4680,8 +4692,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetHistoricalUsageMetricsResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -4948,8 +4961,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteMetadataResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -5163,8 +5177,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteAsyncOperationResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -5324,8 +5339,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSitePublishingCredentialsResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -5788,8 +5804,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetRepositoryResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -5936,8 +5953,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new SlotConfigNamesResult();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -6149,8 +6167,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetUsageMetricsResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 JsonNode usagesValue = responseDoc.get("usages");
@@ -6349,8 +6368,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -6375,7 +6395,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode availabilityStateValue = propertiesValue.get("availabilityState");
                                 if (availabilityStateValue != null && availabilityStateValue instanceof NullNode == false) {
                                     WebSpaceAvailabilityState availabilityStateInstance;
-                                    availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue().toUpperCase());
+                                    availabilityStateInstance = Enum.valueOf(WebSpaceAvailabilityState.class, availabilityStateValue.getTextValue());
                                     propertiesInstance.setAvailabilityState(availabilityStateInstance);
                                 }
                                 
@@ -6409,7 +6429,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         JsonNode sslStateValue = hostNameSslStatesValue.get("sslState");
                                         if (sslStateValue != null && sslStateValue instanceof NullNode == false) {
                                             WebSiteSslState sslStateInstance;
-                                            sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue().toUpperCase());
+                                            sslStateInstance = Enum.valueOf(WebSiteSslState.class, sslStateValue.getTextValue());
                                             webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                                         }
                                         
@@ -6451,7 +6471,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         JsonNode hostTypeValue = hostNameSslStatesValue.get("hostType");
                                         if (hostTypeValue != null && hostTypeValue instanceof NullNode == false) {
                                             HostType hostTypeInstance;
-                                            hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue().toUpperCase());
+                                            hostTypeInstance = Enum.valueOf(HostType.class, hostTypeValue.getTextValue());
                                             webSiteHostNameSslStateInstance.setHostType(hostTypeInstance);
                                         }
                                     }
@@ -6481,7 +6501,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode runtimeAvailabilityStateValue = propertiesValue.get("runtimeAvailabilityState");
                                 if (runtimeAvailabilityStateValue != null && runtimeAvailabilityStateValue instanceof NullNode == false) {
                                     WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                                    runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue().toUpperCase());
+                                    runtimeAvailabilityStateInstance = Enum.valueOf(WebSiteRuntimeAvailabilityState.class, runtimeAvailabilityStateValue.getTextValue());
                                     propertiesInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                                 }
                                 
@@ -6516,7 +6536,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode skuValue = propertiesValue.get("sku");
                                 if (skuValue != null && skuValue instanceof NullNode == false) {
                                     SkuOptions skuInstance;
-                                    skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue().toUpperCase());
+                                    skuInstance = Enum.valueOf(SkuOptions.class, skuValue.getTextValue());
                                     propertiesInstance.setSku(skuInstance);
                                 }
                                 
@@ -6598,7 +6618,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                             JsonNode typeValue = connectionStringsValue.get("type");
                                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                                 DatabaseServerType typeInstance;
-                                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
+                                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue());
                                                 connStringInfoInstance.setType(typeInstance);
                                             }
                                         }
@@ -6671,7 +6691,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode managedPipelineModeValue = siteConfigValue.get("managedPipelineMode");
                                     if (managedPipelineModeValue != null && managedPipelineModeValue instanceof NullNode == false) {
                                         ManagedPipelineMode managedPipelineModeInstance;
-                                        managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue().toUpperCase());
+                                        managedPipelineModeInstance = Enum.valueOf(ManagedPipelineMode.class, managedPipelineModeValue.getTextValue());
                                         siteConfigInstance.setManagedPipelineMode(managedPipelineModeInstance);
                                     }
                                     
@@ -6738,7 +6758,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     JsonNode remoteDebuggingVersionValue = siteConfigValue.get("remoteDebuggingVersion");
                                     if (remoteDebuggingVersionValue != null && remoteDebuggingVersionValue instanceof NullNode == false) {
                                         RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                                        remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue().toUpperCase());
+                                        remoteDebuggingVersionInstance = Enum.valueOf(RemoteDebuggingVersion.class, remoteDebuggingVersionValue.getTextValue());
                                         siteConfigInstance.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
                                     }
                                     
@@ -6815,14 +6835,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 JsonNode stateValue = propertiesValue.get("state");
                                 if (stateValue != null && stateValue instanceof NullNode == false) {
                                     WebSiteState stateInstance;
-                                    stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue().toUpperCase());
+                                    stateInstance = Enum.valueOf(WebSiteState.class, stateValue.getTextValue());
                                     propertiesInstance.setState(stateInstance);
                                 }
                                 
                                 JsonNode usageStateValue = propertiesValue.get("usageState");
                                 if (usageStateValue != null && usageStateValue instanceof NullNode == false) {
                                     WebSiteUsageState usageStateInstance;
-                                    usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue().toUpperCase());
+                                    usageStateInstance = Enum.valueOf(WebSiteUsageState.class, usageStateValue.getTextValue());
                                     propertiesInstance.setUsageState(usageStateInstance);
                                 }
                                 
@@ -7019,8 +7039,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 result = new WebSiteGetBackupsResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -7057,7 +7078,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode statusValue = propertiesValue.get("status");
                             if (statusValue != null && statusValue instanceof NullNode == false) {
                                 BackupItemStatus statusInstance;
-                                statusInstance = Enum.valueOf(BackupItemStatus.class, statusValue.getTextValue().toUpperCase());
+                                statusInstance = Enum.valueOf(BackupItemStatus.class, statusValue.getTextValue());
                                 backupItemInstance.setStatus(statusInstance);
                             }
                             
@@ -7549,8 +7570,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteRestoreResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 JsonNode restoreResponseValue = responseDoc.get("RestoreResponse");
@@ -8042,8 +8064,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteAppSettingsResult();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -8950,8 +8973,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteConnectionStringsResult();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -8981,7 +9005,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             JsonNode typeValue = propertiesValue.get("type");
                             if (typeValue != null && typeValue instanceof NullNode == false) {
                                 DatabaseServerType typeInstance;
-                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue().toUpperCase());
+                                typeInstance = Enum.valueOf(DatabaseServerType.class, typeValue.getTextValue());
                                 connStringInfoInstance.setType(typeInstance);
                             }
                         }
@@ -9240,8 +9264,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new WebSiteMetadataResult();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -9489,8 +9514,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new SiteSourceControlUpdateResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {

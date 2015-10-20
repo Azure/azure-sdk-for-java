@@ -14,20 +14,32 @@
  */
 package com.microsoft.windowsazure.management.scheduler;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.scheduler.models.*;
-import com.microsoft.windowsazure.scheduler.models.*;
-
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceCreateParameters;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetResponse;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatus;
+import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatusResponse;
+import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCreateParameters;
+import com.microsoft.windowsazure.scheduler.models.Job;
+import com.microsoft.windowsazure.scheduler.models.JobAction;
+import com.microsoft.windowsazure.scheduler.models.JobActionType;
+import com.microsoft.windowsazure.scheduler.models.JobCollectionJobsUpdateStateParameters;
+import com.microsoft.windowsazure.scheduler.models.JobCollectionJobsUpdateStateResponse;
+import com.microsoft.windowsazure.scheduler.models.JobCreateParameters;
+import com.microsoft.windowsazure.scheduler.models.JobCreateResponse;
+import com.microsoft.windowsazure.scheduler.models.JobGetHistoryParameters;
+import com.microsoft.windowsazure.scheduler.models.JobGetHistoryResponse;
+import com.microsoft.windowsazure.scheduler.models.JobGetHistoryWithFilterParameters;
+import com.microsoft.windowsazure.scheduler.models.JobGetResponse;
+import com.microsoft.windowsazure.scheduler.models.JobHistoryStatus;
+import com.microsoft.windowsazure.scheduler.models.JobHttpRequest;
+import com.microsoft.windowsazure.scheduler.models.JobListParameters;
+import com.microsoft.windowsazure.scheduler.models.JobListResponse;
+import com.microsoft.windowsazure.scheduler.models.JobListWithFilterParameters;
+import com.microsoft.windowsazure.scheduler.models.JobState;
+import com.microsoft.windowsazure.scheduler.models.JobUpdateStateParameters;
+import com.microsoft.windowsazure.scheduler.models.JobUpdateStateResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -35,6 +47,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class JobOperationsTests extends SchedulerIntegrationTestBase {
     private static String jobName;
@@ -156,7 +176,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         jobHttpRequest.setUri(uri);
 
         action.setRequest(jobHttpRequest);
-        action.setType(JobActionType.HTTP);
+        action.setType(JobActionType.Http);
 
         //Arrange
         JobCreateParameters createParameters = new JobCreateParameters();
@@ -171,7 +191,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         jobId = operationResponse.getJob().getId();
         Assert.assertEquals(201, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
-        Assert.assertEquals(operationResponse.getJob().getState(), JobState.ENABLED);
+        Assert.assertEquals(operationResponse.getJob().getState(), JobState.Enabled);
     }
 
     @Before
@@ -192,7 +212,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
         //Assert
         Assert.assertEquals(200, getResponse.getStatusCode());
         Assert.assertNotNull(getResponse.getRequestId());
-        Assert.assertEquals(getResponse.getJob().getAction().getType(), JobActionType.HTTP);
+        Assert.assertEquals(getResponse.getJob().getAction().getType(), JobActionType.Http);
     }
 
     @Test
@@ -210,7 +230,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     @Test
     public void getHistoryWithFilter() throws Exception {
         JobGetHistoryWithFilterParameters jobGetHistoryWithFilterParameters = new JobGetHistoryWithFilterParameters();
-        jobGetHistoryWithFilterParameters.setStatus(JobHistoryStatus.COMPLETED);
+        jobGetHistoryWithFilterParameters.setStatus(JobHistoryStatus.Completed);
         jobGetHistoryWithFilterParameters.setTop(1);
         //Act
         JobGetHistoryResponse getResponse = schedulerClient.getJobsOperations().getHistoryWithFilter(jobId, jobGetHistoryWithFilterParameters);
@@ -237,7 +257,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     @Test
     public void listJobWithFilter() throws Exception {
         JobListWithFilterParameters jobListParameters = new JobListWithFilterParameters();
-        jobListParameters.setState(JobState.DISABLED);
+        jobListParameters.setState(JobState.Disabled);
         jobListParameters.setTop(1);
 
         //Act
@@ -253,7 +273,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     public void updatejobCollectionStateSuccess() throws Exception {
         //Act
         JobCollectionJobsUpdateStateParameters updateParameters = new JobCollectionJobsUpdateStateParameters();
-        updateParameters.setState(JobState.ENABLED);
+        updateParameters.setState(JobState.Enabled);
         JobCollectionJobsUpdateStateResponse updateOperationResponse = schedulerClient.getJobsOperations().updateJobCollectionState(updateParameters);
 
         //Assert
@@ -266,14 +286,14 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
     public void updatejobStateSuccess() throws Exception {
         //Act
         JobUpdateStateParameters updateParameters = new JobUpdateStateParameters();
-        updateParameters.setState(JobState.DISABLED);
+        updateParameters.setState(JobState.Disabled);
         updateParameters.setUpdateStateReason("just test");
         JobUpdateStateResponse updateOperationResponse = schedulerClient.getJobsOperations().updateState(jobId, updateParameters);
 
         //Assert
         Assert.assertEquals(200, updateOperationResponse.getStatusCode());
         Assert.assertNotNull(updateOperationResponse.getRequestId());
-        Assert.assertEquals(updateOperationResponse.getJob().getState(), JobState.DISABLED);
+        Assert.assertEquals(updateOperationResponse.getJob().getState(), JobState.Disabled);
     }
 
     private static void waitOperationToComplete(String requestId, long waitTimeBetweenTriesInSeconds, int maximumNumberOfTries) {
@@ -294,7 +314,7 @@ public class JobOperationsTests extends SchedulerIntegrationTestBase {
                 e.printStackTrace();
             }
 
-            if ((operationStatus.getStatus() == CloudServiceOperationStatus.FAILED) || (operationStatus.getStatus() == CloudServiceOperationStatus.SUCCEEDED))
+            if ((operationStatus.getStatus() == CloudServiceOperationStatus.Failed) || (operationStatus.getStatus() == CloudServiceOperationStatus.Succeeded))
             {
                 operationCompleted = true;
             } else {

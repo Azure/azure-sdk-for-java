@@ -28,6 +28,7 @@ import com.microsoft.azure.management.network.models.AzureAsyncOperationResponse
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.Error;
 import com.microsoft.azure.management.network.models.ErrorDetails;
+import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.management.network.models.Subnet;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
@@ -43,6 +44,19 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -54,17 +68,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * The Network Resource Provider API includes operations for managing the
@@ -300,6 +303,10 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
             }
         }
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -365,8 +372,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualNetworkPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -486,6 +494,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                     subnetJsonFormatInstance.setId(idInstance4);
                                 }
                             }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue3.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue3.get("provisioningState");
@@ -846,7 +861,7 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -932,7 +947,7 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1068,8 +1083,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 result = new VirtualNetworkGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1189,6 +1205,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                     subnetJsonFormatInstance.setId(idInstance4);
                                 }
                             }
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            virtualNetworkInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1366,8 +1389,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 result = new VirtualNetworkListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1490,6 +1514,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                             subnetJsonFormatInstance.setId(idInstance4);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    virtualNetworkJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1668,8 +1699,9 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                 result = new VirtualNetworkListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1792,6 +1824,13 @@ public class VirtualNetworkOperationsImpl implements ServiceOperations<NetworkRe
                                             subnetJsonFormatInstance.setId(idInstance4);
                                         }
                                     }
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    virtualNetworkJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");

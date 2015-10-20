@@ -27,13 +27,13 @@ package com.microsoft.windowsazure.management.compute.models;
 * The running state of the role instance.
 */
 public enum RoleInstancePowerState {
-    STARTING,
+    Starting,
     
-    STARTED,
+    Started,
     
-    STOPPING,
+    Stopping,
     
-    STOPPED,
+    Stopped,
     
-    UNKNOWN,
+    Unknown,
 }

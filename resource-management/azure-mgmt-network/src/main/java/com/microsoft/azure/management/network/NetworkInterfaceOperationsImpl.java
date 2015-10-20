@@ -32,6 +32,7 @@ import com.microsoft.azure.management.network.models.NetworkInterfaceGetResponse
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.network.models.NetworkInterfaceListResponse;
 import com.microsoft.azure.management.network.models.NetworkInterfacePutResponse;
+import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.windowsazure.core.LazyCollection;
@@ -42,6 +43,19 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -53,17 +67,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * The Network Resource Provider API includes operations for managing the
@@ -342,6 +345,10 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
         
         ((ObjectNode) propertiesValue).put("enableIPForwarding", parameters.isEnableIPForwarding());
         
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
+        }
+        
         if (parameters.getProvisioningState() != null) {
             ((ObjectNode) propertiesValue).put("provisioningState", parameters.getProvisioningState());
         }
@@ -407,8 +414,9 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new NetworkInterfacePutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -605,6 +613,13 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                             boolean enableIPForwardingInstance;
                             enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
                             networkInterfaceInstance.setEnableIPForwarding(enableIPForwardingInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue3.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            networkInterfaceInstance.setResourceGuid(resourceGuidInstance);
                         }
                         
                         JsonNode provisioningStateValue2 = propertiesValue3.get("provisioningState");
@@ -962,7 +977,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1046,7 +1061,7 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1182,8 +1197,9 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                 result = new NetworkInterfaceGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1382,6 +1398,421 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                             networkInterfaceInstance.setEnableIPForwarding(enableIPForwardingInstance);
                         }
                         
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            networkInterfaceInstance.setResourceGuid(resourceGuidInstance);
+                        }
+                        
+                        JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
+                        if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                            String provisioningStateInstance2;
+                            provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                            networkInterfaceInstance.setProvisioningState(provisioningStateInstance2);
+                        }
+                    }
+                    
+                    JsonNode etagValue2 = responseDoc.get("etag");
+                    if (etagValue2 != null && etagValue2 instanceof NullNode == false) {
+                        String etagInstance2;
+                        etagInstance2 = etagValue2.getTextValue();
+                        networkInterfaceInstance.setEtag(etagInstance2);
+                    }
+                    
+                    JsonNode idValue8 = responseDoc.get("id");
+                    if (idValue8 != null && idValue8 instanceof NullNode == false) {
+                        String idInstance8;
+                        idInstance8 = idValue8.getTextValue();
+                        networkInterfaceInstance.setId(idInstance8);
+                    }
+                    
+                    JsonNode nameValue2 = responseDoc.get("name");
+                    if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                        String nameInstance2;
+                        nameInstance2 = nameValue2.getTextValue();
+                        networkInterfaceInstance.setName(nameInstance2);
+                    }
+                    
+                    JsonNode typeValue = responseDoc.get("type");
+                    if (typeValue != null && typeValue instanceof NullNode == false) {
+                        String typeInstance;
+                        typeInstance = typeValue.getTextValue();
+                        networkInterfaceInstance.setType(typeInstance);
+                    }
+                    
+                    JsonNode locationValue = responseDoc.get("location");
+                    if (locationValue != null && locationValue instanceof NullNode == false) {
+                        String locationInstance;
+                        locationInstance = locationValue.getTextValue();
+                        networkInterfaceInstance.setLocation(locationInstance);
+                    }
+                    
+                    JsonNode tagsSequenceElement = ((JsonNode) responseDoc.get("tags"));
+                    if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                        Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                        while (itr.hasNext()) {
+                            Map.Entry<String, JsonNode> property = itr.next();
+                            String tagsKey = property.getKey();
+                            String tagsValue = property.getValue().getTextValue();
+                            networkInterfaceInstance.getTags().put(tagsKey, tagsValue);
+                        }
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The Get ntework interface operation retreives information about the
+    * specified network interface in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @param virtualmachineIndex Required. The virtual machine index.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @return Response for GetNetworkInterface Api service call
+    */
+    @Override
+    public Future<NetworkInterfaceGetResponse> getVirtualMachineScaleSetNetworkInterfaceAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName) {
+        return this.getClient().getExecutorService().submit(new Callable<NetworkInterfaceGetResponse>() { 
+            @Override
+            public NetworkInterfaceGetResponse call() throws Exception {
+                return getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName);
+            }
+         });
+    }
+    
+    /**
+    * The Get ntework interface operation retreives information about the
+    * specified network interface in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @param virtualmachineIndex Required. The virtual machine index.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for GetNetworkInterface Api service call
+    */
+    @Override
+    public NetworkInterfaceGetResponse getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new NullPointerException("virtualMachineScaleSetName");
+        }
+        if (virtualmachineIndex == null) {
+            throw new NullPointerException("virtualmachineIndex");
+        }
+        if (networkInterfaceName == null) {
+            throw new NullPointerException("networkInterfaceName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("virtualMachineScaleSetName", virtualMachineScaleSetName);
+            tracingParameters.put("virtualmachineIndex", virtualmachineIndex);
+            tracingParameters.put("networkInterfaceName", networkInterfaceName);
+            CloudTracing.enter(invocationId, this, "getVirtualMachineScaleSetNetworkInterfaceAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/microsoft.compute/virtualMachineScaleSets/";
+        url = url + URLEncoder.encode(virtualMachineScaleSetName, "UTF-8");
+        url = url + "/virtualMachines/";
+        url = url + URLEncoder.encode(virtualmachineIndex, "UTF-8");
+        url = url + "/networkInterfaces/";
+        url = url + URLEncoder.encode(networkInterfaceName, "UTF-8");
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-05-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            NetworkInterfaceGetResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkInterfaceGetResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    NetworkInterface networkInterfaceInstance = new NetworkInterface();
+                    result.setNetworkInterface(networkInterfaceInstance);
+                    
+                    JsonNode propertiesValue = responseDoc.get("properties");
+                    if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                        JsonNode virtualMachineValue = propertiesValue.get("virtualMachine");
+                        if (virtualMachineValue != null && virtualMachineValue instanceof NullNode == false) {
+                            ResourceId virtualMachineInstance = new ResourceId();
+                            networkInterfaceInstance.setVirtualMachine(virtualMachineInstance);
+                            
+                            JsonNode idValue = virtualMachineValue.get("id");
+                            if (idValue != null && idValue instanceof NullNode == false) {
+                                String idInstance;
+                                idInstance = idValue.getTextValue();
+                                virtualMachineInstance.setId(idInstance);
+                            }
+                        }
+                        
+                        JsonNode networkSecurityGroupValue = propertiesValue.get("networkSecurityGroup");
+                        if (networkSecurityGroupValue != null && networkSecurityGroupValue instanceof NullNode == false) {
+                            ResourceId networkSecurityGroupInstance = new ResourceId();
+                            networkInterfaceInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                            
+                            JsonNode idValue2 = networkSecurityGroupValue.get("id");
+                            if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                String idInstance2;
+                                idInstance2 = idValue2.getTextValue();
+                                networkSecurityGroupInstance.setId(idInstance2);
+                            }
+                        }
+                        
+                        JsonNode ipConfigurationsArray = propertiesValue.get("ipConfigurations");
+                        if (ipConfigurationsArray != null && ipConfigurationsArray instanceof NullNode == false) {
+                            for (JsonNode ipConfigurationsValue : ((ArrayNode) ipConfigurationsArray)) {
+                                NetworkInterfaceIpConfiguration networkInterfaceIpConfigurationJsonFormatInstance = new NetworkInterfaceIpConfiguration();
+                                networkInterfaceInstance.getIpConfigurations().add(networkInterfaceIpConfigurationJsonFormatInstance);
+                                
+                                JsonNode propertiesValue2 = ipConfigurationsValue.get("properties");
+                                if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                                    JsonNode privateIPAddressValue = propertiesValue2.get("privateIPAddress");
+                                    if (privateIPAddressValue != null && privateIPAddressValue instanceof NullNode == false) {
+                                        String privateIPAddressInstance;
+                                        privateIPAddressInstance = privateIPAddressValue.getTextValue();
+                                        networkInterfaceIpConfigurationJsonFormatInstance.setPrivateIpAddress(privateIPAddressInstance);
+                                    }
+                                    
+                                    JsonNode privateIPAllocationMethodValue = propertiesValue2.get("privateIPAllocationMethod");
+                                    if (privateIPAllocationMethodValue != null && privateIPAllocationMethodValue instanceof NullNode == false) {
+                                        String privateIPAllocationMethodInstance;
+                                        privateIPAllocationMethodInstance = privateIPAllocationMethodValue.getTextValue();
+                                        networkInterfaceIpConfigurationJsonFormatInstance.setPrivateIpAllocationMethod(privateIPAllocationMethodInstance);
+                                    }
+                                    
+                                    JsonNode subnetValue = propertiesValue2.get("subnet");
+                                    if (subnetValue != null && subnetValue instanceof NullNode == false) {
+                                        ResourceId subnetInstance = new ResourceId();
+                                        networkInterfaceIpConfigurationJsonFormatInstance.setSubnet(subnetInstance);
+                                        
+                                        JsonNode idValue3 = subnetValue.get("id");
+                                        if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                            String idInstance3;
+                                            idInstance3 = idValue3.getTextValue();
+                                            subnetInstance.setId(idInstance3);
+                                        }
+                                    }
+                                    
+                                    JsonNode publicIPAddressValue = propertiesValue2.get("publicIPAddress");
+                                    if (publicIPAddressValue != null && publicIPAddressValue instanceof NullNode == false) {
+                                        ResourceId publicIPAddressInstance = new ResourceId();
+                                        networkInterfaceIpConfigurationJsonFormatInstance.setPublicIpAddress(publicIPAddressInstance);
+                                        
+                                        JsonNode idValue4 = publicIPAddressValue.get("id");
+                                        if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                            String idInstance4;
+                                            idInstance4 = idValue4.getTextValue();
+                                            publicIPAddressInstance.setId(idInstance4);
+                                        }
+                                    }
+                                    
+                                    JsonNode loadBalancerBackendAddressPoolsArray = propertiesValue2.get("loadBalancerBackendAddressPools");
+                                    if (loadBalancerBackendAddressPoolsArray != null && loadBalancerBackendAddressPoolsArray instanceof NullNode == false) {
+                                        for (JsonNode loadBalancerBackendAddressPoolsValue : ((ArrayNode) loadBalancerBackendAddressPoolsArray)) {
+                                            ResourceId resourceIdInstance = new ResourceId();
+                                            networkInterfaceIpConfigurationJsonFormatInstance.getLoadBalancerBackendAddressPools().add(resourceIdInstance);
+                                            
+                                            JsonNode idValue5 = loadBalancerBackendAddressPoolsValue.get("id");
+                                            if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                                String idInstance5;
+                                                idInstance5 = idValue5.getTextValue();
+                                                resourceIdInstance.setId(idInstance5);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode loadBalancerInboundNatRulesArray = propertiesValue2.get("loadBalancerInboundNatRules");
+                                    if (loadBalancerInboundNatRulesArray != null && loadBalancerInboundNatRulesArray instanceof NullNode == false) {
+                                        for (JsonNode loadBalancerInboundNatRulesValue : ((ArrayNode) loadBalancerInboundNatRulesArray)) {
+                                            ResourceId resourceIdInstance2 = new ResourceId();
+                                            networkInterfaceIpConfigurationJsonFormatInstance.getLoadBalancerInboundNatRules().add(resourceIdInstance2);
+                                            
+                                            JsonNode idValue6 = loadBalancerInboundNatRulesValue.get("id");
+                                            if (idValue6 != null && idValue6 instanceof NullNode == false) {
+                                                String idInstance6;
+                                                idInstance6 = idValue6.getTextValue();
+                                                resourceIdInstance2.setId(idInstance6);
+                                            }
+                                        }
+                                    }
+                                    
+                                    JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
+                                    if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                        String provisioningStateInstance;
+                                        provisioningStateInstance = provisioningStateValue.getTextValue();
+                                        networkInterfaceIpConfigurationJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+                                    }
+                                }
+                                
+                                JsonNode nameValue = ipConfigurationsValue.get("name");
+                                if (nameValue != null && nameValue instanceof NullNode == false) {
+                                    String nameInstance;
+                                    nameInstance = nameValue.getTextValue();
+                                    networkInterfaceIpConfigurationJsonFormatInstance.setName(nameInstance);
+                                }
+                                
+                                JsonNode etagValue = ipConfigurationsValue.get("etag");
+                                if (etagValue != null && etagValue instanceof NullNode == false) {
+                                    String etagInstance;
+                                    etagInstance = etagValue.getTextValue();
+                                    networkInterfaceIpConfigurationJsonFormatInstance.setEtag(etagInstance);
+                                }
+                                
+                                JsonNode idValue7 = ipConfigurationsValue.get("id");
+                                if (idValue7 != null && idValue7 instanceof NullNode == false) {
+                                    String idInstance7;
+                                    idInstance7 = idValue7.getTextValue();
+                                    networkInterfaceIpConfigurationJsonFormatInstance.setId(idInstance7);
+                                }
+                            }
+                        }
+                        
+                        JsonNode dnsSettingsValue = propertiesValue.get("dnsSettings");
+                        if (dnsSettingsValue != null && dnsSettingsValue instanceof NullNode == false) {
+                            NetworkInterfaceDnsSettings dnsSettingsInstance = new NetworkInterfaceDnsSettings();
+                            networkInterfaceInstance.setDnsSettings(dnsSettingsInstance);
+                            
+                            JsonNode dnsServersArray = dnsSettingsValue.get("dnsServers");
+                            if (dnsServersArray != null && dnsServersArray instanceof NullNode == false) {
+                                for (JsonNode dnsServersValue : ((ArrayNode) dnsServersArray)) {
+                                    dnsSettingsInstance.getDnsServers().add(dnsServersValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode appliedDnsServersArray = dnsSettingsValue.get("appliedDnsServers");
+                            if (appliedDnsServersArray != null && appliedDnsServersArray instanceof NullNode == false) {
+                                for (JsonNode appliedDnsServersValue : ((ArrayNode) appliedDnsServersArray)) {
+                                    dnsSettingsInstance.getAppliedDnsServers().add(appliedDnsServersValue.getTextValue());
+                                }
+                            }
+                            
+                            JsonNode internalDnsNameLabelValue = dnsSettingsValue.get("internalDnsNameLabel");
+                            if (internalDnsNameLabelValue != null && internalDnsNameLabelValue instanceof NullNode == false) {
+                                String internalDnsNameLabelInstance;
+                                internalDnsNameLabelInstance = internalDnsNameLabelValue.getTextValue();
+                                dnsSettingsInstance.setInternalDnsNameLabel(internalDnsNameLabelInstance);
+                            }
+                            
+                            JsonNode internalFqdnValue = dnsSettingsValue.get("internalFqdn");
+                            if (internalFqdnValue != null && internalFqdnValue instanceof NullNode == false) {
+                                String internalFqdnInstance;
+                                internalFqdnInstance = internalFqdnValue.getTextValue();
+                                dnsSettingsInstance.setInternalFqdn(internalFqdnInstance);
+                            }
+                        }
+                        
+                        JsonNode macAddressValue = propertiesValue.get("macAddress");
+                        if (macAddressValue != null && macAddressValue instanceof NullNode == false) {
+                            String macAddressInstance;
+                            macAddressInstance = macAddressValue.getTextValue();
+                            networkInterfaceInstance.setMacAddress(macAddressInstance);
+                        }
+                        
+                        JsonNode primaryValue = propertiesValue.get("primary");
+                        if (primaryValue != null && primaryValue instanceof NullNode == false) {
+                            boolean primaryInstance;
+                            primaryInstance = primaryValue.getBooleanValue();
+                            networkInterfaceInstance.setPrimary(primaryInstance);
+                        }
+                        
+                        JsonNode enableIPForwardingValue = propertiesValue.get("enableIPForwarding");
+                        if (enableIPForwardingValue != null && enableIPForwardingValue instanceof NullNode == false) {
+                            boolean enableIPForwardingInstance;
+                            enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
+                            networkInterfaceInstance.setEnableIPForwarding(enableIPForwardingInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                            String resourceGuidInstance;
+                            resourceGuidInstance = resourceGuidValue.getTextValue();
+                            networkInterfaceInstance.setResourceGuid(resourceGuidInstance);
+                        }
+                        
                         JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
                         if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
                             String provisioningStateInstance2;
@@ -1559,8 +1990,9 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                 result = new NetworkInterfaceListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1760,6 +2192,13 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                     boolean enableIPForwardingInstance;
                                     enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
                                     networkInterfaceJsonFormatInstance.setEnableIPForwarding(enableIPForwardingInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    networkInterfaceJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
@@ -1940,8 +2379,9 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                 result = new NetworkInterfaceListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2141,6 +2581,418 @@ public class NetworkInterfaceOperationsImpl implements ServiceOperations<Network
                                     boolean enableIPForwardingInstance;
                                     enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
                                     networkInterfaceJsonFormatInstance.setEnableIPForwarding(enableIPForwardingInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    networkInterfaceJsonFormatInstance.setResourceGuid(resourceGuidInstance);
+                                }
+                                
+                                JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");
+                                if (provisioningStateValue2 != null && provisioningStateValue2 instanceof NullNode == false) {
+                                    String provisioningStateInstance2;
+                                    provisioningStateInstance2 = provisioningStateValue2.getTextValue();
+                                    networkInterfaceJsonFormatInstance.setProvisioningState(provisioningStateInstance2);
+                                }
+                            }
+                            
+                            JsonNode etagValue2 = valueValue.get("etag");
+                            if (etagValue2 != null && etagValue2 instanceof NullNode == false) {
+                                String etagInstance2;
+                                etagInstance2 = etagValue2.getTextValue();
+                                networkInterfaceJsonFormatInstance.setEtag(etagInstance2);
+                            }
+                            
+                            JsonNode idValue8 = valueValue.get("id");
+                            if (idValue8 != null && idValue8 instanceof NullNode == false) {
+                                String idInstance8;
+                                idInstance8 = idValue8.getTextValue();
+                                networkInterfaceJsonFormatInstance.setId(idInstance8);
+                            }
+                            
+                            JsonNode nameValue2 = valueValue.get("name");
+                            if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
+                                String nameInstance2;
+                                nameInstance2 = nameValue2.getTextValue();
+                                networkInterfaceJsonFormatInstance.setName(nameInstance2);
+                            }
+                            
+                            JsonNode typeValue = valueValue.get("type");
+                            if (typeValue != null && typeValue instanceof NullNode == false) {
+                                String typeInstance;
+                                typeInstance = typeValue.getTextValue();
+                                networkInterfaceJsonFormatInstance.setType(typeInstance);
+                            }
+                            
+                            JsonNode locationValue = valueValue.get("location");
+                            if (locationValue != null && locationValue instanceof NullNode == false) {
+                                String locationInstance;
+                                locationInstance = locationValue.getTextValue();
+                                networkInterfaceJsonFormatInstance.setLocation(locationInstance);
+                            }
+                            
+                            JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
+                            if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr.next();
+                                    String tagsKey = property.getKey();
+                                    String tagsValue = property.getValue().getTextValue();
+                                    networkInterfaceJsonFormatInstance.getTags().put(tagsKey, tagsValue);
+                                }
+                            }
+                        }
+                    }
+                    
+                    JsonNode nextLinkValue = responseDoc.get("nextLink");
+                    if (nextLinkValue != null && nextLinkValue instanceof NullNode == false) {
+                        String nextLinkInstance;
+                        nextLinkInstance = nextLinkValue.getTextValue();
+                        result.setNextLink(nextLinkInstance);
+                    }
+                }
+                
+            }
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * The list network interface operation retrieves information about all
+    * network interfaces in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @return Response for ListNetworkInterface Api service call
+    */
+    @Override
+    public Future<NetworkInterfaceListResponse> listVirtualMachineScaleSetNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
+        return this.getClient().getExecutorService().submit(new Callable<NetworkInterfaceListResponse>() { 
+            @Override
+            public NetworkInterfaceListResponse call() throws Exception {
+                return listVirtualMachineScaleSetNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName);
+            }
+         });
+    }
+    
+    /**
+    * The list network interface operation retrieves information about all
+    * network interfaces in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for ListNetworkInterface Api service call
+    */
+    @Override
+    public NetworkInterfaceListResponse listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws IOException, ServiceException {
+        // Validate
+        if (resourceGroupName == null) {
+            throw new NullPointerException("resourceGroupName");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new NullPointerException("virtualMachineScaleSetName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("resourceGroupName", resourceGroupName);
+            tracingParameters.put("virtualMachineScaleSetName", virtualMachineScaleSetName);
+            CloudTracing.enter(invocationId, this, "listVirtualMachineScaleSetNetworkInterfacesAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = "";
+        url = url + "/subscriptions/";
+        if (this.getClient().getCredentials().getSubscriptionId() != null) {
+            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
+        }
+        url = url + "/resourceGroups/";
+        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
+        url = url + "/providers/microsoft.compute/virtualMachineScaleSets/";
+        url = url + URLEncoder.encode(virtualMachineScaleSetName, "UTF-8");
+        url = url + "/";
+        ArrayList<String> queryParameters = new ArrayList<String>();
+        queryParameters.add("api-version=" + "2015-05-01-preview");
+        if (queryParameters.size() > 0) {
+            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
+        }
+        String baseUrl = this.getClient().getBaseUri().toString();
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        url = url.replace(" ", "%20");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/json");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            NetworkInterfaceListResponse result = null;
+            // Deserialize Response
+            if (statusCode == HttpStatus.SC_OK) {
+                InputStream responseContent = httpResponse.getEntity().getContent();
+                result = new NetworkInterfaceListResponse();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseDoc = null;
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
+                }
+                
+                if (responseDoc != null && responseDoc instanceof NullNode == false) {
+                    JsonNode valueArray = responseDoc.get("value");
+                    if (valueArray != null && valueArray instanceof NullNode == false) {
+                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
+                            NetworkInterface networkInterfaceJsonFormatInstance = new NetworkInterface();
+                            result.getNetworkInterfaces().add(networkInterfaceJsonFormatInstance);
+                            
+                            JsonNode propertiesValue = valueValue.get("properties");
+                            if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+                                JsonNode virtualMachineValue = propertiesValue.get("virtualMachine");
+                                if (virtualMachineValue != null && virtualMachineValue instanceof NullNode == false) {
+                                    ResourceId virtualMachineInstance = new ResourceId();
+                                    networkInterfaceJsonFormatInstance.setVirtualMachine(virtualMachineInstance);
+                                    
+                                    JsonNode idValue = virtualMachineValue.get("id");
+                                    if (idValue != null && idValue instanceof NullNode == false) {
+                                        String idInstance;
+                                        idInstance = idValue.getTextValue();
+                                        virtualMachineInstance.setId(idInstance);
+                                    }
+                                }
+                                
+                                JsonNode networkSecurityGroupValue = propertiesValue.get("networkSecurityGroup");
+                                if (networkSecurityGroupValue != null && networkSecurityGroupValue instanceof NullNode == false) {
+                                    ResourceId networkSecurityGroupInstance = new ResourceId();
+                                    networkInterfaceJsonFormatInstance.setNetworkSecurityGroup(networkSecurityGroupInstance);
+                                    
+                                    JsonNode idValue2 = networkSecurityGroupValue.get("id");
+                                    if (idValue2 != null && idValue2 instanceof NullNode == false) {
+                                        String idInstance2;
+                                        idInstance2 = idValue2.getTextValue();
+                                        networkSecurityGroupInstance.setId(idInstance2);
+                                    }
+                                }
+                                
+                                JsonNode ipConfigurationsArray = propertiesValue.get("ipConfigurations");
+                                if (ipConfigurationsArray != null && ipConfigurationsArray instanceof NullNode == false) {
+                                    for (JsonNode ipConfigurationsValue : ((ArrayNode) ipConfigurationsArray)) {
+                                        NetworkInterfaceIpConfiguration networkInterfaceIpConfigurationJsonFormatInstance = new NetworkInterfaceIpConfiguration();
+                                        networkInterfaceJsonFormatInstance.getIpConfigurations().add(networkInterfaceIpConfigurationJsonFormatInstance);
+                                        
+                                        JsonNode propertiesValue2 = ipConfigurationsValue.get("properties");
+                                        if (propertiesValue2 != null && propertiesValue2 instanceof NullNode == false) {
+                                            JsonNode privateIPAddressValue = propertiesValue2.get("privateIPAddress");
+                                            if (privateIPAddressValue != null && privateIPAddressValue instanceof NullNode == false) {
+                                                String privateIPAddressInstance;
+                                                privateIPAddressInstance = privateIPAddressValue.getTextValue();
+                                                networkInterfaceIpConfigurationJsonFormatInstance.setPrivateIpAddress(privateIPAddressInstance);
+                                            }
+                                            
+                                            JsonNode privateIPAllocationMethodValue = propertiesValue2.get("privateIPAllocationMethod");
+                                            if (privateIPAllocationMethodValue != null && privateIPAllocationMethodValue instanceof NullNode == false) {
+                                                String privateIPAllocationMethodInstance;
+                                                privateIPAllocationMethodInstance = privateIPAllocationMethodValue.getTextValue();
+                                                networkInterfaceIpConfigurationJsonFormatInstance.setPrivateIpAllocationMethod(privateIPAllocationMethodInstance);
+                                            }
+                                            
+                                            JsonNode subnetValue = propertiesValue2.get("subnet");
+                                            if (subnetValue != null && subnetValue instanceof NullNode == false) {
+                                                ResourceId subnetInstance = new ResourceId();
+                                                networkInterfaceIpConfigurationJsonFormatInstance.setSubnet(subnetInstance);
+                                                
+                                                JsonNode idValue3 = subnetValue.get("id");
+                                                if (idValue3 != null && idValue3 instanceof NullNode == false) {
+                                                    String idInstance3;
+                                                    idInstance3 = idValue3.getTextValue();
+                                                    subnetInstance.setId(idInstance3);
+                                                }
+                                            }
+                                            
+                                            JsonNode publicIPAddressValue = propertiesValue2.get("publicIPAddress");
+                                            if (publicIPAddressValue != null && publicIPAddressValue instanceof NullNode == false) {
+                                                ResourceId publicIPAddressInstance = new ResourceId();
+                                                networkInterfaceIpConfigurationJsonFormatInstance.setPublicIpAddress(publicIPAddressInstance);
+                                                
+                                                JsonNode idValue4 = publicIPAddressValue.get("id");
+                                                if (idValue4 != null && idValue4 instanceof NullNode == false) {
+                                                    String idInstance4;
+                                                    idInstance4 = idValue4.getTextValue();
+                                                    publicIPAddressInstance.setId(idInstance4);
+                                                }
+                                            }
+                                            
+                                            JsonNode loadBalancerBackendAddressPoolsArray = propertiesValue2.get("loadBalancerBackendAddressPools");
+                                            if (loadBalancerBackendAddressPoolsArray != null && loadBalancerBackendAddressPoolsArray instanceof NullNode == false) {
+                                                for (JsonNode loadBalancerBackendAddressPoolsValue : ((ArrayNode) loadBalancerBackendAddressPoolsArray)) {
+                                                    ResourceId resourceIdInstance = new ResourceId();
+                                                    networkInterfaceIpConfigurationJsonFormatInstance.getLoadBalancerBackendAddressPools().add(resourceIdInstance);
+                                                    
+                                                    JsonNode idValue5 = loadBalancerBackendAddressPoolsValue.get("id");
+                                                    if (idValue5 != null && idValue5 instanceof NullNode == false) {
+                                                        String idInstance5;
+                                                        idInstance5 = idValue5.getTextValue();
+                                                        resourceIdInstance.setId(idInstance5);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode loadBalancerInboundNatRulesArray = propertiesValue2.get("loadBalancerInboundNatRules");
+                                            if (loadBalancerInboundNatRulesArray != null && loadBalancerInboundNatRulesArray instanceof NullNode == false) {
+                                                for (JsonNode loadBalancerInboundNatRulesValue : ((ArrayNode) loadBalancerInboundNatRulesArray)) {
+                                                    ResourceId resourceIdInstance2 = new ResourceId();
+                                                    networkInterfaceIpConfigurationJsonFormatInstance.getLoadBalancerInboundNatRules().add(resourceIdInstance2);
+                                                    
+                                                    JsonNode idValue6 = loadBalancerInboundNatRulesValue.get("id");
+                                                    if (idValue6 != null && idValue6 instanceof NullNode == false) {
+                                                        String idInstance6;
+                                                        idInstance6 = idValue6.getTextValue();
+                                                        resourceIdInstance2.setId(idInstance6);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            JsonNode provisioningStateValue = propertiesValue2.get("provisioningState");
+                                            if (provisioningStateValue != null && provisioningStateValue instanceof NullNode == false) {
+                                                String provisioningStateInstance;
+                                                provisioningStateInstance = provisioningStateValue.getTextValue();
+                                                networkInterfaceIpConfigurationJsonFormatInstance.setProvisioningState(provisioningStateInstance);
+                                            }
+                                        }
+                                        
+                                        JsonNode nameValue = ipConfigurationsValue.get("name");
+                                        if (nameValue != null && nameValue instanceof NullNode == false) {
+                                            String nameInstance;
+                                            nameInstance = nameValue.getTextValue();
+                                            networkInterfaceIpConfigurationJsonFormatInstance.setName(nameInstance);
+                                        }
+                                        
+                                        JsonNode etagValue = ipConfigurationsValue.get("etag");
+                                        if (etagValue != null && etagValue instanceof NullNode == false) {
+                                            String etagInstance;
+                                            etagInstance = etagValue.getTextValue();
+                                            networkInterfaceIpConfigurationJsonFormatInstance.setEtag(etagInstance);
+                                        }
+                                        
+                                        JsonNode idValue7 = ipConfigurationsValue.get("id");
+                                        if (idValue7 != null && idValue7 instanceof NullNode == false) {
+                                            String idInstance7;
+                                            idInstance7 = idValue7.getTextValue();
+                                            networkInterfaceIpConfigurationJsonFormatInstance.setId(idInstance7);
+                                        }
+                                    }
+                                }
+                                
+                                JsonNode dnsSettingsValue = propertiesValue.get("dnsSettings");
+                                if (dnsSettingsValue != null && dnsSettingsValue instanceof NullNode == false) {
+                                    NetworkInterfaceDnsSettings dnsSettingsInstance = new NetworkInterfaceDnsSettings();
+                                    networkInterfaceJsonFormatInstance.setDnsSettings(dnsSettingsInstance);
+                                    
+                                    JsonNode dnsServersArray = dnsSettingsValue.get("dnsServers");
+                                    if (dnsServersArray != null && dnsServersArray instanceof NullNode == false) {
+                                        for (JsonNode dnsServersValue : ((ArrayNode) dnsServersArray)) {
+                                            dnsSettingsInstance.getDnsServers().add(dnsServersValue.getTextValue());
+                                        }
+                                    }
+                                    
+                                    JsonNode appliedDnsServersArray = dnsSettingsValue.get("appliedDnsServers");
+                                    if (appliedDnsServersArray != null && appliedDnsServersArray instanceof NullNode == false) {
+                                        for (JsonNode appliedDnsServersValue : ((ArrayNode) appliedDnsServersArray)) {
+                                            dnsSettingsInstance.getAppliedDnsServers().add(appliedDnsServersValue.getTextValue());
+                                        }
+                                    }
+                                    
+                                    JsonNode internalDnsNameLabelValue = dnsSettingsValue.get("internalDnsNameLabel");
+                                    if (internalDnsNameLabelValue != null && internalDnsNameLabelValue instanceof NullNode == false) {
+                                        String internalDnsNameLabelInstance;
+                                        internalDnsNameLabelInstance = internalDnsNameLabelValue.getTextValue();
+                                        dnsSettingsInstance.setInternalDnsNameLabel(internalDnsNameLabelInstance);
+                                    }
+                                    
+                                    JsonNode internalFqdnValue = dnsSettingsValue.get("internalFqdn");
+                                    if (internalFqdnValue != null && internalFqdnValue instanceof NullNode == false) {
+                                        String internalFqdnInstance;
+                                        internalFqdnInstance = internalFqdnValue.getTextValue();
+                                        dnsSettingsInstance.setInternalFqdn(internalFqdnInstance);
+                                    }
+                                }
+                                
+                                JsonNode macAddressValue = propertiesValue.get("macAddress");
+                                if (macAddressValue != null && macAddressValue instanceof NullNode == false) {
+                                    String macAddressInstance;
+                                    macAddressInstance = macAddressValue.getTextValue();
+                                    networkInterfaceJsonFormatInstance.setMacAddress(macAddressInstance);
+                                }
+                                
+                                JsonNode primaryValue = propertiesValue.get("primary");
+                                if (primaryValue != null && primaryValue instanceof NullNode == false) {
+                                    boolean primaryInstance;
+                                    primaryInstance = primaryValue.getBooleanValue();
+                                    networkInterfaceJsonFormatInstance.setPrimary(primaryInstance);
+                                }
+                                
+                                JsonNode enableIPForwardingValue = propertiesValue.get("enableIPForwarding");
+                                if (enableIPForwardingValue != null && enableIPForwardingValue instanceof NullNode == false) {
+                                    boolean enableIPForwardingInstance;
+                                    enableIPForwardingInstance = enableIPForwardingValue.getBooleanValue();
+                                    networkInterfaceJsonFormatInstance.setEnableIPForwarding(enableIPForwardingInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                    String resourceGuidInstance;
+                                    resourceGuidInstance = resourceGuidValue.getTextValue();
+                                    networkInterfaceJsonFormatInstance.setResourceGuid(resourceGuidInstance);
                                 }
                                 
                                 JsonNode provisioningStateValue2 = propertiesValue.get("provisioningState");

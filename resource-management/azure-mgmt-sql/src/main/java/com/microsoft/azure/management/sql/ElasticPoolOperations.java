@@ -31,10 +31,9 @@ import com.microsoft.azure.management.sql.models.ElasticPoolCreateOrUpdateRespon
 import com.microsoft.azure.management.sql.models.ElasticPoolDatabaseActivityListResponse;
 import com.microsoft.azure.management.sql.models.ElasticPoolGetResponse;
 import com.microsoft.azure.management.sql.models.ElasticPoolListResponse;
-import com.microsoft.azure.management.sql.models.ElasticPoolMetricDefinitions;
-import com.microsoft.azure.management.sql.models.ElasticPoolMetrics;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -142,10 +141,18 @@ public interface ElasticPoolOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String resourceGroupName, String serverName, String elasticPoolName) throws IOException, ServiceException;
+    OperationResponse delete(String resourceGroupName, String serverName, String elasticPoolName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * Deletes the Azure SQL Database Elastic Pool with the given name.
@@ -376,76 +383,4 @@ public interface ElasticPoolOperations {
     * @return Represents the response to a List Azure Sql Database request.
     */
     Future<DatabaseListResponse> listDatabasesAsync(String resourceGroupName, String serverName, String elasticPoolName);
-    
-    /**
-    * Returns information about metrics defined on a Azure SQL Database Elastic
-    * Pool.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents Azure SQL Database Elastic Pool metric definitions.
-    */
-    ElasticPoolMetricDefinitions listMetricDefinitions(String resourceGroupName, String serverName, String elasticPoolName) throws IOException, ServiceException;
-    
-    /**
-    * Returns information about metrics defined on a Azure SQL Database Elastic
-    * Pool.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @return Represents Azure SQL Database Elastic Pool metric definitions.
-    */
-    Future<ElasticPoolMetricDefinitions> listMetricDefinitionsAsync(String resourceGroupName, String serverName, String elasticPoolName);
-    
-    /**
-    * Returns information about Azure SQL Database Elastic Pools.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @param nameFilter Required. The filter to apply on the name of the
-    * metrics.
-    * @param timeGrain Required. The time granularity of the metric to retrieve.
-    * @param startTime Required. The start time for the interval.
-    * @param endTime Required. The end time for the interval.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents Azure SQL Database Elastic Pool metrics.
-    */
-    ElasticPoolMetrics listMetrics(String resourceGroupName, String serverName, String elasticPoolName, String nameFilter, String timeGrain, String startTime, String endTime) throws IOException, ServiceException;
-    
-    /**
-    * Returns information about Azure SQL Database Elastic Pools.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @param nameFilter Required. The filter to apply on the name of the
-    * metrics.
-    * @param timeGrain Required. The time granularity of the metric to retrieve.
-    * @param startTime Required. The start time for the interval.
-    * @param endTime Required. The end time for the interval.
-    * @return Represents Azure SQL Database Elastic Pool metrics.
-    */
-    Future<ElasticPoolMetrics> listMetricsAsync(String resourceGroupName, String serverName, String elasticPoolName, String nameFilter, String timeGrain, String startTime, String endTime);
 }

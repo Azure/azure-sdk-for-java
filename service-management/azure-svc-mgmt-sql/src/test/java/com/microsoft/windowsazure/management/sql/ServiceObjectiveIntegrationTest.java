@@ -14,22 +14,25 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.junit.*;
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjective;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveGetResponse;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResponse;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTestBase {
 

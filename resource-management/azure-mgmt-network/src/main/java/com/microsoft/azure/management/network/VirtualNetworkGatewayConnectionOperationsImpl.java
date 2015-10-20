@@ -33,6 +33,7 @@ import com.microsoft.azure.management.network.models.ConnectionSharedKeyResponse
 import com.microsoft.azure.management.network.models.Error;
 import com.microsoft.azure.management.network.models.ErrorDetails;
 import com.microsoft.azure.management.network.models.LocalNetworkGateway;
+import com.microsoft.azure.management.network.models.OperationStatus;
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.azure.management.network.models.VirtualNetworkGateway;
@@ -49,18 +50,7 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -72,6 +62,19 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
 * The Network Resource Provider API includes operations for managing the
@@ -300,6 +303,10 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 ((ObjectNode) virtualNetworkGateway1Value).put("provisioningState", parameters.getVirtualNetworkGateway1().getProvisioningState());
             }
             
+            if (parameters.getVirtualNetworkGateway1().getResourceGuid() != null) {
+                ((ObjectNode) virtualNetworkGateway1Value).put("resourceGuid", parameters.getVirtualNetworkGateway1().getResourceGuid());
+            }
+            
             if (parameters.getVirtualNetworkGateway1().getEtag() != null) {
                 ((ObjectNode) virtualNetworkGateway1Value).put("etag", parameters.getVirtualNetworkGateway1().getEtag());
             }
@@ -400,6 +407,10 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 ((ObjectNode) virtualNetworkGateway2Value).put("provisioningState", parameters.getVirtualNetworkGateway2().getProvisioningState());
             }
             
+            if (parameters.getVirtualNetworkGateway2().getResourceGuid() != null) {
+                ((ObjectNode) virtualNetworkGateway2Value).put("resourceGuid", parameters.getVirtualNetworkGateway2().getResourceGuid());
+            }
+            
             if (parameters.getVirtualNetworkGateway2().getEtag() != null) {
                 ((ObjectNode) virtualNetworkGateway2Value).put("etag", parameters.getVirtualNetworkGateway2().getEtag());
             }
@@ -456,6 +467,10 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 ((ObjectNode) localNetworkGateway2Value).put("provisioningState", parameters.getLocalNetworkGateway2().getProvisioningState());
             }
             
+            if (parameters.getLocalNetworkGateway2().getResourceGuid() != null) {
+                ((ObjectNode) localNetworkGateway2Value).put("resourceGuid", parameters.getLocalNetworkGateway2().getResourceGuid());
+            }
+            
             if (parameters.getLocalNetworkGateway2().getEtag() != null) {
                 ((ObjectNode) localNetworkGateway2Value).put("etag", parameters.getLocalNetworkGateway2().getEtag());
             }
@@ -493,6 +508,10 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
         
         if (parameters.getSharedKey() != null) {
             ((ObjectNode) propertiesValue).put("sharedKey", parameters.getSharedKey());
+        }
+        
+        if (parameters.getResourceGuid() != null) {
+            ((ObjectNode) propertiesValue).put("resourceGuid", parameters.getResourceGuid());
         }
         
         if (parameters.getProvisioningState() != null) {
@@ -560,8 +579,9 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new VirtualNetworkGatewayConnectionPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -677,6 +697,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                 String provisioningStateInstance2;
                                 provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                                 virtualNetworkGateway1Instance.setProvisioningState(provisioningStateInstance2);
+                            }
+                            
+                            JsonNode resourceGuidValue = virtualNetworkGateway1Value2.get("resourceGuid");
+                            if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                String resourceGuidInstance;
+                                resourceGuidInstance = resourceGuidValue.getTextValue();
+                                virtualNetworkGateway1Instance.setResourceGuid(resourceGuidInstance);
                             }
                             
                             JsonNode etagValue2 = virtualNetworkGateway1Value2.get("etag");
@@ -835,6 +862,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                 virtualNetworkGateway2Instance.setProvisioningState(provisioningStateInstance4);
                             }
                             
+                            JsonNode resourceGuidValue2 = virtualNetworkGateway2Value2.get("resourceGuid");
+                            if (resourceGuidValue2 != null && resourceGuidValue2 instanceof NullNode == false) {
+                                String resourceGuidInstance2;
+                                resourceGuidInstance2 = resourceGuidValue2.getTextValue();
+                                virtualNetworkGateway2Instance.setResourceGuid(resourceGuidInstance2);
+                            }
+                            
                             JsonNode etagValue4 = virtualNetworkGateway2Value2.get("etag");
                             if (etagValue4 != null && etagValue4 instanceof NullNode == false) {
                                 String etagInstance4;
@@ -914,6 +948,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                 localNetworkGateway2Instance.setProvisioningState(provisioningStateInstance5);
                             }
                             
+                            JsonNode resourceGuidValue3 = localNetworkGateway2Value2.get("resourceGuid");
+                            if (resourceGuidValue3 != null && resourceGuidValue3 instanceof NullNode == false) {
+                                String resourceGuidInstance3;
+                                resourceGuidInstance3 = resourceGuidValue3.getTextValue();
+                                localNetworkGateway2Instance.setResourceGuid(resourceGuidInstance3);
+                            }
+                            
                             JsonNode etagValue5 = localNetworkGateway2Value2.get("etag");
                             if (etagValue5 != null && etagValue5 instanceof NullNode == false) {
                                 String etagInstance5;
@@ -980,6 +1021,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                             String sharedKeyInstance;
                             sharedKeyInstance = sharedKeyValue.getTextValue();
                             virtualNetworkGatewayConnectionInstance.setSharedKey(sharedKeyInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue4 = propertiesValue2.get("resourceGuid");
+                        if (resourceGuidValue4 != null && resourceGuidValue4 instanceof NullNode == false) {
+                            String resourceGuidInstance4;
+                            resourceGuidInstance4 = resourceGuidValue4.getTextValue();
+                            virtualNetworkGatewayConnectionInstance.setResourceGuid(resourceGuidInstance4);
                         }
                         
                         JsonNode provisioningStateValue6 = propertiesValue2.get("provisioningState");
@@ -1414,8 +1462,9 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new ConnectionResetSharedKeyPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1671,8 +1720,9 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new ConnectionSharedKeyPutResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1863,7 +1913,7 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -1953,7 +2003,7 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -2093,8 +2143,9 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 result = new VirtualNetworkGatewayConnectionGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2210,6 +2261,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                 String provisioningStateInstance2;
                                 provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                                 virtualNetworkGateway1Instance.setProvisioningState(provisioningStateInstance2);
+                            }
+                            
+                            JsonNode resourceGuidValue = virtualNetworkGateway1Value.get("resourceGuid");
+                            if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                String resourceGuidInstance;
+                                resourceGuidInstance = resourceGuidValue.getTextValue();
+                                virtualNetworkGateway1Instance.setResourceGuid(resourceGuidInstance);
                             }
                             
                             JsonNode etagValue2 = virtualNetworkGateway1Value.get("etag");
@@ -2368,6 +2426,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                 virtualNetworkGateway2Instance.setProvisioningState(provisioningStateInstance4);
                             }
                             
+                            JsonNode resourceGuidValue2 = virtualNetworkGateway2Value.get("resourceGuid");
+                            if (resourceGuidValue2 != null && resourceGuidValue2 instanceof NullNode == false) {
+                                String resourceGuidInstance2;
+                                resourceGuidInstance2 = resourceGuidValue2.getTextValue();
+                                virtualNetworkGateway2Instance.setResourceGuid(resourceGuidInstance2);
+                            }
+                            
                             JsonNode etagValue4 = virtualNetworkGateway2Value.get("etag");
                             if (etagValue4 != null && etagValue4 instanceof NullNode == false) {
                                 String etagInstance4;
@@ -2447,6 +2512,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                 localNetworkGateway2Instance.setProvisioningState(provisioningStateInstance5);
                             }
                             
+                            JsonNode resourceGuidValue3 = localNetworkGateway2Value.get("resourceGuid");
+                            if (resourceGuidValue3 != null && resourceGuidValue3 instanceof NullNode == false) {
+                                String resourceGuidInstance3;
+                                resourceGuidInstance3 = resourceGuidValue3.getTextValue();
+                                localNetworkGateway2Instance.setResourceGuid(resourceGuidInstance3);
+                            }
+                            
                             JsonNode etagValue5 = localNetworkGateway2Value.get("etag");
                             if (etagValue5 != null && etagValue5 instanceof NullNode == false) {
                                 String etagInstance5;
@@ -2513,6 +2585,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                             String sharedKeyInstance;
                             sharedKeyInstance = sharedKeyValue.getTextValue();
                             virtualNetworkGatewayConnectionInstance.setSharedKey(sharedKeyInstance);
+                        }
+                        
+                        JsonNode resourceGuidValue4 = propertiesValue.get("resourceGuid");
+                        if (resourceGuidValue4 != null && resourceGuidValue4 instanceof NullNode == false) {
+                            String resourceGuidInstance4;
+                            resourceGuidInstance4 = resourceGuidValue4.getTextValue();
+                            virtualNetworkGatewayConnectionInstance.setResourceGuid(resourceGuidInstance4);
                         }
                         
                         JsonNode provisioningStateValue6 = propertiesValue.get("provisioningState");
@@ -2704,8 +2783,9 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 result = new ConnectionSharedKeyResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2838,8 +2918,9 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                 result = new VirtualNetworkGatewayConnectionListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2958,6 +3039,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                         String provisioningStateInstance2;
                                         provisioningStateInstance2 = provisioningStateValue2.getTextValue();
                                         virtualNetworkGateway1Instance.setProvisioningState(provisioningStateInstance2);
+                                    }
+                                    
+                                    JsonNode resourceGuidValue = virtualNetworkGateway1Value.get("resourceGuid");
+                                    if (resourceGuidValue != null && resourceGuidValue instanceof NullNode == false) {
+                                        String resourceGuidInstance;
+                                        resourceGuidInstance = resourceGuidValue.getTextValue();
+                                        virtualNetworkGateway1Instance.setResourceGuid(resourceGuidInstance);
                                     }
                                     
                                     JsonNode etagValue2 = virtualNetworkGateway1Value.get("etag");
@@ -3116,6 +3204,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                         virtualNetworkGateway2Instance.setProvisioningState(provisioningStateInstance4);
                                     }
                                     
+                                    JsonNode resourceGuidValue2 = virtualNetworkGateway2Value.get("resourceGuid");
+                                    if (resourceGuidValue2 != null && resourceGuidValue2 instanceof NullNode == false) {
+                                        String resourceGuidInstance2;
+                                        resourceGuidInstance2 = resourceGuidValue2.getTextValue();
+                                        virtualNetworkGateway2Instance.setResourceGuid(resourceGuidInstance2);
+                                    }
+                                    
                                     JsonNode etagValue4 = virtualNetworkGateway2Value.get("etag");
                                     if (etagValue4 != null && etagValue4 instanceof NullNode == false) {
                                         String etagInstance4;
@@ -3195,6 +3290,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                         localNetworkGateway2Instance.setProvisioningState(provisioningStateInstance5);
                                     }
                                     
+                                    JsonNode resourceGuidValue3 = localNetworkGateway2Value.get("resourceGuid");
+                                    if (resourceGuidValue3 != null && resourceGuidValue3 instanceof NullNode == false) {
+                                        String resourceGuidInstance3;
+                                        resourceGuidInstance3 = resourceGuidValue3.getTextValue();
+                                        localNetworkGateway2Instance.setResourceGuid(resourceGuidInstance3);
+                                    }
+                                    
                                     JsonNode etagValue5 = localNetworkGateway2Value.get("etag");
                                     if (etagValue5 != null && etagValue5 instanceof NullNode == false) {
                                         String etagInstance5;
@@ -3261,6 +3363,13 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
                                     String sharedKeyInstance;
                                     sharedKeyInstance = sharedKeyValue.getTextValue();
                                     virtualNetworkGatewayConnectionJsonFormatInstance.setSharedKey(sharedKeyInstance);
+                                }
+                                
+                                JsonNode resourceGuidValue4 = propertiesValue.get("resourceGuid");
+                                if (resourceGuidValue4 != null && resourceGuidValue4 instanceof NullNode == false) {
+                                    String resourceGuidInstance4;
+                                    resourceGuidInstance4 = resourceGuidValue4.getTextValue();
+                                    virtualNetworkGatewayConnectionJsonFormatInstance.setResourceGuid(resourceGuidInstance4);
                                 }
                                 
                                 JsonNode provisioningStateValue6 = propertiesValue.get("provisioningState");
@@ -3433,7 +3542,7 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -3546,7 +3655,7 @@ public class VirtualNetworkGatewayConnectionOperationsImpl implements ServiceOpe
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != com.microsoft.azure.management.network.models.OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.INPROGRESS)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getLongRunningOperationStatusAsync(response.getAzureAsyncOperation()).get();
                 delayInSeconds = result.getRetryAfter();

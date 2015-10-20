@@ -18,6 +18,7 @@
 package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
+
 import java.util.Arrays;
 import java.util.Random;
 

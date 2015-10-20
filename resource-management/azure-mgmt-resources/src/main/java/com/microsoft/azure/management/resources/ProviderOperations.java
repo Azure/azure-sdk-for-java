@@ -29,6 +29,7 @@ import com.microsoft.azure.management.resources.models.ProviderListResult;
 import com.microsoft.azure.management.resources.models.ProviderRegistionResult;
 import com.microsoft.azure.management.resources.models.ProviderUnregistionResult;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

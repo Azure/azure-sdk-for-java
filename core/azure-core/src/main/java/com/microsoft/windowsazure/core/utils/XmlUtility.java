@@ -15,11 +15,11 @@
 
 package com.microsoft.windowsazure.core.utils;
 
-import java.util.ArrayList;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
 
 public abstract class XmlUtility {
     public static Element getElementByTagNameNS(Node element, String namespace,

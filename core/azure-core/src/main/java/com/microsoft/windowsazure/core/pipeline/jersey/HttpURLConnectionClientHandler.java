@@ -14,17 +14,6 @@
  */
 package com.microsoft.windowsazure.core.pipeline.jersey;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.core.MultivaluedMap;
-
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
@@ -33,6 +22,16 @@ import com.sun.jersey.api.client.CommittingOutputStream;
 import com.sun.jersey.api.client.TerminatingClientHandler;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.core.header.InBoundHeaders;
+
+import javax.ws.rs.core.MultivaluedMap;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
 
 public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 

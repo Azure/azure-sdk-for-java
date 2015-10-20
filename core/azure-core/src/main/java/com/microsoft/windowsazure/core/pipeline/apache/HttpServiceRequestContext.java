@@ -16,17 +16,16 @@
 package com.microsoft.windowsazure.core.pipeline.apache;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.HttpRequestWrapper;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.protocol.HttpContext;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HttpServiceRequestContext implements ServiceRequestContext {
     private final HttpRequest clientRequest;

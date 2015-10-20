@@ -33,12 +33,13 @@ import com.microsoft.windowsazure.management.network.models.GetRouteTableForSubn
 import com.microsoft.windowsazure.management.network.models.GetRouteTableResponse;
 import com.microsoft.windowsazure.management.network.models.ListRouteTablesResponse;
 import com.microsoft.windowsazure.management.network.models.SetRouteParameters;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * The Network Management API includes operations for managing the routes for

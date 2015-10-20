@@ -29,12 +29,13 @@ import com.microsoft.windowsazure.management.scheduler.models.CloudServiceCreate
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceGetResponse;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceListResponse;
 import com.microsoft.windowsazure.management.scheduler.models.CloudServiceOperationStatusResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 public interface CloudServiceOperations {
     /**

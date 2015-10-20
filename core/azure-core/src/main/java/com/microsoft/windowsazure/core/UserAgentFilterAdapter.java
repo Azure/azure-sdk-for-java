@@ -17,11 +17,10 @@
  */
 package com.microsoft.windowsazure.core;
 
+import com.microsoft.windowsazure.core.pipeline.apache.HttpServiceRequestContext;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
-
-import com.microsoft.windowsazure.core.pipeline.apache.HttpServiceRequestContext;
 
 public class UserAgentFilterAdapter implements HttpRequestInterceptor {
     private UserAgentFilter filter;

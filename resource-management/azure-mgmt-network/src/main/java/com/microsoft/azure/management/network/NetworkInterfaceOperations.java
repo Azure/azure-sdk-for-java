@@ -31,6 +31,7 @@ import com.microsoft.azure.management.network.models.NetworkInterfacePutResponse
 import com.microsoft.azure.management.network.models.UpdateOperationResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -197,6 +198,36 @@ public interface NetworkInterfaceOperations {
     Future<NetworkInterfaceGetResponse> getAsync(String resourceGroupName, String networkInterfaceName);
     
     /**
+    * The Get ntework interface operation retreives information about the
+    * specified network interface in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @param virtualmachineIndex Required. The virtual machine index.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for GetNetworkInterface Api service call
+    */
+    NetworkInterfaceGetResponse getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) throws IOException, ServiceException;
+    
+    /**
+    * The Get ntework interface operation retreives information about the
+    * specified network interface in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @param virtualmachineIndex Required. The virtual machine index.
+    * @param networkInterfaceName Required. The name of the network interface.
+    * @return Response for GetNetworkInterface Api service call
+    */
+    Future<NetworkInterfaceGetResponse> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
+    
+    /**
     * The List networkInterfaces opertion retrieves all the networkInterfaces
     * in a resource group.
     *
@@ -237,4 +268,30 @@ public interface NetworkInterfaceOperations {
     * @return Response for ListNetworkInterface Api service call
     */
     Future<NetworkInterfaceListResponse> listAllAsync();
+    
+    /**
+    * The list network interface operation retrieves information about all
+    * network interfaces in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return Response for ListNetworkInterface Api service call
+    */
+    NetworkInterfaceListResponse listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws IOException, ServiceException;
+    
+    /**
+    * The list network interface operation retrieves information about all
+    * network interfaces in a virtual machine scale set.
+    *
+    * @param resourceGroupName Required. The name of the resource group.
+    * @param virtualMachineScaleSetName Required. The name of the virtual
+    * machine scale set.
+    * @return Response for ListNetworkInterface Api service call
+    */
+    Future<NetworkInterfaceListResponse> listVirtualMachineScaleSetNetworkInterfacesAsync(String resourceGroupName, String virtualMachineScaleSetName);
 }

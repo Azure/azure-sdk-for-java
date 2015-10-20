@@ -18,11 +18,6 @@
 package com.microsoft.windowsazure.core.pipeline.apache;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.protocol.HttpContext;
-
-import java.util.LinkedList;
 
 public class HttpRequestInterceptorFrontAdapter extends HttpRequestInterceptorAdapter {
     public void addFront(ServiceRequestFilter filter) {

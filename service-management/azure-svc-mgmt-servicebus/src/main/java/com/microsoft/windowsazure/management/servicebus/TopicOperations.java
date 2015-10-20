@@ -29,12 +29,13 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnect
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusTopic;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusTopicResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusTopicsResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Bus Management API includes operations for managing Service Bus

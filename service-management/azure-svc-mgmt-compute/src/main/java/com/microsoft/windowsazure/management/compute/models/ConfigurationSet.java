@@ -24,12 +24,35 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
+
 import java.util.ArrayList;
 
 /**
 * Objects that provide system or application data.
 */
 public class ConfigurationSet {
+    private AdditionalUnattendContentSettings additionalUnattendContent;
+    
+    /**
+    * Optional. Specifies additional base-64 encoded XML formatted information
+    * that can be included in the Unattend.xml file, which is used by Windows
+    * Setup.
+    * @return The AdditionalUnattendContent value.
+    */
+    public AdditionalUnattendContentSettings getAdditionalUnattendContent() {
+        return this.additionalUnattendContent;
+    }
+    
+    /**
+    * Optional. Specifies additional base-64 encoded XML formatted information
+    * that can be included in the Unattend.xml file, which is used by Windows
+    * Setup.
+    * @param additionalUnattendContentValue The AdditionalUnattendContent value.
+    */
+    public void setAdditionalUnattendContent(final AdditionalUnattendContentSettings additionalUnattendContentValue) {
+        this.additionalUnattendContent = additionalUnattendContentValue;
+    }
+    
     private String adminPassword;
     
     /**

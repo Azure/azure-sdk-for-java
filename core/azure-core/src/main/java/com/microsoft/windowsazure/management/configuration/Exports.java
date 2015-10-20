@@ -14,12 +14,12 @@
  */
 package com.microsoft.windowsazure.management.configuration;
 
+import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.Builder.Registry;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
-
-import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.Builder.Registry;
 
 public class Exports implements Builder.Exports {
 

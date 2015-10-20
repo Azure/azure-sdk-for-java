@@ -25,6 +25,7 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
+
 import java.io.Closeable;
 import java.net.URI;
 
@@ -86,6 +87,13 @@ public interface SqlManagementClient extends Closeable, FilterableService<SqlMan
     * @return The AuditingPolicyOperations value.
     */
     AuditingPolicyOperations getAuditingPolicyOperations();
+    
+    /**
+    * Represents all the operations for determining the set of capabilites
+    * available in a specified region.
+    * @return The CapabilitiesOperations value.
+    */
+    CapabilitiesOperations getCapabilitiesOperations();
     
     /**
     * Represents all the operations for operating pertaining to activation on
@@ -150,12 +158,28 @@ public interface SqlManagementClient extends Closeable, FilterableService<SqlMan
     RecommendedIndexOperations getRecommendedIndexesOperations();
     
     /**
+    * Represents all the operations for operating on Azure SQL Database
+    * Replication Links.  Contains operations to: Delete and Retrieve
+    * replication links.
+    * @return The DatabaseReplicationLinksOperations value.
+    */
+    ReplicationLinkOperations getDatabaseReplicationLinksOperations();
+    
+    /**
     * Represents all the operations for managing Azure SQL Database secure
     * connection.  Contains operations to: Create, Retrieve and Update secure
     * connection policy .
     * @return The SecureConnectionOperations value.
     */
     SecureConnectionPolicyOperations getSecureConnectionOperations();
+    
+    /**
+    * Represents all the operations for operating on Azure SQL Server Active
+    * Directory Administrators.  Contains operations to: Create, Retrieve,
+    * Update, and Delete Azure SQL Server Active Directory Administrators.
+    * @return The ServerAdministratorsOperations value.
+    */
+    ServerAdministratorOperations getServerAdministratorsOperations();
     
     /**
     * Represents all the operations for operating on Azure SQL Database

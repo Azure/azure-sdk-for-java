@@ -14,19 +14,18 @@
  */
 package com.microsoft.windowsazure.core.tracing.util;
 
-import static org.junit.Assert.assertTrue;
+import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpRequest;
+import org.apache.http.client.methods.HttpPost;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.client.methods.HttpPost;
-import org.junit.Test;
-
-import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.util.Locale;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import static org.junit.Assert.assertTrue;
 
 public class JavaTracingInterceptorTest {
 

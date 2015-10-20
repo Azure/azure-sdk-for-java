@@ -16,10 +16,10 @@
 package com.microsoft.windowsazure.core.utils;
 
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 
 /**
  * The Class KeyStoreCredential.

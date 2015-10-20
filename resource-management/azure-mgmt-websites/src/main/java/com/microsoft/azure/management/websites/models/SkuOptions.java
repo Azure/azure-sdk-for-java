@@ -27,13 +27,13 @@ package com.microsoft.azure.management.websites.models;
 * Web Hosting Plan SKU options.
 */
 public enum SkuOptions {
-    FREE,
+    Free,
     
-    SHARED,
+    Shared,
     
-    BASIC,
+    Basic,
     
-    STANDARD,
+    Standard,
     
-    PREMIUM,
+    Premium,
 }

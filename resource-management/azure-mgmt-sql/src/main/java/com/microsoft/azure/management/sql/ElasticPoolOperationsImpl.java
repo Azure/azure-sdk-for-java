@@ -40,15 +40,8 @@ import com.microsoft.azure.management.sql.models.ElasticPoolDatabaseActivityList
 import com.microsoft.azure.management.sql.models.ElasticPoolDatabaseActivityProperties;
 import com.microsoft.azure.management.sql.models.ElasticPoolGetResponse;
 import com.microsoft.azure.management.sql.models.ElasticPoolListResponse;
-import com.microsoft.azure.management.sql.models.ElasticPoolMetricDefinitions;
-import com.microsoft.azure.management.sql.models.ElasticPoolMetrics;
 import com.microsoft.azure.management.sql.models.ElasticPoolProperties;
 import com.microsoft.azure.management.sql.models.ErrorResponse;
-import com.microsoft.azure.management.sql.models.Metric;
-import com.microsoft.azure.management.sql.models.MetricAvailability;
-import com.microsoft.azure.management.sql.models.MetricDefinition;
-import com.microsoft.azure.management.sql.models.MetricName;
-import com.microsoft.azure.management.sql.models.Name;
 import com.microsoft.azure.management.sql.models.OperationImpact;
 import com.microsoft.azure.management.sql.models.RecommendedIndex;
 import com.microsoft.azure.management.sql.models.RecommendedIndexProperties;
@@ -60,7 +53,6 @@ import com.microsoft.azure.management.sql.models.SloUsageMetric;
 import com.microsoft.azure.management.sql.models.Table;
 import com.microsoft.azure.management.sql.models.TableProperties;
 import com.microsoft.azure.management.sql.models.UpgradeHint;
-import com.microsoft.azure.management.sql.models.Value;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.ServiceOperations;
@@ -69,6 +61,19 @@ import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+import org.codehaus.jackson.node.ObjectNode;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -81,17 +86,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 /**
 * Represents all the operations for operating on Azure SQL Database Elastic
@@ -255,7 +249,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
         }
         
         if (parameters.getProperties().getStorageMB() != null) {
-            ((ObjectNode) propertiesValue).put("storageMB", Long.toString(parameters.getProperties().getStorageMB()));
+            ((ObjectNode) propertiesValue).put("storageMB", Integer.toString(parameters.getProperties().getStorageMB()));
         }
         
         if (parameters.getProperties().getDatabaseDtuMin() != null) {
@@ -311,8 +305,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 InputStream responseContent = httpResponse.getEntity().getContent();
                 result = new ElasticPoolCreateOrUpdateResponse();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -371,29 +366,29 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                         
                         JsonNode dtuValue = propertiesValue2.get("dtu");
                         if (dtuValue != null && dtuValue instanceof NullNode == false) {
-                            long dtuInstance;
-                            dtuInstance = dtuValue.getLongValue();
+                            int dtuInstance;
+                            dtuInstance = dtuValue.getIntValue();
                             propertiesInstance.setDtu(dtuInstance);
                         }
                         
                         JsonNode databaseDtuMaxValue = propertiesValue2.get("databaseDtuMax");
                         if (databaseDtuMaxValue != null && databaseDtuMaxValue instanceof NullNode == false) {
-                            long databaseDtuMaxInstance;
-                            databaseDtuMaxInstance = databaseDtuMaxValue.getLongValue();
+                            int databaseDtuMaxInstance;
+                            databaseDtuMaxInstance = databaseDtuMaxValue.getIntValue();
                             propertiesInstance.setDatabaseDtuMax(databaseDtuMaxInstance);
                         }
                         
                         JsonNode databaseDtuMinValue = propertiesValue2.get("databaseDtuMin");
                         if (databaseDtuMinValue != null && databaseDtuMinValue instanceof NullNode == false) {
-                            long databaseDtuMinInstance;
-                            databaseDtuMinInstance = databaseDtuMinValue.getLongValue();
+                            int databaseDtuMinInstance;
+                            databaseDtuMinInstance = databaseDtuMinValue.getIntValue();
                             propertiesInstance.setDatabaseDtuMin(databaseDtuMinInstance);
                         }
                         
                         JsonNode storageMBValue = propertiesValue2.get("storageMB");
                         if (storageMBValue != null && storageMBValue instanceof NullNode == false) {
-                            long storageMBInstance;
-                            storageMBInstance = storageMBValue.getLongValue();
+                            int storageMBInstance;
+                            storageMBInstance = storageMBValue.getIntValue();
                             propertiesInstance.setStorageMB(storageMBInstance);
                         }
                     }
@@ -450,7 +445,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             if (statusCode == HttpStatus.SC_CREATED) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -535,7 +530,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
             }
             
             ElasticPoolCreateOrUpdateResponse response = client2.getElasticPoolsOperations().beginCreateOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).get();
-            if (response.getStatus() == OperationStatus.SUCCEEDED) {
+            if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
             ElasticPoolCreateOrUpdateResponse result = client2.getElasticPoolsOperations().getElasticPoolOperationStatusAsync(response.getOperationStatusLink()).get();
@@ -546,7 +541,7 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
             if (client2.getLongRunningOperationInitialTimeout() >= 0) {
                 delayInSeconds = client2.getLongRunningOperationInitialTimeout();
             }
-            while ((result.getStatus() != OperationStatus.INPROGRESS) == false) {
+            while (result.getStatus() != null && result.getStatus().equals(OperationStatus.InProgress)) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getElasticPoolsOperations().getElasticPoolOperationStatusAsync(response.getOperationStatusLink()).get();
                 delayInSeconds = result.getRetryAfter();
@@ -605,11 +600,19 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse delete(String resourceGroupName, String serverName, String elasticPoolName) throws IOException, ServiceException {
+    public OperationResponse delete(String resourceGroupName, String serverName, String elasticPoolName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (resourceGroupName == null) {
             throw new NullPointerException("resourceGroupName");
@@ -830,8 +833,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new ElasticPoolGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -866,29 +870,29 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                         
                         JsonNode dtuValue = propertiesValue.get("dtu");
                         if (dtuValue != null && dtuValue instanceof NullNode == false) {
-                            long dtuInstance;
-                            dtuInstance = dtuValue.getLongValue();
+                            int dtuInstance;
+                            dtuInstance = dtuValue.getIntValue();
                             propertiesInstance.setDtu(dtuInstance);
                         }
                         
                         JsonNode databaseDtuMaxValue = propertiesValue.get("databaseDtuMax");
                         if (databaseDtuMaxValue != null && databaseDtuMaxValue instanceof NullNode == false) {
-                            long databaseDtuMaxInstance;
-                            databaseDtuMaxInstance = databaseDtuMaxValue.getLongValue();
+                            int databaseDtuMaxInstance;
+                            databaseDtuMaxInstance = databaseDtuMaxValue.getIntValue();
                             propertiesInstance.setDatabaseDtuMax(databaseDtuMaxInstance);
                         }
                         
                         JsonNode databaseDtuMinValue = propertiesValue.get("databaseDtuMin");
                         if (databaseDtuMinValue != null && databaseDtuMinValue instanceof NullNode == false) {
-                            long databaseDtuMinInstance;
-                            databaseDtuMinInstance = databaseDtuMinValue.getLongValue();
+                            int databaseDtuMinInstance;
+                            databaseDtuMinInstance = databaseDtuMinValue.getIntValue();
                             propertiesInstance.setDatabaseDtuMin(databaseDtuMinInstance);
                         }
                         
                         JsonNode storageMBValue = propertiesValue.get("storageMB");
                         if (storageMBValue != null && storageMBValue instanceof NullNode == false) {
-                            long storageMBInstance;
-                            storageMBInstance = storageMBValue.getLongValue();
+                            int storageMBInstance;
+                            storageMBInstance = storageMBValue.getIntValue();
                             propertiesInstance.setStorageMB(storageMBInstance);
                         }
                     }
@@ -1085,8 +1089,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new DatabaseGetResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1855,6 +1860,13 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                                 }
                             }
                         }
+                        
+                        JsonNode defaultSecondaryLocationValue = propertiesValue.get("defaultSecondaryLocation");
+                        if (defaultSecondaryLocationValue != null && defaultSecondaryLocationValue instanceof NullNode == false) {
+                            String defaultSecondaryLocationInstance;
+                            defaultSecondaryLocationInstance = defaultSecondaryLocationValue.getTextValue();
+                            propertiesInstance.setDefaultSecondaryLocation(defaultSecondaryLocationInstance);
+                        }
                     }
                     
                     JsonNode idValue8 = responseDoc.get("id");
@@ -2000,8 +2012,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new ElasticPoolCreateOrUpdateResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2060,29 +2073,29 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                         
                         JsonNode dtuValue = propertiesValue.get("dtu");
                         if (dtuValue != null && dtuValue instanceof NullNode == false) {
-                            long dtuInstance;
-                            dtuInstance = dtuValue.getLongValue();
+                            int dtuInstance;
+                            dtuInstance = dtuValue.getIntValue();
                             propertiesInstance.setDtu(dtuInstance);
                         }
                         
                         JsonNode databaseDtuMaxValue = propertiesValue.get("databaseDtuMax");
                         if (databaseDtuMaxValue != null && databaseDtuMaxValue instanceof NullNode == false) {
-                            long databaseDtuMaxInstance;
-                            databaseDtuMaxInstance = databaseDtuMaxValue.getLongValue();
+                            int databaseDtuMaxInstance;
+                            databaseDtuMaxInstance = databaseDtuMaxValue.getIntValue();
                             propertiesInstance.setDatabaseDtuMax(databaseDtuMaxInstance);
                         }
                         
                         JsonNode databaseDtuMinValue = propertiesValue.get("databaseDtuMin");
                         if (databaseDtuMinValue != null && databaseDtuMinValue instanceof NullNode == false) {
-                            long databaseDtuMinInstance;
-                            databaseDtuMinInstance = databaseDtuMinValue.getLongValue();
+                            int databaseDtuMinInstance;
+                            databaseDtuMinInstance = databaseDtuMinValue.getIntValue();
                             propertiesInstance.setDatabaseDtuMin(databaseDtuMinInstance);
                         }
                         
                         JsonNode storageMBValue = propertiesValue.get("storageMB");
                         if (storageMBValue != null && storageMBValue instanceof NullNode == false) {
-                            long storageMBInstance;
-                            storageMBInstance = storageMBValue.getLongValue();
+                            int storageMBInstance;
+                            storageMBInstance = storageMBValue.getIntValue();
                             propertiesInstance.setStorageMB(storageMBInstance);
                         }
                     }
@@ -2132,11 +2145,11 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-            if (statusCode == HttpStatus.SC_OK) {
-                result.setStatus(OperationStatus.SUCCEEDED);
-            }
             if (statusCode == HttpStatus.SC_CREATED) {
-                result.setStatus(OperationStatus.SUCCEEDED);
+                result.setStatus(OperationStatus.Succeeded);
+            }
+            if (statusCode == HttpStatus.SC_OK) {
+                result.setStatus(OperationStatus.Succeeded);
             }
             
             if (shouldTrace) {
@@ -2264,8 +2277,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new ElasticPoolListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2303,29 +2317,29 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                                 
                                 JsonNode dtuValue = propertiesValue.get("dtu");
                                 if (dtuValue != null && dtuValue instanceof NullNode == false) {
-                                    long dtuInstance;
-                                    dtuInstance = dtuValue.getLongValue();
+                                    int dtuInstance;
+                                    dtuInstance = dtuValue.getIntValue();
                                     propertiesInstance.setDtu(dtuInstance);
                                 }
                                 
                                 JsonNode databaseDtuMaxValue = propertiesValue.get("databaseDtuMax");
                                 if (databaseDtuMaxValue != null && databaseDtuMaxValue instanceof NullNode == false) {
-                                    long databaseDtuMaxInstance;
-                                    databaseDtuMaxInstance = databaseDtuMaxValue.getLongValue();
+                                    int databaseDtuMaxInstance;
+                                    databaseDtuMaxInstance = databaseDtuMaxValue.getIntValue();
                                     propertiesInstance.setDatabaseDtuMax(databaseDtuMaxInstance);
                                 }
                                 
                                 JsonNode databaseDtuMinValue = propertiesValue.get("databaseDtuMin");
                                 if (databaseDtuMinValue != null && databaseDtuMinValue instanceof NullNode == false) {
-                                    long databaseDtuMinInstance;
-                                    databaseDtuMinInstance = databaseDtuMinValue.getLongValue();
+                                    int databaseDtuMinInstance;
+                                    databaseDtuMinInstance = databaseDtuMinValue.getIntValue();
                                     propertiesInstance.setDatabaseDtuMin(databaseDtuMinInstance);
                                 }
                                 
                                 JsonNode storageMBValue = propertiesValue.get("storageMB");
                                 if (storageMBValue != null && storageMBValue instanceof NullNode == false) {
-                                    long storageMBInstance;
-                                    storageMBInstance = storageMBValue.getLongValue();
+                                    int storageMBInstance;
+                                    storageMBInstance = storageMBValue.getIntValue();
                                     propertiesInstance.setStorageMB(storageMBInstance);
                                 }
                             }
@@ -2515,8 +2529,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new ElasticPoolActivityListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2831,8 +2846,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new ElasticPoolDatabaseActivityListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3138,8 +3154,9 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                 result = new DatabaseListResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -3911,6 +3928,13 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                                         }
                                     }
                                 }
+                                
+                                JsonNode defaultSecondaryLocationValue = propertiesValue.get("defaultSecondaryLocation");
+                                if (defaultSecondaryLocationValue != null && defaultSecondaryLocationValue instanceof NullNode == false) {
+                                    String defaultSecondaryLocationInstance;
+                                    defaultSecondaryLocationInstance = defaultSecondaryLocationValue.getTextValue();
+                                    propertiesInstance.setDefaultSecondaryLocation(defaultSecondaryLocationInstance);
+                                }
                             }
                             
                             JsonNode idValue8 = valueValue.get("id");
@@ -3949,512 +3973,6 @@ public class ElasticPoolOperationsImpl implements ServiceOperations<SqlManagemen
                                     String tagsKey8 = property8.getKey();
                                     String tagsValue8 = property8.getValue().getTextValue();
                                     databaseInstance.getTags().put(tagsKey8, tagsValue8);
-                                }
-                            }
-                        }
-                    }
-                }
-                
-            }
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
-    }
-    
-    /**
-    * Returns information about metrics defined on a Azure SQL Database Elastic
-    * Pool.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @return Represents Azure SQL Database Elastic Pool metric definitions.
-    */
-    @Override
-    public Future<ElasticPoolMetricDefinitions> listMetricDefinitionsAsync(final String resourceGroupName, final String serverName, final String elasticPoolName) {
-        return this.getClient().getExecutorService().submit(new Callable<ElasticPoolMetricDefinitions>() { 
-            @Override
-            public ElasticPoolMetricDefinitions call() throws Exception {
-                return listMetricDefinitions(resourceGroupName, serverName, elasticPoolName);
-            }
-         });
-    }
-    
-    /**
-    * Returns information about metrics defined on a Azure SQL Database Elastic
-    * Pool.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents Azure SQL Database Elastic Pool metric definitions.
-    */
-    @Override
-    public ElasticPoolMetricDefinitions listMetricDefinitions(String resourceGroupName, String serverName, String elasticPoolName) throws IOException, ServiceException {
-        // Validate
-        if (resourceGroupName == null) {
-            throw new NullPointerException("resourceGroupName");
-        }
-        if (serverName == null) {
-            throw new NullPointerException("serverName");
-        }
-        if (elasticPoolName == null) {
-            throw new NullPointerException("elasticPoolName");
-        }
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("resourceGroupName", resourceGroupName);
-            tracingParameters.put("serverName", serverName);
-            tracingParameters.put("elasticPoolName", elasticPoolName);
-            CloudTracing.enter(invocationId, this, "listMetricDefinitionsAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "";
-        url = url + "/subscriptions/";
-        if (this.getClient().getCredentials().getSubscriptionId() != null) {
-            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
-        }
-        url = url + "/resourceGroups/";
-        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
-        url = url + "/providers/";
-        url = url + "Microsoft.Sql";
-        url = url + "/servers/";
-        url = url + URLEncoder.encode(serverName, "UTF-8");
-        url = url + "/elasticPools/";
-        url = url + URLEncoder.encode(elasticPoolName, "UTF-8");
-        url = url + "/metricDefinitions";
-        ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2014-04-01");
-        if (queryParameters.size() > 0) {
-            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
-        }
-        String baseUrl = this.getClient().getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpGet httpRequest = new HttpGet(url);
-        
-        // Set Headers
-        httpRequest.setHeader("Accept", "application/json");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            ElasticPoolMetricDefinitions result = null;
-            // Deserialize Response
-            if (statusCode == HttpStatus.SC_OK) {
-                InputStream responseContent = httpResponse.getEntity().getContent();
-                result = new ElasticPoolMetricDefinitions();
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
-                }
-                
-                if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                    JsonNode valueArray = responseDoc.get("value");
-                    if (valueArray != null && valueArray instanceof NullNode == false) {
-                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                            MetricDefinition metricDefinitionInstance = new MetricDefinition();
-                            result.getMetricDefinitions().add(metricDefinitionInstance);
-                            
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                MetricName nameInstance = new MetricName();
-                                metricDefinitionInstance.setName(nameInstance);
-                                
-                                JsonNode valueValue2 = nameValue.get("value");
-                                if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
-                                    String valueInstance;
-                                    valueInstance = valueValue2.getTextValue();
-                                    nameInstance.setValue(valueInstance);
-                                }
-                                
-                                JsonNode localizedValueValue = nameValue.get("localizedValue");
-                                if (localizedValueValue != null && localizedValueValue instanceof NullNode == false) {
-                                    String localizedValueInstance;
-                                    localizedValueInstance = localizedValueValue.getTextValue();
-                                    nameInstance.setLocalizedValue(localizedValueInstance);
-                                }
-                            }
-                            
-                            JsonNode unitValue = valueValue.get("unit");
-                            if (unitValue != null && unitValue instanceof NullNode == false) {
-                                String unitInstance;
-                                unitInstance = unitValue.getTextValue();
-                                metricDefinitionInstance.setUnit(unitInstance);
-                            }
-                            
-                            JsonNode primaryAggregationTypeValue = valueValue.get("primaryAggregationType");
-                            if (primaryAggregationTypeValue != null && primaryAggregationTypeValue instanceof NullNode == false) {
-                                String primaryAggregationTypeInstance;
-                                primaryAggregationTypeInstance = primaryAggregationTypeValue.getTextValue();
-                                metricDefinitionInstance.setPrimaryAggregationType(primaryAggregationTypeInstance);
-                            }
-                            
-                            JsonNode metricAvailabilitiesArray = valueValue.get("metricAvailabilities");
-                            if (metricAvailabilitiesArray != null && metricAvailabilitiesArray instanceof NullNode == false) {
-                                for (JsonNode metricAvailabilitiesValue : ((ArrayNode) metricAvailabilitiesArray)) {
-                                    MetricAvailability metricAvailabilityInstance = new MetricAvailability();
-                                    metricDefinitionInstance.getMetricAvailabilities().add(metricAvailabilityInstance);
-                                    
-                                    JsonNode timeGrainValue = metricAvailabilitiesValue.get("timeGrain");
-                                    if (timeGrainValue != null && timeGrainValue instanceof NullNode == false) {
-                                        String timeGrainInstance;
-                                        timeGrainInstance = timeGrainValue.getTextValue();
-                                        metricAvailabilityInstance.setTimeGrain(timeGrainInstance);
-                                    }
-                                    
-                                    JsonNode retentionValue = metricAvailabilitiesValue.get("retention");
-                                    if (retentionValue != null && retentionValue instanceof NullNode == false) {
-                                        String retentionInstance;
-                                        retentionInstance = retentionValue.getTextValue();
-                                        metricAvailabilityInstance.setRetention(retentionInstance);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                
-            }
-            result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-            }
-            
-            if (shouldTrace) {
-                CloudTracing.exit(invocationId, result);
-            }
-            return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
-                httpResponse.getEntity().getContent().close();
-            }
-        }
-    }
-    
-    /**
-    * Returns information about Azure SQL Database Elastic Pools.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @param nameFilter Required. The filter to apply on the name of the
-    * metrics.
-    * @param timeGrain Required. The time granularity of the metric to retrieve.
-    * @param startTime Required. The start time for the interval.
-    * @param endTime Required. The end time for the interval.
-    * @return Represents Azure SQL Database Elastic Pool metrics.
-    */
-    @Override
-    public Future<ElasticPoolMetrics> listMetricsAsync(final String resourceGroupName, final String serverName, final String elasticPoolName, final String nameFilter, final String timeGrain, final String startTime, final String endTime) {
-        return this.getClient().getExecutorService().submit(new Callable<ElasticPoolMetrics>() { 
-            @Override
-            public ElasticPoolMetrics call() throws Exception {
-                return listMetrics(resourceGroupName, serverName, elasticPoolName, nameFilter, timeGrain, startTime, endTime);
-            }
-         });
-    }
-    
-    /**
-    * Returns information about Azure SQL Database Elastic Pools.
-    *
-    * @param resourceGroupName Required. The name of the Resource Group to
-    * which the Azure SQL Database Serve belongs.
-    * @param serverName Required. The name of the Azure SQL Server in which
-    * Azure SQL Database Elastic Pools are hosted.
-    * @param elasticPoolName Required. The name of the Azure SQL Elastic Pool
-    * for which to get the metrics.
-    * @param nameFilter Required. The filter to apply on the name of the
-    * metrics.
-    * @param timeGrain Required. The time granularity of the metric to retrieve.
-    * @param startTime Required. The start time for the interval.
-    * @param endTime Required. The end time for the interval.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return Represents Azure SQL Database Elastic Pool metrics.
-    */
-    @Override
-    public ElasticPoolMetrics listMetrics(String resourceGroupName, String serverName, String elasticPoolName, String nameFilter, String timeGrain, String startTime, String endTime) throws IOException, ServiceException {
-        // Validate
-        if (resourceGroupName == null) {
-            throw new NullPointerException("resourceGroupName");
-        }
-        if (serverName == null) {
-            throw new NullPointerException("serverName");
-        }
-        if (elasticPoolName == null) {
-            throw new NullPointerException("elasticPoolName");
-        }
-        if (nameFilter == null) {
-            throw new NullPointerException("nameFilter");
-        }
-        if (timeGrain == null) {
-            throw new NullPointerException("timeGrain");
-        }
-        if (startTime == null) {
-            throw new NullPointerException("startTime");
-        }
-        if (endTime == null) {
-            throw new NullPointerException("endTime");
-        }
-        
-        // Tracing
-        boolean shouldTrace = CloudTracing.getIsEnabled();
-        String invocationId = null;
-        if (shouldTrace) {
-            invocationId = Long.toString(CloudTracing.getNextInvocationId());
-            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("resourceGroupName", resourceGroupName);
-            tracingParameters.put("serverName", serverName);
-            tracingParameters.put("elasticPoolName", elasticPoolName);
-            tracingParameters.put("nameFilter", nameFilter);
-            tracingParameters.put("timeGrain", timeGrain);
-            tracingParameters.put("startTime", startTime);
-            tracingParameters.put("endTime", endTime);
-            CloudTracing.enter(invocationId, this, "listMetricsAsync", tracingParameters);
-        }
-        
-        // Construct URL
-        String url = "";
-        url = url + "/subscriptions/";
-        if (this.getClient().getCredentials().getSubscriptionId() != null) {
-            url = url + URLEncoder.encode(this.getClient().getCredentials().getSubscriptionId(), "UTF-8");
-        }
-        url = url + "/resourceGroups/";
-        url = url + URLEncoder.encode(resourceGroupName, "UTF-8");
-        url = url + "/providers/";
-        url = url + "Microsoft.Sql";
-        url = url + "/servers/";
-        url = url + URLEncoder.encode(serverName, "UTF-8");
-        url = url + "/elasticPools/";
-        url = url + URLEncoder.encode(elasticPoolName, "UTF-8");
-        url = url + "/metrics";
-        ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2014-04-01");
-        ArrayList<String> odataFilter = new ArrayList<String>();
-        ArrayList<String> odataFilter2 = new ArrayList<String>();
-        odataFilter2.add(URLEncoder.encode(nameFilter, "UTF-8"));
-        if (odataFilter2.size() > 0) {
-            odataFilter.add("(" + CollectionStringBuilder.join(odataFilter2, null) + ")");
-        }
-        odataFilter.add("timeGrain eq duration'" + URLEncoder.encode(timeGrain, "UTF-8") + "'");
-        odataFilter.add("startTime eq " + URLEncoder.encode(startTime, "UTF-8"));
-        odataFilter.add("endTime eq " + URLEncoder.encode(endTime, "UTF-8"));
-        if (odataFilter.size() > 0) {
-            queryParameters.add("$filter=" + CollectionStringBuilder.join(odataFilter, " and "));
-        }
-        if (queryParameters.size() > 0) {
-            url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
-        }
-        String baseUrl = this.getClient().getBaseUri().toString();
-        // Trim '/' character from the end of baseUrl and beginning of url.
-        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
-            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
-        }
-        if (url.charAt(0) == '/') {
-            url = url.substring(1);
-        }
-        url = baseUrl + "/" + url;
-        url = url.replace(" ", "%20");
-        
-        // Create HTTP transport objects
-        HttpGet httpRequest = new HttpGet(url);
-        
-        // Set Headers
-        httpRequest.setHeader("Accept", "application/json");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
-                CloudTracing.sendRequest(invocationId, httpRequest);
-            }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
-                CloudTracing.receiveResponse(invocationId, httpResponse);
-            }
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
-                    CloudTracing.error(invocationId, ex);
-                }
-                throw ex;
-            }
-            
-            // Create Result
-            ElasticPoolMetrics result = null;
-            // Deserialize Response
-            if (statusCode == HttpStatus.SC_OK) {
-                InputStream responseContent = httpResponse.getEntity().getContent();
-                result = new ElasticPoolMetrics();
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
-                }
-                
-                if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                    JsonNode valueArray = responseDoc.get("value");
-                    if (valueArray != null && valueArray instanceof NullNode == false) {
-                        for (JsonNode valueValue : ((ArrayNode) valueArray)) {
-                            Metric metricInstance = new Metric();
-                            result.getMetrics().add(metricInstance);
-                            
-                            JsonNode startTimeValue = valueValue.get("startTime");
-                            if (startTimeValue != null && startTimeValue instanceof NullNode == false) {
-                                Calendar startTimeInstance;
-                                startTimeInstance = DatatypeConverter.parseDateTime(startTimeValue.getTextValue());
-                                metricInstance.setStartTime(startTimeInstance);
-                            }
-                            
-                            JsonNode endTimeValue = valueValue.get("endTime");
-                            if (endTimeValue != null && endTimeValue instanceof NullNode == false) {
-                                Calendar endTimeInstance;
-                                endTimeInstance = DatatypeConverter.parseDateTime(endTimeValue.getTextValue());
-                                metricInstance.setEndTime(endTimeInstance);
-                            }
-                            
-                            JsonNode timeGrainValue = valueValue.get("timeGrain");
-                            if (timeGrainValue != null && timeGrainValue instanceof NullNode == false) {
-                                String timeGrainInstance;
-                                timeGrainInstance = timeGrainValue.getTextValue();
-                                metricInstance.setTimeGrain(timeGrainInstance);
-                            }
-                            
-                            JsonNode unitValue = valueValue.get("unit");
-                            if (unitValue != null && unitValue instanceof NullNode == false) {
-                                String unitInstance;
-                                unitInstance = unitValue.getTextValue();
-                                metricInstance.setUnit(unitInstance);
-                            }
-                            
-                            JsonNode nameValue = valueValue.get("name");
-                            if (nameValue != null && nameValue instanceof NullNode == false) {
-                                Name nameInstance = new Name();
-                                metricInstance.setName(nameInstance);
-                                
-                                JsonNode valueValue2 = nameValue.get("value");
-                                if (valueValue2 != null && valueValue2 instanceof NullNode == false) {
-                                    String valueInstance;
-                                    valueInstance = valueValue2.getTextValue();
-                                    nameInstance.setValue(valueInstance);
-                                }
-                                
-                                JsonNode localizedValueValue = nameValue.get("localizedValue");
-                                if (localizedValueValue != null && localizedValueValue instanceof NullNode == false) {
-                                    String localizedValueInstance;
-                                    localizedValueInstance = localizedValueValue.getTextValue();
-                                    nameInstance.setLocalizedValue(localizedValueInstance);
-                                }
-                            }
-                            
-                            JsonNode metricValuesArray = valueValue.get("metricValues");
-                            if (metricValuesArray != null && metricValuesArray instanceof NullNode == false) {
-                                for (JsonNode metricValuesValue : ((ArrayNode) metricValuesArray)) {
-                                    Value valueInstance2 = new Value();
-                                    metricInstance.getValues().add(valueInstance2);
-                                    
-                                    JsonNode timestampValue = metricValuesValue.get("timestamp");
-                                    if (timestampValue != null && timestampValue instanceof NullNode == false) {
-                                        Calendar timestampInstance;
-                                        timestampInstance = DatatypeConverter.parseDateTime(timestampValue.getTextValue());
-                                        valueInstance2.setTimestamp(timestampInstance);
-                                    }
-                                    
-                                    JsonNode averageValue = metricValuesValue.get("average");
-                                    if (averageValue != null && averageValue instanceof NullNode == false) {
-                                        double averageInstance;
-                                        averageInstance = averageValue.getDoubleValue();
-                                        valueInstance2.setAverage(averageInstance);
-                                    }
-                                    
-                                    JsonNode minimumValue = metricValuesValue.get("minimum");
-                                    if (minimumValue != null && minimumValue instanceof NullNode == false) {
-                                        double minimumInstance;
-                                        minimumInstance = minimumValue.getDoubleValue();
-                                        valueInstance2.setMinimum(minimumInstance);
-                                    }
-                                    
-                                    JsonNode maximumValue = metricValuesValue.get("maximum");
-                                    if (maximumValue != null && maximumValue instanceof NullNode == false) {
-                                        double maximumInstance;
-                                        maximumInstance = maximumValue.getDoubleValue();
-                                        valueInstance2.setMaximum(maximumInstance);
-                                    }
-                                    
-                                    JsonNode totalValue = metricValuesValue.get("total");
-                                    if (totalValue != null && totalValue instanceof NullNode == false) {
-                                        double totalInstance;
-                                        totalInstance = totalValue.getDoubleValue();
-                                        valueInstance2.setTotal(totalInstance);
-                                    }
-                                    
-                                    JsonNode countValue = metricValuesValue.get("count");
-                                    if (countValue != null && countValue instanceof NullNode == false) {
-                                        double countInstance;
-                                        countInstance = countValue.getDoubleValue();
-                                        valueInstance2.setCount(countInstance);
-                                    }
                                 }
                             }
                         }

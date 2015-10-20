@@ -44,6 +44,26 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespa
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNamespacesResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusSharedAccessAuthorizationRule;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -57,25 +77,6 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Bus Management API includes operations for managing Service Bus
@@ -489,7 +490,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             Element namespaceTypeElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
                             if (namespaceTypeElement != null && namespaceTypeElement.getTextContent() != null && !namespaceTypeElement.getTextContent().isEmpty()) {
                                 NamespaceType namespaceTypeInstance;
-                                namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent().toUpperCase());
+                                namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent());
                                 namespaceDescriptionInstance.setNamespaceType(namespaceTypeInstance);
                             }
                         }
@@ -738,7 +739,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             if (rightsSequenceElement2 != null) {
                                 for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i1 = i1 + 1) {
                                     org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i1));
-                                    sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
+                                    sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                 }
                             }
                             
@@ -1052,7 +1053,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             Element namespaceTypeElement2 = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
                             if (namespaceTypeElement2 != null && namespaceTypeElement2.getTextContent() != null && !namespaceTypeElement2.getTextContent().isEmpty()) {
                                 NamespaceType namespaceTypeInstance;
-                                namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement2.getTextContent().toUpperCase());
+                                namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement2.getTextContent());
                                 namespaceDescriptionInstance.setNamespaceType(namespaceTypeInstance);
                             }
                         }
@@ -1499,7 +1500,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             Element namespaceTypeElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
                             if (namespaceTypeElement != null && namespaceTypeElement.getTextContent() != null && !namespaceTypeElement.getTextContent().isEmpty()) {
                                 NamespaceType namespaceTypeInstance;
-                                namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent().toUpperCase());
+                                namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent());
                                 namespaceDescriptionInstance.setNamespaceType(namespaceTypeInstance);
                             }
                         }
@@ -1668,7 +1669,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             if (rightsSequenceElement != null) {
                                 for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i1 = i1 + 1) {
                                     org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i1));
-                                    sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
+                                    sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                 }
                             }
                             
@@ -1884,7 +1885,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                     if (rightsSequenceElement != null) {
                                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
                                             org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
+                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                         }
                                     }
                                     
@@ -2098,7 +2099,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                     Element namespaceTypeElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceType");
                                     if (namespaceTypeElement != null && namespaceTypeElement.getTextContent() != null && !namespaceTypeElement.getTextContent().isEmpty()) {
                                         NamespaceType namespaceTypeInstance;
-                                        namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent().toUpperCase());
+                                        namespaceTypeInstance = NamespaceType.valueOf(namespaceTypeElement.getTextContent());
                                         entryInstance.setNamespaceType(namespaceTypeInstance);
                                     }
                                 }
@@ -2263,7 +2264,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                     if (rightsSequenceElement != null) {
                                         for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
                                             org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
-                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
+                                            entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                         }
                                     }
                                     
@@ -2559,7 +2560,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                             if (rightsSequenceElement2 != null) {
                                 for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i1 = i1 + 1) {
                                     org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i1));
-                                    sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent().toUpperCase()));
+                                    sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                 }
                             }
                             

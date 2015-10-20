@@ -47,16 +47,7 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -67,6 +58,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
 * Operations for managing the RecordSets in a DNS zone.
@@ -459,8 +461,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new RecordSetCreateOrUpdateResponse();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1029,8 +1032,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetGetResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1456,8 +1460,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -1889,8 +1894,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -2277,8 +2283,9 @@ public class RecordSetOperationsImpl implements ServiceOperations<DnsManagementC
             result = new RecordSetListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = null;
-            if (responseContent == null == false) {
-                responseDoc = objectMapper.readTree(responseContent);
+            String responseDocContent = IOUtils.toString(responseContent);
+            if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                responseDoc = objectMapper.readTree(responseDocContent);
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {

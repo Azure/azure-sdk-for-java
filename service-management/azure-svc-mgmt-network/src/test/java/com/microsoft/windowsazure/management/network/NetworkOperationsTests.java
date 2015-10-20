@@ -15,11 +15,17 @@
 
 package com.microsoft.windowsazure.management.network;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.utils.BOMInputStream;
+import com.microsoft.windowsazure.management.network.models.NetworkGetConfigurationResponse;
+import com.microsoft.windowsazure.management.network.models.NetworkListResponse;
+import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,17 +33,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
+import java.io.StringWriter;
+import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.core.utils.BOMInputStream;
-import com.microsoft.windowsazure.management.network.models.*;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.w3c.dom.Document;
+import static org.junit.Assert.assertNotNull;
 
 public class NetworkOperationsTests extends NetworkManagementIntegrationTestBase {
     

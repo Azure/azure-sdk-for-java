@@ -29,9 +29,9 @@ package com.microsoft.windowsazure.management.network.models;
 * network, or test the gateway's connection to a local network site.
 */
 public enum GatewayConnectionUpdateOperation {
-    CONNECT,
+    Connect,
     
-    DISCONNECT,
+    Disconnect,
     
-    TEST,
+    Test,
 }

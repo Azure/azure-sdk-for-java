@@ -37,13 +37,14 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineShutdo
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineStartRolesParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateLoadBalancedSetParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateParameters;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Management API includes operations for managing the virtual

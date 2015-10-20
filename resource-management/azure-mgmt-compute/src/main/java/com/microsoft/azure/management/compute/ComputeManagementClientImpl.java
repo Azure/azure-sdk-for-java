@@ -35,6 +35,19 @@ import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.NullNode;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -44,17 +57,6 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.NullNode;
 
 /**
 * The Compute Management Client.
@@ -395,8 +397,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 result = new DeleteOperationResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -410,7 +413,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                     JsonNode statusValue = responseDoc.get("status");
                     if (statusValue != null && statusValue instanceof NullNode == false) {
                         OperationStatus statusInstance;
-                        statusInstance = Enum.valueOf(OperationStatus.class, statusValue.getTextValue().toUpperCase());
+                        statusInstance = Enum.valueOf(OperationStatus.class, statusValue.getTextValue());
                         result.setStatus(statusInstance);
                     }
                     
@@ -610,8 +613,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 result = new ComputeLongRunningOperationResponse();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseDoc = null;
-                if (responseContent == null == false) {
-                    responseDoc = objectMapper.readTree(responseContent);
+                String responseDocContent = IOUtils.toString(responseContent);
+                if (responseDocContent == null == false && responseDocContent.length() > 0) {
+                    responseDoc = objectMapper.readTree(responseDocContent);
                 }
                 
                 if (responseDoc != null && responseDoc instanceof NullNode == false) {
@@ -625,7 +629,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                     JsonNode statusValue = responseDoc.get("status");
                     if (statusValue != null && statusValue instanceof NullNode == false) {
                         ComputeOperationStatus statusInstance;
-                        statusInstance = Enum.valueOf(ComputeOperationStatus.class, statusValue.getTextValue().toUpperCase());
+                        statusInstance = Enum.valueOf(ComputeOperationStatus.class, statusValue.getTextValue());
                         result.setStatus(statusInstance);
                     }
                     
@@ -648,10 +652,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                         JsonNode outputValue = propertiesValue.get("output");
                         if (outputValue != null && outputValue instanceof NullNode == false) {
                             String outputInstance;
-                            /// LOCALFIX-START
-                            // outputInstance = outputValue.getTextValue();
-                            outputInstance = outputValue.toString();
-                            /// LOCALFIX-END
+                            outputInstance = outputValue.getTextValue();
                             result.setOutput(outputInstance);
                         }
                     }

@@ -16,22 +16,24 @@
 
 package com.microsoft.azure.samples.storage;
 
-import com.microsoft.azure.management.storage.models.*;
+import com.microsoft.azure.management.storage.StorageManagementClient;
+import com.microsoft.azure.management.storage.StorageManagementService;
+import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.management.storage.models.KeyName;
+import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.azure.management.storage.models.StorageAccountKeys;
+import com.microsoft.azure.management.storage.models.StorageAccountRegenerateKeyResponse;
+import com.microsoft.azure.management.storage.models.StorageAccountUpdateResponse;
 import com.microsoft.azure.utility.AuthHelper;
-import com.microsoft.azure.utility.StorageHelper;
 import com.microsoft.azure.utility.ResourceContext;
-
+import com.microsoft.azure.utility.StorageHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
-import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.StorageManagementService;
-
-import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.net.URI;
 
 public class StorageAccountExample {
     /**
@@ -130,9 +132,9 @@ public class StorageAccountExample {
             } else {
                 KeyName keyName = null;
                 if (args[3].toLowerCase().equals("primary")) {
-                    keyName = KeyName.KEY1;
+                    keyName = KeyName.Key1;
                 } else if (args[3].toLowerCase().equals("secondary")) {
-                    keyName = KeyName.KEY2;
+                    keyName = KeyName.Key2;
                 }
                 if (keyName == null) {
                     result = -1;
@@ -210,15 +212,15 @@ public class StorageAccountExample {
     
     private static AccountType accountTypeStrToVal(String accountType) {
         if(accountType.toLowerCase().equals("standard_grs")) {
-            return AccountType.STANDARDGRS;
+            return AccountType.StandardGRS;
         } else if(accountType.toLowerCase().equals("standard_ragrs")) {
-            return AccountType.STANDARDRAGRS;
+            return AccountType.StandardRAGRS;
         } else if(accountType.toLowerCase().equals("standard_lrs")) {
-            return AccountType.STANDARDLRS;
+            return AccountType.StandardLRS;
         } else if(accountType.toLowerCase().equals("standard_zrs")) {
-            return AccountType.STANDARDZRS;
+            return AccountType.StandardZRS;
         } else if(accountType.toLowerCase().equals("premium_lrs")) {
-            return AccountType.PREMIUMLRS;
+            return AccountType.PremiumLRS;
         }
         
         return null;
@@ -337,9 +339,9 @@ public class StorageAccountExample {
         StorageAccountRegenerateKeyResponse response = StorageHelper.regenerateStorageAccountKey(client, context,
                 keyName);
         if(response != null) {
-            System.out.println("Key " + (keyName == KeyName.KEY1 ? "Primary" : "Secondary") + " regenerated.");
+            System.out.println("Key " + (keyName == KeyName.Key1 ? "Primary" : "Secondary") + " regenerated.");
             StorageAccountKeys keys = response.getStorageAccountKeys();
-            System.out.println("Key Value: " + (keyName == KeyName.KEY1 ? keys.getKey1() : keys.getKey2()));
+            System.out.println("Key Value: " + (keyName == KeyName.Key1 ? keys.getKey1() : keys.getKey2()));
         }
 
         return (response == null ? 1 : 0);
@@ -460,6 +462,6 @@ public class StorageAccountExample {
         if(System.getProperty(key) != null) {
             return System.getProperty(key);
         }
-        return getPropertyElseEnvironment(key);
+        return null;
     }
 }

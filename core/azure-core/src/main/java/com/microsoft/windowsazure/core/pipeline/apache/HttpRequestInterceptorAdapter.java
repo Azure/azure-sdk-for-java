@@ -22,9 +22,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class HttpRequestInterceptorAdapter implements HttpRequestInterceptor {
     private LinkedList<ServiceRequestFilter> filters;

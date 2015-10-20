@@ -29,12 +29,13 @@ import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.ResourceProviderGetPropertiesResponse;
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatusResponse;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 public interface SchedulerManagementClient extends Closeable, FilterableService<SchedulerManagementClient> {
     /**

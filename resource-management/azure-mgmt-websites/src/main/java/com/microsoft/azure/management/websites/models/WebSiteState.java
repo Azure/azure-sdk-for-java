@@ -27,7 +27,7 @@ package com.microsoft.azure.management.websites.models;
 * The state of the website.
 */
 public enum WebSiteState {
-    STOPPED,
+    Stopped,
     
-    RUNNING,
+    Running,
 }
