@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.8.4-SNAPSHOT</version>
     <artifactId>azure-bom</artifactId>
   </parent>
 
@@ -60,6 +60,11 @@
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
         <version>4.3.6</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.10</version>
       </dependency>
       <dependency>
         <groupId>commons-lang</groupId>
