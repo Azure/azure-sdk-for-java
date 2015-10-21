@@ -1,3 +1,7 @@
+2015.10.21 Version 0.9.0
+* New Azure Resource Manager Storage Management library
+* Fix a few bugs
+
 2015.9.22 Version 0.8.3
 * Fix unexpected exceptions thrown in some long running operations
 

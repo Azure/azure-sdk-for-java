@@ -24,7 +24,6 @@
 package com.microsoft.azure.management.storage.models;
 
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
-
 import java.util.Calendar;
 
 /**

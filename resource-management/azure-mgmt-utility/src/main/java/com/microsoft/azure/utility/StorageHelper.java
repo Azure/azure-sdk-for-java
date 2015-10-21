@@ -219,7 +219,7 @@ public class StorageHelper {
             service = Executors.newFixedThreadPool(1);
             future = storageManagementClient.getStorageAccountsOperations()
                     .regenerateKeyAsync(context.getResourceGroupName(),
-                            storageAccountName, keyName);
+                            storageAccountName, keyName.name());
             response = future.get();
         } catch (Exception ex) {
             throw ex;
