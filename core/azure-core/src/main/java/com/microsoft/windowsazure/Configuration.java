@@ -46,6 +46,18 @@ public class Configuration {
     public static final String PROPERTY_LOG_HTTP_REQUESTS = "com.microsoft.windowsazure.Configuration.logHttpRequests";
 
     /**
+     * Property name to control whether the Rest client uses a Proxy connection to the remote resources.  Defines the host
+     * of the proxy to use
+     */
+    public static final String PROPERTY_HTTP_PROXY_HOST = "http.proxyHost";
+    
+    /**
+     * Property name to control whether the Rest client uses a Proxy connection to the remote resources.  Defines the port
+     * of the proxy to use
+     */
+    public static final String PROPERTY_HTTP_PROXY_PORT = "http.proxyPort";
+    
+    /**
      * The configuration instance.
      */
     private static Configuration instance;

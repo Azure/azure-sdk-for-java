@@ -24,6 +24,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import java.util.Map;
 
 import static com.microsoft.windowsazure.core.utils.ExportUtils.getPropertyIfExists;
+import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 
 public class Exports implements Builder.Exports {
 
@@ -69,7 +70,18 @@ public class Exports implements Builder.Exports {
                         ClientConfig.class, properties);
                 ClientConfigSettings settings = builder.build(profile, service,
                         ClientConfigSettings.class, properties);
-                Client client = Client.create(clientConfig);
+                Client client;
+                String proxyHost = (String) getPropertyIfExists(profile,
+                        properties, Configuration.PROPERTY_HTTP_PROXY_HOST);
+                Integer proxyPort = (Integer) getPropertyIfExists(profile,
+                        properties, Configuration.PROPERTY_HTTP_PROXY_PORT);
+                if ((proxyHost != null) && (proxyPort != null)) {
+                    URLConnectionClientHandler clientHandler = new URLConnectionClientHandler(
+                        new ProxyConnectionFactory(proxyHost, proxyPort));
+                    client = new Client(clientHandler, clientConfig);
+                } else {
+                    client = Client.create(clientConfig);
+                }
                 settings.applyConfig(client);
                 return client;
             }
