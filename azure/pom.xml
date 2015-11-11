@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <artifactId>azure-bom</artifactId>
   </parent>
 
@@ -54,8 +54,25 @@
     </developer>
   </developers>
 
+  <repositories>
+    <repository>
+      <id>adx-snapshots</id>
+      <name>Azure ADX Snapshots</name>
+      <url>http://adxsnapshots.azurewebsites.net/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.microsoft.rest</groupId>
+        <artifactId>azure-client-runtime</artifactId>
+        <version>[0.0.1-SNAPSHOT, 1.0.0)</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
@@ -380,32 +397,6 @@
     </profile>
   </profiles>
   <modules>
-    <module>../core/azure-core</module>
-    <module>../core/azure-core-test</module>
-    <module>../core/azure-tracing-util</module>
-    <module>../services/keyvault/azure-keyvault</module>
-    <module>../services/keyvault/azure-keyvault-extensions</module>
-    <module>../services/keyvault/azure-keyvault-core</module>
-    <module>../services/azure-media</module>
-    <module>../services/azure-servicebus</module>
-    <module>../services/azure-serviceruntime</module>
-    <module>../resource-management/azure-mgmt-compute</module>
-    <module>../resource-management/azure-mgmt-resources</module>
-    <module>../resource-management/azure-mgmt-sql</module>
-    <module>../resource-management/azure-mgmt-storage</module>
-    <module>../resource-management/azure-mgmt-network</module>
-    <module>../resource-management/azure-mgmt-websites</module>
-    <module>../resource-management/azure-mgmt-dns</module>
-    <module>../resource-management/azure-mgmt-traffic-manager</module>
-    <module>../resource-management/azure-mgmt-utility</module>
-    <module>../azure-mgmt-samples</module>
-    <module>../service-management/azure-svc-mgmt-websites</module>
-    <module>../service-management/azure-svc-mgmt-scheduler</module>
-    <module>../service-management/azure-svc-mgmt</module>
-    <module>../service-management/azure-svc-mgmt-network</module>
-    <module>../service-management/azure-svc-mgmt-storage</module>
-    <module>../service-management/azure-svc-mgmt-sql</module>
-    <module>../service-management/azure-svc-mgmt-media</module>
-    <module>../service-management/azure-svc-mgmt-compute</module>
+    <module>../azure-mgmt-compute</module>
   </modules>
 </project>
