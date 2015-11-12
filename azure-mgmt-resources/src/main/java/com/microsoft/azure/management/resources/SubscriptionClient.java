@@ -94,15 +94,15 @@ public interface SubscriptionClient {
     void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
-     * Gets the Subscriptions object to access its operations.
+     * Gets the SubscriptionsOperations object to access its operations.
      * @return the subscriptions value.
      */
-    Subscriptions getSubscriptions();
+    SubscriptionsOperations getSubscriptions();
 
     /**
-     * Gets the Tenants object to access its operations.
+     * Gets the TenantsOperations object to access its operations.
      * @return the tenants value.
      */
-    Tenants getTenants();
+    TenantsOperations getTenants();
 
 }

@@ -123,23 +123,23 @@ public class SubscriptionClientImpl extends ServiceClient implements Subscriptio
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private Subscriptions subscriptions;
+    private SubscriptionsOperations subscriptions;
 
     /**
-     * Gets the Subscriptions object to access its operations.
+     * Gets the SubscriptionsOperations object to access its operations.
      * @return the subscriptions value.
      */
-    public Subscriptions getSubscriptions() {
+    public SubscriptionsOperations getSubscriptions() {
         return this.subscriptions;
     }
 
-    private Tenants tenants;
+    private TenantsOperations tenants;
 
     /**
-     * Gets the Tenants object to access its operations.
+     * Gets the TenantsOperations object to access its operations.
      * @return the tenants value.
      */
-    public Tenants getTenants() {
+    public TenantsOperations getTenants() {
         return this.tenants;
     }
 
@@ -208,7 +208,7 @@ public class SubscriptionClientImpl extends ServiceClient implements Subscriptio
         this.azureClient.setCredentials(this.credentials);
         this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.subscriptions = new SubscriptionsImpl(retrofit, this);
-        this.tenants = new TenantsImpl(retrofit, this);
+        this.subscriptions = new SubscriptionsOperationsImpl(retrofit, this);
+        this.tenants = new TenantsOperationsImpl(retrofit, this);
     }
 }

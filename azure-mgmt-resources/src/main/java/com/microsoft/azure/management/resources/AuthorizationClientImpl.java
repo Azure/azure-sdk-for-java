@@ -123,13 +123,13 @@ public class AuthorizationClientImpl extends ServiceClient implements Authorizat
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private ManagementLocks managementLocks;
+    private ManagementLocksOperations managementLocks;
 
     /**
-     * Gets the ManagementLocks object to access its operations.
+     * Gets the ManagementLocksOperations object to access its operations.
      * @return the managementLocks value.
      */
-    public ManagementLocks getManagementLocks() {
+    public ManagementLocksOperations getManagementLocks() {
         return this.managementLocks;
     }
 
@@ -198,6 +198,6 @@ public class AuthorizationClientImpl extends ServiceClient implements Authorizat
         this.azureClient.setCredentials(this.credentials);
         this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.managementLocks = new ManagementLocksImpl(retrofit, this);
+        this.managementLocks = new ManagementLocksOperationsImpl(retrofit, this);
     }
 }

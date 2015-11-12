@@ -123,13 +123,13 @@ public class FeatureClientImpl extends ServiceClient implements FeatureClient {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private Features features;
+    private FeaturesOperations features;
 
     /**
-     * Gets the Features object to access its operations.
+     * Gets the FeaturesOperations object to access its operations.
      * @return the features value.
      */
-    public Features getFeatures() {
+    public FeaturesOperations getFeatures() {
         return this.features;
     }
 
@@ -198,6 +198,6 @@ public class FeatureClientImpl extends ServiceClient implements FeatureClient {
         this.azureClient.setCredentials(this.credentials);
         this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.features = new FeaturesImpl(retrofit, this);
+        this.features = new FeaturesOperationsImpl(retrofit, this);
     }
 }

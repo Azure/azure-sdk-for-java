@@ -123,93 +123,93 @@ public class ComputeManagementClientImpl extends ServiceClient implements Comput
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private AvailabilitySets availabilitySets;
+    private AvailabilitySetsOperations availabilitySets;
 
     /**
-     * Gets the AvailabilitySets object to access its operations.
+     * Gets the AvailabilitySetsOperations object to access its operations.
      * @return the availabilitySets value.
      */
-    public AvailabilitySets getAvailabilitySets() {
+    public AvailabilitySetsOperations getAvailabilitySets() {
         return this.availabilitySets;
     }
 
-    private VirtualMachineExtensionImages virtualMachineExtensionImages;
+    private VirtualMachineExtensionImagesOperations virtualMachineExtensionImages;
 
     /**
-     * Gets the VirtualMachineExtensionImages object to access its operations.
+     * Gets the VirtualMachineExtensionImagesOperations object to access its operations.
      * @return the virtualMachineExtensionImages value.
      */
-    public VirtualMachineExtensionImages getVirtualMachineExtensionImages() {
+    public VirtualMachineExtensionImagesOperations getVirtualMachineExtensionImages() {
         return this.virtualMachineExtensionImages;
     }
 
-    private VirtualMachineExtensions virtualMachineExtensions;
+    private VirtualMachineExtensionsOperations virtualMachineExtensions;
 
     /**
-     * Gets the VirtualMachineExtensions object to access its operations.
+     * Gets the VirtualMachineExtensionsOperations object to access its operations.
      * @return the virtualMachineExtensions value.
      */
-    public VirtualMachineExtensions getVirtualMachineExtensions() {
+    public VirtualMachineExtensionsOperations getVirtualMachineExtensions() {
         return this.virtualMachineExtensions;
     }
 
-    private VirtualMachineImages virtualMachineImages;
+    private VirtualMachineImagesOperations virtualMachineImages;
 
     /**
-     * Gets the VirtualMachineImages object to access its operations.
+     * Gets the VirtualMachineImagesOperations object to access its operations.
      * @return the virtualMachineImages value.
      */
-    public VirtualMachineImages getVirtualMachineImages() {
+    public VirtualMachineImagesOperations getVirtualMachineImages() {
         return this.virtualMachineImages;
     }
 
-    private Usage usage;
+    private UsageOperations usage;
 
     /**
-     * Gets the Usage object to access its operations.
+     * Gets the UsageOperations object to access its operations.
      * @return the usage value.
      */
-    public Usage getUsage() {
+    public UsageOperations getUsage() {
         return this.usage;
     }
 
-    private VirtualMachineSizes virtualMachineSizes;
+    private VirtualMachineSizesOperations virtualMachineSizes;
 
     /**
-     * Gets the VirtualMachineSizes object to access its operations.
+     * Gets the VirtualMachineSizesOperations object to access its operations.
      * @return the virtualMachineSizes value.
      */
-    public VirtualMachineSizes getVirtualMachineSizes() {
+    public VirtualMachineSizesOperations getVirtualMachineSizes() {
         return this.virtualMachineSizes;
     }
 
-    private VirtualMachines virtualMachines;
+    private VirtualMachinesOperations virtualMachines;
 
     /**
-     * Gets the VirtualMachines object to access its operations.
+     * Gets the VirtualMachinesOperations object to access its operations.
      * @return the virtualMachines value.
      */
-    public VirtualMachines getVirtualMachines() {
+    public VirtualMachinesOperations getVirtualMachines() {
         return this.virtualMachines;
     }
 
-    private VirtualMachineScaleSets virtualMachineScaleSets;
+    private VirtualMachineScaleSetsOperations virtualMachineScaleSets;
 
     /**
-     * Gets the VirtualMachineScaleSets object to access its operations.
+     * Gets the VirtualMachineScaleSetsOperations object to access its operations.
      * @return the virtualMachineScaleSets value.
      */
-    public VirtualMachineScaleSets getVirtualMachineScaleSets() {
+    public VirtualMachineScaleSetsOperations getVirtualMachineScaleSets() {
         return this.virtualMachineScaleSets;
     }
 
-    private VirtualMachineScaleSetVMs virtualMachineScaleSetVMs;
+    private VirtualMachineScaleSetVMsOperations virtualMachineScaleSetVMs;
 
     /**
-     * Gets the VirtualMachineScaleSetVMs object to access its operations.
+     * Gets the VirtualMachineScaleSetVMsOperations object to access its operations.
      * @return the virtualMachineScaleSetVMs value.
      */
-    public VirtualMachineScaleSetVMs getVirtualMachineScaleSetVMs() {
+    public VirtualMachineScaleSetVMsOperations getVirtualMachineScaleSetVMs() {
         return this.virtualMachineScaleSetVMs;
     }
 
@@ -278,14 +278,14 @@ public class ComputeManagementClientImpl extends ServiceClient implements Comput
         this.azureClient.setCredentials(this.credentials);
         this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.availabilitySets = new AvailabilitySetsImpl(retrofit, this);
-        this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesImpl(retrofit, this);
-        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(retrofit, this);
-        this.virtualMachineImages = new VirtualMachineImagesImpl(retrofit, this);
-        this.usage = new UsageImpl(retrofit, this);
-        this.virtualMachineSizes = new VirtualMachineSizesImpl(retrofit, this);
-        this.virtualMachines = new VirtualMachinesImpl(retrofit, this);
-        this.virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(retrofit, this);
-        this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsImpl(retrofit, this);
+        this.availabilitySets = new AvailabilitySetsOperationsImpl(retrofit, this);
+        this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesOperationsImpl(retrofit, this);
+        this.virtualMachineExtensions = new VirtualMachineExtensionsOperationsImpl(retrofit, this);
+        this.virtualMachineImages = new VirtualMachineImagesOperationsImpl(retrofit, this);
+        this.usage = new UsageOperationsImpl(retrofit, this);
+        this.virtualMachineSizes = new VirtualMachineSizesOperationsImpl(retrofit, this);
+        this.virtualMachines = new VirtualMachinesOperationsImpl(retrofit, this);
+        this.virtualMachineScaleSets = new VirtualMachineScaleSetsOperationsImpl(retrofit, this);
+        this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsOperationsImpl(retrofit, this);
     }
 }

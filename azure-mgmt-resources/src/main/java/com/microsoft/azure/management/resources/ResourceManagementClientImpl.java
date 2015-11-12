@@ -123,83 +123,83 @@ public class ResourceManagementClientImpl extends ServiceClient implements Resou
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private Deployments deployments;
+    private DeploymentsOperations deployments;
 
     /**
-     * Gets the Deployments object to access its operations.
+     * Gets the DeploymentsOperations object to access its operations.
      * @return the deployments value.
      */
-    public Deployments getDeployments() {
+    public DeploymentsOperations getDeployments() {
         return this.deployments;
     }
 
-    private ProviderOperationsMetadata providerOperationsMetadata;
+    private ProviderOperationsMetadataOperations providerOperationsMetadata;
 
     /**
-     * Gets the ProviderOperationsMetadata object to access its operations.
+     * Gets the ProviderOperationsMetadataOperations object to access its operations.
      * @return the providerOperationsMetadata value.
      */
-    public ProviderOperationsMetadata getProviderOperationsMetadata() {
+    public ProviderOperationsMetadataOperations getProviderOperationsMetadata() {
         return this.providerOperationsMetadata;
     }
 
-    private Providers providers;
+    private ProvidersOperations providers;
 
     /**
-     * Gets the Providers object to access its operations.
+     * Gets the ProvidersOperations object to access its operations.
      * @return the providers value.
      */
-    public Providers getProviders() {
+    public ProvidersOperations getProviders() {
         return this.providers;
     }
 
-    private ResourceGroups resourceGroups;
+    private ResourceGroupsOperations resourceGroups;
 
     /**
-     * Gets the ResourceGroups object to access its operations.
+     * Gets the ResourceGroupsOperations object to access its operations.
      * @return the resourceGroups value.
      */
-    public ResourceGroups getResourceGroups() {
+    public ResourceGroupsOperations getResourceGroups() {
         return this.resourceGroups;
     }
 
-    private Resources resources;
+    private ResourcesOperations resources;
 
     /**
-     * Gets the Resources object to access its operations.
+     * Gets the ResourcesOperations object to access its operations.
      * @return the resources value.
      */
-    public Resources getResources() {
+    public ResourcesOperations getResources() {
         return this.resources;
     }
 
-    private Tags tags;
+    private TagsOperations tags;
 
     /**
-     * Gets the Tags object to access its operations.
+     * Gets the TagsOperations object to access its operations.
      * @return the tags value.
      */
-    public Tags getTags() {
+    public TagsOperations getTags() {
         return this.tags;
     }
 
-    private DeploymentOperations deploymentOperations;
+    private DeploymentOperationsOperations deploymentOperations;
 
     /**
-     * Gets the DeploymentOperations object to access its operations.
+     * Gets the DeploymentOperationsOperations object to access its operations.
      * @return the deploymentOperations value.
      */
-    public DeploymentOperations getDeploymentOperations() {
+    public DeploymentOperationsOperations getDeploymentOperations() {
         return this.deploymentOperations;
     }
 
-    private ResourceProviderOperationDetails resourceProviderOperationDetails;
+    private ResourceProviderOperationDetailsOperations resourceProviderOperationDetails;
 
     /**
-     * Gets the ResourceProviderOperationDetails object to access its operations.
+     * Gets the ResourceProviderOperationDetailsOperations object to access its operations.
      * @return the resourceProviderOperationDetails value.
      */
-    public ResourceProviderOperationDetails getResourceProviderOperationDetails() {
+    public ResourceProviderOperationDetailsOperations getResourceProviderOperationDetails() {
         return this.resourceProviderOperationDetails;
     }
 
@@ -268,13 +268,13 @@ public class ResourceManagementClientImpl extends ServiceClient implements Resou
         this.azureClient.setCredentials(this.credentials);
         this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.deployments = new DeploymentsImpl(retrofit, this);
-        this.providerOperationsMetadata = new ProviderOperationsMetadataImpl(retrofit, this);
-        this.providers = new ProvidersImpl(retrofit, this);
-        this.resourceGroups = new ResourceGroupsImpl(retrofit, this);
-        this.resources = new ResourcesImpl(retrofit, this);
-        this.tags = new TagsImpl(retrofit, this);
-        this.deploymentOperations = new DeploymentOperationsImpl(retrofit, this);
-        this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsImpl(retrofit, this);
+        this.deployments = new DeploymentsOperationsImpl(retrofit, this);
+        this.providerOperationsMetadata = new ProviderOperationsMetadataOperationsImpl(retrofit, this);
+        this.providers = new ProvidersOperationsImpl(retrofit, this);
+        this.resourceGroups = new ResourceGroupsOperationsImpl(retrofit, this);
+        this.resources = new ResourcesOperationsImpl(retrofit, this);
+        this.tags = new TagsOperationsImpl(retrofit, this);
+        this.deploymentOperations = new DeploymentOperationsOperationsImpl(retrofit, this);
+        this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsOperationsImpl(retrofit, this);
     }
 }

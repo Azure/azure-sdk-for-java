@@ -94,9 +94,9 @@ public interface FeatureClient {
     void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
-     * Gets the Features object to access its operations.
+     * Gets the FeaturesOperations object to access its operations.
      * @return the features value.
      */
-    Features getFeatures();
+    FeaturesOperations getFeatures();
 
 }

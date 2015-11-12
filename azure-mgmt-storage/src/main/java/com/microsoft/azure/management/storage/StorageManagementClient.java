@@ -94,15 +94,15 @@ public interface StorageManagementClient {
     void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
-     * Gets the StorageAccounts object to access its operations.
+     * Gets the StorageAccountsOperations object to access its operations.
      * @return the storageAccounts value.
      */
-    StorageAccounts getStorageAccounts();
+    StorageAccountsOperations getStorageAccounts();
 
     /**
-     * Gets the Usage object to access its operations.
+     * Gets the UsageOperations object to access its operations.
      * @return the usage value.
      */
-    Usage getUsage();
+    UsageOperations getUsage();
 
 }

@@ -94,51 +94,51 @@ public interface ResourceManagementClient {
     void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
-     * Gets the Deployments object to access its operations.
+     * Gets the DeploymentsOperations object to access its operations.
      * @return the deployments value.
      */
-    Deployments getDeployments();
+    DeploymentsOperations getDeployments();
 
     /**
-     * Gets the ProviderOperationsMetadata object to access its operations.
+     * Gets the ProviderOperationsMetadataOperations object to access its operations.
      * @return the providerOperationsMetadata value.
      */
-    ProviderOperationsMetadata getProviderOperationsMetadata();
+    ProviderOperationsMetadataOperations getProviderOperationsMetadata();
 
     /**
-     * Gets the Providers object to access its operations.
+     * Gets the ProvidersOperations object to access its operations.
      * @return the providers value.
      */
-    Providers getProviders();
+    ProvidersOperations getProviders();
 
     /**
-     * Gets the ResourceGroups object to access its operations.
+     * Gets the ResourceGroupsOperations object to access its operations.
      * @return the resourceGroups value.
      */
-    ResourceGroups getResourceGroups();
+    ResourceGroupsOperations getResourceGroups();
 
     /**
-     * Gets the Resources object to access its operations.
+     * Gets the ResourcesOperations object to access its operations.
      * @return the resources value.
      */
-    Resources getResources();
+    ResourcesOperations getResources();
 
     /**
-     * Gets the Tags object to access its operations.
+     * Gets the TagsOperations object to access its operations.
      * @return the tags value.
      */
-    Tags getTags();
+    TagsOperations getTags();
 
     /**
-     * Gets the DeploymentOperations object to access its operations.
+     * Gets the DeploymentOperationsOperations object to access its operations.
      * @return the deploymentOperations value.
      */
-    DeploymentOperations getDeploymentOperations();
+    DeploymentOperationsOperations getDeploymentOperations();
 
     /**
-     * Gets the ResourceProviderOperationDetails object to access its operations.
+     * Gets the ResourceProviderOperationDetailsOperations object to access its operations.
      * @return the resourceProviderOperationDetails value.
      */
-    ResourceProviderOperationDetails getResourceProviderOperationDetails();
+    ResourceProviderOperationDetailsOperations getResourceProviderOperationDetails();
 
 }

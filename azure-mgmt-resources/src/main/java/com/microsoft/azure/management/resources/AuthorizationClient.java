@@ -94,9 +94,9 @@ public interface AuthorizationClient {
     void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
-     * Gets the ManagementLocks object to access its operations.
+     * Gets the ManagementLocksOperations object to access its operations.
      * @return the managementLocks value.
      */
-    ManagementLocks getManagementLocks();
+    ManagementLocksOperations getManagementLocks();
 
 }

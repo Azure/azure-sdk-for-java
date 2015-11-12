@@ -123,23 +123,23 @@ public class StorageManagementClientImpl extends ServiceClient implements Storag
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private StorageAccounts storageAccounts;
+    private StorageAccountsOperations storageAccounts;
 
     /**
-     * Gets the StorageAccounts object to access its operations.
+     * Gets the StorageAccountsOperations object to access its operations.
      * @return the storageAccounts value.
      */
-    public StorageAccounts getStorageAccounts() {
+    public StorageAccountsOperations getStorageAccounts() {
         return this.storageAccounts;
     }
 
-    private Usage usage;
+    private UsageOperations usage;
 
     /**
-     * Gets the Usage object to access its operations.
+     * Gets the UsageOperations object to access its operations.
      * @return the usage value.
      */
-    public Usage getUsage() {
+    public UsageOperations getUsage() {
         return this.usage;
     }
 
@@ -208,7 +208,7 @@ public class StorageManagementClientImpl extends ServiceClient implements Storag
         this.azureClient.setCredentials(this.credentials);
         this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.storageAccounts = new StorageAccountsImpl(retrofit, this);
-        this.usage = new UsageImpl(retrofit, this);
+        this.storageAccounts = new StorageAccountsOperationsImpl(retrofit, this);
+        this.usage = new UsageOperationsImpl(retrofit, this);
     }
 }

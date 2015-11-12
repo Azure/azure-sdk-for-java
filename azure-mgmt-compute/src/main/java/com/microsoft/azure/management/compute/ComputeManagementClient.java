@@ -94,57 +94,57 @@ public interface ComputeManagementClient {
     void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
-     * Gets the AvailabilitySets object to access its operations.
+     * Gets the AvailabilitySetsOperations object to access its operations.
      * @return the availabilitySets value.
      */
-    AvailabilitySets getAvailabilitySets();
+    AvailabilitySetsOperations getAvailabilitySets();
 
     /**
-     * Gets the VirtualMachineExtensionImages object to access its operations.
+     * Gets the VirtualMachineExtensionImagesOperations object to access its operations.
      * @return the virtualMachineExtensionImages value.
      */
-    VirtualMachineExtensionImages getVirtualMachineExtensionImages();
+    VirtualMachineExtensionImagesOperations getVirtualMachineExtensionImages();
 
     /**
-     * Gets the VirtualMachineExtensions object to access its operations.
+     * Gets the VirtualMachineExtensionsOperations object to access its operations.
      * @return the virtualMachineExtensions value.
      */
-    VirtualMachineExtensions getVirtualMachineExtensions();
+    VirtualMachineExtensionsOperations getVirtualMachineExtensions();
 
     /**
-     * Gets the VirtualMachineImages object to access its operations.
+     * Gets the VirtualMachineImagesOperations object to access its operations.
      * @return the virtualMachineImages value.
      */
-    VirtualMachineImages getVirtualMachineImages();
+    VirtualMachineImagesOperations getVirtualMachineImages();
 
     /**
-     * Gets the Usage object to access its operations.
+     * Gets the UsageOperations object to access its operations.
      * @return the usage value.
      */
-    Usage getUsage();
+    UsageOperations getUsage();
 
     /**
-     * Gets the VirtualMachineSizes object to access its operations.
+     * Gets the VirtualMachineSizesOperations object to access its operations.
      * @return the virtualMachineSizes value.
      */
-    VirtualMachineSizes getVirtualMachineSizes();
+    VirtualMachineSizesOperations getVirtualMachineSizes();
 
     /**
-     * Gets the VirtualMachines object to access its operations.
+     * Gets the VirtualMachinesOperations object to access its operations.
      * @return the virtualMachines value.
      */
-    VirtualMachines getVirtualMachines();
+    VirtualMachinesOperations getVirtualMachines();
 
     /**
-     * Gets the VirtualMachineScaleSets object to access its operations.
+     * Gets the VirtualMachineScaleSetsOperations object to access its operations.
      * @return the virtualMachineScaleSets value.
      */
-    VirtualMachineScaleSets getVirtualMachineScaleSets();
+    VirtualMachineScaleSetsOperations getVirtualMachineScaleSets();
 
     /**
-     * Gets the VirtualMachineScaleSetVMs object to access its operations.
+     * Gets the VirtualMachineScaleSetVMsOperations object to access its operations.
      * @return the virtualMachineScaleSetVMs value.
      */
-    VirtualMachineScaleSetVMs getVirtualMachineScaleSetVMs();
+    VirtualMachineScaleSetVMsOperations getVirtualMachineScaleSetVMs();
 
 }
