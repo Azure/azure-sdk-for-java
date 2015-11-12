@@ -4,9 +4,36 @@ var colors = require('colors');
 var exec = require('child_process').exec;
 
 var mappings = {
-    'azure-mgmt-compute': 'arm-compute/2015-06-15/swagger/compute.json',
-    'azure-mgmt-storage': 'arm-storage/2015-06-15/swagger/storage.json',
-    'azure-mgmt-resources': 'arm-storage/2014-04-01/swagger/resources.json'
+    'compute': {
+        'dir': 'azure-mgmt-compute',
+        'source': 'arm-compute/2015-06-15/swagger/compute.json',
+        'package': 'com.microsoft.azure.management.compute' 
+    },
+    'storage': {
+        'dir': 'azure-mgmt-storage',
+        'source': 'arm-storage/2015-06-15/swagger/storage.json',
+        'package': 'com.microsoft.azure.management.storage'
+    },
+    'resources': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/resources/2014-04-01-preview/swagger/resources.json',
+        'package': 'com.microsoft.azure.management.resources'
+    },
+    'subscriptions': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/subscriptions/2014-04-01-preview/swagger/subscriptions.json',
+        'package': 'com.microsoft.azure.management.resources'
+    },
+    'authorization': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/authorization/2015-01-01/swagger/authorization.json',
+        'package': 'com.microsoft.azure.management.resources'
+    },
+    'features': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/features/2014-08-01-preview/swagger/features.json',
+        'package': 'com.microsoft.azure.management.resources'
+    }
 };
 
 gulp.task('default', function() {
@@ -35,7 +62,7 @@ gulp.task('codegen', function(cb) {
             });
         } else {
             if (mappings[project] === undefined) {
-                console.error('Invalid project name ' + project);
+                console.error('Invalid project name "' + project + '"!');
                 process.exit(1);
             }
             codegen(project, cb);
@@ -45,9 +72,9 @@ gulp.task('codegen', function(cb) {
 
 
 var codegen = function(project, cb) {
-    console.log('Generating ' + project + ' from spec file ' + specRoot + '/' + mappings[project]);
-    exec(autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java -Namespace com.microsoft.azure -Input ' + specRoot + '/' + mappings[project] + 
-            ' -outputDirectory ' + project + '/src/main/java/com/microsoft/azure -Header MICROSOFT_MIT', function(err, stdout, stderr) {
+    console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
+    exec(autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
+            ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT', function(err, stdout, stderr) {
         console.log(stdout);
         console.error(stderr);
     });
