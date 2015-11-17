@@ -100,12 +100,6 @@ public interface ResourceManagementClient {
     DeploymentsOperations getDeployments();
 
     /**
-     * Gets the ProviderOperationsMetadataOperations object to access its operations.
-     * @return the providerOperationsMetadata value.
-     */
-    ProviderOperationsMetadataOperations getProviderOperationsMetadata();
-
-    /**
      * Gets the ProvidersOperations object to access its operations.
      * @return the providers value.
      */
@@ -140,5 +134,17 @@ public interface ResourceManagementClient {
      * @return the resourceProviderOperationDetails value.
      */
     ResourceProviderOperationDetailsOperations getResourceProviderOperationDetails();
+
+    /**
+     * Gets the PolicyDefinitionsOperations object to access its operations.
+     * @return the policyDefinitions value.
+     */
+    PolicyDefinitionsOperations getPolicyDefinitions();
+
+    /**
+     * Gets the PolicyAssignmentsOperations object to access its operations.
+     * @return the policyAssignments value.
+     */
+    PolicyAssignmentsOperations getPolicyAssignments();
 
 }

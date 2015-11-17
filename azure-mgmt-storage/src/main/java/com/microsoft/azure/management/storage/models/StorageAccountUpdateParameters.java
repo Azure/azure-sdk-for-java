@@ -10,13 +10,19 @@
 
 package com.microsoft.azure.management.storage.models;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.BaseResource;
 
 /**
  * The parameters to update on the account.
  */
-public class StorageAccountUpdateParameters extends Resource {
+public class StorageAccountUpdateParameters extends BaseResource {
+    /**
+     * Resource tags
+     */
+    private Map<String, String> tags;
+
     /**
      * Gets or sets the account type. Note that StandardZRS and PremiumLRS
      * accounts cannot be changed to other account types, and other account
@@ -35,6 +41,24 @@ public class StorageAccountUpdateParameters extends Resource {
      */
     @JsonProperty(value = "properties.customDomain")
     private CustomDomain customDomain;
+
+    /**
+     * Get the tags value.
+     *
+     * @return the tags value
+     */ 
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags value.
+     *
+     * @param tags the tags value to set
+     */
+    public void setTags(Map<String, String> tags) {
+        this.tags = tags;
+    }
 
     /**
      * Get the accountType value.

@@ -11,9 +11,9 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.rest.AzureClient;
+import com.microsoft.rest.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.CustomHeaderInterceptor;
-import com.microsoft.rest.ServiceClient;
 import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
 import retrofit.Retrofit;
@@ -21,7 +21,7 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the SubscriptionClient class.
  */
-public class SubscriptionClientImpl extends ServiceClient implements SubscriptionClient {
+public class SubscriptionClientImpl extends AzureServiceClient implements SubscriptionClient {
     private String baseUri;
     private AzureClient azureClient;
 
@@ -206,7 +206,6 @@ public class SubscriptionClientImpl extends ServiceClient implements Subscriptio
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
         this.subscriptions = new SubscriptionsOperationsImpl(retrofit, this);
         this.tenants = new TenantsOperationsImpl(retrofit, this);

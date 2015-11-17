@@ -42,20 +42,18 @@ public interface UsageOperations {
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
      *
-     * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
      * @return the UsageListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<UsageListResult> list(String apiVersion) throws ServiceException;
+    ServiceResponse<UsageListResult> list() throws ServiceException;
 
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
      *
-     * @param apiVersion the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    Call<ResponseBody> listAsync(String apiVersion, final ServiceCallback<UsageListResult> serviceCallback);
+    Call<ResponseBody> listAsync(final ServiceCallback<UsageListResult> serviceCallback);
 
     /**
      * Gets the current usage count and the limit for the resources under the subscription.

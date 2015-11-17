@@ -12,7 +12,6 @@ package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.resources.models.ManagementLockObject;
-import com.microsoft.azure.management.resources.models.ManagementLockProperties;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.rest.AzureServiceResponseBuilder;
 import com.microsoft.rest.CloudError;
@@ -46,7 +45,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockProperties parameters) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -86,7 +85,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param parameters The management lock parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      */
-    public Call<ResponseBody> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockProperties parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
+    public Call<ResponseBody> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (resourceGroupName == null) {
             serviceCallback.failure(new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
@@ -148,7 +147,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockProperties parameters) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -208,7 +207,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param parameters Create or update management lock parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      */
-    public Call<ResponseBody> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockProperties parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
+    public Call<ResponseBody> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (resourceGroupName == null) {
             serviceCallback.failure(new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
@@ -413,7 +412,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockProperties parameters) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException {
         if (lockName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter lockName is required and cannot be null."));
@@ -448,7 +447,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param parameters The management lock parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      */
-    public Call<ResponseBody> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockProperties parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
+    public Call<ResponseBody> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (lockName == null) {
             serviceCallback.failure(new ServiceException(
                 new IllegalArgumentException("Parameter lockName is required and cannot be null.")));

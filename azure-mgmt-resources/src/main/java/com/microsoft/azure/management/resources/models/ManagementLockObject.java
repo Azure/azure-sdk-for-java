@@ -10,17 +10,13 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.BaseResource;
 
 /**
  * Management lock information.
  */
-public class ManagementLockObject {
-    /**
-     * Gets or sets the properties of the lock.
-     */
-    private ManagementLockProperties properties;
-
+public class ManagementLockObject extends BaseResource {
     /**
      * Gets or sets the Id of the lock.
      */
@@ -37,22 +33,17 @@ public class ManagementLockObject {
     private String name;
 
     /**
-     * Get the properties value.
-     *
-     * @return the properties value
-     */ 
-    public ManagementLockProperties getProperties() {
-        return this.properties;
-    }
+     * Gets or sets the lock level of the management lock. Possible values for
+     * this property include: 'NotSpecified', 'CanNotDelete', 'ReadOnly'.
+     */
+    @JsonProperty(value = "properties.level")
+    private String level;
 
     /**
-     * Set the properties value.
-     *
-     * @param properties the properties value to set
+     * Gets or sets the notes of the management lock.
      */
-    public void setProperties(ManagementLockProperties properties) {
-        this.properties = properties;
-    }
+    @JsonProperty(value = "properties.notes")
+    private String notes;
 
     /**
      * Get the id value.
@@ -106,6 +97,42 @@ public class ManagementLockObject {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Get the level value.
+     *
+     * @return the level value
+     */ 
+    public String getLevel() {
+        return this.level;
+    }
+
+    /**
+     * Set the level value.
+     *
+     * @param level the level value to set
+     */
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    /**
+     * Get the notes value.
+     *
+     * @return the notes value
+     */ 
+    public String getNotes() {
+        return this.notes;
+    }
+
+    /**
+     * Set the notes value.
+     *
+     * @param notes the notes value to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
 }

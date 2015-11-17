@@ -10,36 +10,35 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.BaseResource;
 
 /**
- * Operation
+ * Policy definition.
  */
-public class Operation {
+public class PolicyDefinition extends BaseResource {
     /**
-     * Gets or sets the operation name
+     * Gets or sets the policy definition name.
      */
     private String name;
 
     /**
-     * Gets or sets the operation display name
+     * Gets or sets the policy definition description.
      */
-    private String displayName;
-
-    /**
-     * Gets or sets the operation description
-     */
+    @JsonProperty(value = "properties.description")
     private String description;
 
     /**
-     * Gets or sets the operation origin
+     * Gets or sets the policy definition display name.
      */
-    private String origin;
+    @JsonProperty(value = "properties.displayName")
+    private String displayName;
 
     /**
-     * Gets or sets the operation properties
+     * The policy rule json.
      */
-    private Object properties;
+    @JsonProperty(value = "properties.policyRule")
+    private Object policyRule;
 
     /**
      * Get the name value.
@@ -57,24 +56,6 @@ public class Operation {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Get the displayName value.
-     *
-     * @return the displayName value
-     */ 
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName value.
-     *
-     * @param displayName the displayName value to set
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
     }
 
     /**
@@ -96,39 +77,39 @@ public class Operation {
     }
 
     /**
-     * Get the origin value.
+     * Get the displayName value.
      *
-     * @return the origin value
+     * @return the displayName value
      */ 
-    public String getOrigin() {
-        return this.origin;
+    public String getDisplayName() {
+        return this.displayName;
     }
 
     /**
-     * Set the origin value.
+     * Set the displayName value.
      *
-     * @param origin the origin value to set
+     * @param displayName the displayName value to set
      */
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**
-     * Get the properties value.
+     * Get the policyRule value.
      *
-     * @return the properties value
+     * @return the policyRule value
      */ 
-    public Object getProperties() {
-        return this.properties;
+    public Object getPolicyRule() {
+        return this.policyRule;
     }
 
     /**
-     * Set the properties value.
+     * Set the policyRule value.
      *
-     * @param properties the properties value to set
+     * @param policyRule the policyRule value to set
      */
-    public void setProperties(Object properties) {
-        this.properties = properties;
+    public void setPolicyRule(Object policyRule) {
+        this.policyRule = policyRule;
     }
 
 }

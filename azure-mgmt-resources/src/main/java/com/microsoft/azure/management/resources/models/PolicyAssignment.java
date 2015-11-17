@@ -10,27 +10,35 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.BaseResource;
 
 /**
- * Resource Type
+ * Policy assignment.
  */
-public class ResourceType {
+public class PolicyAssignment extends BaseResource {
     /**
-     * Gets or sets the resource type name
+     * Gets or sets the policy assignment name.
      */
     private String name;
 
     /**
-     * Gets or sets the resource type display name
+     * Gets or sets the policy assignment scope.
      */
+    @JsonProperty(value = "properties.scope")
+    private String scope;
+
+    /**
+     * Gets or sets the policy assignment display name.
+     */
+    @JsonProperty(value = "properties.displayName")
     private String displayName;
 
     /**
-     * Gets or sets the resource type operations
+     * Gets or sets the policy definition Id.
      */
-    private List<Operation> operations;
+    @JsonProperty(value = "properties.policyDefinitionId")
+    private String policyDefinitionId;
 
     /**
      * Get the name value.
@@ -48,6 +56,24 @@ public class ResourceType {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Get the scope value.
+     *
+     * @return the scope value
+     */ 
+    public String getScope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope value.
+     *
+     * @param scope the scope value to set
+     */
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 
     /**
@@ -69,21 +95,21 @@ public class ResourceType {
     }
 
     /**
-     * Get the operations value.
+     * Get the policyDefinitionId value.
      *
-     * @return the operations value
+     * @return the policyDefinitionId value
      */ 
-    public List<Operation> getOperations() {
-        return this.operations;
+    public String getPolicyDefinitionId() {
+        return this.policyDefinitionId;
     }
 
     /**
-     * Set the operations value.
+     * Set the policyDefinitionId value.
      *
-     * @param operations the operations value to set
+     * @param policyDefinitionId the policyDefinitionId value to set
      */
-    public void setOperations(List<Operation> operations) {
-        this.operations = operations;
+    public void setPolicyDefinitionId(String policyDefinitionId) {
+        this.policyDefinitionId = policyDefinitionId;
     }
 
 }
