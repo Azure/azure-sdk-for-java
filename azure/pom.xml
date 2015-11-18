@@ -318,5 +318,6 @@
     <module>../azure-mgmt-compute</module>
     <module>../azure-mgmt-resources</module>
     <module>../azure-mgmt-storage</module>
+    <module>../azure-mgmt-network</module>
   </modules>
 </project>
