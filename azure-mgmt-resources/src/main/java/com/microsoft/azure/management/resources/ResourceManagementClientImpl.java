@@ -11,9 +11,9 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.rest.AzureClient;
+import com.microsoft.rest.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.CustomHeaderInterceptor;
-import com.microsoft.rest.ServiceClient;
 import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
 import retrofit.Retrofit;
@@ -21,7 +21,7 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the ResourceManagementClient class.
  */
-public class ResourceManagementClientImpl extends ServiceClient implements ResourceManagementClient {
+public class ResourceManagementClientImpl extends AzureServiceClient implements ResourceManagementClient {
     private String baseUri;
     private AzureClient azureClient;
 
@@ -133,16 +133,6 @@ public class ResourceManagementClientImpl extends ServiceClient implements Resou
         return this.deployments;
     }
 
-    private ProviderOperationsMetadataOperations providerOperationsMetadata;
-
-    /**
-     * Gets the ProviderOperationsMetadataOperations object to access its operations.
-     * @return the providerOperationsMetadata value.
-     */
-    public ProviderOperationsMetadataOperations getProviderOperationsMetadata() {
-        return this.providerOperationsMetadata;
-    }
-
     private ProvidersOperations providers;
 
     /**
@@ -201,6 +191,26 @@ public class ResourceManagementClientImpl extends ServiceClient implements Resou
      */
     public ResourceProviderOperationDetailsOperations getResourceProviderOperationDetails() {
         return this.resourceProviderOperationDetails;
+    }
+
+    private PolicyDefinitionsOperations policyDefinitions;
+
+    /**
+     * Gets the PolicyDefinitionsOperations object to access its operations.
+     * @return the policyDefinitions value.
+     */
+    public PolicyDefinitionsOperations getPolicyDefinitions() {
+        return this.policyDefinitions;
+    }
+
+    private PolicyAssignmentsOperations policyAssignments;
+
+    /**
+     * Gets the PolicyAssignmentsOperations object to access its operations.
+     * @return the policyAssignments value.
+     */
+    public PolicyAssignmentsOperations getPolicyAssignments() {
+        return this.policyAssignments;
     }
 
     /**
@@ -266,15 +276,15 @@ public class ResourceManagementClientImpl extends ServiceClient implements Resou
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
         this.deployments = new DeploymentsOperationsImpl(retrofit, this);
-        this.providerOperationsMetadata = new ProviderOperationsMetadataOperationsImpl(retrofit, this);
         this.providers = new ProvidersOperationsImpl(retrofit, this);
         this.resourceGroups = new ResourceGroupsOperationsImpl(retrofit, this);
         this.resources = new ResourcesOperationsImpl(retrofit, this);
         this.tags = new TagsOperationsImpl(retrofit, this);
         this.deploymentOperations = new DeploymentOperationsOperationsImpl(retrofit, this);
         this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsOperationsImpl(retrofit, this);
+        this.policyDefinitions = new PolicyDefinitionsOperationsImpl(retrofit, this);
+        this.policyAssignments = new PolicyAssignmentsOperationsImpl(retrofit, this);
     }
 }

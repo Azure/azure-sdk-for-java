@@ -7,7 +7,7 @@ var mappings = {
     'compute': {
         'dir': 'azure-mgmt-compute',
         'source': 'arm-compute/2015-06-15/swagger/compute.json',
-        'package': 'com.microsoft.azure.management.compute' 
+        'package': 'com.microsoft.azure.management.compute'
     },
     'storage': {
         'dir': 'azure-mgmt-storage',
@@ -33,6 +33,11 @@ var mappings = {
         'dir': 'azure-mgmt-resources',
         'source': 'arm-resources/features/2014-08-01-preview/swagger/features.json',
         'package': 'com.microsoft.azure.management.resources'
+    },
+    'network': {
+        'dir': 'azure-mgmt-network',
+        'source': 'arm-network/2015-06-15/swagger/network.json',
+        'package': 'com.microsoft.azure.management.network'
     }
 };
 
@@ -73,8 +78,12 @@ gulp.task('codegen', function(cb) {
 
 var codegen = function(project, cb) {
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
-    exec(autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
-            ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT', function(err, stdout, stderr) {
+    cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
+            ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT';
+    if (mappings[project].args !== undefined) {
+        cmd = cmd + ' ' + args;
+    }
+    exec(cmd, function(err, stdout, stderr) {
         console.log(stdout);
         console.error(stderr);
     });

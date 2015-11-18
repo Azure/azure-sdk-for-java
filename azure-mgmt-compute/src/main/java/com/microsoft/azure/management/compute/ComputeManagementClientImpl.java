@@ -11,9 +11,9 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.rest.AzureClient;
+import com.microsoft.rest.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.CustomHeaderInterceptor;
-import com.microsoft.rest.ServiceClient;
 import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
 import retrofit.Retrofit;
@@ -21,7 +21,7 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the ComputeManagementClient class.
  */
-public class ComputeManagementClientImpl extends ServiceClient implements ComputeManagementClient {
+public class ComputeManagementClientImpl extends AzureServiceClient implements ComputeManagementClient {
     private String baseUri;
     private AzureClient azureClient;
 
@@ -276,7 +276,6 @@ public class ComputeManagementClientImpl extends ServiceClient implements Comput
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
         this.availabilitySets = new AvailabilitySetsOperationsImpl(retrofit, this);
         this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesOperationsImpl(retrofit, this);

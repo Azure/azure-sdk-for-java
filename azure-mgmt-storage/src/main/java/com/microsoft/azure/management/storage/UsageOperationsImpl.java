@@ -36,21 +36,20 @@ public class UsageOperationsImpl implements UsageOperations {
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
      *
-     * @param apiVersion the String value
      * @return the UsageListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<UsageListResult> list(String apiVersion) throws ServiceException {
+    public ServiceResponse<UsageListResult> list() throws ServiceException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (apiVersion == null) {
+        if (this.client.getApiVersion() == null) {
             throw new ServiceException(
-                new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
             return listDelegate(call.execute(), null);
         } catch (ServiceException ex) {
             throw ex;
@@ -62,21 +61,20 @@ public class UsageOperationsImpl implements UsageOperations {
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
      *
-     * @param apiVersion the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      */
-    public Call<ResponseBody> listAsync(String apiVersion, final ServiceCallback<UsageListResult> serviceCallback) {
+    public Call<ResponseBody> listAsync(final ServiceCallback<UsageListResult> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
             return null;
         }
-        if (apiVersion == null) {
+        if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter apiVersion is required and cannot be null.")));
+                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<UsageListResult>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {

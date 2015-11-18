@@ -10,7 +10,6 @@
 
 package com.microsoft.azure.management.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import com.microsoft.rest.BaseResource;
 
@@ -36,7 +35,6 @@ public class Resource extends BaseResource {
     /**
      * Resource location
      */
-    @JsonProperty(required = true)
     private String location;
 
     /**

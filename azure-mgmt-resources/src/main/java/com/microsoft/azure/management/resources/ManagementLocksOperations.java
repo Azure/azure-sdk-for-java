@@ -11,7 +11,6 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.ManagementLockObject;
-import com.microsoft.azure.management.resources.models.ManagementLockProperties;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
@@ -38,16 +37,16 @@ public interface ManagementLocksOperations {
      */
     interface ManagementLocksService {
         @PUT("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
-        Call<ResponseBody> createOrUpdateAtResourceGroupLevel(@Path("resourceGroupName") String resourceGroupName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockProperties parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateAtResourceGroupLevel(@Path("resourceGroupName") String resourceGroupName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockObject parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @PUT("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
-        Call<ResponseBody> createOrUpdateAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockProperties parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockObject parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @HTTP(path = "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> deleteAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @PUT("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
-        Call<ResponseBody> createOrUpdateAtSubscriptionLevel(@Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockProperties parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateAtSubscriptionLevel(@Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockObject parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @HTTP(path = "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> deleteAtSubscriptionLevel(@Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
@@ -92,7 +91,7 @@ public interface ManagementLocksOperations {
      * @throws ServiceException exception thrown from REST call
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockProperties parameters) throws ServiceException;
+    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException;
 
     /**
      * Create or update a management lock at the resource group level.
@@ -103,7 +102,7 @@ public interface ManagementLocksOperations {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    Call<ResponseBody> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockProperties parameters, final ServiceCallback<ManagementLockObject> serviceCallback);
+    Call<ResponseBody> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback);
 
     /**
      * Create or update a management lock at the resource level or any level below resource.
@@ -118,7 +117,7 @@ public interface ManagementLocksOperations {
      * @throws ServiceException exception thrown from REST call
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockProperties parameters) throws ServiceException;
+    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException;
 
     /**
      * Create or update a management lock at the resource level or any level below resource.
@@ -133,7 +132,7 @@ public interface ManagementLocksOperations {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    Call<ResponseBody> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockProperties parameters, final ServiceCallback<ManagementLockObject> serviceCallback);
+    Call<ResponseBody> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback);
 
     /**
      * Deletes the management lock of a resource or any level below resource.
@@ -171,7 +170,7 @@ public interface ManagementLocksOperations {
      * @throws ServiceException exception thrown from REST call
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockProperties parameters) throws ServiceException;
+    ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException;
 
     /**
      * Create or update a management lock at the subscription level.
@@ -181,7 +180,7 @@ public interface ManagementLocksOperations {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    Call<ResponseBody> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockProperties parameters, final ServiceCallback<ManagementLockObject> serviceCallback);
+    Call<ResponseBody> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback);
 
     /**
      * Deletes the management lock of a subscription.

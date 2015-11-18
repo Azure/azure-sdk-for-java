@@ -11,9 +11,9 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.rest.AzureClient;
+import com.microsoft.rest.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.CustomHeaderInterceptor;
-import com.microsoft.rest.ServiceClient;
 import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
 import retrofit.Retrofit;
@@ -21,7 +21,7 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the AuthorizationClient class.
  */
-public class AuthorizationClientImpl extends ServiceClient implements AuthorizationClient {
+public class AuthorizationClientImpl extends AzureServiceClient implements AuthorizationClient {
     private String baseUri;
     private AzureClient azureClient;
 
@@ -196,7 +196,6 @@ public class AuthorizationClientImpl extends ServiceClient implements Authorizat
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        this.azureClient.setLongRunningOperationRetryTimeout(this.longRunningOperationRetryTimeout);
         Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
         this.managementLocks = new ManagementLocksOperationsImpl(retrofit, this);
     }
