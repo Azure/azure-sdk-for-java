@@ -87,6 +87,30 @@ public class EndpointProperties {
         this.endpointStatus = endpointStatusValue;
     }
     
+    private Long minChildEndpoints;
+    
+    /**
+    * Optional. Gets or sets the minimum number of endpoints that must be
+    * available in the child profile in order for the parent profile to be
+    * considered available. Only applicable to endpoint of type
+    * 'NestedEndpoints'.
+    * @return The MinChildEndpoints value.
+    */
+    public Long getMinChildEndpoints() {
+        return this.minChildEndpoints;
+    }
+    
+    /**
+    * Optional. Gets or sets the minimum number of endpoints that must be
+    * available in the child profile in order for the parent profile to be
+    * considered available. Only applicable to endpoint of type
+    * 'NestedEndpoints'.
+    * @param minChildEndpointsValue The MinChildEndpoints value.
+    */
+    public void setMinChildEndpoints(final Long minChildEndpointsValue) {
+        this.minChildEndpoints = minChildEndpointsValue;
+    }
+    
     private Long priority;
     
     /**

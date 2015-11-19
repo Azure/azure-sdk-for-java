@@ -36,6 +36,14 @@ import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -47,15 +55,6 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 /**
 * Operations for managing Traffic Manager endpoints.
@@ -180,7 +179,7 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
         url = url + "/";
         url = url + URLEncoder.encode(endpointName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -251,6 +250,10 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
             
             if (parameters.getEndpoint().getProperties().getEndpointMonitorStatus() != null) {
                 ((ObjectNode) propertiesValue).put("endpointMonitorStatus", parameters.getEndpoint().getProperties().getEndpointMonitorStatus());
+            }
+            
+            if (parameters.getEndpoint().getProperties().getMinChildEndpoints() != null) {
+                ((ObjectNode) propertiesValue).put("minChildEndpoints", parameters.getEndpoint().getProperties().getMinChildEndpoints());
             }
         }
         
@@ -369,6 +372,13 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
                         endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                         propertiesInstance.setEndpointMonitorStatus(endpointMonitorStatusInstance);
                     }
+                    
+                    JsonNode minChildEndpointsValue = propertiesValue2.get("minChildEndpoints");
+                    if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                        long minChildEndpointsInstance;
+                        minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                        propertiesInstance.setMinChildEndpoints(minChildEndpointsInstance);
+                    }
                 }
             }
             
@@ -476,7 +486,7 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
         url = url + "/";
         url = url + URLEncoder.encode(endpointName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -616,7 +626,7 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
         url = url + "/";
         url = url + URLEncoder.encode(endpointName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -746,6 +756,13 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
                         endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                         propertiesInstance.setEndpointMonitorStatus(endpointMonitorStatusInstance);
                     }
+                    
+                    JsonNode minChildEndpointsValue = propertiesValue.get("minChildEndpoints");
+                    if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                        long minChildEndpointsInstance;
+                        minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                        propertiesInstance.setMinChildEndpoints(minChildEndpointsInstance);
+                    }
                 }
             }
             
@@ -864,7 +881,7 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
         url = url + "/";
         url = url + URLEncoder.encode(endpointName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -935,6 +952,10 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
             
             if (parameters.getEndpoint().getProperties().getEndpointMonitorStatus() != null) {
                 ((ObjectNode) propertiesValue).put("endpointMonitorStatus", parameters.getEndpoint().getProperties().getEndpointMonitorStatus());
+            }
+            
+            if (parameters.getEndpoint().getProperties().getMinChildEndpoints() != null) {
+                ((ObjectNode) propertiesValue).put("minChildEndpoints", parameters.getEndpoint().getProperties().getMinChildEndpoints());
             }
         }
         
@@ -1052,6 +1073,13 @@ public class EndpointOperationsImpl implements ServiceOperations<TrafficManagerM
                         String endpointMonitorStatusInstance;
                         endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                         propertiesInstance.setEndpointMonitorStatus(endpointMonitorStatusInstance);
+                    }
+                    
+                    JsonNode minChildEndpointsValue = propertiesValue2.get("minChildEndpoints");
+                    if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                        long minChildEndpointsInstance;
+                        minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                        propertiesInstance.setMinChildEndpoints(minChildEndpointsInstance);
                     }
                 }
             }

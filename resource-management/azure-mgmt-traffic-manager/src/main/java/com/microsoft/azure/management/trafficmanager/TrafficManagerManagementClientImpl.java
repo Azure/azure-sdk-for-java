@@ -26,13 +26,12 @@ package com.microsoft.azure.management.trafficmanager;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import org.apache.http.impl.client.HttpClientBuilder;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
 * Client for creating, updating, listing and deleting Azure Traffic Manager
@@ -142,7 +141,7 @@ public class TrafficManagerManagementClientImpl extends ServiceClient<TrafficMan
         super(httpBuilder, executorService);
         this.endpoints = new EndpointOperationsImpl(this);
         this.profiles = new ProfileOperationsImpl(this);
-        this.apiVersion = "2015-04-28-preview";
+        this.apiVersion = "2015-11-01";
         this.longRunningOperationInitialTimeout = -1;
         this.longRunningOperationRetryTimeout = -1;
     }

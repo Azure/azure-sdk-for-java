@@ -30,7 +30,6 @@ import com.microsoft.azure.management.trafficmanager.models.EndpointUpdateParame
 import com.microsoft.azure.management.trafficmanager.models.EndpointUpdateResponse;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-
 import java.io.IOException;
 import java.util.concurrent.Future;
 
