@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -45,7 +46,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @return the AvailabilitySet object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<AvailabilitySet> createOrUpdate(String resourceGroupName, String name, AvailabilitySet parameters) throws ServiceException {
+    public ServiceResponse<AvailabilitySet> createOrUpdate(String resourceGroupName, String name, AvailabilitySet parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -67,14 +68,8 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, name, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, name, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateDelegate(call.execute(), null);
     }
 
     /**
@@ -118,7 +113,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -126,7 +121,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySet> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<AvailabilitySet> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<AvailabilitySet>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySet>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -140,7 +135,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @param availabilitySetName The name of the availability set.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws ServiceException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -157,14 +152,8 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.delete(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.delete(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDelegate(call.execute(), null);
     }
 
     /**
@@ -201,7 +190,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -209,7 +198,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(200, new TypeToken<Void>(){}.getType())
@@ -224,7 +213,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @return the AvailabilitySet object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<AvailabilitySet> get(String resourceGroupName, String availabilitySetName) throws ServiceException {
+    public ServiceResponse<AvailabilitySet> get(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -241,14 +230,8 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -285,7 +268,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -293,7 +276,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<AvailabilitySet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<AvailabilitySet>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySet>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -307,7 +290,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @return the AvailabilitySetListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<AvailabilitySetListResult> list(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<AvailabilitySetListResult> list(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -320,14 +303,8 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -358,7 +335,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -366,7 +343,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<AvailabilitySetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<AvailabilitySetListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySetListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -381,7 +358,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @return the VirtualMachineSizeListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws ServiceException {
+    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -398,14 +375,8 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAvailableSizesDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAvailableSizesDelegate(call.execute(), null);
     }
 
     /**
@@ -442,7 +413,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAvailableSizesDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -450,7 +421,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineSizeListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineSizeListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -464,19 +435,13 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @return the AvailabilitySetListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<AvailabilitySetListResult> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<AvailabilitySetListResult> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -497,7 +462,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -505,7 +470,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<AvailabilitySetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<AvailabilitySetListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySetListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -519,19 +484,13 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @return the VirtualMachineSizeListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAvailableSizesNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAvailableSizesNextDelegate(call.execute(), null);
     }
 
     /**
@@ -552,7 +511,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAvailableSizesNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -560,7 +519,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineSizeListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineSizeListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

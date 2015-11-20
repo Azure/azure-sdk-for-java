@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -61,9 +62,10 @@ public interface TagsOperations {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException;
+    ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException, IOException;
 
     /**
      * Delete a subscription resource tag value.
@@ -81,9 +83,10 @@ public interface TagsOperations {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the TagValue object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException;
+    ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException, IOException;
 
     /**
      * Create a subscription resource tag value.
@@ -100,9 +103,10 @@ public interface TagsOperations {
      *
      * @param tagName The name of the tag.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the TagDetails object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException;
+    ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException, IOException;
 
     /**
      * Create a subscription resource tag.
@@ -118,9 +122,10 @@ public interface TagsOperations {
      *
      * @param tagName The name of the tag.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String tagName) throws ServiceException;
+    ServiceResponse<Void> delete(String tagName) throws ServiceException, IOException;
 
     /**
      * Delete a subscription resource tag.
@@ -135,9 +140,10 @@ public interface TagsOperations {
      * Get a list of subscription resource tags.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;TagDetails&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException;
+    ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException, IOException;
 
     /**
      * Get a list of subscription resource tags.
@@ -152,9 +158,10 @@ public interface TagsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;TagDetails&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Get a list of subscription resource tags.

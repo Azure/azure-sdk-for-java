@@ -95,9 +95,10 @@ public interface ApplicationGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the applicationgateway.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ApplicationGateway object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ApplicationGateway> get(String resourceGroupName, String applicationGatewayName) throws ServiceException;
+    ServiceResponse<ApplicationGateway> get(String resourceGroupName, String applicationGatewayName) throws ServiceException, IOException;
 
     /**
      * The Get applicationgateway operation retreives information about the specified applicationgateway.
@@ -138,9 +139,10 @@ public interface ApplicationGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ApplicationGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ApplicationGateway>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<ApplicationGateway>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List ApplicationGateway opertion retrieves all the applicationgateways in a resource group.
@@ -155,9 +157,10 @@ public interface ApplicationGatewaysOperations {
      * The List applicationgateway opertion retrieves all the applicationgateways in a subscription.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ApplicationGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ApplicationGateway>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<ApplicationGateway>> listAll() throws ServiceException, IOException;
 
     /**
      * The List applicationgateway opertion retrieves all the applicationgateways in a subscription.
@@ -216,9 +219,10 @@ public interface ApplicationGatewaysOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ApplicationGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ApplicationGateway>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ApplicationGateway>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List ApplicationGateway opertion retrieves all the applicationgateways in a resource group.
@@ -234,9 +238,10 @@ public interface ApplicationGatewaysOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ApplicationGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ApplicationGateway>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ApplicationGateway>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List applicationgateway opertion retrieves all the applicationgateways in a subscription.

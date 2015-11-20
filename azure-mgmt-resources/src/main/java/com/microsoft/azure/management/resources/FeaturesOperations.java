@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -57,9 +58,10 @@ public interface FeaturesOperations {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<FeatureResult>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<FeatureResult>> listAll() throws ServiceException, IOException;
 
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
@@ -74,9 +76,10 @@ public interface FeaturesOperations {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<FeatureResult>> list(String resourceProviderNamespace) throws ServiceException;
+    ServiceResponse<PageImpl<FeatureResult>> list(String resourceProviderNamespace) throws ServiceException, IOException;
 
     /**
      * Gets a list of previewed features of a resource provider.
@@ -93,9 +96,10 @@ public interface FeaturesOperations {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the FeatureResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<FeatureResult> get(String resourceProviderNamespace, String featureName) throws ServiceException;
+    ServiceResponse<FeatureResult> get(String resourceProviderNamespace, String featureName) throws ServiceException, IOException;
 
     /**
      * Get all features under the subscription.
@@ -113,9 +117,10 @@ public interface FeaturesOperations {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the FeatureResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<FeatureResult> register(String resourceProviderNamespace, String featureName) throws ServiceException;
+    ServiceResponse<FeatureResult> register(String resourceProviderNamespace, String featureName) throws ServiceException, IOException;
 
     /**
      * Registers for a previewed feature of a resource provider.
@@ -132,9 +137,10 @@ public interface FeaturesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<FeatureResult>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<FeatureResult>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
@@ -150,9 +156,10 @@ public interface FeaturesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<FeatureResult>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<FeatureResult>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets a list of previewed features of a resource provider.

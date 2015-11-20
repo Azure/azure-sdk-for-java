@@ -20,6 +20,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -40,7 +41,7 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
      * @return the VirtualMachineSizeListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> list(String location) throws ServiceException {
+    public ServiceResponse<VirtualMachineSizeListResult> list(String location) throws ServiceException, IOException {
         if (location == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -53,14 +54,8 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(location, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(location, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -91,7 +86,7 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -99,7 +94,7 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
         return call;
     }
 
-    private ServiceResponse<VirtualMachineSizeListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineSizeListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineSizeListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineSizeListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -113,19 +108,13 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
      * @return the VirtualMachineSizeListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<VirtualMachineSizeListResult> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -146,7 +135,7 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -154,7 +143,7 @@ public class VirtualMachineSizesOperationsImpl implements VirtualMachineSizesOpe
         return call;
     }
 
-    private ServiceResponse<VirtualMachineSizeListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineSizeListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineSizeListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineSizeListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

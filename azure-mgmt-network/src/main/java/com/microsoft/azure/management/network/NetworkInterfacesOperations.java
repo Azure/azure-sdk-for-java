@@ -104,9 +104,10 @@ public interface NetworkInterfacesOperations {
      * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the NetworkInterface object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName, String expand) throws ServiceException;
+    ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface.
@@ -150,9 +151,10 @@ public interface NetworkInterfacesOperations {
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) throws ServiceException, IOException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
@@ -171,9 +173,10 @@ public interface NetworkInterfacesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws ServiceException, IOException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
@@ -194,9 +197,10 @@ public interface NetworkInterfacesOperations {
      * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the NetworkInterface object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws ServiceException;
+    ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface in a virtual machine scale set.
@@ -215,9 +219,10 @@ public interface NetworkInterfacesOperations {
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listAll() throws ServiceException, IOException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
@@ -232,9 +237,10 @@ public interface NetworkInterfacesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.
@@ -250,9 +256,10 @@ public interface NetworkInterfacesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
@@ -268,9 +275,10 @@ public interface NetworkInterfacesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
@@ -286,9 +294,10 @@ public interface NetworkInterfacesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
@@ -304,9 +313,10 @@ public interface NetworkInterfacesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkInterface>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.

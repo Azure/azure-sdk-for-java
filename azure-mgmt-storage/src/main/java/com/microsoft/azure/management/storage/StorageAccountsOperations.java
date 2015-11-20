@@ -85,9 +85,10 @@ public interface StorageAccountsOperations {
      *
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the CheckNameAvailabilityResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName) throws ServiceException;
+    ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName) throws ServiceException, IOException;
 
     /**
      * Checks that account name is valid and is not in use.
@@ -128,9 +129,10 @@ public interface StorageAccountsOperations {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws ServiceException;
+    ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws ServiceException, IOException;
 
     /**
      * Deletes a storage account in Microsoft Azure.
@@ -148,9 +150,10 @@ public interface StorageAccountsOperations {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccount object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws ServiceException;
+    ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws ServiceException, IOException;
 
     /**
      * Returns the properties for the specified storage account including but not limited to name, account type, location, and account status. The ListKeys operation should be used to retrieve storage keys.
@@ -169,9 +172,10 @@ public interface StorageAccountsOperations {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @param parameters The parameters to update on the account. Note that only one property can be changed at a time using this API. 
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccount object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws ServiceException;
+    ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws ServiceException, IOException;
 
     /**
      * Updates the account type or tags for a storage account. It can also be used to add a custom domain (note that custom domains cannot be added via the Create operation). Only one custom domain is supported per storage account. In order to replace a custom domain, the old value must be cleared before a new value may be set. To clear a custom domain, simply update the custom domain with empty string. Then call update again with the new cutsom domain name. The update API can only be used to update one of tags, accountType, or customDomain per call. To update multiple of these properties, call the API multiple times with one change per call. This call does not change the storage keys for the account. If you want to change storage account keys, use the RegenerateKey operation. The location and name of the storage account cannot be changed after creation.
@@ -190,9 +194,10 @@ public interface StorageAccountsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the storage account.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccountKeys object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws ServiceException;
+    ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws ServiceException, IOException;
 
     /**
      * Lists the access keys for the specified storage account.
@@ -208,9 +213,10 @@ public interface StorageAccountsOperations {
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccountListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccountListResult> list() throws ServiceException;
+    ServiceResponse<StorageAccountListResult> list() throws ServiceException, IOException;
 
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
@@ -225,9 +231,10 @@ public interface StorageAccountsOperations {
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccountListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccountListResult> listByResourceGroup(String resourceGroupName) throws ServiceException;
+    ServiceResponse<StorageAccountListResult> listByResourceGroup(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.
@@ -245,9 +252,10 @@ public interface StorageAccountsOperations {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @param regenerateKey Specifies name of the key which should be regenerated. key1 or key2 for the default keys
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccountKeys object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) throws ServiceException;
+    ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) throws ServiceException, IOException;
 
     /**
      * Regenerates the access keys for the specified storage account.
@@ -265,9 +273,10 @@ public interface StorageAccountsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccountListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccountListResult> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<StorageAccountListResult> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
@@ -283,9 +292,10 @@ public interface StorageAccountsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the StorageAccountListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<StorageAccountListResult> listByResourceGroupNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<StorageAccountListResult> listByResourceGroupNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.

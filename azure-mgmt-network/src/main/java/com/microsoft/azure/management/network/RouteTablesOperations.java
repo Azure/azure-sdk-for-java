@@ -89,9 +89,10 @@ public interface RouteTablesOperations {
      * @param routeTableName The name of the route table.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the RouteTable object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws ServiceException;
+    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get RouteTables operation retrieves information about the specified route table.
@@ -133,9 +134,10 @@ public interface RouteTablesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The list RouteTables returns all route tables in a resource group
@@ -150,9 +152,10 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a subscription
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<RouteTable>> listAll() throws ServiceException, IOException;
 
     /**
      * The list RouteTables returns all route tables in a subscription
@@ -167,9 +170,10 @@ public interface RouteTablesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list RouteTables returns all route tables in a resource group
@@ -185,9 +189,10 @@ public interface RouteTablesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list RouteTables returns all route tables in a subscription

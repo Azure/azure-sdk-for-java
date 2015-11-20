@@ -84,9 +84,10 @@ public interface LocalNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the LocalNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LocalNetworkGateway> get(String resourceGroupName, String localNetworkGatewayName) throws ServiceException;
+    ServiceResponse<LocalNetworkGateway> get(String resourceGroupName, String localNetworkGatewayName) throws ServiceException, IOException;
 
     /**
      * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
@@ -125,9 +126,10 @@ public interface LocalNetworkGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;LocalNetworkGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LocalNetworkGateway>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<LocalNetworkGateway>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List LocalNetworkGateways opertion retrieves all the local network gateways stored.
@@ -143,9 +145,10 @@ public interface LocalNetworkGatewaysOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;LocalNetworkGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LocalNetworkGateway>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<LocalNetworkGateway>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List LocalNetworkGateways opertion retrieves all the local network gateways stored.

@@ -98,7 +98,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the NetworkInterface object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName, String expand) throws ServiceException {
+    public ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName, String expand) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -115,14 +115,8 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -160,7 +154,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -168,7 +162,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<NetworkInterface> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<NetworkInterface> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<NetworkInterface>(new AzureJacksonUtils())
                 .register(200, new TypeToken<NetworkInterface>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -242,7 +236,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -263,14 +257,8 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listVirtualMachineScaleSetVMNetworkInterfacesDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listVirtualMachineScaleSetVMNetworkInterfacesDelegate(call.execute(), null);
     }
 
     /**
@@ -313,7 +301,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listVirtualMachineScaleSetVMNetworkInterfacesDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -321,7 +309,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -336,7 +324,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -353,14 +341,8 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listVirtualMachineScaleSetNetworkInterfacesDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listVirtualMachineScaleSetNetworkInterfacesDelegate(call.execute(), null);
     }
 
     /**
@@ -397,7 +379,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listVirtualMachineScaleSetNetworkInterfacesDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -405,7 +387,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -423,7 +405,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the NetworkInterface object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws ServiceException {
+    public ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -448,14 +430,8 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
-            return getVirtualMachineScaleSetNetworkInterfaceDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getVirtualMachineScaleSetNetworkInterfaceDelegate(call.execute(), null);
     }
 
     /**
@@ -505,7 +481,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getVirtualMachineScaleSetNetworkInterfaceDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -513,7 +489,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterfaceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterfaceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<NetworkInterface>(new AzureJacksonUtils())
                 .register(200, new TypeToken<NetworkInterface>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -526,7 +502,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listAll() throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listAll() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -535,14 +511,8 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAllDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAllDelegate(call.execute(), null);
     }
 
     /**
@@ -567,7 +537,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -575,7 +545,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -589,7 +559,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> list(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> list(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -602,14 +572,8 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -640,7 +604,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -648,7 +612,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -662,19 +626,13 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
-            return listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
+        return listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(call.execute(), null);
     }
 
     /**
@@ -695,7 +653,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -703,7 +661,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -717,19 +675,13 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
-            return listVirtualMachineScaleSetNetworkInterfacesNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
+        return listVirtualMachineScaleSetNetworkInterfacesNextDelegate(call.execute(), null);
     }
 
     /**
@@ -750,7 +702,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listVirtualMachineScaleSetNetworkInterfacesNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -758,7 +710,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -772,19 +724,13 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listAllNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listAllNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAllNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAllNextDelegate(call.execute(), null);
     }
 
     /**
@@ -805,7 +751,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -813,7 +759,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -827,19 +773,13 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
      * @return the PageImpl&lt;NetworkInterface&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<NetworkInterface>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<NetworkInterface>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -860,7 +800,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -868,7 +808,7 @@ public class NetworkInterfacesOperationsImpl implements NetworkInterfacesOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

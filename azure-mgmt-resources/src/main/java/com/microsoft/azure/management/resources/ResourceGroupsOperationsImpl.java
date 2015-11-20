@@ -52,7 +52,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the PageImpl&lt;GenericResource&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<GenericResource>> listResources(String resourceGroupName, GenericResourceFilter filter, Integer top) throws ServiceException {
+    public ServiceResponse<PageImpl<GenericResource>> listResources(String resourceGroupName, GenericResourceFilter filter, Integer top) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -65,14 +65,8 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listResourcesDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listResourcesDelegate(call.execute(), null);
     }
 
     /**
@@ -105,7 +99,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listResourcesDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -113,7 +107,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<GenericResource>> listResourcesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<GenericResource>> listResourcesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<GenericResource>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<GenericResource>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -127,7 +121,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the Boolean object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Boolean> checkExistence(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<Boolean> checkExistence(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -140,14 +134,8 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<Void> call = service.checkExistence(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return checkExistenceDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<Void> call = service.checkExistence(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return checkExistenceDelegate(call.execute(), null);
     }
 
     /**
@@ -178,7 +166,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<Void> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(checkExistenceDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -186,7 +174,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Boolean>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(404, new TypeToken<Void>(){}.getType())
@@ -202,7 +190,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the ResourceGroup object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ResourceGroup> createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws ServiceException {
+    public ServiceResponse<ResourceGroup> createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -220,14 +208,8 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateDelegate(call.execute(), null);
     }
 
     /**
@@ -265,7 +247,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -273,7 +255,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceGroup> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ResourceGroup> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ResourceGroup>(new AzureJacksonUtils())
                 .register(201, new TypeToken<ResourceGroup>(){}.getType())
                 .register(200, new TypeToken<ResourceGroup>(){}.getType())
@@ -333,7 +315,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the ResourceGroup object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ResourceGroup> get(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<ResourceGroup> get(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -346,14 +328,8 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -384,7 +360,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -392,7 +368,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceGroup> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ResourceGroup> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ResourceGroup>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ResourceGroup>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -407,7 +383,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the ResourceGroup object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ResourceGroup> patch(String resourceGroupName, ResourceGroup parameters) throws ServiceException {
+    public ServiceResponse<ResourceGroup> patch(String resourceGroupName, ResourceGroup parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -425,14 +401,8 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.patch(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return patchDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.patch(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return patchDelegate(call.execute(), null);
     }
 
     /**
@@ -470,7 +440,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(patchDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -478,7 +448,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceGroup> patchDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ResourceGroup> patchDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ResourceGroup>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ResourceGroup>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -493,7 +463,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the PageImpl&lt;ResourceGroup&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ResourceGroup>> list(ResourceGroupFilter filter, Integer top) throws ServiceException {
+    public ServiceResponse<PageImpl<ResourceGroup>> list(ResourceGroupFilter filter, Integer top) throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -502,14 +472,8 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -536,7 +500,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -544,7 +508,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<ResourceGroup>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ResourceGroup>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ResourceGroup>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -558,19 +522,13 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the PageImpl&lt;GenericResource&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<GenericResource>> listResourcesNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<GenericResource>> listResourcesNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listResourcesNext(nextPageLink, this.client.getAcceptLanguage());
-            return listResourcesNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listResourcesNext(nextPageLink, this.client.getAcceptLanguage());
+        return listResourcesNextDelegate(call.execute(), null);
     }
 
     /**
@@ -591,7 +549,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listResourcesNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -599,7 +557,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<GenericResource>> listResourcesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<GenericResource>> listResourcesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<GenericResource>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<GenericResource>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -613,19 +571,13 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
      * @return the PageImpl&lt;ResourceGroup&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ResourceGroup>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ResourceGroup>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -646,7 +598,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -654,7 +606,7 @@ public class ResourceGroupsOperationsImpl implements ResourceGroupsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<ResourceGroup>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ResourceGroup>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ResourceGroup>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

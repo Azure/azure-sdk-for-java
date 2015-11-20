@@ -89,9 +89,10 @@ public interface VirtualNetworksOperations {
      * @param virtualNetworkName The name of the virtual network.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualNetwork object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetwork> get(String resourceGroupName, String virtualNetworkName, String expand) throws ServiceException;
+    ServiceResponse<VirtualNetwork> get(String resourceGroupName, String virtualNetworkName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get VirtualNetwork operation retrieves information about the specified virtual network.
@@ -132,9 +133,10 @@ public interface VirtualNetworksOperations {
      * The list VirtualNetwork returns all Virtual Networks in a subscription
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetwork&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetwork>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetwork>> listAll() throws ServiceException, IOException;
 
     /**
      * The list VirtualNetwork returns all Virtual Networks in a subscription
@@ -149,9 +151,10 @@ public interface VirtualNetworksOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetwork&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetwork>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetwork>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The list VirtualNetwork returns all Virtual Networks in a resource group
@@ -167,9 +170,10 @@ public interface VirtualNetworksOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetwork&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetwork>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetwork>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list VirtualNetwork returns all Virtual Networks in a subscription
@@ -185,9 +189,10 @@ public interface VirtualNetworksOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetwork&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetwork>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetwork>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list VirtualNetwork returns all Virtual Networks in a resource group

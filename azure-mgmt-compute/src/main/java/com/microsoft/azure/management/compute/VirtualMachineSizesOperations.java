@@ -15,6 +15,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -44,9 +45,10 @@ public interface VirtualMachineSizesOperations {
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> list(String location) throws ServiceException;
+    ServiceResponse<VirtualMachineSizeListResult> list(String location) throws ServiceException, IOException;
 
     /**
      * Lists virtual-machine-sizes available in a location for a subscription.
@@ -62,9 +64,10 @@ public interface VirtualMachineSizesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<VirtualMachineSizeListResult> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Lists virtual-machine-sizes available in a location for a subscription.

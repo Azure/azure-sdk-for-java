@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -42,7 +43,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * @return the LocationListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException {
+    public ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException {
         if (subscriptionId == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -51,14 +52,8 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listLocationsDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listLocationsDelegate(call.execute(), null);
     }
 
     /**
@@ -84,7 +79,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listLocationsDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -92,7 +87,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<LocationListResult> listLocationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<LocationListResult> listLocationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<LocationListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<LocationListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -106,7 +101,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * @return the Subscription object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException {
+    public ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException {
         if (subscriptionId == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -115,14 +110,8 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -148,7 +137,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -156,7 +145,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<Subscription> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Subscription> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Subscription>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Subscription>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -169,7 +158,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * @return the PageImpl&lt;Subscription&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subscription>> list() throws ServiceException {
+    public ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -178,14 +167,8 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -210,7 +193,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -218,7 +201,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Subscription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<Subscription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<Subscription>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Subscription>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -232,19 +215,13 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * @return the LocationListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.getAcceptLanguage());
-            return listLocationsNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.getAcceptLanguage());
+        return listLocationsNextDelegate(call.execute(), null);
     }
 
     /**
@@ -265,7 +242,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listLocationsNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -273,7 +250,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<LocationListResult> listLocationsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<LocationListResult> listLocationsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<LocationListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<LocationListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -287,19 +264,13 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * @return the PageImpl&lt;Subscription&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -320,7 +291,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -328,7 +299,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Subscription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<Subscription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<Subscription>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Subscription>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

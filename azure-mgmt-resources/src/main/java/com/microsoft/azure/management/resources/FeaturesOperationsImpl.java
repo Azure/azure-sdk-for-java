@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -40,7 +41,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
      * @return the PageImpl&lt;FeatureResult&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<FeatureResult>> listAll() throws ServiceException {
+    public ServiceResponse<PageImpl<FeatureResult>> listAll() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -49,14 +50,8 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAllDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAllDelegate(call.execute(), null);
     }
 
     /**
@@ -81,7 +76,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -89,7 +84,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<FeatureResult>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -103,7 +98,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
      * @return the PageImpl&lt;FeatureResult&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<FeatureResult>> list(String resourceProviderNamespace) throws ServiceException {
+    public ServiceResponse<PageImpl<FeatureResult>> list(String resourceProviderNamespace) throws ServiceException, IOException {
         if (resourceProviderNamespace == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
@@ -116,14 +111,8 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -154,7 +143,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -162,7 +151,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<FeatureResult>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -177,7 +166,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
      * @return the FeatureResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<FeatureResult> get(String resourceProviderNamespace, String featureName) throws ServiceException {
+    public ServiceResponse<FeatureResult> get(String resourceProviderNamespace, String featureName) throws ServiceException, IOException {
         if (resourceProviderNamespace == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
@@ -194,14 +183,8 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -238,7 +221,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -246,7 +229,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<FeatureResult> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<FeatureResult> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<FeatureResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<FeatureResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -261,7 +244,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
      * @return the FeatureResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<FeatureResult> register(String resourceProviderNamespace, String featureName) throws ServiceException {
+    public ServiceResponse<FeatureResult> register(String resourceProviderNamespace, String featureName) throws ServiceException, IOException {
         if (resourceProviderNamespace == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
@@ -278,14 +261,8 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return registerDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return registerDelegate(call.execute(), null);
     }
 
     /**
@@ -322,7 +299,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(registerDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -330,7 +307,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<FeatureResult> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<FeatureResult> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<FeatureResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<FeatureResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -344,19 +321,13 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
      * @return the PageImpl&lt;FeatureResult&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<FeatureResult>> listAllNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<FeatureResult>> listAllNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAllNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAllNextDelegate(call.execute(), null);
     }
 
     /**
@@ -377,7 +348,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -385,7 +356,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<FeatureResult>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -399,19 +370,13 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
      * @return the PageImpl&lt;FeatureResult&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<FeatureResult>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<FeatureResult>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -432,7 +397,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -440,7 +405,7 @@ public class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<FeatureResult>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

@@ -121,9 +121,10 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineScaleSetVM object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVM> get(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException;
+    ServiceResponse<VirtualMachineScaleSetVM> get(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException;
 
     /**
      * The operation to get a virtual machine scale set virtual machine.
@@ -143,9 +144,10 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineScaleSetVMInstanceView object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException;
+    ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException;
 
     /**
      * The operation to get a virtual machine scale set virtual machine.
@@ -167,9 +169,10 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param select The list parameters.
      * @param expand The expand expression to apply on the operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineScaleSetVMListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVMListResult> list(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand) throws ServiceException;
+    ServiceResponse<VirtualMachineScaleSetVMListResult> list(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand) throws ServiceException, IOException;
 
     /**
      * The operation to list virtual machine scale sets VMs.
@@ -261,9 +264,10 @@ public interface VirtualMachineScaleSetVMsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineScaleSetVMListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVMListResult> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<VirtualMachineScaleSetVMListResult> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The operation to list virtual machine scale sets VMs.

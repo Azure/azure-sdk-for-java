@@ -168,7 +168,7 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
      * @return the VirtualMachineExtension object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException {
+    public ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -189,14 +189,8 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -240,7 +234,7 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -248,7 +242,7 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
         return call;
     }
 
-    private ServiceResponse<VirtualMachineExtension> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineExtension> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineExtension>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineExtension>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

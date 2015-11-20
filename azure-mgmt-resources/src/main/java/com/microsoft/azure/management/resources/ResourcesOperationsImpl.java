@@ -102,7 +102,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
      * @return the PageImpl&lt;GenericResource&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<GenericResource>> list(GenericResourceFilter filter, Integer top) throws ServiceException {
+    public ServiceResponse<PageImpl<GenericResource>> list(GenericResourceFilter filter, Integer top) throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -111,14 +111,8 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -145,7 +139,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -153,7 +147,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<GenericResource>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<GenericResource>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<GenericResource>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<GenericResource>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -172,7 +166,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
      * @return the Boolean object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Boolean> checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException {
+    public ServiceResponse<Boolean> checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -201,14 +195,8 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
-        try {
-            Call<Void> call = service.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
-            return checkExistenceDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<Void> call = service.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+        return checkExistenceDelegate(call.execute(), null);
     }
 
     /**
@@ -264,7 +252,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             public void onResponse(Response<Void> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(checkExistenceDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -272,7 +260,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
         return call;
     }
 
-    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Boolean>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(404, new TypeToken<Void>(){}.getType())
@@ -291,7 +279,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
      * @param apiVersion the String value
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -320,14 +308,8 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
-            return deleteDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+        return deleteDelegate(call.execute(), null);
     }
 
     /**
@@ -383,7 +365,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -391,7 +373,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>(){}.getType())
                 .register(204, new TypeToken<Void>(){}.getType())
@@ -412,7 +394,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
      * @return the GenericResource object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<GenericResource> createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResource parameters) throws ServiceException {
+    public ServiceResponse<GenericResource> createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResource parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -446,14 +428,8 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
                 new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, parameters, this.client.getAcceptLanguage());
-            return createOrUpdateDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, parameters, this.client.getAcceptLanguage());
+        return createOrUpdateDelegate(call.execute(), null);
     }
 
     /**
@@ -516,7 +492,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -524,7 +500,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
         return call;
     }
 
-    private ServiceResponse<GenericResource> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<GenericResource> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<GenericResource>(new AzureJacksonUtils())
                 .register(201, new TypeToken<GenericResource>(){}.getType())
                 .register(200, new TypeToken<GenericResource>(){}.getType())
@@ -544,7 +520,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
      * @return the GenericResource object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<GenericResource> get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException {
+    public ServiceResponse<GenericResource> get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -573,14 +549,8 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -636,7 +606,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -644,7 +614,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
         return call;
     }
 
-    private ServiceResponse<GenericResource> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<GenericResource> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<GenericResource>(new AzureJacksonUtils())
                 .register(200, new TypeToken<GenericResource>(){}.getType())
                 .register(204, new TypeToken<GenericResource>(){}.getType())
@@ -659,19 +629,13 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
      * @return the PageImpl&lt;GenericResource&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<GenericResource>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<GenericResource>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -692,7 +656,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -700,7 +664,7 @@ public class ResourcesOperationsImpl implements ResourcesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<GenericResource>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<GenericResource>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<GenericResource>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<GenericResource>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

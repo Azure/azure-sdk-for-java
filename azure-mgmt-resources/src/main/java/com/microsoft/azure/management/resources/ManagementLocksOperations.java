@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -89,9 +90,10 @@ public interface ManagementLocksOperations {
      * @param lockName The lock name.
      * @param parameters The management lock parameters.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException;
+    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException;
 
     /**
      * Create or update a management lock at the resource group level.
@@ -115,9 +117,10 @@ public interface ManagementLocksOperations {
      * @param lockName The name of lock.
      * @param parameters Create or update management lock parameters.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException;
+    ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException;
 
     /**
      * Create or update a management lock at the resource level or any level below resource.
@@ -144,9 +147,10 @@ public interface ManagementLocksOperations {
      * @param resourceName Resource identity.
      * @param lockName The name of lock.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) throws ServiceException;
+    ServiceResponse<Void> deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) throws ServiceException, IOException;
 
     /**
      * Deletes the management lock of a resource or any level below resource.
@@ -168,9 +172,10 @@ public interface ManagementLocksOperations {
      * @param lockName The name of lock.
      * @param parameters The management lock parameters.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException;
+    ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException, IOException;
 
     /**
      * Create or update a management lock at the subscription level.
@@ -187,9 +192,10 @@ public interface ManagementLocksOperations {
      *
      * @param lockName The name of lock.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deleteAtSubscriptionLevel(String lockName) throws ServiceException;
+    ServiceResponse<Void> deleteAtSubscriptionLevel(String lockName) throws ServiceException, IOException;
 
     /**
      * Deletes the management lock of a subscription.
@@ -205,9 +211,10 @@ public interface ManagementLocksOperations {
      *
      * @param lockName Name of the management lock.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ManagementLockObject object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ManagementLockObject> get(String lockName) throws ServiceException;
+    ServiceResponse<ManagementLockObject> get(String lockName) throws ServiceException, IOException;
 
     /**
      * Gets the management lock of a scope.
@@ -224,9 +231,10 @@ public interface ManagementLocksOperations {
      * @param resourceGroup The resource group names.
      * @param lockName The name of lock.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deleteAtResourceGroupLevel(String resourceGroup, String lockName) throws ServiceException;
+    ServiceResponse<Void> deleteAtResourceGroupLevel(String resourceGroup, String lockName) throws ServiceException, IOException;
 
     /**
      * Deletes the management lock of a resource group.
@@ -244,9 +252,10 @@ public interface ManagementLocksOperations {
      * @param resourceGroupName Resource group name.
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevel(String resourceGroupName, ManagementLockObject filter) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevel(String resourceGroupName, ManagementLockObject filter) throws ServiceException, IOException;
 
     /**
      * Gets all the management locks of a resource group.
@@ -268,9 +277,10 @@ public interface ManagementLocksOperations {
      * @param resourceName Resource identity.
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter) throws ServiceException, IOException;
 
     /**
      * Gets all the management locks of a resource or any level below resource.
@@ -291,9 +301,10 @@ public interface ManagementLocksOperations {
      *
      * @param nextLink NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listNext(String nextLink) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listNext(String nextLink) throws ServiceException, IOException;
 
     /**
      * Get a list of management locks at resource level or below.
@@ -309,9 +320,10 @@ public interface ManagementLocksOperations {
      *
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevel(ManagementLockObject filter) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevel(ManagementLockObject filter) throws ServiceException, IOException;
 
     /**
      * Gets all the management locks of a subscription.
@@ -327,9 +339,10 @@ public interface ManagementLocksOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets all the management locks of a resource group.
@@ -345,9 +358,10 @@ public interface ManagementLocksOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets all the management locks of a resource or any level below resource.
@@ -363,9 +377,10 @@ public interface ManagementLocksOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listNextNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listNextNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Get a list of management locks at resource level or below.
@@ -381,9 +396,10 @@ public interface ManagementLocksOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ManagementLockObject&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets all the management locks of a subscription.

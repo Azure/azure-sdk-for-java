@@ -165,9 +165,10 @@ public interface VirtualMachinesOperations {
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachine object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws ServiceException;
+    ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws ServiceException, IOException;
 
     /**
      * The operation to get a virtual machine.
@@ -208,9 +209,10 @@ public interface VirtualMachinesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws ServiceException;
+    ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws ServiceException, IOException;
 
     /**
      * Sets the state of the VM as Generalized.
@@ -227,9 +229,10 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualMachine>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The operation to list virtual machines under a resource group.
@@ -244,9 +247,10 @@ public interface VirtualMachinesOperations {
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<VirtualMachine>> listAll() throws ServiceException, IOException;
 
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
@@ -262,9 +266,10 @@ public interface VirtualMachinesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String vmName) throws ServiceException;
+    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String vmName) throws ServiceException, IOException;
 
     /**
      * Lists virtual-machine-sizes available to be used for a virtual machine.
@@ -347,9 +352,10 @@ public interface VirtualMachinesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualMachine>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The operation to list virtual machines under a resource group.
@@ -365,9 +371,10 @@ public interface VirtualMachinesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualMachine>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
@@ -383,9 +390,10 @@ public interface VirtualMachinesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Lists virtual-machine-sizes available to be used for a virtual machine.

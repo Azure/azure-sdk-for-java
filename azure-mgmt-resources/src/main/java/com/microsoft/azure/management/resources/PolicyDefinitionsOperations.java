@@ -15,6 +15,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -50,9 +51,10 @@ public interface PolicyDefinitionsOperations {
      * @param policyDefinitionName The policy definition name.
      * @param parameters The policy definition properties
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PolicyDefinition object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws ServiceException;
+    ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws ServiceException, IOException;
 
     /**
      * Create or update policy definition.
@@ -69,9 +71,10 @@ public interface PolicyDefinitionsOperations {
      *
      * @param policyDefinitionName The policy definition name.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PolicyDefinition object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws ServiceException;
+    ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws ServiceException, IOException;
 
     /**
      * Gets policy definition.
@@ -87,9 +90,10 @@ public interface PolicyDefinitionsOperations {
      *
      * @param policyDefinitionName The policy definition name.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String policyDefinitionName) throws ServiceException;
+    ServiceResponse<Void> delete(String policyDefinitionName) throws ServiceException, IOException;
 
     /**
      * Deletes policy definition.

@@ -51,7 +51,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the CheckNameAvailabilityResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName) throws ServiceException {
+    public ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName) throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -65,14 +65,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(accountName);
-        try {
-            Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), accountName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return checkNameAvailabilityDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), accountName, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return checkNameAvailabilityDelegate(call.execute(), null);
     }
 
     /**
@@ -104,7 +98,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(checkNameAvailabilityDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -112,7 +106,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<CheckNameAvailabilityResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<CheckNameAvailabilityResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -184,7 +178,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws ServiceException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -201,14 +195,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDelegate(call.execute(), null);
     }
 
     /**
@@ -245,7 +233,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -253,7 +241,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>(){}.getType())
                 .register(204, new TypeToken<Void>(){}.getType())
@@ -268,7 +256,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccount object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws ServiceException {
+    public ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -285,14 +273,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.getProperties(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getPropertiesDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.getProperties(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getPropertiesDelegate(call.execute(), null);
     }
 
     /**
@@ -329,7 +311,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getPropertiesDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -337,7 +319,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccount>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccount>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -353,7 +335,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccount object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws ServiceException {
+    public ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -375,14 +357,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.update(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return updateDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.update(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return updateDelegate(call.execute(), null);
     }
 
     /**
@@ -426,7 +402,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(updateDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -434,7 +410,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccount>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccount>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -449,7 +425,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccountKeys object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws ServiceException {
+    public ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -466,14 +442,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listKeys(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listKeysDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listKeys(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listKeysDelegate(call.execute(), null);
     }
 
     /**
@@ -510,7 +480,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listKeysDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -518,7 +488,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccountKeys>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountKeys>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -531,7 +501,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccountListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccountListResult> list() throws ServiceException {
+    public ServiceResponse<StorageAccountListResult> list() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -540,14 +510,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -572,7 +536,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -580,7 +544,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccountListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -594,7 +558,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccountListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccountListResult> listByResourceGroup(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<StorageAccountListResult> listByResourceGroup(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -607,14 +571,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listByResourceGroupDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listByResourceGroupDelegate(call.execute(), null);
     }
 
     /**
@@ -645,7 +603,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listByResourceGroupDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -653,7 +611,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listByResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccountListResult> listByResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -669,7 +627,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccountKeys object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) throws ServiceException {
+    public ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -691,14 +649,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(regenerateKey);
-        try {
-            Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.getSubscriptionId(), regenerateKey, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return regenerateKeyDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.getSubscriptionId(), regenerateKey, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return regenerateKeyDelegate(call.execute(), null);
     }
 
     /**
@@ -742,7 +694,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(regenerateKeyDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -750,7 +702,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccountKeys>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountKeys>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -764,19 +716,13 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccountListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccountListResult> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<StorageAccountListResult> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -797,7 +743,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -805,7 +751,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccountListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -819,19 +765,13 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @return the StorageAccountListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<StorageAccountListResult> listByResourceGroupNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<StorageAccountListResult> listByResourceGroupNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listByResourceGroupNext(nextPageLink, this.client.getAcceptLanguage());
-            return listByResourceGroupNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listByResourceGroupNext(nextPageLink, this.client.getAcceptLanguage());
+        return listByResourceGroupNextDelegate(call.execute(), null);
     }
 
     /**
@@ -852,7 +792,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listByResourceGroupNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -860,7 +800,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listByResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<StorageAccountListResult> listByResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

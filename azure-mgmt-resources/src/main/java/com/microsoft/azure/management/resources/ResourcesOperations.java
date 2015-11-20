@@ -92,9 +92,10 @@ public interface ResourcesOperations {
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<GenericResource>> list(GenericResourceFilter filter, Integer top) throws ServiceException;
+    ServiceResponse<PageImpl<GenericResource>> list(GenericResourceFilter filter, Integer top) throws ServiceException, IOException;
 
     /**
      * Get all of the resources under a subscription.
@@ -116,9 +117,10 @@ public interface ResourcesOperations {
      * @param resourceName Resource identity.
      * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Boolean object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException;
+    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException;
 
     /**
      * Checks whether resource exists.
@@ -144,9 +146,10 @@ public interface ResourcesOperations {
      * @param resourceName Resource identity.
      * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException;
+    ServiceResponse<Void> delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException;
 
     /**
      * Delete resource and all of its resources. 
@@ -173,9 +176,10 @@ public interface ResourcesOperations {
      * @param apiVersion the String value
      * @param parameters Create or update resource parameters.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the GenericResource object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<GenericResource> createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResource parameters) throws ServiceException;
+    ServiceResponse<GenericResource> createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResource parameters) throws ServiceException, IOException;
 
     /**
      * Create a resource.
@@ -202,9 +206,10 @@ public interface ResourcesOperations {
      * @param resourceName Resource identity.
      * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the GenericResource object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<GenericResource> get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException;
+    ServiceResponse<GenericResource> get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException;
 
     /**
      * Returns a resource belonging to a resource group.
@@ -225,9 +230,10 @@ public interface ResourcesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<GenericResource>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<GenericResource>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Get all of the resources under a subscription.

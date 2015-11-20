@@ -109,9 +109,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ExpressRouteCircuit object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuit> get(String resourceGroupName, String circuitName) throws ServiceException;
+    ServiceResponse<ExpressRouteCircuit> get(String resourceGroupName, String circuitName) throws ServiceException, IOException;
 
     /**
      * The Get ExpressRouteCircuit operation retreives information about the specified ExpressRouteCircuit.
@@ -153,9 +154,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitArpTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTable(String resourceGroupName, String circuitName) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTable(String resourceGroupName, String circuitName) throws ServiceException, IOException;
 
     /**
      * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
@@ -173,9 +175,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitRoutesTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTable(String resourceGroupName, String circuitName) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTable(String resourceGroupName, String circuitName) throws ServiceException, IOException;
 
     /**
      * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
@@ -193,9 +196,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the loadBalancer.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitStats&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStats(String resourceGroupName, String circuitName) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStats(String resourceGroupName, String circuitName) throws ServiceException, IOException;
 
     /**
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
@@ -212,9 +216,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
@@ -229,9 +234,10 @@ public interface ExpressRouteCircuitsOperations {
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAll() throws ServiceException, IOException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
@@ -246,9 +252,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitArpTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
@@ -264,9 +271,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitRoutesTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
@@ -282,9 +290,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitStats&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
@@ -300,9 +309,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
@@ -318,9 +328,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.

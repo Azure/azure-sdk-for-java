@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -50,9 +51,10 @@ public interface DeploymentOperationsOperations {
      * @param deploymentName The name of the deployment.
      * @param operationId Operation Id.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the DeploymentOperation object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DeploymentOperation> get(String resourceGroupName, String deploymentName, String operationId) throws ServiceException;
+    ServiceResponse<DeploymentOperation> get(String resourceGroupName, String deploymentName, String operationId) throws ServiceException, IOException;
 
     /**
      * Get a list of deployments operations.
@@ -72,9 +74,10 @@ public interface DeploymentOperationsOperations {
      * @param deploymentName The name of the deployment.
      * @param top Query parameters.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;DeploymentOperation&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<DeploymentOperation>> list(String resourceGroupName, String deploymentName, Integer top) throws ServiceException;
+    ServiceResponse<PageImpl<DeploymentOperation>> list(String resourceGroupName, String deploymentName, Integer top) throws ServiceException, IOException;
 
     /**
      * Gets a list of deployments operations.
@@ -92,9 +95,10 @@ public interface DeploymentOperationsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;DeploymentOperation&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<DeploymentOperation>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<DeploymentOperation>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets a list of deployments operations.

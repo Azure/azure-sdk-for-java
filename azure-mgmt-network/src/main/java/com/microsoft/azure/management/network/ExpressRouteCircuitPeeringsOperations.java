@@ -85,9 +85,10 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ExpressRouteCircuitPeering object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuitPeering> get(String resourceGroupName, String circuitName, String peeringName) throws ServiceException;
+    ServiceResponse<ExpressRouteCircuitPeering> get(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException;
 
     /**
      * The GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
@@ -132,9 +133,10 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the curcuit.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitPeering&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> list(String resourceGroupName, String circuitName) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException;
 
     /**
      * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
@@ -151,9 +153,10 @@ public interface ExpressRouteCircuitPeeringsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitPeering&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.

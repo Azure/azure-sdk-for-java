@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import java.util.List;
 import retrofit.Call;
 import retrofit.http.GET;
@@ -58,9 +59,10 @@ public interface VirtualMachineImagesOperations {
      * @param skus the String value
      * @param version the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineImage object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException;
+    ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException, IOException;
 
     /**
      * Gets a virtual machine image.
@@ -86,9 +88,10 @@ public interface VirtualMachineImagesOperations {
      * @param top the Integer value
      * @param orderby the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException;
+    ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException, IOException;
 
     /**
      * Gets a list of virtual machine images.
@@ -111,9 +114,10 @@ public interface VirtualMachineImagesOperations {
      * @param location the String value
      * @param publisherName the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException;
+    ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException, IOException;
 
     /**
      * Gets a list of virtual machine image offers.
@@ -130,9 +134,10 @@ public interface VirtualMachineImagesOperations {
      *
      * @param location the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException;
+    ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException, IOException;
 
     /**
      * Gets a list of virtual machine image publishers.
@@ -150,9 +155,10 @@ public interface VirtualMachineImagesOperations {
      * @param publisherName the String value
      * @param offer the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException;
+    ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException, IOException;
 
     /**
      * Gets a list of virtual machine image skus.

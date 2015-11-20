@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -55,9 +56,10 @@ public interface ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Provider object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws ServiceException;
+    ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws ServiceException, IOException;
 
     /**
      * Unregisters provider from a subscription.
@@ -73,9 +75,10 @@ public interface ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Provider object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Provider> register(String resourceProviderNamespace) throws ServiceException;
+    ServiceResponse<Provider> register(String resourceProviderNamespace) throws ServiceException, IOException;
 
     /**
      * Registers provider to be used with a subscription.
@@ -91,9 +94,10 @@ public interface ProvidersOperations {
      *
      * @param top Query parameters. If null is passed returns all deployments.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;Provider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Provider>> list(Integer top) throws ServiceException;
+    ServiceResponse<PageImpl<Provider>> list(Integer top) throws ServiceException, IOException;
 
     /**
      * Gets a list of resource providers.
@@ -109,9 +113,10 @@ public interface ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Provider object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Provider> get(String resourceProviderNamespace) throws ServiceException;
+    ServiceResponse<Provider> get(String resourceProviderNamespace) throws ServiceException, IOException;
 
     /**
      * Gets a resource provider.
@@ -127,9 +132,10 @@ public interface ProvidersOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;Provider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Provider>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<Provider>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets a list of resource providers.

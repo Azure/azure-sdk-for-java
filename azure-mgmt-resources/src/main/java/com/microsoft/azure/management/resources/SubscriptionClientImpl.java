@@ -123,24 +123,20 @@ public class SubscriptionClientImpl extends AzureServiceClient implements Subscr
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private SubscriptionsOperations subscriptions;
-
     /**
      * Gets the SubscriptionsOperations object to access its operations.
      * @return the subscriptions value.
      */
     public SubscriptionsOperations getSubscriptions() {
-        return this.subscriptions;
+        return new SubscriptionsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private TenantsOperations tenants;
 
     /**
      * Gets the TenantsOperations object to access its operations.
      * @return the tenants value.
      */
     public TenantsOperations getTenants() {
-        return this.tenants;
+        return new TenantsOperationsImpl(this.retrofitBuilder.build(), this);
     }
 
     /**
@@ -206,8 +202,6 @@ public class SubscriptionClientImpl extends AzureServiceClient implements Subscr
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.subscriptions = new SubscriptionsOperationsImpl(retrofit, this);
-        this.tenants = new TenantsOperationsImpl(retrofit, this);
+        this.retrofitBuilder = retrofitBuilder.baseUrl(baseUri);
     }
 }

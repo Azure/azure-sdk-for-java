@@ -123,14 +123,12 @@ public class FeatureClientImpl extends AzureServiceClient implements FeatureClie
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private FeaturesOperations features;
-
     /**
      * Gets the FeaturesOperations object to access its operations.
      * @return the features value.
      */
     public FeaturesOperations getFeatures() {
-        return this.features;
+        return new FeaturesOperationsImpl(this.retrofitBuilder.build(), this);
     }
 
     /**
@@ -196,7 +194,6 @@ public class FeatureClientImpl extends AzureServiceClient implements FeatureClie
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.features = new FeaturesOperationsImpl(retrofit, this);
+        this.retrofitBuilder = retrofitBuilder.baseUrl(baseUri);
     }
 }

@@ -105,7 +105,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * @return the Subnet object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException {
+    public ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -126,14 +126,8 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -177,7 +171,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -185,7 +179,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
         return call;
     }
 
-    private ServiceResponse<Subnet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Subnet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Subnet>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Subnet>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -264,7 +258,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * @return the PageImpl&lt;Subnet&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException {
+    public ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -281,14 +275,8 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -325,7 +313,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -333,7 +321,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Subnet>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<Subnet>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<Subnet>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Subnet>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -347,19 +335,13 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * @return the PageImpl&lt;Subnet&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -380,7 +362,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -388,7 +370,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Subnet>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<Subnet>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<Subnet>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Subnet>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

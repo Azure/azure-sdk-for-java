@@ -89,9 +89,10 @@ public interface NetworkSecurityGroupsOperations {
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws ServiceException;
+    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
@@ -132,9 +133,10 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a subscription
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAll() throws ServiceException, IOException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription
@@ -149,9 +151,10 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group
@@ -167,9 +170,10 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription
@@ -185,9 +189,10 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group

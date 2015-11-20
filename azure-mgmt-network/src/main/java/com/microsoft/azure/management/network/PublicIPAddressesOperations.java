@@ -89,9 +89,10 @@ public interface PublicIPAddressesOperations {
      * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PublicIPAddress object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName, String expand) throws ServiceException;
+    ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get publicIpAddress operation retreives information about the specified pubicIpAddress
@@ -132,9 +133,10 @@ public interface PublicIPAddressesOperations {
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<PublicIPAddress>> listAll() throws ServiceException, IOException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
@@ -149,9 +151,10 @@ public interface PublicIPAddressesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<PublicIPAddress>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
@@ -167,9 +170,10 @@ public interface PublicIPAddressesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<PublicIPAddress>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
@@ -185,9 +189,10 @@ public interface PublicIPAddressesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<PublicIPAddress>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.

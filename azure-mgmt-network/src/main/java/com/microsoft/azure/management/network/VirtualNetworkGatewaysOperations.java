@@ -88,9 +88,10 @@ public interface VirtualNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException;
+    ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException, IOException;
 
     /**
      * The Get VirtualNetworkGateway operation retrieves information about the specified virtual network gateway through Network resource provider.
@@ -129,9 +130,10 @@ public interface VirtualNetworkGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
@@ -171,9 +173,10 @@ public interface VirtualNetworkGatewaysOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.

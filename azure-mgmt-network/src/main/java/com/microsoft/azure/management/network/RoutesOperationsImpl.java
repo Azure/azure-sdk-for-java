@@ -104,7 +104,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * @return the Route object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException {
+    public ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -125,14 +125,8 @@ public class RoutesOperationsImpl implements RoutesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, routeTableName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, routeTableName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -175,7 +169,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -183,7 +177,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
         return call;
     }
 
-    private ServiceResponse<Route> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Route> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Route>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Route>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -262,7 +256,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * @return the PageImpl&lt;Route&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException {
+    public ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -279,14 +273,8 @@ public class RoutesOperationsImpl implements RoutesOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -323,7 +311,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -331,7 +319,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Route>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<Route>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<Route>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Route>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -345,19 +333,13 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * @return the PageImpl&lt;Route&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -378,7 +360,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -386,7 +368,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Route>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<Route>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<Route>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Route>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
