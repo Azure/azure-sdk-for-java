@@ -78,9 +78,10 @@ public interface ResourceGroupsOperations {
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<GenericResource>> listResources(String resourceGroupName, GenericResourceFilter filter, Integer top) throws ServiceException;
+    ServiceResponse<PageImpl<GenericResource>> listResources(String resourceGroupName, GenericResourceFilter filter, Integer top) throws ServiceException, IOException;
 
     /**
      * Get all of the resources under a subscription.
@@ -98,9 +99,10 @@ public interface ResourceGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Boolean object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Boolean> checkExistence(String resourceGroupName) throws ServiceException;
+    ServiceResponse<Boolean> checkExistence(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * Checks whether resource group exists.
@@ -117,9 +119,10 @@ public interface ResourceGroupsOperations {
      * @param resourceGroupName The name of the resource group to be created or updated.
      * @param parameters Parameters supplied to the create or update resource group service operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ResourceGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ResourceGroup> createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws ServiceException;
+    ServiceResponse<ResourceGroup> createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws ServiceException, IOException;
 
     /**
      * Create a resource group.
@@ -156,9 +159,10 @@ public interface ResourceGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ResourceGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ResourceGroup> get(String resourceGroupName) throws ServiceException;
+    ServiceResponse<ResourceGroup> get(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * Get a resource group.
@@ -175,9 +179,10 @@ public interface ResourceGroupsOperations {
      * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
      * @param parameters Parameters supplied to the update state resource group service operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ResourceGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ResourceGroup> patch(String resourceGroupName, ResourceGroup parameters) throws ServiceException;
+    ServiceResponse<ResourceGroup> patch(String resourceGroupName, ResourceGroup parameters) throws ServiceException, IOException;
 
     /**
      * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource groups, though if a field is unspecified current value will be carried over. 
@@ -195,9 +200,10 @@ public interface ResourceGroupsOperations {
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ResourceGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ResourceGroup>> list(ResourceGroupFilter filter, Integer top) throws ServiceException;
+    ServiceResponse<PageImpl<ResourceGroup>> list(ResourceGroupFilter filter, Integer top) throws ServiceException, IOException;
 
     /**
      * Gets a collection of resource groups.
@@ -214,9 +220,10 @@ public interface ResourceGroupsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<GenericResource>> listResourcesNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<GenericResource>> listResourcesNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Get all of the resources under a subscription.
@@ -232,9 +239,10 @@ public interface ResourceGroupsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ResourceGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ResourceGroup>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ResourceGroup>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets a collection of resource groups.

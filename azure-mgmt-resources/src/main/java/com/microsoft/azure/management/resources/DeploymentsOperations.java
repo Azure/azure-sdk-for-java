@@ -96,9 +96,10 @@ public interface DeploymentsOperations {
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Boolean object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws ServiceException;
+    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws ServiceException, IOException;
 
     /**
      * Checks whether deployment exists.
@@ -140,9 +141,10 @@ public interface DeploymentsOperations {
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the DeploymentExtended object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DeploymentExtended> get(String resourceGroupName, String deploymentName) throws ServiceException;
+    ServiceResponse<DeploymentExtended> get(String resourceGroupName, String deploymentName) throws ServiceException, IOException;
 
     /**
      * Get a deployment.
@@ -160,9 +162,10 @@ public interface DeploymentsOperations {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws ServiceException;
+    ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws ServiceException, IOException;
 
     /**
      * Cancel a currently running template deployment.
@@ -181,9 +184,10 @@ public interface DeploymentsOperations {
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment to validate.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the DeploymentValidateResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DeploymentValidateResult> validate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException;
+    ServiceResponse<DeploymentValidateResult> validate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException, IOException;
 
     /**
      * Validate a deployment template.
@@ -203,9 +207,10 @@ public interface DeploymentsOperations {
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all deployments.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;DeploymentExtended&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<DeploymentExtended>> list(String resourceGroupName, DeploymentExtendedFilter filter, Integer top) throws ServiceException;
+    ServiceResponse<PageImpl<DeploymentExtended>> list(String resourceGroupName, DeploymentExtendedFilter filter, Integer top) throws ServiceException, IOException;
 
     /**
      * Get a list of deployments.
@@ -223,9 +228,10 @@ public interface DeploymentsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;DeploymentExtended&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<DeploymentExtended>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<DeploymentExtended>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Get a list of deployments.

@@ -2,32 +2,24 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
-import com.microsoft.rest.credentials.UserTokenCredentials;
+import com.microsoft.rest.credentials.ApplicationTokenCredentials;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 public abstract class StorageManagementTestBase {
     protected static ResourceManagementClient resourceManagementClient;
     protected static StorageManagementClient storageManagementClient;
 
     public static void createClients() {
-        resourceManagementClient = new ResourceManagementClientImpl(
-                new UserTokenCredentials(
-                        System.getenv("arm.clientid"),
-                        System.getenv("arm.domain"),
-                        System.getenv("arm.username"),
-                        System.getenv("arm.password"),
-                        System.getenv("arm.redirecturi"),
-                        null)
-        );
+        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+                System.getenv("arm.clientid"),
+                System.getenv("arm.domain"),
+                System.getenv("arm.secret"),
+                null);
+        resourceManagementClient = new ResourceManagementClientImpl(credentials);
         resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        storageManagementClient = new StorageManagementClientImpl(
-                new UserTokenCredentials(
-                        System.getenv("arm.clientid"),
-                        System.getenv("arm.domain"),
-                        System.getenv("arm.username"),
-                        System.getenv("arm.password"),
-                        System.getenv("arm.redirecturi"),
-                        null)
-        );
+        resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        storageManagementClient = new StorageManagementClientImpl(credentials);
         storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
     }
 }

@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -44,9 +45,10 @@ public interface TenantsOperations {
      * Gets a list of the tenantIds.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TenantIdDescription>> list() throws ServiceException;
+    ServiceResponse<PageImpl<TenantIdDescription>> list() throws ServiceException, IOException;
 
     /**
      * Gets a list of the tenantIds.
@@ -61,9 +63,10 @@ public interface TenantsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TenantIdDescription>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<TenantIdDescription>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Gets a list of the tenantIds.

@@ -85,9 +85,10 @@ public interface RoutesOperations {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Route object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException;
+    ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException;
 
     /**
      * The Get route operation retreives information about the specified route from the route table.
@@ -132,9 +133,10 @@ public interface RoutesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;Route&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException;
+    ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException, IOException;
 
     /**
      * The List network security rule opertion retrieves all the routes in a route table.
@@ -151,9 +153,10 @@ public interface RoutesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;Route&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List network security rule opertion retrieves all the routes in a route table.

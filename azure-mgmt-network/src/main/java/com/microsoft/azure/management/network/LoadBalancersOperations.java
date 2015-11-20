@@ -89,9 +89,10 @@ public interface LoadBalancersOperations {
      * @param loadBalancerName The name of the loadBalancer.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the LoadBalancer object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName, String expand) throws ServiceException;
+    ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface.
@@ -132,9 +133,10 @@ public interface LoadBalancersOperations {
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
      *
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> listAll() throws ServiceException;
+    ServiceResponse<PageImpl<LoadBalancer>> listAll() throws ServiceException, IOException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -149,9 +151,10 @@ public interface LoadBalancersOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<LoadBalancer>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
@@ -167,9 +170,10 @@ public interface LoadBalancersOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> listAllNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<LoadBalancer>> listAllNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -185,9 +189,10 @@ public interface LoadBalancersOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<LoadBalancer>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.

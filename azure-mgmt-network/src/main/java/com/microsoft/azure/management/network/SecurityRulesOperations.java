@@ -85,9 +85,10 @@ public interface SecurityRulesOperations {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the SecurityRule object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<SecurityRule> get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws ServiceException;
+    ServiceResponse<SecurityRule> get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws ServiceException, IOException;
 
     /**
      * The Get NetworkSecurityRule operation retreives information about the specified network security rule.
@@ -132,9 +133,10 @@ public interface SecurityRulesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;SecurityRule&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<SecurityRule>> list(String resourceGroupName, String networkSecurityGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<SecurityRule>> list(String resourceGroupName, String networkSecurityGroupName) throws ServiceException, IOException;
 
     /**
      * The List network security rule opertion retrieves all the security rules in a network security group.
@@ -151,9 +153,10 @@ public interface SecurityRulesOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;SecurityRule&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<SecurityRule>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<SecurityRule>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List network security rule opertion retrieves all the security rules in a network security group.

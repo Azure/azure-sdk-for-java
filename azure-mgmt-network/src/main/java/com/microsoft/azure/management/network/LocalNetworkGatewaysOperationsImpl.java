@@ -104,7 +104,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
      * @return the LocalNetworkGateway object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<LocalNetworkGateway> get(String resourceGroupName, String localNetworkGatewayName) throws ServiceException {
+    public ServiceResponse<LocalNetworkGateway> get(String resourceGroupName, String localNetworkGatewayName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -121,14 +121,8 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, localNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, localNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -165,7 +159,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -173,7 +167,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
         return call;
     }
 
-    private ServiceResponse<LocalNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<LocalNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<LocalNetworkGateway>(new AzureJacksonUtils())
                 .register(200, new TypeToken<LocalNetworkGateway>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -238,7 +232,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
      * @return the PageImpl&lt;LocalNetworkGateway&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<LocalNetworkGateway>> list(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<PageImpl<LocalNetworkGateway>> list(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -251,14 +245,8 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -289,7 +277,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -297,7 +285,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
         return call;
     }
 
-    private ServiceResponse<PageImpl<LocalNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<LocalNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGateway>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<LocalNetworkGateway>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -311,19 +299,13 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
      * @return the PageImpl&lt;LocalNetworkGateway&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<LocalNetworkGateway>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<LocalNetworkGateway>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -344,7 +326,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -352,7 +334,7 @@ public class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGatewaysO
         return call;
     }
 
-    private ServiceResponse<PageImpl<LocalNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<LocalNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGateway>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<LocalNetworkGateway>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -66,9 +67,10 @@ public interface AvailabilitySetsOperations {
      * @param name Parameters supplied to the Create Availability Set operation.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the AvailabilitySet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<AvailabilitySet> createOrUpdate(String resourceGroupName, String name, AvailabilitySet parameters) throws ServiceException;
+    ServiceResponse<AvailabilitySet> createOrUpdate(String resourceGroupName, String name, AvailabilitySet parameters) throws ServiceException, IOException;
 
     /**
      * The operation to create or update the availability set.
@@ -87,9 +89,10 @@ public interface AvailabilitySetsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws ServiceException;
+    ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException;
 
     /**
      * The operation to delete the availability set.
@@ -107,9 +110,10 @@ public interface AvailabilitySetsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the AvailabilitySet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<AvailabilitySet> get(String resourceGroupName, String availabilitySetName) throws ServiceException;
+    ServiceResponse<AvailabilitySet> get(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException;
 
     /**
      * The operation to get the availability set.
@@ -126,9 +130,10 @@ public interface AvailabilitySetsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the AvailabilitySetListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<AvailabilitySetListResult> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<AvailabilitySetListResult> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The operation to list the availability sets.
@@ -145,9 +150,10 @@ public interface AvailabilitySetsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws ServiceException;
+    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException;
 
     /**
      * Lists virtual-machine-sizes available to be used for an availability set.
@@ -164,9 +170,10 @@ public interface AvailabilitySetsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the AvailabilitySetListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<AvailabilitySetListResult> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<AvailabilitySetListResult> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The operation to list the availability sets.
@@ -182,9 +189,10 @@ public interface AvailabilitySetsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * Lists virtual-machine-sizes available to be used for an availability set.

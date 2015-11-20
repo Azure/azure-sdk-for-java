@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import java.util.List;
 import retrofit.Call;
 import retrofit.http.GET;
@@ -51,9 +52,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param type the String value
      * @param version the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineExtensionImage object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws ServiceException;
+    ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws ServiceException, IOException;
 
     /**
      * Gets a virtual machine extension image.
@@ -73,9 +75,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param location the String value
      * @param publisherName the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws ServiceException;
+    ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws ServiceException, IOException;
 
     /**
      * Gets a list of virtual machine extension image types.
@@ -97,9 +100,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param top the Integer value
      * @param orderBy the String value
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws ServiceException;
+    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws ServiceException, IOException;
 
     /**
      * Gets a list of virtual machine extension image versions.

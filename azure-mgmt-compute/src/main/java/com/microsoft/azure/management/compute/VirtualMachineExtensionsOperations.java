@@ -104,9 +104,10 @@ public interface VirtualMachineExtensionsOperations {
      * @param vmExtensionName The name of the virtual machine extension.
      * @param expand The expand expression to apply on the operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualMachineExtension object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException;
+    ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException, IOException;
 
     /**
      * The operation to get the extension.

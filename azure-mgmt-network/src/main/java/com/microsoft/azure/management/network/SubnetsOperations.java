@@ -86,9 +86,10 @@ public interface SubnetsOperations {
      * @param subnetName The name of the subnet.
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the Subnet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException;
+    ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException;
 
     /**
      * The Get subnet operation retreives information about the specified subnet.
@@ -134,9 +135,10 @@ public interface SubnetsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;Subnet&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException;
+    ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.
@@ -153,9 +155,10 @@ public interface SubnetsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;Subnet&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.

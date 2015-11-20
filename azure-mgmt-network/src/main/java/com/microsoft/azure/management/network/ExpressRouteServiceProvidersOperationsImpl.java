@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -40,7 +41,7 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
      * @return the PageImpl&lt;ExpressRouteServiceProvider&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ExpressRouteServiceProvider>> list() throws ServiceException {
+    public ServiceResponse<PageImpl<ExpressRouteServiceProvider>> list() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -49,14 +50,8 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -81,7 +76,7 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -89,7 +84,7 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteServiceProvider>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ExpressRouteServiceProvider>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -103,19 +98,13 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
      * @return the PageImpl&lt;ExpressRouteServiceProvider&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -136,7 +125,7 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -144,7 +133,7 @@ public class ExpressRouteServiceProvidersOperationsImpl implements ExpressRouteS
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteServiceProvider>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ExpressRouteServiceProvider>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

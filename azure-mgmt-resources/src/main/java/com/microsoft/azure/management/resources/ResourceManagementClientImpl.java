@@ -123,94 +123,76 @@ public class ResourceManagementClientImpl extends AzureServiceClient implements 
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private DeploymentsOperations deployments;
-
     /**
      * Gets the DeploymentsOperations object to access its operations.
      * @return the deployments value.
      */
     public DeploymentsOperations getDeployments() {
-        return this.deployments;
+        return new DeploymentsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private ProvidersOperations providers;
 
     /**
      * Gets the ProvidersOperations object to access its operations.
      * @return the providers value.
      */
     public ProvidersOperations getProviders() {
-        return this.providers;
+        return new ProvidersOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private ResourceGroupsOperations resourceGroups;
 
     /**
      * Gets the ResourceGroupsOperations object to access its operations.
      * @return the resourceGroups value.
      */
     public ResourceGroupsOperations getResourceGroups() {
-        return this.resourceGroups;
+        return new ResourceGroupsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private ResourcesOperations resources;
 
     /**
      * Gets the ResourcesOperations object to access its operations.
      * @return the resources value.
      */
     public ResourcesOperations getResources() {
-        return this.resources;
+        return new ResourcesOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private TagsOperations tags;
 
     /**
      * Gets the TagsOperations object to access its operations.
      * @return the tags value.
      */
     public TagsOperations getTags() {
-        return this.tags;
+        return new TagsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private DeploymentOperationsOperations deploymentOperations;
 
     /**
      * Gets the DeploymentOperationsOperations object to access its operations.
      * @return the deploymentOperations value.
      */
     public DeploymentOperationsOperations getDeploymentOperations() {
-        return this.deploymentOperations;
+        return new DeploymentOperationsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private ResourceProviderOperationDetailsOperations resourceProviderOperationDetails;
 
     /**
      * Gets the ResourceProviderOperationDetailsOperations object to access its operations.
      * @return the resourceProviderOperationDetails value.
      */
     public ResourceProviderOperationDetailsOperations getResourceProviderOperationDetails() {
-        return this.resourceProviderOperationDetails;
+        return new ResourceProviderOperationDetailsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private PolicyDefinitionsOperations policyDefinitions;
 
     /**
      * Gets the PolicyDefinitionsOperations object to access its operations.
      * @return the policyDefinitions value.
      */
     public PolicyDefinitionsOperations getPolicyDefinitions() {
-        return this.policyDefinitions;
+        return new PolicyDefinitionsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private PolicyAssignmentsOperations policyAssignments;
 
     /**
      * Gets the PolicyAssignmentsOperations object to access its operations.
      * @return the policyAssignments value.
      */
     public PolicyAssignmentsOperations getPolicyAssignments() {
-        return this.policyAssignments;
+        return new PolicyAssignmentsOperationsImpl(this.retrofitBuilder.build(), this);
     }
 
     /**
@@ -276,15 +258,6 @@ public class ResourceManagementClientImpl extends AzureServiceClient implements 
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.deployments = new DeploymentsOperationsImpl(retrofit, this);
-        this.providers = new ProvidersOperationsImpl(retrofit, this);
-        this.resourceGroups = new ResourceGroupsOperationsImpl(retrofit, this);
-        this.resources = new ResourcesOperationsImpl(retrofit, this);
-        this.tags = new TagsOperationsImpl(retrofit, this);
-        this.deploymentOperations = new DeploymentOperationsOperationsImpl(retrofit, this);
-        this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsOperationsImpl(retrofit, this);
-        this.policyDefinitions = new PolicyDefinitionsOperationsImpl(retrofit, this);
-        this.policyAssignments = new PolicyAssignmentsOperationsImpl(retrofit, this);
+        this.retrofitBuilder = retrofitBuilder.baseUrl(baseUri);
     }
 }

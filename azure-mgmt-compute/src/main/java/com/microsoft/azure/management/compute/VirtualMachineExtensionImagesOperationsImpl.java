@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import java.util.List;
 import retrofit.Call;
 import retrofit.Response;
@@ -46,7 +47,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
      * @return the VirtualMachineExtensionImage object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws ServiceException {
+    public ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws ServiceException, IOException {
         if (location == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -71,14 +72,8 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(location, publisherName, type, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(location, publisherName, type, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -127,7 +122,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -135,7 +130,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<VirtualMachineExtensionImage> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineExtensionImage> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineExtensionImage>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineExtensionImage>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -150,7 +145,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
      * @return the List&lt;VirtualMachineImageResource&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws ServiceException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws ServiceException, IOException {
         if (location == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -167,14 +162,8 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listTypes(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listTypesDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listTypes(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listTypesDelegate(call.execute(), null);
     }
 
     /**
@@ -211,7 +200,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listTypesDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -219,7 +208,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listTypesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<List<VirtualMachineImageResource>> listTypesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -238,7 +227,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
      * @return the List&lt;VirtualMachineImageResource&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws ServiceException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws ServiceException, IOException {
         if (location == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -259,14 +248,8 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, orderBy, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listVersionsDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, orderBy, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listVersionsDelegate(call.execute(), null);
     }
 
     /**
@@ -312,7 +295,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listVersionsDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -320,7 +303,7 @@ public class VirtualMachineExtensionImagesOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listVersionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<List<VirtualMachineImageResource>> listVersionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

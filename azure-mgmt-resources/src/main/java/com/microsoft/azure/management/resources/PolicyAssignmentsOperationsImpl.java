@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -47,7 +48,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -76,14 +77,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listForResourceDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listForResourceDelegate(call.execute(), null);
     }
 
     /**
@@ -139,7 +134,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -147,7 +142,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -162,7 +157,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -175,14 +170,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listForResourceGroupDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listForResourceGroupDelegate(call.execute(), null);
     }
 
     /**
@@ -214,7 +203,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceGroupDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -222,7 +211,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -237,7 +226,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PolicyAssignment object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException {
+    public ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException, IOException {
         if (scope == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -254,14 +243,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.delete(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.delete(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDelegate(call.execute(), null);
     }
 
     /**
@@ -298,7 +281,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -306,7 +289,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PolicyAssignment> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -322,7 +305,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PolicyAssignment object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException {
+    public ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException, IOException {
         if (scope == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -344,14 +327,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.create(scope, policyAssignmentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.create(scope, policyAssignmentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createDelegate(call.execute(), null);
     }
 
     /**
@@ -395,7 +372,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -403,7 +380,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> createDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PolicyAssignment> createDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
                 .register(201, new TypeToken<PolicyAssignment>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -418,7 +395,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PolicyAssignment object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException {
+    public ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException, IOException {
         if (scope == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -435,14 +412,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -479,7 +450,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -487,7 +458,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PolicyAssignment> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -501,7 +472,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PolicyAssignment object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException {
+    public ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException, IOException {
         if (policyAssignmentId == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
@@ -514,14 +485,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.deleteById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteByIdDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.deleteById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteByIdDelegate(call.execute(), null);
     }
 
     /**
@@ -552,7 +517,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteByIdDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -560,7 +525,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> deleteByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PolicyAssignment> deleteByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -575,7 +540,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PolicyAssignment object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException {
+    public ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException, IOException {
         if (policyAssignmentId == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
@@ -593,14 +558,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createById(policyAssignmentId, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createByIdDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createById(policyAssignmentId, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createByIdDelegate(call.execute(), null);
     }
 
     /**
@@ -638,7 +597,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createByIdDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -646,7 +605,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> createByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PolicyAssignment> createByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
                 .register(201, new TypeToken<PolicyAssignment>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -660,7 +619,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PolicyAssignment object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException {
+    public ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException, IOException {
         if (policyAssignmentId == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
@@ -673,14 +632,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.getById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getByIdDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.getById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getByIdDelegate(call.execute(), null);
     }
 
     /**
@@ -711,7 +664,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getByIdDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -719,7 +672,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> getByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PolicyAssignment> getByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -733,7 +686,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -742,14 +695,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -775,7 +722,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -783,7 +730,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -798,7 +745,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException, IOException {
         if (scope == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -811,14 +758,8 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listForScopeDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listForScopeDelegate(call.execute(), null);
     }
 
     /**
@@ -850,7 +791,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForScopeDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -858,7 +799,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -872,19 +813,13 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listForResourceNext(nextPageLink, this.client.getAcceptLanguage());
-            return listForResourceNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listForResourceNext(nextPageLink, this.client.getAcceptLanguage());
+        return listForResourceNextDelegate(call.execute(), null);
     }
 
     /**
@@ -905,7 +840,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -913,7 +848,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -927,19 +862,13 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listForResourceGroupNext(nextPageLink, this.client.getAcceptLanguage());
-            return listForResourceGroupNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listForResourceGroupNext(nextPageLink, this.client.getAcceptLanguage());
+        return listForResourceGroupNextDelegate(call.execute(), null);
     }
 
     /**
@@ -960,7 +889,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceGroupNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -968,7 +897,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -982,19 +911,13 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1015,7 +938,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1023,7 +946,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -1037,19 +960,13 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listForScopeNext(nextPageLink, this.client.getAcceptLanguage());
-            return listForScopeNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listForScopeNext(nextPageLink, this.client.getAcceptLanguage());
+        return listForScopeNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1070,7 +987,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForScopeNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1078,7 +995,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

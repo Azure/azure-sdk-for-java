@@ -123,24 +123,20 @@ public class StorageManagementClientImpl extends AzureServiceClient implements S
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private StorageAccountsOperations storageAccounts;
-
     /**
      * Gets the StorageAccountsOperations object to access its operations.
      * @return the storageAccounts value.
      */
     public StorageAccountsOperations getStorageAccounts() {
-        return this.storageAccounts;
+        return new StorageAccountsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private UsageOperations usage;
 
     /**
      * Gets the UsageOperations object to access its operations.
      * @return the usage value.
      */
     public UsageOperations getUsage() {
-        return this.usage;
+        return new UsageOperationsImpl(this.retrofitBuilder.build(), this);
     }
 
     /**
@@ -206,8 +202,6 @@ public class StorageManagementClientImpl extends AzureServiceClient implements S
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.storageAccounts = new StorageAccountsOperationsImpl(retrofit, this);
-        this.usage = new UsageOperationsImpl(retrofit, this);
+        this.retrofitBuilder = retrofitBuilder.baseUrl(baseUri);
     }
 }

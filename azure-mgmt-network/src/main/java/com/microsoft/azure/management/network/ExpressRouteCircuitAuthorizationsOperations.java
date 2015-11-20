@@ -85,9 +85,10 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ExpressRouteCircuitAuthorization object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuitAuthorization> get(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException;
+    ServiceResponse<ExpressRouteCircuitAuthorization> get(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException, IOException;
 
     /**
      * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
@@ -132,9 +133,10 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the curcuit.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitAuthorization&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> list(String resourceGroupName, String circuitName) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException;
 
     /**
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
@@ -151,9 +153,10 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;ExpressRouteCircuitAuthorization&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.

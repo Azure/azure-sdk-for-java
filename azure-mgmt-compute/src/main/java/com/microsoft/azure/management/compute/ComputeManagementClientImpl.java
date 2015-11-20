@@ -123,94 +123,76 @@ public class ComputeManagementClientImpl extends AzureServiceClient implements C
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
-    private AvailabilitySetsOperations availabilitySets;
-
     /**
      * Gets the AvailabilitySetsOperations object to access its operations.
      * @return the availabilitySets value.
      */
     public AvailabilitySetsOperations getAvailabilitySets() {
-        return this.availabilitySets;
+        return new AvailabilitySetsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachineExtensionImagesOperations virtualMachineExtensionImages;
 
     /**
      * Gets the VirtualMachineExtensionImagesOperations object to access its operations.
      * @return the virtualMachineExtensionImages value.
      */
     public VirtualMachineExtensionImagesOperations getVirtualMachineExtensionImages() {
-        return this.virtualMachineExtensionImages;
+        return new VirtualMachineExtensionImagesOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachineExtensionsOperations virtualMachineExtensions;
 
     /**
      * Gets the VirtualMachineExtensionsOperations object to access its operations.
      * @return the virtualMachineExtensions value.
      */
     public VirtualMachineExtensionsOperations getVirtualMachineExtensions() {
-        return this.virtualMachineExtensions;
+        return new VirtualMachineExtensionsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachineImagesOperations virtualMachineImages;
 
     /**
      * Gets the VirtualMachineImagesOperations object to access its operations.
      * @return the virtualMachineImages value.
      */
     public VirtualMachineImagesOperations getVirtualMachineImages() {
-        return this.virtualMachineImages;
+        return new VirtualMachineImagesOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private UsageOperations usage;
 
     /**
      * Gets the UsageOperations object to access its operations.
      * @return the usage value.
      */
     public UsageOperations getUsage() {
-        return this.usage;
+        return new UsageOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachineSizesOperations virtualMachineSizes;
 
     /**
      * Gets the VirtualMachineSizesOperations object to access its operations.
      * @return the virtualMachineSizes value.
      */
     public VirtualMachineSizesOperations getVirtualMachineSizes() {
-        return this.virtualMachineSizes;
+        return new VirtualMachineSizesOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachinesOperations virtualMachines;
 
     /**
      * Gets the VirtualMachinesOperations object to access its operations.
      * @return the virtualMachines value.
      */
     public VirtualMachinesOperations getVirtualMachines() {
-        return this.virtualMachines;
+        return new VirtualMachinesOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachineScaleSetsOperations virtualMachineScaleSets;
 
     /**
      * Gets the VirtualMachineScaleSetsOperations object to access its operations.
      * @return the virtualMachineScaleSets value.
      */
     public VirtualMachineScaleSetsOperations getVirtualMachineScaleSets() {
-        return this.virtualMachineScaleSets;
+        return new VirtualMachineScaleSetsOperationsImpl(this.retrofitBuilder.build(), this);
     }
-
-    private VirtualMachineScaleSetVMsOperations virtualMachineScaleSetVMs;
 
     /**
      * Gets the VirtualMachineScaleSetVMsOperations object to access its operations.
      * @return the virtualMachineScaleSetVMs value.
      */
     public VirtualMachineScaleSetVMsOperations getVirtualMachineScaleSetVMs() {
-        return this.virtualMachineScaleSetVMs;
+        return new VirtualMachineScaleSetVMsOperationsImpl(this.retrofitBuilder.build(), this);
     }
 
     /**
@@ -276,15 +258,6 @@ public class ComputeManagementClientImpl extends AzureServiceClient implements C
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
-        Retrofit retrofit = retrofitBuilder.baseUrl(baseUri).build();
-        this.availabilitySets = new AvailabilitySetsOperationsImpl(retrofit, this);
-        this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesOperationsImpl(retrofit, this);
-        this.virtualMachineExtensions = new VirtualMachineExtensionsOperationsImpl(retrofit, this);
-        this.virtualMachineImages = new VirtualMachineImagesOperationsImpl(retrofit, this);
-        this.usage = new UsageOperationsImpl(retrofit, this);
-        this.virtualMachineSizes = new VirtualMachineSizesOperationsImpl(retrofit, this);
-        this.virtualMachines = new VirtualMachinesOperationsImpl(retrofit, this);
-        this.virtualMachineScaleSets = new VirtualMachineScaleSetsOperationsImpl(retrofit, this);
-        this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsOperationsImpl(retrofit, this);
+        this.retrofitBuilder = retrofitBuilder.baseUrl(baseUri);
     }
 }

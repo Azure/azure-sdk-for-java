@@ -104,7 +104,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
      * @return the ExpressRouteCircuitAuthorization object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ExpressRouteCircuitAuthorization> get(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException {
+    public ServiceResponse<ExpressRouteCircuitAuthorization> get(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -125,14 +125,8 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -175,7 +169,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -183,7 +177,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
         return call;
     }
 
-    private ServiceResponse<ExpressRouteCircuitAuthorization> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ExpressRouteCircuitAuthorization> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorization>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorization>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -262,7 +256,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
      * @return the PageImpl&lt;ExpressRouteCircuitAuthorization&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> list(String resourceGroupName, String circuitName) throws ServiceException {
+    public ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -279,14 +273,8 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -323,7 +311,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -331,7 +319,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorization>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorization>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -345,19 +333,13 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
      * @return the PageImpl&lt;ExpressRouteCircuitAuthorization&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -378,7 +360,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -386,7 +368,7 @@ public class ExpressRouteCircuitAuthorizationsOperationsImpl implements ExpressR
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorization>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorization>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

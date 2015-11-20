@@ -102,7 +102,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @return the Boolean object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws ServiceException {
+    public ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -119,14 +119,8 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<Void> call = service.checkExistence(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return checkExistenceDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<Void> call = service.checkExistence(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return checkExistenceDelegate(call.execute(), null);
     }
 
     /**
@@ -163,7 +157,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             public void onResponse(Response<Void> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(checkExistenceDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -171,7 +165,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Boolean>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(404, new TypeToken<Void>(){}.getType())
@@ -245,7 +239,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @return the DeploymentExtended object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<DeploymentExtended> get(String resourceGroupName, String deploymentName) throws ServiceException {
+    public ServiceResponse<DeploymentExtended> get(String resourceGroupName, String deploymentName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -262,14 +256,8 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -306,7 +294,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -314,7 +302,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentExtended> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<DeploymentExtended> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<DeploymentExtended>(new AzureJacksonUtils())
                 .register(200, new TypeToken<DeploymentExtended>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -328,7 +316,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @param deploymentName The name of the deployment.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws ServiceException {
+    public ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -345,14 +333,8 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.cancel(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return cancelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.cancel(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return cancelDelegate(call.execute(), null);
     }
 
     /**
@@ -389,7 +371,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(cancelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -397,7 +379,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .build(response, retrofit);
@@ -412,7 +394,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @return the DeploymentValidateResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<DeploymentValidateResult> validate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException {
+    public ServiceResponse<DeploymentValidateResult> validate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -434,14 +416,8 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.validate(resourceGroupName, deploymentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return validateDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.validate(resourceGroupName, deploymentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return validateDelegate(call.execute(), null);
     }
 
     /**
@@ -485,7 +461,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(validateDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -493,7 +469,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentValidateResult> validateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<DeploymentValidateResult> validateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<DeploymentValidateResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<DeploymentValidateResult>(){}.getType())
                 .register(400, new TypeToken<DeploymentValidateResult>(){}.getType())
@@ -510,7 +486,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @return the PageImpl&lt;DeploymentExtended&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<DeploymentExtended>> list(String resourceGroupName, DeploymentExtendedFilter filter, Integer top) throws ServiceException {
+    public ServiceResponse<PageImpl<DeploymentExtended>> list(String resourceGroupName, DeploymentExtendedFilter filter, Integer top) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -523,14 +499,8 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -563,7 +533,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -571,7 +541,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<DeploymentExtended>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<DeploymentExtended>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<DeploymentExtended>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -585,19 +555,13 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @return the PageImpl&lt;DeploymentExtended&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<DeploymentExtended>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<DeploymentExtended>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -618,7 +582,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -626,7 +590,7 @@ public class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<DeploymentExtended>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<DeploymentExtended>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<DeploymentExtended>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

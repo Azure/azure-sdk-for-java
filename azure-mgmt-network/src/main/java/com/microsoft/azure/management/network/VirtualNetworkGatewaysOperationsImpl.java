@@ -104,7 +104,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * @return the VirtualNetworkGateway object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException {
+    public ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -121,14 +121,8 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -165,7 +159,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -173,7 +167,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<VirtualNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualNetworkGateway>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualNetworkGateway>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -238,7 +232,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -251,14 +245,8 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -289,7 +277,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -297,7 +285,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGateway>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -369,19 +357,13 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -402,7 +384,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -410,7 +392,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGateway>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

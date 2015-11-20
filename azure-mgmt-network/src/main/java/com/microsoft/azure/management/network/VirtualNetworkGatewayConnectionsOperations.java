@@ -97,9 +97,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the VirtualNetworkGatewayConnection object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGatewayConnection> get(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws ServiceException;
+    ServiceResponse<VirtualNetworkGatewayConnection> get(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws ServiceException, IOException;
 
     /**
      * The Get VirtualNetworkGatewayConnection operation retrieves information about the specified virtual network gateway connection through Network resource provider.
@@ -139,9 +140,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param connectionSharedKeyName The virtual network gateway connection shared key name.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the ConnectionSharedKeyResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ConnectionSharedKeyResult> getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws ServiceException;
+    ServiceResponse<ConnectionSharedKeyResult> getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws ServiceException, IOException;
 
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection shared key through Network resource provider.
@@ -158,9 +160,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetworkGatewayConnection&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> list(String resourceGroupName) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> list(String resourceGroupName) throws ServiceException, IOException;
 
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
@@ -224,9 +227,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
      * @return the PageImpl&lt;VirtualNetworkGatewayConnection&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNext(String nextPageLink) throws ServiceException;
+    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNext(String nextPageLink) throws ServiceException, IOException;
 
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.

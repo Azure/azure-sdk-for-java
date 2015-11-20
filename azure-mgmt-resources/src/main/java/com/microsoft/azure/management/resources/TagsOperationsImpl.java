@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -42,7 +43,7 @@ public class TagsOperationsImpl implements TagsOperations {
      * @param tagValue The value of the tag.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException {
+    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException, IOException {
         if (tagName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -59,14 +60,8 @@ public class TagsOperationsImpl implements TagsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.deleteValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteValueDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.deleteValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteValueDelegate(call.execute(), null);
     }
 
     /**
@@ -103,7 +98,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteValueDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -111,7 +106,7 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>(){}.getType())
                 .register(204, new TypeToken<Void>(){}.getType())
@@ -126,7 +121,7 @@ public class TagsOperationsImpl implements TagsOperations {
      * @return the TagValue object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException {
+    public ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException, IOException {
         if (tagName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -143,14 +138,8 @@ public class TagsOperationsImpl implements TagsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.createOrUpdateValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateValueDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdateValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateValueDelegate(call.execute(), null);
     }
 
     /**
@@ -187,7 +176,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateValueDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -195,7 +184,7 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<TagValue> createOrUpdateValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<TagValue> createOrUpdateValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<TagValue>(new AzureJacksonUtils())
                 .register(200, new TypeToken<TagValue>(){}.getType())
                 .register(201, new TypeToken<TagValue>(){}.getType())
@@ -210,7 +199,7 @@ public class TagsOperationsImpl implements TagsOperations {
      * @return the TagDetails object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException {
+    public ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException, IOException {
         if (tagName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -223,14 +212,8 @@ public class TagsOperationsImpl implements TagsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.createOrUpdate(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdate(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateDelegate(call.execute(), null);
     }
 
     /**
@@ -261,7 +244,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -269,7 +252,7 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<TagDetails> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<TagDetails> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<TagDetails>(new AzureJacksonUtils())
                 .register(200, new TypeToken<TagDetails>(){}.getType())
                 .register(201, new TypeToken<TagDetails>(){}.getType())
@@ -283,7 +266,7 @@ public class TagsOperationsImpl implements TagsOperations {
      * @param tagName The name of the tag.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> delete(String tagName) throws ServiceException {
+    public ServiceResponse<Void> delete(String tagName) throws ServiceException, IOException {
         if (tagName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -296,14 +279,8 @@ public class TagsOperationsImpl implements TagsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.delete(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.delete(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDelegate(call.execute(), null);
     }
 
     /**
@@ -334,7 +311,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -342,7 +319,7 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>(){}.getType())
                 .register(204, new TypeToken<Void>(){}.getType())
@@ -355,7 +332,7 @@ public class TagsOperationsImpl implements TagsOperations {
      * @return the PageImpl&lt;TagDetails&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException {
+    public ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -364,14 +341,8 @@ public class TagsOperationsImpl implements TagsOperations {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -396,7 +367,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -404,7 +375,7 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<TagDetails>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<TagDetails>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<TagDetails>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<TagDetails>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -418,19 +389,13 @@ public class TagsOperationsImpl implements TagsOperations {
      * @return the PageImpl&lt;TagDetails&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -451,7 +416,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -459,7 +424,7 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<TagDetails>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<TagDetails>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<TagDetails>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<TagDetails>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

@@ -213,7 +213,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the VirtualMachineScaleSet object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSet> get(String resourceGroupName, String vmScaleSetName) throws ServiceException {
+    public ServiceResponse<VirtualMachineScaleSet> get(String resourceGroupName, String vmScaleSetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -230,14 +230,8 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -274,7 +268,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -282,7 +276,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineScaleSet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSet>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineScaleSet>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -355,7 +349,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the VirtualMachineScaleSetInstanceView object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName) throws ServiceException {
+    public ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -372,14 +366,8 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.getInstanceView(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getInstanceViewDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.getInstanceView(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getInstanceViewDelegate(call.execute(), null);
     }
 
     /**
@@ -416,7 +404,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getInstanceViewDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -424,7 +412,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceViewDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceViewDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSetInstanceView>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineScaleSetInstanceView>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -438,7 +426,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the VirtualMachineScaleSetListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetListResult> list(String resourceGroupName) throws ServiceException {
+    public ServiceResponse<VirtualMachineScaleSetListResult> list(String resourceGroupName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -451,14 +439,8 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute(), null);
     }
 
     /**
@@ -489,7 +471,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -497,7 +479,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineScaleSetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSetListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineScaleSetListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -510,7 +492,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the PageImpl&lt;VirtualMachineScaleSet&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAll() throws ServiceException {
+    public ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAll() throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -519,14 +501,8 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAllDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAllDelegate(call.execute(), null);
     }
 
     /**
@@ -551,7 +527,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -559,7 +535,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -574,7 +550,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the VirtualMachineScaleSetListSkusResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkus(String resourceGroupName, String vmScaleSetName) throws ServiceException {
+    public ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkus(String resourceGroupName, String vmScaleSetName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -591,14 +567,8 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listSkus(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listSkusDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listSkus(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listSkusDelegate(call.execute(), null);
     }
 
     /**
@@ -635,7 +605,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listSkusDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -643,7 +613,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSetListSkusResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineScaleSetListSkusResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -874,19 +844,13 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the VirtualMachineScaleSetListResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetListResult> listNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<VirtualMachineScaleSetListResult> listNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -907,7 +871,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -915,7 +879,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineScaleSetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSetListResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineScaleSetListResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -929,19 +893,13 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the PageImpl&lt;VirtualMachineScaleSet&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAllNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAllNextDelegate(call.execute(), null);
     }
 
     /**
@@ -962,7 +920,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -970,7 +928,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -984,19 +942,13 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
      * @return the VirtualMachineScaleSetListSkusResult object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listSkusNext(nextPageLink, this.client.getAcceptLanguage());
-            return listSkusNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listSkusNext(nextPageLink, this.client.getAcceptLanguage());
+        return listSkusNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1017,7 +969,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listSkusNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1025,7 +977,7 @@ public class VirtualMachineScaleSetsOperationsImpl implements VirtualMachineScal
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSetListSkusResult>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineScaleSetListSkusResult>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())

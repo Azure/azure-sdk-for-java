@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
+import java.io.IOException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -45,7 +46,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -67,14 +68,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateAtResourceGroupLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateAtResourceGroupLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -118,7 +113,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateAtResourceGroupLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -126,7 +121,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ManagementLockObject>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ManagementLockObject>(){}.getType())
                 .register(201, new TypeToken<ManagementLockObject>(){}.getType())
@@ -147,7 +142,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -185,14 +180,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateAtResourceLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateAtResourceLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -260,7 +249,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateAtResourceLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -268,7 +257,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ManagementLockObject>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ManagementLockObject>(){}.getType())
                 .register(201, new TypeToken<ManagementLockObject>(){}.getType())
@@ -287,7 +276,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param lockName The name of lock.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) throws ServiceException {
+    public ServiceResponse<Void> deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -320,14 +309,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteAtResourceLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteAtResourceLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -388,7 +371,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteAtResourceLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -396,7 +379,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<Void> deleteAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(200, new TypeToken<Void>(){}.getType())
@@ -412,7 +395,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException, IOException {
         if (lockName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter lockName is required and cannot be null."));
@@ -430,14 +413,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters);
-        try {
-            Call<ResponseBody> call = service.createOrUpdateAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return createOrUpdateAtSubscriptionLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.createOrUpdateAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateAtSubscriptionLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -475,7 +452,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateAtSubscriptionLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -483,7 +460,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ManagementLockObject>(new AzureJacksonUtils())
                 .register(201, new TypeToken<ManagementLockObject>(){}.getType())
                 .register(200, new TypeToken<ManagementLockObject>(){}.getType())
@@ -497,7 +474,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param lockName The name of lock.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> deleteAtSubscriptionLevel(String lockName) throws ServiceException {
+    public ServiceResponse<Void> deleteAtSubscriptionLevel(String lockName) throws ServiceException, IOException {
         if (lockName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter lockName is required and cannot be null."));
@@ -510,14 +487,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.deleteAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteAtSubscriptionLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.deleteAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteAtSubscriptionLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -548,7 +519,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteAtSubscriptionLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -556,7 +527,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<Void> deleteAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(200, new TypeToken<Void>(){}.getType())
@@ -571,7 +542,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the ManagementLockObject object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> get(String lockName) throws ServiceException {
+    public ServiceResponse<ManagementLockObject> get(String lockName) throws ServiceException, IOException {
         if (lockName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter lockName is required and cannot be null."));
@@ -584,14 +555,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.get(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return getDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.get(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDelegate(call.execute(), null);
     }
 
     /**
@@ -622,7 +587,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -630,7 +595,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<ManagementLockObject> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<ManagementLockObject>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ManagementLockObject>(){}.getType())
                 .register(204, new TypeToken<ManagementLockObject>(){}.getType())
@@ -645,7 +610,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param lockName The name of lock.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Void> deleteAtResourceGroupLevel(String resourceGroup, String lockName) throws ServiceException {
+    public ServiceResponse<Void> deleteAtResourceGroupLevel(String resourceGroup, String lockName) throws ServiceException, IOException {
         if (resourceGroup == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -662,14 +627,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.deleteAtResourceGroupLevel(resourceGroup, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return deleteAtResourceGroupLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.deleteAtResourceGroupLevel(resourceGroup, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteAtResourceGroupLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -706,7 +665,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteAtResourceGroupLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -714,7 +673,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<Void> deleteAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<Void> deleteAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>(){}.getType())
                 .register(200, new TypeToken<Void>(){}.getType())
@@ -730,7 +689,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevel(String resourceGroupName, ManagementLockObject filter) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevel(String resourceGroupName, ManagementLockObject filter) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -743,14 +702,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAtResourceGroupLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAtResourceGroupLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -782,7 +735,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAtResourceGroupLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -790,7 +743,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -809,7 +762,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter) throws ServiceException, IOException {
         if (resourceGroupName == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -838,14 +791,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAtResourceLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAtResourceLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -901,7 +848,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAtResourceLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -909,7 +856,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -923,7 +870,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listNext(String nextLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listNext(String nextLink) throws ServiceException, IOException {
         if (nextLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -932,14 +879,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNext(nextLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
-            return listNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNext(nextLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        return listNextDelegate(call.execute(), null);
     }
 
     /**
@@ -965,7 +906,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -973,7 +914,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -987,7 +928,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevel(ManagementLockObject filter) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevel(ManagementLockObject filter) throws ServiceException, IOException {
         if (this.client.getSubscriptionId() == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
@@ -996,14 +937,8 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             throw new ServiceException(
                 new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
-            return listAtSubscriptionLevelDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listAtSubscriptionLevelDelegate(call.execute(), null);
     }
 
     /**
@@ -1029,7 +964,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAtSubscriptionLevelDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1037,7 +972,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -1051,19 +986,13 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAtResourceGroupLevelNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAtResourceGroupLevelNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAtResourceGroupLevelNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAtResourceGroupLevelNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1084,7 +1013,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAtResourceGroupLevelNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1092,7 +1021,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -1106,19 +1035,13 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAtResourceLevelNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAtResourceLevelNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAtResourceLevelNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAtResourceLevelNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1139,7 +1062,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAtResourceLevelNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1147,7 +1070,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -1161,19 +1084,13 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listNextNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listNextNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listNextNext(nextPageLink, this.client.getAcceptLanguage());
-            return listNextNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listNextNext(nextPageLink, this.client.getAcceptLanguage());
+        return listNextNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1194,7 +1111,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1202,7 +1119,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listNextNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listNextNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
@@ -1216,19 +1133,13 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
      * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNext(String nextPageLink) throws ServiceException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNext(String nextPageLink) throws ServiceException, IOException {
         if (nextPageLink == null) {
             throw new ServiceException(
                 new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
         }
-        try {
-            Call<ResponseBody> call = service.listAtSubscriptionLevelNext(nextPageLink, this.client.getAcceptLanguage());
-            return listAtSubscriptionLevelNextDelegate(call.execute(), null);
-        } catch (ServiceException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            throw new ServiceException(ex);
-        }
+        Call<ResponseBody> call = service.listAtSubscriptionLevelNext(nextPageLink, this.client.getAcceptLanguage());
+        return listAtSubscriptionLevelNextDelegate(call.execute(), null);
     }
 
     /**
@@ -1249,7 +1160,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAtSubscriptionLevelNextDelegate(response, retrofit));
-                } catch (ServiceException exception) {
+                } catch (ServiceException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -1257,7 +1168,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>(){}.getType())
                 .registerError(new TypeToken<CloudError>(){}.getType())
