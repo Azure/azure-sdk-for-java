@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-bom</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK</name>
@@ -38,7 +38,7 @@
   </scm>
 
   <properties>
-    <projectVersion>0.0.1-SNAPSHOT</projectVersion>
+    <projectVersion>1.0.0-SNAPSHOT</projectVersion>
   </properties>
 
   <developers>
@@ -47,6 +47,17 @@
       <name>Microsoft</name>
     </developer>
   </developers>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>adx-snapshots</id>
+      <name>Azure ADX Snapshots</name>
+      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
+
   <modules>
     <module>azure</module>
   </modules>
@@ -56,40 +67,16 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.2</version>
+          <version>2.5.3</version>
         </plugin>
-  			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-  			<plugin>
-  				<groupId>org.eclipse.m2e</groupId>
-  				<artifactId>lifecycle-mapping</artifactId>
-  				<version>1.0.0</version>
-  				<configuration>
-  					<lifecycleMappingMetadata>
-  						<pluginExecutions>
-  							<pluginExecution>
-  								<pluginExecutionFilter>
-  									<groupId>
-  										org.apache.maven.plugins
-  									</groupId>
-  									<artifactId>
-  										maven-checkstyle-plugin
-  									</artifactId>
-  									<versionRange>
-  										[2.11,)
-  									</versionRange>
-  									<goals>
-  										<goal>check</goal>
-  									</goals>
-  								</pluginExecutionFilter>
-  								<action>
-  									<ignore />
-  								</action>
-  							</pluginExecution>
-  						</pluginExecutions>
-  					</lifecycleMappingMetadata>
-  				</configuration>
-  			</plugin>
   		</plugins>
   	</pluginManagement>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ftp</artifactId>
+        <version>2.10</version>
+      </extension>
+    </extensions>
   </build>
 </project>
