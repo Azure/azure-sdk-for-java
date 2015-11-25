@@ -19,6 +19,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -71,10 +72,11 @@ public interface ResourcesOperations {
      * @param parameters move resources' parameters.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * Begin moving resources.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
@@ -93,9 +95,10 @@ public interface ResourcesOperations {
      * @param top Query parameters. If null is passed returns all resource groups.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<GenericResource>> list(GenericResourceFilter filter, Integer top) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<GenericResource>> list(GenericResourceFilter filter, Integer top) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get all of the resources under a subscription.
@@ -118,9 +121,10 @@ public interface ResourcesOperations {
      * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Boolean object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException;
+    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Checks whether resource exists.
@@ -147,9 +151,10 @@ public interface ResourcesOperations {
      * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException;
+    ServiceResponse<Void> delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Delete resource and all of its resources. 
@@ -177,9 +182,10 @@ public interface ResourcesOperations {
      * @param parameters Create or update resource parameters.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the GenericResource object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<GenericResource> createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResource parameters) throws ServiceException, IOException;
+    ServiceResponse<GenericResource> createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResource parameters) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Create a resource.
@@ -207,9 +213,10 @@ public interface ResourcesOperations {
      * @param apiVersion the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the GenericResource object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<GenericResource> get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException;
+    ServiceResponse<GenericResource> get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Returns a resource belonging to a resource group.
@@ -231,9 +238,10 @@ public interface ResourcesOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<GenericResource>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<GenericResource>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get all of the resources under a subscription.

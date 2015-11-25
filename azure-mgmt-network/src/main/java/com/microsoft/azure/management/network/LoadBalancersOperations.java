@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -67,10 +68,11 @@ public interface LoadBalancersOperations {
      * @param loadBalancerName The name of the loadBalancer.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String loadBalancerName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String loadBalancerName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete loadbalancer operation deletes the specified loadbalancer.
@@ -90,9 +92,10 @@ public interface LoadBalancersOperations {
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LoadBalancer object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName, String expand) throws ServiceException, IOException;
+    ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName, String expand) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface.
@@ -113,10 +116,11 @@ public interface LoadBalancersOperations {
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the LoadBalancer object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LoadBalancer> createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancer parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<LoadBalancer> createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancer parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put LoadBalancer operation creates/updates a LoadBalancer
@@ -134,9 +138,10 @@ public interface LoadBalancersOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> listAll() throws ServiceException, IOException;
+    ServiceResponse<PageImpl<LoadBalancer>> listAll() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -152,9 +157,10 @@ public interface LoadBalancersOperations {
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> list(String resourceGroupName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<LoadBalancer>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
@@ -171,9 +177,10 @@ public interface LoadBalancersOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> listAllNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<LoadBalancer>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -190,9 +197,10 @@ public interface LoadBalancersOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<LoadBalancer>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<LoadBalancer>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.

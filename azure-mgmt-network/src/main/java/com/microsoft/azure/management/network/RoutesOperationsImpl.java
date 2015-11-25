@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.Callback;
@@ -46,10 +47,11 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * @param routeName The name of the route.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, routeTableName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -101,29 +103,26 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Route object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException {
+    public ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (routeTableName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeTableName is required and cannot be null.");
         }
         if (routeName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter routeName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, routeTableName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -139,28 +138,23 @@ public class RoutesOperationsImpl implements RoutesOperations {
      */
     public Call<ResponseBody> getAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Route> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (routeTableName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter routeTableName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
             return null;
         }
         if (routeName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter routeName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(resourceGroupName, routeTableName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -193,10 +187,11 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * @param routeParameters Parameters supplied to the create/update routeoperation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Route object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<Route> createOrUpdate(String resourceGroupName, String routeTableName, String routeName, Route routeParameters) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Route> createOrUpdate(String resourceGroupName, String routeTableName, String routeName, Route routeParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, routeTableName, routeName, this.client.getSubscriptionId(), routeParameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<Route>() {}.getType());
     }
@@ -253,25 +248,23 @@ public class RoutesOperationsImpl implements RoutesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Route&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (routeTableName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeTableName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -286,23 +279,19 @@ public class RoutesOperationsImpl implements RoutesOperations {
      */
     public Call<ResponseBody> listAsync(String resourceGroupName, String routeTableName, final ServiceCallback<PageImpl<Route>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (routeTableName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter routeTableName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -330,13 +319,14 @@ public class RoutesOperationsImpl implements RoutesOperations {
      * The List network security rule opertion retrieves all the routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Route&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -350,8 +340,7 @@ public class RoutesOperationsImpl implements RoutesOperations {
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<Route>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

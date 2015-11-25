@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.util.List;
 import retrofit.Call;
 import retrofit.Response;
@@ -45,37 +46,32 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * @param offer the String value
      * @param skus the String value
      * @param version the String value
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineImage object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (publisherName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
         }
         if (offer == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter offer is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
         }
         if (skus == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter skus is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter skus is required and cannot be null.");
         }
         if (version == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter version is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter version is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(location, publisherName, offer, skus, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -93,38 +89,31 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      */
     public Call<ResponseBody> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImage> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
             return null;
         }
         if (offer == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter offer is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter offer is required and cannot be null."));
             return null;
         }
         if (skus == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter skus is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter skus is required and cannot be null."));
             return null;
         }
         if (version == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter version is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter version is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(location, publisherName, offer, skus, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -158,33 +147,29 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException, IOException {
+    public ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (publisherName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
         }
         if (offer == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter offer is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
         }
         if (skus == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter skus is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter skus is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -204,33 +189,27 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      */
     public Call<ResponseBody> listAsync(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
             return null;
         }
         if (offer == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter offer is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter offer is required and cannot be null."));
             return null;
         }
         if (skus == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter skus is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter skus is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -259,25 +238,23 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      *
      * @param location the String value
      * @param publisherName the String value
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException, IOException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (publisherName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listOffers(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listOffersDelegate(call.execute(), null);
@@ -292,23 +269,19 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      */
     public Call<ResponseBody> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listOffers(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -336,21 +309,20 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * Gets a list of virtual machine image publishers.
      *
      * @param location the String value
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException, IOException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listPublishers(location, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listPublishersDelegate(call.execute(), null);
@@ -364,18 +336,15 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      */
     public Call<ResponseBody> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listPublishers(location, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -405,29 +374,26 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * @param location the String value
      * @param publisherName the String value
      * @param offer the String value
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException, IOException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (publisherName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
         }
         if (offer == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter offer is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSkus(location, publisherName, offer, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listSkusDelegate(call.execute(), null);
@@ -443,28 +409,23 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      */
     public Call<ResponseBody> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter publisherName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
             return null;
         }
         if (offer == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter offer is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter offer is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listSkus(location, publisherName, offer, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());

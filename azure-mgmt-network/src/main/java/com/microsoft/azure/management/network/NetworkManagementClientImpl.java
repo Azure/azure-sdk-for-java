@@ -26,6 +26,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.util.UUID;
 import retrofit.Call;
 import retrofit.Response;
@@ -353,21 +354,20 @@ public class NetworkManagementClientImpl extends AzureServiceClient implements N
      *
      * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DnsNameAvailabilityResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location, String domainNameLabel) throws ServiceException, IOException {
+    public ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location, String domainNameLabel) throws ServiceException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null.");
         }
         if (this.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
         return checkDnsNameAvailabilityDelegate(call.execute(), null);
@@ -382,18 +382,15 @@ public class NetworkManagementClientImpl extends AzureServiceClient implements N
      */
     public Call<ResponseBody> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResult> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter location is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (this.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());

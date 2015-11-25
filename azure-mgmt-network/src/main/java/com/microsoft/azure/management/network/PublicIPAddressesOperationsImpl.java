@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.Callback;
@@ -45,10 +46,11 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      * @param publicIpAddressName The name of the subnet.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String publicIpAddressName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String publicIpAddressName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -95,25 +97,23 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PublicIPAddress object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName, String expand) throws ServiceException, IOException {
+    public ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName, String expand) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (publicIpAddressName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -129,23 +129,19 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      */
     public Call<ResponseBody> getAsync(String resourceGroupName, String publicIpAddressName, String expand, final ServiceCallback<PublicIPAddress> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (publicIpAddressName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
@@ -177,10 +173,11 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the PublicIPAddress object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<PublicIPAddress> createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddress parameters) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<PublicIPAddress> createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddress parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<PublicIPAddress>() {}.getType());
     }
@@ -230,17 +227,17 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
      *
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PublicIPAddress>> listAll() throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PublicIPAddress>> listAll() throws ServiceException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAllDelegate(call.execute(), null);
@@ -253,13 +250,11 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      */
     public Call<ResponseBody> listAllAsync(final ServiceCallback<PageImpl<PublicIPAddress>> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -287,21 +282,20 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PublicIPAddress>> list(String resourceGroupName) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PublicIPAddress>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -315,18 +309,15 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      */
     public Call<ResponseBody> listAsync(String resourceGroupName, final ServiceCallback<PageImpl<PublicIPAddress>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -354,13 +345,14 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PublicIPAddress>> listAllNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PublicIPAddress>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         return listAllNextDelegate(call.execute(), null);
@@ -374,8 +366,7 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      */
     public Call<ResponseBody> listAllNextAsync(String nextPageLink, final ServiceCallback<PageImpl<PublicIPAddress>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
@@ -403,13 +394,14 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PublicIPAddress>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PublicIPAddress>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -423,8 +415,7 @@ public class PublicIPAddressesOperationsImpl implements PublicIPAddressesOperati
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<PublicIPAddress>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

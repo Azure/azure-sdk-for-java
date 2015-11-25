@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -45,9 +46,10 @@ public interface UsageOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UsageListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<UsageListResult> list() throws ServiceException, IOException;
+    ServiceResponse<UsageListResult> list() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
@@ -63,9 +65,10 @@ public interface UsageOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UsageListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<UsageListResult> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<UsageListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets the current usage count and the limit for the resources under the subscription.

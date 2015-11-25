@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -39,21 +40,20 @@ public class ResourceProviderOperationDetailsOperationsImpl implements ResourceP
      *
      * @param resourceProviderNamespace Resource identity.
      * @param apiVersion the String value
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceProviderOperationDetailListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ResourceProviderOperationDetailListResult> list(String resourceProviderNamespace, String apiVersion) throws ServiceException, IOException {
+    public ServiceResponse<ResourceProviderOperationDetailListResult> list(String resourceProviderNamespace, String apiVersion) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceProviderNamespace == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (apiVersion == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -68,18 +68,15 @@ public class ResourceProviderOperationDetailsOperationsImpl implements ResourceP
      */
     public Call<ResponseBody> listAsync(String resourceProviderNamespace, String apiVersion, final ServiceCallback<ResourceProviderOperationDetailListResult> serviceCallback) {
         if (resourceProviderNamespace == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (apiVersion == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter apiVersion is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
@@ -108,13 +105,14 @@ public class ResourceProviderOperationDetailsOperationsImpl implements ResourceP
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceProviderOperationDetailListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ResourceProviderOperationDetailListResult> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<ResourceProviderOperationDetailListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -128,8 +126,7 @@ public class ResourceProviderOperationDetailsOperationsImpl implements ResourceP
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<ResourceProviderOperationDetailListResult> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

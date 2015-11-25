@@ -24,6 +24,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.Callback;
@@ -47,10 +48,11 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> deallocate(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> deallocate(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.deallocate(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -104,10 +106,11 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -159,29 +162,26 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVM object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetVM> get(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineScaleSetVM> get(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (vmScaleSetName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
         }
         if (instanceId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -197,28 +197,23 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      */
     public Call<ResponseBody> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, final ServiceCallback<VirtualMachineScaleSetVM> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (vmScaleSetName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
             return null;
         }
         if (instanceId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter instanceId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -248,29 +243,26 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVMInstanceView object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (vmScaleSetName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.");
         }
         if (instanceId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceView(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getInstanceViewDelegate(call.execute(), null);
@@ -286,28 +278,23 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      */
     public Call<ResponseBody> getInstanceViewAsync(String resourceGroupName, String vmScaleSetName, String instanceId, final ServiceCallback<VirtualMachineScaleSetVMInstanceView> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (vmScaleSetName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
             return null;
         }
         if (instanceId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter instanceId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.getInstanceView(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -339,25 +326,23 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param filter The filter to apply on the operation.
      * @param select The list parameters.
      * @param expand The expand expression to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVMListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetVMListResult> list(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineScaleSetVMListResult> list(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualMachineScaleSetName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -375,23 +360,19 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      */
     public Call<ResponseBody> listAsync(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand, final ServiceCallback<VirtualMachineScaleSetVMListResult> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (virtualMachineScaleSetName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -423,10 +404,11 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> powerOff(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> powerOff(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.powerOff(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -480,10 +462,11 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> restart(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> restart(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.restart(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -537,10 +520,11 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * @param instanceId The instance id of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> start(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> start(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.start(resourceGroupName, vmScaleSetName, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -590,13 +574,14 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      * The operation to list virtual machine scale sets VMs.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVMListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineScaleSetVMListResult> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineScaleSetVMListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -610,8 +595,7 @@ public class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMachineSc
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<VirtualMachineScaleSetVMListResult> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

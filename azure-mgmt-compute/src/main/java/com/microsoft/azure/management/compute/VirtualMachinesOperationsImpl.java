@@ -26,6 +26,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.Callback;
@@ -49,10 +50,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineCaptureResult object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<VirtualMachineCaptureResult> capture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<VirtualMachineCaptureResult> capture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.capture(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<VirtualMachineCaptureResult>() {}.getType());
     }
@@ -107,10 +109,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachine object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<VirtualMachine> createOrUpdate(String resourceGroupName, String vmName, VirtualMachine parameters) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<VirtualMachine> createOrUpdate(String resourceGroupName, String vmName, VirtualMachine parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualMachine>() {}.getType());
     }
@@ -164,10 +167,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String vmName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -214,25 +218,23 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachine object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (vmName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -248,23 +250,19 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> getAsync(String resourceGroupName, String vmName, String expand, final ServiceCallback<VirtualMachine> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (vmName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -295,10 +293,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> deallocate(String resourceGroupName, String vmName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> deallocate(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.deallocate(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -344,24 +343,22 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws ServiceException, IOException {
+    public ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (vmName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return generalizeDelegate(call.execute(), null);
@@ -376,23 +373,19 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> generalizeAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (vmName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -419,21 +412,20 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * The operation to list virtual machines under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualMachine>> list(String resourceGroupName) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<VirtualMachine>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -447,18 +439,15 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> listAsync(String resourceGroupName, final ServiceCallback<PageImpl<VirtualMachine>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -485,17 +474,17 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualMachine>> listAll() throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<VirtualMachine>> listAll() throws ServiceException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAllDelegate(call.execute(), null);
@@ -508,13 +497,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> listAllAsync(final ServiceCallback<PageImpl<VirtualMachine>> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -543,25 +530,23 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineSizeListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String vmName) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (vmName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAvailableSizesDelegate(call.execute(), null);
@@ -576,23 +561,19 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> listAvailableSizesAsync(String resourceGroupName, String vmName, final ServiceCallback<VirtualMachineSizeListResult> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (vmName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -623,10 +604,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> powerOff(String resourceGroupName, String vmName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> powerOff(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.powerOff(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -674,10 +656,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> restart(String resourceGroupName, String vmName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> restart(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.restart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -725,10 +708,11 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * @param vmName The name of the virtual machine.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> start(String resourceGroupName, String vmName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> start(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.start(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -773,13 +757,14 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * The operation to list virtual machines under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualMachine>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<VirtualMachine>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -793,8 +778,7 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<VirtualMachine>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
@@ -822,13 +806,14 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<VirtualMachine>> listAllNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<VirtualMachine>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         return listAllNextDelegate(call.execute(), null);
@@ -842,8 +827,7 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> listAllNextAsync(String nextPageLink, final ServiceCallback<PageImpl<VirtualMachine>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
@@ -871,13 +855,14 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      * Lists virtual-machine-sizes available to be used for a virtual machine.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineSizeListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
         return listAvailableSizesNextDelegate(call.execute(), null);
@@ -891,8 +876,7 @@ public class VirtualMachinesOperationsImpl implements VirtualMachinesOperations 
      */
     public Call<ResponseBody> listAvailableSizesNextAsync(String nextPageLink, final ServiceCallback<VirtualMachineSizeListResult> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());

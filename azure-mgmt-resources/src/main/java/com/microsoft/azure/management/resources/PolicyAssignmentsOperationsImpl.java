@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -45,37 +46,32 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @param resourceType The resource type.
      * @param resourceName The resource name.
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (resourceProviderNamespace == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
         if (parentResourcePath == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
         }
         if (resourceType == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
         }
         if (resourceName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listForResourceDelegate(call.execute(), null);
@@ -94,38 +90,31 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (resourceProviderNamespace == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
         if (parentResourcePath == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
             return null;
         }
         if (resourceType == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
             return null;
         }
         if (resourceName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -154,21 +143,20 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param resourceGroupName Resource group name.
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listForResourceGroupDelegate(call.execute(), null);
@@ -183,18 +171,15 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listForResourceGroupAsync(String resourceGroupName, String filter, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -223,25 +208,23 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException, IOException {
+    public ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException, IOException, IllegalArgumentException {
         if (scope == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
         if (policyAssignmentName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteDelegate(call.execute(), null);
@@ -256,23 +239,19 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignment> serviceCallback) {
         if (scope == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter scope is required and cannot be null."));
             return null;
         }
         if (policyAssignmentName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.delete(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -302,29 +281,26 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
      * @param parameters Policy assignment.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException, IOException {
+    public ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException, IOException, IllegalArgumentException {
         if (scope == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
         if (policyAssignmentName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.create(scope, policyAssignmentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -341,28 +317,23 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> createAsync(String scope, String policyAssignmentName, PolicyAssignment parameters, final ServiceCallback<PolicyAssignment> serviceCallback) {
         if (scope == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter scope is required and cannot be null."));
             return null;
         }
         if (policyAssignmentName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
@@ -392,25 +363,23 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException, IOException {
+    public ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException, IOException, IllegalArgumentException {
         if (scope == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
         if (policyAssignmentName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -425,23 +394,19 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignment> serviceCallback) {
         if (scope == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter scope is required and cannot be null."));
             return null;
         }
         if (policyAssignmentName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(scope, policyAssignmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -469,21 +434,20 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Delete policy assignment.
      *
      * @param policyAssignmentId Policy assignment Id
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException, IOException {
+    public ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException, IOException, IllegalArgumentException {
         if (policyAssignmentId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteByIdDelegate(call.execute(), null);
@@ -497,18 +461,15 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignment> serviceCallback) {
         if (policyAssignmentId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.deleteById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -537,25 +498,23 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param policyAssignmentId Policy assignment Id
      * @param parameters Policy assignment.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException, IOException {
+    public ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException, IOException, IllegalArgumentException {
         if (policyAssignmentId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createById(policyAssignmentId, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -571,23 +530,19 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> createByIdAsync(String policyAssignmentId, PolicyAssignment parameters, final ServiceCallback<PolicyAssignment> serviceCallback) {
         if (policyAssignmentId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
@@ -616,21 +571,20 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Get single policy assignment.
      *
      * @param policyAssignmentId Policy assignment Id
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException, IOException {
+    public ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException, IOException, IllegalArgumentException {
         if (policyAssignmentId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getByIdDelegate(call.execute(), null);
@@ -644,18 +598,15 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignment> serviceCallback) {
         if (policyAssignmentId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.getById(policyAssignmentId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -683,17 +634,17 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -707,13 +658,11 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listAsync(String filter, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -742,21 +691,20 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param scope Scope.
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException, IOException, IllegalArgumentException {
         if (scope == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listForScopeDelegate(call.execute(), null);
@@ -771,18 +719,15 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listForScopeAsync(String scope, String filter, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (scope == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter scope is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter scope is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -810,13 +755,14 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listForResourceNext(nextPageLink, this.client.getAcceptLanguage());
         return listForResourceNextDelegate(call.execute(), null);
@@ -830,8 +776,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listForResourceNextAsync(String nextPageLink, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listForResourceNext(nextPageLink, this.client.getAcceptLanguage());
@@ -859,13 +804,14 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listForResourceGroupNext(nextPageLink, this.client.getAcceptLanguage());
         return listForResourceGroupNextDelegate(call.execute(), null);
@@ -879,8 +825,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listForResourceGroupNextAsync(String nextPageLink, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listForResourceGroupNext(nextPageLink, this.client.getAcceptLanguage());
@@ -908,13 +853,14 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -928,8 +874,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
@@ -957,13 +902,14 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the scope.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listForScopeNext(nextPageLink, this.client.getAcceptLanguage());
         return listForScopeNextDelegate(call.execute(), null);
@@ -977,8 +923,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      */
     public Call<ResponseBody> listForScopeNextAsync(String nextPageLink, final ServiceCallback<PageImpl<PolicyAssignment>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listForScopeNext(nextPageLink, this.client.getAcceptLanguage());

@@ -24,6 +24,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -43,29 +44,26 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param resourceGroupName The resource group name.
      * @param lockName The lock name.
      * @param parameters The management lock parameters.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ManagementLockObject object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -82,28 +80,23 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
@@ -139,45 +132,38 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param resourceName Resource identity.
      * @param lockName The name of lock.
      * @param parameters Create or update management lock parameters.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ManagementLockObject object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (resourceProviderNamespace == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
         if (parentResourcePath == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
         }
         if (resourceType == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
         }
         if (resourceName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -198,48 +184,39 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (resourceProviderNamespace == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
         if (parentResourcePath == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
             return null;
         }
         if (resourceType == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
             return null;
         }
         if (resourceName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
             return null;
         }
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
@@ -274,40 +251,34 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
      * @param lockName The name of lock.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) throws ServiceException, IOException {
+    public ServiceResponse<Void> deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (resourceProviderNamespace == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
         if (parentResourcePath == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
         }
         if (resourceType == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
         }
         if (resourceName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteAtResourceLevelDelegate(call.execute(), null);
@@ -326,43 +297,35 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> deleteAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (resourceProviderNamespace == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
         if (parentResourcePath == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
             return null;
         }
         if (resourceType == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
             return null;
         }
         if (resourceName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
             return null;
         }
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -392,25 +355,23 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      *
      * @param lockName The name of lock.
      * @param parameters The management lock parameters.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ManagementLockObject object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException, IOException {
+    public ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObject parameters) throws ServiceException, IOException, IllegalArgumentException {
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdateAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -426,23 +387,19 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockObject parameters, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
@@ -472,20 +429,19 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Deletes the management lock of a subscription.
      *
      * @param lockName The name of lock.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> deleteAtSubscriptionLevel(String lockName) throws ServiceException, IOException {
+    public ServiceResponse<Void> deleteAtSubscriptionLevel(String lockName) throws ServiceException, IOException, IllegalArgumentException {
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteAtSubscriptionLevelDelegate(call.execute(), null);
@@ -499,18 +455,15 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> deleteAtSubscriptionLevelAsync(String lockName, final ServiceCallback<Void> serviceCallback) {
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.deleteAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -539,21 +492,20 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Gets the management lock of a scope.
      *
      * @param lockName Name of the management lock.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ManagementLockObject object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<ManagementLockObject> get(String lockName) throws ServiceException, IOException {
+    public ServiceResponse<ManagementLockObject> get(String lockName) throws ServiceException, IOException, IllegalArgumentException {
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -567,18 +519,15 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> getAsync(String lockName, final ServiceCallback<ManagementLockObject> serviceCallback) {
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -608,24 +557,22 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      *
      * @param resourceGroup The resource group names.
      * @param lockName The name of lock.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> deleteAtResourceGroupLevel(String resourceGroup, String lockName) throws ServiceException, IOException {
+    public ServiceResponse<Void> deleteAtResourceGroupLevel(String resourceGroup, String lockName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroup == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.");
         }
         if (lockName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteAtResourceGroupLevel(resourceGroup, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteAtResourceGroupLevelDelegate(call.execute(), null);
@@ -640,23 +587,19 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> deleteAtResourceGroupLevelAsync(String resourceGroup, String lockName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroup == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
             return null;
         }
         if (lockName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter lockName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.deleteAtResourceGroupLevel(resourceGroup, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -686,21 +629,20 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      *
      * @param resourceGroupName Resource group name.
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevel(String resourceGroupName, ManagementLockObject filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevel(String resourceGroupName, ManagementLockObject filter) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAtResourceGroupLevelDelegate(call.execute(), null);
@@ -715,18 +657,15 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listAtResourceGroupLevelAsync(String resourceGroupName, ManagementLockObject filter, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -759,37 +698,32 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (resourceProviderNamespace == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
         if (parentResourcePath == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
         }
         if (resourceType == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
         }
         if (resourceName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAtResourceLevelDelegate(call.execute(), null);
@@ -808,38 +742,31 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, ManagementLockObject filter, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (resourceProviderNamespace == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
         if (parentResourcePath == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
             return null;
         }
         if (resourceType == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceType is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
             return null;
         }
         if (resourceName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -867,17 +794,17 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Get a list of management locks at resource level or below.
      *
      * @param nextLink NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listNext(String nextLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listNext(String nextLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -891,13 +818,11 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listNextAsync(String nextLink, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (nextLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
@@ -925,17 +850,17 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Gets all the management locks of a subscription.
      *
      * @param filter The filter to apply on the operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevel(ManagementLockObject filter) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevel(ManagementLockObject filter) throws ServiceException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAtSubscriptionLevelDelegate(call.execute(), null);
@@ -949,13 +874,11 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listAtSubscriptionLevelAsync(ManagementLockObject filter, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -983,13 +906,14 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Gets all the management locks of a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceGroupLevelNext(nextPageLink, this.client.getAcceptLanguage());
         return listAtResourceGroupLevelNextDelegate(call.execute(), null);
@@ -1003,8 +927,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listAtResourceGroupLevelNextAsync(String nextPageLink, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAtResourceGroupLevelNext(nextPageLink, this.client.getAcceptLanguage());
@@ -1032,13 +955,14 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Gets all the management locks of a resource or any level below resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceLevelNext(nextPageLink, this.client.getAcceptLanguage());
         return listAtResourceLevelNextDelegate(call.execute(), null);
@@ -1052,8 +976,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listAtResourceLevelNextAsync(String nextPageLink, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAtResourceLevelNext(nextPageLink, this.client.getAcceptLanguage());
@@ -1081,13 +1004,14 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Get a list of management locks at resource level or below.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listNextNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listNextNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNextNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextNextDelegate(call.execute(), null);
@@ -1101,8 +1025,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listNextNextAsync(String nextPageLink, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNextNext(nextPageLink, this.client.getAcceptLanguage());
@@ -1130,13 +1053,14 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      * Gets all the management locks of a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ManagementLockObject&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtSubscriptionLevelNext(nextPageLink, this.client.getAcceptLanguage());
         return listAtSubscriptionLevelNextDelegate(call.execute(), null);
@@ -1150,8 +1074,7 @@ public class ManagementLocksOperationsImpl implements ManagementLocksOperations 
      */
     public Call<ResponseBody> listAtSubscriptionLevelNextAsync(String nextPageLink, final ServiceCallback<PageImpl<ManagementLockObject>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAtSubscriptionLevelNext(nextPageLink, this.client.getAcceptLanguage());

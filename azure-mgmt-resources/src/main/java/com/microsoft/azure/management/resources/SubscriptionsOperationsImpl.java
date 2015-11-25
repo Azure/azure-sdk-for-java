@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -40,17 +41,17 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param subscriptionId Id of the subscription
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException {
+    public ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException {
         if (subscriptionId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listLocationsDelegate(call.execute(), null);
@@ -64,13 +65,11 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      */
     public Call<ResponseBody> listLocationsAsync(String subscriptionId, final ServiceCallback<LocationListResult> serviceCallback) {
         if (subscriptionId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -98,17 +97,17 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets details about particular subscription.
      *
      * @param subscriptionId Id of the subscription.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subscription object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException {
+    public ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException {
         if (subscriptionId == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -122,13 +121,11 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      */
     public Call<ResponseBody> getAsync(String subscriptionId, final ServiceCallback<Subscription> serviceCallback) {
         if (subscriptionId == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(subscriptionId, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -155,17 +152,17 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
     /**
      * Gets a list of the subscriptionIds.
      *
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -178,13 +175,11 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      */
     public Call<ResponseBody> listAsync(final ServiceCallback<PageImpl<Subscription>> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -212,13 +207,14 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.getAcceptLanguage());
         return listLocationsNextDelegate(call.execute(), null);
@@ -232,8 +228,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      */
     public Call<ResponseBody> listLocationsNextAsync(String nextPageLink, final ServiceCallback<LocationListResult> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.getAcceptLanguage());
@@ -261,13 +256,14 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets a list of the subscriptionIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -281,8 +277,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<Subscription>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

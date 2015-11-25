@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -55,10 +56,11 @@ public interface VirtualMachineExtensionsOperations {
      * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineExtension object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineExtension> createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtension extensionParameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<VirtualMachineExtension> createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtension extensionParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to create or update the extension.
@@ -80,10 +82,11 @@ public interface VirtualMachineExtensionsOperations {
      * @param vmExtensionName The name of the virtual machine extension.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String vmName, String vmExtensionName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String vmName, String vmExtensionName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to delete the extension.
@@ -105,9 +108,10 @@ public interface VirtualMachineExtensionsOperations {
      * @param expand The expand expression to apply on the operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtension object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException, IOException;
+    ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The operation to get the extension.
