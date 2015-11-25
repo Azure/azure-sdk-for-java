@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -41,24 +42,22 @@ public class TagsOperationsImpl implements TagsOperations {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException, IOException {
+    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException, IOException, IllegalArgumentException {
         if (tagName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
         if (tagValue == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter tagValue is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteValueDelegate(call.execute(), null);
@@ -73,23 +72,19 @@ public class TagsOperationsImpl implements TagsOperations {
      */
     public Call<ResponseBody> deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) {
         if (tagName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
             return null;
         }
         if (tagValue == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter tagValue is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.deleteValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -118,25 +113,23 @@ public class TagsOperationsImpl implements TagsOperations {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagValue object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException, IOException {
+    public ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException, IOException, IllegalArgumentException {
         if (tagName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
         if (tagValue == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter tagValue is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.createOrUpdateValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createOrUpdateValueDelegate(call.execute(), null);
@@ -151,23 +144,19 @@ public class TagsOperationsImpl implements TagsOperations {
      */
     public Call<ResponseBody> createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValue> serviceCallback) {
         if (tagName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
             return null;
         }
         if (tagValue == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter tagValue is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.createOrUpdateValue(tagName, tagValue, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -196,21 +185,20 @@ public class TagsOperationsImpl implements TagsOperations {
      * Create a subscription resource tag.
      *
      * @param tagName The name of the tag.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagDetails object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException, IOException {
+    public ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException, IOException, IllegalArgumentException {
         if (tagName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.createOrUpdate(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createOrUpdateDelegate(call.execute(), null);
@@ -224,18 +212,15 @@ public class TagsOperationsImpl implements TagsOperations {
      */
     public Call<ResponseBody> createOrUpdateAsync(String tagName, final ServiceCallback<TagDetails> serviceCallback) {
         if (tagName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.createOrUpdate(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -264,20 +249,19 @@ public class TagsOperationsImpl implements TagsOperations {
      * Delete a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> delete(String tagName) throws ServiceException, IOException {
+    public ServiceResponse<Void> delete(String tagName) throws ServiceException, IOException, IllegalArgumentException {
         if (tagName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteDelegate(call.execute(), null);
@@ -291,18 +275,15 @@ public class TagsOperationsImpl implements TagsOperations {
      */
     public Call<ResponseBody> deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) {
         if (tagName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter tagName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.delete(tagName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -329,17 +310,17 @@ public class TagsOperationsImpl implements TagsOperations {
     /**
      * Get a list of subscription resource tags.
      *
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TagDetails&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -352,13 +333,11 @@ public class TagsOperationsImpl implements TagsOperations {
      */
     public Call<ResponseBody> listAsync(final ServiceCallback<PageImpl<TagDetails>> serviceCallback) {
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -386,13 +365,14 @@ public class TagsOperationsImpl implements TagsOperations {
      * Get a list of subscription resource tags.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TagDetails&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -406,8 +386,7 @@ public class TagsOperationsImpl implements TagsOperations {
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<TagDetails>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

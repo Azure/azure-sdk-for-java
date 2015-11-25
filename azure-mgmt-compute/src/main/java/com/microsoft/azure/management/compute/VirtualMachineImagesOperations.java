@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.util.List;
 import retrofit.Call;
 import retrofit.http.GET;
@@ -60,9 +61,10 @@ public interface VirtualMachineImagesOperations {
      * @param version the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineImage object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException, IOException;
+    ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a virtual machine image.
@@ -89,9 +91,10 @@ public interface VirtualMachineImagesOperations {
      * @param orderby the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException, IOException;
+    ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine images.
@@ -115,9 +118,10 @@ public interface VirtualMachineImagesOperations {
      * @param publisherName the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException, IOException;
+    ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine image offers.
@@ -135,9 +139,10 @@ public interface VirtualMachineImagesOperations {
      * @param location the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException, IOException;
+    ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine image publishers.
@@ -156,9 +161,10 @@ public interface VirtualMachineImagesOperations {
      * @param offer the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException, IOException;
+    ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine image skus.

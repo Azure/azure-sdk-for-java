@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -40,25 +41,23 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      *
      * @param policyDefinitionName The policy definition name.
      * @param parameters The policy definition properties
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyDefinition object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws ServiceException, IOException {
+    public ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws ServiceException, IOException, IllegalArgumentException {
         if (policyDefinitionName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -74,23 +73,19 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      */
     public Call<ResponseBody> createOrUpdateAsync(String policyDefinitionName, PolicyDefinition parameters, final ServiceCallback<PolicyDefinition> serviceCallback) {
         if (policyDefinitionName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
@@ -119,21 +114,20 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      * Gets policy definition.
      *
      * @param policyDefinitionName The policy definition name.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyDefinition object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws ServiceException, IOException {
+    public ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws ServiceException, IOException, IllegalArgumentException {
         if (policyDefinitionName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -147,18 +141,15 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      */
     public Call<ResponseBody> getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinition> serviceCallback) {
         if (policyDefinitionName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -186,20 +177,19 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      * Deletes policy definition.
      *
      * @param policyDefinitionName The policy definition name.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public ServiceResponse<Void> delete(String policyDefinitionName) throws ServiceException, IOException {
+    public ServiceResponse<Void> delete(String policyDefinitionName) throws ServiceException, IOException, IllegalArgumentException {
         if (policyDefinitionName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteDelegate(call.execute(), null);
@@ -213,18 +203,15 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      */
     public Call<ResponseBody> deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback) {
         if (policyDefinitionName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());

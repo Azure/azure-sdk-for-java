@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -62,10 +63,11 @@ public interface RoutesOperations {
      * @param routeName The name of the route.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete route operation deletes the specified route from a route table.
@@ -86,9 +88,10 @@ public interface RoutesOperations {
      * @param routeName The name of the route.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Route object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException;
+    ServiceResponse<Route> get(String resourceGroupName, String routeTableName, String routeName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get route operation retreives information about the specified route from the route table.
@@ -110,10 +113,11 @@ public interface RoutesOperations {
      * @param routeParameters Parameters supplied to the create/update routeoperation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Route object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Route> createOrUpdate(String resourceGroupName, String routeTableName, String routeName, Route routeParameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Route> createOrUpdate(String resourceGroupName, String routeTableName, String routeName, Route routeParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put route operation creates/updates a route in the specified route table
@@ -134,9 +138,10 @@ public interface RoutesOperations {
      * @param routeTableName The name of the route table.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Route&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<Route>> list(String resourceGroupName, String routeTableName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List network security rule opertion retrieves all the routes in a route table.
@@ -154,9 +159,10 @@ public interface RoutesOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Route&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<Route>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List network security rule opertion retrieves all the routes in a route table.

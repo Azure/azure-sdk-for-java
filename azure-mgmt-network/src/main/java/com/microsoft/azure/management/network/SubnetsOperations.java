@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -62,10 +63,11 @@ public interface SubnetsOperations {
      * @param subnetName The name of the subnet.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete subnet operation deletes the specified subnet.
@@ -87,9 +89,10 @@ public interface SubnetsOperations {
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subnet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException;
+    ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get subnet operation retreives information about the specified subnet.
@@ -112,10 +115,11 @@ public interface SubnetsOperations {
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Subnet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subnet> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, Subnet subnetParameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Subnet> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, Subnet subnetParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put Subnet operation creates/updates a subnet in thespecified virtual network
@@ -136,9 +140,10 @@ public interface SubnetsOperations {
      * @param virtualNetworkName The name of the virtual network.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subnet&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.
@@ -156,9 +161,10 @@ public interface SubnetsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subnet&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.

@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.util.List;
 import retrofit.Call;
 import retrofit.http.GET;
@@ -53,9 +54,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param version the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtensionImage object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws ServiceException, IOException;
+    ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a virtual machine extension image.
@@ -76,9 +78,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param publisherName the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws ServiceException, IOException;
+    ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image types.
@@ -101,9 +104,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param orderBy the String value
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws ServiceException, IOException;
+    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image versions.

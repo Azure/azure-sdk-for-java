@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -67,10 +68,11 @@ public interface NetworkSecurityGroupsOperations {
      * @param networkSecurityGroupName The name of the network security group.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Delete NetworkSecurityGroup operation deletes the specifed network security group
@@ -90,9 +92,10 @@ public interface NetworkSecurityGroupsOperations {
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws ServiceException, IOException;
+    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
@@ -113,10 +116,11 @@ public interface NetworkSecurityGroupsOperations {
      * @param parameters Parameters supplied to the create/update Network Security Group operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkSecurityGroup> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<NetworkSecurityGroup> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put NetworkSecurityGroup operation creates/updates a network security groupin the specified resource group.
@@ -134,9 +138,10 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAll() throws ServiceException, IOException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAll() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription
@@ -152,9 +157,10 @@ public interface NetworkSecurityGroupsOperations {
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> list(String resourceGroupName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group
@@ -171,9 +177,10 @@ public interface NetworkSecurityGroupsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription
@@ -190,9 +197,10 @@ public interface NetworkSecurityGroupsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group
