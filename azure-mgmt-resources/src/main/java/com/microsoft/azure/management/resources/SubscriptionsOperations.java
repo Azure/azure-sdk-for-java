@@ -18,6 +18,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -57,9 +58,10 @@ public interface SubscriptionsOperations {
      * @param subscriptionId Id of the subscription
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException;
+    ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscription locations.
@@ -76,9 +78,10 @@ public interface SubscriptionsOperations {
      * @param subscriptionId Id of the subscription.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subscription object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException;
+    ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets details about particular subscription.
@@ -94,9 +97,10 @@ public interface SubscriptionsOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException;
+    ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.
@@ -112,9 +116,10 @@ public interface SubscriptionsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscription locations.
@@ -131,9 +136,10 @@ public interface SubscriptionsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.

@@ -20,6 +20,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -88,10 +89,11 @@ public interface ExpressRouteCircuitsOperations {
      * @param circuitName The name of the express route Circuit.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String circuitName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete ExpressRouteCircuit operation deletes the specified ExpressRouteCircuit.
@@ -110,9 +112,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param circuitName The name of the circuit.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuit object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuit> get(String resourceGroupName, String circuitName) throws ServiceException, IOException;
+    ServiceResponse<ExpressRouteCircuit> get(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get ExpressRouteCircuit operation retreives information about the specified ExpressRouteCircuit.
@@ -132,10 +135,11 @@ public interface ExpressRouteCircuitsOperations {
      * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuit object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuit> createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuit parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<ExpressRouteCircuit> createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuit parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put ExpressRouteCircuit operation creates/updates a ExpressRouteCircuit
@@ -155,9 +159,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param circuitName The name of the circuit.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitArpTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTable(String resourceGroupName, String circuitName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTable(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
@@ -176,9 +181,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param circuitName The name of the circuit.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitRoutesTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTable(String resourceGroupName, String circuitName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTable(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
@@ -197,9 +203,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param circuitName The name of the loadBalancer.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitStats&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStats(String resourceGroupName, String circuitName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStats(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
@@ -217,9 +224,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> list(String resourceGroupName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
@@ -235,9 +243,10 @@ public interface ExpressRouteCircuitsOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAll() throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAll() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
@@ -253,9 +262,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitArpTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
@@ -272,9 +282,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitRoutesTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
@@ -291,9 +302,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitStats&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
@@ -310,9 +322,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
@@ -329,9 +342,10 @@ public interface ExpressRouteCircuitsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuit&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.

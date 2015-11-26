@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -46,9 +47,10 @@ public interface ExpressRouteServiceProvidersOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteServiceProvider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> list() throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> list() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
@@ -64,9 +66,10 @@ public interface ExpressRouteServiceProvidersOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteServiceProvider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.

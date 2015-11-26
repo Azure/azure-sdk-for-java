@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -62,10 +63,11 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param peeringName The name of the peering.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
@@ -86,9 +88,10 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param peeringName The name of the peering.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitPeering object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuitPeering> get(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException;
+    ServiceResponse<ExpressRouteCircuitPeering> get(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
@@ -110,10 +113,11 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitPeering object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuitPeering> createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeering peeringParameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<ExpressRouteCircuitPeering> createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeering peeringParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put Pering operation creates/updates an peering in the specified ExpressRouteCircuits
@@ -134,9 +138,10 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param circuitName The name of the curcuit.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitPeering&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
@@ -154,9 +159,10 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitPeering&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.

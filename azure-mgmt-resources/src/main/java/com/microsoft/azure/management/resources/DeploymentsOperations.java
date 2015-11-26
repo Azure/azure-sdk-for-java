@@ -20,6 +20,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -75,10 +76,11 @@ public interface DeploymentsOperations {
      * @param deploymentName The name of the deployment to be deleted.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String deploymentName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String deploymentName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * Begin deleting deployment.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
@@ -97,9 +99,10 @@ public interface DeploymentsOperations {
      * @param deploymentName The name of the deployment.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Boolean object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws ServiceException, IOException;
+    ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Checks whether deployment exists.
@@ -119,10 +122,11 @@ public interface DeploymentsOperations {
      * @param parameters Additional parameters supplied to the operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the DeploymentExtended object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DeploymentExtended> createOrUpdate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<DeploymentExtended> createOrUpdate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * Create a named template deployment using a template.
@@ -142,9 +146,10 @@ public interface DeploymentsOperations {
      * @param deploymentName The name of the deployment.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentExtended object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DeploymentExtended> get(String resourceGroupName, String deploymentName) throws ServiceException, IOException;
+    ServiceResponse<DeploymentExtended> get(String resourceGroupName, String deploymentName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get a deployment.
@@ -163,9 +168,10 @@ public interface DeploymentsOperations {
      * @param deploymentName The name of the deployment.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws ServiceException, IOException;
+    ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Cancel a currently running template deployment.
@@ -185,9 +191,10 @@ public interface DeploymentsOperations {
      * @param parameters Deployment to validate.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentValidateResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DeploymentValidateResult> validate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException, IOException;
+    ServiceResponse<DeploymentValidateResult> validate(String resourceGroupName, String deploymentName, Deployment parameters) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Validate a deployment template.
@@ -208,9 +215,10 @@ public interface DeploymentsOperations {
      * @param top Query parameters. If null is passed returns all deployments.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;DeploymentExtended&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<DeploymentExtended>> list(String resourceGroupName, DeploymentExtendedFilter filter, Integer top) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<DeploymentExtended>> list(String resourceGroupName, DeploymentExtendedFilter filter, Integer top) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get a list of deployments.
@@ -229,9 +237,10 @@ public interface DeploymentsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;DeploymentExtended&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<DeploymentExtended>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<DeploymentExtended>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get a list of deployments.

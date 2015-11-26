@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -67,10 +68,11 @@ public interface RouteTablesOperations {
      * @param routeTableName The name of the route table.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Delete RouteTable operation deletes the specifed Route Table
@@ -90,9 +92,10 @@ public interface RouteTablesOperations {
      * @param expand expand references resources.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RouteTable object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws ServiceException, IOException;
+    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get RouteTables operation retrieves information about the specified route table.
@@ -113,10 +116,11 @@ public interface RouteTablesOperations {
      * @param parameters Parameters supplied to the create/update Route Table operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RouteTable object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put RouteTable operation creates/updates a route tablein the specified resource group.
@@ -135,9 +139,10 @@ public interface RouteTablesOperations {
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group
@@ -153,9 +158,10 @@ public interface RouteTablesOperations {
      *
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listAll() throws ServiceException, IOException;
+    ServiceResponse<PageImpl<RouteTable>> listAll() throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription
@@ -171,9 +177,10 @@ public interface RouteTablesOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group
@@ -190,9 +197,10 @@ public interface RouteTablesOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription

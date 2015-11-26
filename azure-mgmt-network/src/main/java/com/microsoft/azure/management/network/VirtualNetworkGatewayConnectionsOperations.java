@@ -20,6 +20,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -75,10 +76,11 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway connection operation through Network resource provider.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGatewayConnection object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGatewayConnection> createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnection parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<VirtualNetworkGatewayConnection> createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnection parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put VirtualNetworkGatewayConnection operation creates/updates a virtual network gateway connection in the specified resource group through Network resource provider.
@@ -98,9 +100,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGatewayConnection object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGatewayConnection> get(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws ServiceException, IOException;
+    ServiceResponse<VirtualNetworkGatewayConnection> get(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get VirtualNetworkGatewayConnection operation retrieves information about the specified virtual network gateway connection through Network resource provider.
@@ -119,10 +122,11 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Delete VirtualNetworkGatewayConnection operation deletes the specifed virtual network Gateway connection through Network resource provider.
@@ -141,9 +145,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param connectionSharedKeyName The virtual network gateway connection shared key name.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionSharedKeyResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ConnectionSharedKeyResult> getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws ServiceException, IOException;
+    ServiceResponse<ConnectionSharedKeyResult> getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection shared key through Network resource provider.
@@ -161,9 +166,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param resourceGroupName The name of the resource group.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualNetworkGatewayConnection&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> list(String resourceGroupName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
@@ -182,10 +188,11 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param parameters Parameters supplied to the Begin Reset Virtual Network Gateway connection shared key operation through Network resource provider.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ConnectionResetSharedKey object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ConnectionResetSharedKey> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKey parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<ConnectionResetSharedKey> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKey parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
@@ -206,10 +213,11 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway conection Shared key operation throughNetwork resource provider.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ConnectionSharedKey object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ConnectionSharedKey> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKey parameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<ConnectionSharedKey> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKey parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
@@ -228,9 +236,10 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualNetworkGatewayConnection&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.

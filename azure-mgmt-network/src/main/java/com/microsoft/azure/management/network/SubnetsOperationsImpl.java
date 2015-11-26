@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.Callback;
@@ -46,10 +47,11 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * @param subnetName The name of the subnet.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() {}.getType());
     }
@@ -102,29 +104,26 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand expand references resources.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subnet object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException {
+    public ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
         if (subnetName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         return getDelegate(call.execute(), null);
@@ -141,28 +140,23 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      */
     public Call<ResponseBody> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, final ServiceCallback<Subnet> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (virtualNetworkName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
             return null;
         }
         if (subnetName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter subnetName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
@@ -195,10 +189,11 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Subnet object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<Subnet> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, Subnet subnetParameters) throws ServiceException, IOException, InterruptedException {
+    public ServiceResponse<Subnet> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, Subnet subnetParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), subnetParameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<Subnet>() {}.getType());
     }
@@ -255,25 +250,23 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subnet&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
@@ -288,23 +281,19 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      */
     public Call<ResponseBody> listAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<PageImpl<Subnet>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
         if (virtualNetworkName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -332,13 +321,14 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      * The List subnets opertion retrieves all the subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws ServiceException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subnet&gt; object if successful.
-     * @throws ServiceException the exception wrapped in ServiceException if failed.
      */
-    public ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException {
+    public ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
-            throw new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute(), null);
@@ -352,8 +342,7 @@ public class SubnetsOperationsImpl implements SubnetsOperations {
      */
     public Call<ResponseBody> listNextAsync(String nextPageLink, final ServiceCallback<PageImpl<Subnet>> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());

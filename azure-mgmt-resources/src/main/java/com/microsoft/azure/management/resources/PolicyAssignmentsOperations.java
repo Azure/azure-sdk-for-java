@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -91,9 +92,10 @@ public interface PolicyAssignmentsOperations {
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource.
@@ -116,9 +118,10 @@ public interface PolicyAssignmentsOperations {
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource group.
@@ -137,9 +140,10 @@ public interface PolicyAssignmentsOperations {
      * @param policyAssignmentName Policy assignment name.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException, IOException;
+    ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Delete policy assignment.
@@ -159,9 +163,10 @@ public interface PolicyAssignmentsOperations {
      * @param parameters Policy assignment.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException, IOException;
+    ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Create policy assignment.
@@ -181,9 +186,10 @@ public interface PolicyAssignmentsOperations {
      * @param policyAssignmentName Policy assignment name.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException, IOException;
+    ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get single policy assignment.
@@ -201,9 +207,10 @@ public interface PolicyAssignmentsOperations {
      * @param policyAssignmentId Policy assignment Id
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException, IOException;
+    ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Delete policy assignment.
@@ -221,9 +228,10 @@ public interface PolicyAssignmentsOperations {
      * @param parameters Policy assignment.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException, IOException;
+    ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Create policy assignment by Id.
@@ -241,9 +249,10 @@ public interface PolicyAssignmentsOperations {
      * @param policyAssignmentId Policy assignment Id
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException, IOException;
+    ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Get single policy assignment.
@@ -260,9 +269,10 @@ public interface PolicyAssignmentsOperations {
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the subscription.
@@ -280,9 +290,10 @@ public interface PolicyAssignmentsOperations {
      * @param filter The filter to apply on the operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the scope.
@@ -300,9 +311,10 @@ public interface PolicyAssignmentsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource.
@@ -319,9 +331,10 @@ public interface PolicyAssignmentsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource group.
@@ -338,9 +351,10 @@ public interface PolicyAssignmentsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the subscription.
@@ -357,9 +371,10 @@ public interface PolicyAssignmentsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the scope.

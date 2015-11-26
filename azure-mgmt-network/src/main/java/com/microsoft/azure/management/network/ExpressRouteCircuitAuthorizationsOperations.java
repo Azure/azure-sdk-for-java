@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 import java.lang.InterruptedException;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -62,10 +63,11 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param authorizationName The name of the authorization.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
@@ -86,9 +88,10 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param authorizationName The name of the authorization.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitAuthorization object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuitAuthorization> get(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException, IOException;
+    ServiceResponse<ExpressRouteCircuitAuthorization> get(String resourceGroupName, String circuitName, String authorizationName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
@@ -110,10 +113,11 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitAuthorization object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ExpressRouteCircuitAuthorization> createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorization authorizationParameters) throws ServiceException, IOException, InterruptedException;
+    ServiceResponse<ExpressRouteCircuitAuthorization> createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorization authorizationParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put Authorization operation creates/updates an authorization in thespecified ExpressRouteCircuits
@@ -134,9 +138,10 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param circuitName The name of the curcuit.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitAuthorization&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
@@ -154,9 +159,10 @@ public interface ExpressRouteCircuitAuthorizationsOperations {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws ServiceException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitAuthorization&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNext(String nextPageLink) throws ServiceException, IOException;
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorization>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
 
     /**
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
