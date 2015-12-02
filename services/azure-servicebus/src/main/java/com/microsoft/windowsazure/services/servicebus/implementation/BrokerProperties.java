@@ -36,6 +36,12 @@ public class BrokerProperties {
     @JsonProperty("SessionId")
     private String sessionId;
 
+    @JsonProperty("PartitionKey")
+    private String partitionKey;
+
+    @JsonProperty("ViaPartitionKey")
+    private String viaPartitionKey;
+
     @JsonProperty("DeliveryCount")
     private Integer deliveryCount;
 
@@ -145,6 +151,24 @@ public class BrokerProperties {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    @JsonIgnore
+    public String getPartitionKey() {
+        return partitionKey;
+    }
+
+    public void setPartitionKey(String partitionKey) {
+        this.partitionKey = partitionKey;
+    }
+
+    @JsonIgnore
+    public String getViaPartitionKey() {
+        return partitionKey;
+    }
+
+    public void setViaPartitionKey(String viaPartitionKey) {
+        this.viaPartitionKey = viaPartitionKey;
     }
 
     @JsonIgnore
