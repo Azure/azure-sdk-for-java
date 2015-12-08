@@ -1,6 +1,6 @@
 package com.microsoft.azure.eventhubs;
 
-import com.microsoft.azure.eventhubs.Exceptions.*;
+import com.microsoft.azure.servicebus.*;
 
 public final class PartitionSender
 {

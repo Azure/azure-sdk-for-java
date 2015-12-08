@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;

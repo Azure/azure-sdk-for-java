@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -111,7 +111,7 @@ public class TestApiApp
 			CompletableFuture.allOf(
 			
 			receiver1.receive().thenAcceptAsync(new Consumer<Collection<Message>>() {
-				@Override
+				// @Override
 				public void accept(Collection<Message> msgs) {
 					if(msgs != null && !msgs.isEmpty()) {
 						LinkedList<Message> messages = new LinkedList<Message>();
@@ -120,8 +120,8 @@ public class TestApiApp
 						}
 					}
 				
-			}),
-			
+			})
+			/*,
 			receiver.receive().thenAcceptAsync(new Consumer<Collection<Message>>() {
 				@Override
 				public void accept(Collection<Message> msgs) {
@@ -155,8 +155,8 @@ public class TestApiApp
 						System.out.println("Receiver3: " + messages.getLast().getMessageAnnotations());
 						}
 					}
-				
-			})).get();
+				})*/
+			).get();
 		}
 	
     }
@@ -277,7 +277,6 @@ public class TestApiApp
 				sender2.Send(BuildTestMessage()),
 				sender3.Send(BuildTestMessage())).thenRunAsync(new Runnable() {
 					
-					@Override
 					public void run()  {
 						long count = startingCount + 1;
 						try {

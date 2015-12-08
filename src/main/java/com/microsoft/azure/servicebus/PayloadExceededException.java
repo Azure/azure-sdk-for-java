@@ -1,8 +1,6 @@
-package com.microsoft.azure.eventhubs.Exceptions;
+package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.eventhubs.common.RetryPolicy;
-
-public class PayloadExceededException extends EventHubException {
+public class PayloadExceededException extends ServiceBusException {
 
 	private static final long serialVersionUID = -7474944260042213247L;
 

@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
 import java.time.*;
 import java.util.*;
@@ -7,6 +7,10 @@ import org.apache.qpid.proton.engine.impl.StringUtils;
 
 public class ConnectionStringBuilder {
 
+	final String EndpointConfigName = "Endpoint";
+	final String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
+	final String SharedAccessKeyConfigName = "SharedAccessKey";
+	
 	private String connectionString;
 	private String hostName;
 	private String sharedAccessKeyName;
@@ -15,24 +19,24 @@ public class ConnectionStringBuilder {
 	private RetryPolicy retryPolicy;
 	
 	private ConnectionStringBuilder(
-			final String hostName,
+			final String namespaceName,
 			final String sharedAccessKeyName,
 			final String sharedAccessKey,
 			final Duration operationTimeout,
 			final RetryPolicy retryPolicy)  
 	{
-		this.hostName = hostName;
+		this.hostName = namespaceName;
 		this.sharedAccessKey = sharedAccessKey;
 		this.sharedAccessKeyName = sharedAccessKeyName;
 		this.operationTimeout = operationTimeout;
 		this.retryPolicy = retryPolicy;
 	}
 	
-	public ConnectionStringBuilder(final String hostName,
+	public ConnectionStringBuilder(final String namespaceName,
 			final String sharedAccessKeyName,
 			final String sharedAccessKey)
 	{
-		this(hostName, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.Default);
+		this(namespaceName, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.Default);
 	}
 	
 	public ConnectionStringBuilder(String connectionString) {
@@ -40,11 +44,6 @@ public class ConnectionStringBuilder {
 	}
 
 	String getHostName() {
-		/* if (StringUtil.isNullOrEmpty(this.hostName) && !StringUtil.isNullOrEmpty(this.connectionString))
-		{
-			this.hostName = 
-		}*/
-		
 		return this.hostName;
 	}
 	
@@ -59,9 +58,8 @@ public class ConnectionStringBuilder {
 	@Override public String toString() {
 		return this.connectionString;
 	}
-
-	public void Validate() {
-		// TODO Add Validation on ConnStrBuilder
+	
+	void parseConnectionString(String connectionString) {
 		
 	}
 }

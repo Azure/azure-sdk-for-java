@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
 import java.time.*;
 import java.util.*;

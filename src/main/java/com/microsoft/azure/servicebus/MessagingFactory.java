@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -51,7 +51,6 @@ public class MessagingFactory {
 	
 	public static MessagingFactory createFromConnectionString(final String connectionString) {
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-		builder.Validate();
 		return new MessagingFactory(builder);
 	}
 	

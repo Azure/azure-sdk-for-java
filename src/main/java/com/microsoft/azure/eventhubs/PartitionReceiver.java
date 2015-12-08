@@ -3,7 +3,7 @@ package com.microsoft.azure.eventhubs;
 import java.time.*;
 import java.util.LinkedList;
 
-import com.microsoft.azure.eventhubs.Exceptions.*;
+import com.microsoft.azure.servicebus.*;
 
 public final class PartitionReceiver 
 {

@@ -1,8 +1,6 @@
-package com.microsoft.azure.eventhubs.Exceptions;
+package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.eventhubs.common.RetryPolicy;
-
-public class ServerBusyException extends EventHubException 
+public class ServerBusyException extends ServiceBusException 
 {
 	private static final long serialVersionUID = -1106827749824999989L;
 

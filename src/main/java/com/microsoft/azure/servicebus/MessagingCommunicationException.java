@@ -1,8 +1,6 @@
-package com.microsoft.azure.eventhubs.Exceptions;
+package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.eventhubs.common.RetryPolicy;
-
-public class MessagingCommunicationException extends EventHubException{
+public class MessagingCommunicationException extends ServiceBusException{
 
 	/**
 	 * 

@@ -1,28 +1,17 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
-import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
-import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.Link;
-import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.engine.Sasl;
-import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.Ssl;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.Transport;
-import org.apache.qpid.proton.engine.Event.Type;
 import org.apache.qpid.proton.reactor.Handshaker;
 
 // ServiceBus <-> ProtonReactor interaction 
@@ -51,9 +40,9 @@ public final class ConnectionHandler extends BaseHandler
     public void onUnhandled(Event event)
 	{
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
-    {
-        TRACE_LOGGER.log(Level.FINE, "sendLink.onUnhandled: name[" + event.getLink().getName() + "] : event["+event+"]");
-    }
+	    {
+	        TRACE_LOGGER.log(Level.FINE, "sendLink.onUnhandled: name[" + event.getLink().getName() + "] : event["+event+"]");
+	    }
     }	
 
 	@Override

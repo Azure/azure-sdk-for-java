@@ -2,13 +2,10 @@ package com.microsoft.azure.eventhubs;
 
 import java.util.Date;
 
-import org.apache.qpid.proton.engine.*;
-
-import com.microsoft.azure.eventhubs.Exceptions.*;
-import com.microsoft.azure.eventhubs.common.*;
+import com.microsoft.azure.servicebus.*;
 
 /**
- * Anchor class - All EventHub client operations STARTS here.
+ * Anchor class - all EventHub client operations STARTS here.
  */
 public class EventHubClient 
 {
@@ -23,7 +20,6 @@ public class EventHubClient
 			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
-		connStr.Validate();
 		return new EventHubClient(connStr);
 	}
 	

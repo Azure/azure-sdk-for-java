@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.common;
+package com.microsoft.azure.servicebus;
 
 public class RetryPolicy {
 	// TODO: Flush out what all needs to be implemented for CustomRetryPolicies
