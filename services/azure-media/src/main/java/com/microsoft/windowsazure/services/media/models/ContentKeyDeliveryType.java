@@ -27,7 +27,9 @@ public enum ContentKeyDeliveryType {
     /** Use PlayReady License acquisition protocol. */
     PlayReadyLicense(1),
     /** Use MPEG Baseline HTTP key protocol. */
-    BaselineHttp(2);
+    BaselineHttp(2),
+    /** Use Widevine license acquisition protocol. */
+    Widevine(3);
     
     /** The AssetDeliveryPolicyType code. */
     private int contentKeyDeliveryType;
@@ -66,6 +68,8 @@ public enum ContentKeyDeliveryType {
             return ContentKeyDeliveryType.PlayReadyLicense;
         case 2:
             return ContentKeyDeliveryType.BaselineHttp;
+        case 3:
+            return ContentKeyDeliveryType.Widevine;
         default:
             throw new InvalidParameterException("option");
         }

@@ -34,6 +34,9 @@ public class TokenRestrictionTemplate {
     
     @XmlElement(name = "TokenType")
     private TokenType tokenType;
+
+    @XmlElement(name = "OpenIdConnectDiscoveryDocument")
+    private OpenIdConnectDiscoveryDocument openIdConnectDiscoveryDocument;
     
     @SuppressWarnings("unused")
     private TokenRestrictionTemplate() {
@@ -146,4 +149,21 @@ public class TokenRestrictionTemplate {
         this.alternateVerificationKeys = alternateVerificationKeys;
         return this;
     }
+    
+    /**
+     * @return the alternateVerificationKeys
+     */
+    public OpenIdConnectDiscoveryDocument getOpenIdConnectDiscoveryDocument() {
+        return openIdConnectDiscoveryDocument;
+    }
+
+    /**
+     * @param alternateVerificationKeys the alternateVerificationKeys to set
+     * @return this
+     */
+    public TokenRestrictionTemplate setOpenIdConnectDiscoveryDocument(OpenIdConnectDiscoveryDocument openIdConnectDiscoveryDocument) {
+        this.openIdConnectDiscoveryDocument = openIdConnectDiscoveryDocument;
+        return this;
+    }
+    
 }

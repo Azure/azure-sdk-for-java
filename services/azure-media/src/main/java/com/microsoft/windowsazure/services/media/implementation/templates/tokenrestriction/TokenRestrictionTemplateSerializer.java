@@ -3,6 +3,8 @@ package com.microsoft.windowsazure.services.media.implementation.templates.token
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +39,30 @@ public final class TokenRestrictionTemplateSerializer {
     }
 
     public static String serialize(TokenRestrictionTemplate template) throws JAXBException {
+
+        if (template.getPrimaryVerificationKey() == null && template.getOpenIdConnectDiscoveryDocument() == null) {
+            throw new IllegalArgumentException(
+                    ErrorMessages.PRIMARY_VERIFICATIONKEY_AND_OPENIDCONNECTDISCOVERYDOCUMENT_ARE_NULL);
+        }
+
+        if (template.getOpenIdConnectDiscoveryDocument() != null) {
+            if (template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri() == null
+                    || template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri().isEmpty()) {
+                throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NULL_OR_EMPTY);
+            }
+
+            boolean openIdDiscoveryUrlValid = true;
+            try {
+                new URL(template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri());
+            } catch (MalformedURLException e) {
+                openIdDiscoveryUrlValid = false;
+            }
+
+            if (!openIdDiscoveryUrlValid) {
+                throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NOT_ABSOLUTE_URI);
+            }
+        }
+
         StringWriter writer = new StringWriter();
         JAXBContext context = JAXBContext.newInstance(TokenRestrictionTemplate.class);
         Marshaller m = context.createMarshaller();
@@ -44,9 +70,7 @@ public final class TokenRestrictionTemplateSerializer {
         m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapper() {
             @Override
             public String[] getPreDeclaredNamespaceUris() {
-                return new String[] { 
-                        XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI 
-                     };
+                return new String[] { XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI };
             }
 
             @Override
@@ -101,8 +125,8 @@ public final class TokenRestrictionTemplateSerializer {
     }
 
     public static String generateTestToken(TokenRestrictionTemplate tokenTemplate, TokenVerificationKey signingKeyToUse,
-            UUID keyIdForContentKeyIdentifierClaim, Date tokenExpiration, Date notBefore) {    
-        
+            UUID keyIdForContentKeyIdentifierClaim, Date tokenExpiration, Date notBefore) {
+
         if (tokenTemplate == null) {
             throw new NullPointerException("tokenTemplate");
         }
@@ -117,61 +141,63 @@ public final class TokenRestrictionTemplateSerializer {
             cal.add(Calendar.MINUTE, 10);
             tokenExpiration = cal.getTime();
         }
-        
+
         if (notBefore == null) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
             cal.add(Calendar.MINUTE, -5);
             notBefore = cal.getTime();
         }
-        
+
         if (tokenTemplate.getTokenType().equals(TokenType.SWT)) {
-            return generateTestTokenSWT(tokenTemplate, signingKeyToUse, keyIdForContentKeyIdentifierClaim, tokenExpiration);
+            return generateTestTokenSWT(tokenTemplate, signingKeyToUse, keyIdForContentKeyIdentifierClaim,
+                    tokenExpiration);
         } else {
-            return generateTestTokenJWT(tokenTemplate, signingKeyToUse, keyIdForContentKeyIdentifierClaim, tokenExpiration, notBefore);
+            return generateTestTokenJWT(tokenTemplate, signingKeyToUse, keyIdForContentKeyIdentifierClaim,
+                    tokenExpiration, notBefore);
         }
     }
 
-    public static String generateTestTokenJWT(TokenRestrictionTemplate tokenTemplate, TokenVerificationKey signingKeyToUse,
-        UUID keyIdForContentKeyIdentifierClaim, Date tokenExpiration, Date notBefore) {
-    
+    public static String generateTestTokenJWT(TokenRestrictionTemplate tokenTemplate,
+            TokenVerificationKey signingKeyToUse, UUID keyIdForContentKeyIdentifierClaim, Date tokenExpiration,
+            Date notBefore) {
+
         SymmetricVerificationKey signingKey = (SymmetricVerificationKey) signingKeyToUse;
         SecretKeySpec secretKey = new SecretKeySpec(signingKey.getKeyValue(), "HmacSHA256");
-        
+
         // Mapping Claims.
         Map<String, Object> claims = new HashMap<String, Object>();
         for (TokenClaim claim : tokenTemplate.getRequiredClaims()) {
             String claimValue = claim.getClaimValue();
             if (claimValue == null && claim.getClaimType().equals(TokenClaim.getContentKeyIdentifierClaimType())) {
                 if (keyIdForContentKeyIdentifierClaim == null) {
-                    throw new IllegalArgumentException(String.format("The 'keyIdForContentKeyIdentifierClaim' parameter cannot be null when the token template contains a required '%s' claim type.", TokenClaim.getContentKeyIdentifierClaimType()));
+                    throw new IllegalArgumentException(String.format(
+                            "The 'keyIdForContentKeyIdentifierClaim' parameter cannot be null when the token template contains a required '%s' claim type.",
+                            TokenClaim.getContentKeyIdentifierClaimType()));
                 }
                 claimValue = keyIdForContentKeyIdentifierClaim.toString();
             }
-            claims.put(claim.getClaimType(), claimValue);    
+            claims.put(claim.getClaimType(), claimValue);
         }
 
-        return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
-                .setClaims(claims)
-                .setIssuer(tokenTemplate.getIssuer().toString())
-                .setAudience(tokenTemplate.getAudience().toString())
-                .setIssuedAt(notBefore)
-                .setExpiration(tokenExpiration)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+        return Jwts.builder().setHeaderParam("typ", "JWT").setClaims(claims)
+                .setIssuer(tokenTemplate.getIssuer().toString()).setAudience(tokenTemplate.getAudience().toString())
+                .setIssuedAt(notBefore).setExpiration(tokenExpiration).signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
-    
-    public static String generateTestTokenSWT(TokenRestrictionTemplate tokenTemplate, TokenVerificationKey signingKeyToUse,
-            UUID keyIdForContentKeyIdentifierClaim, Date tokenExpiration) {
-        
+
+    public static String generateTestTokenSWT(TokenRestrictionTemplate tokenTemplate,
+            TokenVerificationKey signingKeyToUse, UUID keyIdForContentKeyIdentifierClaim, Date tokenExpiration) {
+
         StringBuilder builder = new StringBuilder();
 
         for (TokenClaim claim : tokenTemplate.getRequiredClaims()) {
             String claimValue = claim.getClaimValue();
             if (claim.getClaimType().equals(TokenClaim.getContentKeyIdentifierClaimType())) {
                 if (keyIdForContentKeyIdentifierClaim == null) {
-                    throw new IllegalArgumentException(String.format("The 'keyIdForContentKeyIdentifierClaim' parameter cannot be null when the token template contains a required '%s' claim type.", TokenClaim.getContentKeyIdentifierClaimType()));
+                    throw new IllegalArgumentException(String.format(
+                            "The 'keyIdForContentKeyIdentifierClaim' parameter cannot be null when the token template contains a required '%s' claim type.",
+                            TokenClaim.getContentKeyIdentifierClaimType()));
                 }
                 claimValue = keyIdForContentKeyIdentifierClaim.toString();
             }
