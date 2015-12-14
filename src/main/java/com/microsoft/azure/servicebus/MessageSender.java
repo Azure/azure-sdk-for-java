@@ -23,6 +23,7 @@ public class MessageSender extends ClientEntity {
 	private final Sender sendLink;
 	private final ConcurrentHashMap<byte[], CompletableFuture<Void>> pendingSendWaiters;
 	private final MessagingFactory underlyingFactory;
+	private final String sendPath;
 	
 	private CompletableFuture<MessageSender> linkOpen; 
 	
@@ -41,11 +42,16 @@ public class MessageSender extends ClientEntity {
 	}
 	
 	private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath) {
+		this.sendPath = senderPath;
 		this.underlyingFactory = factory;
 		this.sendLink = MessageSender.createSendLink(factory.getConnection(), sendLinkName, senderPath);
 		this.linkOpen = new CompletableFuture<MessageSender>();
 		this.pendingSendWaiters = new ConcurrentHashMap<byte[], CompletableFuture<Void>>();
 		this.nextTag = new AtomicLong(0);
+	}
+	
+	public String getSendPath() {
+		return this.sendPath;
 	}
 	
 	// TODO: just enqueue on send and a timer which actually drains as many sends as getCredit() in that interval

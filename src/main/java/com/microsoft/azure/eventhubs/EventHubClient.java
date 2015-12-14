@@ -1,7 +1,8 @@
 package com.microsoft.azure.eventhubs;
 
-import java.io.IOException;
-import java.util.Date;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.servicebus.*;
 
@@ -11,54 +12,63 @@ import com.microsoft.azure.servicebus.*;
 public class EventHubClient 
 {
 	private final MessagingFactory underlyingFactory;
+	private final MessageSender sender;
 	
-	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException
+	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, EntityNotFoundException, InterruptedException, ExecutionException
 	{
 		this.underlyingFactory = MessagingFactory.createFromConnectionString(connectionString.toString());
+		this.sender = MessageSender.Create(this.underlyingFactory, "sender0", connectionString.getEntityPath()).get();
 	}
 	
 	public static EventHubClient createFromConnectionString(final String connectionString)
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, IOException
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, IOException, InterruptedException, ExecutionException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		return new EventHubClient(connStr);
 	}
 	
 	public final PartitionSender createPartitionSender(final String partitionId)
-		throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException
+		throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException
 	{
-		return new PartitionSender(partitionId);
+		return new PartitionSender(this.underlyingFactory, this.sender.getSendPath(), partitionId);
 	}
 	
 	// TODO: return partitionInfo
 	public final String getPartitionInfo()
 			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException
 	{
-		return "0";
+		throw new UnsupportedOperationException("TODO: Implement over http");
 	}
 	
 	public final void send(EventData data) 
 			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException
 	{
+		if (data == null) {
+			// TODO: TRACE
+			throw new IllegalArgumentException("data");
+		}
 		
+		this.sender.Send(data.toAmqpMessage());
 	}
 	
 	public final void send(Iterable<EventData> data) 
 			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException
 	{
-		
+		throw new UnsupportedOperationException("TODO Implement Send Batch");
 	}
 	
 	public final void send(EventData data, String partitionKey) 
-			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException
+			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, InterruptedException, ExecutionException
 	{
-		
+		// TODO: Arguments
+		data.setPartitionKey(partitionKey);
+		this.sender.Send(data.toAmqpMessage()).get();
 	}
 	
 	public final void send(Iterable<EventData> data, String partitionKey) 
 		throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException
 	{
-		
+		throw new UnsupportedOperationException("TODO Implement Send Batch");
 	}
 	
 	public final PartitionReceiver createReceiver(final String partitionId) {

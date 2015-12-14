@@ -17,12 +17,12 @@ public class ConnectionStringBuilder {
 	final static String EndpointConfigName = "Endpoint";
 	final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
 	final static String SharedAccessKeyConfigName = "SharedAccessKey";
-
+	final static String EntityPathConfigName = "EntityPath";
 	final static String KeyValueSeparator = "=";
 	final static String KeyValuePairDelimiter = ";";
 
 	private static final String AllKeyEnumerateRegex = "(" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
-			+ "|" + SharedAccessKeyConfigName + ")";
+			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + ")";
 
 	private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
 			+ KeyValueSeparator;
@@ -31,11 +31,12 @@ public class ConnectionStringBuilder {
 	private URI endpoint;
 	private String sharedAccessKeyName;
 	private String sharedAccessKey;
+	private String entityPath;
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 
 	// TODO: upgrade to public after implementing retryPolicy
-	private ConnectionStringBuilder(final String namespaceName, final String sharedAccessKeyName,
+	private ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
 			final String sharedAccessKey, final Duration operationTimeout, final RetryPolicy retryPolicy) {
 		
 		try {
@@ -50,18 +51,18 @@ public class ConnectionStringBuilder {
 		this.sharedAccessKeyName = sharedAccessKeyName;
 		this.operationTimeout = operationTimeout;
 		this.retryPolicy = retryPolicy;
+		this.entityPath = entityPath;
 	}
 
-	public ConnectionStringBuilder(final String namespaceName, final String sharedAccessKeyName,
+	public ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
 			final String sharedAccessKey) {
-		this(namespaceName, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout,
+		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout,
 				RetryPolicy.Default);
 	}
 
 	/*
 	 * ConnectionString format:
-	 * Endpoint=sb://namespace_DNS_Name;SharedAccessKeyName=
-	 * SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
 	 */
 	public ConnectionStringBuilder(String connectionString) {
 		this.parseConnectionString(connectionString);
@@ -79,18 +80,36 @@ public class ConnectionStringBuilder {
 	String getSasKeyName() {
 		return this.sharedAccessKeyName;
 	}
+	
+	public String getEntityPath() {
+		return this.entityPath;
+	}
 
 	@Override
 	public String toString() {
 
 		if (StringUtil.isNullOrWhiteSpace(this.connectionString)) {
 			StringBuilder connectionStringBuilder = new StringBuilder();
-			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
+			if (this.endpoint != null) {
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
 					this.endpoint.toString(), KeyValuePairDelimiter));
-			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
+			}
+			
+			if (!StringUtil.isNullOrWhiteSpace(this.entityPath)) {
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
+					KeyValueSeparator, this.entityPath, KeyValuePairDelimiter));
+			}
+			
+			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
 					KeyValueSeparator, this.sharedAccessKeyName, KeyValuePairDelimiter));
-			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
+			}
+			
+			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey)) {
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
 					KeyValueSeparator, this.sharedAccessKey));
+			}
+			
 			this.connectionString = connectionStringBuilder.toString();
 		}
 
@@ -146,6 +165,9 @@ public class ConnectionStringBuilder {
 			}
 			else if(key.equalsIgnoreCase(SharedAccessKeyConfigName)) {
 				this.sharedAccessKey = values[valueIndex];
+			}
+			else if (key.equalsIgnoreCase(EntityPathConfigName)) {
+				this.entityPath = values[valueIndex];
 			}
 			else {
 				throw new IllegalConnectionStringFormatException(
