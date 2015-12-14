@@ -25,7 +25,7 @@ public class TokenRestrictionTemplate {
     @XmlElement(name = "Issuer", required = true)
     private URI issuer;
     
-    @XmlElement(name = "PrimaryVerificationKey")
+    @XmlElement(name = "PrimaryVerificationKey", nillable = true)
     private TokenVerificationKey primaryVerificationKey;
     
     @XmlElementWrapper(name = "RequiredClaims")

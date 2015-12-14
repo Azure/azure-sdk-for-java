@@ -39,30 +39,9 @@ public final class TokenRestrictionTemplateSerializer {
     }
 
     public static String serialize(TokenRestrictionTemplate template) throws JAXBException {
-
-        if (template.getPrimaryVerificationKey() == null && template.getOpenIdConnectDiscoveryDocument() == null) {
-            throw new IllegalArgumentException(
-                    ErrorMessages.PRIMARY_VERIFICATIONKEY_AND_OPENIDCONNECTDISCOVERYDOCUMENT_ARE_NULL);
-        }
-
-        if (template.getOpenIdConnectDiscoveryDocument() != null) {
-            if (template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri() == null
-                    || template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri().isEmpty()) {
-                throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NULL_OR_EMPTY);
-            }
-
-            boolean openIdDiscoveryUrlValid = true;
-            try {
-                new URL(template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri());
-            } catch (MalformedURLException e) {
-                openIdDiscoveryUrlValid = false;
-            }
-
-            if (!openIdDiscoveryUrlValid) {
-                throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NOT_ABSOLUTE_URI);
-            }
-        }
-
+    	
+    	validateTokenRestrictionTemplate(template);
+    	
         StringWriter writer = new StringWriter();
         JAXBContext context = JAXBContext.newInstance(TokenRestrictionTemplate.class);
         Marshaller m = context.createMarshaller();
@@ -85,7 +64,32 @@ public final class TokenRestrictionTemplateSerializer {
         return writer.toString();
     }
 
-    public static TokenRestrictionTemplate deserialize(String xml) throws JAXBException {
+    private static void validateTokenRestrictionTemplate(TokenRestrictionTemplate template) {
+    	if (template.getPrimaryVerificationKey() == null && template.getOpenIdConnectDiscoveryDocument() == null) {
+            throw new IllegalArgumentException(
+                    ErrorMessages.PRIMARY_VERIFICATIONKEY_AND_OPENIDCONNECTDISCOVERYDOCUMENT_ARE_NULL);
+        }
+
+        if (template.getOpenIdConnectDiscoveryDocument() != null) {
+            if (template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri() == null
+                    || template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri().isEmpty()) {
+                throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NULL_OR_EMPTY);
+            }
+
+            boolean openIdDiscoveryUrlValid = true;
+            try {
+                new URL(template.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri());
+            } catch (MalformedURLException e) {
+                openIdDiscoveryUrlValid = false;
+            }
+
+            if (!openIdDiscoveryUrlValid) {
+                throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NOT_ABSOLUTE_URI);
+            }
+        }		
+	}
+
+	public static TokenRestrictionTemplate deserialize(String xml) throws JAXBException {
         try {
             return deserialize(xml, null);
         } catch (SAXException e) {
@@ -103,7 +107,9 @@ public final class TokenRestrictionTemplateSerializer {
             Schema schema = factory.newSchema(new File(validationSchemaFileName));
             u.setSchema(schema);
         }
-        return (TokenRestrictionTemplate) u.unmarshal(new StringReader(xml));
+        TokenRestrictionTemplate template = (TokenRestrictionTemplate) u.unmarshal(new StringReader(xml));
+    	validateTokenRestrictionTemplate(template);
+        return template;
     }
 
     private static String generateTokenExpiry(Date expiry) {
