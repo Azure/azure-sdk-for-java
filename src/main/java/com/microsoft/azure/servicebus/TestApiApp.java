@@ -1,8 +1,6 @@
 package com.microsoft.azure.servicebus;
 
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
+import java.nio.charset.*;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,10 +14,7 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
-import org.apache.qpid.proton.reactor.*;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,30 +22,29 @@ public class TestApiApp
 {
     public static void main	(String[] args) throws Exception
     {
-    	/*FileHandler fh = new FileHandler("c:\\amqpframes.log", false);
-    	Logger l = Logger.getLogger("");
+    	FileHandler fh = new FileHandler("c:\\amqpframes.log", false);
+    	Logger l = Logger.getLogger("eventhub.trace");
     	fh.setFormatter(new SimpleFormatter());
     	l.addHandler(fh);
     	l.setLevel(Level.ALL);
     	
     	String username = "RootManageSharedAccessKey";
 		String password = "LHbmplGdVC7Lo7A1RAXXDgeHSM9WHIRvZmIt7m1y5w0=";
-		String hostname = "firstehub-ns.servicebus.windows.net";
-		*/
-		String username = "sendrecv";
-		String password = "lLR6KcSXQZQJbyMvZYRJFAZMCw+s9cQ2poSIqtY582s=";
-		String hostname = "standard.servicebus.windows.net";
+		String namespaceName = "firstehub-ns";
 		
-		ConnectionStringBuilder connStr = new ConnectionStringBuilder(hostname, username, password);
+		ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, username, password);
+		System.out.println(connStr.toString());
 		MessagingFactory factory = MessagingFactory.createFromConnectionString(connStr.toString());
-		MessageSender sender = MessageSender.Create(factory, "sender0", "testwithjava/partitions/0");
+		// Thread.sleep(4000);
 		
 		MessageReceiver receiver = MessageReceiver.Create(
 				factory,
 				"receiver0",
-				"testwithjava/ConsumerGroups/$default/Partitions/0",
-				"13583534", //4579928", // offset
-				1000);
+				"gojavago/ConsumerGroups/$Default/Partitions/0",
+				"-1", //4579928", // offset
+				1000).get();
+		
+		MessageSender sender = MessageSender.Create(factory, "sender0", "gojavago/partitions/0").get();
 		
 		Message msg = Proton.message();
 		HashMap<String, String> props = new HashMap<String, String>();
@@ -66,13 +60,16 @@ public class TestApiApp
 		// System.out.println(gson.toJson(p));
 		
 		Binary bodyData = new Binary(gson.toJson(p).getBytes(Charset.defaultCharset()));
-		// sender.Send(msg); // async send
+		Section body = new Data(bodyData);
+		msg.setBody(body);
 		
+		sender.Send(msg).get();
+		System.out.println("sent");
 		
 		Collection<Message> msgs = receiver.receive().get();
+		
 		for(Message recvdMessage: msgs) {
-			System.out.println(recvdMessage.getMessageAnnotations());
-			// System.out.println(gson.fromJson(recvdMessage.getBody()));
+			print(0, recvdMessage, true);
 		}
 	}
     
@@ -82,7 +79,7 @@ public class TestApiApp
 				"receiver0",
 				"hackit/ConsumerGroups/$default/Partitions/0",
 				"-1", //4579928", // offset
-				1000);
+				1000).get();
 		
 		
 		MessageReceiver receiver1 = MessageReceiver.Create(
@@ -90,21 +87,21 @@ public class TestApiApp
 				"receiver1",
 				"hackit/ConsumerGroups/$default/Partitions/1",
 				"-1", //4579928", // offset
-				1000);
+				1000).get();
 		
 		MessageReceiver receiver2 = MessageReceiver.Create(
 				factory,
 				"receiver2",
 				"hackit/ConsumerGroups/$default/Partitions/2",
 				"-1", //4579928", // offset
-				1000);
+				1000).get();
 		
 		MessageReceiver receiver3 = MessageReceiver.Create(
 				factory,
 				"receiver3",
 				"hackit/ConsumerGroups/$default/Partitions/3",
 				"-1", //4579928", // offset
-				1000);
+				1000).get();
 		
 		while(true){
 			
@@ -163,10 +160,10 @@ public class TestApiApp
     
     public static CompletableFuture<Void> Send(MessagingFactory connection, int groupIndex) throws Exception {
     
-    	MessageSender sender = MessageSender.Create(connection, "sender0", "hackit/partitions/0");
-		MessageSender sender1 = MessageSender.Create(connection, "sender1", "hackit/partitions/1");
-		MessageSender sender2 = MessageSender.Create(connection, "sender2", "hackit/partitions/2");
-		MessageSender sender3 = MessageSender.Create(connection, "sender3", "hackit/partitions/3");
+    	MessageSender sender = MessageSender.Create(connection, "sender0", "hackit/partitions/0").get();
+		MessageSender sender1 = MessageSender.Create(connection, "sender1", "hackit/partitions/1").get();
+		MessageSender sender2 = MessageSender.Create(connection, "sender2", "hackit/partitions/2").get();
+		MessageSender sender3 = MessageSender.Create(connection, "sender3", "hackit/partitions/3").get();
 		
 		return CompletableFuture.allOf(
 			keepSending(groupIndex + 0, sender, sender1, sender2, sender3, 0),

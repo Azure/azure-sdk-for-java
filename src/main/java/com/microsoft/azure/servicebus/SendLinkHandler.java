@@ -1,21 +1,9 @@
 package com.microsoft.azure.servicebus;
 
-import java.util.*;
-import java.util.concurrent.*;
 import java.util.logging.*;
 
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
-import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
-import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.*;
-import org.apache.qpid.proton.engine.Event.Type;
-import org.apache.qpid.proton.message.Message;
 
 public class SendLinkHandler extends BaseHandler {
 
@@ -23,17 +11,21 @@ public class SendLinkHandler extends BaseHandler {
 	
 	private final String name;
 	private final MessageSender msgSender;
+	private final Object firstFlow;
+	private boolean isFirstFlow;
 	
 	SendLinkHandler(final String name, final MessageSender sender) {
 		this.name = name;
 		this.msgSender = sender;
+		this.firstFlow = new Object();
+		this.isFirstFlow = true;
 	}
 
 	@Override
     public void onUnhandled(Event event) {
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
-            TRACE_LOGGER.log(Level.FINE, "sendLink.onUnhandled: name[" + event.getLink().getName() + "] : event["+event+"]");
+            TRACE_LOGGER.log(Level.FINE, "sendLink.onUnhandled: name[" + event.getLink().getName() + "] : event[" + event + "]");
         }		
 	}
 
@@ -54,15 +46,36 @@ public class SendLinkHandler extends BaseHandler {
 	}
 
 	@Override
+	public void onLinkFlow(Event event){
+		if (this.isFirstFlow) {
+			synchronized (this.firstFlow) {
+				if (this.isFirstFlow) {
+					this.msgSender.onOpenComplete(null);
+					this.isFirstFlow = false;
+				}
+			}
+		}
+		
+		if(TRACE_LOGGER.isLoggable(Level.FINE))
+        {
+			Sender sender = (Sender) event.getLink();
+			TRACE_LOGGER.log(Level.FINE, "sendLink.onFlow: name[" + sender.getName() + "] : unsettled[" + sender.getUnsettled() + "] : credit[" + sender.getCredit()+ "]");
+        }
+	}
+	
+	@Override
     public void onLinkRemoteClose(Event event) {
 		Link link = event.getLink();
         if (link instanceof Sender) {
         	ErrorCondition condition = link.getRemoteCondition();
     		if (condition != null) {
-                System.err.println(String.format("LinkError(name: %s): " + condition.getDescription(), this.name));
-            } else {
-                System.err.println("LinkError (no description returned).");
-            }
+    			if(TRACE_LOGGER.isLoggable(Level.SEVERE))
+    	        {
+    				TRACE_LOGGER.log(Level.SEVERE, "sendLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getDescription() + "]");
+    	        }
+            } 
+    		
+    		this.msgSender.onError(condition);
         }
 	}
 }

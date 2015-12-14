@@ -22,16 +22,16 @@ import org.apache.qpid.proton.reactor.Reactor;
 public class MessageReceiver extends ClientEntity {
 	
 	private final int prefetchCount; 
-	private final ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private final ConcurrentLinkedQueue<CompletableFuture<Collection<Message>>> pendingReceives;
 	private final MessagingFactory underlyingFactory;
 	
+	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
-	
+	private CompletableFuture<MessageReceiver> linkOpen;
 	/**
 	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on. Connection has to be associated with Reactor before Creating a receiver on it.
 	 */
-	public static MessageReceiver Create(
+	public static CompletableFuture<MessageReceiver> Create(
 			final MessagingFactory factory, 
 			final String name, 
 			final String recvPath, 
@@ -43,7 +43,7 @@ public class MessageReceiver extends ClientEntity {
 		ReceiveLinkHandler handler = new ReceiveLinkHandler(name, msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
 
-		return msgReceiver;
+		return msgReceiver.linkOpen;
 	}
 	
 	private MessageReceiver(final MessagingFactory factory, 
@@ -54,6 +54,7 @@ public class MessageReceiver extends ClientEntity {
 		this.prefetchCount = prefetchCount;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset);
+		this.linkOpen = new CompletableFuture<MessageReceiver>();
 		this.pendingReceives = new ConcurrentLinkedQueue<CompletableFuture<Collection<Message>>>();
 		this.underlyingFactory = factory;
 	}
@@ -67,7 +68,7 @@ public class MessageReceiver extends ClientEntity {
 			synchronized (this.prefetchedMessages) {
 				if (!this.prefetchedMessages.isEmpty()) {
 					Collection<Message> returnMessages = this.prefetchedMessages;
-					this.prefetchedMessages.removeAll((Collection<?>)returnMessages);
+					this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 					return CompletableFuture.completedFuture(returnMessages);
 				}
 			}
@@ -78,27 +79,53 @@ public class MessageReceiver extends ClientEntity {
 		return onReceive;
 	}
 	
-	// intended to be called by proton reactor handler 
-	void onDelivery(Collection<Message> messages) {
-		if (this.pendingReceives.isEmpty()) {
-			this.prefetchedMessages.addAll(messages);
+	void onOpenComplete(ErrorCondition condition){
+		if (condition == null) {
+			this.linkOpen.complete(this);
 		}
 		else {
-			this.pendingReceives.poll().complete(messages);
+			this.linkOpen.completeExceptionally(ExceptionUtil.toException(condition));
+		}
+	}
+	
+	// intended to be called by proton reactor handler 
+	void onDelivery(Collection<Message> messages) {
+		synchronized (this.pendingReceives) {
+			if (this.pendingReceives.isEmpty()) {
+				this.prefetchedMessages.addAll(messages);
+			}
+			else {
+				this.pendingReceives.poll().complete(messages);
+			}
 		}
 	}
 	
 	// TODO: Map to appropriate exception based on ErrMsg 
 	void onError(ErrorCondition error) {
+		
+		synchronized (this.linkOpen) {
+			if (!this.linkOpen.isDone()) {
+				this.onOpenComplete(error);
+				return;
+			}
+		}
+		
 		if (this.pendingReceives != null && !this.pendingReceives.isEmpty()) {
+			
 			synchronized (this.pendingReceives) {
-				
 				for(CompletableFuture<Collection<Message>> future: this.pendingReceives) {
-					future.completeExceptionally(new Exception(error.toString()));
+					future.completeExceptionally(ExceptionUtil.toException(error));
 				}
 			}
 		}
 	}
+
+	@Override
+	public void close() {
+		if (this.receiveLink != null && this.receiveLink.getLocalState() == EndpointState.ACTIVE) {
+			this.receiveLink.close();
+		}
+	}	
 	
 	private Receiver createReceiveLink(
 								final Connection connection, 
@@ -129,12 +156,4 @@ public class MessageReceiver extends ClientEntity {
                 
         return receiver;
 	}
-
-	@Override
-	public void close() {
-		if (this.receiveLink != null && this.receiveLink.getLocalState() == EndpointState.ACTIVE) {
-			this.receiveLink.close();
-		}
-	}
-	
 }

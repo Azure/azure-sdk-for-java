@@ -1,5 +1,6 @@
 package com.microsoft.azure.eventhubs;
 
+import java.io.IOException;
 import java.util.Date;
 
 import com.microsoft.azure.servicebus.*;
@@ -11,13 +12,13 @@ public class EventHubClient
 {
 	private final MessagingFactory underlyingFactory;
 	
-	private EventHubClient(ConnectionStringBuilder connectionString) 
+	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException
 	{
 		this.underlyingFactory = MessagingFactory.createFromConnectionString(connectionString.toString());
 	}
 	
 	public static EventHubClient createFromConnectionString(final String connectionString)
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, IOException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		return new EventHubClient(connStr);

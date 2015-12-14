@@ -18,18 +18,24 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.engine.Event.Type;
 import org.apache.qpid.proton.message.Message;
 
-// ServiceBus <-> ProtonReactor interaction 
-// handles all recvLink - reactor events
+/** 
+ * ServiceBus <-> ProtonReactor interaction 
+ * handles all recvLink - reactor events
+ */
 public final class ReceiveLinkHandler extends BaseHandler {
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger("eventhub.trace");
 	
 	private final String name;
 	private final MessageReceiver msgReceiver;
+	private final Object firstFlow;
+	private boolean isFirstFlow;
 	
 	ReceiveLinkHandler(final String name, final MessageReceiver receiver) {
 		this.name = name;
 		this.msgReceiver = receiver;
+		this.firstFlow = new Object();
+		this.isFirstFlow = true;
 	}
 	
 	@Override
@@ -60,15 +66,23 @@ public final class ReceiveLinkHandler extends BaseHandler {
     }
 	
 	@Override
+	public void onLinkFlow(Event event){
+		
+		
+		// TODO: TRACE
+	}
+	
+	@Override
     public void onLinkRemoteClose(Event event) {
 		Link link = event.getLink();
         if (link instanceof Receiver) {
         	ErrorCondition condition = link.getRemoteCondition();
     		if (condition != null) {
-                System.err.println(String.format("LinkError(name: %s): " + condition.getDescription(), this.name));
-            } else {
-                System.err.println("LinkError (no description returned).");
-            }
+    			if(TRACE_LOGGER.isLoggable(Level.SEVERE))
+    	        {
+    				TRACE_LOGGER.log(Level.SEVERE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getDescription() + "]");
+    	        }
+            } 
     		
     		this.msgReceiver.onError(condition);
         }
@@ -78,6 +92,15 @@ public final class ReceiveLinkHandler extends BaseHandler {
     public void onDelivery(Event event) {
 		
         Receiver recv = (Receiver)event.getLink();
+        
+        if (this.isFirstFlow) {
+			synchronized (this.firstFlow) {
+				if (this.isFirstFlow) {
+					this.msgReceiver.onOpenComplete(null);
+					this.isFirstFlow = false;
+				}
+			}
+		}
         
         Delivery delivery = recv.current();
         LinkedList<Message> messages = new LinkedList<Message>();
@@ -107,6 +130,7 @@ public final class ReceiveLinkHandler extends BaseHandler {
         	TRACE_LOGGER.log(Level.FINE,
         			String.format("recvLink.onDelivery (name: %s) credit: %s", this.name, recv.getCredit()));
         }
+        
         int flowCount = this.msgReceiver.getPrefetchCount() - recv.getCredit();
         if (flowCount > 0) {
         	recv.flow(flowCount);

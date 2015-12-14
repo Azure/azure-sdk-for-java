@@ -23,25 +23,21 @@ public class MessagingFactory {
 	
 	private final Connection connection;
 	
-	MessagingFactory(ConnectionStringBuilder builder) {
+	MessagingFactory(ConnectionStringBuilder builder) throws IOException {
 		startReactor();
 		this.connection = getConnection(builder);
 	}
 	
 	private Connection getConnection(ConnectionStringBuilder builder){
-		ConnectionHandler handler = new ConnectionHandler(builder.getHostName(), builder.getSasKeyName(), builder.getSasKey());
+		ConnectionHandler handler = new ConnectionHandler(builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
 		return reactor.connection(handler);
 	}
 
-	private void startReactor()
+	private void startReactor() throws IOException
 	{
 		if (reactor == null) {
-			try {
-				reactor = Proton.reactor();
-				new Thread(new RunReactor(reactor)).start();
-			}catch(IOException ioException){
-				// TODO: throw - cannot start Reactor
-			}
+			reactor = Proton.reactor();
+			new Thread(new RunReactor(reactor)).start();
 		}
 	}
 	
@@ -49,7 +45,7 @@ public class MessagingFactory {
 		return this.connection;
 	}
 	
-	public static MessagingFactory createFromConnectionString(final String connectionString) {
+	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException {
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
 		return new MessagingFactory(builder);
 	}
@@ -62,12 +58,13 @@ public class MessagingFactory {
 		}
 		
 		public void run() {
-			this.r.run();
 
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 		    {
-				TRACE_LOGGER.log(Level.FINE, "running instance started...");
+				TRACE_LOGGER.log(Level.FINE, "starting reactor instance.");
 		    }
+			
+			this.r.run();
 		}
 	}
 }
