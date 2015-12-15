@@ -12,7 +12,7 @@ import retrofit.Response;
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public class ServiceException extends AutoRestException {
+public class CloudException extends AutoRestException {
     /**
      * Information about the associated HTTP response.
      */
@@ -21,19 +21,19 @@ public class ServiceException extends AutoRestException {
     /**
      * The HTTP response body.
      */
-    private Object body;
+    private CloudError body;
 
     /**
      * Initializes a new instance of the ServiceException class.
      */
-    public ServiceException() { }
+    public CloudException() { }
 
     /**
      * Initializes a new instance of the ServiceException class.
      *
      * @param message The exception message.
      */
-    public ServiceException(final String message) {
+    public CloudException(final String message) {
         super(message);
     }
 
@@ -43,7 +43,7 @@ public class ServiceException extends AutoRestException {
      * @param message the exception message
      * @param cause   exception that caused this exception to occur
      */
-    public ServiceException(final String message, final Throwable cause) {
+    public CloudException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -52,7 +52,7 @@ public class ServiceException extends AutoRestException {
      *
      * @param cause exception that caused this exception to occur
      */
-    public ServiceException(final Throwable cause) {
+    public CloudException(final Throwable cause) {
         super(cause);
     }
 
@@ -70,7 +70,7 @@ public class ServiceException extends AutoRestException {
      *
      * @return the response body
      */
-    public Object getBody() {
+    public CloudError getBody() {
         return body;
     }
 
@@ -88,7 +88,7 @@ public class ServiceException extends AutoRestException {
      *
      * @param body the response object
      */
-    public void setBody(Object body) {
+    public void setBody(CloudError body) {
         this.body = body;
     }
 }
