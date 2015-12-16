@@ -16,6 +16,7 @@ public final class PartitionReceiver
 	private boolean offsetInclusive;
 	private MessageReceiver internalReceiver; 
 	private ReceiveHandler receiveHandler;
+	private MessagingFactory underlyingFactory;
 	
 	static final int DefaultPrefetchCount = 300;
 	
@@ -51,6 +52,7 @@ public final class PartitionReceiver
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", eventHubName, consumerGroupName, partitionId), 
 				startingOffset, offsetInclusive, this.DefaultPrefetchCount, receiveHandler).get();
 		this.receiveHandler = receiveHandler;
+		this.underlyingFactory = factory;
 	}
 	
 	/**
@@ -86,14 +88,14 @@ public final class PartitionReceiver
 	public Collection<EventData> Receive() 
 			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException, InterruptedException, ExecutionException
 	{
-		return this.Receive(Duration.ofSeconds(60));
+		return this.Receive(this.underlyingFactory.getOperationTimeout());
 	}
 	
 	public Collection<EventData> Receive(Duration waittime)
 			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException, InterruptedException, ExecutionException
 	{
 		if (this.receiveHandler != null) {
-			throw new IllegalStateException("Receive and onReceive cannot be performed on Single instance of Receiver.");
+			throw new IllegalStateException("Receive and onReceive cannot be performed side-by-side on a single instance of Receiver.");
 		}
 		
 		Collection<Message> amqpMessages = this.internalReceiver.receive().get();

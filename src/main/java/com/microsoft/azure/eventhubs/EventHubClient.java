@@ -102,6 +102,15 @@ public class EventHubClient
 		return new PartitionReceiver(this.underlyingFactory, this.sender.getSendPath(), consumerGroupName, partitionId, startingOffset, offsetInclusive);
 	}
 	
+	/*
+	 * Built for EventProcessorHost scenario.
+	 * - Implement ReceiveHandler to process events.
+	 */
+	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, ReceiveHandler receiveHandler) 
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+		return new PartitionReceiver(this.underlyingFactory, this.sender.getSendPath(), consumerGroupName, partitionId, startingOffset, offsetInclusive, receiveHandler);
+	}
+	
 	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc) {
 		throw new UnsupportedOperationException("TODO: Implement datetime receiver");
 	}

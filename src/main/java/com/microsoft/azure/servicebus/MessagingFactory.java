@@ -23,9 +23,14 @@ public class MessagingFactory {
 	
 	private final Connection connection;
 	
+	private Duration operationTimeout;
+	private RetryPolicy retryPolicy;
+	
 	MessagingFactory(ConnectionStringBuilder builder) throws IOException {
 		startReactor();
 		this.connection = getConnection(builder);
+		this.operationTimeout = builder.getOperationTimeout();
+		this.retryPolicy = builder.getRetryPolicy();
 	}
 	
 	private Connection getConnection(ConnectionStringBuilder builder){
@@ -43,6 +48,10 @@ public class MessagingFactory {
 	
 	Connection getConnection() {
 		return this.connection;
+	}
+	
+	public Duration getOperationTimeout() {
+		return this.operationTimeout;
 	}
 	
 	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException {

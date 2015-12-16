@@ -84,6 +84,14 @@ public class ConnectionStringBuilder {
 	public String getEntityPath() {
 		return this.entityPath;
 	}
+	
+	public Duration getOperationTimeout() {
+		return this.operationTimeout;
+	}
+	
+	public RetryPolicy getRetryPolicy() {
+		return this.retryPolicy;
+	}
 
 	@Override
 	public String toString() {
