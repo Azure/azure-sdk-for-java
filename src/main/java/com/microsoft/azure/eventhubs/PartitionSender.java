@@ -17,13 +17,13 @@ public final class PartitionSender
 								String.format("%s/Partitions/%s", eventHubName, partitionId)).get();
 	}
 
-	public final void Send(EventData data) 
+	public final void send(EventData data) 
 			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException, InterruptedException, ExecutionException
 	{
-		this.internalSender.Send(data.toAmqpMessage()).get();
+		this.internalSender.send(data.toAmqpMessage()).get();
 	}
 	
-	public final void Send(Iterable<EventData> eventDatas) 
+	public final void send(Iterable<EventData> eventDatas) 
 			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException
 	{
 		throw new UnsupportedOperationException("TODO: Implement Send Batch");

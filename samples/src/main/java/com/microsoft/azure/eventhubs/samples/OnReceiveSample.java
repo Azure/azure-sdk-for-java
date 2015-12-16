@@ -10,9 +10,8 @@ public class OnReceiveSample {
 	public static void main(String[] args) throws Exception {
 		
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
-		System.out.println(connStr.toString());
 		
-		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString());
+		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
 		PartitionReceiver receiver = ehClient.createReceiver(EventHubClient.DefaultConsumerGroupName, "0", "-1", false, new OnReceiveSample.EventPrinter());
 		

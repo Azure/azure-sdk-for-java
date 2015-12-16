@@ -85,13 +85,13 @@ public final class PartitionReceiver
 		throw new UnsupportedOperationException("TODO:");
 	}
 	
-	public Collection<EventData> Receive() 
+	public Collection<EventData> receive() 
 			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException, InterruptedException, ExecutionException
 	{
-		return this.Receive(this.underlyingFactory.getOperationTimeout());
+		return this.receive(this.underlyingFactory.getOperationTimeout());
 	}
 	
-	public Collection<EventData> Receive(Duration waittime)
+	public Collection<EventData> receive(Duration waittime)
 			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException, InterruptedException, ExecutionException
 	{
 		if (this.receiveHandler != null) {

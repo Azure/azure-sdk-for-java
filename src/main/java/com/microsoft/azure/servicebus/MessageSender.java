@@ -55,7 +55,7 @@ public class MessageSender extends ClientEntity {
 	}
 	
 	// TODO: just enqueue on send and a timer which actually drains as many sends as getCredit() in that interval
-	public CompletableFuture<Void> Send(Message msg) {
+	public CompletableFuture<Void> send(Message msg) {
 		
 		byte[] bytes = new byte[5 * 1024];
 		int encodedSize = msg.encode(bytes, 0, MaxMessageLength);

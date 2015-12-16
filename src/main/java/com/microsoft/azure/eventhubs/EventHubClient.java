@@ -3,6 +3,7 @@ package com.microsoft.azure.eventhubs;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.*;
 
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.*;
@@ -17,19 +18,35 @@ public class EventHubClient
 	public static final String DefaultConsumerGroupName = "$Default";
 	
 	private final MessagingFactory underlyingFactory;
-	private final MessageSender sender;
+	private final String eventHubName;
 	
-	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, EntityNotFoundException, InterruptedException, ExecutionException
+	private MessageSender sender;
+	
+	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, EntityNotFoundException
 	{
 		this.underlyingFactory = MessagingFactory.createFromConnectionString(connectionString.toString());
-		this.sender = MessageSender.Create(this.underlyingFactory, "sender0", connectionString.getEntityPath()).get();
+		this.eventHubName = connectionString.getEntityPath();
 	}
 	
-	public static EventHubClient createFromConnectionString(final String connectionString)
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, IOException, InterruptedException, ExecutionException
+	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, IOException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
-		return new EventHubClient(connStr);
+		final EventHubClient eventHubClient = new EventHubClient(connStr);
+		
+		return eventHubClient.createInternalSender()
+				.thenApplyAsync(new Function<Void, EventHubClient>() {
+					public EventHubClient apply(Void a) {
+						return eventHubClient;
+					}
+				});
+	}
+	
+	CompletableFuture<Void> createInternalSender() throws EntityNotFoundException {
+		return MessageSender.Create(this.underlyingFactory, "sender0", this.eventHubName)
+				.thenAcceptAsync(new Consumer<MessageSender>() {
+					public void accept(MessageSender a) { EventHubClient.this.sender = a;}
+				});
 	}
 	
 	public final PartitionSender createPartitionSender(final String partitionId)
@@ -53,7 +70,7 @@ public class EventHubClient
 			throw new IllegalArgumentException("data");
 		}
 		
-		this.sender.Send(data.toAmqpMessage());
+		this.sender.send(data.toAmqpMessage());
 	}
 	
 	public final void send(Iterable<EventData> data) 
@@ -78,7 +95,7 @@ public class EventHubClient
 						? new MessageAnnotations(new HashMap<Symbol, Object>()) 
 						: amqpMessage.getMessageAnnotations();
 		messageAnnotations.getValue().put(AmqpConstants.PartitionKey, partitionKey);
-		this.sender.Send(data.toAmqpMessage()).get();
+		this.sender.send(data.toAmqpMessage()).get();
 	}
 	
 	public final void send(Iterable<EventData> data, String partitionKey) 

@@ -5,7 +5,10 @@ import java.util.LinkedList;
 
 import org.apache.qpid.proton.message.Message;
 
-public final class EventDataUtil {
+/*
+ * Internal utility class for EventData
+ */
+final class EventDataUtil {
 	
 	private EventDataUtil(){}
 	
