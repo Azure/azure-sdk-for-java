@@ -27,7 +27,7 @@ public class MessageReceiver extends ClientEntity {
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private CompletableFuture<MessageReceiver> linkOpen;
-	
+	private MessageReceiveHandler receiveHandler;
 	/**
 	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on. Connection has to be associated with Reactor before Creating a receiver on it.
 	 */
@@ -37,9 +37,10 @@ public class MessageReceiver extends ClientEntity {
 			final String recvPath, 
 			final String offset,
 			final boolean offsetInclusive,
-			final int prefetchCount)
+			final int prefetchCount,
+			final MessageReceiveHandler receiveHandler)
 	{
-		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, prefetchCount);
+		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, prefetchCount, receiveHandler);
 		
 		ReceiveLinkHandler handler = new ReceiveLinkHandler(name, msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
@@ -52,19 +53,24 @@ public class MessageReceiver extends ClientEntity {
 			final String recvPath, 
 			final String offset,
 			final boolean offsetInclusive,
-			final int prefetchCount){
+			final int prefetchCount,
+			final MessageReceiveHandler receiveHandler){
 		this.prefetchCount = prefetchCount;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset, offsetInclusive);
 		this.linkOpen = new CompletableFuture<MessageReceiver>();
 		this.pendingReceives = new ConcurrentLinkedQueue<CompletableFuture<Collection<Message>>>();
 		this.underlyingFactory = factory;
+		this.receiveHandler = receiveHandler;
 	}
 	
 	public int getPrefetchCount() {
 		return this.prefetchCount;
 	}
 	
+	/*
+	 * if ReceiveHandler is passed to the Constructor - this receive shouldn't be called
+	 */
 	public CompletableFuture<Collection<Message>> receive(){
 		if (!this.prefetchedMessages.isEmpty()) {
 			synchronized (this.prefetchedMessages) {
@@ -92,6 +98,12 @@ public class MessageReceiver extends ClientEntity {
 	
 	// intended to be called by proton reactor handler 
 	void onDelivery(Collection<Message> messages) {
+		if (this.receiveHandler != null) {
+			this.receiveHandler.onReceiveMessages(messages);
+			
+			return;
+		}
+		
 		synchronized (this.pendingReceives) {
 			if (this.pendingReceives.isEmpty()) {
 				this.prefetchedMessages.addAll(messages);
@@ -104,6 +116,8 @@ public class MessageReceiver extends ClientEntity {
 	
 	// TODO: Map to appropriate exception based on ErrMsg 
 	void onError(ErrorCondition error) {
+		
+		// TODO: apply retryPolicy here - recreate link - "preserve offset"
 		
 		synchronized (this.linkOpen) {
 			if (!this.linkOpen.isDone()) {

@@ -33,11 +33,7 @@ public final class PartitionReceiver
 			final String startingOffset, 
 			final boolean offsetInclusive) 
 					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
-		this(factory, eventHubName, consumerGroupName, partitionId);
-		this.startingOffset = startingOffset;
-		this.offsetInclusive = offsetInclusive;
-		this.internalReceiver = MessageReceiver.Create(factory, "receiver0", 
-				String.format("%s/ConsumerGroups/%s/Partitions/%s", eventHubName, consumerGroupName, partitionId), startingOffset, offsetInclusive, this.DefaultPrefetchCount).get();
+		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null);
 	}
 	
 	PartitionReceiver(MessagingFactory factory, 
@@ -48,7 +44,12 @@ public final class PartitionReceiver
 			final boolean offsetInclusive,
 			final ReceiveHandler receiveHandler) 
 					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
-		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive);
+		this(factory, eventHubName, consumerGroupName, partitionId);
+		this.startingOffset = startingOffset;
+		this.offsetInclusive = offsetInclusive;
+		this.internalReceiver = MessageReceiver.Create(factory, "receiver0", 
+				String.format("%s/ConsumerGroups/%s/Partitions/%s", eventHubName, consumerGroupName, partitionId), 
+				startingOffset, offsetInclusive, this.DefaultPrefetchCount, receiveHandler).get();
 		this.receiveHandler = receiveHandler;
 	}
 	
@@ -96,11 +97,6 @@ public final class PartitionReceiver
 		}
 		
 		Collection<Message> amqpMessages = this.internalReceiver.receive().get();
-		LinkedList<EventData> events = new LinkedList<EventData>();
-		for(Message message : amqpMessages) {
-			events.add(new EventData(message));
-		}
-		
-		return events;
+		return EventDataUtil.toEventDataCollection(amqpMessages);
 	}
 }

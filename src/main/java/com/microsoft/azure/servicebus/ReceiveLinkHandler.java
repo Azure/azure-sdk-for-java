@@ -66,13 +66,6 @@ public final class ReceiveLinkHandler extends BaseHandler {
     }
 	
 	@Override
-	public void onLinkFlow(Event event){
-		
-		
-		// TODO: TRACE
-	}
-	
-	@Override
     public void onLinkRemoteClose(Event event) {
 		Link link = event.getLink();
         if (link instanceof Receiver) {
