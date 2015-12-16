@@ -2,8 +2,11 @@ package com.microsoft.azure.eventhubs;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.message.*;
 import com.microsoft.azure.servicebus.*;
 
 /**
@@ -62,8 +65,19 @@ public class EventHubClient
 	public final void send(EventData data, String partitionKey) 
 			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, InterruptedException, ExecutionException
 	{
-		// TODO: Arguments
-		data.setPartitionKey(partitionKey);
+		if (data == null) {
+			throw new IllegalArgumentException("EventData cannot be null.");
+		}
+		
+		if (partitionKey == null) {
+			throw new IllegalArgumentException("partitionKey cannot be null");
+		}
+		
+		Message amqpMessage = data.toAmqpMessage();
+		MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
+						? new MessageAnnotations(new HashMap<Symbol, Object>()) 
+						: amqpMessage.getMessageAnnotations();
+		messageAnnotations.getValue().put(AmqpConstants.PartitionKey, partitionKey);
 		this.sender.Send(data.toAmqpMessage()).get();
 	}
 	

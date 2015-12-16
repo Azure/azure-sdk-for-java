@@ -1,9 +1,6 @@
 package com.microsoft.azure.eventhubs;
 
-import java.io.*;
 import java.nio.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.apache.qpid.proton.Proton;
@@ -20,48 +17,45 @@ public class EventData implements AutoCloseable {
 	private Date enqueuedTimeUtc;
 	private boolean closed;
 	private Binary bodyData;
-	
+	private boolean isReceivedEvent;
 	private Map<String, String> properties;
 	
-	// property bag intended to carry ServiceProperties
-	private Map<Symbol, Object> systemProperties;
-	
-	private ReceivedSystemProperties receivedSystemProperties;
+	private SystemProperties systemProperties;
 	
 	EventData() {
 		this.properties = new HashMap<String, String>();
 		this.closed = false;
-		this.systemProperties = new HashMap<Symbol, Object>();
 	}
 	
 	/*
 	 * Internal Constructor - intended to be used only by the @@PartitionReceiver
 	 */
+	@SuppressWarnings("unchecked")
 	EventData(Message amqpMessage) {
 		if (amqpMessage == null) {
 			throw new IllegalArgumentException("amqpMessage cannot be null");
 		}
 		
-		this.systemProperties = Collections.unmodifiableMap(amqpMessage.getMessageAnnotations().getValue());
+		Map<Symbol, Object> messageAnnotations = amqpMessage.getMessageAnnotations().getValue();
 		
-		Object partitionKeyObj = this.systemProperties.get(AmqpConstants.PartitionKey);
+		Object partitionKeyObj = messageAnnotations.get(AmqpConstants.PartitionKey);
 		if (partitionKeyObj != null) 
 			this.partitionKey = partitionKeyObj.toString();
 		
-		Object sequenceNumberObj = this.systemProperties.get(AmqpConstants.SequenceNumber);
+		Object sequenceNumberObj = messageAnnotations.get(AmqpConstants.SequenceNumber);
 		this.sequenceNumber = (long) sequenceNumberObj;
 		
-		Object enqueuedTimeUtcObj = this.systemProperties.get(AmqpConstants.EnqueuedTimeUtc);
+		Object enqueuedTimeUtcObj = messageAnnotations.get(AmqpConstants.EnqueuedTimeUtc);
 		this.enqueuedTimeUtc = (Date) enqueuedTimeUtcObj;
 		
-		this.offset = this.systemProperties.get(AmqpConstants.Offset).toString();
+		this.offset = messageAnnotations.get(AmqpConstants.Offset).toString();
 		
 		this.properties = amqpMessage.getApplicationProperties() == null ? null 
-				: (Map<String, String>) amqpMessage.getApplicationProperties().getValue();
+				: ((Map<String, String>)(amqpMessage.getApplicationProperties().getValue()));
 		
 		this.bodyData = ((Data) amqpMessage.getBody()).getValue();
 		
-		this.receivedSystemProperties = new ReceivedSystemProperties(this);
+		this.isReceivedEvent = true;
 	}
 	
 	public EventData(byte[] data) {
@@ -77,7 +71,6 @@ public class EventData implements AutoCloseable {
 	public EventData(byte[] data, final int offset, final int length) {
 		this();
 		
-		// TODO: evaluate if this(new ByteArrayInputStream(data)) - is required
 		if (data == null) {
 			throw new IllegalArgumentException("data cannot be null");
 		}
@@ -100,24 +93,22 @@ public class EventData implements AutoCloseable {
 	}
 	
 	/*
-	 * Internal method to set partitionKey while sending the Message.
-	 */
-	void setPartitionKey(String partitionKey) {
-		this.systemProperties.put(AmqpConstants.PartitionKey, partitionKey);
-	}
-	
-	/*
 	 * Application property bag
 	 */
-	public Map getProperties() {
+	public Map<String, String> getProperties() {
 		return this.properties;
 	}
 	
 	/*
 	 * SystemProperties populated by EventHubService
+	 * As these are populated by Service, they are only present on a Received EventData
 	 */
-	public ReceivedSystemProperties getReceivedSystemProperties() {
-		return this.receivedSystemProperties;
+	public SystemProperties getSystemProperties() {
+		if (this.isReceivedEvent && this.systemProperties == null) {
+			this.systemProperties = new SystemProperties(this);
+		}
+		
+		return this.systemProperties;
 	}
 	
 	private void throwIfAutoClosed() {
@@ -137,11 +128,6 @@ public class EventData implements AutoCloseable {
 			amqpMessage.setApplicationProperties(applicationProperties);
 		}
 		
-		if (this.systemProperties != null && !this.systemProperties.isEmpty()) {
-			MessageAnnotations messageAnnotations = new MessageAnnotations(this.systemProperties);
-			amqpMessage.setMessageAnnotations(messageAnnotations);
-		}
-		
 		if (this.bodyData != null) {
 			amqpMessage.setBody(new Data(this.bodyData));
 		}
@@ -159,10 +145,10 @@ public class EventData implements AutoCloseable {
 		this.closed = true;
 	}
 	
-	public static final class ReceivedSystemProperties {
+	public static final class SystemProperties {
 		EventData event;
 		
-		ReceivedSystemProperties(EventData event) {
+		SystemProperties(EventData event) {
 			this.event = event;
 		}
 		
