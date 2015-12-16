@@ -1,7 +1,9 @@
 package com.microsoft.azure.eventhubs;
 
 import java.io.*;
+import java.nio.*;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.apache.qpid.proton.Proton;
@@ -15,16 +17,16 @@ public class EventData implements AutoCloseable {
 	private String partitionKey;
 	private String offset;
 	private long sequenceNumber;
-	private ZonedDateTime enqueuedTimeUtc;
-	private InputStream stream;
-	private boolean ownsStream;
+	private Date enqueuedTimeUtc;
 	private boolean closed;
 	private Binary bodyData;
 	
 	private Map<String, String> properties;
 	
-	// INVESTIGATE: readonly system properties bag
+	// property bag intended to carry ServiceProperties
 	private Map<Symbol, Object> systemProperties;
+	
+	private ReceivedSystemProperties receivedSystemProperties;
 	
 	EventData() {
 		this.properties = new HashMap<String, String>();
@@ -32,55 +34,90 @@ public class EventData implements AutoCloseable {
 		this.systemProperties = new HashMap<Symbol, Object>();
 	}
 	
+	/*
+	 * Internal Constructor - intended to be used only by the @@PartitionReceiver
+	 */
 	EventData(Message amqpMessage) {
-		this();
-		
 		if (amqpMessage == null) {
 			throw new IllegalArgumentException("amqpMessage cannot be null");
 		}
 		
-		MessageUtil.UpdateEventDataHeaderAndProperties(amqpMessage, this);
-		// TODO: this.bodyData = amqpMessage.getBody();
+		this.systemProperties = Collections.unmodifiableMap(amqpMessage.getMessageAnnotations().getValue());
+		
+		Object partitionKeyObj = this.systemProperties.get(AmqpConstants.PartitionKey);
+		if (partitionKeyObj != null) 
+			this.partitionKey = partitionKeyObj.toString();
+		
+		Object sequenceNumberObj = this.systemProperties.get(AmqpConstants.SequenceNumber);
+		this.sequenceNumber = (long) sequenceNumberObj;
+		
+		Object enqueuedTimeUtcObj = this.systemProperties.get(AmqpConstants.EnqueuedTimeUtc);
+		this.enqueuedTimeUtc = (Date) enqueuedTimeUtcObj;
+		
+		this.offset = this.systemProperties.get(AmqpConstants.Offset).toString();
+		
+		this.properties = amqpMessage.getApplicationProperties() == null ? null 
+				: (Map<String, String>) amqpMessage.getApplicationProperties().getValue();
+		
+		this.bodyData = ((Data) amqpMessage.getBody()).getValue();
+		
+		this.receivedSystemProperties = new ReceivedSystemProperties(this);
 	}
 	
 	public EventData(byte[] data) {
-		// TODO: evaluate if this(new ByteArrayInputStream(data)) - is required
+		this();
+		
 		if (data == null) {
 			throw new IllegalArgumentException("data cannot be null");
 		}
 		
 		this.bodyData = new Binary(data);
-		this.ownsStream = true;
 	}
 	
-	// TODO: Investigate the need of Stream constructor - we cannot pass/get Stream handle from ProtonJ lib
-	// TODO: FIND out what Stream datatype is used by jackson json lib; research for a general java standard
-	EventData(InputStream stream) {
-		this.stream = stream;
+	public EventData(byte[] data, final int offset, final int length) {
+		this();
+		
+		// TODO: evaluate if this(new ByteArrayInputStream(data)) - is required
+		if (data == null) {
+			throw new IllegalArgumentException("data cannot be null");
+		}
+		
+		this.bodyData = new Binary(data, offset, length);
 	}
 	
-	protected String getPartitionKey(){
-		return this.partitionKey;
+	public EventData(ByteBuffer buffer){
+		this();
+		
+		if (buffer == null) {
+			throw new IllegalArgumentException("data cannot be null");
+		}
+		
+		this.bodyData = Binary.create(buffer);
 	}
 	
+	public byte[] getBody() {
+		return this.bodyData.getArray();
+	}
+	
+	/*
+	 * Internal method to set partitionKey while sending the Message.
+	 */
 	void setPartitionKey(String partitionKey) {
-		this.partitionKey = partitionKey;
+		this.systemProperties.put(AmqpConstants.PartitionKey, partitionKey);
 	}
 	
-	protected long getSequenceNumber() {
-		return this.sequenceNumber;
-	}
-	
-	protected ZonedDateTime getEnqueuedTimeUtc() {
-		return this.enqueuedTimeUtc;
-	}
-	
-	protected String getOffset() {
-		return this.offset;
-	}
-
-	Map<String, String> getProperties() {
+	/*
+	 * Application property bag
+	 */
+	public Map getProperties() {
 		return this.properties;
+	}
+	
+	/*
+	 * SystemProperties populated by EventHubService
+	 */
+	public ReceivedSystemProperties getReceivedSystemProperties() {
+		return this.receivedSystemProperties;
 	}
 	
 	private void throwIfAutoClosed() {
@@ -116,12 +153,33 @@ public class EventData implements AutoCloseable {
 	public void close() throws Exception {
 		
 		if (!this.closed) {
-			if (this.stream != null && this.ownsStream) {
-				this.stream.close();
-				this.stream = null;
-			}
+			// TODO: dispose native resources
 		}
 		
 		this.closed = true;
+	}
+	
+	public static final class ReceivedSystemProperties {
+		EventData event;
+		
+		ReceivedSystemProperties(EventData event) {
+			this.event = event;
+		}
+		
+		public long getSequenceNumber() {
+			return this.event.sequenceNumber;
+		}
+		
+		public Date getEnqueuedTimeUtc() {
+			return this.event.enqueuedTimeUtc;
+		}
+		
+		public String getOffset() {
+			return this.event.offset;
+		}
+		
+		public String getPartitionKey() {
+			return this.event.partitionKey;
+		}
 	}
 }

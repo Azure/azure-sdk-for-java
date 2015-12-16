@@ -17,7 +17,6 @@ import org.apache.qpid.proton.reactor.Reactor;
  * Abstracts all amqp related details
  * translates event-driven reactor model into async receive Api
  * Manage reconnect? - store currentConsumedOffset
- * TODO: onReceive
  */
 public class MessageReceiver extends ClientEntity {
 	
@@ -28,6 +27,7 @@ public class MessageReceiver extends ClientEntity {
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private CompletableFuture<MessageReceiver> linkOpen;
+	
 	/**
 	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on. Connection has to be associated with Reactor before Creating a receiver on it.
 	 */
@@ -36,9 +36,10 @@ public class MessageReceiver extends ClientEntity {
 			final String name, 
 			final String recvPath, 
 			final String offset,
+			final boolean offsetInclusive,
 			final int prefetchCount)
 	{
-		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, prefetchCount);
+		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, prefetchCount);
 		
 		ReceiveLinkHandler handler = new ReceiveLinkHandler(name, msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
@@ -50,10 +51,11 @@ public class MessageReceiver extends ClientEntity {
 			final String name, 
 			final String recvPath, 
 			final String offset,
+			final boolean offsetInclusive,
 			final int prefetchCount){
 		this.prefetchCount = prefetchCount;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
-		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset);
+		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset, offsetInclusive);
 		this.linkOpen = new CompletableFuture<MessageReceiver>();
 		this.pendingReceives = new ConcurrentLinkedQueue<CompletableFuture<Collection<Message>>>();
 		this.underlyingFactory = factory;
@@ -131,14 +133,15 @@ public class MessageReceiver extends ClientEntity {
 								final Connection connection, 
 								final String name, 
 								final String recvPath, 
-								final String offset)
+								final String offset,
+								final boolean offsetInclusive)
 	{	
 		Source source = new Source();
         source.setAddress(recvPath);
         source.setFilter(Collections.singletonMap(
         		Symbol.valueOf("apache.org:selector-filter:string"),
         		new UnknownDescribedType(Symbol.valueOf("apache.org:selector-filter:string"), 
-        				String.format("amqp.annotation.x-opt-offset > '%s'", offset))));
+        				String.format("amqp.annotation.%s >%s '%s'", AmqpConstants.OffsetName, offsetInclusive ? "=" : StringUtil.EMPTY, offset))));
         // source.setDynamicNodeProperties(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), 122));
 		
 		Session ssn = connection.session();

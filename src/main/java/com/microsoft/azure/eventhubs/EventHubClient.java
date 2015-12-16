@@ -11,6 +11,8 @@ import com.microsoft.azure.servicebus.*;
  */
 public class EventHubClient 
 {
+	public static final String DefaultConsumerGroupName = "$Default";
+	
 	private final MessagingFactory underlyingFactory;
 	private final MessageSender sender;
 	
@@ -71,40 +73,41 @@ public class EventHubClient
 		throw new UnsupportedOperationException("TODO Implement Send Batch");
 	}
 	
-	public final PartitionReceiver createReceiver(final String partitionId) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId) 
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+		return this.createReceiver(consumerGroupName, partitionId, PartitionReceiver.StartOfStream, false);
 	}
 	
-	public final PartitionReceiver createReceiver(final String partitionId, final String startingOffset) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset) 
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+		return this.createReceiver(consumerGroupName, partitionId, startingOffset, false);
 	}
 	
-	public final PartitionReceiver createReceiver(final String partitionId, final String startingOffset, boolean offsetInclusive) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+		return new PartitionReceiver(this.underlyingFactory, this.sender.getSendPath(), consumerGroupName, partitionId, startingOffset, offsetInclusive);
 	}
 	
-	public final PartitionReceiver createReceiver(final String partitionId, final Date dateTimeUtc) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc) {
+		throw new UnsupportedOperationException("TODO: Implement datetime receiver");
 	}
 	
-	public final PartitionReceiver createEpochReceiver(final String partitionId, final long epoch) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createEpochReceiver(final String consumerGroupName, final String partitionId, final long epoch) {
+		return this.createEpochReceiver(consumerGroupName, partitionId, PartitionReceiver.StartOfStream, epoch);
 	}
 	
-	public final PartitionReceiver createEpochReceiver(final String partitionId, final String startingOffset, final long epoch) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, final long epoch) {
+		return this.createEpochReceiver(consumerGroupName, partitionId, startingOffset, false, epoch);
 	}
 	
-	public final PartitionReceiver createEpochReceiver(final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch) {
+		throw new UnsupportedOperationException("TODO: submit change to protonj");
 	}
 	
-	public final PartitionReceiver createEpochReceiver(final String partitionId, final Date dateTimeUtc, final long epoch) {
-		return new PartitionReceiver(partitionId);
+	public final PartitionReceiver createEpochReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc, final long epoch) {
+		throw new UnsupportedOperationException("TODO: submit change to protonj");
 	}
 	
-	// TODO: is IDisposable present in java? we don't have connFactory 
-	// - so is this the time to dispose the native resources ? 
 	public final void close()
 	{
 		
