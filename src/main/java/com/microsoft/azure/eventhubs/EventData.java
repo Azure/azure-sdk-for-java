@@ -43,7 +43,7 @@ public class EventData implements AutoCloseable {
 			this.partitionKey = partitionKeyObj.toString();
 		
 		Object sequenceNumberObj = messageAnnotations.get(AmqpConstants.SequenceNumber);
-		this.sequenceNumber = (long) sequenceNumberObj;
+		this.sequenceNumber = (Long) sequenceNumberObj;
 		
 		Object enqueuedTimeUtcObj = messageAnnotations.get(AmqpConstants.EnqueuedTimeUtc);
 		this.enqueuedTimeUtc = (Date) enqueuedTimeUtcObj;
@@ -135,7 +135,6 @@ public class EventData implements AutoCloseable {
 		return amqpMessage;
 	}
 
-	@Override
 	public void close() throws Exception {
 		
 		if (!this.closed) {

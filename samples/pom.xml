@@ -2,20 +2,20 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-eventhubs</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  
-  <name>azure-eventhubs</name>
-  <url>http://maven.apache.org</url>
-
+  <artifactId>azure-eventhubs-samples</artifactId>
+	<name>azure-eventhubs-samples</name>
+  <parent>
+  		<groupId>com.microsoft.azure</groupId>
+  		<artifactId>azure-eventhubs</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</parent>
+    
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
-    	<dependency>
+		<dependency>
   		<groupId>org.apache.qpid</groupId>
   		<artifactId>proton-j</artifactId>
   		<version>0.10</version>
