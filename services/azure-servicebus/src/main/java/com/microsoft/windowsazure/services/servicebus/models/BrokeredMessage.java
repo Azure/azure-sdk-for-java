@@ -350,6 +350,54 @@ public class BrokeredMessage {
     }
 
     /**
+     * Returns the partition key for the message.
+     * 
+     * @return A <code>String</code> object that represents the partition key.
+     * 
+     */
+    public String getPartitionKey() {
+        return brokerProperties.getPartitionKey();
+    }
+
+    /**
+     * Sets the partition key for the message.
+     * 
+     * @param partitionKey
+     *            A <code>String</code> object that represents the partition key.
+     * 
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
+     */
+    public BrokeredMessage setPartitionKey(String partitionKey) {
+        brokerProperties.setPartitionKey(partitionKey);
+        return this;
+    }
+
+    /**
+     * Returns the via partition key for the message.
+     * 
+     * @return A <code>String</code> object that represents the via partition key.
+     * 
+     */
+    public String getViaPartitionKey() {
+        return brokerProperties.getViaPartitionKey();
+    }
+
+    /**
+     * Sets the via partition key for the message.
+     * 
+     * @param viaPartitionKey
+     *            A <code>String</code> object that represents the via partition key.
+     * 
+     * @return A <code>Message</code> object that represents the updated
+     *         message.
+     */
+    public BrokeredMessage setViaPartitionKey(String viaPartitionKey) {
+        brokerProperties.setViaPartitionKey(viaPartitionKey);
+        return this;
+    }
+
+    /**
      * Returns the label of the message.
      * 
      * @return A <code>String</code> object that represents the label.
