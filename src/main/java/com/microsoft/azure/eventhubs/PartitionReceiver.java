@@ -33,7 +33,7 @@ public final class PartitionReceiver
 			final String partitionId, 
 			final String startingOffset, 
 			final boolean offsetInclusive) 
-					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null);
 	}
 	
@@ -44,7 +44,7 @@ public final class PartitionReceiver
 			final String startingOffset, 
 			final boolean offsetInclusive,
 			final ReceiveHandler receiveHandler) 
-					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, false, receiveHandler);
 	}
 	
@@ -57,7 +57,7 @@ public final class PartitionReceiver
 			final Long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
-					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		this(factory, eventHubName, consumerGroupName, partitionId);
 		this.startingOffset = startingOffset;
 		this.offsetInclusive = offsetInclusive;

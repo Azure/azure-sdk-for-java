@@ -1,6 +1,7 @@
 package com.microsoft.azure.eventhubs.samples;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.servicebus.*;
@@ -8,12 +9,20 @@ import com.microsoft.azure.servicebus.*;
 public class OnReceiveSample {
 
 	public static void main(String[] args) throws Exception {
-		
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
 		
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
-		PartitionReceiver receiver = ehClient.createReceiver(EventHubClient.DefaultConsumerGroupName, "0", "-1", false, new OnReceiveSample.EventPrinter());
+		String partitionId = "0";
+		long epoch = 20000;
+		PartitionReceiver receiver = ehClient.createEpochReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, "-1", false, epoch, new OnReceiveSample.EventPrinter());
+		
+		try {
+			PartitionReceiver receiver2 = ehClient.createEpochReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, "-1", false, epoch - 10, new OnReceiveSample.EventPrinter());
+		}
+		catch(ExecutionException exception) {
+			System.out.println("ExpectedException: " + exception.toString());
+		}
 		
 		System.out.println("done...");
 		System.in.read();

@@ -16,9 +16,14 @@
 
   <dependencies>
     	<dependency>
+  		<!-- groupId>org.apache.qpid</groupId>
+  		<artifactId>proton-j</artifactId>
+  		<version>0.10</version-->
   		<groupId>org.apache.qpid</groupId>
   		<artifactId>proton-j</artifactId>
-  		<version>0.10</version>
+  		<scope>system</scope>
+        <version>0.12.0-SNAPSHOT</version>
+  		<systemPath>\\hercules\public\proton-j\proton-j-0.12.0-SNAPSHOT.jar</systemPath>
   	</dependency>
   	<dependency>
   		<groupId>org.slf4j</groupId>

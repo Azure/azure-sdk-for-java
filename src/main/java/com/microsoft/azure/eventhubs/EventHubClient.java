@@ -105,17 +105,17 @@ public class EventHubClient
 	}
 	
 	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId) 
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		return this.createReceiver(consumerGroupName, partitionId, PartitionReceiver.StartOfStream, false);
 	}
 	
 	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset) 
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		return this.createReceiver(consumerGroupName, partitionId, startingOffset, false);
 	}
 	
 	public final PartitionReceiver createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		return new PartitionReceiver(this.underlyingFactory, this.sender.getSendPath(), consumerGroupName, partitionId, startingOffset, offsetInclusive);
 	}
 	
@@ -144,7 +144,7 @@ public class EventHubClient
 	 * - Implement ReceiveHandler to process events.
 	 */
 	public final PartitionReceiver createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch, ReceiveHandler receiveHandler) 
-			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+			throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException, ReceiverDisconnectedException {
 		return new PartitionReceiver(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, true, receiveHandler);
 	}
 	
