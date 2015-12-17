@@ -42,8 +42,19 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CollectionStringBuilder;
+import com.microsoft.windowsazure.core.utils.EnumUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.tracing.CloudTracing;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -57,17 +68,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.NullNode;
 import org.codehaus.jackson.node.ObjectNode;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 /**
 * Operations for managing Traffic Manager profiles.
@@ -150,7 +150,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "Microsoft.Network";
         url = url + "/checkTrafficManagerNameAvailability";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -245,7 +245,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                 JsonNode reasonValue = responseDoc.get("reason");
                 if (reasonValue != null && reasonValue instanceof NullNode == false) {
                     Reason reasonInstance;
-                    reasonInstance = Enum.valueOf(Reason.class, reasonValue.getTextValue());
+                    reasonInstance = EnumUtility.fromString(Reason.class, reasonValue.getTextValue());
                     result.setReason(reasonInstance);
                 }
                 
@@ -368,7 +368,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -485,6 +485,10 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                         
                         if (endpointsItem.getProperties().getEndpointMonitorStatus() != null) {
                             ((ObjectNode) propertiesValue2).put("endpointMonitorStatus", endpointsItem.getProperties().getEndpointMonitorStatus());
+                        }
+                        
+                        if (endpointsItem.getProperties().getMinChildEndpoints() != null) {
+                            ((ObjectNode) propertiesValue2).put("minChildEndpoints", endpointsItem.getProperties().getMinChildEndpoints());
                         }
                     }
                 }
@@ -718,6 +722,13 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                                     endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                                     propertiesInstance2.setEndpointMonitorStatus(endpointMonitorStatusInstance);
                                 }
+                                
+                                JsonNode minChildEndpointsValue = propertiesValue4.get("minChildEndpoints");
+                                if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                                    long minChildEndpointsInstance;
+                                    minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                                    propertiesInstance2.setMinChildEndpoints(minChildEndpointsInstance);
+                                }
                             }
                         }
                     }
@@ -847,7 +858,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -971,7 +982,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1188,6 +1199,13 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                                     endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                                     propertiesInstance2.setEndpointMonitorStatus(endpointMonitorStatusInstance);
                                 }
+                                
+                                JsonNode minChildEndpointsValue = propertiesValue2.get("minChildEndpoints");
+                                if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                                    long minChildEndpointsInstance;
+                                    minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                                    propertiesInstance2.setMinChildEndpoints(minChildEndpointsInstance);
+                                }
                             }
                         }
                     }
@@ -1298,7 +1316,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1351,13 +1369,13 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valuesArray = responseDoc.get("values");
-                if (valuesArray != null && valuesArray instanceof NullNode == false) {
-                    for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
+                JsonNode valueArray = responseDoc.get("value");
+                if (valueArray != null && valueArray instanceof NullNode == false) {
+                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Profile profileInstance = new Profile();
                         result.getProfiles().add(profileInstance);
                         
-                        JsonNode propertiesValue = valuesValue.get("properties");
+                        JsonNode propertiesValue = valueValue.get("properties");
                         if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             ProfileProperties propertiesInstance = new ProfileProperties();
                             profileInstance.setProperties(propertiesInstance);
@@ -1518,40 +1536,47 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                                             endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                                             propertiesInstance2.setEndpointMonitorStatus(endpointMonitorStatusInstance);
                                         }
+                                        
+                                        JsonNode minChildEndpointsValue = propertiesValue2.get("minChildEndpoints");
+                                        if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                                            long minChildEndpointsInstance;
+                                            minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                                            propertiesInstance2.setMinChildEndpoints(minChildEndpointsInstance);
+                                        }
                                     }
                                 }
                             }
                         }
                         
-                        JsonNode idValue2 = valuesValue.get("id");
+                        JsonNode idValue2 = valueValue.get("id");
                         if (idValue2 != null && idValue2 instanceof NullNode == false) {
                             String idInstance2;
                             idInstance2 = idValue2.getTextValue();
                             profileInstance.setId(idInstance2);
                         }
                         
-                        JsonNode nameValue2 = valuesValue.get("name");
+                        JsonNode nameValue2 = valueValue.get("name");
                         if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
                             String nameInstance2;
                             nameInstance2 = nameValue2.getTextValue();
                             profileInstance.setName(nameInstance2);
                         }
                         
-                        JsonNode typeValue2 = valuesValue.get("type");
+                        JsonNode typeValue2 = valueValue.get("type");
                         if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
                             String typeInstance2;
                             typeInstance2 = typeValue2.getTextValue();
                             profileInstance.setType(typeInstance2);
                         }
                         
-                        JsonNode locationValue = valuesValue.get("location");
+                        JsonNode locationValue = valueValue.get("location");
                         if (locationValue != null && locationValue instanceof NullNode == false) {
                             String locationInstance;
                             locationInstance = locationValue.getTextValue();
                             profileInstance.setLocation(locationInstance);
                         }
                         
-                        JsonNode tagsSequenceElement = ((JsonNode) valuesValue.get("tags"));
+                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
                         if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                             Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                             while (itr.hasNext()) {
@@ -1640,7 +1665,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "Microsoft.Network";
         url = url + "/trafficmanagerprofiles";
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -1693,13 +1718,13 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
             }
             
             if (responseDoc != null && responseDoc instanceof NullNode == false) {
-                JsonNode valuesArray = responseDoc.get("values");
-                if (valuesArray != null && valuesArray instanceof NullNode == false) {
-                    for (JsonNode valuesValue : ((ArrayNode) valuesArray)) {
+                JsonNode valueArray = responseDoc.get("value");
+                if (valueArray != null && valueArray instanceof NullNode == false) {
+                    for (JsonNode valueValue : ((ArrayNode) valueArray)) {
                         Profile profileInstance = new Profile();
                         result.getProfiles().add(profileInstance);
                         
-                        JsonNode propertiesValue = valuesValue.get("properties");
+                        JsonNode propertiesValue = valueValue.get("properties");
                         if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
                             ProfileProperties propertiesInstance = new ProfileProperties();
                             profileInstance.setProperties(propertiesInstance);
@@ -1860,40 +1885,47 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                                             endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                                             propertiesInstance2.setEndpointMonitorStatus(endpointMonitorStatusInstance);
                                         }
+                                        
+                                        JsonNode minChildEndpointsValue = propertiesValue2.get("minChildEndpoints");
+                                        if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                                            long minChildEndpointsInstance;
+                                            minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                                            propertiesInstance2.setMinChildEndpoints(minChildEndpointsInstance);
+                                        }
                                     }
                                 }
                             }
                         }
                         
-                        JsonNode idValue2 = valuesValue.get("id");
+                        JsonNode idValue2 = valueValue.get("id");
                         if (idValue2 != null && idValue2 instanceof NullNode == false) {
                             String idInstance2;
                             idInstance2 = idValue2.getTextValue();
                             profileInstance.setId(idInstance2);
                         }
                         
-                        JsonNode nameValue2 = valuesValue.get("name");
+                        JsonNode nameValue2 = valueValue.get("name");
                         if (nameValue2 != null && nameValue2 instanceof NullNode == false) {
                             String nameInstance2;
                             nameInstance2 = nameValue2.getTextValue();
                             profileInstance.setName(nameInstance2);
                         }
                         
-                        JsonNode typeValue2 = valuesValue.get("type");
+                        JsonNode typeValue2 = valueValue.get("type");
                         if (typeValue2 != null && typeValue2 instanceof NullNode == false) {
                             String typeInstance2;
                             typeInstance2 = typeValue2.getTextValue();
                             profileInstance.setType(typeInstance2);
                         }
                         
-                        JsonNode locationValue = valuesValue.get("location");
+                        JsonNode locationValue = valueValue.get("location");
                         if (locationValue != null && locationValue instanceof NullNode == false) {
                             String locationInstance;
                             locationInstance = locationValue.getTextValue();
                             profileInstance.setLocation(locationInstance);
                         }
                         
-                        JsonNode tagsSequenceElement = ((JsonNode) valuesValue.get("tags"));
+                        JsonNode tagsSequenceElement = ((JsonNode) valueValue.get("tags"));
                         if (tagsSequenceElement != null && tagsSequenceElement instanceof NullNode == false) {
                             Iterator<Map.Entry<String, JsonNode>> itr = tagsSequenceElement.getFields();
                             while (itr.hasNext()) {
@@ -2016,7 +2048,7 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
         url = url + "/trafficmanagerprofiles/";
         url = url + URLEncoder.encode(profileName, "UTF-8");
         ArrayList<String> queryParameters = new ArrayList<String>();
-        queryParameters.add("api-version=" + "2015-04-28-preview");
+        queryParameters.add("api-version=" + "2015-11-01");
         if (queryParameters.size() > 0) {
             url = url + "?" + CollectionStringBuilder.join(queryParameters, "&");
         }
@@ -2133,6 +2165,10 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                         
                         if (endpointsItem.getProperties().getEndpointMonitorStatus() != null) {
                             ((ObjectNode) propertiesValue2).put("endpointMonitorStatus", endpointsItem.getProperties().getEndpointMonitorStatus());
+                        }
+                        
+                        if (endpointsItem.getProperties().getMinChildEndpoints() != null) {
+                            ((ObjectNode) propertiesValue2).put("minChildEndpoints", endpointsItem.getProperties().getMinChildEndpoints());
                         }
                     }
                 }
@@ -2368,6 +2404,13 @@ public class ProfileOperationsImpl implements ServiceOperations<TrafficManagerMa
                                     String endpointMonitorStatusInstance;
                                     endpointMonitorStatusInstance = endpointMonitorStatusValue.getTextValue();
                                     propertiesInstance2.setEndpointMonitorStatus(endpointMonitorStatusInstance);
+                                }
+                                
+                                JsonNode minChildEndpointsValue = propertiesValue4.get("minChildEndpoints");
+                                if (minChildEndpointsValue != null && minChildEndpointsValue instanceof NullNode == false) {
+                                    long minChildEndpointsInstance;
+                                    minChildEndpointsInstance = minChildEndpointsValue.getLongValue();
+                                    propertiesInstance2.setMinChildEndpoints(minChildEndpointsInstance);
                                 }
                             }
                         }
