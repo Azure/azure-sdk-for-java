@@ -28,8 +28,10 @@ public class MessageReceiver extends ClientEntity {
 	private Receiver receiveLink;
 	private CompletableFuture<MessageReceiver> linkOpen;
 	private MessageReceiveHandler receiveHandler;
+	
 	/**
-	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on. Connection has to be associated with Reactor before Creating a receiver on it.
+	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
+	 * Connection has to be associated with Reactor before Creating a receiver on it.
 	 */
 	public static CompletableFuture<MessageReceiver> Create(
 			final MessagingFactory factory, 
@@ -55,12 +57,23 @@ public class MessageReceiver extends ClientEntity {
 			final boolean offsetInclusive,
 			final int prefetchCount,
 			final MessageReceiveHandler receiveHandler){
+		this.underlyingFactory = factory;
 		this.prefetchCount = prefetchCount;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset, offsetInclusive);
 		this.linkOpen = new CompletableFuture<MessageReceiver>();
+		
+		Timer.schedule(new Runnable() {
+			public void run() {
+				synchronized(MessageReceiver.this.linkOpen) {
+					if (!MessageReceiver.this.linkOpen.isDone()) {
+						MessageReceiver.this.linkOpen.completeExceptionally(new OperationTimedOutException());
+					}
+				}
+			}}
+		, this.underlyingFactory.getOperationTimeout(), TimerType.OneTimeRun);
+		
 		this.pendingReceives = new ConcurrentLinkedQueue<CompletableFuture<Collection<Message>>>();
-		this.underlyingFactory = factory;
 		this.receiveHandler = receiveHandler;
 	}
 	
@@ -69,7 +82,7 @@ public class MessageReceiver extends ClientEntity {
 	}
 	
 	/*
-	 * if ReceiveHandler is passed to the Constructor - this receive shouldn't be called
+	 * if ReceiveHandler is passed to the Constructor - this receive shouldn't be invoked
 	 */
 	public CompletableFuture<Collection<Message>> receive(){
 		if (!this.prefetchedMessages.isEmpty()) {
@@ -88,11 +101,15 @@ public class MessageReceiver extends ClientEntity {
 	}
 	
 	void onOpenComplete(ErrorCondition condition){
-		if (condition == null) {
-			this.linkOpen.complete(this);
-		}
-		else {
-			this.linkOpen.completeExceptionally(ExceptionUtil.toException(condition));
+		synchronized (this.linkOpen) {
+			if (!this.linkOpen.isDone()) {
+				if (condition == null) {
+					this.linkOpen.complete(this);
+				}
+				else {
+					this.linkOpen.completeExceptionally(ExceptionUtil.toException(condition));
+				}
+			}
 		}
 	}
 	

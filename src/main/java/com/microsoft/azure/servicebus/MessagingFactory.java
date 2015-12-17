@@ -54,6 +54,10 @@ public class MessagingFactory {
 		return this.operationTimeout;
 	}
 	
+	public RetryPolicy getRetryPolicy() {
+		return this.retryPolicy;
+	}
+	
 	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException {
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
 		return new MessagingFactory(builder);

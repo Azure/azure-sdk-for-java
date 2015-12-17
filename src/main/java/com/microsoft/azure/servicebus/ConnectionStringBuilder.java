@@ -86,11 +86,11 @@ public class ConnectionStringBuilder {
 	}
 	
 	public Duration getOperationTimeout() {
-		return this.operationTimeout;
+		return (this.operationTimeout == null ? MessagingFactory.DefaultOperationTimeout : this.operationTimeout);
 	}
 	
 	public RetryPolicy getRetryPolicy() {
-		return this.retryPolicy;
+		return (this.retryPolicy == null ? RetryPolicy.Default : this.retryPolicy);
 	}
 
 	@Override
