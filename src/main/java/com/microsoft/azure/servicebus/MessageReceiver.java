@@ -29,6 +29,9 @@ public class MessageReceiver extends ClientEntity {
 	private CompletableFuture<MessageReceiver> linkOpen;
 	private MessageReceiveHandler receiveHandler;
 	
+	private long epoch;
+	private boolean isEpochReceiver;
+	
 	/**
 	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
 	 * Connection has to be associated with Reactor before Creating a receiver on it.
@@ -40,9 +43,11 @@ public class MessageReceiver extends ClientEntity {
 			final String offset,
 			final boolean offsetInclusive,
 			final int prefetchCount,
+			final long epoch,
+			final boolean isEpochReceiver,
 			final MessageReceiveHandler receiveHandler)
 	{
-		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, prefetchCount, receiveHandler);
+		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, prefetchCount, epoch, isEpochReceiver, receiveHandler);
 		
 		ReceiveLinkHandler handler = new ReceiveLinkHandler(name, msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
@@ -56,9 +61,13 @@ public class MessageReceiver extends ClientEntity {
 			final String offset,
 			final boolean offsetInclusive,
 			final int prefetchCount,
+			final Long epoch,
+			final boolean isEpochReceiver,
 			final MessageReceiveHandler receiveHandler){
 		this.underlyingFactory = factory;
 		this.prefetchCount = prefetchCount;
+		this.epoch = epoch;
+		this.isEpochReceiver = isEpochReceiver;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset, offsetInclusive);
 		this.linkOpen = new CompletableFuture<MessageReceiver>();
@@ -184,6 +193,9 @@ public class MessageReceiver extends ClientEntity {
         receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
         receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
         // receiver.setContext(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), 122));
+        
+        if (this.isEpochReceiver)
+        	receiver.setAttachProperties(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), this.epoch));
         
         ssn.open();
         receiver.open();

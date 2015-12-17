@@ -73,7 +73,7 @@ public final class ReceiveLinkHandler extends BaseHandler {
     		if (condition != null) {
     			if(TRACE_LOGGER.isLoggable(Level.SEVERE))
     	        {
-    				TRACE_LOGGER.log(Level.SEVERE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getDescription() + "]");
+    				TRACE_LOGGER.log(Level.SEVERE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
     	        }
             } 
     		

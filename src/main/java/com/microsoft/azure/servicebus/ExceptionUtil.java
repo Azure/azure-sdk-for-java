@@ -14,6 +14,9 @@ final class ExceptionUtil {
 		if (errorCondition.getCondition() == AmqpErrorCode.NotFound) {
 			return new EntityNotFoundException(errorCondition.getDescription());
 		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
+			return new ReceiverDisconnectedException(errorCondition.getDescription());
+		}		
 		
 		// enumerate all ExceptionTypes
 		return null;

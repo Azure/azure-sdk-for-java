@@ -45,12 +45,25 @@ public final class PartitionReceiver
 			final boolean offsetInclusive,
 			final ReceiveHandler receiveHandler) 
 					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
+		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, false, receiveHandler);
+	}
+	
+	PartitionReceiver(MessagingFactory factory, 
+			final String eventHubName, 
+			final String consumerGroupName, 
+			final String partitionId, 
+			final String startingOffset, 
+			final boolean offsetInclusive,
+			final Long epoch,
+			final boolean isEpochReceiver,
+			final ReceiveHandler receiveHandler) 
+					throws EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
 		this(factory, eventHubName, consumerGroupName, partitionId);
 		this.startingOffset = startingOffset;
 		this.offsetInclusive = offsetInclusive;
-		this.internalReceiver = MessageReceiver.Create(factory, "receiver0", 
+		this.internalReceiver = MessageReceiver.Create(factory, UUID.randomUUID().toString(), 
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", eventHubName, consumerGroupName, partitionId), 
-				startingOffset, offsetInclusive, this.DefaultPrefetchCount, receiveHandler).get();
+				startingOffset, offsetInclusive, this.DefaultPrefetchCount, epoch, isEpochReceiver, receiveHandler).get();
 		this.receiveHandler = receiveHandler;
 		this.underlyingFactory = factory;
 	}
