@@ -42,40 +42,40 @@ public class SecurityRule extends SubResource {
 
     /**
      * Gets or sets Source Port or Range. Integer or range between 0 and
-     * 65535. Asterix â€œ*â€ can also be used to match all ports.
+     * 65535. Asterix '*' can also be used to match all ports.
      */
     @JsonProperty(value = "properties.sourcePortRange")
     private String sourcePortRange;
 
     /**
      * Gets or sets Destination Port or Range. Integer or range between 0 and
-     * 65535. Asterix â€œ*â€ can also be used to match all ports.
+     * 65535. Asterix '*' can also be used to match all ports.
      */
     @JsonProperty(value = "properties.destinationPortRange")
     private String destinationPortRange;
 
     /**
      * Gets or sets source address prefix. CIDR or source IP range. Asterix
-     * â€œ*â€ can also be used to match all source IPs. Default tags such as
-     * â€˜VirtualNetworkâ€™, â€˜AzureLoadBalancerâ€™ and â€˜Internetâ€™ can
-     * also be used. If this is an ingress rule, specifies where network
-     * traffic originates from.
+     * '*' can also be used to match all source IPs. Default tags such as
+     * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+     * If this is an ingress rule, specifies where network traffic originates
+     * from.
      */
     @JsonProperty(value = "properties.sourceAddressPrefix", required = true)
     private String sourceAddressPrefix;
 
     /**
      * Gets or sets destination address prefix. CIDR or source IP range.
-     * Asterix â€œ*â€ can also be used to match all source IPs. Default tags
-     * such as â€˜VirtualNetworkâ€™, â€˜AzureLoadBalancerâ€™ and
-     * â€˜Internetâ€™ can also be used.
+     * Asterix '*' can also be used to match all source IPs. Default tags
+     * such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also
+     * be used.
      */
     @JsonProperty(value = "properties.destinationAddressPrefix", required = true)
     private String destinationAddressPrefix;
 
     /**
      * Gets or sets network traffic is allowed or denied. Possible values are
-     * â€œAllowâ€ and â€œDenyâ€. Possible values for this property include:
+     * 'Allow' and 'Deny'. Possible values for this property include:
      * 'Allow', 'Deny'.
      */
     @JsonProperty(value = "properties.access", required = true)

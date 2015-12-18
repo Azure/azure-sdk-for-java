@@ -12,9 +12,9 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.DnsNameAvailabilityResult;
 import com.microsoft.rest.AzureClient;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
@@ -235,12 +235,12 @@ public interface NetworkManagementClient {
      *
      * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DnsNameAvailabilityResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location, String domainNameLabel) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location, String domainNameLabel) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.

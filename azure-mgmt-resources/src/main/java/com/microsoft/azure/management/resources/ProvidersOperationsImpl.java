@@ -14,10 +14,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -30,7 +29,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in ProvidersOperations.
  */
-public class ProvidersOperationsImpl implements ProvidersOperations {
+public final class ProvidersOperationsImpl implements ProvidersOperations {
     /** The Retrofit service to perform REST calls. */
     private ProvidersService service;
     /** The service client containing this operation class. */
@@ -51,12 +50,12 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
      * Unregisters provider from a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Provider object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -96,7 +95,7 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(unregisterDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -104,10 +103,10 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
         return call;
     }
 
-    private ServiceResponse<Provider> unregisterDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Provider>(new AzureJacksonUtils())
+    private ServiceResponse<Provider> unregisterDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Provider, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Provider>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -115,12 +114,12 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
      * Registers provider to be used with a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Provider object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<Provider> register(String resourceProviderNamespace) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Provider> register(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -160,7 +159,7 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(registerDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -168,10 +167,10 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
         return call;
     }
 
-    private ServiceResponse<Provider> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Provider>(new AzureJacksonUtils())
+    private ServiceResponse<Provider> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Provider, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Provider>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -179,12 +178,12 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
      * Gets a list of resource providers.
      *
      * @param top Query parameters. If null is passed returns all deployments.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<Provider>> list(Integer top) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<Provider>> list(Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -217,7 +216,7 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -225,10 +224,10 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Provider>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<Provider>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<Provider>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Provider>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -236,12 +235,12 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
      * Gets a resource provider.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Provider object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<Provider> get(String resourceProviderNamespace) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Provider> get(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -281,7 +280,7 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -289,10 +288,10 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
         return call;
     }
 
-    private ServiceResponse<Provider> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Provider>(new AzureJacksonUtils())
+    private ServiceResponse<Provider> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Provider, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Provider>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -300,12 +299,12 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<Provider>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<Provider>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -331,7 +330,7 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -339,10 +338,10 @@ public class ProvidersOperationsImpl implements ProvidersOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Provider>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<Provider>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<Provider>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Provider>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

@@ -62,6 +62,12 @@ public class ApplicationGateway extends Resource {
     private List<ApplicationGatewayFrontendPort> frontendPorts;
 
     /**
+     * Gets or sets probes of application gateway resource.
+     */
+    @JsonProperty(value = "properties.probes")
+    private List<ApplicationGatewayProbe> probes;
+
+    /**
      * Gets or sets backend address pool of application gateway resource.
      */
     @JsonProperty(value = "properties.backendAddressPools")
@@ -78,6 +84,12 @@ public class ApplicationGateway extends Resource {
      */
     @JsonProperty(value = "properties.httpListeners")
     private List<ApplicationGatewayHttpListener> httpListeners;
+
+    /**
+     * Gets or sets URL path map of application gateway resource.
+     */
+    @JsonProperty(value = "properties.urlPathMaps")
+    private List<ApplicationGatewayUrlPathMap> urlPathMaps;
 
     /**
      * Gets or sets request routing rules of application gateway resource.
@@ -141,15 +153,6 @@ public class ApplicationGateway extends Resource {
      */
     public String getOperationalState() {
         return this.operationalState;
-    }
-
-    /**
-     * Set the operationalState value.
-     *
-     * @param operationalState the operationalState value to set
-     */
-    public void setOperationalState(String operationalState) {
-        this.operationalState = operationalState;
     }
 
     /**
@@ -225,6 +228,24 @@ public class ApplicationGateway extends Resource {
     }
 
     /**
+     * Get the probes value.
+     *
+     * @return the probes value
+     */
+    public List<ApplicationGatewayProbe> getProbes() {
+        return this.probes;
+    }
+
+    /**
+     * Set the probes value.
+     *
+     * @param probes the probes value to set
+     */
+    public void setProbes(List<ApplicationGatewayProbe> probes) {
+        this.probes = probes;
+    }
+
+    /**
      * Get the backendAddressPools value.
      *
      * @return the backendAddressPools value
@@ -276,6 +297,24 @@ public class ApplicationGateway extends Resource {
      */
     public void setHttpListeners(List<ApplicationGatewayHttpListener> httpListeners) {
         this.httpListeners = httpListeners;
+    }
+
+    /**
+     * Get the urlPathMaps value.
+     *
+     * @return the urlPathMaps value
+     */
+    public List<ApplicationGatewayUrlPathMap> getUrlPathMaps() {
+        return this.urlPathMaps;
+    }
+
+    /**
+     * Set the urlPathMaps value.
+     *
+     * @param urlPathMaps the urlPathMaps value to set
+     */
+    public void setUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps) {
+        this.urlPathMaps = urlPathMaps;
     }
 
     /**

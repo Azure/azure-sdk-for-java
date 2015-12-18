@@ -56,15 +56,6 @@ public class ResourceGroup {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
      * Get the name value.
      *
      * @return the name value

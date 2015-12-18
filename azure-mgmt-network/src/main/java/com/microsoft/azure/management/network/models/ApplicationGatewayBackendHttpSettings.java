@@ -48,6 +48,18 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
     private String cookieBasedAffinity;
 
     /**
+     * Gets or sets request timeout.
+     */
+    @JsonProperty(value = "properties.requestTimeout")
+    private Integer requestTimeout;
+
+    /**
+     * Gets or sets probe resource of application gateway.
+     */
+    @JsonProperty(value = "properties.probe")
+    private SubResource probe;
+
+    /**
      * Gets or sets Provisioning state of the backend http settings resource
      * Updating/Deleting/Failed.
      */
@@ -142,6 +154,42 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      */
     public void setCookieBasedAffinity(String cookieBasedAffinity) {
         this.cookieBasedAffinity = cookieBasedAffinity;
+    }
+
+    /**
+     * Get the requestTimeout value.
+     *
+     * @return the requestTimeout value
+     */
+    public Integer getRequestTimeout() {
+        return this.requestTimeout;
+    }
+
+    /**
+     * Set the requestTimeout value.
+     *
+     * @param requestTimeout the requestTimeout value to set
+     */
+    public void setRequestTimeout(Integer requestTimeout) {
+        this.requestTimeout = requestTimeout;
+    }
+
+    /**
+     * Get the probe value.
+     *
+     * @return the probe value
+     */
+    public SubResource getProbe() {
+        return this.probe;
+    }
+
+    /**
+     * Set the probe value.
+     *
+     * @param probe the probe value to set
+     */
+    public void setProbe(SubResource probe) {
+        this.probe = probe;
     }
 
     /**

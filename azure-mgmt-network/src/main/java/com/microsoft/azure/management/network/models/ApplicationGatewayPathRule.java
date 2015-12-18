@@ -11,11 +11,12 @@
 package com.microsoft.azure.management.network.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * Request routing rule of application gateway.
+ * Path rule of URL path map of application gateway.
  */
-public class ApplicationGatewayRequestRoutingRule extends SubResource {
+public class ApplicationGatewayPathRule extends SubResource {
     /**
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -28,38 +29,25 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     private String etag;
 
     /**
-     * Gets or sets the rule type. Possible values for this property include:
-     * 'Basic', 'PathBasedRouting'.
+     * Gets or sets the path rules of URL path map.
      */
-    @JsonProperty(value = "properties.ruleType")
-    private String ruleType;
+    @JsonProperty(value = "properties.paths")
+    private List<String> paths;
 
     /**
-     * Gets or sets backend address pool resource of application gateway.
+     * Gets or sets backend address pool resource of URL path map.
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
-     * Gets or sets frontend port resource of application gateway.
+     * Gets or sets backend http settings resource of URL path map.
      */
     @JsonProperty(value = "properties.backendHttpSettings")
     private SubResource backendHttpSettings;
 
     /**
-     * Gets or sets http listener resource of application gateway.
-     */
-    @JsonProperty(value = "properties.httpListener")
-    private SubResource httpListener;
-
-    /**
-     * Gets or sets url path map resource of application gateway.
-     */
-    @JsonProperty(value = "properties.urlPathMap")
-    private SubResource urlPathMap;
-
-    /**
-     * Gets or sets Provisioning state of the request routing rule resource
+     * Gets or sets path rule of URL path map resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -102,21 +90,21 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the ruleType value.
+     * Get the paths value.
      *
-     * @return the ruleType value
+     * @return the paths value
      */
-    public String getRuleType() {
-        return this.ruleType;
+    public List<String> getPaths() {
+        return this.paths;
     }
 
     /**
-     * Set the ruleType value.
+     * Set the paths value.
      *
-     * @param ruleType the ruleType value to set
+     * @param paths the paths value to set
      */
-    public void setRuleType(String ruleType) {
-        this.ruleType = ruleType;
+    public void setPaths(List<String> paths) {
+        this.paths = paths;
     }
 
     /**
@@ -153,42 +141,6 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      */
     public void setBackendHttpSettings(SubResource backendHttpSettings) {
         this.backendHttpSettings = backendHttpSettings;
-    }
-
-    /**
-     * Get the httpListener value.
-     *
-     * @return the httpListener value
-     */
-    public SubResource getHttpListener() {
-        return this.httpListener;
-    }
-
-    /**
-     * Set the httpListener value.
-     *
-     * @param httpListener the httpListener value to set
-     */
-    public void setHttpListener(SubResource httpListener) {
-        this.httpListener = httpListener;
-    }
-
-    /**
-     * Get the urlPathMap value.
-     *
-     * @return the urlPathMap value
-     */
-    public SubResource getUrlPathMap() {
-        return this.urlPathMap;
-    }
-
-    /**
-     * Set the urlPathMap value.
-     *
-     * @param urlPathMap the urlPathMap value to set
-     */
-    public void setUrlPathMap(SubResource urlPathMap) {
-        this.urlPathMap = urlPathMap;
     }
 
     /**

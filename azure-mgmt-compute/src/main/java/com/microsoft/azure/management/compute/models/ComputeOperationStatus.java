@@ -32,7 +32,7 @@ public enum ComputeOperationStatus {
     /** The actual serialized value for a ComputeOperationStatus instance. */
     private String value;
 
-    private ComputeOperationStatus(String value) {
+    ComputeOperationStatus(String value) {
         this.value = value;
     }
 

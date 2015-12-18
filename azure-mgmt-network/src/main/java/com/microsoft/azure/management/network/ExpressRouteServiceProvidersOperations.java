@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.ExpressRouteServiceProvider;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -44,12 +44,12 @@ public interface ExpressRouteServiceProvidersOperations {
     /**
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteServiceProvider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> list() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
@@ -63,12 +63,12 @@ public interface ExpressRouteServiceProvidersOperations {
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteServiceProvider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.

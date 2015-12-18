@@ -23,7 +23,7 @@ public enum UsageUnit {
     /** The actual serialized value for a UsageUnit instance. */
     private String value;
 
-    private UsageUnit(String value) {
+    UsageUnit(String value) {
         this.value = value;
     }
 

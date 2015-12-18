@@ -15,10 +15,9 @@ import com.microsoft.azure.management.compute.models.AvailabilitySet;
 import com.microsoft.azure.management.compute.models.AvailabilitySetListResult;
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResult;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -32,7 +31,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in AvailabilitySetsOperations.
  */
-public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperations {
+public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperations {
     /** The Retrofit service to perform REST calls. */
     private AvailabilitySetsService service;
     /** The service client containing this operation class. */
@@ -55,12 +54,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Availability Set operation.
      * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AvailabilitySet object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<AvailabilitySet> createOrUpdate(String resourceGroupName, String name, AvailabilitySet parameters) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<AvailabilitySet> createOrUpdate(String resourceGroupName, String name, AvailabilitySet parameters) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -118,7 +117,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -126,10 +125,10 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySet> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<AvailabilitySet>(new AzureJacksonUtils())
+    private ServiceResponse<AvailabilitySet> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<AvailabilitySet, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySet>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -138,12 +137,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -191,7 +190,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -199,8 +198,8 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -211,12 +210,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AvailabilitySet object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<AvailabilitySet> get(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<AvailabilitySet> get(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -264,7 +263,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -272,10 +271,10 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<AvailabilitySet>(new AzureJacksonUtils())
+    private ServiceResponse<AvailabilitySet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<AvailabilitySet, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySet>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -283,12 +282,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * The operation to list the availability sets.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AvailabilitySetListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<AvailabilitySetListResult> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<AvailabilitySetListResult> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -328,7 +327,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -336,10 +335,10 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<AvailabilitySetListResult>(new AzureJacksonUtils())
+    private ServiceResponse<AvailabilitySetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<AvailabilitySetListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySetListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -348,12 +347,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineSizeListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -401,7 +400,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAvailableSizesDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -409,10 +408,10 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult>(new AzureJacksonUtils())
+    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineSizeListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -420,12 +419,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * The operation to list the availability sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AvailabilitySetListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<AvailabilitySetListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<AvailabilitySetListResult> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -451,7 +450,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -459,10 +458,10 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<AvailabilitySetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<AvailabilitySetListResult>(new AzureJacksonUtils())
+    private ServiceResponse<AvailabilitySetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<AvailabilitySetListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<AvailabilitySetListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -470,12 +469,12 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
      * Lists virtual-machine-sizes available to be used for an availability set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineSizeListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -501,7 +500,7 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAvailableSizesNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -509,10 +508,10 @@ public class AvailabilitySetsOperationsImpl implements AvailabilitySetsOperation
         return call;
     }
 
-    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult>(new AzureJacksonUtils())
+    private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineSizeListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

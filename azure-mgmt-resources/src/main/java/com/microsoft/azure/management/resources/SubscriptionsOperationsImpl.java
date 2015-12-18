@@ -15,10 +15,9 @@ import com.microsoft.azure.management.resources.models.LocationListResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -31,7 +30,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in SubscriptionsOperations.
  */
-public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
+public final class SubscriptionsOperationsImpl implements SubscriptionsOperations {
     /** The Retrofit service to perform REST calls. */
     private SubscriptionsService service;
     /** The service client containing this operation class. */
@@ -52,12 +51,12 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param subscriptionId Id of the subscription
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -90,7 +89,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listLocationsDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -98,10 +97,10 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<LocationListResult> listLocationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<LocationListResult>(new AzureJacksonUtils())
+    private ServiceResponse<LocationListResult> listLocationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<LocationListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<LocationListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -109,12 +108,12 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets details about particular subscription.
      *
      * @param subscriptionId Id of the subscription.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subscription object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Subscription> get(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -147,7 +146,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -155,22 +154,22 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<Subscription> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Subscription>(new AzureJacksonUtils())
+    private ServiceResponse<Subscription> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Subscription, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Subscription>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
     /**
      * Gets a list of the subscriptionIds.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<Subscription>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -202,7 +201,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -210,10 +209,10 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Subscription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<Subscription>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<Subscription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<Subscription>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Subscription>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -221,12 +220,12 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -252,7 +251,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listLocationsNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -260,10 +259,10 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<LocationListResult> listLocationsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<LocationListResult>(new AzureJacksonUtils())
+    private ServiceResponse<LocationListResult> listLocationsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<LocationListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<LocationListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -271,12 +270,12 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
      * Gets a list of the subscriptionIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -302,7 +301,7 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -310,10 +309,10 @@ public class SubscriptionsOperationsImpl implements SubscriptionsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Subscription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<Subscription>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<Subscription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<Subscription>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<Subscription>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

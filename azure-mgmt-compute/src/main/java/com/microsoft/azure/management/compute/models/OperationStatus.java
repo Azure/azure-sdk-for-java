@@ -29,7 +29,7 @@ public enum OperationStatus {
     /** The actual serialized value for a OperationStatus instance. */
     private String value;
 
-    private OperationStatus(String value) {
+    OperationStatus(String value) {
         this.value = value;
     }
 

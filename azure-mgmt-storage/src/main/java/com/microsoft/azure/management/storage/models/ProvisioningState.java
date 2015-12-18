@@ -29,7 +29,7 @@ public enum ProvisioningState {
     /** The actual serialized value for a ProvisioningState instance. */
     private String value;
 
-    private ProvisioningState(String value) {
+    ProvisioningState(String value) {
         this.value = value;
     }
 

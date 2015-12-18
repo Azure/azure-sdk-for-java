@@ -46,30 +46,12 @@ public class VirtualMachineScaleSetSkuCapacity {
     }
 
     /**
-     * Set the minimum value.
-     *
-     * @param minimum the minimum value to set
-     */
-    public void setMinimum(Long minimum) {
-        this.minimum = minimum;
-    }
-
-    /**
      * Get the maximum value.
      *
      * @return the maximum value
      */
     public Long getMaximum() {
         return this.maximum;
-    }
-
-    /**
-     * Set the maximum value.
-     *
-     * @param maximum the maximum value to set
-     */
-    public void setMaximum(Long maximum) {
-        this.maximum = maximum;
     }
 
     /**
@@ -82,30 +64,12 @@ public class VirtualMachineScaleSetSkuCapacity {
     }
 
     /**
-     * Set the defaultCapacity value.
-     *
-     * @param defaultCapacity the defaultCapacity value to set
-     */
-    public void setDefaultCapacity(Long defaultCapacity) {
-        this.defaultCapacity = defaultCapacity;
-    }
-
-    /**
      * Get the scaleType value.
      *
      * @return the scaleType value
      */
     public String getScaleType() {
         return this.scaleType;
-    }
-
-    /**
-     * Set the scaleType value.
-     *
-     * @param scaleType the scaleType value to set
-     */
-    public void setScaleType(String scaleType) {
-        this.scaleType = scaleType;
     }
 
 }

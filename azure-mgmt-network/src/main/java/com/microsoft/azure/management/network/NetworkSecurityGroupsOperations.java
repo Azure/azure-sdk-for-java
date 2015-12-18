@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -64,13 +64,13 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Delete NetworkSecurityGroup operation deletes the specifed network security group.
@@ -88,12 +88,12 @@ public interface NetworkSecurityGroupsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
@@ -112,13 +112,13 @@ public interface NetworkSecurityGroupsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create/update Network Security Group operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkSecurityGroup> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<NetworkSecurityGroup> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put NetworkSecurityGroup operation creates/updates a network security groupin the specified resource group.
@@ -134,12 +134,12 @@ public interface NetworkSecurityGroupsOperations {
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAll() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
@@ -153,12 +153,12 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
@@ -173,12 +173,12 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
@@ -193,12 +193,12 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.

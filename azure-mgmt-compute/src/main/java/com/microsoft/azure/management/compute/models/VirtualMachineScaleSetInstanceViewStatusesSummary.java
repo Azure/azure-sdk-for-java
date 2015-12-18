@@ -31,13 +31,4 @@ public class VirtualMachineScaleSetInstanceViewStatusesSummary {
         return this.statusesSummary;
     }
 
-    /**
-     * Set the statusesSummary value.
-     *
-     * @param statusesSummary the statusesSummary value to set
-     */
-    public void setStatusesSummary(List<VirtualMachineStatusCodeCount> statusesSummary) {
-        this.statusesSummary = statusesSummary;
-    }
-
 }

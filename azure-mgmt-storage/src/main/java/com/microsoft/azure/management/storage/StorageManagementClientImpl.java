@@ -21,10 +21,10 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the StorageManagementClient class.
  */
-public class StorageManagementClientImpl extends AzureServiceClient implements StorageManagementClient {
+public final class StorageManagementClientImpl extends AzureServiceClient implements StorageManagementClient {
     /** The URI used as the base for all cloud service requests. */
-    private String baseUri;
-    /** the {@link AzureClient} used for long running operations .*/
+    private final String baseUri;
+    /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
     /**

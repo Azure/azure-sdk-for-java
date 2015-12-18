@@ -35,7 +35,7 @@ public enum AccountType {
     /** The actual serialized value for a AccountType instance. */
     private String value;
 
-    private AccountType(String value) {
+    AccountType(String value) {
         this.value = value;
     }
 

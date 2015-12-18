@@ -15,8 +15,8 @@ import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureResult;
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResult;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -93,13 +93,13 @@ public interface VirtualMachinesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineCaptureResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineCaptureResult> capture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<VirtualMachineCaptureResult> capture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * Captures the VM by copying VirtualHardDisks of the VM and outputs a template that can be used to create similar VMs.
@@ -118,13 +118,13 @@ public interface VirtualMachinesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachine object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachine> createOrUpdate(String resourceGroupName, String vmName, VirtualMachine parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<VirtualMachine> createOrUpdate(String resourceGroupName, String vmName, VirtualMachine parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to create or update a virtual machine.
@@ -142,13 +142,13 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to delete a virtual machine.
@@ -166,12 +166,12 @@ public interface VirtualMachinesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachine object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to get a virtual machine.
@@ -189,13 +189,13 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deallocate(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> deallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * Shuts down the Virtual Machine and releases the compute resources. You are not billed for the compute resources that this Virtual Machine uses.
@@ -212,12 +212,12 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Sets the state of the VM as Generalized.
@@ -233,12 +233,12 @@ public interface VirtualMachinesOperations {
      * The operation to list virtual machines under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<VirtualMachine>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machines under a resource group.
@@ -252,12 +252,12 @@ public interface VirtualMachinesOperations {
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> listAll() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<VirtualMachine>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
@@ -272,12 +272,12 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizes(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists virtual-machine-sizes available to be used for a virtual machine.
@@ -294,13 +294,13 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> powerOff(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> powerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to power off (stop) a virtual machine.
@@ -317,13 +317,13 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> restart(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> restart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to restart a virtual machine.
@@ -340,13 +340,13 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> start(String resourceGroupName, String vmName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> start(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to start a virtual machine.
@@ -362,12 +362,12 @@ public interface VirtualMachinesOperations {
      * The operation to list virtual machines under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<VirtualMachine>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machines under a resource group.
@@ -382,12 +382,12 @@ public interface VirtualMachinesOperations {
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualMachine&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualMachine>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<VirtualMachine>> listAllNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
@@ -402,12 +402,12 @@ public interface VirtualMachinesOperations {
      * Lists virtual-machine-sizes available to be used for a virtual machine.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineSizeListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists virtual-machine-sizes available to be used for a virtual machine.

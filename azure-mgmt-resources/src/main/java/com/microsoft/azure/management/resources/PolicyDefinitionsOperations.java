@@ -11,8 +11,8 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.PolicyDefinition;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -50,12 +50,12 @@ public interface PolicyDefinitionsOperations {
      *
      * @param policyDefinitionName The policy definition name.
      * @param parameters The policy definition properties
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyDefinition object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Create or update policy definition.
@@ -71,12 +71,12 @@ public interface PolicyDefinitionsOperations {
      * Gets policy definition.
      *
      * @param policyDefinitionName The policy definition name.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyDefinition object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy definition.
@@ -91,12 +91,12 @@ public interface PolicyDefinitionsOperations {
      * Deletes policy definition.
      *
      * @param policyDefinitionName The policy definition name.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String policyDefinitionName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> delete(String policyDefinitionName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Deletes policy definition.

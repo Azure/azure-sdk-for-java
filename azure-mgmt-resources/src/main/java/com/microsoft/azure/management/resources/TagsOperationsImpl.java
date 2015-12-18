@@ -15,10 +15,9 @@ import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TagDetails;
 import com.microsoft.azure.management.resources.models.TagValue;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -31,7 +30,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in TagsOperations.
  */
-public class TagsOperationsImpl implements TagsOperations {
+public final class TagsOperationsImpl implements TagsOperations {
     /** The Retrofit service to perform REST calls. */
     private TagsService service;
     /** The service client containing this operation class. */
@@ -53,12 +52,12 @@ public class TagsOperationsImpl implements TagsOperations {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -106,7 +105,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteValueDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -114,8 +113,8 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
+    private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -126,12 +125,12 @@ public class TagsOperationsImpl implements TagsOperations {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagValue object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -179,7 +178,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateValueDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -187,11 +186,11 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<TagValue> createOrUpdateValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<TagValue>(new AzureJacksonUtils())
+    private ServiceResponse<TagValue> createOrUpdateValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<TagValue, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<TagValue>() { }.getType())
                 .register(201, new TypeToken<TagValue>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -199,12 +198,12 @@ public class TagsOperationsImpl implements TagsOperations {
      * Create a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagDetails object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<TagDetails> createOrUpdate(String tagName) throws CloudException, IOException, IllegalArgumentException {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -244,7 +243,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -252,11 +251,11 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<TagDetails> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<TagDetails>(new AzureJacksonUtils())
+    private ServiceResponse<TagDetails> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<TagDetails, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<TagDetails>() { }.getType())
                 .register(201, new TypeToken<TagDetails>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -264,12 +263,12 @@ public class TagsOperationsImpl implements TagsOperations {
      * Delete a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String tagName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Void> delete(String tagName) throws CloudException, IOException, IllegalArgumentException {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -309,7 +308,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -317,8 +316,8 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -327,12 +326,12 @@ public class TagsOperationsImpl implements TagsOperations {
     /**
      * Get a list of subscription resource tags.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TagDetails&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<TagDetails>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -364,7 +363,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -372,10 +371,10 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<TagDetails>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<TagDetails>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<TagDetails>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<TagDetails>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<TagDetails>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -383,12 +382,12 @@ public class TagsOperationsImpl implements TagsOperations {
      * Get a list of subscription resource tags.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TagDetails&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -414,7 +413,7 @@ public class TagsOperationsImpl implements TagsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -422,10 +421,10 @@ public class TagsOperationsImpl implements TagsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<TagDetails>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<TagDetails>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<TagDetails>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<TagDetails>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<TagDetails>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

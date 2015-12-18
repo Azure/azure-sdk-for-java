@@ -104,30 +104,12 @@ public class VirtualMachineScaleSetVM extends Resource {
     }
 
     /**
-     * Set the instanceId value.
-     *
-     * @param instanceId the instanceId value to set
-     */
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
-
-    /**
      * Get the sku value.
      *
      * @return the sku value
      */
     public Sku getSku() {
         return this.sku;
-    }
-
-    /**
-     * Set the sku value.
-     *
-     * @param sku the sku value to set
-     */
-    public void setSku(Sku sku) {
-        this.sku = sku;
     }
 
     /**
@@ -158,15 +140,6 @@ public class VirtualMachineScaleSetVM extends Resource {
     }
 
     /**
-     * Set the resources value.
-     *
-     * @param resources the resources value to set
-     */
-    public void setResources(List<VirtualMachineExtension> resources) {
-        this.resources = resources;
-    }
-
-    /**
      * Get the latestModelApplied value.
      *
      * @return the latestModelApplied value
@@ -176,30 +149,12 @@ public class VirtualMachineScaleSetVM extends Resource {
     }
 
     /**
-     * Set the latestModelApplied value.
-     *
-     * @param latestModelApplied the latestModelApplied value to set
-     */
-    public void setLatestModelApplied(Boolean latestModelApplied) {
-        this.latestModelApplied = latestModelApplied;
-    }
-
-    /**
      * Get the instanceView value.
      *
      * @return the instanceView value
      */
     public VirtualMachineInstanceView getInstanceView() {
         return this.instanceView;
-    }
-
-    /**
-     * Set the instanceView value.
-     *
-     * @param instanceView the instanceView value to set
-     */
-    public void setInstanceView(VirtualMachineInstanceView instanceView) {
-        this.instanceView = instanceView;
     }
 
     /**

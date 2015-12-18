@@ -36,30 +36,12 @@ public class VirtualMachineScaleSetVMExtensionsSummary {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get the statusesSummary value.
      *
      * @return the statusesSummary value
      */
     public List<VirtualMachineStatusCodeCount> getStatusesSummary() {
         return this.statusesSummary;
-    }
-
-    /**
-     * Set the statusesSummary value.
-     *
-     * @param statusesSummary the statusesSummary value to set
-     */
-    public void setStatusesSummary(List<VirtualMachineStatusCodeCount> statusesSummary) {
-        this.statusesSummary = statusesSummary;
     }
 
 }

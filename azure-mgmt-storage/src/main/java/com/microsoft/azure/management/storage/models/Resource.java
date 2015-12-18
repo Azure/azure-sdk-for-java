@@ -52,15 +52,6 @@ public class Resource extends BaseResource {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
      * Get the name value.
      *
      * @return the name value
@@ -70,30 +61,12 @@ public class Resource extends BaseResource {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get the type value.
      *
      * @return the type value
      */
     public String getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type value.
-     *
-     * @param type the type value to set
-     */
-    public void setType(String type) {
-        this.type = type;
     }
 
     /**

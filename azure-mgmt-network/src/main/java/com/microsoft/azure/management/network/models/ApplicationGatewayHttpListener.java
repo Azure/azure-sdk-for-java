@@ -47,10 +47,22 @@ public class ApplicationGatewayHttpListener extends SubResource {
     private String protocol;
 
     /**
+     * Gets or sets the host name of http listener.
+     */
+    @JsonProperty(value = "properties.hostName")
+    private String hostName;
+
+    /**
      * Gets or sets ssl certificate resource of application gateway.
      */
     @JsonProperty(value = "properties.sslCertificate")
     private SubResource sslCertificate;
+
+    /**
+     * Gets or sets the requireServerNameIndication of http listener.
+     */
+    @JsonProperty(value = "properties.requireServerNameIndication")
+    private String requireServerNameIndication;
 
     /**
      * Gets or sets Provisioning state of the http listener resource
@@ -150,6 +162,24 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
+     * Get the hostName value.
+     *
+     * @return the hostName value
+     */
+    public String getHostName() {
+        return this.hostName;
+    }
+
+    /**
+     * Set the hostName value.
+     *
+     * @param hostName the hostName value to set
+     */
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    /**
      * Get the sslCertificate value.
      *
      * @return the sslCertificate value
@@ -165,6 +195,24 @@ public class ApplicationGatewayHttpListener extends SubResource {
      */
     public void setSslCertificate(SubResource sslCertificate) {
         this.sslCertificate = sslCertificate;
+    }
+
+    /**
+     * Get the requireServerNameIndication value.
+     *
+     * @return the requireServerNameIndication value
+     */
+    public String getRequireServerNameIndication() {
+        return this.requireServerNameIndication;
+    }
+
+    /**
+     * Set the requireServerNameIndication value.
+     *
+     * @param requireServerNameIndication the requireServerNameIndication value to set
+     */
+    public void setRequireServerNameIndication(String requireServerNameIndication) {
+        this.requireServerNameIndication = requireServerNameIndication;
     }
 
     /**

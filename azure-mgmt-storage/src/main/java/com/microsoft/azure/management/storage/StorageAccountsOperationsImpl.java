@@ -20,10 +20,9 @@ import com.microsoft.azure.management.storage.models.StorageAccountListResult;
 import com.microsoft.azure.management.storage.models.StorageAccountRegenerateKeyParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountUpdateParameters;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -38,7 +37,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in StorageAccountsOperations.
  */
-public class StorageAccountsOperationsImpl implements StorageAccountsOperations {
+public final class StorageAccountsOperationsImpl implements StorageAccountsOperations {
     /** The Retrofit service to perform REST calls. */
     private StorageAccountsService service;
     /** The service client containing this operation class. */
@@ -59,12 +58,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * Checks that account name is valid and is not in use.
      *
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CheckNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -106,7 +105,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(checkNameAvailabilityDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -114,10 +113,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<CheckNameAvailabilityResult>(new AzureJacksonUtils())
+    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<CheckNameAvailabilityResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<CheckNameAvailabilityResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -127,13 +126,13 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @param parameters The parameters to provide for the created account.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the StorageAccount object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<StorageAccount> create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<StorageAccount> create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.create(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<StorageAccount>() { }.getType());
     }
@@ -149,24 +148,19 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      */
     public Call<ResponseBody> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<StorageAccount> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter accountName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.create(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -188,12 +182,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -241,7 +235,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -249,8 +243,8 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -261,12 +255,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccount object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -314,7 +308,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getPropertiesDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -322,10 +316,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccount>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccount>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -335,12 +329,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @param parameters The parameters to update on the account. Note that only one property can be changed at a time using this API. 
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccount object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -398,7 +392,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(updateDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -406,10 +400,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccount>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccount>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -418,12 +412,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the storage account.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountKeys object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -471,7 +465,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listKeysDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -479,22 +473,22 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccountKeys>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountListResult> list() throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountListResult> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -526,7 +520,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -534,10 +528,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccountListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -545,12 +539,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountListResult> listByResourceGroup(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountListResult> listByResourceGroup(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -590,7 +584,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listByResourceGroupDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -598,10 +592,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listByResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccountListResult> listByResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -611,12 +605,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.  
      * @param regenerateKey Specifies name of the key which should be regenerated. key1 or key2 for the default keys
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountKeys object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -674,7 +668,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(regenerateKeyDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -682,10 +676,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccountKeys>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -693,12 +687,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountListResult> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -724,7 +718,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -732,10 +726,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccountListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -743,12 +737,12 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountListResult> listByResourceGroupNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountListResult> listByResourceGroupNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -774,7 +768,7 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listByResourceGroupNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -782,10 +776,10 @@ public class StorageAccountsOperationsImpl implements StorageAccountsOperations 
         return call;
     }
 
-    private ServiceResponse<StorageAccountListResult> listByResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<StorageAccountListResult>(new AzureJacksonUtils())
+    private ServiceResponse<StorageAccountListResult> listByResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<StorageAccountListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

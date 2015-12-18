@@ -30,13 +30,4 @@ public class VirtualMachineScaleSetListSkusResult {
         return this.value;
     }
 
-    /**
-     * Set the value value.
-     *
-     * @param value the value value to set
-     */
-    public void setValue(List<VirtualMachineScaleSetSku> value) {
-        this.value = value;
-    }
-
 }

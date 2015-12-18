@@ -15,12 +15,11 @@ import com.microsoft.azure.management.network.models.DnsNameAvailabilityResult;
 import com.microsoft.rest.AzureClient;
 import com.microsoft.rest.AzureServiceClient;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.CustomHeaderInterceptor;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.OkHttpClient;
@@ -34,12 +33,12 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the NetworkManagementClient class.
  */
-public class NetworkManagementClientImpl extends AzureServiceClient implements NetworkManagementClient {
+public final class NetworkManagementClientImpl extends AzureServiceClient implements NetworkManagementClient {
     /** The Retrofit service to perform REST calls. */
     private NetworkManagementClientService service;
     /** The URI used as the base for all cloud service requests. */
-    private String baseUri;
-    /** the {@link AzureClient} used for long running operations .*/
+    private final String baseUri;
+    /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
     /**
@@ -360,12 +359,12 @@ public class NetworkManagementClientImpl extends AzureServiceClient implements N
      *
      * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DnsNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location, String domainNameLabel) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location, String domainNameLabel) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -406,7 +405,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient implements N
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(checkDnsNameAvailabilityDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -414,10 +413,10 @@ public class NetworkManagementClientImpl extends AzureServiceClient implements N
         return call;
     }
 
-    private ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<DnsNameAvailabilityResult>(new AzureJacksonUtils())
+    private ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<DnsNameAvailabilityResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<DnsNameAvailabilityResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

@@ -14,10 +14,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.PolicyAssignment;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -31,7 +30,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in PolicyAssignmentsOperations.
  */
-public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperations {
+public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperations {
     /** The Retrofit service to perform REST calls. */
     private PolicyAssignmentsService service;
     /** The service client containing this operation class. */
@@ -57,12 +56,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @param resourceType The resource type.
      * @param resourceName The resource name.
      * @param filter The filter to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -135,7 +134,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -143,10 +142,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -155,12 +154,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param resourceGroupName Resource group name.
      * @param filter The filter to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroup(String resourceGroupName, String filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -201,7 +200,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceGroupDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -209,10 +208,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -221,12 +220,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -274,7 +273,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -282,10 +281,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyAssignment> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -295,12 +294,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
      * @param parameters Policy assignment.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -358,7 +357,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -366,10 +365,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> createDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyAssignment> createDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
                 .register(201, new TypeToken<PolicyAssignment>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -378,12 +377,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -431,7 +430,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -439,10 +438,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyAssignment> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -450,12 +449,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Delete policy assignment.
      *
      * @param policyAssignmentId Policy assignment Id
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws CloudException, IOException, IllegalArgumentException {
         if (policyAssignmentId == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
@@ -495,7 +494,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteByIdDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -503,10 +502,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> deleteByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyAssignment> deleteByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -515,12 +514,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param policyAssignmentId Policy assignment Id
      * @param parameters Policy assignment.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws CloudException, IOException, IllegalArgumentException {
         if (policyAssignmentId == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
@@ -570,7 +569,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createByIdDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -578,10 +577,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> createByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyAssignment> createByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
                 .register(201, new TypeToken<PolicyAssignment>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -589,12 +588,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Get single policy assignment.
      *
      * @param policyAssignmentId Policy assignment Id
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws CloudException, IOException, IllegalArgumentException {
         if (policyAssignmentId == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
@@ -634,7 +633,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getByIdDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -642,10 +641,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyAssignment> getByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyAssignment>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyAssignment> getByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -653,12 +652,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> list(String filter) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -691,7 +690,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -699,10 +698,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -711,12 +710,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      *
      * @param scope Scope.
      * @param filter The filter to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForScope(String scope, String filter) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -757,7 +756,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForScopeDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -765,10 +764,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -776,12 +775,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -807,7 +806,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -815,10 +814,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -826,12 +825,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -857,7 +856,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForResourceGroupNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -865,10 +864,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -876,12 +875,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -907,7 +906,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -915,10 +914,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -926,12 +925,12 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
      * Gets policy assignments of the scope.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -957,7 +956,7 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listForScopeNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -965,10 +964,10 @@ public class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

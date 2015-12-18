@@ -50,15 +50,6 @@ public class PolicyAssignment extends BaseResource {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get the scope value.
      *
      * @return the scope value
