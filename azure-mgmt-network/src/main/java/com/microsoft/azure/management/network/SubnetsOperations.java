@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.Subnet;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -59,13 +59,13 @@ public interface SubnetsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete subnet operation deletes the specified subnet.
@@ -85,12 +85,12 @@ public interface SubnetsOperations {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subnet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Subnet> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get subnet operation retreives information about the specified subnet.
@@ -111,13 +111,13 @@ public interface SubnetsOperations {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Subnet object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subnet> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, Subnet subnetParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Subnet> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, Subnet subnetParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put Subnet operation creates/updates a subnet in thespecified virtual network.
@@ -136,12 +136,12 @@ public interface SubnetsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subnet&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<Subnet>> list(String resourceGroupName, String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.
@@ -157,12 +157,12 @@ public interface SubnetsOperations {
      * The List subnets opertion retrieves all the subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subnet&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<Subnet>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.

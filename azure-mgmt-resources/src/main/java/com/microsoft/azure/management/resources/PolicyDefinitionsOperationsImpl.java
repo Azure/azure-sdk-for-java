@@ -13,10 +13,9 @@ package com.microsoft.azure.management.resources;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.resources.models.PolicyDefinition;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -30,7 +29,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in PolicyDefinitionsOperations.
  */
-public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperations {
+public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperations {
     /** The Retrofit service to perform REST calls. */
     private PolicyDefinitionsService service;
     /** The service client containing this operation class. */
@@ -52,12 +51,12 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      *
      * @param policyDefinitionName The policy definition name.
      * @param parameters The policy definition properties
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyDefinition object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws CloudException, IOException, IllegalArgumentException {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
@@ -107,7 +106,7 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(createOrUpdateDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -115,10 +114,10 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyDefinition> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyDefinition>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyDefinition> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyDefinition, CloudException>(new AzureJacksonUtils())
                 .register(201, new TypeToken<PolicyDefinition>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -126,12 +125,12 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      * Gets policy definition.
      *
      * @param policyDefinitionName The policy definition name.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PolicyDefinition object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws CloudException, IOException, IllegalArgumentException {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
@@ -171,7 +170,7 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -179,10 +178,10 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
         return call;
     }
 
-    private ServiceResponse<PolicyDefinition> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PolicyDefinition>(new AzureJacksonUtils())
+    private ServiceResponse<PolicyDefinition> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PolicyDefinition, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PolicyDefinition>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -190,12 +189,12 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
      * Deletes policy definition.
      *
      * @param policyDefinitionName The policy definition name.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String policyDefinitionName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<Void> delete(String policyDefinitionName) throws CloudException, IOException, IllegalArgumentException {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
@@ -235,7 +234,7 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(deleteDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -243,8 +242,8 @@ public class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsOperati
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<Void>(new AzureJacksonUtils())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
     }

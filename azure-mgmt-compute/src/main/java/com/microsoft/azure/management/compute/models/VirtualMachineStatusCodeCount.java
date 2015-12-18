@@ -36,30 +36,12 @@ public class VirtualMachineStatusCodeCount {
     }
 
     /**
-     * Set the code value.
-     *
-     * @param code the code value to set
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    /**
      * Get the count value.
      *
      * @return the count value
      */
     public Integer getCount() {
         return this.count;
-    }
-
-    /**
-     * Set the count value.
-     *
-     * @param count the count value to set
-     */
-    public void setCount(Integer count) {
-        this.count = count;
     }
 
 }

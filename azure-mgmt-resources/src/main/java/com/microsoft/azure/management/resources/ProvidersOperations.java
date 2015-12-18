@@ -12,8 +12,8 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -55,12 +55,12 @@ public interface ProvidersOperations {
      * Unregisters provider from a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Provider object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Unregisters provider from a subscription.
@@ -75,12 +75,12 @@ public interface ProvidersOperations {
      * Registers provider to be used with a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Provider object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Provider> register(String resourceProviderNamespace) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Provider> register(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Registers provider to be used with a subscription.
@@ -95,12 +95,12 @@ public interface ProvidersOperations {
      * Gets a list of resource providers.
      *
      * @param top Query parameters. If null is passed returns all deployments.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Provider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Provider>> list(Integer top) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<Provider>> list(Integer top) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
@@ -115,12 +115,12 @@ public interface ProvidersOperations {
      * Gets a resource provider.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Provider object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Provider> get(String resourceProviderNamespace) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Provider> get(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a resource provider.
@@ -135,12 +135,12 @@ public interface ProvidersOperations {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Provider&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Provider>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<Provider>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.

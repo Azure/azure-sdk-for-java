@@ -11,33 +11,15 @@
 package com.microsoft.azure.management.resources.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ResourceManagementErrorWithDetails model.
  */
-public class ResourceManagementErrorWithDetails {
+public class ResourceManagementErrorWithDetails extends ResourceManagementError {
     /**
      * Gets or sets validation error.
      */
     private List<ResourceManagementError> details;
-
-    /**
-     * Gets or sets the error code returned from the server.
-     */
-    @JsonProperty(required = true)
-    private String code;
-
-    /**
-     * Gets or sets the error message returned from the server.
-     */
-    @JsonProperty(required = true)
-    private String message;
-
-    /**
-     * Gets or sets the target of the error.
-     */
-    private String target;
 
     /**
      * Get the details value.
@@ -55,60 +37,6 @@ public class ResourceManagementErrorWithDetails {
      */
     public void setDetails(List<ResourceManagementError> details) {
         this.details = details;
-    }
-
-    /**
-     * Get the code value.
-     *
-     * @return the code value
-     */
-    public String getCode() {
-        return this.code;
-    }
-
-    /**
-     * Set the code value.
-     *
-     * @param code the code value to set
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    /**
-     * Get the message value.
-     *
-     * @return the message value
-     */
-    public String getMessage() {
-        return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Get the target value.
-     *
-     * @return the target value
-     */
-    public String getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Set the target value.
-     *
-     * @param target the target value to set
-     */
-    public void setTarget(String target) {
-        this.target = target;
     }
 
 }

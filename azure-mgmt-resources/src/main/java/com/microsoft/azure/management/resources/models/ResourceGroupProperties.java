@@ -29,13 +29,4 @@ public class ResourceGroupProperties {
         return this.provisioningState;
     }
 
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     */
-    public void setProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-    }
-
 }

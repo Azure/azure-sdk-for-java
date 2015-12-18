@@ -14,10 +14,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -32,7 +31,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in ExpressRouteCircuitPeeringsOperations.
  */
-public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCircuitPeeringsOperations {
+public final class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCircuitPeeringsOperations {
     /** The Retrofit service to perform REST calls. */
     private ExpressRouteCircuitPeeringsService service;
     /** The service client containing this operation class. */
@@ -55,13 +54,13 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String peeringName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, circuitName, peeringName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -77,24 +76,19 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      */
     public Call<ResponseBody> deleteAsync(String resourceGroupName, String circuitName, String peeringName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (circuitName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter circuitName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
         if (peeringName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter peeringName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, circuitName, peeringName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
@@ -116,12 +110,12 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitPeering object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ExpressRouteCircuitPeering> get(String resourceGroupName, String circuitName, String peeringName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<ExpressRouteCircuitPeering> get(String resourceGroupName, String circuitName, String peeringName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -177,7 +171,7 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -185,10 +179,10 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
         return call;
     }
 
-    private ServiceResponse<ExpressRouteCircuitPeering> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitPeering>(new AzureJacksonUtils())
+    private ServiceResponse<ExpressRouteCircuitPeering> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitPeering, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<ExpressRouteCircuitPeering>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -199,13 +193,13 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitPeering object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<ExpressRouteCircuitPeering> createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeering peeringParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<ExpressRouteCircuitPeering> createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeering peeringParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, circuitName, peeringName, this.client.getSubscriptionId(), peeringParameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ExpressRouteCircuitPeering>() { }.getType());
     }
@@ -222,28 +216,22 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      */
     public Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeering peeringParameters, final ServiceCallback<ExpressRouteCircuitPeering> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (circuitName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter circuitName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
         if (peeringName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter peeringName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (peeringParameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringParameters is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(peeringParameters, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, circuitName, peeringName, this.client.getSubscriptionId(), peeringParameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -265,12 +253,12 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the curcuit.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitPeering&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> list(String resourceGroupName, String circuitName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> list(String resourceGroupName, String circuitName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -318,7 +306,7 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -326,10 +314,10 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitPeering>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -337,12 +325,12 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
      * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;ExpressRouteCircuitPeering&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -368,7 +356,7 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -376,10 +364,10 @@ public class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressRouteCi
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitPeering>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

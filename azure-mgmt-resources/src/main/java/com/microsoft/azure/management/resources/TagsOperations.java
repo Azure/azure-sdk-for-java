@@ -13,8 +13,8 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TagDetails;
 import com.microsoft.azure.management.resources.models.TagValue;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -61,12 +61,12 @@ public interface TagsOperations {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Delete a subscription resource tag value.
@@ -83,12 +83,12 @@ public interface TagsOperations {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagValue object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<TagValue> createOrUpdateValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Create a subscription resource tag value.
@@ -104,12 +104,12 @@ public interface TagsOperations {
      * Create a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagDetails object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<TagDetails> createOrUpdate(String tagName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<TagDetails> createOrUpdate(String tagName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Create a subscription resource tag.
@@ -124,12 +124,12 @@ public interface TagsOperations {
      * Delete a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String tagName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> delete(String tagName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Delete a subscription resource tag.
@@ -143,12 +143,12 @@ public interface TagsOperations {
     /**
      * Get a list of subscription resource tags.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TagDetails&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TagDetails>> list() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<TagDetails>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get a list of subscription resource tags.
@@ -162,12 +162,12 @@ public interface TagsOperations {
      * Get a list of subscription resource tags.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TagDetails&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<TagDetails>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get a list of subscription resource tags.

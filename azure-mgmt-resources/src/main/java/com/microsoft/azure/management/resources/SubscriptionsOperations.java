@@ -13,8 +13,8 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.models.LocationListResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -55,12 +55,12 @@ public interface SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param subscriptionId Id of the subscription
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<LocationListResult> listLocations(String subscriptionId) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscription locations.
@@ -75,12 +75,12 @@ public interface SubscriptionsOperations {
      * Gets details about particular subscription.
      *
      * @param subscriptionId Id of the subscription.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Subscription object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<Subscription> get(String subscriptionId) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<Subscription> get(String subscriptionId) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets details about particular subscription.
@@ -94,12 +94,12 @@ public interface SubscriptionsOperations {
     /**
      * Gets a list of the subscriptionIds.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subscription>> list() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<Subscription>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.
@@ -113,12 +113,12 @@ public interface SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocationListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<LocationListResult> listLocationsNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscription locations.
@@ -133,12 +133,12 @@ public interface SubscriptionsOperations {
      * Gets a list of the subscriptionIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;Subscription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<Subscription>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.

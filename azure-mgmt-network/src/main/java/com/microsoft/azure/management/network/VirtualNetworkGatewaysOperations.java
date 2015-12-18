@@ -13,8 +13,8 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGateway;
 import com.microsoft.azure.management.network.models.VpnClientParameters;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -67,13 +67,13 @@ public interface VirtualNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway operation through Network resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGateway> createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<VirtualNetworkGateway> createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put VirtualNetworkGateway operation creates/updates a virtual network gateway in the specified resource group through Network resource provider.
@@ -91,12 +91,12 @@ public interface VirtualNetworkGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get VirtualNetworkGateway operation retrieves information about the specified virtual network gateway through Network resource provider.
@@ -113,13 +113,13 @@ public interface VirtualNetworkGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Delete VirtualNetworkGateway operation deletes the specifed virtual network Gateway through Network resource provider.
@@ -135,12 +135,12 @@ public interface VirtualNetworkGatewaysOperations {
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
@@ -157,13 +157,13 @@ public interface VirtualNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Reset Virtual Network Gateway operation through Network resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualNetworkGateway> reset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<VirtualNetworkGateway> reset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Reset VirtualNetworkGateway operation resets the primary of the virtual network gateway in the specified resource group through Network resource provider.
@@ -182,12 +182,12 @@ public interface VirtualNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Generating  Virtual Network Gateway Vpn client package operation through Network resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the String object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Generatevpnclientpackage operation generates Vpn client package for P2S client of the virtual network gateway in the specified resource group through Network resource provider.
@@ -204,12 +204,12 @@ public interface VirtualNetworkGatewaysOperations {
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.

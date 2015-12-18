@@ -14,11 +14,10 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.compute.models.VirtualMachineImage;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.serializer.JacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -32,7 +31,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineImagesOperations.
  */
-public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesOperations {
+public final class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesOperations {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineImagesService service;
     /** The service client containing this operation class. */
@@ -57,12 +56,12 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * @param offer the String value
      * @param skus the String value
      * @param version the String value
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineImage object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualMachineImage> get(String location, String publisherName, String offer, String skus, String version) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -134,7 +133,7 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -142,10 +141,10 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
         return call;
     }
 
-    private ServiceResponse<VirtualMachineImage> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<VirtualMachineImage>(new AzureJacksonUtils())
+    private ServiceResponse<VirtualMachineImage> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualMachineImage, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineImage>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -159,12 +158,12 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus, VirtualMachineImageResource filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -231,7 +230,7 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -239,10 +238,10 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>>(new AzureJacksonUtils())
+    private ServiceResponse<List<VirtualMachineImageResource>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -251,12 +250,12 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      *
      * @param location the String value
      * @param publisherName the String value
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listOffers(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -304,7 +303,7 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listOffersDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -312,10 +311,10 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listOffersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>>(new AzureJacksonUtils())
+    private ServiceResponse<List<VirtualMachineImageResource>> listOffersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -323,12 +322,12 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * Gets a list of virtual machine image publishers.
      *
      * @param location the String value
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listPublishers(String location) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -368,7 +367,7 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listPublishersDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -376,10 +375,10 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listPublishersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>>(new AzureJacksonUtils())
+    private ServiceResponse<List<VirtualMachineImageResource>> listPublishersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -389,12 +388,12 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
      * @param location the String value
      * @param publisherName the String value
      * @param offer the String value
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listSkus(String location, String publisherName, String offer) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -450,7 +449,7 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listSkusDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -458,10 +457,10 @@ public class VirtualMachineImagesOperationsImpl implements VirtualMachineImagesO
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>>(new AzureJacksonUtils())
+    private ServiceResponse<List<VirtualMachineImageResource>> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

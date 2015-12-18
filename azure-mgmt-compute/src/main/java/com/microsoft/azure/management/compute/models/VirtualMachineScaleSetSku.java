@@ -40,15 +40,6 @@ public class VirtualMachineScaleSetSku {
     }
 
     /**
-     * Set the resourceType value.
-     *
-     * @param resourceType the resourceType value to set
-     */
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
-    }
-
-    /**
      * Get the sku value.
      *
      * @return the sku value
@@ -58,30 +49,12 @@ public class VirtualMachineScaleSetSku {
     }
 
     /**
-     * Set the sku value.
-     *
-     * @param sku the sku value to set
-     */
-    public void setSku(Sku sku) {
-        this.sku = sku;
-    }
-
-    /**
      * Get the capacity value.
      *
      * @return the capacity value
      */
     public VirtualMachineScaleSetSkuCapacity getCapacity() {
         return this.capacity;
-    }
-
-    /**
-     * Set the capacity value.
-     *
-     * @param capacity the capacity value to set
-     */
-    public void setCapacity(VirtualMachineScaleSetSkuCapacity capacity) {
-        this.capacity = capacity;
     }
 
 }

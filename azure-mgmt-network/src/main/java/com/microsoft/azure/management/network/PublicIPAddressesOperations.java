@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.PublicIPAddress;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -64,13 +64,13 @@ public interface PublicIPAddressesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String publicIpAddressName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete publicIpAddress operation deletes the specified publicIpAddress.
@@ -88,12 +88,12 @@ public interface PublicIPAddressesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PublicIPAddress object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
@@ -112,13 +112,13 @@ public interface PublicIPAddressesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the PublicIPAddress object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PublicIPAddress> createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddress parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<PublicIPAddress> createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddress parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put PublicIPAddress operation creates/updates a stable/dynamic PublicIP address.
@@ -134,12 +134,12 @@ public interface PublicIPAddressesOperations {
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> listAll() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<PublicIPAddress>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
@@ -153,12 +153,12 @@ public interface PublicIPAddressesOperations {
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<PublicIPAddress>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
@@ -173,12 +173,12 @@ public interface PublicIPAddressesOperations {
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<PublicIPAddress>> listAllNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
@@ -193,12 +193,12 @@ public interface PublicIPAddressesOperations {
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;PublicIPAddress&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<PublicIPAddress>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<PublicIPAddress>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.

@@ -14,10 +14,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TenantIdDescription;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -30,7 +29,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in TenantsOperations.
  */
-public class TenantsOperationsImpl implements TenantsOperations {
+public final class TenantsOperationsImpl implements TenantsOperations {
     /** The Retrofit service to perform REST calls. */
     private TenantsService service;
     /** The service client containing this operation class. */
@@ -50,12 +49,12 @@ public class TenantsOperationsImpl implements TenantsOperations {
     /**
      * Gets a list of the tenantIds.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<TenantIdDescription>> list() throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<TenantIdDescription>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -87,7 +86,7 @@ public class TenantsOperationsImpl implements TenantsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -95,10 +94,10 @@ public class TenantsOperationsImpl implements TenantsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<TenantIdDescription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescription>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<TenantIdDescription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescription>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<TenantIdDescription>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -106,12 +105,12 @@ public class TenantsOperationsImpl implements TenantsOperations {
      * Gets a list of the tenantIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<TenantIdDescription>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<TenantIdDescription>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -137,7 +136,7 @@ public class TenantsOperationsImpl implements TenantsOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -145,10 +144,10 @@ public class TenantsOperationsImpl implements TenantsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<TenantIdDescription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescription>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<TenantIdDescription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescription>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<TenantIdDescription>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

@@ -14,10 +14,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.RouteTable;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -32,7 +31,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in RouteTablesOperations.
  */
-public class RouteTablesOperationsImpl implements RouteTablesOperations {
+public final class RouteTablesOperationsImpl implements RouteTablesOperations {
     /** The Retrofit service to perform REST calls. */
     private RouteTablesService service;
     /** The service client containing this operation class. */
@@ -54,13 +53,13 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -75,20 +74,16 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      */
     public Call<ResponseBody> deleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeTableName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter routeTableName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
@@ -110,12 +105,12 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RouteTable object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -164,7 +159,7 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -172,10 +167,10 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
         return call;
     }
 
-    private ServiceResponse<RouteTable> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<RouteTable>(new AzureJacksonUtils())
+    private ServiceResponse<RouteTable> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<RouteTable, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<RouteTable>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -185,13 +180,13 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create/update Route Table operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RouteTable object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, routeTableName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<RouteTable>() { }.getType());
     }
@@ -207,24 +202,19 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      */
     public Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTable parameters, final ServiceCallback<RouteTable> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeTableName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter routeTableName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, routeTableName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -245,12 +235,12 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -290,7 +280,7 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -298,22 +288,22 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<RouteTable>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<RouteTable>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
     /**
      * The list RouteTables returns all route tables in a subscription.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<RouteTable>> listAll() throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<RouteTable>> listAll() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -345,7 +335,7 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -353,10 +343,10 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<RouteTable>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<RouteTable>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -364,12 +354,12 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -395,7 +385,7 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -403,10 +393,10 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<RouteTable>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<RouteTable>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -414,12 +404,12 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
      * The list RouteTables returns all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -445,7 +435,7 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listAllNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -453,10 +443,10 @@ public class RouteTablesOperationsImpl implements RouteTablesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<RouteTable>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<RouteTable>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

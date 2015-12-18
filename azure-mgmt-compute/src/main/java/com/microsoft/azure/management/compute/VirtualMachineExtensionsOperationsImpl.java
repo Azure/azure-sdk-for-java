@@ -13,10 +13,9 @@ package com.microsoft.azure.management.compute;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -31,7 +30,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineExtensionsOperations.
  */
-public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExtensionsOperations {
+public final class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExtensionsOperations {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineExtensionsService service;
     /** The service client containing this operation class. */
@@ -55,13 +54,13 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
      * @param vmName The name of the virtual machine where the extension should be create or updated.
      * @param vmExtensionName The name of the virtual machine extension.
      * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineExtension object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<VirtualMachineExtension> createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtension extensionParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<VirtualMachineExtension> createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtension extensionParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), extensionParameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualMachineExtension>() { }.getType());
     }
@@ -78,28 +77,22 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
      */
     public Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtension extensionParameters, final ServiceCallback<VirtualMachineExtension> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (extensionParameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter extensionParameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(extensionParameters, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), extensionParameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -122,13 +115,13 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String vmName, String vmExtensionName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -144,24 +137,19 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
      */
     public Call<ResponseBody> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
@@ -184,12 +172,12 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
      * @param expand The expand expression to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtension object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualMachineExtension> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -246,7 +234,7 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -254,10 +242,10 @@ public class VirtualMachineExtensionsOperationsImpl implements VirtualMachineExt
         return call;
     }
 
-    private ServiceResponse<VirtualMachineExtension> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<VirtualMachineExtension>(new AzureJacksonUtils())
+    private ServiceResponse<VirtualMachineExtension> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualMachineExtension, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualMachineExtension>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

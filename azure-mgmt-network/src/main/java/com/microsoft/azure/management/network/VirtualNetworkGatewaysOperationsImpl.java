@@ -15,10 +15,9 @@ import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGateway;
 import com.microsoft.azure.management.network.models.VpnClientParameters;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
@@ -33,7 +32,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in VirtualNetworkGatewaysOperations.
  */
-public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatewaysOperations {
+public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatewaysOperations {
     /** The Retrofit service to perform REST calls. */
     private VirtualNetworkGatewaysService service;
     /** The service client containing this operation class. */
@@ -56,13 +55,13 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway operation through Network resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<VirtualNetworkGateway> createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<VirtualNetworkGateway> createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualNetworkGateway>() { }.getType());
     }
@@ -78,24 +77,19 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      */
     public Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters, final ServiceCallback<VirtualNetworkGateway> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkGatewayName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -117,12 +111,12 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGateway object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualNetworkGateway> get(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -170,7 +164,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -178,10 +172,10 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<VirtualNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<VirtualNetworkGateway>(new AzureJacksonUtils())
+    private ServiceResponse<VirtualNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualNetworkGateway, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<VirtualNetworkGateway>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -190,13 +184,13 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkGatewayName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.delete(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -211,20 +205,16 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      */
     public Call<ResponseBody> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkGatewayName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
@@ -244,12 +234,12 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<VirtualNetworkGateway>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -289,7 +279,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -297,10 +287,10 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGateway>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -310,13 +300,13 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Reset Virtual Network Gateway operation through Network resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGateway object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<VirtualNetworkGateway> reset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<VirtualNetworkGateway> reset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         Response<ResponseBody> result = service.reset(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<VirtualNetworkGateway>() { }.getType());
     }
@@ -332,24 +322,19 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      */
     public Call<ResponseBody> resetAsync(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGateway parameters, final ServiceCallback<VirtualNetworkGateway> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkGatewayName == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter parameters is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
         if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new ServiceException(
-                new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.")));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.reset(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
@@ -372,12 +357,12 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Generating  Virtual Network Gateway Vpn client package operation through Network resource provider.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the String object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -435,7 +420,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(generatevpnclientpackageDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -443,10 +428,10 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<String> generatevpnclientpackageDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<String>(new AzureJacksonUtils())
+    private ServiceResponse<String> generatevpnclientpackageDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<String, CloudException>(new AzureJacksonUtils())
                 .register(202, new TypeToken<String>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -454,12 +439,12 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
      * The List VirtualNetworkGateways opertion retrieves all the virtual network gateways stored.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;VirtualNetworkGateway&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<VirtualNetworkGateway>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -485,7 +470,7 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -493,10 +478,10 @@ public class VirtualNetworkGatewaysOperationsImpl implements VirtualNetworkGatew
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<VirtualNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGateway>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

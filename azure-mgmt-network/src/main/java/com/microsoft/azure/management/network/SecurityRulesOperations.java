@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.SecurityRule;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -59,13 +59,13 @@ public interface SecurityRulesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete network security rule operation deletes the specified network security rule.
@@ -84,12 +84,12 @@ public interface SecurityRulesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SecurityRule object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<SecurityRule> get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<SecurityRule> get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get NetworkSecurityRule operation retreives information about the specified network security rule.
@@ -109,13 +109,13 @@ public interface SecurityRulesOperations {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SecurityRule object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<SecurityRule> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRule securityRuleParameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<SecurityRule> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRule securityRuleParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put network security rule operation creates/updates a security rule in the specified network security group.
@@ -134,12 +134,12 @@ public interface SecurityRulesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;SecurityRule&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<SecurityRule>> list(String resourceGroupName, String networkSecurityGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<SecurityRule>> list(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List network security rule opertion retrieves all the security rules in a network security group.
@@ -155,12 +155,12 @@ public interface SecurityRulesOperations {
      * The List network security rule opertion retrieves all the security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;SecurityRule&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<SecurityRule>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<SecurityRule>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List network security rule opertion retrieves all the security rules in a network security group.

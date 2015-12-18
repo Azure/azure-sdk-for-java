@@ -26,7 +26,7 @@ public enum Reason {
     /** The actual serialized value for a Reason instance. */
     private String value;
 
-    private Reason(String value) {
+    Reason(String value) {
         this.value = value;
     }
 

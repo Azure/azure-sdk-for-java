@@ -33,13 +33,4 @@ public class DataDiskImage {
         return this.lun;
     }
 
-    /**
-     * Set the lun value.
-     *
-     * @param lun the lun value to set
-     */
-    public void setLun(int lun) {
-        this.lun = lun;
-    }
-
 }

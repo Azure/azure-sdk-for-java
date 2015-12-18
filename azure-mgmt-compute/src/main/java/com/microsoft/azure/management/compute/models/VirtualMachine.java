@@ -105,15 +105,6 @@ public class VirtualMachine extends Resource {
     }
 
     /**
-     * Set the resources value.
-     *
-     * @param resources the resources value to set
-     */
-    public void setResources(List<VirtualMachineExtension> resources) {
-        this.resources = resources;
-    }
-
-    /**
      * Get the hardwareProfile value.
      *
      * @return the hardwareProfile value
@@ -246,15 +237,6 @@ public class VirtualMachine extends Resource {
      */
     public VirtualMachineInstanceView getInstanceView() {
         return this.instanceView;
-    }
-
-    /**
-     * Set the instanceView value.
-     *
-     * @param instanceView the instanceView value to set
-     */
-    public void setInstanceView(VirtualMachineInstanceView instanceView) {
-        this.instanceView = instanceView;
     }
 
 }

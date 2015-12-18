@@ -11,8 +11,8 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.UsagesListResult;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -44,12 +44,12 @@ public interface UsagesOperations {
      * Lists compute usages for a subscription.
      *
      * @param location The location upon which resource usage is queried.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UsagesListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<UsagesListResult> list(String location) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<UsagesListResult> list(String location) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists compute usages for a subscription.
@@ -64,12 +64,12 @@ public interface UsagesOperations {
      * Lists compute usages for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UsagesListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<UsagesListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<UsagesListResult> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists compute usages for a subscription.

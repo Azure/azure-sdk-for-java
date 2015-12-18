@@ -26,7 +26,7 @@ public enum DeploymentMode {
     /** The actual serialized value for a DeploymentMode instance. */
     private String value;
 
-    private DeploymentMode(String value) {
+    DeploymentMode(String value) {
         this.value = value;
     }
 

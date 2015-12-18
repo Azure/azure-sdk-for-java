@@ -26,7 +26,7 @@ public enum AccountStatus {
     /** The actual serialized value for a AccountStatus instance. */
     private String value;
 
-    private AccountStatus(String value) {
+    AccountStatus(String value) {
         this.value = value;
     }
 

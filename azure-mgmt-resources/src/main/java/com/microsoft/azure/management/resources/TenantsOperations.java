@@ -12,8 +12,8 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TenantIdDescription;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -44,12 +44,12 @@ public interface TenantsOperations {
     /**
      * Gets a list of the tenantIds.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TenantIdDescription>> list() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<TenantIdDescription>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the tenantIds.
@@ -63,12 +63,12 @@ public interface TenantsOperations {
      * Gets a list of the tenantIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<TenantIdDescription>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<TenantIdDescription>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the tenantIds.

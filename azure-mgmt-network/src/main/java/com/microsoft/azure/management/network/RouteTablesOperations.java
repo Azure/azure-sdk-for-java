@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.RouteTable;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -64,13 +64,13 @@ public interface RouteTablesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Delete RouteTable operation deletes the specifed Route Table.
@@ -88,12 +88,12 @@ public interface RouteTablesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RouteTable object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get RouteTables operation retrieves information about the specified route table.
@@ -112,13 +112,13 @@ public interface RouteTablesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create/update Route Table operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RouteTable object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put RouteTable operation creates/updates a route tablein the specified resource group.
@@ -135,12 +135,12 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<RouteTable>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group.
@@ -154,12 +154,12 @@ public interface RouteTablesOperations {
     /**
      * The list RouteTables returns all route tables in a subscription.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listAll() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<RouteTable>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription.
@@ -173,12 +173,12 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<RouteTable>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group.
@@ -193,12 +193,12 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<RouteTable>> listAllNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription.

@@ -21,10 +21,10 @@ import retrofit.Retrofit;
 /**
  * Initializes a new instance of the ComputeManagementClient class.
  */
-public class ComputeManagementClientImpl extends AzureServiceClient implements ComputeManagementClient {
+public final class ComputeManagementClientImpl extends AzureServiceClient implements ComputeManagementClient {
     /** The URI used as the base for all cloud service requests. */
-    private String baseUri;
-    /** the {@link AzureClient} used for long running operations .*/
+    private final String baseUri;
+    /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
     /**

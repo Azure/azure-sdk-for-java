@@ -41,30 +41,12 @@ public class VirtualMachineScaleSetInstanceView {
     }
 
     /**
-     * Set the virtualMachine value.
-     *
-     * @param virtualMachine the virtualMachine value to set
-     */
-    public void setVirtualMachine(VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine) {
-        this.virtualMachine = virtualMachine;
-    }
-
-    /**
      * Get the extensions value.
      *
      * @return the extensions value
      */
     public List<VirtualMachineScaleSetVMExtensionsSummary> getExtensions() {
         return this.extensions;
-    }
-
-    /**
-     * Set the extensions value.
-     *
-     * @param extensions the extensions value to set
-     */
-    public void setExtensions(List<VirtualMachineScaleSetVMExtensionsSummary> extensions) {
-        this.extensions = extensions;
     }
 
     /**

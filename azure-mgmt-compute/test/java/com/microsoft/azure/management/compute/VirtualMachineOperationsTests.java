@@ -21,6 +21,7 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.Page;
 import com.microsoft.rest.ServiceException;
 import org.junit.AfterClass;
@@ -28,6 +29,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
@@ -54,12 +56,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     }
 
     @Test
-    public void canCreateStorageAccount() throws Exception {
+    public void canCreateVirtualMachine() throws Exception {
         // Create
         String vmName = "javavm";
         VirtualMachine request = new VirtualMachine();
         request.setLocation(location);
-        request.setType("Microsoft.Compute/virtualMachines");
         request.setOsProfile(new OSProfile());
         request.getOsProfile().setComputerName("javatest");
         request.getOsProfile().setAdminUsername("Foo12");
@@ -104,7 +105,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         computeManagementClient.getVirtualMachines().delete(rgName, vmName);
     }
 
-    private ImageReference getVMImage(String publisher, String offer, String sku) throws ServiceException {
+    private ImageReference getVMImage(String publisher, String offer, String sku) throws CloudException, IOException {
         VirtualMachineImageResource virtualMachineImageResource = new VirtualMachineImageResource();
         String name = computeManagementClient.getVirtualMachineImages().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
         ImageReference imageReference = new ImageReference();

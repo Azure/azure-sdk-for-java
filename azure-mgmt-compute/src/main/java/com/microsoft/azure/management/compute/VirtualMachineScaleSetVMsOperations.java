@@ -13,8 +13,8 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceView;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMListResult;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -71,13 +71,13 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> deallocate(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> deallocate(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to deallocate a virtual machine scale set.
@@ -96,13 +96,13 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to delete a virtual machine scale set.
@@ -121,12 +121,12 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVM object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVM> get(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachineScaleSetVM> get(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to get a virtual machine scale set virtual machine.
@@ -145,12 +145,12 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVMInstanceView object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceView(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to get a virtual machine scale set virtual machine.
@@ -171,12 +171,12 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param filter The filter to apply on the operation.
      * @param select The list parameters.
      * @param expand The expand expression to apply on the operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVMListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVMListResult> list(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachineScaleSetVMListResult> list(String resourceGroupName, String virtualMachineScaleSetName, VirtualMachineScaleSetVM filter, String select, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machine scale sets VMs.
@@ -197,13 +197,13 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> powerOff(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> powerOff(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to power off (stop) a virtual machine scale set.
@@ -222,13 +222,13 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> restart(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> restart(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to restart a virtual machine scale set.
@@ -247,13 +247,13 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceId The instance id of the virtual machine.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> start(String resourceGroupName, String vmScaleSetName, String instanceId) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> start(String resourceGroupName, String vmScaleSetName, String instanceId) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The operation to start a virtual machine scale set.
@@ -270,12 +270,12 @@ public interface VirtualMachineScaleSetVMsOperations {
      * The operation to list virtual machine scale sets VMs.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetVMListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<VirtualMachineScaleSetVMListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<VirtualMachineScaleSetVMListResult> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machine scale sets VMs.

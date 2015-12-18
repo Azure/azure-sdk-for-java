@@ -13,10 +13,9 @@ package com.microsoft.azure.management.network;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.network.models.UsagesListResult;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -29,7 +28,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in UsagesOperations.
  */
-public class UsagesOperationsImpl implements UsagesOperations {
+public final class UsagesOperationsImpl implements UsagesOperations {
     /** The Retrofit service to perform REST calls. */
     private UsagesService service;
     /** The service client containing this operation class. */
@@ -50,12 +49,12 @@ public class UsagesOperationsImpl implements UsagesOperations {
      * Lists compute usages for a subscription.
      *
      * @param location The location upon which resource usage is queried.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UsagesListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<UsagesListResult> list(String location) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<UsagesListResult> list(String location) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -95,7 +94,7 @@ public class UsagesOperationsImpl implements UsagesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -103,10 +102,10 @@ public class UsagesOperationsImpl implements UsagesOperations {
         return call;
     }
 
-    private ServiceResponse<UsagesListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<UsagesListResult>(new AzureJacksonUtils())
+    private ServiceResponse<UsagesListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<UsagesListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<UsagesListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -114,12 +113,12 @@ public class UsagesOperationsImpl implements UsagesOperations {
      * Lists compute usages for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UsagesListResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<UsagesListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<UsagesListResult> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -145,7 +144,7 @@ public class UsagesOperationsImpl implements UsagesOperations {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -153,10 +152,10 @@ public class UsagesOperationsImpl implements UsagesOperations {
         return call;
     }
 
-    private ServiceResponse<UsagesListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<UsagesListResult>(new AzureJacksonUtils())
+    private ServiceResponse<UsagesListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<UsagesListResult, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<UsagesListResult>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

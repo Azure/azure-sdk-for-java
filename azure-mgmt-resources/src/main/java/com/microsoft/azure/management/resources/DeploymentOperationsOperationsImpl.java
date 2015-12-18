@@ -14,10 +14,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.resources.models.DeploymentOperation;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudError;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.squareup.okhttp.ResponseBody;
@@ -30,7 +29,7 @@ import retrofit.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in DeploymentOperationsOperations.
  */
-public class DeploymentOperationsOperationsImpl implements DeploymentOperationsOperations {
+public final class DeploymentOperationsOperationsImpl implements DeploymentOperationsOperations {
     /** The Retrofit service to perform REST calls. */
     private DeploymentOperationsService service;
     /** The service client containing this operation class. */
@@ -53,12 +52,12 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId Operation Id.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentOperation object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<DeploymentOperation> get(String resourceGroupName, String deploymentName, String operationId) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<DeploymentOperation> get(String resourceGroupName, String deploymentName, String operationId) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -114,7 +113,7 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(getDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -122,10 +121,10 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
         return call;
     }
 
-    private ServiceResponse<DeploymentOperation> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<DeploymentOperation>(new AzureJacksonUtils())
+    private ServiceResponse<DeploymentOperation> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<DeploymentOperation, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<DeploymentOperation>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -135,12 +134,12 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top Query parameters.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;DeploymentOperation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<DeploymentOperation>> list(String resourceGroupName, String deploymentName, Integer top) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<DeploymentOperation>> list(String resourceGroupName, String deploymentName, Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -189,7 +188,7 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -197,10 +196,10 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
         return call;
     }
 
-    private ServiceResponse<PageImpl<DeploymentOperation>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<DeploymentOperation>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<DeploymentOperation>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 
@@ -208,12 +207,12 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
      * Gets a list of deployments operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;DeploymentOperation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<DeploymentOperation>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<DeploymentOperation>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -239,7 +238,7 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 try {
                     serviceCallback.success(listNextDelegate(response, retrofit));
-                } catch (ServiceException | IOException exception) {
+                } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
@@ -247,10 +246,10 @@ public class DeploymentOperationsOperationsImpl implements DeploymentOperationsO
         return call;
     }
 
-    private ServiceResponse<PageImpl<DeploymentOperation>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws ServiceException, IOException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>>(new AzureJacksonUtils())
+    private ServiceResponse<PageImpl<DeploymentOperation>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>, CloudException>(new AzureJacksonUtils())
                 .register(200, new TypeToken<PageImpl<DeploymentOperation>>() { }.getType())
-                .registerError(new TypeToken<CloudError>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response, retrofit);
     }
 

@@ -12,8 +12,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -79,13 +79,13 @@ public interface NetworkInterfacesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    ServiceResponse<Void> delete(String resourceGroupName, String networkInterfaceName) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<Void> delete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The delete netwokInterface operation deletes the specified netwokInterface.
@@ -103,12 +103,12 @@ public interface NetworkInterfacesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterface object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface.
@@ -127,13 +127,13 @@ public interface NetworkInterfacesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create/update NetworkInterface operation
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the NetworkInterface object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkInterface> createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterface parameters) throws ServiceException, IOException, IllegalArgumentException, InterruptedException;
+    ServiceResponse<NetworkInterface> createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterface parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
     /**
      * The Put NetworkInterface operation creates/updates a networkInterface.
@@ -152,12 +152,12 @@ public interface NetworkInterfacesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
@@ -175,12 +175,12 @@ public interface NetworkInterfacesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName, String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
@@ -200,12 +200,12 @@ public interface NetworkInterfacesOperations {
      * @param virtualmachineIndex The virtual machine index.
      * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterface object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface in a virtual machine scale set.
@@ -223,12 +223,12 @@ public interface NetworkInterfacesOperations {
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
      *
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listAll() throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
@@ -242,12 +242,12 @@ public interface NetworkInterfacesOperations {
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> list(String resourceGroupName) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.
@@ -262,12 +262,12 @@ public interface NetworkInterfacesOperations {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
@@ -282,12 +282,12 @@ public interface NetworkInterfacesOperations {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
@@ -302,12 +302,12 @@ public interface NetworkInterfacesOperations {
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listAllNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listAllNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
@@ -322,12 +322,12 @@ public interface NetworkInterfacesOperations {
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PageImpl&lt;NetworkInterface&gt; object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<PageImpl<NetworkInterface>> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<PageImpl<NetworkInterface>> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.

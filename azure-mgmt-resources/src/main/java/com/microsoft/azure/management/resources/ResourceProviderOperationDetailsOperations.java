@@ -11,8 +11,8 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.ResourceProviderOperationDetailListResult;
+import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceException;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
@@ -45,12 +45,12 @@ public interface ResourceProviderOperationDetailsOperations {
      *
      * @param resourceProviderNamespace Resource identity.
      * @param apiVersion the String value
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceProviderOperationDetailListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ResourceProviderOperationDetailListResult> list(String resourceProviderNamespace, String apiVersion) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<ResourceProviderOperationDetailListResult> list(String resourceProviderNamespace, String apiVersion) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
@@ -66,12 +66,12 @@ public interface ResourceProviderOperationDetailsOperations {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws ServiceException exception thrown from REST call
+     * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceProviderOperationDetailListResult object wrapped in ServiceResponse if successful.
      */
-    ServiceResponse<ResourceProviderOperationDetailListResult> listNext(String nextPageLink) throws ServiceException, IOException, IllegalArgumentException;
+    ServiceResponse<ResourceProviderOperationDetailListResult> listNext(String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
