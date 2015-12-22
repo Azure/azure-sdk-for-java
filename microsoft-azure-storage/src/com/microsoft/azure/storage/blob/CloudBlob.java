@@ -2016,10 +2016,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *
      * @return A <code>String</code> that represents the name of the blob.
      *
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
      */
-    public final String getName() throws URISyntaxException {
+    public final String getName() {
         return this.name;
     }
 
