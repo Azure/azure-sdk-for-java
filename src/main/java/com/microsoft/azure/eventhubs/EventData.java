@@ -77,7 +77,7 @@ public class EventData implements AutoCloseable {
 	 *  	partitionSender.Send(eventData);
 	 *  </pre>
 	 * @param data the actual payload of data in bytes to be Sent to EventHubs.
-	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString()}
+	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
 	public EventData(byte[] data) {
 		this();
@@ -107,7 +107,7 @@ public class EventData implements AutoCloseable {
 	 * @param data the byte[] where the payload of the Event to be sent to EventHubs is present
 	 * @param offset Offset in the byte[] to read from ; inclusive index
 	 * @param length length of the byte[] to be read, starting from offset
-	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString()}
+	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
 	public EventData(byte[] data, final int offset, final int length) {
 		this();
@@ -135,7 +135,7 @@ public class EventData implements AutoCloseable {
 	 *  	partitionSender.Send(eventData);
 	 *  </pre>
 	 * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
-	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString()}
+	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
 	public EventData(ByteBuffer buffer){
 		this();

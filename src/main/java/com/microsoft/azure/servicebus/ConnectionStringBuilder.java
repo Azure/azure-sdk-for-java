@@ -54,6 +54,13 @@ public class ConnectionStringBuilder {
 		this.entityPath = entityPath;
 	}
 
+	/**
+	 * Build connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
+	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required) 
+	 * @param entityPath Entity path
+	 * @param sharedAccessKeyName Shared Access Key name
+	 * @param sharedAccessKey Shared Access Key
+	 */
 	public ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
 			final String sharedAccessKey) {
 		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.Default);
@@ -123,7 +130,7 @@ public class ConnectionStringBuilder {
 		return this.connectionString;
 	}
 
-	void parseConnectionString(String connectionString) {
+	private void parseConnectionString(String connectionString) {
 
 		// TODO: Trace and throw
 		if (StringUtil.isNullOrWhiteSpace(connectionString)) {
