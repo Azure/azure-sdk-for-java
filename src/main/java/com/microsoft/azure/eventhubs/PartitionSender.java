@@ -1,6 +1,8 @@
 package com.microsoft.azure.eventhubs;
 
-import java.util.concurrent.ExecutionException;
+import java.util.UUID;
+import java.util.concurrent.*;
+import java.util.function.*;
 
 import com.microsoft.azure.servicebus.*;
 
@@ -8,19 +10,40 @@ public final class PartitionSender
 {
 	private final String partitionId;
 	private final String eventHubName;
-	private final MessageSender internalSender;
+	private final MessagingFactory factory;
 	
-	PartitionSender(MessagingFactory factory, String eventHubName, String partitionId) throws EntityNotFoundException, InterruptedException, ExecutionException {
+	private MessageSender internalSender;
+		
+	private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId) {
 		this.partitionId = partitionId;
 		this.eventHubName = eventHubName;
-		this.internalSender = MessageSender.Create(factory, "partitionSender0", 
-								String.format("%s/Partitions/%s", eventHubName, partitionId)).get();
+		this.factory = factory;
+	}
+	
+	/**
+	 * Internal-Only: factory pattern to Create EventHubSender
+	 */
+	static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws EntityNotFoundException {
+		final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
+		return sender.createInternalSender()
+				.thenApplyAsync(new Function<Void, PartitionSender>() {
+					public PartitionSender apply(Void a) {
+						return sender;
+					}
+				});
+	}
+	
+	private CompletableFuture<Void> createInternalSender() throws EntityNotFoundException {
+		return MessageSender.Create(this.factory, UUID.randomUUID().toString(), this.eventHubName)
+				.thenAcceptAsync(new Consumer<MessageSender>() {
+					public void accept(MessageSender a) { PartitionSender.this.internalSender = a;}
+				});
 	}
 
-	public final void send(EventData data) 
-			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException, InterruptedException, ExecutionException
+	public final CompletableFuture<Void> send(EventData data) 
+			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException
 	{
-		this.internalSender.send(data.toAmqpMessage()).get();
+		return this.internalSender.send(data.toAmqpMessage());
 	}
 	
 	public final void send(Iterable<EventData> eventDatas) 

@@ -23,19 +23,18 @@ public class SendRecv {
 		
 		// senders
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		ehClient.send(sendEvent); // basic send - not tied to any partition
+		ehClient.send(sendEvent).get(); // basic send - not tied to any partition
 		
 		String partitionKey = "partitionTheStream";
-		ehClient.send(sendEvent, partitionKey); // all events with same partitionKey lands on Same partition
+		ehClient.send(sendEvent, partitionKey).get(); // all events with same partitionKey lands on Same partition
 		
-		PartitionSender sender = ehClient.createPartitionSender("0"); // Send to a specific partition
-		sender.send(sendEvent); // a non-blocking CompletableFuture variant is available for all APIs
+		PartitionSender sender = ehClient.createPartitionSender("0").get(); // Send to a specific partition
+		sender.send(sendEvent).get();
 		
 		// receiver
 		String partitionId = "0"; // we will provide an API to get PartitionIds in V0.2
-		String startReceivingFromOffset = "637272";
-		PartitionReceiver receiver = ehClient.createReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, startReceivingFromOffset, false);
-		Collection<EventData> receivedEvents = receiver.receive(); // a non-blocking CompletableFuture variant is available
+		PartitionReceiver receiver = ehClient.createReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, PartitionReceiver.StartOfStream, false).get();
+		Collection<EventData> receivedEvents = receiver.receive().get();
 		
 		for(EventData receivedEvent: receivedEvents) {
 			System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));

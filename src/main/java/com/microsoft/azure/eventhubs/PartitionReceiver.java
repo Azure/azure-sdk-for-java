@@ -3,6 +3,7 @@ package com.microsoft.azure.eventhubs;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.*;
 
 import org.apache.qpid.proton.message.Message;
 
@@ -16,39 +17,18 @@ public final class PartitionReceiver
 	private boolean offsetInclusive;
 	private MessageReceiver internalReceiver; 
 	private ReceiveHandler receiveHandler;
-	private MessagingFactory underlyingFactory;
+	private final MessagingFactory underlyingFactory;
+	private final String eventHubName;
+	private final String consumerGroupName;
+	private Long epoch;
+	private boolean isEpochReceiver;
 	
 	static final int DefaultPrefetchCount = 300;
+	static final long NullEpoch = 0;
 	
 	public static final String StartOfStream = "-1";
-	
-	private PartitionReceiver(MessagingFactory factory, final String eventHubName, final String consumerGroupName, final String partitionId)
-	{
-		this.partitionId = partitionId;
-	}
-	
-	PartitionReceiver(MessagingFactory factory, 
-			final String eventHubName, 
-			final String consumerGroupName, 
-			final String partitionId, 
-			final String startingOffset, 
-			final boolean offsetInclusive) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
-		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null);
-	}
-	
-	PartitionReceiver(MessagingFactory factory, 
-			final String eventHubName, 
-			final String consumerGroupName, 
-			final String partitionId, 
-			final String startingOffset, 
-			final boolean offsetInclusive,
-			final ReceiveHandler receiveHandler) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
-		this(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, false, receiveHandler);
-	}
-	
-	PartitionReceiver(MessagingFactory factory, 
+		
+	private PartitionReceiver(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
 			final String partitionId, 
@@ -57,15 +37,43 @@ public final class PartitionReceiver
 			final Long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, InterruptedException, ExecutionException {
-		this(factory, eventHubName, consumerGroupName, partitionId);
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException {
+		this.underlyingFactory = factory;
+		this.eventHubName = eventHubName;
+		this.consumerGroupName = consumerGroupName;
+		this.partitionId = partitionId;
 		this.startingOffset = startingOffset;
 		this.offsetInclusive = offsetInclusive;
-		this.internalReceiver = MessageReceiver.Create(factory, UUID.randomUUID().toString(), 
-				String.format("%s/ConsumerGroups/%s/Partitions/%s", eventHubName, consumerGroupName, partitionId), 
-				startingOffset, offsetInclusive, this.DefaultPrefetchCount, epoch, isEpochReceiver, receiveHandler).get();
+		this.epoch = epoch;
+		this.isEpochReceiver = isEpochReceiver;
 		this.receiveHandler = receiveHandler;
-		this.underlyingFactory = factory;
+	}
+	
+	static CompletableFuture<PartitionReceiver> Create(MessagingFactory factory, 
+			final String eventHubName, 
+			final String consumerGroupName, 
+			final String partitionId, 
+			final String startingOffset, 
+			final boolean offsetInclusive,
+			final long epoch,
+			final boolean isEpochReceiver,
+			final ReceiveHandler receiveHandler) 
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException {
+		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, isEpochReceiver, receiveHandler);
+		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>() {
+			public PartitionReceiver apply(Void a){
+				return receiver;
+			}
+		});
+	}
+	
+	private CompletableFuture<Void> createInternalReceiver() throws EntityNotFoundException {
+		return MessageReceiver.Create(this.underlyingFactory, UUID.randomUUID().toString(), 
+				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
+				this.startingOffset, this.offsetInclusive, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver, this.receiveHandler)
+				.thenAcceptAsync(new Consumer<MessageReceiver>() {
+					public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
+				});
 	}
 	
 	/**
@@ -98,20 +106,24 @@ public final class PartitionReceiver
 		throw new UnsupportedOperationException("TODO:");
 	}
 	
-	public Collection<EventData> receive() 
-			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException, InterruptedException, ExecutionException
+	public CompletableFuture<Collection<EventData>> receive() 
+			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException
 	{
 		return this.receive(this.underlyingFactory.getOperationTimeout());
 	}
 	
-	public Collection<EventData> receive(Duration waittime)
-			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException, InterruptedException, ExecutionException
+	public CompletableFuture<Collection<EventData>> receive(Duration waittime)
+			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException
 	{
 		if (this.receiveHandler != null) {
 			throw new IllegalStateException("Receive and onReceive cannot be performed side-by-side on a single instance of Receiver.");
 		}
 		
-		Collection<Message> amqpMessages = this.internalReceiver.receive().get();
-		return EventDataUtil.toEventDataCollection(amqpMessages);
+		return this.internalReceiver.receive().thenApplyAsync(new Function<Collection<Message>, Collection<EventData>>() {
+			@Override
+			public Collection<EventData> apply(Collection<Message> amqpMessages) {
+				return EventDataUtil.toEventDataCollection(amqpMessages);
+			}			
+		});		
 	}
 }

@@ -15,10 +15,10 @@ public class OnReceiveSample {
 		
 		String partitionId = "0";
 		long epoch = 20000;
-		PartitionReceiver receiver = ehClient.createEpochReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, "-1", false, epoch, new OnReceiveSample.EventPrinter());
+		PartitionReceiver receiver = ehClient.createEpochReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, PartitionReceiver.StartOfStream, false, epoch, new OnReceiveSample.EventPrinter()).get();
 		
 		try {
-			PartitionReceiver receiver2 = ehClient.createEpochReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, "-1", false, epoch - 10, new OnReceiveSample.EventPrinter());
+			PartitionReceiver receiver2 = ehClient.createEpochReceiver(EventHubClient.DefaultConsumerGroupName, partitionId, PartitionReceiver.StartOfStream, false, epoch - 10, new OnReceiveSample.EventPrinter()).get();
 		}
 		catch(ExecutionException exception) {
 			System.out.println("ExpectedException: " + exception.toString());
