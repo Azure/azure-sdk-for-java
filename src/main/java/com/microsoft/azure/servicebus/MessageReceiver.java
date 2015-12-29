@@ -182,8 +182,7 @@ public class MessageReceiver extends ClientEntity {
         		Symbol.valueOf("apache.org:selector-filter:string"),
         		new UnknownDescribedType(Symbol.valueOf("apache.org:selector-filter:string"), 
         				String.format("amqp.annotation.%s >%s '%s'", AmqpConstants.OffsetName, offsetInclusive ? "=" : StringUtil.EMPTY, offset))));
-        // source.setDynamicNodeProperties(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), 122));
-		
+        
 		Session ssn = connection.session();
 		Receiver receiver = ssn.receiver(name);
 		receiver.setSource(source);
@@ -194,8 +193,9 @@ public class MessageReceiver extends ClientEntity {
         receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
         // receiver.setContext(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), 122));
         
-        if (this.isEpochReceiver)
-        	receiver.setAttachProperties(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), this.epoch));
+        if (this.isEpochReceiver) {
+        	receiver.setProperties(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), (Object) this.epoch));
+        }
         
         ssn.open();
         receiver.open();

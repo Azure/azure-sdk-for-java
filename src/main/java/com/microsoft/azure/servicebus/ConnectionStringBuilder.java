@@ -56,8 +56,7 @@ public class ConnectionStringBuilder {
 
 	public ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
 			final String sharedAccessKey) {
-		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout,
-				RetryPolicy.Default);
+		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.Default);
 	}
 
 	/*
