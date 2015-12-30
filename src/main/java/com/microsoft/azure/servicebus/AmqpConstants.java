@@ -4,6 +4,10 @@ import org.apache.qpid.proton.amqp.Symbol;
 
 public final class AmqpConstants {
 
+	private AmqpConstants() { }
+	
+	public static final String Vendor = "com.microsoft";
+	
 	public static final String OffsetName = "x-opt-offset";
 	
 	public static final Symbol PartitionKey = Symbol.getSymbol("x-opt-partition-key");

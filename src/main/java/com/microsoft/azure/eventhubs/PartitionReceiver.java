@@ -37,7 +37,7 @@ public final class PartitionReceiver
 			final Long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException {
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException {
 		this.underlyingFactory = factory;
 		this.eventHubName = eventHubName;
 		this.consumerGroupName = consumerGroupName;
@@ -58,7 +58,7 @@ public final class PartitionReceiver
 			final long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException {
+					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException {
 		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, isEpochReceiver, receiveHandler);
 		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>() {
 			public PartitionReceiver apply(Void a){
@@ -107,13 +107,13 @@ public final class PartitionReceiver
 	}
 	
 	public CompletableFuture<Collection<EventData>> receive() 
-			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException
+			throws ServerBusyException, AuthorizationFailedException
 	{
 		return this.receive(this.underlyingFactory.getOperationTimeout());
 	}
 	
 	public CompletableFuture<Collection<EventData>> receive(Duration waittime)
-			throws ServerBusyException, AuthorizationFailedException, InternalServerErrorException
+			throws ServerBusyException, AuthorizationFailedException
 	{
 		if (this.receiveHandler != null) {
 			throw new IllegalStateException("Receive and onReceive cannot be performed side-by-side on a single instance of Receiver.");

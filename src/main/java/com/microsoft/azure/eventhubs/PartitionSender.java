@@ -41,13 +41,13 @@ public final class PartitionSender
 	}
 
 	public final CompletableFuture<Void> send(EventData data) 
-			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException
+			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException
 	{
 		return this.internalSender.send(data.toAmqpMessage());
 	}
 	
 	public final void send(Iterable<EventData> eventDatas) 
-			throws MessagingCommunicationException, ServerBusyException, InternalServerErrorException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException
+			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadExceededException, EntityNotFoundException
 	{
 		throw new UnsupportedOperationException("TODO: Implement Send Batch");
 	}

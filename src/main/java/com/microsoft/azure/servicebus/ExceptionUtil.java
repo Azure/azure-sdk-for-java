@@ -16,7 +16,13 @@ final class ExceptionUtil {
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
 			return new ReceiverDisconnectedException(errorCondition.getDescription());
-		}		
+		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.UnauthorizedAccess) {
+			return new AuthorizationFailedException(errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == ClientConstants.ServerBusyError) {
+			return new ServerBusyException(errorCondition.getDescription());
+		}
 		
 		// enumerate all ExceptionTypes
 		return null;

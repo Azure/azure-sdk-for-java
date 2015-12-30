@@ -20,14 +20,19 @@ public class SecurityExceptions extends TestBase
 	public void testEventHubClientUnAuthorizedAccess() throws Throwable
 	{
 		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-		ConnectionStringBuilder connectionString = new ConnectionStringBuilder(eventHubInfo.getNamespaceName(), eventHubInfo.getName(), TestBase.SasRuleName, "wrongvalue");
-		
-		try
-		{
-			EventHubClient.createFromConnectionString(connectionString.toString()).get();		
+		try {
+			ConnectionStringBuilder connectionString = new ConnectionStringBuilder(eventHubInfo.getNamespaceName(), eventHubInfo.getName(), TestBase.SasRuleName, "wrongvalue");
+			
+			try
+			{
+				EventHubClient.createFromConnectionString(connectionString.toString()).get();		
+			}
+			catch(ExecutionException exp) {
+				throw exp.getCause();
+			}
 		}
-		catch(ExecutionException exp) {
-			throw exp.getCause();
+		finally {
+			TestBase.checkinTestEventHub(eventHubInfo.getName());
 		}
 	}
 }
