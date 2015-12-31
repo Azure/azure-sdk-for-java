@@ -174,7 +174,7 @@ public class EventData implements AutoCloseable
 		return this.properties;
 	}
 	
-	public void setProperties(Map applicationProperties)
+	public void setProperties(Map<String, String> applicationProperties)
 	{
 		this.properties = applicationProperties;
 	}

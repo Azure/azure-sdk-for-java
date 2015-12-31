@@ -6,13 +6,14 @@ import java.util.*;
 /**
  *  RetryPolicy implementation where the delay between retries will grow in a staggered exponential manner.
  *  RetryPolicy can be set on the client operations using {@link ServiceBusConnectionStringBuilder}.
+ *  RetryIntervals will be computed using a retryFactor which is a function of deltaBackOff (MaximumBackoff - MinimumBackoff) and MaximumRetryCount
  */
 public final class RetryExponential extends RetryPolicy
 {
-	private Duration minimumBackoff;
-	private Duration maximumBackoff;
-	private int maximumRetryCount;
-	private double retryFactor;
+	private final Duration minimumBackoff;
+	private final Duration maximumBackoff;
+	private final int maximumRetryCount;
+	private final double retryFactor;
 	
 	public RetryExponential(Duration minimumBackoff, Duration maximumBackoff, int maximumRetryCount)
 	{
@@ -23,7 +24,7 @@ public final class RetryExponential extends RetryPolicy
 	}
 
 	@Override
-	public boolean isNextRetryAllowed(String clientId, Exception lastException, Duration remainingTime, Duration retryAfter)
+	public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
 	{
 		// TODO: does string inturn'ing effect sync logic ?
 		synchronized (clientId)
@@ -32,32 +33,35 @@ public final class RetryExponential extends RetryPolicy
 		
 			if (currentRetryCount >= this.maximumRetryCount)
 			{
-				return false;
+				return null;
 			}
 			
 			// TODO: Given the current implementation evaluate the need for the extra wait for ServerBusyException
 			if (!RetryPolicy.isRetryableException(lastException))
 			{
-				return false;
+				return null;
 			}
 		
-			long nextRetryInterval = (long) Math.pow(2, (double)this.maximumRetryCount + this.retryFactor);
-			if (remainingTime.getSeconds() < nextRetryInterval) {
-				return false;
+			double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
+			long nextRetryIntervalSeconds = (long) nextRetryInterval ;
+			long nextRetryIntervalNano = (long)((nextRetryInterval - (double)nextRetryIntervalSeconds) * 1000000000);
+			if (remainingTime.getSeconds() < nextRetryInterval + 5)
+			{
+				return null;
 			}
 			
-			retryAfter.plusSeconds(nextRetryInterval);
-			return true;
+			Duration retryAfter = this.minimumBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
+			return retryAfter;
 		}
 	}
 	
 	private double computeRetryFactor()
 	{
-		long deltaBackoff = this.maximumBackoff.getSeconds() - this.minimumBackoff.getSeconds();
+		long deltaBackoff = this.maximumBackoff.minus(this.minimumBackoff).getSeconds();
 		if (deltaBackoff <= 0 || this.maximumRetryCount <= 0) {
 			return 0;
 		}
 		
-		return (Math.log(deltaBackoff / (Math.pow(2, this.maximumRetryCount) - 1))) / (Math.log(2));
+		return (Math.log(deltaBackoff) / Math.log(this.maximumRetryCount));
 	}
 }

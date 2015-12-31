@@ -14,12 +14,20 @@ public abstract class RetryPolicy
 		this.retryCounts = new ConcurrentHashMap<String, Integer>();
 	}
 	
-	void incrementRetryCount(String clientId)
+	public void incrementRetryCount(String clientId)
 	{
 		synchronized (clientId)
 		{
 			Integer retryCount = this.retryCounts.get(clientId);
 			this.retryCounts.put(clientId, retryCount == null ? 1 : retryCount + 1);
+		}
+	}
+	
+	public void resetRetryCount(String clientId)
+	{
+		synchronized (clientId)
+		{
+			this.retryCounts.put(clientId, 0);
 		}
 	}
 	
@@ -56,7 +64,7 @@ public abstract class RetryPolicy
 	}
 	
 	/**
-	 * @param retryAfter "out" parameter. Pass retryAfter with value = 0 - this method will increment the value. Don't new-up this parameter in the implementations of {@link RetryPolicy#isNextRetryAllowed(Duration)}.
+	 * return returns 'null' Duration when not Allowed
 	 */
-	public abstract boolean isNextRetryAllowed(String clientId, Exception lastException, Duration remainingTime, Duration retryAfter);
+	public abstract Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime);
 }

@@ -13,7 +13,7 @@ import com.microsoft.azure.servicebus.*;
 /**
  * Anchor class - all EventHub client operations STARTS here.
  */
-public class EventHubClient 
+public class EventHubClient extends ClientEntity
 {
 	public static final String DefaultConsumerGroupName = "$Default";
 	
@@ -24,6 +24,7 @@ public class EventHubClient
 	
 	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, EntityNotFoundException
 	{
+		super(UUID.randomUUID().toString());
 		this.underlyingFactory = MessagingFactory.createFromConnectionString(connectionString.toString());
 		this.eventHubName = connectionString.getEntityPath();
 	}

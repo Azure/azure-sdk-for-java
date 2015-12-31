@@ -42,6 +42,7 @@ public class MessageSender extends ClientEntity {
 	}
 	
 	private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath) {
+		super(sendLinkName);
 		this.sendPath = senderPath;
 		this.underlyingFactory = factory;
 		this.sendLink = MessageSender.createSendLink(factory.getConnection(), sendLinkName, senderPath);

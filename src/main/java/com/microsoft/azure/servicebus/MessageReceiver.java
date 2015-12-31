@@ -18,8 +18,8 @@ import org.apache.qpid.proton.reactor.Reactor;
  * translates event-driven reactor model into async receive Api
  * Manage reconnect? - store currentConsumedOffset
  */
-public class MessageReceiver extends ClientEntity {
-	
+public class MessageReceiver extends ClientEntity
+{
 	private final int prefetchCount; 
 	private final ConcurrentLinkedQueue<CompletableFuture<Collection<Message>>> pendingReceives;
 	private final MessagingFactory underlyingFactory;
@@ -63,7 +63,9 @@ public class MessageReceiver extends ClientEntity {
 			final int prefetchCount,
 			final Long epoch,
 			final boolean isEpochReceiver,
-			final MessageReceiveHandler receiveHandler){
+			final MessageReceiveHandler receiveHandler)
+	{
+		super(name);
 		this.underlyingFactory = factory;
 		this.prefetchCount = prefetchCount;
 		this.epoch = epoch;
@@ -72,10 +74,15 @@ public class MessageReceiver extends ClientEntity {
 		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset, offsetInclusive);
 		this.linkOpen = new CompletableFuture<MessageReceiver>();
 		
-		Timer.schedule(new Runnable() {
-			public void run() {
-				synchronized(MessageReceiver.this.linkOpen) {
-					if (!MessageReceiver.this.linkOpen.isDone()) {
+		// timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
+		Timer.schedule(new Runnable()
+		{
+			public void run()
+			{
+				synchronized(MessageReceiver.this.linkOpen)
+				{
+					if (!MessageReceiver.this.linkOpen.isDone())
+					{
 						MessageReceiver.this.linkOpen.completeExceptionally(new OperationTimedOutException());
 					}
 				}
@@ -86,17 +93,22 @@ public class MessageReceiver extends ClientEntity {
 		this.receiveHandler = receiveHandler;
 	}
 	
-	public int getPrefetchCount() {
+	public int getPrefetchCount()
+	{
 		return this.prefetchCount;
 	}
 	
 	/*
 	 * if ReceiveHandler is passed to the Constructor - this receive shouldn't be invoked
 	 */
-	public CompletableFuture<Collection<Message>> receive(){
-		if (!this.prefetchedMessages.isEmpty()) {
-			synchronized (this.prefetchedMessages) {
-				if (!this.prefetchedMessages.isEmpty()) {
+	public CompletableFuture<Collection<Message>> receive()
+	{
+		if (!this.prefetchedMessages.isEmpty())
+		{
+			synchronized (this.prefetchedMessages)
+			{
+				if (!this.prefetchedMessages.isEmpty())
+				{
 					Collection<Message> returnMessages = this.prefetchedMessages;
 					this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 					return CompletableFuture.completedFuture(returnMessages);
@@ -109,62 +121,76 @@ public class MessageReceiver extends ClientEntity {
 		return onReceive;
 	}
 	
-	void onOpenComplete(ErrorCondition condition){
-		synchronized (this.linkOpen) {
-			if (!this.linkOpen.isDone()) {
-				if (condition == null) {
+	void onOpenComplete(Exception exception)
+	{
+		synchronized (this.linkOpen)
+		{
+			if (!this.linkOpen.isDone())
+			{
+				if (exception == null)
+				{
 					this.linkOpen.complete(this);
 				}
-				else {
-					this.linkOpen.completeExceptionally(ExceptionUtil.toException(condition));
+				else
+				{
+					this.linkOpen.completeExceptionally(exception);
 				}
 			}
 		}
 	}
 	
 	// intended to be called by proton reactor handler 
-	void onDelivery(Collection<Message> messages) {
-		if (this.receiveHandler != null) {
+	void onDelivery(Collection<Message> messages)
+	{
+		if (this.receiveHandler != null)
+		{
 			this.receiveHandler.onReceiveMessages(messages);
-			
 			return;
 		}
 		
-		synchronized (this.pendingReceives) {
-			if (this.pendingReceives.isEmpty()) {
+		synchronized (this.pendingReceives)
+		{
+			if (this.pendingReceives.isEmpty())
+			{
 				this.prefetchedMessages.addAll(messages);
 			}
-			else {
+			else
+			{
 				this.pendingReceives.poll().complete(messages);
 			}
 		}
 	}
 	
-	// TODO: Map to appropriate exception based on ErrMsg 
-	void onError(ErrorCondition error) {
+	void onError(ErrorCondition error)
+	{		
+		Exception completionException = ExceptionUtil.toException(error);
 		
-		// TODO: apply retryPolicy here - recreate link - "preserve offset"
-		
-		synchronized (this.linkOpen) {
-			if (!this.linkOpen.isDone()) {
-				this.onOpenComplete(error);
+		synchronized (this.linkOpen)
+		{
+			if (!this.linkOpen.isDone())
+			{
+				this.onOpenComplete(completionException);
 				return;
 			}
 		}
 		
-		if (this.pendingReceives != null && !this.pendingReceives.isEmpty()) {
-			
-			synchronized (this.pendingReceives) {
-				for(CompletableFuture<Collection<Message>> future: this.pendingReceives) {
-					future.completeExceptionally(ExceptionUtil.toException(error));
+		if (this.pendingReceives != null && !this.pendingReceives.isEmpty())
+		{
+			synchronized (this.pendingReceives)
+			{
+				for(CompletableFuture<Collection<Message>> future: this.pendingReceives)
+				{
+					future.completeExceptionally(completionException);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void close() {
-		if (this.receiveLink != null && this.receiveLink.getLocalState() == EndpointState.ACTIVE) {
+	public void close()
+	{
+		if (this.receiveLink != null && this.receiveLink.getLocalState() == EndpointState.ACTIVE)
+		{
 			this.receiveLink.close();
 		}
 	}	
@@ -172,15 +198,15 @@ public class MessageReceiver extends ClientEntity {
 	private Receiver createReceiveLink(
 								final Connection connection, 
 								final String name, 
-								final String recvPath, 
+								final String receivePath, 
 								final String offset,
 								final boolean offsetInclusive)
 	{	
 		Source source = new Source();
-        source.setAddress(recvPath);
+        source.setAddress(receivePath);
         source.setFilter(Collections.singletonMap(
-        		Symbol.valueOf("apache.org:selector-filter:string"),
-        		new UnknownDescribedType(Symbol.valueOf("apache.org:selector-filter:string"), 
+        		AmqpConstants.StringFilter,
+        		new UnknownDescribedType(AmqpConstants.StringFilter, 
         				String.format("amqp.annotation.%s >%s '%s'", AmqpConstants.OffsetName, offsetInclusive ? "=" : StringUtil.EMPTY, offset))));
         
 		Session ssn = connection.session();
@@ -191,10 +217,10 @@ public class MessageReceiver extends ClientEntity {
 		// use explicit settlement via dispositions (not pre-settled)
         receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
         receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        // receiver.setContext(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), 122));
         
-        if (this.isEpochReceiver) {
-        	receiver.setProperties(Collections.singletonMap(Symbol.valueOf("com.microsoft:epoch"), (Object) this.epoch));
+        if (this.isEpochReceiver)
+        {
+        	receiver.setProperties(Collections.singletonMap(AmqpConstants.Epoch, (Object) this.epoch));
         }
         
         ssn.open();
