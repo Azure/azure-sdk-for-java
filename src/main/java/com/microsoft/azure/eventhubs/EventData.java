@@ -10,8 +10,8 @@ import org.apache.qpid.proton.message.*;
 import com.microsoft.azure.servicebus.*;
 
 /**
- * The data structure encapsulating the Event being sent to and received from EventHubs.
- * Each EventHubs partition is nothing but a Stream of EventData.
+ * The data structure encapsulating the Event being sent-to and received-from EventHubs.
+ * Each EventHubs partition can be visualized as a Stream of EventData.
  */
 public class EventData implements AutoCloseable {
 	
@@ -31,7 +31,7 @@ public class EventData implements AutoCloseable {
 	}
 	
 	/*
-	 * Internal Constructor - intended to be used only by the @@PartitionReceiver to Create #EventData out of #Message
+	 * Internal Constructor - intended to be used only by the {@link PartitionReceiver} to Create #EventData out of #Message
 	 */
 	@SuppressWarnings("unchecked")
 	EventData(Message amqpMessage) {

@@ -1,25 +1,26 @@
 package com.microsoft.azure.servicebus;
 
-public abstract class ServiceBusException extends Exception {
+public abstract class ServiceBusException extends Exception
+{
+	  private static final long serialVersionUID = -3654294093967132325L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3654294093967132325L;
-
-	  public ServiceBusException() {
+	  public ServiceBusException()
+	  {
 	    super();
 	  }
-
-	  public ServiceBusException(String message) {
+	
+	  public ServiceBusException(String message)
+	  {
 	    super(message);
 	  }
 	
-	  public ServiceBusException(Throwable cause) {
+	  public ServiceBusException(Throwable cause)
+	  {
 	    super(cause);
 	  }
 	
-	  public ServiceBusException(String message, Throwable cause) {
+	  public ServiceBusException(String message, Throwable cause)
+	  {
 	    super(message, cause);
 	  }
 	  

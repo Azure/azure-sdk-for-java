@@ -12,5 +12,6 @@ public final class AmqpErrorCode {
 	
 	// link errors
 	public static final Symbol Stolen = Symbol.getSymbol("amqp:link:stolen");
-	
+	public static final Symbol PayloadSizeExceeded = Symbol.getSymbol("amqp:link:message-size-exceeded");
+
 }

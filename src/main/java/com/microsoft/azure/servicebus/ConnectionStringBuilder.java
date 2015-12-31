@@ -63,7 +63,7 @@ public class ConnectionStringBuilder {
 	 */
 	public ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
 			final String sharedAccessKey) {
-		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.Default);
+		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 
 	/*
@@ -96,7 +96,7 @@ public class ConnectionStringBuilder {
 	}
 	
 	public RetryPolicy getRetryPolicy() {
-		return (this.retryPolicy == null ? RetryPolicy.Default : this.retryPolicy);
+		return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
 	}
 
 	@Override

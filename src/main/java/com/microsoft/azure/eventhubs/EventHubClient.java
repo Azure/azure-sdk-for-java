@@ -35,16 +35,19 @@ public class EventHubClient
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
 		
 		return eventHubClient.createInternalSender()
-				.thenApplyAsync(new Function<Void, EventHubClient>() {
+				.thenApplyAsync(new Function<Void, EventHubClient>()
+				{
 					public EventHubClient apply(Void a) {
 						return eventHubClient;
 					}
 				});
 	}
 	
-	CompletableFuture<Void> createInternalSender() throws EntityNotFoundException {
+	CompletableFuture<Void> createInternalSender() throws EntityNotFoundException
+	{
 		return MessageSender.Create(this.underlyingFactory, UUID.randomUUID().toString(), this.eventHubName)
-				.thenAcceptAsync(new Consumer<MessageSender>() {
+				.thenAcceptAsync(new Consumer<MessageSender>()
+				{
 					public void accept(MessageSender a) { EventHubClient.this.sender = a;}
 				});
 	}
@@ -63,9 +66,10 @@ public class EventHubClient
 	}
 	
 	public final CompletableFuture<Void> send(EventData data) 
-			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadExceededException
+			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadSizeExceededException
 	{
-		if (data == null) {
+		if (data == null)
+		{
 			// TODO: TRACE
 			throw new IllegalArgumentException("EventData cannot be empty.");
 		}
@@ -74,19 +78,21 @@ public class EventHubClient
 	}
 	
 	public final CompletableFuture<Void> send(Iterable<EventData> data) 
-			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadExceededException
+			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadSizeExceededException
 	{
 		throw new UnsupportedOperationException("TODO Implement Send Batch");
 	}
 	
 	public final CompletableFuture<Void> send(EventData data, String partitionKey) 
-			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadExceededException
+			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadSizeExceededException
 	{
-		if (data == null) {
+		if (data == null)
+		{
 			throw new IllegalArgumentException("EventData cannot be null.");
 		}
 		
-		if (partitionKey == null) {
+		if (partitionKey == null)
+		{
 			throw new IllegalArgumentException("partitionKey cannot be null");
 		}
 		
@@ -99,18 +105,20 @@ public class EventHubClient
 	}
 	
 	public final CompletableFuture<Void> send(Iterable<EventData> data, String partitionKey) 
-		throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadExceededException
+		throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadSizeExceededException
 	{
 		throw new UnsupportedOperationException("TODO: Implement Send Batch");
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId) 
-			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException, InterruptedException, ExecutionException {
+			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException, InterruptedException, ExecutionException
+	{
 		return this.createReceiver(consumerGroupName, partitionId, PartitionReceiver.StartOfStream, false);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset) 
-			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException, InterruptedException, ExecutionException {
+			throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException, InterruptedException, ExecutionException
+	{
 		return this.createReceiver(consumerGroupName, partitionId, startingOffset, false);
 	}
 	
@@ -142,13 +150,14 @@ public class EventHubClient
 		return PartitionReceiver.Create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, true, null);
 	}
 	
-	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc, final long epoch) {
+	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc, final long epoch)
+	{
 		// return PartitionReceiver.Create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, isEpochReceiver, receiveHandler)
 		throw new UnsupportedOperationException("TODO: Implement datetime receiver");
 	}
 	
 	/**
-	 * Use Epoch receiver to ensure that there is only *one* Receiver active on the EventHub Partition for this consumer group.
+	 * Use Epoch receiver to ensure that there is only *one* Receiver active per an EventHub Partition per consumer group.
 	 * EventHubs Service will ensure that the Receiver with highest epoch Value owns the Partition. 
 	 * This overload of CreateEpochReceiver is built to support EventProcessorHost pattern. Implement ReceiveHandler to process events.
 	 * @param consumerGroupName consumer group name
@@ -164,7 +173,8 @@ public class EventHubClient
 	 * @throws ReceiverDisconnectedException
 	 */
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch, ReceiveHandler receiveHandler) 
-			throws EntityNotFoundException, ServerBusyException, AuthorizationFailedException, ReceiverDisconnectedException {
+			throws EntityNotFoundException, ServerBusyException, AuthorizationFailedException, ReceiverDisconnectedException
+	{
 		return PartitionReceiver.Create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, true, receiveHandler);
 	}
 	

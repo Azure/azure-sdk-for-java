@@ -4,7 +4,8 @@ public class ServerBusyException extends ServiceBusException
 {
 	private static final long serialVersionUID = -1106827749824999989L;
 	
-	ServerBusyException(String message) {
+	ServerBusyException(String message)
+	{
 		super(message);
 	}
 	

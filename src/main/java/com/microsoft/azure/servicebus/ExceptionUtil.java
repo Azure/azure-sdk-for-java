@@ -23,8 +23,11 @@ final class ExceptionUtil {
 		else if (errorCondition.getCondition() == ClientConstants.ServerBusyError) {
 			return new ServerBusyException(errorCondition.getDescription());
 		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.PayloadSizeExceeded) {
+			return new PayloadSizeExceededException(errorCondition.getDescription());
+		}
 		
-		// enumerate all ExceptionTypes
+		// TODO: enumerate all ExceptionTypes
 		return null;
 	}
 }

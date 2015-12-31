@@ -5,8 +5,8 @@ import java.util.logging.*;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 
-public class SendLinkHandler extends BaseHandler {
-
+public class SendLinkHandler extends BaseHandler
+{
 	private static final Logger TRACE_LOGGER = Logger.getLogger("eventhub.trace");
 	
 	private final String name;
@@ -14,7 +14,8 @@ public class SendLinkHandler extends BaseHandler {
 	private final Object firstFlow;
 	private boolean isFirstFlow;
 	
-	SendLinkHandler(final String name, final MessageSender sender) {
+	SendLinkHandler(final String name, final MessageSender sender)
+	{
 		this.name = name;
 		this.msgSender = sender;
 		this.firstFlow = new Object();
@@ -22,7 +23,8 @@ public class SendLinkHandler extends BaseHandler {
 	}
 
 	@Override
-    public void onUnhandled(Event event) {
+    public void onUnhandled(Event event)
+	{
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
             TRACE_LOGGER.log(Level.FINE, "sendLink.onUnhandled: name[" + event.getLink().getName() + "] : event[" + event + "]");
@@ -30,8 +32,8 @@ public class SendLinkHandler extends BaseHandler {
 	}
 
 	@Override
-    public void onDelivery(Event event) {
-		
+    public void onDelivery(Event event)
+	{		
 		Sender sender = (Sender) event.getLink();
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
@@ -46,10 +48,14 @@ public class SendLinkHandler extends BaseHandler {
 	}
 
 	@Override
-	public void onLinkFlow(Event event){
-		if (this.isFirstFlow) {
-			synchronized (this.firstFlow) {
-				if (this.isFirstFlow) {
+	public void onLinkFlow(Event event)
+	{
+		if (this.isFirstFlow)
+		{
+			synchronized (this.firstFlow)
+			{
+				if (this.isFirstFlow)
+				{
 					this.msgSender.onOpenComplete(null);
 					this.isFirstFlow = false;
 				}
@@ -64,11 +70,14 @@ public class SendLinkHandler extends BaseHandler {
 	}
 	
 	@Override
-    public void onLinkRemoteClose(Event event) {
+    public void onLinkRemoteClose(Event event)
+	{
 		Link link = event.getLink();
-        if (link instanceof Sender) {
+        if (link instanceof Sender)
+        {
         	ErrorCondition condition = link.getRemoteCondition();
-    		if (condition != null) {
+    		if (condition != null)
+    		{
     			if(TRACE_LOGGER.isLoggable(Level.SEVERE))
     	        {
     				TRACE_LOGGER.log(Level.SEVERE, "sendLink.onLinkRemoteClose: name[" + link.getName() + "] : ErrorCondition[" + condition.getDescription() + "]");
