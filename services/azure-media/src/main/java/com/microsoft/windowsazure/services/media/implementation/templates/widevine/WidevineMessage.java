@@ -5,24 +5,54 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class WidevineMessage {
-	/**
-	 * Controls which content keys should be included in a license. 
-     * Only one of allowed_track_types and content_key_specs can be specified.
+    /**
+     * Controls which content keys should be included in a license. Only one of
+     * allowed_track_types and content_key_specs can be specified.
      */
-	@JsonProperty
-    public AllowedTrackTypes allowed_track_types;
+    @JsonProperty("allowed_track_types")
+    private AllowedTrackTypes allowedTrackTypes;
 
     /**
-     * A finer grained control on what content keys to return. 
-     * Only one of allowed_track_types and content_key_specs can be specified.
+     * A finer grained control on what content keys to return. Only one of
+     * allowed_track_types and content_key_specs can be specified.
      */
-	@JsonProperty
-    public ContentKeySpecs[] content_key_specs;
+    @JsonProperty("content_key_specs")
+    private ContentKeySpecs[] contentKeySpecs;
 
-	/**
-     * Policy settings for this license. In the event this asset has 
-     * a pre-defined policy, these specified values will be used.
+    /**
+     * Policy settings for this license. In the event this asset has a
+     * pre-defined policy, these specified values will be used.
      */
-	@JsonProperty
-    public Object policy_overrides;
+    @JsonProperty("policy_overrides")
+    private Object policyOverrides;
+
+    @JsonProperty("allowed_track_types")
+    public AllowedTrackTypes getAllowedTrackTypes() {
+        return allowedTrackTypes;
+    }
+
+    @JsonProperty("allowed_track_types")
+    public void setAllowedTrackTypes(AllowedTrackTypes allowedTrackTypes) {
+        this.allowedTrackTypes = allowedTrackTypes;
+    }
+
+    @JsonProperty("content_key_specs")
+    public ContentKeySpecs[] getContentKeySpecs() {
+        return contentKeySpecs;
+    }
+
+    @JsonProperty("content_key_specs")
+    public void setContentKeySpecs(ContentKeySpecs[] contentKeySpecs) {
+        this.contentKeySpecs = contentKeySpecs;
+    }
+
+    @JsonProperty("policy_overrides")
+    public Object getPolicyOverrides() {
+        return policyOverrides;
+    }
+
+    @JsonProperty("policy_overrides")
+    public void setPolicyOverrides(Object policyOverrides) {
+        this.policyOverrides = policyOverrides;
+    }
 }

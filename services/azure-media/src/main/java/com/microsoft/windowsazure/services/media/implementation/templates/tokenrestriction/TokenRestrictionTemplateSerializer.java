@@ -39,9 +39,9 @@ public final class TokenRestrictionTemplateSerializer {
     }
 
     public static String serialize(TokenRestrictionTemplate template) throws JAXBException {
-    	
-    	validateTokenRestrictionTemplate(template);
-    	
+
+        validateTokenRestrictionTemplate(template);
+
         StringWriter writer = new StringWriter();
         JAXBContext context = JAXBContext.newInstance(TokenRestrictionTemplate.class);
         Marshaller m = context.createMarshaller();
@@ -49,7 +49,9 @@ public final class TokenRestrictionTemplateSerializer {
         m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapper() {
             @Override
             public String[] getPreDeclaredNamespaceUris() {
-                return new String[] { XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI };
+                return new String[] {
+                        XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI
+                };
             }
 
             @Override
@@ -65,7 +67,7 @@ public final class TokenRestrictionTemplateSerializer {
     }
 
     private static void validateTokenRestrictionTemplate(TokenRestrictionTemplate template) {
-    	if (template.getPrimaryVerificationKey() == null && template.getOpenIdConnectDiscoveryDocument() == null) {
+        if (template.getPrimaryVerificationKey() == null && template.getOpenIdConnectDiscoveryDocument() == null) {
             throw new IllegalArgumentException(
                     ErrorMessages.PRIMARY_VERIFICATIONKEY_AND_OPENIDCONNECTDISCOVERYDOCUMENT_ARE_NULL);
         }
@@ -86,10 +88,10 @@ public final class TokenRestrictionTemplateSerializer {
             if (!openIdDiscoveryUrlValid) {
                 throw new IllegalArgumentException(ErrorMessages.OPENIDDISCOVERYURI_STRING_IS_NOT_ABSOLUTE_URI);
             }
-        }		
-	}
+        }
+    }
 
-	public static TokenRestrictionTemplate deserialize(String xml) throws JAXBException {
+    public static TokenRestrictionTemplate deserialize(String xml) throws JAXBException {
         try {
             return deserialize(xml, null);
         } catch (SAXException e) {
@@ -108,7 +110,7 @@ public final class TokenRestrictionTemplateSerializer {
             u.setSchema(schema);
         }
         TokenRestrictionTemplate template = (TokenRestrictionTemplate) u.unmarshal(new StringReader(xml));
-    	validateTokenRestrictionTemplate(template);
+        validateTokenRestrictionTemplate(template);
         return template;
     }
 
