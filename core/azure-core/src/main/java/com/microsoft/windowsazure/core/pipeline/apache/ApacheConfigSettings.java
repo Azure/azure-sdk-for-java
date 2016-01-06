@@ -100,13 +100,11 @@ public class ApacheConfigSettings {
             httpClientBuilder.addInterceptorFirst(new HttpHeaderRemovalFilter());
         }
         
-        if (properties.containsKey("AuthFilters"))
+        if (properties.containsKey("AuthFilter"))
         {
             @SuppressWarnings("unchecked")
-            ArrayList<ServiceRequestFilter> filters = (ArrayList<ServiceRequestFilter>) properties.get("AuthFilters");
-            for (ServiceRequestFilter filter : filters) {
-                httpClientBuilder.addInterceptorFirst(new FilterInterceptor(filter));
-            }
+            ServiceRequestFilter filter = (ServiceRequestFilter) properties.get("AuthFilter");
+            httpClientBuilder.addInterceptorFirst(new FilterInterceptor(filter));
         }
 
         return httpClientBuilder;

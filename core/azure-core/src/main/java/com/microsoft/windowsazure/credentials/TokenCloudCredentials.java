@@ -116,16 +116,7 @@ public class TokenCloudCredentials extends SubscriptionCloudCredentials {
     @Override
     @SuppressWarnings("unchecked")
     public <T> void applyConfig(String profile, Map<String, Object> properties) {
-    	ArrayList<AdalAuthFilter> filters;
-    	if (!properties.containsKey("AuthFilters"))
-    	{
-    		filters = new ArrayList<AdalAuthFilter>();
-    		properties.put("AuthFilters", filters);
-    	} else {
-    		filters = (ArrayList<AdalAuthFilter>)properties.get("AuthFilters");
-    	}
-    	
-    	filters.add(new AdalAuthFilter(this.token));
+        properties.put("AuthFilter", new AdalAuthFilter(this.token));
     }
 
 }

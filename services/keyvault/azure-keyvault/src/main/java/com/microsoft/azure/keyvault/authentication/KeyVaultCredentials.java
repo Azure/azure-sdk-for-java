@@ -30,6 +30,7 @@ import org.apache.http.Header;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.credentials.CloudCredentials;
+import org.apache.http.auth.AUTH;
 
 /**
  * An implementation of {@link CloudCredentials} that supports automatic bearer
@@ -38,7 +39,7 @@ import com.microsoft.windowsazure.credentials.CloudCredentials;
  */
 public abstract class KeyVaultCredentials extends CloudCredentials implements BearerCredentialsSupport {
 
-    private static final String AUTH_FILTERS_KEY = "AuthFilters";
+    private static final String AUTH_FILTERS_KEY = "AuthFilter";
 
     private final HashMap<String, Map<String, String>> cachedChallenges = new HashMap<String, Map<String, String>>();
 
@@ -48,17 +49,7 @@ public abstract class KeyVaultCredentials extends CloudCredentials implements Be
 
         // Modifies properties to add our authenticating filter.
 
-        // First get the existing list of filters...
-        ArrayList<ServiceRequestFilter> filters;
-        if (!properties.containsKey(AUTH_FILTERS_KEY)) {
-            filters = new ArrayList<ServiceRequestFilter>();
-            properties.put(AUTH_FILTERS_KEY, filters);
-        } else {
-            filters = (ArrayList<ServiceRequestFilter>) properties.get(AUTH_FILTERS_KEY);
-        }
-
-        // ...then we add our filter.
-        filters.add(new ServiceRequestFilter() {
+        properties.put(AUTH_FILTERS_KEY, new ServiceRequestFilter() {
 
             @Override
             public void filter(ServiceRequestContext request) {
