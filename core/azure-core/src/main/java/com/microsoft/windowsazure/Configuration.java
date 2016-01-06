@@ -56,11 +56,6 @@ public class Configuration {
      * of the proxy to use
      */
     public static final String PROPERTY_HTTP_PROXY_PORT = "http.proxyPort";
-    
-    /**
-     * The configuration instance.
-     */
-    private static Configuration instance;
 
     /**
      * The configuration properties.
@@ -85,21 +80,14 @@ public class Configuration {
     }
 
     public static Configuration getInstance() {
-        if (instance == null) {
-            try {
-                instance = Configuration.load();
-            } catch (IOException e) {
-                log.error(
-                    "Unable to load META-INF/com.microsoft.windowsazure.properties",
-                    e);
-                instance = new Configuration();
-            }
+        try {
+            return Configuration.load();
+        } catch (IOException e) {
+            log.error(
+                "Unable to load META-INF/com.microsoft.windowsazure.properties",
+                e);
+            return new Configuration();
         }
-        return instance;
-    }
-
-    public static void setInstance(final Configuration configuration) {
-        Configuration.instance = configuration;
     }
 
     public static Configuration load() throws IOException {
