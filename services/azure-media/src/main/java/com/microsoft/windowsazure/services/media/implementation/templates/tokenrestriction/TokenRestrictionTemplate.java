@@ -10,47 +10,49 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement(name = "TokenRestrictionTemplate")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TokenRestrictionTemplate {
-    
+
     @XmlElementWrapper(name = "AlternateVerificationKeys")
     @XmlElement(name = "TokenVerificationKey")
     private List<TokenVerificationKey> alternateVerificationKeys;
-    
+
     @XmlElement(name = "Audience", required = true)
     private URI audience;
-    
+
     @XmlElement(name = "Issuer", required = true)
     private URI issuer;
-    
-    @XmlElement(name = "PrimaryVerificationKey")
+
+    @XmlElement(name = "PrimaryVerificationKey", nillable = true)
     private TokenVerificationKey primaryVerificationKey;
-    
+
     @XmlElementWrapper(name = "RequiredClaims")
     @XmlElement(name = "TokenClaim")
     private List<TokenClaim> requiredClaims;
-    
+
     @XmlElement(name = "TokenType")
     private TokenType tokenType;
-    
+
+    @XmlElement(name = "OpenIdConnectDiscoveryDocument")
+    private OpenIdConnectDiscoveryDocument openIdConnectDiscoveryDocument;
+
     @SuppressWarnings("unused")
     private TokenRestrictionTemplate() {
         this.setTokenType(TokenType.SWT);
         initCollections();
     }
-    
+
     public TokenRestrictionTemplate(TokenType tokenType) {
         this.setTokenType(tokenType);
         initCollections();
     }
-    
+
     private void initCollections() {
         setRequiredClaims(new ArrayList<TokenClaim>());
         setAlternateVerificationKeys(new ArrayList<TokenVerificationKey>());
     }
-    
+
     /**
      * @return the audience
      */
@@ -59,7 +61,8 @@ public class TokenRestrictionTemplate {
     }
 
     /**
-     * @param audience the audience to set
+     * @param audience
+     *            the audience to set
      * @return this
      */
     public TokenRestrictionTemplate setAudience(URI audience) {
@@ -75,7 +78,8 @@ public class TokenRestrictionTemplate {
     }
 
     /**
-     * @param issuer the issuer to set
+     * @param issuer
+     *            the issuer to set
      * @return this
      */
     public TokenRestrictionTemplate setIssuer(URI issuer) {
@@ -91,7 +95,8 @@ public class TokenRestrictionTemplate {
     }
 
     /**
-     * @param tokenType the tokenType to set
+     * @param tokenType
+     *            the tokenType to set
      * @return this
      */
     public TokenRestrictionTemplate setTokenType(TokenType tokenType) {
@@ -107,7 +112,8 @@ public class TokenRestrictionTemplate {
     }
 
     /**
-     * @param primaryVerificationKey the primaryVerificationKey to set
+     * @param primaryVerificationKey
+     *            the primaryVerificationKey to set
      * @return this
      */
     public TokenRestrictionTemplate setPrimaryVerificationKey(TokenVerificationKey primaryVerificationKey) {
@@ -123,7 +129,8 @@ public class TokenRestrictionTemplate {
     }
 
     /**
-     * @param requiredClaims the requiredClaims to set
+     * @param requiredClaims
+     *            the requiredClaims to set
      * @return this
      */
     public TokenRestrictionTemplate setRequiredClaims(List<TokenClaim> requiredClaims) {
@@ -139,11 +146,31 @@ public class TokenRestrictionTemplate {
     }
 
     /**
-     * @param alternateVerificationKeys the alternateVerificationKeys to set
+     * @param alternateVerificationKeys
+     *            the alternateVerificationKeys to set
      * @return this
      */
     public TokenRestrictionTemplate setAlternateVerificationKeys(List<TokenVerificationKey> alternateVerificationKeys) {
         this.alternateVerificationKeys = alternateVerificationKeys;
         return this;
     }
+
+    /**
+     * @return the alternateVerificationKeys
+     */
+    public OpenIdConnectDiscoveryDocument getOpenIdConnectDiscoveryDocument() {
+        return openIdConnectDiscoveryDocument;
+    }
+
+    /**
+     * @param alternateVerificationKeys
+     *            the alternateVerificationKeys to set
+     * @return this
+     */
+    public TokenRestrictionTemplate setOpenIdConnectDiscoveryDocument(
+            OpenIdConnectDiscoveryDocument openIdConnectDiscoveryDocument) {
+        this.openIdConnectDiscoveryDocument = openIdConnectDiscoveryDocument;
+        return this;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.microsoft.windowsazure.services.media.implementation.templates.token
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -230,6 +231,91 @@ public class TokenRestrictionTemplateSerializerTests {
         } catch(IllegalArgumentException e) {
             // Assert
             assertTrue(e.getMessage().contains("keyIdForContentKeyIdentifierClaim"));
+        }
+    }
+    
+    @Test
+    public void OpenIdDocumentAsVerificationKeyRoundTrip() throws JAXBException, URISyntaxException
+    {
+        String openConnectId = "https://openconnectIddiscoveryUri";
+        String expectedElement =
+            "<OpenIdDiscoveryUri>https://openconnectIddiscoveryUri</OpenIdDiscoveryUri>";
+
+        TokenRestrictionTemplate template = new TokenRestrictionTemplate(TokenType.JWT);
+        template.setAudience(new URI(_sampleAudience));
+        template.setIssuer(new URI(_sampleIssuer));
+        OpenIdConnectDiscoveryDocument openId = new OpenIdConnectDiscoveryDocument();
+        openId.setOpenIdDiscoveryUri(openConnectId);
+        template.setOpenIdConnectDiscoveryDocument(openId);
+        String templateAsString = TokenRestrictionTemplateSerializer.serialize(template);
+        assertTrue(templateAsString.contains("<PrimaryVerificationKey i:nil=\"true\"/>"));
+        assertTrue(templateAsString.contains(expectedElement));
+        TokenRestrictionTemplate output = TokenRestrictionTemplateSerializer.deserialize(templateAsString);
+        assertNotNull(output);
+        assertNotNull(output.getOpenIdConnectDiscoveryDocument());
+        assertNull(output.getPrimaryVerificationKey());
+        assertTrue(output.getAlternateVerificationKeys().isEmpty());
+        assertEquals(output.getOpenIdConnectDiscoveryDocument().getOpenIdDiscoveryUri(), openConnectId);
+
+    }
+    
+    @Test
+    public void TokenRestrictionTemplateSerializeNotPrimaryKeyAndNoOpenConnectIdDocument() throws URISyntaxException
+    {
+        TokenRestrictionTemplate template = new TokenRestrictionTemplate(TokenType.JWT);
+        template.setAudience(new URI(_sampleAudience));
+        template.setIssuer(new URI(_sampleIssuer));
+        try {
+            TokenRestrictionTemplateSerializer.serialize(template);
+            fail();
+        }
+        catch (Exception ex) {
+            assertEquals("Both PrimaryVerificationKey and OpenIdConnectDiscoveryDocument are null.", ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void InputMissingPrimaryKeyShouldNotThrow()
+    {
+        String tokenTemplate = "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\"><AlternateVerificationKeys><TokenVerificationKey i:type=\"SymmetricVerificationKey\"><KeyValue>GG07fDPZ+HMD2vcoknMqYjEJMb7LSq8zUmdCYMvRCevnQK//ilbhODO/FydMrHiwZGmI6XywvOOU7SSzRPlI3Q==</KeyValue></TokenVerificationKey></AlternateVerificationKeys><Audience>http://sampleaudience/</Audience><Issuer>http://sampleissuerurl/</Issuer><RequiredClaims><TokenClaim><ClaimType>urn:microsoft:azure:mediaservices:contentkeyidentifier</ClaimType><ClaimValue i:nil=\"true\" /></TokenClaim><TokenClaim><ClaimType>urn:myservice:claims:rental</ClaimType><ClaimValue>true</ClaimValue></TokenClaim></RequiredClaims></TokenRestrictionTemplate>";
+        try {
+			TokenRestrictionTemplateSerializer.deserialize(tokenTemplate);
+			fail();
+		} catch (Exception ex) {
+            assertEquals("Both PrimaryVerificationKey and OpenIdConnectDiscoveryDocument are null.", ex.getMessage());
+		}
+    }
+    
+    @Test	
+    public void TokenRestrictionTemplateDeserializeNotAbsoluteDiscoveryUri()
+    {
+        String body =
+            "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\" ><AlternateVerificationKeys /><Audience>http://sampleissuerurl/</Audience><Issuer>http://sampleaudience/</Issuer><OpenIdConnectDiscoveryDocument ><OpenIdDiscoveryUri >RelativeUri</OpenIdDiscoveryUri></OpenIdConnectDiscoveryDocument></TokenRestrictionTemplate>";
+
+        try
+        {
+            TokenRestrictionTemplateSerializer.deserialize(body);
+            fail();
+        }
+        catch (Exception ex)
+        {
+        	assertEquals("String representation of OpenIdConnectDiscoveryDocument.OpenIdDiscoveryUri is not valid absolute Uri.", ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void TokenRestrictionTemplateDeserializeNilOpenConnectIdDocumentUriNoPrimaryKey()
+    {
+        String body =
+            "<TokenRestrictionTemplate xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.microsoft.com/Azure/MediaServices/KeyDelivery/TokenRestrictionTemplate/v1\" ><AlternateVerificationKeys /><Audience>http://sampleissuerurl/</Audience><Issuer>http://sampleaudience/</Issuer><OpenIdConnectDiscoveryDocument ><OpenIdDiscoveryUri i:nil=\"true\"></OpenIdDiscoveryUri></OpenIdConnectDiscoveryDocument></TokenRestrictionTemplate>";
+        try
+        {
+            TokenRestrictionTemplateSerializer.deserialize(body);
+            fail();
+        }
+        catch (Exception ex)
+        {
+        	assertEquals("OpenIdConnectDiscoveryDocument.OpenIdDiscoveryUri string value is null or empty.", ex.getMessage());
         }
     }
 }

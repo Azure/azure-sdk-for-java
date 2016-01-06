@@ -35,9 +35,10 @@ public enum AssetDeliveryPolicyConfigurationKey {
     /** The PlayReady Custom Attributes to add to the PlayReady Content Header. */
     PlayReadyCustomAttributes(5),
     /** The initialization vector to use for envelope encryption. */
-    EnvelopeEncryptionIV(6);
-    
-    
+    EnvelopeEncryptionIV(6),
+    /** Widevine DRM Acquisition Url to use for common encryption. */
+    WidevineLicenseAcquisitionUrl(7);
+
 
     /** The AssetDeliveryPolicyType code. */
     private int assetDeliveryPolicyConfigurationKey;
@@ -84,6 +85,8 @@ public enum AssetDeliveryPolicyConfigurationKey {
             return AssetDeliveryPolicyConfigurationKey.PlayReadyCustomAttributes;
         case 6:
             return AssetDeliveryPolicyConfigurationKey.EnvelopeEncryptionIV;
+        case 7:
+            return AssetDeliveryPolicyConfigurationKey.WidevineLicenseAcquisitionUrl;
         default:
             throw new InvalidParameterException("option");
         }
