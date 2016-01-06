@@ -95,8 +95,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
                 });
 
         // applied as default configuration
-        Configuration.setInstance(config);
-        service = ServiceBusService.create();
+        service = ServiceBusService.create(config);
     }
 
     @Test
