@@ -22,16 +22,17 @@ import org.apache.qpid.proton.message.Message;
  * ServiceBus <-> ProtonReactor interaction 
  * handles all recvLink - reactor events
  */
-public final class ReceiveLinkHandler extends BaseHandler {
-
-	private static final Logger TRACE_LOGGER = Logger.getLogger("eventhub.trace");
+public final class ReceiveLinkHandler extends BaseHandler
+{
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
 	
 	private final String name;
 	private final MessageReceiver msgReceiver;
 	private final Object firstFlow;
 	private boolean isFirstFlow;
 	
-	ReceiveLinkHandler(final String name, final MessageReceiver receiver) {
+	ReceiveLinkHandler(final String name, final MessageReceiver receiver)
+	{
 		this.name = name;
 		this.msgReceiver = receiver;
 		this.firstFlow = new Object();
@@ -48,9 +49,11 @@ public final class ReceiveLinkHandler extends BaseHandler {
     }	
 	
 	@Override
-    public void onLinkLocalOpen(Event evt) {
+    public void onLinkLocalOpen(Event evt)
+	{
         Link link = evt.getLink();
-        if (link instanceof Receiver) {
+        if (link instanceof Receiver)
+        {
             Receiver receiver = (Receiver) link;
             
             if(TRACE_LOGGER.isLoggable(Level.FINE))
@@ -59,21 +62,25 @@ public final class ReceiveLinkHandler extends BaseHandler {
             			String.format("LinkHandler(name: %s) initial credit: %s", this.name, receiver.getCredit()));
             }
             
-            if (receiver.getCredit() < this.msgReceiver.getPrefetchCount()) {
+            if (receiver.getCredit() < this.msgReceiver.getPrefetchCount())
+            {
                 receiver.flow(this.msgReceiver.getPrefetchCount());
             }
         }
     }
 	
 	@Override
-    public void onLinkRemoteClose(Event event) {
+    public void onLinkRemoteClose(Event event)
+	{
 		Link link = event.getLink();
-        if (link instanceof Receiver) {
+        if (link instanceof Receiver)
+        {
         	ErrorCondition condition = link.getRemoteCondition();
-    		if (condition != null) {
-    			if(TRACE_LOGGER.isLoggable(Level.SEVERE))
+        	if (condition != null)
+    		{
+    			if(TRACE_LOGGER.isLoggable(Level.WARNING))
     	        {
-    				TRACE_LOGGER.log(Level.SEVERE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+    				TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
     	        }
             } 
     		
@@ -81,52 +88,74 @@ public final class ReceiveLinkHandler extends BaseHandler {
         }
 	}
 	
+	
 	@Override
-    public void onDelivery(Event event) {
-		
-        Receiver recv = (Receiver)event.getLink();
-        
-        if (this.isFirstFlow) {
-			synchronized (this.firstFlow) {
-				if (this.isFirstFlow) {
+	public void onLinkRemoteDetach(Event event)
+	{
+		Link link = event.getLink();
+        if (link instanceof Receiver)
+        {
+        	ErrorCondition condition = link.getRemoteCondition();
+        	if (condition != null)
+        	{
+        		if (TRACE_LOGGER.isLoggable(Level.WARNING))
+        		TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteDetach: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+            }
+        	
+        	this.msgReceiver.onError(condition);
+            link.close();
+        }
+	}
+	
+	@Override
+    public void onDelivery(Event event)
+	{
+		if (this.isFirstFlow)
+        {
+			synchronized (this.firstFlow)
+			{
+				if (this.isFirstFlow)
+				{
 					this.msgReceiver.onOpenComplete(null);
 					this.isFirstFlow = false;
 				}
 			}
 		}
         
-        Delivery delivery = recv.current();
+        Delivery delivery = event.getDelivery();
+        Receiver receiveLink = (Receiver) delivery.getLink();
         LinkedList<Message> messages = new LinkedList<Message>();
-        while (delivery != null && delivery.isReadable() && !delivery.isPartial()) {
-        	
+        
+        while (delivery != null && delivery.isReadable() && !delivery.isPartial())
+        {
         	int size = delivery.pending();
             byte[] buffer = new byte[size];
-            int read = recv.recv(buffer, 0, buffer.length);
+            int read = receiveLink.recv(buffer, 0, buffer.length);
             
             Message msg = Proton.message();
             msg.decode(buffer, 0, read);
             
             messages.add(msg);
-                       
-            if (!recv.advance()){
-            	break;
+            
+            if (receiveLink.advance())
+            {
+            	delivery = receiveLink.current();
             }
-            else {            	 
-                delivery = recv.current();
+            else
+            {    
+            	break;
             }
         }        
         
-        this.msgReceiver.onDelivery(messages);
+        if (messages != null && messages.size() > 0)
+        {
+        	this.msgReceiver.onDelivery(messages);
+        }
         
         if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
         	TRACE_LOGGER.log(Level.FINE,
-        			String.format("recvLink.onDelivery (name: %s) credit: %s", this.name, recv.getCredit()));
-        }
-        
-        int flowCount = this.msgReceiver.getPrefetchCount() - recv.getCredit();
-        if (flowCount > 0) {
-        	recv.flow(flowCount);
+        			String.format("recvLink.onDelivery (name: %s) credit: %s", this.name, receiveLink.getCredit()));
         }
     }
 }

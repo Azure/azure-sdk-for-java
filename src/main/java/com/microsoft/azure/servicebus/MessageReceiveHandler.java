@@ -7,7 +7,8 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.eventhubs.EventData;
 
-public abstract class MessageReceiveHandler {
+public abstract class MessageReceiveHandler
+{
 	
 	public abstract void onReceiveMessages(Collection<Message> messages);
 	

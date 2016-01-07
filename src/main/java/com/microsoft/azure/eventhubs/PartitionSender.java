@@ -6,6 +6,7 @@ import java.util.function.*;
 
 import com.microsoft.azure.servicebus.*;
 
+// TODO: Implement Timeout on Send operation
 public final class PartitionSender
 {
 	private final String partitionId;

@@ -78,9 +78,9 @@ public class SendLinkHandler extends BaseHandler
         	ErrorCondition condition = link.getRemoteCondition();
     		if (condition != null)
     		{
-    			if(TRACE_LOGGER.isLoggable(Level.SEVERE))
+    			if(TRACE_LOGGER.isLoggable(Level.WARNING))
     	        {
-    				TRACE_LOGGER.log(Level.SEVERE, "sendLink.onLinkRemoteClose: name[" + link.getName() + "] : ErrorCondition[" + condition.getDescription() + "]");
+    				TRACE_LOGGER.log(Level.WARNING, "sendLink.onLinkRemoteClose: name[" + link.getName() + "] : ErrorCondition[" + condition.getDescription() + "]");
     	        }
             } 
     		

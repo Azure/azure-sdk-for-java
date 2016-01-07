@@ -14,8 +14,8 @@ public abstract class TestBase
 	public final static String SasRuleName = "RootManageSharedAccessKey";
 		
 	public static TestEventHubInfo checkoutTestEventHub() {
-		HashMap sasRule = new HashMap<String, String>();
-		sasRule.put(TestBase.SasRuleName, "-----SasKey------");
+		HashMap<String, String> sasRule = new HashMap<String, String>();
+		sasRule.put(TestBase.SasRuleName, "----SasKey-----");
 		return new TestEventHubInfo("gojavago", "firstehub-ns", null, sasRule);
 	}
 	

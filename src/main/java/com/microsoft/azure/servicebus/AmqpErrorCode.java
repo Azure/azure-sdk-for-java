@@ -9,6 +9,7 @@ public final class AmqpErrorCode {
 	public static final Symbol ResourceLimitExceeded = Symbol.getSymbol("amqp:resource-limit-exceeded");
 	public static final Symbol NotAllowed = Symbol.getSymbol("amqp:not-allowed");
 	public static final Symbol InternalError = Symbol.getSymbol("amqp:internal-error");
+	public static final Symbol IllegalState = Symbol.getSymbol("amqp:illegal-state");
 	
 	// link errors
 	public static final Symbol Stolen = Symbol.getSymbol("amqp:link:stolen");

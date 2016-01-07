@@ -1,8 +1,7 @@
 package com.microsoft.azure.servicebus;
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.*;
+import java.net.*;
 import java.time.*;
 import java.util.*;
 import java.util.regex.*;
@@ -10,8 +9,20 @@ import java.util.regex.*;
 import org.apache.qpid.proton.engine.Endpoint;
 import org.apache.qpid.proton.engine.impl.StringUtils;
 
-public class ConnectionStringBuilder {
-
+/**
+ * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
+ * It can also be used to perform basic validation on an existing connection string.
+ *  <p> Illustration:
+ *  <pre>
+ *  	ConnectionStringBuilder connStr = new ConnectionStringBuilder(
+ *  		"namespaceName", 
+ *  		"ServiceBusEntityName", // eventHubName or QueueName or TopicName 
+ *  		"sayKeyName", 
+ *  		"SasKey");
+ *  </pre>
+ */
+public class ConnectionStringBuilder
+{
 	final static String endpointFormat = "amqps://%s.servicebus.windows.net";
 	
 	final static String EndpointConfigName = "Endpoint";
@@ -37,11 +48,14 @@ public class ConnectionStringBuilder {
 
 	// TODO: upgrade to public after implementing retryPolicy
 	private ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
-			final String sharedAccessKey, final Duration operationTimeout, final RetryPolicy retryPolicy) {
-		
-		try {
+			final String sharedAccessKey, final Duration operationTimeout, final RetryPolicy retryPolicy)
+	{
+		try
+		{
 			this.endpoint = new URI(String.format(Locale.US, endpointFormat, namespaceName));
-		} catch(URISyntaxException exception) {
+		} 
+		catch(URISyntaxException exception)
+		{
 			throw new IllegalConnectionStringFormatException(
 					String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
 					exception);
@@ -62,64 +76,81 @@ public class ConnectionStringBuilder {
 	 * @param sharedAccessKey Shared Access Key
 	 */
 	public ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
-			final String sharedAccessKey) {
+			final String sharedAccessKey)
+	{
 		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 
-	/*
+	/**
 	 * ConnectionString format:
-	 * Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * @throws IllegalConnectionStringFormatException when the format of the ConnectionString is not valid
 	 */
-	public ConnectionStringBuilder(String connectionString) {
+	public ConnectionStringBuilder(String connectionString)
+	{
 		this.parseConnectionString(connectionString);
 		this.connectionString = connectionString;
 	}
 	
-	URI getEndpoint() {
+	URI getEndpoint()
+	{
 		return this.endpoint;
 	}
 
-	String getSasKey() {
+	String getSasKey()
+	{
 		return this.sharedAccessKey;
 	}
 
-	String getSasKeyName() {
+	public String getSasKeyName()
+	{
 		return this.sharedAccessKeyName;
 	}
 	
-	public String getEntityPath() {
+	public String getEntityPath()
+	{
 		return this.entityPath;
 	}
 	
-	public Duration getOperationTimeout() {
+	/**
+	 * OperationTimeout is applied in erroneous situations to notify the caller about the relevant {@link ServiceBusException}
+	 */
+	public Duration getOperationTimeout()
+	{
 		return (this.operationTimeout == null ? MessagingFactory.DefaultOperationTimeout : this.operationTimeout);
 	}
 	
-	public RetryPolicy getRetryPolicy() {
+	public RetryPolicy getRetryPolicy()
+	{
 		return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
 	}
 
 	@Override
-	public String toString() {
-
-		if (StringUtil.isNullOrWhiteSpace(this.connectionString)) {
+	public String toString()
+	{
+		if (StringUtil.isNullOrWhiteSpace(this.connectionString))
+		{
 			StringBuilder connectionStringBuilder = new StringBuilder();
-			if (this.endpoint != null) {
+			if (this.endpoint != null)
+			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
 					this.endpoint.toString(), KeyValuePairDelimiter));
 			}
 			
-			if (!StringUtil.isNullOrWhiteSpace(this.entityPath)) {
+			if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
+			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
 					KeyValueSeparator, this.entityPath, KeyValuePairDelimiter));
 			}
 			
-			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
+			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName))
+			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
 					KeyValueSeparator, this.sharedAccessKeyName, KeyValuePairDelimiter));
 			}
 			
-			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey)) {
+			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey))
+			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
 					KeyValueSeparator, this.sharedAccessKey));
 			}
@@ -130,10 +161,11 @@ public class ConnectionStringBuilder {
 		return this.connectionString;
 	}
 
-	private void parseConnectionString(String connectionString) {
-
+	private void parseConnectionString(String connectionString)
+	{
 		// TODO: Trace and throw
-		if (StringUtil.isNullOrWhiteSpace(connectionString)) {
+		if (StringUtil.isNullOrWhiteSpace(connectionString))
+		{
 			throw new IllegalConnectionStringFormatException(String.format("connectionString cannot be empty"));
 		}
 
@@ -143,47 +175,58 @@ public class ConnectionStringBuilder {
 		String[] values = keyValuePattern.split(connection);
 		Matcher keys = keyValuePattern.matcher(connection);
 
-		if (values == null || values.length <= 1 || keys.groupCount() == 0) {
+		if (values == null || values.length <= 1 || keys.groupCount() == 0)
+		{
 			throw new IllegalConnectionStringFormatException("Connection String cannot be parsed.");
 		}
 
-		if (!StringUtil.isNullOrWhiteSpace((values[0]))) {
+		if (!StringUtil.isNullOrWhiteSpace((values[0])))
+		{
 			throw new IllegalConnectionStringFormatException(
 					String.format(Locale.US, "Cannot parse part of ConnectionString: %s", values[0]));
 		}
 
 		int valueIndex = 0;
-		while (keys.find()) {
-			
+		while (keys.find())
+		{
 			valueIndex++;
 
 			String key = keys.group();
 			key = key.substring(1, key.length() - 1);
 			
-			if (values.length < valueIndex + 1){
+			if (values.length < valueIndex + 1)
+			{
 				throw new IllegalConnectionStringFormatException(
 						String.format(Locale.US, "Value for the connection string parameter name: %s, not found", key));
 			}
 			
-			if (key.equalsIgnoreCase(EndpointConfigName)) {
-				try {
+			if (key.equalsIgnoreCase(EndpointConfigName))
+			{
+				try
+				{
 					this.endpoint = new URI(values[valueIndex]); 
-				} catch(URISyntaxException exception) {
+				}
+				catch(URISyntaxException exception)
+				{
 					throw new IllegalConnectionStringFormatException(
 							String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", EndpointConfigName),
 							exception);
 				}
 			}
-			else if(key.equalsIgnoreCase(SharedAccessKeyNameConfigName)) {
+			else if(key.equalsIgnoreCase(SharedAccessKeyNameConfigName))
+			{
 				this.sharedAccessKeyName = values[valueIndex];
 			}
-			else if(key.equalsIgnoreCase(SharedAccessKeyConfigName)) {
+			else if(key.equalsIgnoreCase(SharedAccessKeyConfigName))
+			{
 				this.sharedAccessKey = values[valueIndex];
 			}
-			else if (key.equalsIgnoreCase(EntityPathConfigName)) {
+			else if (key.equalsIgnoreCase(EntityPathConfigName))
+			{
 				this.entityPath = values[valueIndex];
 			}
-			else {
+			else
+			{
 				throw new IllegalConnectionStringFormatException(
 						String.format(Locale.US, "Illegal connection string parameter name: %s", key));
 			}

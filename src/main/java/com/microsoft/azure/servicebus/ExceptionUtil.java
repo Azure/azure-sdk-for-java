@@ -7,24 +7,34 @@ final class ExceptionUtil {
 
 	static ServiceBusException toException(ErrorCondition errorCondition) {
 
-		if (errorCondition == null) {
+		if (errorCondition == null)
+		{
 			throw new IllegalArgumentException("'null' errorCondition cannot be translated to ServiceBusException");
 		}
 		
-		if (errorCondition.getCondition() == AmqpErrorCode.NotFound) {
+		if (errorCondition.getCondition() == AmqpErrorCode.NotFound)
+		{
 			return new EntityNotFoundException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
+		else if (errorCondition.getCondition() == AmqpErrorCode.Stolen)
+		{
 			return new ReceiverDisconnectedException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.UnauthorizedAccess) {
+		else if (errorCondition.getCondition() == AmqpErrorCode.UnauthorizedAccess)
+		{
 			return new AuthorizationFailedException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == ClientConstants.ServerBusyError) {
+		else if (errorCondition.getCondition() == ClientConstants.ServerBusyError)
+		{
 			return new ServerBusyException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == AmqpErrorCode.PayloadSizeExceeded) {
+		else if (errorCondition.getCondition() == AmqpErrorCode.PayloadSizeExceeded)
+		{
 			return new PayloadSizeExceededException(errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.InternalError)
+		{
+			return new InternalServerException(errorCondition.getDescription());
 		}
 		
 		// TODO: enumerate all ExceptionTypes

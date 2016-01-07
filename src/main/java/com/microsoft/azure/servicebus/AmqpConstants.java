@@ -2,8 +2,8 @@ package com.microsoft.azure.servicebus;
 
 import org.apache.qpid.proton.amqp.Symbol;
 
-public final class AmqpConstants {
-
+public final class AmqpConstants
+{
 	private AmqpConstants() { }
 	
 	public static final String Apache = "apache.org";

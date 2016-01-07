@@ -13,7 +13,7 @@ final class EventDataUtil
 	
 	private EventDataUtil(){}
 	
-	public static Collection<EventData> toEventDataCollection(Collection<Message> messages)
+	public static LinkedList<EventData> toEventDataCollection(Collection<Message> messages)
 	{
 		// TODO: no-copy solution
 		LinkedList<EventData> events = new LinkedList<EventData>();

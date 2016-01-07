@@ -17,7 +17,7 @@ import org.apache.qpid.proton.message.Message;
  */
 public class MessageSender extends ClientEntity {
 	
-	public static final int MaxMessageLength = 4 * 1024;
+	public static final int MaxMessageLength = 250 * 1024;
 	
 	private final Object lock = new Object(); 
 	private final Sender sendLink;
@@ -58,8 +58,8 @@ public class MessageSender extends ClientEntity {
 	// TODO: just enqueue on send and a timer which actually drains as many sends as getCredit() in that interval
 	public CompletableFuture<Void> send(Message msg) {
 		
-		byte[] bytes = new byte[5 * 1024];
-		int encodedSize = msg.encode(bytes, 0, MaxMessageLength);
+		byte[] bytes = new byte[MaxMessageLength];
+		int encodedSize = msg.encode(bytes, 0, (int)(MaxMessageLength - (MaxMessageLength * 0.05)));
 		
 		byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
         Delivery dlv = this.sendLink.delivery(tag);

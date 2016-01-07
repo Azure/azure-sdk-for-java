@@ -12,6 +12,6 @@ public class ServerBusyException extends ServiceBusException
 	@Override 
 	public boolean getIsTransient()
 	{
-		  return false;
+		return true;
 	}
 }

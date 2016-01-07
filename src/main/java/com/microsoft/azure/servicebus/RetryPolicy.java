@@ -3,6 +3,7 @@ package com.microsoft.azure.servicebus;
 import java.time.*;
 import java.util.concurrent.*;
 
+// TODO: SIMPLIFY retryPolicy - ConcurrentHashMap is not needed
 public abstract class RetryPolicy
 {
 	private ConcurrentHashMap<String, Integer> retryCounts;
@@ -25,9 +26,13 @@ public abstract class RetryPolicy
 	
 	public void resetRetryCount(String clientId)
 	{
-		synchronized (clientId)
+		Integer currentRetryCount = this.retryCounts.get(clientId);
+		if (currentRetryCount != null && currentRetryCount != 0)
 		{
-			this.retryCounts.put(clientId, 0);
+			synchronized (clientId)
+			{
+				this.retryCounts.put(clientId, 0);
+			}
 		}
 	}
 	

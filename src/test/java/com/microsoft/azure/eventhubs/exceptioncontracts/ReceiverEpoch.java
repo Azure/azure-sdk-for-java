@@ -9,14 +9,15 @@ import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
-public class ReceiverEpoch extends TestBase {
+public class ReceiverEpoch extends TestBase
+{
 
 	@Test (expected = ReceiverDisconnectedException.class)
 	public void testEpochReceiver() throws Throwable
 	{
 		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-		try {
-			
+		try 
+		{
 			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
 			EventHubClient ehClient = EventHubClient.createFromConnectionString(connectionString.toString()).get();		
 			String cgName = eventHubInfo.getRandomConsumerGroup();
@@ -24,10 +25,12 @@ public class ReceiverEpoch extends TestBase {
 			long epoch = 345632;
 			ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch, new EventCounter()).get();
 		
-			try {
+			try
+			{
 				ehClient.createEpochReceiver(cgName, partitionId, epoch - 10).get();
 			}
-			catch(ExecutionException exp) {
+			catch(ExecutionException exp)
+			{
 				throw exp.getCause();
 			}
 		}
@@ -36,16 +39,20 @@ public class ReceiverEpoch extends TestBase {
 		}
 	}
 
-	public static final class EventCounter extends ReceiveHandler {
+	public static final class EventCounter extends ReceiveHandler
+	{
 		private long count;
 		
-		public EventCounter(){ 
+		public EventCounter()
+		{ 
 			count = 0;
-			}
+		}
 		
 		@Override
-		public void onReceive(Collection<EventData> events) {
-			for(EventData event: events) {
+		public void onReceive(Collection<EventData> events)
+		{
+			for(EventData event: events)
+			{
 				System.out.println(String.format("Counter: %s, Offset: %s, SeqNo: %s, EnqueueTime: %s, PKey: %s", 
 						 this.count, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber(), event.getSystemProperties().getEnqueuedTimeUtc(), event.getSystemProperties().getPartitionKey()));
 			}		

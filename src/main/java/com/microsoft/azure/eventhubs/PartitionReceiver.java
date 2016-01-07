@@ -9,6 +9,7 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.*;
 
+// TODO: Implement timeout on Receive
 public final class PartitionReceiver 
 {
 	private final String partitionId;
@@ -108,18 +109,19 @@ public final class PartitionReceiver
 		return this.internalReceiver.getPrefetchCount();
 	}
 	
-	public final long getEpoch() {
-		throw new UnsupportedOperationException("TODO:");
-	}
-	
-	public CompletableFuture<Collection<EventData>> receive() 
-			throws ServerBusyException, AuthorizationFailedException
+	public final long getEpoch()
 	{
-		return this.receive(this.underlyingFactory.getOperationTimeout());
+		return this.epoch;
 	}
 	
-	public CompletableFuture<Collection<EventData>> receive(Duration waittime)
-			throws ServerBusyException, AuthorizationFailedException
+	/** 
+	 * Receive Events from an EventHub partition
+	 * @return
+	 * @throws ServerBusyException
+	 * @throws AuthorizationFailedException
+	 */
+	public CompletableFuture<Collection<EventData>> receive() 
+			throws ServerBusyException, AuthorizationFailedException, InternalServerException
 	{
 		if (this.receiveHandler != null)
 		{
@@ -131,7 +133,14 @@ public final class PartitionReceiver
 			@Override
 			public Collection<EventData> apply(Collection<Message> amqpMessages)
 			{
-				return EventDataUtil.toEventDataCollection(amqpMessages);
+				LinkedList<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages);
+				EventData lastEvent = events.getLast();
+				if (lastEvent != null)
+				{
+					PartitionReceiver.this.internalReceiver.setLastReceivedOffset(lastEvent.getSystemProperties().getOffset());
+				}
+				
+				return events;
 			}			
 		});		
 	}
