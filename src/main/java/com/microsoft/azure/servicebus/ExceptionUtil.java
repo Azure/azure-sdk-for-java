@@ -5,7 +5,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 final class ExceptionUtil {
 
-	static ServiceBusException toException(ErrorCondition errorCondition) {
+	static Exception toException(ErrorCondition errorCondition) {
 
 		if (errorCondition == null)
 		{
@@ -35,6 +35,10 @@ final class ExceptionUtil {
 		else if (errorCondition.getCondition() == AmqpErrorCode.InternalError)
 		{
 			return new InternalServerException(errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == ClientConstants.ArgumentError)
+		{
+			return new IllegalArgumentException(errorCondition.getDescription());
 		}
 		
 		// TODO: enumerate all ExceptionTypes

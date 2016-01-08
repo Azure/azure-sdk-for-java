@@ -18,7 +18,7 @@ public class OnReceiveSample
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
 		String partitionId = "0";
-		long epoch = 20000;
+		long epoch = 20001;
 		PartitionReceiver receiver = ehClient.createEpochReceiver(
 			EventHubClient.DefaultConsumerGroupName, 
 			partitionId, 
@@ -27,7 +27,6 @@ public class OnReceiveSample
 			epoch, 
 			new EventPrinter()).get();
 			
-		System.out.println("done...");
 		System.in.read();
 	}
 
@@ -40,14 +39,16 @@ public class OnReceiveSample
 		{
 			for(EventData event: events)
 			{
-				System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s, PKey: %s", 
+				System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
 						event.getSystemProperties().getOffset(), 
 						event.getSystemProperties().getSequenceNumber(), 
-						event.getSystemProperties().getEnqueuedTimeUtc(), 
-						event.getSystemProperties().getPartitionKey()));
+						event.getSystemProperties().getEnqueuedTimeUtc()));
 			}
 			
 			System.out.println("Processing events...");
+			System.out.println();
+			System.out.println();
+			System.out.println();
 			
 			try
 			{

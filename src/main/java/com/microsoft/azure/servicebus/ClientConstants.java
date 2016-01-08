@@ -10,6 +10,7 @@ public final class ClientConstants {
 	public final static int AmqpsPort = 5671;
 	
 	public final static Symbol ServerBusyError = Symbol.getSymbol(AmqpConstants.Vendor + ":server-busy");
+	public static final Symbol ArgumentError = Symbol.getSymbol(AmqpConstants.Vendor + ":argument-error");
 	
 	public static final Duration TimerTolerance = Duration.ofSeconds(5);
 	

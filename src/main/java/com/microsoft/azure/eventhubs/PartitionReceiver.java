@@ -119,6 +119,7 @@ public final class PartitionReceiver
 	 * @return
 	 * @throws ServerBusyException
 	 * @throws AuthorizationFailedException
+	 * @throws InternalServerException
 	 */
 	public CompletableFuture<Collection<EventData>> receive() 
 			throws ServerBusyException, AuthorizationFailedException, InternalServerException

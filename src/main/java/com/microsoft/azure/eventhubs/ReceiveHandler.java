@@ -8,6 +8,7 @@ public abstract class ReceiveHandler extends MessageReceiveHandler
 {
 	public abstract void onReceive(Collection<EventData> events);
 	
+	// TODO: Add OnError functionality
 	// TODO: return CompletableFuture<Void>
 	@Override
 	public void onReceiveMessages(Collection<Message> messages)

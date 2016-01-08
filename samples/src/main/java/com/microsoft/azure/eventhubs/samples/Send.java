@@ -9,7 +9,7 @@ import com.google.gson.*;
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.servicebus.*;
 
-public class SendRecv
+public class Send
 {
 
 	public static void main(String[] args) 
@@ -27,33 +27,19 @@ public class SendRecv
 		EventData sendEvent = new EventData(payloadBytes);
 		
 		// senders
+		// Type-1 - Simple Send - not tied to any partition
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		ehClient.send(sendEvent).get(); // basic send - not tied to any partition
+		ehClient.send(sendEvent).get();
 		
+		// Type-2 - Send using PartitionKey - all Events with Same partitionKey will land on the Same Partition
 		String partitionKey = "partitionTheStream";
-		ehClient.send(sendEvent, partitionKey).get(); // all events with same partitionKey lands on Same partition
+		ehClient.send(sendEvent, partitionKey).get();
 		
-		PartitionSender sender = ehClient.createPartitionSender("0").get(); // Send to a specific partition
+		// Type-3 - Send to a Specific Partition
+		PartitionSender sender = ehClient.createPartitionSender("0").get();
 		sender.send(sendEvent).get();
 		
-		// receiver
-		String partitionId = "0"; // API to get PartitionIds will be released as part of V0.2
-		PartitionReceiver receiver = ehClient.createReceiver(
-				EventHubClient.DefaultConsumerGroupName, 
-				partitionId, 
-				PartitionReceiver.StartOfStream, 
-				false).get();
-		Collection<EventData> receivedEvents = receiver.receive().get();
-		
-		for(EventData receivedEvent: receivedEvents)
-		{
-			System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
-			System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
-					receivedEvent.getSystemProperties().getOffset(), 
-					receivedEvent.getSystemProperties().getSequenceNumber(), 
-					receivedEvent.getSystemProperties().getEnqueuedTimeUtc()));
-		}
-		
+		System.out.println("Send Complete...");
 		System.in.read();
 	}
 
@@ -62,7 +48,7 @@ public class SendRecv
 	 */
 	static final class PayloadEvent
 	{
-		PayloadEvent() {  }
+		PayloadEvent()	{}
 		
 		public String strProperty;
 		public long longProperty;
