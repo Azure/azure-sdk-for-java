@@ -17,7 +17,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2-SNAPSHOT</version>
     <relativePath>../../azure/pom.xml</relativePath>
   </parent>
 
@@ -39,7 +39,7 @@
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-    <tag>v0.9.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
