@@ -1,4 +1,4 @@
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.amqp;
 
 import java.util.*;
 import java.util.logging.*;
@@ -7,6 +7,8 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.transport.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.*;
+
+import com.microsoft.azure.servicebus.ClientConstants;
 
 /**
  * ServiceBus <-> ProtonReactor interaction handles all
@@ -23,7 +25,7 @@ public final class ConnectionHandler extends BaseHandler
 
 	// TODO: sasl mechanism should be passed - since currently it only supports
 	// sasKey/Value - simplified & directly passing username/password
-	ConnectionHandler(final String hostname, final String username, final String password)
+	public ConnectionHandler(final String hostname, final String username, final String password)
 	{
 		add(new Handshaker());
 		this.hostname = hostname;

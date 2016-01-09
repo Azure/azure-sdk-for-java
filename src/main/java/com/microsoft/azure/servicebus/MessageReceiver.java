@@ -16,6 +16,9 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
 import org.apache.qpid.proton.reactor.Reactor;
 
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
+
 /**
  * Common Receiver that abstracts all amqp related details
  * translates event-driven reactor model into async receive Api
@@ -30,8 +33,7 @@ public class MessageReceiver extends ClientEntity
 	private final MessagingFactory underlyingFactory;
 	private final String name;
 	private final String receivePath;
-	
-	
+		
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private CompletableFuture<MessageReceiver> linkOpen;
@@ -145,7 +147,7 @@ public class MessageReceiver extends ClientEntity
 		return onReceive;
 	}
 	
-	void onOpenComplete(Exception exception)
+	public void onOpenComplete(Exception exception)
 	{
 		synchronized (this.linkOpen)
 		{
@@ -167,7 +169,7 @@ public class MessageReceiver extends ClientEntity
 	}
 	
 	// intended to be called by proton reactor handler 
-	void onDelivery(Collection<Message> messages)
+	public void onDelivery(Collection<Message> messages)
 	{
 		if (this.receiveHandler != null)
 		{
@@ -195,7 +197,7 @@ public class MessageReceiver extends ClientEntity
 		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 	}
 	
-	void onError(ErrorCondition error)
+	public void onError(ErrorCondition error)
 	{		
 		Exception completionException = ExceptionUtil.toException(error);
 		

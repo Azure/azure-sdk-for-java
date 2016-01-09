@@ -1,9 +1,11 @@
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.amqp;
 
 import java.util.logging.*;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
+
+import com.microsoft.azure.servicebus.MessageSender;
 
 public class SendLinkHandler extends BaseHandler
 {
@@ -14,7 +16,7 @@ public class SendLinkHandler extends BaseHandler
 	private final Object firstFlow;
 	private boolean isFirstFlow;
 	
-	SendLinkHandler(final String name, final MessageSender sender)
+	public SendLinkHandler(final String name, final MessageSender sender)
 	{
 		this.name = name;
 		this.msgSender = sender;

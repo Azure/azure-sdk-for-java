@@ -25,7 +25,7 @@ public final class PartitionSender
 	/**
 	 * Internal-Only: factory pattern to Create EventHubSender
 	 */
-	static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws EntityNotFoundException
+	static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException
 	{
 		final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
 		return sender.createInternalSender()
@@ -38,7 +38,7 @@ public final class PartitionSender
 				});
 	}
 	
-	private CompletableFuture<Void> createInternalSender() throws EntityNotFoundException
+	private CompletableFuture<Void> createInternalSender() throws ServiceBusException
 	{
 		return MessageSender.Create(this.factory, UUID.randomUUID().toString(), this.eventHubName)
 				.thenAcceptAsync(new Consumer<MessageSender>()
@@ -48,13 +48,13 @@ public final class PartitionSender
 	}
 
 	public final CompletableFuture<Void> send(EventData data) 
-			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadSizeExceededException, EntityNotFoundException
+			throws ServiceBusException
 	{
 		return this.internalSender.send(data.toAmqpMessage());
 	}
 	
 	public final void send(Iterable<EventData> eventDatas) 
-			throws MessagingCommunicationException, ServerBusyException, AuthorizationFailedException, PayloadSizeExceededException, EntityNotFoundException
+			throws ServiceBusException
 	{
 		throw new UnsupportedOperationException("TODO: Implement Send Batch");
 	}

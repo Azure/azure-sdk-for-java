@@ -1,9 +1,9 @@
 package com.microsoft.azure.servicebus;
 
-public class EntityNotFoundException extends ServiceBusException 
+public class IllegalEntityException extends ServiceBusException 
 {
 
-	EntityNotFoundException(final String errorMessage)
+	IllegalEntityException(final String errorMessage)
 	{
 		super(errorMessage);
 	}

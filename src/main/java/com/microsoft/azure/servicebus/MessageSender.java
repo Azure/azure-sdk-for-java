@@ -11,11 +11,14 @@ import org.apache.qpid.proton.amqp.transport.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
+
 /**
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
  */
-public class MessageSender extends ClientEntity {
+public class MessageSender extends ClientEntity
+{
 	
 	public static final int MaxMessageLength = 250 * 1024;
 	
@@ -33,7 +36,7 @@ public class MessageSender extends ClientEntity {
 	public static CompletableFuture<MessageSender> Create(
 			final MessagingFactory factory,
 			final String sendLinkName,
-			final String senderPath) throws EntityNotFoundException
+			final String senderPath) throws IllegalEntityException
 	{
 		MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
 		SendLinkHandler handler = new SendLinkHandler(sendLinkName, msgSender);
@@ -41,7 +44,8 @@ public class MessageSender extends ClientEntity {
 		return msgSender.linkOpen;
 	}
 	
-	private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath) {
+	private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath)
+	{
 		super(sendLinkName);
 		this.sendPath = senderPath;
 		this.underlyingFactory = factory;
@@ -51,12 +55,13 @@ public class MessageSender extends ClientEntity {
 		this.nextTag = new AtomicLong(0);
 	}
 	
-	public String getSendPath() {
+	public String getSendPath()
+	{
 		return this.sendPath;
 	}
 	
-	// TODO: just enqueue on send and a timer which actually drains as many sends as getCredit() in that interval
-	public CompletableFuture<Void> send(Message msg) {
+	public CompletableFuture<Void> send(Message msg)
+	{
 		
 		byte[] bytes = new byte[MaxMessageLength];
 		int encodedSize = msg.encode(bytes, 0, (int)(MaxMessageLength - (MaxMessageLength * 0.05)));
@@ -74,24 +79,32 @@ public class MessageSender extends ClientEntity {
 	}
 	
 	@Override
-	public void close() {
-		if (this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE) {
+	public void close()
+	{
+		if (this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE)
+		{
 			this.sendLink.close();
 		}
 	}
 	
-	void onOpenComplete(ErrorCondition condition) {
-		if (condition == null) {
+	public void onOpenComplete(ErrorCondition condition)
+	{
+		if (condition == null)
+		{
 			this.linkOpen.complete(this);
 		}
-		else {		
+		else
+		{		
 			this.linkOpen.completeExceptionally(ExceptionUtil.toException(condition));
 		}
 	}
 	
-	void onError(ErrorCondition error){
-		synchronized (this.linkOpen) {
-			if (!this.linkOpen.isDone()) {
+	public void onError(ErrorCondition error)
+	{
+		synchronized (this.linkOpen)
+		{
+			if (!this.linkOpen.isDone())
+			{
 				this.onOpenComplete(error);
 				return;
 			}
@@ -100,13 +113,16 @@ public class MessageSender extends ClientEntity {
 		// TODO: what happens to Pending Sends
 	}
 	
-	void onSendComplete(byte[] deliveryTag, DeliveryState outcome) {
-		if (outcome == Accepted.getInstance()) {
+	public void onSendComplete(byte[] deliveryTag, DeliveryState outcome)
+	{
+		if (outcome == Accepted.getInstance())
+		{
 			this.pendingSendWaiters.get(deliveryTag).complete(null);
 		}
 	}
 
-	private static Sender createSendLink(final Connection connection, final String linkName, final String senderPath) {
+	private static Sender createSendLink(final Connection connection, final String linkName, final String senderPath)
+	{
 		Session session = connection.session();
         session.open();
         

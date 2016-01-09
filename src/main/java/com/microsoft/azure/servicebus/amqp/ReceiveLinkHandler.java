@@ -1,4 +1,4 @@
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.amqp;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -18,6 +18,9 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.engine.Event.Type;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.MessageReceiver;
+
 /** 
  * ServiceBus <-> ProtonReactor interaction 
  * handles all recvLink - reactor events
@@ -31,7 +34,7 @@ public final class ReceiveLinkHandler extends BaseHandler
 	private final Object firstFlow;
 	private boolean isFirstFlow;
 	
-	ReceiveLinkHandler(final String name, final MessageReceiver receiver)
+	public ReceiveLinkHandler(final String name, final MessageReceiver receiver)
 	{
 		this.name = name;
 		this.msgReceiver = receiver;

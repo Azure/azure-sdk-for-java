@@ -38,7 +38,7 @@ public final class PartitionReceiver
 			final Long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException
+					throws ServiceBusException
 	{
 		this.underlyingFactory = factory;
 		this.eventHubName = eventHubName;
@@ -60,7 +60,7 @@ public final class PartitionReceiver
 			final long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
-					throws ReceiverDisconnectedException, EntityNotFoundException, ServerBusyException, AuthorizationFailedException
+					throws ServiceBusException
 	{
 		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, isEpochReceiver, receiveHandler);
 		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
@@ -72,7 +72,7 @@ public final class PartitionReceiver
 		});
 	}
 	
-	private CompletableFuture<Void> createInternalReceiver() throws EntityNotFoundException
+	private CompletableFuture<Void> createInternalReceiver() throws ServiceBusException
 	{
 		return MessageReceiver.Create(this.underlyingFactory, UUID.randomUUID().toString(), 
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
@@ -122,7 +122,7 @@ public final class PartitionReceiver
 	 * @throws InternalServerException
 	 */
 	public CompletableFuture<Collection<EventData>> receive() 
-			throws ServerBusyException, AuthorizationFailedException, InternalServerException
+			throws ServiceBusException
 	{
 		if (this.receiveHandler != null)
 		{

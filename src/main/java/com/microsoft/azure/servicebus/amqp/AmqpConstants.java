@@ -1,4 +1,4 @@
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.amqp.Symbol;
 

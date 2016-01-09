@@ -1,4 +1,4 @@
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.amqp.Symbol;
 
@@ -10,6 +10,7 @@ public final class AmqpErrorCode {
 	public static final Symbol NotAllowed = Symbol.getSymbol("amqp:not-allowed");
 	public static final Symbol InternalError = Symbol.getSymbol("amqp:internal-error");
 	public static final Symbol IllegalState = Symbol.getSymbol("amqp:illegal-state");
+	public static final Symbol NotImplemented = Symbol.getSymbol("amqp:not-implemented");
 	
 	// link errors
 	public static final Symbol Stolen = Symbol.getSymbol("amqp:link:stolen");

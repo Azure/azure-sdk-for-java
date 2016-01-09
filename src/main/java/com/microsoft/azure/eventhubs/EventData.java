@@ -8,10 +8,11 @@ import org.apache.qpid.proton.amqp.*;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.message.*;
 import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
- * Each EventHubs partition can be visualized as a Stream of EventData.
+ * Each EventHubs partition can be visualized as a Stream of {@link EventData}.
  */
 public class EventData implements AutoCloseable
 {
@@ -223,11 +224,11 @@ public class EventData implements AutoCloseable
 		return amqpMessage;
 	}
 
-	public void close() throws Exception
+	public void close()
 	{		
 		if (!this.closed)
 		{
-			// TODO: dispose native resources
+			this.bodyData = null;
 		}
 		
 		this.closed = true;

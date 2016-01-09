@@ -10,6 +10,8 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.*;
 
+import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
+
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
  * TODO: Manage reconnect?
