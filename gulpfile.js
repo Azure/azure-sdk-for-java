@@ -38,6 +38,11 @@ var mappings = {
         'dir': 'azure-mgmt-network',
         'source': 'arm-network/2015-06-15/swagger/network.json',
         'package': 'com.microsoft.azure.management.network'
+    },
+    'website': {
+        'dir': 'azure-mgmt-website',
+        'source': 'arm-web/2015-08-01/swagger/service.json',
+        'package': 'com.microsoft.azure.management.website'
     }
 };
 
