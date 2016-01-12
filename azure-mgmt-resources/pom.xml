@@ -76,6 +76,10 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.rest</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
