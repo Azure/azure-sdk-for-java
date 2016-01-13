@@ -52,12 +52,6 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
 				IKey versionKey = versionKeyFuture.get();
 
 				Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			finally
 			{
