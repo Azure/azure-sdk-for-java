@@ -14,7 +14,8 @@ import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
- * TODO: Manage reconnect?
+ * TODO: Manage reconnect
+ * TODO: Bring all Create's here - so that it can manage recreate/close scenario's
  */
 public class MessagingFactory extends ClientEntity
 {

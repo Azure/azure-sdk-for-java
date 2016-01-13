@@ -1,6 +1,7 @@
 package com.microsoft.azure.eventhubs.samples;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -39,10 +40,11 @@ public class OnReceiveSample
 		{
 			for(EventData event: events)
 			{
-				System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
+				System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s, Msg: %s", 
 						event.getSystemProperties().getOffset(), 
 						event.getSystemProperties().getSequenceNumber(), 
-						event.getSystemProperties().getEnqueuedTimeUtc()));
+						event.getSystemProperties().getEnqueuedTimeUtc(),
+						new String(event.getBody(), Charset.defaultCharset())));
 			}
 			
 			System.out.println("Processing events...");

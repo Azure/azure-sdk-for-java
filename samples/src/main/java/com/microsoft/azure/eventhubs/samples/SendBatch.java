@@ -1,15 +1,16 @@
 package com.microsoft.azure.eventhubs.samples;
 
 import java.io.IOException;
-import java.nio.charset.*;
-import java.util.*;
+import java.nio.charset.Charset;
+import java.util.LinkedList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import com.google.gson.*;
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.servicebus.*;
 
-public class Send
+public class SendBatch
 {
 
 	public static void main(String[] args) 
@@ -18,23 +19,20 @@ public class Send
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
 		
 		Gson gson = new GsonBuilder().create();
+		LinkedList<EventData> events = new LinkedList<EventData>();
 		
-		PayloadEvent payload = new PayloadEvent(1);
-		byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
-		EventData sendEvent = new EventData(payloadBytes);
-		
-		// senders
-		// Type-1 - Simple Send - not tied to any partition
+		for (int count  = 1; count< 20; count++)
+		{
+			PayloadEvent payload = new PayloadEvent(count);
+			byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
+			EventData sendEvent = new EventData(payloadBytes);
+			events.add(sendEvent);
+		}
+
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		ehClient.send(sendEvent).get();
+		PartitionSender sender = ehClient.createPartitionSender("1").get();
 		
-		// Type-2 - Send using PartitionKey - all Events with Same partitionKey will land on the Same Partition
-		String partitionKey = "partitionTheStream";
-		ehClient.send(sendEvent, partitionKey).get();
-		
-		// Type-3 - Send to a Specific Partition
-		PartitionSender sender = ehClient.createPartitionSender("0").get();
-		sender.send(sendEvent).get();
+		sender.send(events).get();
 		
 		System.out.println("Send Complete...");
 		System.in.read();
@@ -60,4 +58,5 @@ public class Send
 		public long longProperty;
 		public int intProperty;
 	}
+
 }

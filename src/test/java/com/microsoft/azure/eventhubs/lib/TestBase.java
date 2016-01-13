@@ -13,7 +13,8 @@ public abstract class TestBase
 {
 	public final static String SasRuleName = "RootManageSharedAccessKey";
 		
-	public static TestEventHubInfo checkoutTestEventHub() {
+	public static TestEventHubInfo checkoutTestEventHub()
+	{
 		HashMap<String, String> sasRule = new HashMap<String, String>();
 		sasRule.put(TestBase.SasRuleName, "----SasKey-----");
 		return new TestEventHubInfo("gojavago", "firstehub-ns", null, sasRule);
@@ -24,7 +25,8 @@ public abstract class TestBase
 		return new ConnectionStringBuilder(eventHubInfo.getNamespaceName(), eventHubInfo.getName(), sasRule.getKey(), sasRule.getValue());
 	}
 
-	public static void checkinTestEventHub(String name) {
+	public static void checkinTestEventHub(String name)
+	{
 		// TODO: Implement Checkin-Checkout functionality	
 	}
 }

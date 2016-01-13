@@ -5,11 +5,13 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.message.*;
 import com.microsoft.azure.servicebus.*;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.*;
 
 /**
  * Anchor class - all EventHub client operations STARTS here.
@@ -39,7 +41,8 @@ public class EventHubClient extends ClientEntity
 		return eventHubClient.createInternalSender()
 				.thenApplyAsync(new Function<Void, EventHubClient>()
 				{
-					public EventHubClient apply(Void a) {
+					public EventHubClient apply(Void a)
+					{
 						return eventHubClient;
 					}
 				});
@@ -72,23 +75,27 @@ public class EventHubClient extends ClientEntity
 	{
 		if (data == null)
 		{
-			// TODO: TRACE
 			throw new IllegalArgumentException("EventData cannot be empty.");
 		}
 		
 		return this.sender.send(data.toAmqpMessage());
 	}
 	
-	public final CompletableFuture<Void> send(Iterable<EventData> data) 
+	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
-		throw new UnsupportedOperationException("TODO Implement Send Batch");
+		if (eventDatas == null)
+		{
+			throw new IllegalArgumentException("EventData cannot be null.");
+		}
+		
+		return this.sender.send(EventDataUtil.toAmqpMessage(eventDatas), AmqpConstants.AmqpBatchMessageFormat);
 	}
 	
-	public final CompletableFuture<Void> send(EventData data, String partitionKey) 
+	public final CompletableFuture<Void> send(EventData eventData, String partitionKey) 
 			throws ServiceBusException
 	{
-		if (data == null)
+		if (eventData == null)
 		{
 			throw new IllegalArgumentException("EventData cannot be null.");
 		}
@@ -97,19 +104,25 @@ public class EventHubClient extends ClientEntity
 		{
 			throw new IllegalArgumentException("partitionKey cannot be null");
 		}
-		
-		Message amqpMessage = data.toAmqpMessage();
-		MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
-						? new MessageAnnotations(new HashMap<Symbol, Object>()) 
-						: amqpMessage.getMessageAnnotations();
-		messageAnnotations.getValue().put(AmqpConstants.PartitionKey, partitionKey);
-		return this.sender.send(data.toAmqpMessage());
+				
+		return this.sender.send(eventData.toAmqpMessage(partitionKey));
 	}
 	
-	public final CompletableFuture<Void> send(Iterable<EventData> data, String partitionKey) 
+	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey) 
 		throws ServiceBusException
 	{
-		throw new UnsupportedOperationException("TODO: Implement Send Batch");
+		if (eventDatas == null)
+		{
+			throw new IllegalArgumentException("EventData batch cannot be empty.");
+		}
+		
+		// TODO: PartitionKey SizeLimit - boundaries check
+		if (partitionKey == null)
+		{
+			throw new IllegalArgumentException("partitionKey cannot be null");
+		}
+		
+		return this.sender.send(EventDataUtil.toAmqpMessage(eventDatas, partitionKey), AmqpConstants.AmqpBatchMessageFormat);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId) 
@@ -130,7 +143,8 @@ public class EventHubClient extends ClientEntity
 		return PartitionReceiver.Create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, PartitionReceiver.NullEpoch, false, null);
 	}
 	
-	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc) {
+	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Date dateTimeUtc)
+	{
 		throw new UnsupportedOperationException("TODO: Implement datetime receiver");
 	}
 	

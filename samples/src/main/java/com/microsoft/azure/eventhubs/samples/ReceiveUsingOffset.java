@@ -5,8 +5,6 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
-import com.google.gson.*;
-
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.servicebus.*;
 
@@ -17,8 +15,6 @@ public class ReceiveUsingOffset
 			throws ServiceBusException, ExecutionException, InterruptedException, IOException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
-		
-		Gson gson = new GsonBuilder().create();
 		
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		

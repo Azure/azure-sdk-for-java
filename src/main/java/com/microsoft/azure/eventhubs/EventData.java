@@ -164,6 +164,7 @@ public class EventData implements AutoCloseable
 	 */
 	public byte[] getBody()
 	{
+		// TODO: enforce on-send constructor type 2
 		return this.bodyData.getArray();
 	}
 	
@@ -223,7 +224,23 @@ public class EventData implements AutoCloseable
 		
 		return amqpMessage;
 	}
+	
+	Message toAmqpMessage(String partitionKey)
+	{
+		this.throwIfAutoClosed();
+		
+		Message amqpMessage = this.toAmqpMessage();
+		
+		MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
+				? new MessageAnnotations(new HashMap<Symbol, Object>()) 
+				: amqpMessage.getMessageAnnotations();		
+		messageAnnotations.getValue().put(AmqpConstants.PartitionKey, partitionKey);
+		amqpMessage.setMessageAnnotations(messageAnnotations);
+		
+		return amqpMessage;
+	}
 
+	// TODO: remove Close - simplify
 	public void close()
 	{		
 		if (!this.closed)

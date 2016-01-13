@@ -1,10 +1,18 @@
 package com.microsoft.azure.eventhubs;
 
+import java.util.LinkedList;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.function.*;
 
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.DataList;
+import org.apache.qpid.proton.message.Message;
+
 import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 // TODO: Implement Timeout on Send operation
 public final class PartitionSender
@@ -53,9 +61,14 @@ public final class PartitionSender
 		return this.internalSender.send(data.toAmqpMessage());
 	}
 	
-	public final void send(Iterable<EventData> eventDatas) 
+	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
-		throw new UnsupportedOperationException("TODO: Implement Send Batch");
+		if (eventDatas == null)
+		{
+			throw new IllegalArgumentException("EventData batch cannot be empty.");
+		}
+		
+		return this.internalSender.send(EventDataUtil.toAmqpMessage(eventDatas), AmqpConstants.AmqpBatchMessageFormat);
 	}
 }

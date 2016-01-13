@@ -34,7 +34,8 @@ public class ReceiverEpoch extends TestBase
 				throw exp.getCause();
 			}
 		}
-		finally {
+		finally
+		{
 			TestBase.checkinTestEventHub(eventHubInfo.getName());
 		}
 	}

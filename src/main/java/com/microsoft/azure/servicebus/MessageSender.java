@@ -1,16 +1,20 @@
 package com.microsoft.azure.servicebus;
 
+import java.util.LinkedList;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 import java.util.function.*;
 
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.*;
 import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 
 /**
@@ -20,7 +24,7 @@ import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 public class MessageSender extends ClientEntity
 {
 	
-	public static final int MaxMessageLength = 250 * 1024;
+	public static final int MaxMessageLength = 255 * 1024;
 	
 	private final Object lock = new Object(); 
 	private final Sender sendLink;
@@ -60,22 +64,30 @@ public class MessageSender extends ClientEntity
 		return this.sendPath;
 	}
 	
-	public CompletableFuture<Void> send(Message msg)
+	public CompletableFuture<Void> send(Message msg, long messageFormat)
 	{
-		
+		// TODO: fix allocation per call
 		byte[] bytes = new byte[MaxMessageLength];
+		
+		// TODO: is the extra size needed in the original array - while encoding
 		int encodedSize = msg.encode(bytes, 0, (int)(MaxMessageLength - (MaxMessageLength * 0.05)));
 		
 		byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
         Delivery dlv = this.sendLink.delivery(tag);
-        int sentMsgSize = this.sendLink.send(bytes, 0, encodedSize);
+        dlv.setMessageFormat(messageFormat);
         
+        int sentMsgSize = this.sendLink.send(bytes, 0, encodedSize);
         assert sentMsgSize != encodedSize : "Contract of the ProtonJ library for Sender.Send API changed";
         
         CompletableFuture<Void> onSend = new CompletableFuture<Void>();
         this.pendingSendWaiters.put(tag, onSend);
         this.sendLink.advance();
         return onSend;
+	}
+	
+	public CompletableFuture<Void> send(Message msg)
+	{
+		return this.send(msg, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 	
 	@Override

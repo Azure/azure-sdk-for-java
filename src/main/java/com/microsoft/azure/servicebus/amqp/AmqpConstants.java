@@ -18,4 +18,6 @@ public final class AmqpConstants
 	
 	public static final Symbol StringFilter = Symbol.valueOf(AmqpConstants.Apache + ":selector-filter:string");
 	public static final Symbol Epoch = Symbol.valueOf(AmqpConstants.Vendor + ":epoch");
+	
+	public static final long AmqpBatchMessageFormat = 2147563264L; 
 }
