@@ -1,14 +1,21 @@
 package com.microsoft.azure.keyvault.extensions.test;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.extensions.KeyVaultKeyResolver;
+import com.microsoft.azure.keyvault.extensions.SymmetricKey;
 import com.microsoft.azure.keyvault.models.KeyBundle;
+import com.microsoft.azure.keyvault.models.Secret;
 
 //
 //Copyright © Microsoft Corporation, All Rights Reserved
@@ -29,7 +36,10 @@ import com.microsoft.azure.keyvault.models.KeyBundle;
 
 public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBase {
 
-	private static final String KEY_NAME = "JavaExtensionKey";
+	private static final String KEY_NAME    = "JavaExtensionKey";
+	private static final String SECRET_NAME = "JavaExtensionSecret";
+	
+    private static final Base64 _base64 = new Base64(-1, null, true);
 
 	@Test
 	public void KeyVault_KeyVaultKeyResolver_Key() throws InterruptedException, ExecutionException
@@ -63,186 +73,196 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
 		}
 	}
 
-	/*
-
-     /// <summary>
-     /// Test resolving a key from a 128bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
-     /// </summary>
-     [Fact]
-     public async Task KeyVault_KeyVaultKeyResolver_Secret128Base64()
+     /* 
+      * Test resolving a key from a 128bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
+      */
+     @Test
+     public void KeyVault_KeyVaultKeyResolver_Secret128Base64() throws InterruptedException, ExecutionException
      {
          // Arrange
-         var client   = CreateKeyVaultClient();
-         var vault    = ConfigurationManager.AppSettings["VaultUrl"];
+         byte[] keyBytes = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+         byte[] CEK      = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
+         byte[] EK       = { 0x1F, (byte) 0xA6, (byte) 0x8B, 0x0A, (byte) 0x81, 0x12, (byte) 0xB4, 0x47, (byte) 0xAE, (byte) 0xF3, 0x4B, (byte) 0xD8, (byte) 0xFB, 0x5A, 0x7B, (byte) 0x82, (byte) 0x9D, 0x3E, (byte) 0x86, 0x23, 0x71, (byte) 0xD2, (byte) 0xCF, (byte) 0xE5 };
 
-         var keyBytes = new byte[128 >> 3];
 
-         new RNGCryptoServiceProvider().GetNonZeroBytes( keyBytes );
-
-         var secret   = await client.SetSecretAsync( vault, "TestSecret", Convert.ToBase64String( keyBytes ), null, "application/octet-stream" ).ConfigureAwait( false );
+         Future<Secret> futureSecret   = keyVaultClient.setSecretAsync(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes), "application/octet-stream", null, null );
+         Secret         secret         = futureSecret.get();
 
          if ( secret != null )
          {
              try
              {
                  // ctor with client
-                 var resolver = new KeyVaultKeyResolver( client );
+                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
 
-                 var baseKey    = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 var versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
+                 IKey baseKey    = resolver.resolveKeyAsync( secret.getSecretIdentifier().getBaseIdentifier() ).get();
+                 IKey versionKey = resolver.resolveKeyAsync( secret.getSecretIdentifier().getIdentifier() ).get();
 
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Check for correct key identifiers
+                 Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
 
-                 // ctor with authentication callback
-                 resolver = new KeyVaultKeyResolver( GetAccessToken );
+                 // Ensure key operations give the expected results
+                 byte[] encrypted = null;
 
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
+                 try {
+                     encrypted = baseKey.wrapKeyAsync(CEK, "A128KW").get().getLeft();
+                 } catch (InterruptedException e) {
+                     fail("InterrupedException");
+                 } catch (ExecutionException e) {
+                     fail("ExecutionException");
+                 } catch (NoSuchAlgorithmException e) {
+                     fail("NoSuchAlgorithmException");
+                 }
 
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Assert
+                 assertArrayEquals(EK, encrypted);
 
-                 // ctor with vault name and client
-                 resolver = new KeyVaultKeyResolver( vault, client );
+                 try {
+                     encrypted = versionKey.wrapKeyAsync(CEK, "A128KW").get().getLeft();
+                 } catch (InterruptedException e) {
+                     fail("InterrupedException");
+                 } catch (ExecutionException e) {
+                     fail("ExecutionException");
+                 } catch (NoSuchAlgorithmException e) {
+                     fail("NoSuchAlgorithmException");
+                 }
 
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
-
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
-
-                 // ctor with vault name and authentication callback
-                 resolver = new KeyVaultKeyResolver( vault, GetAccessToken );
-
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
-
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Assert
+                 assertArrayEquals(EK, encrypted);
              }
              finally
              {
                  // Delete the key
-                 client.DeleteSecretAsync( vault, "TestSecret" ).GetAwaiter().GetResult();
+                 keyVaultClient.deleteSecretAsync( getVaultUri(), SECRET_NAME ).get();
              }
          }
      }
 
-     /// <summary>
-     /// Test resolving a key from a 192bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
-     /// </summary>
-     [Fact]
-     public async Task KeyVault_KeyVaultKeyResolver_Secret192Base64()
+     /* 
+      * Test resolving a key from a 128bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
+      */
+     @Test
+     public void KeyVault_KeyVaultKeyResolver_Secret192Base64() throws InterruptedException, ExecutionException
      {
          // Arrange
-         var client   = CreateKeyVaultClient();
-         var vault    = ConfigurationManager.AppSettings["VaultUrl"];
+         byte[] keyBytes = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
+         byte[] CEK      = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
+         byte[] EK       = { (byte) 0x96, 0x77, (byte) 0x8B, 0x25, (byte) 0xAE, 0x6C, (byte) 0xA4, 0x35, (byte) 0xF9, 0x2B, 0x5B, (byte) 0x97, (byte) 0xC0, 0x50, (byte) 0xAE, (byte) 0xD2, 0x46, (byte) 0x8A, (byte) 0xB8, (byte) 0xA1, 0x7A, (byte) 0xD8, 0x4E, 0x5D };
 
-         var keyBytes = new byte[192 >> 3];
-
-         new RNGCryptoServiceProvider().GetNonZeroBytes( keyBytes );
-
-         var secret   = await client.SetSecretAsync( vault, "TestSecret", Convert.ToBase64String( keyBytes ), null, "application/octet-stream" ).ConfigureAwait( false );
+         Future<Secret> futureSecret   = keyVaultClient.setSecretAsync(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes), "application/octet-stream", null, null );
+         Secret         secret         = futureSecret.get();
 
          if ( secret != null )
          {
              try
              {
                  // ctor with client
-                 var resolver = new KeyVaultKeyResolver( client );
+                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
 
-                 var baseKey    = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 var versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
+                 IKey baseKey    = resolver.resolveKeyAsync( secret.getSecretIdentifier().getBaseIdentifier() ).get();
+                 IKey versionKey = resolver.resolveKeyAsync( secret.getSecretIdentifier().getIdentifier() ).get();
 
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Check for correct key identifiers
+                 Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
 
-                 // ctor with authentication callback
-                 resolver = new KeyVaultKeyResolver( GetAccessToken );
+                 // Ensure key operations give the expected results
+                 byte[] encrypted = null;
 
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
+                 try {
+                     encrypted = baseKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
+                 } catch (InterruptedException e) {
+                     fail("InterrupedException");
+                 } catch (ExecutionException e) {
+                     fail("ExecutionException");
+                 } catch (NoSuchAlgorithmException e) {
+                     fail("NoSuchAlgorithmException");
+                 }
 
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Assert
+                 assertArrayEquals(EK, encrypted);
 
-                 // ctor with vault name and client
-                 resolver = new KeyVaultKeyResolver( vault, client );
+                 try {
+                     encrypted = versionKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
+                 } catch (InterruptedException e) {
+                     fail("InterrupedException");
+                 } catch (ExecutionException e) {
+                     fail("ExecutionException");
+                 } catch (NoSuchAlgorithmException e) {
+                     fail("NoSuchAlgorithmException");
+                 }
 
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
-
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
-
-                 // ctor with vault name and authentication callback
-                 resolver = new KeyVaultKeyResolver( vault, GetAccessToken );
-
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
-
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Assert
+                 assertArrayEquals(EK, encrypted);
              }
              finally
              {
                  // Delete the key
-                 client.DeleteSecretAsync( vault, "TestSecret" ).GetAwaiter().GetResult();
+                 keyVaultClient.deleteSecretAsync( getVaultUri(), SECRET_NAME ).get();
              }
          }
      }
 
-     /// <summary>
-     /// Test resolving a key from a 256bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
-     /// </summary>
-     [Fact]
-     public async Task KeyVault_KeyVaultKeyResolver_Secret256Base64()
+     /* 
+      * Test resolving a key from a 256bit secret encoded as base64 in a vault using various KeyVaultKeyResolver constructors.
+      */
+     @Test
+     public void KeyVault_KeyVaultKeyResolver_Secret256Base64() throws InterruptedException, ExecutionException
      {
          // Arrange
-         var client   = CreateKeyVaultClient();
-         var vault    = ConfigurationManager.AppSettings["VaultUrl"];
+         byte[] keyBytes = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F };
+         byte[] CEK      = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
+         byte[] EK       = { 0x64, (byte) 0xE8, (byte) 0xC3, (byte) 0xF9, (byte) 0xCE, 0x0F, 0x5B, (byte) 0xA2, 0x63, (byte) 0xE9, 0x77, 0x79, 0x05, (byte) 0x81, (byte) 0x8A, 0x2A, (byte) 0x93, (byte) 0xC8, 0x19, 0x1E, 0x7D, 0x6E, (byte) 0x8A, (byte) 0xE7 };
 
-         var keyBytes = new byte[256 >> 3];
-
-         new RNGCryptoServiceProvider().GetNonZeroBytes( keyBytes );
-
-         var secret   = await client.SetSecretAsync( vault, "TestSecret", Convert.ToBase64String( keyBytes ), null, "application/octet-stream" ).ConfigureAwait( false );
+         Future<Secret> futureSecret   = keyVaultClient.setSecretAsync(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes), "application/octet-stream", null, null );
+         Secret         secret         = futureSecret.get();
 
          if ( secret != null )
          {
              try
              {
                  // ctor with client
-                 var resolver = new KeyVaultKeyResolver( client );
+                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
 
-                 var baseKey    = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 var versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
+                 IKey baseKey    = resolver.resolveKeyAsync( secret.getSecretIdentifier().getBaseIdentifier() ).get();
+                 IKey versionKey = resolver.resolveKeyAsync( secret.getSecretIdentifier().getIdentifier() ).get();
 
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Check for correct key identifiers
+                 Assert.assertEquals( baseKey.getKid(), versionKey.getKid() );
 
-                 // ctor with authentication callback
-                 resolver = new KeyVaultKeyResolver( GetAccessToken );
+                 // Ensure key operations give the expected results
+                 byte[] encrypted = null;
 
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
+                 try {
+                     encrypted = baseKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
+                 } catch (InterruptedException e) {
+                     fail("InterrupedException");
+                 } catch (ExecutionException e) {
+                     fail("ExecutionException");
+                 } catch (NoSuchAlgorithmException e) {
+                     fail("NoSuchAlgorithmException");
+                 }
 
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Assert
+                 assertArrayEquals(EK, encrypted);
 
-                 // ctor with vault name and client
-                 resolver = new KeyVaultKeyResolver( vault, client );
+                 try {
+                     encrypted = versionKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
+                 } catch (InterruptedException e) {
+                     fail("InterrupedException");
+                 } catch (ExecutionException e) {
+                     fail("ExecutionException");
+                 } catch (NoSuchAlgorithmException e) {
+                     fail("NoSuchAlgorithmException");
+                 }
 
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
-
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
-
-                 // ctor with vault name and authentication callback
-                 resolver = new KeyVaultKeyResolver( vault, GetAccessToken );
-
-                 baseKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.BaseIdentifier, default( CancellationToken ) ).ConfigureAwait( false );
-                 versionKey = await resolver.ResolveKeyAsync( secret.SecretIdentifier.Identifier, default( CancellationToken ) ).ConfigureAwait( false );
-
-                 Assert.Equal( baseKey.Kid, versionKey.Kid );
+                 // Assert
+                 assertArrayEquals(EK, encrypted);
              }
              finally
              {
                  // Delete the key
-                 client.DeleteSecretAsync( vault, "TestSecret" ).GetAwaiter().GetResult();
+                 keyVaultClient.deleteSecretAsync( getVaultUri(), SECRET_NAME ).get();
              }
          }
      }
-	 */
 }
