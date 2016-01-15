@@ -81,13 +81,15 @@ public class KeyVaultKey implements IKey {
         }
 
         if (key.getKty().equals(JsonWebKeyType.RSA)) {
-            _implementation = new RsaKey(keyBundle.getKey());
+        	// The private key is not available for KeyVault keys
+            _implementation = new RsaKey(key.getKid(), key.toRSA(false));
         } else if (key.getKty().equals(JsonWebKeyType.RSAHSM)) {
-            _implementation = new RsaKey(keyBundle.getKey());
+        	// The private key is not available for KeyVault keys
+            _implementation = new RsaKey(key.getKid(), key.toRSA(false));
         }
 
         if (_implementation == null) {
-            throw new IllegalArgumentException(String.format("The key type %s is not supported", keyBundle.getKey().getKty()));
+            throw new IllegalArgumentException(String.format("The key type %s is not supported", key.getKty()));
         }
 
         _client = client;
