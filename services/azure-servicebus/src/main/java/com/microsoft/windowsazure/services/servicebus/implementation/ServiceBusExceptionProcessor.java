@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,14 +27,19 @@ import org.apache.commons.logging.LogFactory;
 
 import com.microsoft.windowsazure.services.servicebus.ServiceBusContract;
 import com.microsoft.windowsazure.services.servicebus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.servicebus.models.CreateEventHubResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateSubscriptionResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateTopicResult;
+import com.microsoft.windowsazure.services.servicebus.models.EventHubInfo;
+import com.microsoft.windowsazure.services.servicebus.models.GetEventHubResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListEventHubsOptions;
+import com.microsoft.windowsazure.services.servicebus.models.ListEventHubsResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.servicebus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListRulesOptions;
@@ -253,6 +258,63 @@ public class ServiceBusExceptionProcessor implements ServiceBusContract {
     public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
         try {
             return next.updateQueue(queueInfo);
+        } catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        } catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public CreateEventHubResult createEventHub(EventHubInfo eventHub)
+            throws ServiceException {
+        try {
+            return next.createEventHub(eventHub);
+        } catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        } catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteEventHub(String eventHubPath) throws ServiceException {
+        try {
+            next.deleteEventHub(eventHubPath);
+        } catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        } catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetEventHubResult getEventHub(String eventHubPath) throws ServiceException {
+        try {
+            return next.getEventHub(eventHubPath);
+        } catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        } catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListEventHubsResult listEventHubs() throws ServiceException {
+        try {
+            return next.listEventHubs();
+        } catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        } catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListEventHubsResult listEventHubs(ListEventHubsOptions options)
+            throws ServiceException {
+        try {
+            return next.listEventHubs(options);
         } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
         } catch (ClientHandlerException e) {
