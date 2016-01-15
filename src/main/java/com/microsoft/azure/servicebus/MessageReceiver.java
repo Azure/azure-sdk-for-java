@@ -3,10 +3,7 @@ package com.microsoft.azure.servicebus;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import org.apache.qpid.proton.amqp.*;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -14,7 +11,6 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
-import org.apache.qpid.proton.reactor.Reactor;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
@@ -122,8 +118,7 @@ public class MessageReceiver extends ClientEntity
 					// return all available msgs to application-layer and send 'link-flow' frame for prefetch
 					Collection<Message> returnMessages = this.prefetchedMessages;
 					this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
-					
-					this.sendFlow();
+					this.sendFlow(returnMessages.size());					
 					return CompletableFuture.completedFuture(returnMessages);
 				}
 			}
@@ -131,7 +126,6 @@ public class MessageReceiver extends ClientEntity
 		
 		CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<Collection<Message>>();
 		this.pendingReceives.offer(new WorkItem<Collection<Message>>(onReceive, this.underlyingFactory.getOperationTimeout()));
-		this.sendFlow();
 		
 		if (this.currentOperationTracker == null && this.pendingReceives.peek() != null)
 		{
@@ -175,7 +169,7 @@ public class MessageReceiver extends ClientEntity
 		{
 			this.receiveHandler.onReceiveMessages(messages);
 			this.currentOperationTracker = TimeoutTracker.create(this.underlyingFactory.getOperationTimeout());
-			this.sendFlow();
+			this.sendFlow(messages.size());
 		}		
 		else
 		{
@@ -190,6 +184,7 @@ public class MessageReceiver extends ClientEntity
 				{
 					this.pendingReceives.poll().getWork().complete(messages);
 					this.currentOperationTracker = this.pendingReceives.peek() != null ? this.pendingReceives.peek().getTimeoutTracker() : null;
+					this.sendFlow(messages.size());
 				}
 			}
 		}
@@ -269,6 +264,7 @@ public class MessageReceiver extends ClientEntity
         				String.format("amqp.annotation.%s >%s '%s'", AmqpConstants.OffsetName, offsetInclusive ? "=" : StringUtil.EMPTY, offset))));
         
 		Session ssn = connection.session();
+		
 		Receiver receiver = ssn.receiver(name);
 		receiver.setSource(source);
 		receiver.setTarget(new Target());
@@ -288,11 +284,20 @@ public class MessageReceiver extends ClientEntity
         return receiver;
 	}
 	
-	private void sendFlow()
+	/**
+	 * set the link credit; not thread-safe
+	 */
+	private void sendFlow(int credits)
 	{
 		if (this.receiveLink.getLocalState() == EndpointState.ACTIVE)
 		{
-			this.receiveLink.flow(this.prefetchCount);
+			this.receiveLink.flow(credits);
+
+			if(TRACE_LOGGER.isLoggable(Level.FINE))
+	        {
+	        	TRACE_LOGGER.log(Level.FINE,
+	        			String.format("MessageReceiver.sendFlow (linkname: %s), updated-link-credit: %s", this.receiveLink.getName(), this.receiveLink.getCredit()));
+	        }
 		}
 		else
 		{

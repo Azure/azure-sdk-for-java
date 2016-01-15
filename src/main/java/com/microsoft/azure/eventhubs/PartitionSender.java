@@ -1,14 +1,12 @@
 package com.microsoft.azure.eventhubs;
 
-import java.util.LinkedList;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.DataList;
 import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.*;
@@ -48,7 +46,8 @@ public final class PartitionSender
 	
 	private CompletableFuture<Void> createInternalSender() throws ServiceBusException
 	{
-		return MessageSender.Create(this.factory, UUID.randomUUID().toString(), this.eventHubName)
+		return MessageSender.Create(this.factory, UUID.randomUUID().toString(), 
+				String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{
 					public void accept(MessageSender a) { PartitionSender.this.internalSender = a;}
@@ -69,6 +68,6 @@ public final class PartitionSender
 			throw new IllegalArgumentException("EventData batch cannot be empty.");
 		}
 		
-		return this.internalSender.send(EventDataUtil.toAmqpMessage(eventDatas), AmqpConstants.AmqpBatchMessageFormat);
+		return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas), null);
 	}
 }

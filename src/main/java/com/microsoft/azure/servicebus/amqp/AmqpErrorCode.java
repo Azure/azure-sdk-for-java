@@ -2,7 +2,8 @@ package com.microsoft.azure.servicebus.amqp;
 
 import org.apache.qpid.proton.amqp.Symbol;
 
-public final class AmqpErrorCode {
+public final class AmqpErrorCode
+{
 
 	public static final Symbol NotFound = Symbol.getSymbol("amqp:not-found");
 	public static final Symbol UnauthorizedAccess = Symbol.getSymbol("amqp:unauthorized-access");
@@ -15,5 +16,6 @@ public final class AmqpErrorCode {
 	// link errors
 	public static final Symbol Stolen = Symbol.getSymbol("amqp:link:stolen");
 	public static final Symbol PayloadSizeExceeded = Symbol.getSymbol("amqp:link:message-size-exceeded");
+	public static final Symbol AmqpLinkDetachForced = Symbol.getSymbol("amqp:link:detach-forced");
 
 }

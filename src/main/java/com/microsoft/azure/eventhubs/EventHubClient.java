@@ -6,8 +6,7 @@ import java.util.concurrent.*;
 import java.util.function.*;
 
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.*;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.message.*;
 import com.microsoft.azure.servicebus.*;
@@ -89,7 +88,7 @@ public class EventHubClient extends ClientEntity
 			throw new IllegalArgumentException("EventData cannot be null.");
 		}
 		
-		return this.sender.send(EventDataUtil.toAmqpMessage(eventDatas), AmqpConstants.AmqpBatchMessageFormat);
+		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas), null);
 	}
 	
 	public final CompletableFuture<Void> send(EventData eventData, String partitionKey) 
@@ -122,7 +121,7 @@ public class EventHubClient extends ClientEntity
 			throw new IllegalArgumentException("partitionKey cannot be null");
 		}
 		
-		return this.sender.send(EventDataUtil.toAmqpMessage(eventDatas, partitionKey), AmqpConstants.AmqpBatchMessageFormat);
+		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey), partitionKey);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId) 

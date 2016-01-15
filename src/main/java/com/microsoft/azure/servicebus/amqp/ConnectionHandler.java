@@ -33,17 +33,6 @@ public final class ConnectionHandler extends BaseHandler
 		this.password = password;
 	}
 
-	// TODO: REMOVE after hooking proper diagnostics
-	@Override
-	public void onUnhandled(Event event)
-	{
-		if (TRACE_LOGGER.isLoggable(Level.FINE))
-		{
-			TRACE_LOGGER.log(Level.FINE,
-					"Connection.onUnhandled: name[" + event.getConnection().getHostname() + "] : event[" + event + "]");
-		}
-	}
-
 	@Override
 	public void onConnectionBound(Event event)
 	{

@@ -57,7 +57,7 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.NotImplemented)
 		{
-			// TODO: ideally this should have been ToBeImplemented
+			// TODO: ideally this should have been ToBeImplementedException
 			return new UnsupportedOperationException(errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.NotAllowed)
@@ -71,6 +71,10 @@ final class ExceptionUtil
 		else if (errorCondition.getCondition() == ClientConstants.StoreLockLostError)
 		{
 			return ServiceBusException.Create(false, errorCondition.getDescription());
+		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced)
+		{
+			return new AmqpException(errorCondition);
 		}
 		
 		return ServiceBusException.Create(true, errorCondition.getDescription());

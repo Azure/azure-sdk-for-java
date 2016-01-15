@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus.amqp;
 
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
@@ -32,14 +33,14 @@ public final class ReceiveLinkHandler extends BaseHandler
 	private final String name;
 	private final MessageReceiver msgReceiver;
 	private final Object firstFlow;
-	private boolean isFirstFlow;
+	private boolean isFirstDelivery;
 	
 	public ReceiveLinkHandler(final String name, final MessageReceiver receiver)
 	{
 		this.name = name;
 		this.msgReceiver = receiver;
 		this.firstFlow = new Object();
-		this.isFirstFlow = true;
+		this.isFirstDelivery = true;
 	}
 	
 	@Override
@@ -113,14 +114,14 @@ public final class ReceiveLinkHandler extends BaseHandler
 	@Override
     public void onDelivery(Event event)
 	{
-		if (this.isFirstFlow)
+		if (this.isFirstDelivery)
         {
 			synchronized (this.firstFlow)
 			{
-				if (this.isFirstFlow)
+				if (this.isFirstDelivery)
 				{
 					this.msgReceiver.onOpenComplete(null);
-					this.isFirstFlow = false;
+					this.isFirstDelivery = false;
 				}
 			}
 		}
@@ -130,7 +131,13 @@ public final class ReceiveLinkHandler extends BaseHandler
         LinkedList<Message> messages = new LinkedList<Message>();
         
         while (delivery != null && delivery.isReadable() && !delivery.isPartial())
-        {
+        {    
+        	if(TRACE_LOGGER.isLoggable(Level.FINE))
+            {
+        		TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "recvLink.onDelivery (name: %s) invalid delivery - deliveryTag: %s, isReadable(): %s, isPartial(): %s"
+            					, receiveLink.getName() , new String(delivery.getTag()), delivery.isReadable(), delivery.isPartial()));
+            }
+        	
         	int size = delivery.pending();
             byte[] buffer = new byte[size];
             int read = receiveLink.recv(buffer, 0, buffer.length);
@@ -148,17 +155,16 @@ public final class ReceiveLinkHandler extends BaseHandler
             {    
             	break;
             }
-        }        
+        }
         
         if (messages != null && messages.size() > 0)
         {
         	this.msgReceiver.onDelivery(messages);
-        }
-        
-        if(TRACE_LOGGER.isLoggable(Level.FINE))
-        {
-        	TRACE_LOGGER.log(Level.FINE,
-        			String.format("recvLink.onDelivery (name: %s) credit: %s", this.name, receiveLink.getCredit()));
+            
+            if(TRACE_LOGGER.isLoggable(Level.FINE) && receiveLink != null)
+            {
+            	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "recvLink.onDelivery - linkCredit: %s", receiveLink.getCredit()));
+            }
         }
     }
 }
