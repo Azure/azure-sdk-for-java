@@ -72,6 +72,7 @@
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>azure-client-authentication</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>

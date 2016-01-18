@@ -26,6 +26,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.POST;
 import retrofit.http.Query;
@@ -40,18 +41,23 @@ public interface GlobalDomainRegistrationOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface GlobalDomainRegistrationService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
         Call<ResponseBody> getAllDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
         Call<ResponseBody> getDomainControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/validateDomainRegistrationInformation")
         Call<ResponseBody> validateDomainPurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body DomainRegistrationInput domainRegistrationInput, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
         Call<ResponseBody> checkDomainAvailability(@Path("subscriptionId") String subscriptionId, @Body NameIdentifier identifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
         Call<ResponseBody> listDomainRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

@@ -55,13 +55,10 @@ public final class TenantsOperationsImpl implements TenantsOperations {
      * @return the PageImpl&lt;TenantIdDescription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PageImpl<TenantIdDescription>> list() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
     }
 
@@ -72,15 +69,11 @@ public final class TenantsOperationsImpl implements TenantsOperations {
      * @return the {@link Call} object
      */
     public Call<ResponseBody> listAsync(final ServiceCallback<PageImpl<TenantIdDescription>> serviceCallback) {
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PageImpl<TenantIdDescription>>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {

@@ -22,6 +22,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.PUT;
 import retrofit.http.Query;
@@ -36,18 +37,23 @@ public interface ProviderOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface ProviderService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/Microsoft.Web/sourcecontrols")
         Call<ResponseBody> getSourceControls(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
         Call<ResponseBody> getSourceControl(@Path("sourceControlType") String sourceControlType, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
         Call<ResponseBody> updateSourceControl(@Path("sourceControlType") String sourceControlType, @Body SourceControl requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/Microsoft.Web/publishingUsers/web")
         Call<ResponseBody> getPublishingUser(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("providers/Microsoft.Web/publishingUsers/web")
         Call<ResponseBody> updatePublishingUser(@Body User requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
