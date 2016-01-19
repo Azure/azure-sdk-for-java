@@ -1,18 +1,19 @@
 package com.example.jianghlu.azureresourcerunner;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.microsoft.azure.management.compute.ComputeManagementClient;
 import com.microsoft.azure.management.compute.ComputeManagementClientImpl;
+import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.PageImpl;
@@ -43,7 +44,7 @@ public class Navigator extends AppCompatActivity {
         setTitle(subscription.getSubscriptionName());
 
         UserTokenCredentials credentials = new UserTokenCredentials(
-                this, CLIENT_ID, "common", REDIRECT_URI, null
+                this, CLIENT_ID, subscription.getTenantId(), REDIRECT_URI
         );
         rClient = new ResourceManagementClientImpl(credentials);
         sClient = new StorageManagementClientImpl(credentials);
@@ -54,10 +55,13 @@ public class Navigator extends AppCompatActivity {
     }
 
     public void listResourceGroups(View view) {
-
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Please wait...");
+        progress.setMessage("Loading resource groups...");
         rClient.getResourceGroups().listAsync(null, null, new ServiceCallback<PageImpl<ResourceGroup>>() {
             @Override
             public void failure(Throwable t) {
+                progress.dismiss();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -82,6 +86,7 @@ public class Navigator extends AppCompatActivity {
                         return view;
                     }
                 };
+                progress.dismiss();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -93,13 +98,17 @@ public class Navigator extends AppCompatActivity {
     }
 
     public void listStorageAccounts(View view) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Please wait...");
+        progress.setMessage("Loading storage accounts...");
         sClient.getStorageAccounts().listAsync(new ServiceCallback<StorageAccountListResult>() {
             @Override
             public void failure(Throwable t) {
+                progress.dismiss();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Failed to get resource groups", Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "Failed to get storage accounts", Toast.LENGTH_LONG);
                     }
                 });
             }
@@ -120,6 +129,7 @@ public class Navigator extends AppCompatActivity {
                         return view;
                     }
                 };
+                progress.dismiss();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -131,5 +141,53 @@ public class Navigator extends AppCompatActivity {
     }
 
     public void listVirtualMachines(View view) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Please wait...");
+        progress.setMessage("Loading storage accounts...");
+        cClient.getVirtualMachines().listAllAsync(new ServiceCallback<com.microsoft.azure.management.compute.models.PageImpl<VirtualMachine>>() {
+            @Override
+            public void failure(Throwable t) {
+                progress.dismiss();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Failed to get virtual machines", Toast.LENGTH_LONG);
+                    }
+                });
+            }
+
+            @Override
+            public void success(final ServiceResponse<com.microsoft.azure.management.compute.models.PageImpl<VirtualMachine>> result) {
+                final ListView listView = (ListView) findViewById(R.id.main_content);
+                final ArrayAdapter adapter = new ArrayAdapter<VirtualMachine>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody().getItems()) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+
+                        VirtualMachine vm = result.getBody().getItems().get(position);
+                        text1.setText(vm.getName());
+                        String desc = "";
+                        if (vm.getPlan() != null) {
+                            desc = desc + "Plan: " + vm.getPlan().getName() + "\t";
+                        }
+                        if (vm.getHardwareProfile() != null) {
+                            desc = desc + "Size: " + vm.getHardwareProfile().getVmSize() + "\t";
+                        }
+                        desc += "Location: " + vm.getLocation();
+                        text2.setText(desc);
+                        return view;
+                    }
+                };
+                progress.dismiss();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listView.setAdapter(adapter);
+                    }
+                });
+            }
+        });
     }
 }

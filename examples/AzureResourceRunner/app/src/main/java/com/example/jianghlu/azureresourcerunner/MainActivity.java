@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.microsoft.aad.adal.AuthenticationContext;
+import com.microsoft.aad.adal.PromptBehavior;
 import com.microsoft.azure.management.resources.SubscriptionClient;
 import com.microsoft.azure.management.resources.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.SubscriptionsOperations;
@@ -24,10 +24,8 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.credentials.AzureEnvironment;
 import com.microsoft.rest.credentials.UserTokenCredentials;
 
-import java.security.NoSuchAlgorithmException;
+import java.net.CookieManager;
 import java.util.ArrayList;
-
-import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         progress.setTitle("Please wait...");
         progress.setMessage("We are loading all your tenants and subscriptions...");
         credentials = new UserTokenCredentials(
-                self, CLIENT_ID, "common", REDIRECT_URI, null
+                self, CLIENT_ID, "common", REDIRECT_URI, PromptBehavior.REFRESH_SESSION, AzureEnvironment.AZURE
         );
         final TextView textOutput = (TextView)findViewById(R.id.text_output);
         SubscriptionClient client = new SubscriptionClientImpl(credentials);
@@ -90,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     subscriptionList = new ArrayList<>();
                     for (TenantIdDescription tenant : result.getBody().getItems()) {
-                        SubscriptionsOperations subOps = new SubscriptionClientImpl(credentials).getSubscriptions();
                         credentials = new UserTokenCredentials(
-                                self, CLIENT_ID, tenant.getTenantId(), REDIRECT_URI, null
+                                self, CLIENT_ID, tenant.getTenantId(), REDIRECT_URI
                         );
+                        SubscriptionsOperations subOps = new SubscriptionClientImpl(credentials).getSubscriptions();
                         Page<Subscription> response = subOps.list().getBody();
                         for (Subscription sub : response.getItems()) {
                             subscriptionList.add(new SubscriptionInfo(tenant.getTenantId(), sub.getSubscriptionId(), sub.getDisplayName()));
@@ -114,8 +112,9 @@ public class MainActivity extends AppCompatActivity {
     public void logout(View view) {
         if (this.credentials != null) {
             credentials.setToken(null);
-            UserTokenCredentials.clearTokenCache();
-            Toast.makeText(this, "Successfully logged out!", Toast.LENGTH_LONG).show();
         }
+        UserTokenCredentials.clearTokenCache();
+        new CookieManager().getCookieStore().removeAll();
+        Toast.makeText(this, "Successfully logged out!", Toast.LENGTH_LONG).show();
     }
 }
