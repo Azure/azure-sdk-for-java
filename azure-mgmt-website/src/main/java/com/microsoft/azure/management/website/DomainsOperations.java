@@ -21,6 +21,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.HTTP;
 import retrofit.http.PATCH;
 import retrofit.http.Path;
@@ -37,21 +38,27 @@ public interface DomainsOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface DomainsService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains")
         Call<ResponseBody> getDomains(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Call<ResponseBody> getDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Call<ResponseBody> createOrUpdateDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body Domain domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> deleteDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("forceHardDeleteDomain") Boolean forceHardDeleteDomain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
         Call<ResponseBody> updateDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body Domain domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/operationresults/{operationId}")
         Call<ResponseBody> getDomainOperation(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

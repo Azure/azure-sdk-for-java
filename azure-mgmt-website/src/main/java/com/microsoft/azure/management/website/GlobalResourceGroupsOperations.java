@@ -19,6 +19,7 @@ import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.POST;
 import retrofit.http.Query;
@@ -33,6 +34,7 @@ public interface GlobalResourceGroupsOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface GlobalResourceGroupsService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
         Call<ResponseBody> moveResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelope moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

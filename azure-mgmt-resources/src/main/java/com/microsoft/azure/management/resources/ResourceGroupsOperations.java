@@ -25,6 +25,7 @@ import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.HEAD;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.HTTP;
 import retrofit.http.PATCH;
 import retrofit.http.Path;
@@ -42,30 +43,39 @@ public interface ResourceGroupsOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface ResourceGroupsService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         Call<ResponseBody> listResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Call<Void> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Call<ResponseBody> patch(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups")
         Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listResourcesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 

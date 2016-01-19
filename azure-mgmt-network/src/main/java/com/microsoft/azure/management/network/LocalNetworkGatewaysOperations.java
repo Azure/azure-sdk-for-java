@@ -21,6 +21,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.HTTP;
 import retrofit.http.Path;
 import retrofit.http.PUT;
@@ -37,18 +38,23 @@ public interface LocalNetworkGatewaysOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface LocalNetworkGatewaysService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}")
         Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Body LocalNetworkGateway parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}")
         Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}/", method = "DELETE", hasBody = true)
         Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways")
         Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 

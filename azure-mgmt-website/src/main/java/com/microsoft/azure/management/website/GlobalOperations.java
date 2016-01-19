@@ -29,6 +29,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.POST;
 import retrofit.http.PUT;
@@ -44,42 +45,55 @@ public interface GlobalOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface GlobalService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
         Call<ResponseBody> getSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
         Call<ResponseBody> updateSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body User requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
         Call<ResponseBody> getSubscriptionGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
         Call<ResponseBody> getAllCertificates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
         Call<ResponseBody> getAllServerFarms(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/sites")
         Call<ResponseBody> getAllSites(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
         Call<ResponseBody> getAllHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/managedHostingEnvironments")
         Call<ResponseBody> getAllManagedHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/classicMobileServices")
         Call<ResponseBody> getAllClassicMobileServices(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
         Call<ResponseBody> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable/{name}")
         Call<ResponseBody> isHostingEnvironmentWithLegacyNameAvailable(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable")
         Call<ResponseBody> isHostingEnvironmentNameAvailable(@Path("subscriptionId") String subscriptionId, @Query("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
         Call<ResponseBody> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Body ResourceNameAvailabilityRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

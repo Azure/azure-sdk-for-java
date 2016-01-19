@@ -20,6 +20,7 @@ import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.http.Url;
@@ -34,9 +35,11 @@ public interface ExpressRouteServiceProvidersOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface ExpressRouteServiceProvidersService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders")
         Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 

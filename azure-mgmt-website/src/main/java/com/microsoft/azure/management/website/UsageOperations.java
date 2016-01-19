@@ -18,6 +18,7 @@ import java.io.IOException;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -31,6 +32,7 @@ public interface UsageOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface UsageService {
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web.Admin/environments/{environmentName}/usage")
         Call<ResponseBody> getUsage(@Path("resourceGroupName") String resourceGroupName, @Path("environmentName") String environmentName, @Path("subscriptionId") String subscriptionId, @Query("lastId") String lastId, @Query("batchSize") int batchSize, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

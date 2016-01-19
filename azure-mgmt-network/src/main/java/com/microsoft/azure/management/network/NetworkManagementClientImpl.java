@@ -342,12 +342,12 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     private void initialize() {
-        if (this.credentials != null) {
-            this.credentials.applyCredentialsFilter(this.client);
-        }
         this.apiVersion = "2015-06-15";
         this.acceptLanguage = "en-US";
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
+        if (this.credentials != null) {
+            this.credentials.applyCredentialsFilter(this.client);
+        }
         this.azureClient = new AzureClient(client, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
         this.retrofitBuilder.baseUrl(baseUri);
