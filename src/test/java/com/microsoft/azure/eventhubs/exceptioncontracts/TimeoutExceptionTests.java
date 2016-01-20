@@ -1,8 +1,8 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
+import java.util.*;
 import java.util.concurrent.*;
 
-import org.apache.qpid.proton.driver.Connector;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.*;
@@ -19,12 +19,12 @@ public class TimeoutExceptionTests
 		
 		MessagingFactory factory = MessagingFactory.create(
 				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey"),
-				server.reactor);
+				MockServer.reactor);
 				
 		try 
 		{
 			// this throws timeout as the Connector in MockServer doesn't have any AmqpConnection associated
-			MessageReceiver.Create(factory, "receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, 100, 0, false, null).get();
+			MessageReceiver.create(factory, "receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false, null).get();
 		}
 		catch(ExecutionException exp)
 		{

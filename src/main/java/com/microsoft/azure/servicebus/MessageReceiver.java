@@ -37,6 +37,9 @@ public class MessageReceiver extends ClientEntity
 	
 	private long epoch;
 	private boolean isEpochReceiver;
+	private Instant dateTime;
+	private boolean offsetInclusive;
+	
 	private TimeoutTracker currentOperationTracker;
 	private String lastReceivedOffset;
 	
@@ -44,18 +47,19 @@ public class MessageReceiver extends ClientEntity
 	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
 	 * Connection has to be associated with Reactor before Creating a receiver on it.
 	 */
-	public static CompletableFuture<MessageReceiver> Create(
+	public static CompletableFuture<MessageReceiver> create(
 			final MessagingFactory factory, 
 			final String name, 
 			final String recvPath, 
 			final String offset,
 			final boolean offsetInclusive,
+			final Instant dateTime,
 			final int prefetchCount,
 			final long epoch,
 			final boolean isEpochReceiver,
 			final MessageReceiveHandler receiveHandler)
 	{
-		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, prefetchCount, epoch, isEpochReceiver, receiveHandler);
+		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, dateTime, prefetchCount, epoch, isEpochReceiver, receiveHandler);
 		
 		ReceiveLinkHandler handler = new ReceiveLinkHandler(name, msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
@@ -68,6 +72,7 @@ public class MessageReceiver extends ClientEntity
 			final String recvPath, 
 			final String offset,
 			final boolean offsetInclusive,
+			final Instant dateTime,
 			final int prefetchCount,
 			final Long epoch,
 			final boolean isEpochReceiver,
@@ -81,8 +86,17 @@ public class MessageReceiver extends ClientEntity
 		this.epoch = epoch;
 		this.isEpochReceiver = isEpochReceiver;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
-		this.receiveLink = this.createReceiveLink(factory.getConnection(), name, recvPath, offset, offsetInclusive);
-		this.lastReceivedOffset = offset.toString();
+		if (offset != null)
+		{
+			this.lastReceivedOffset = offset;
+			this.offsetInclusive = offsetInclusive;
+		}
+		else
+		{
+			this.dateTime = dateTime;
+		}
+		
+		this.receiveLink = this.createReceiveLink();
 		this.currentOperationTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		this.initializeLinkOpen(this.currentOperationTracker);
 		
@@ -156,6 +170,7 @@ public class MessageReceiver extends ClientEntity
 					this.linkOpen.completeExceptionally(exception);
 				}
 				
+				this.offsetInclusive = false; // re-open link always starts from the last received offset
 				this.currentOperationTracker = null;
 				this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 			}
@@ -249,21 +264,36 @@ public class MessageReceiver extends ClientEntity
 		}
 	}
 	
-	private Receiver createReceiveLink(
-								final Connection connection, 
-								final String name, 
-								final String receivePath, 
-								final String offset,
-								final boolean offsetInclusive)
+	private Receiver createReceiveLink()
 	{	
 		Source source = new Source();
         source.setAddress(receivePath);
-        source.setFilter(Collections.singletonMap(
-        		AmqpConstants.StringFilter,
-        		new UnknownDescribedType(AmqpConstants.StringFilter, 
-        				String.format("amqp.annotation.%s >%s '%s'", AmqpConstants.OffsetName, offsetInclusive ? "=" : StringUtil.EMPTY, offset))));
         
-		Session ssn = connection.session();
+        UnknownDescribedType filter = null;
+        if (this.lastReceivedOffset == null)
+        {
+        	long totalMilliSeconds;
+        	try {
+        		// TODO: how to handle the case when : this.dateTime - epoch doesn't fit in a long !
+	        	totalMilliSeconds = this.dateTime.toEpochMilli();
+	        } catch(ArithmeticException ex)
+        	{
+        		totalMilliSeconds = Long.MAX_VALUE;
+        	}
+        	
+            filter = new UnknownDescribedType(AmqpConstants.StringFilter,
+        			String.format(AmqpConstants.AmqpAnnotationFormat, AmqpConstants.ReceivedAtAnnotationName, StringUtil.EMPTY, totalMilliSeconds));
+        }
+        else 
+        {
+        	filter =  new UnknownDescribedType(AmqpConstants.StringFilter,
+            		String.format(AmqpConstants.AmqpAnnotationFormat, AmqpConstants.OffsetAnnotationName, this.offsetInclusive ? "=" : StringUtil.EMPTY, this.lastReceivedOffset));
+        }
+        
+        Map<Symbol, UnknownDescribedType> filterMap = Collections.singletonMap(AmqpConstants.StringFilter, filter);
+        source.setFilter(filterMap);
+        
+		Session ssn = this.underlyingFactory.getConnection().session();
 		
 		Receiver receiver = ssn.receiver(name);
 		receiver.setSource(source);
@@ -313,12 +343,7 @@ public class MessageReceiver extends ClientEntity
 					@Override
 					public void run()
 					{
-						MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink(
-								MessageReceiver.this.underlyingFactory.getConnection(), 
-								MessageReceiver.this.name, 
-								MessageReceiver.this.receivePath, 
-								MessageReceiver.this.lastReceivedOffset, 
-								false);
+						MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink();
 						ReceiveLinkHandler handler = new ReceiveLinkHandler(name, MessageReceiver.this);
 						BaseHandler.setHandler(MessageReceiver.this.receiveLink, handler);
 						MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());

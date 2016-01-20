@@ -63,8 +63,8 @@ public class ReceiverRetry extends TestBase
 		
 		try 
 		{	
-			MessageReceiver receiver = MessageReceiver.Create(factory, 
-					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, 100, 0, false, null).get();
+			MessageReceiver receiver = MessageReceiver.create(factory, 
+					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false, null).get();
 			Collection<Message> messages = receiver.receive().get();
 			if (messages != null) {
 				receiver.receive().get();

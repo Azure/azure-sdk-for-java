@@ -31,12 +31,12 @@ public class MessagingFactory extends ClientEntity
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 	
-	MessagingFactory(ConnectionStringBuilder builder, Reactor reactor) throws IOException
+	MessagingFactory(final ConnectionStringBuilder builder, final Reactor reactor) throws IOException
 	{
 		super("MessagingFactory" + UUID.randomUUID().toString());
 		
 		if (reactor == null)
-			startReactor();
+			this.startReactor();
 		else if (MessagingFactory.reactor == null)
 			MessagingFactory.reactor = reactor;
 		else if (MessagingFactory.reactor != reactor)

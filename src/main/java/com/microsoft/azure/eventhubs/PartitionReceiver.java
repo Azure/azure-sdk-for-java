@@ -10,12 +10,13 @@ import org.apache.qpid.proton.message.Message;
 import com.microsoft.azure.servicebus.*;
 
 // TODO: Implement timeout on Receive
-public final class PartitionReceiver 
+public final class PartitionReceiver
 {
 	private final String partitionId;
 	
 	private String startingOffset;
 	private boolean offsetInclusive;
+	private Instant startingDateTime;
 	private MessageReceiver internalReceiver; 
 	private ReceiveHandler receiveHandler;
 	private final MessagingFactory underlyingFactory;
@@ -35,6 +36,7 @@ public final class PartitionReceiver
 			final String partitionId, 
 			final String startingOffset, 
 			final boolean offsetInclusive,
+			final Instant dateTime,
 			final Long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
@@ -46,23 +48,25 @@ public final class PartitionReceiver
 		this.partitionId = partitionId;
 		this.startingOffset = startingOffset;
 		this.offsetInclusive = offsetInclusive;
+		this.startingDateTime = dateTime;
 		this.epoch = epoch;
 		this.isEpochReceiver = isEpochReceiver;
 		this.receiveHandler = receiveHandler;
 	}
 	
-	static CompletableFuture<PartitionReceiver> Create(MessagingFactory factory, 
+	static CompletableFuture<PartitionReceiver> create(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
 			final String partitionId, 
 			final String startingOffset, 
 			final boolean offsetInclusive,
+			final Instant dateTime,
 			final long epoch,
 			final boolean isEpochReceiver,
 			final ReceiveHandler receiveHandler) 
 					throws ServiceBusException
 	{
-		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, epoch, isEpochReceiver, receiveHandler);
+		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiveHandler);
 		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
 		{
 			public PartitionReceiver apply(Void a)
@@ -74,9 +78,9 @@ public final class PartitionReceiver
 	
 	private CompletableFuture<Void> createInternalReceiver() throws ServiceBusException
 	{
-		return MessageReceiver.Create(this.underlyingFactory, UUID.randomUUID().toString(), 
+		return MessageReceiver.create(this.underlyingFactory, UUID.randomUUID().toString(), 
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
-				this.startingOffset, this.offsetInclusive, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver, this.receiveHandler)
+				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver, this.receiveHandler)
 				.thenAcceptAsync(new Consumer<MessageReceiver>()
 				{
 					public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
@@ -86,12 +90,12 @@ public final class PartitionReceiver
 	/**
 	 * @return The Cursor from which this Receiver started receiving from
 	 */
-	public final String getStartingOffset()
+	final String getStartingOffset()
 	{
 		return this.startingOffset;
 	}
 	
-	public final boolean getOffsetInclusive()
+	final boolean getOffsetInclusive()
 	{
 		return this.offsetInclusive;
 	}
@@ -144,5 +148,10 @@ public final class PartitionReceiver
 				return events;
 			}			
 		});		
+	}
+
+	public void close() {
+		if (this.internalReceiver != null)
+		this.internalReceiver.close();		
 	}
 }

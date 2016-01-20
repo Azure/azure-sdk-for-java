@@ -1,25 +1,25 @@
 package com.microsoft.azure.eventhubs;
 
 import java.nio.*;
+import java.time.*;
 import java.util.*;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.*;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.message.*;
-import com.microsoft.azure.servicebus.*;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.*;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
  * Each EventHubs partition can be visualized as a Stream of {@link EventData}.
  */
-public class EventData implements AutoCloseable
+public class EventData
 {
 	private String partitionKey;
 	private String offset;
 	private long sequenceNumber;
-	private Date enqueuedTimeUtc;
+	private Instant enqueuedTime;
 	private boolean closed;
 	private Binary bodyData;
 	private boolean isReceivedEvent;
@@ -53,7 +53,7 @@ public class EventData implements AutoCloseable
 		this.sequenceNumber = (Long) sequenceNumberObj;
 		
 		Object enqueuedTimeUtcObj = messageAnnotations.get(AmqpConstants.EnqueuedTimeUtc);
-		this.enqueuedTimeUtc = (Date) enqueuedTimeUtcObj;
+		this.enqueuedTime = ((Date) enqueuedTimeUtcObj).toInstant();
 		
 		this.offset = messageAnnotations.get(AmqpConstants.Offset).toString();
 		
@@ -239,17 +239,6 @@ public class EventData implements AutoCloseable
 		
 		return amqpMessage;
 	}
-
-	// TODO: remove Close - simplify
-	public void close()
-	{		
-		if (!this.closed)
-		{
-			this.bodyData = null;
-		}
-		
-		this.closed = true;
-	}
 	
 	public static final class SystemProperties
 	{
@@ -265,9 +254,9 @@ public class EventData implements AutoCloseable
 			return this.event.sequenceNumber;
 		}
 		
-		public Date getEnqueuedTimeUtc()
+		public Instant getEnqueuedTime()
 		{
-			return this.event.enqueuedTimeUtc;
+			return this.event.enqueuedTime;
 		}
 		
 		public String getOffset()

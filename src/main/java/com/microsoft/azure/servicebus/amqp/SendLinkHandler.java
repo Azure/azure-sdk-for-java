@@ -25,15 +25,6 @@ public class SendLinkHandler extends BaseHandler
 	}
 
 	@Override
-    public void onUnhandled(Event event)
-	{
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-        {
-            TRACE_LOGGER.log(Level.FINE, "sendLink.onUnhandled: name[" + event.getLink().getName() + "] : event[" + event + "]");
-        }		
-	}
-
-	@Override
     public void onDelivery(Event event)
 	{		
 		Sender sender = (Sender) event.getLink();

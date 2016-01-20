@@ -1,8 +1,6 @@
 package com.microsoft.azure.servicebus.amqp;
 
-import java.nio.charset.Charset;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,25 +30,16 @@ public final class ReceiveLinkHandler extends BaseHandler
 	
 	private final String name;
 	private final MessageReceiver msgReceiver;
-	private final Object firstFlow;
-	private boolean isFirstDelivery;
+	private final Object firstResponse;
+	private boolean isFirstResponse;
 	
 	public ReceiveLinkHandler(final String name, final MessageReceiver receiver)
 	{
 		this.name = name;
 		this.msgReceiver = receiver;
-		this.firstFlow = new Object();
-		this.isFirstDelivery = true;
+		this.firstResponse = new Object();
+		this.isFirstResponse = true;
 	}
-	
-	@Override
-    public void onUnhandled(Event event)
-	{
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-        {
-            TRACE_LOGGER.log(Level.FINE, "recvLink.onUnhandled: name[" + event.getLink().getName() + "] : event["+event+"]");
-        }
-    }	
 	
 	@Override
     public void onLinkLocalOpen(Event evt)
@@ -63,7 +52,7 @@ public final class ReceiveLinkHandler extends BaseHandler
             if(TRACE_LOGGER.isLoggable(Level.FINE))
             {
             	TRACE_LOGGER.log(Level.FINE,
-            			String.format("LinkHandler(name: %s) initial credit: %s", this.name, receiver.getCredit()));
+            			String.format("ReceiveLinkHandler(name: %s) initial credit: %s", this.name, receiver.getCredit()));
             }
             
             if (receiver.getCredit() < this.msgReceiver.getPrefetchCount())
@@ -72,6 +61,37 @@ public final class ReceiveLinkHandler extends BaseHandler
             }
         }
     }
+	
+	@Override
+	public void onLinkRemoteOpen(Event event)
+	{
+		Link link = event.getLink();
+        if (link instanceof Receiver)
+        {
+        	if (link.getRemoteSource() != null)
+        	{
+        		if(TRACE_LOGGER.isLoggable(Level.FINE))
+                {
+                	TRACE_LOGGER.log(Level.FINE,
+                			String.format("ReceiveLinkHandler(name: %s) RemoteSource: %s", this.name, link.getRemoteSource()));
+                }
+        		
+        		synchronized (this.firstResponse)
+        		{
+					this.isFirstResponse = false;
+	        		this.msgReceiver.onOpenComplete(null);
+        		}
+        	}
+        	else
+        	{
+        		if(TRACE_LOGGER.isLoggable(Level.FINE))
+                {
+                	TRACE_LOGGER.log(Level.FINE,
+                			String.format("ReceiveLinkHandler(name: %s): remote Target Source set to null. waiting for error.", this.name));
+                }
+        	}
+        }
+	}
 	
 	@Override
     public void onLinkRemoteClose(Event event)
@@ -114,14 +134,14 @@ public final class ReceiveLinkHandler extends BaseHandler
 	@Override
     public void onDelivery(Event event)
 	{
-		if (this.isFirstDelivery)
+		if (this.isFirstResponse)
         {
-			synchronized (this.firstFlow)
+			synchronized (this.firstResponse)
 			{
-				if (this.isFirstDelivery)
+				if (this.isFirstResponse)
 				{
 					this.msgReceiver.onOpenComplete(null);
-					this.isFirstDelivery = false;
+					this.isFirstResponse = false;
 				}
 			}
 		}
