@@ -1,3 +1,6 @@
+2015.x.x Version 4.2.0
+ * Added support for setting a library-wide proxy. The default proxy can be set on OperationContext.
+
 2016.03.31 Version 4.1.0
  * Added support for client side encryption for blobs, queues and tables.
  * Since the encryption preview, added functionality where uploading encrypted blobs can be done with just PutBlob, not PutBlock + PutBlockList, if the blob is small enough.

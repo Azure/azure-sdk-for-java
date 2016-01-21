@@ -18,7 +18,10 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -119,7 +122,74 @@ public class GenericTests {
             container2.deleteIfExists();
         }
     }
+    
+    @Test
+    public void testProxy() throws URISyntaxException, StorageException {
+        CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
+        CloudBlobContainer container = blobClient.getContainerReference("container1");
+        
+        // Use a request-level proxy
+        OperationContext opContext = new OperationContext();
+        opContext.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.1.1.1", 8888)));
 
+        // Turn of retries to make the failure happen faster
+        BlobRequestOptions opt = new BlobRequestOptions();
+        opt.setRetryPolicyFactory(new RetryNoRetry());
+        
+        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't 
+        // work as one would expect and will always for us return false. So, we validate by making sure the request
+        // fails when we set a bad proxy rather than check the proxy setting itself.
+        try {
+            container.exists(null, opt, opContext);
+            fail("Bad proxy should throw an exception.");
+        }
+        catch (StorageException e) {
+            assertEquals(ConnectException.class, e.getCause().getClass());
+            assertEquals("Connection timed out: connect", e.getCause().getMessage());
+        }
+    }
+
+    @Test
+    public void testDefaultProxy() throws URISyntaxException, StorageException {        
+        CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
+        CloudBlobContainer container = blobClient.getContainerReference("container1");
+        
+        // Use a default proxy
+        OperationContext.setDefaultProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.1.1.1", 8888)));
+
+        // Turn of retries to make the failure happen faster
+        BlobRequestOptions opt = new BlobRequestOptions();
+        opt.setRetryPolicyFactory(new RetryNoRetry());
+        
+        // Unfortunately HttpURLConnection doesn't expose a getter and the usingProxy method it does have doesn't 
+        // work as one would expect and will always for us return false. So, we validate by making sure the request
+        // fails when we set a bad proxy rather than check the proxy setting itself succeeding.
+        try {
+            container.exists(null, opt, null);
+            fail("Bad proxy should throw an exception.");
+        }
+        catch (StorageException e) {
+            assertEquals(ConnectException.class, e.getCause().getClass());
+            assertEquals("Connection timed out: connect", e.getCause().getMessage());
+        }
+    }
+    
+    @Test
+    public void testProxyOverridesDefault() throws URISyntaxException, StorageException {
+        CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
+        CloudBlobContainer container = blobClient.getContainerReference("container1");
+        
+        // Set a default proxy
+        OperationContext.setDefaultProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.1.1.1", 8888)));
+
+        // Override it with no proxy
+        OperationContext opContext = new OperationContext();
+        opContext.setProxy(Proxy.NO_PROXY);
+        
+        // Should succeed as request-level proxy should override the bad default proxy
+        container.exists(null, null, opContext);
+    }
+    
     /**
      * Make sure that if a request throws an error when it is being built that the request is not sent.
      * 
