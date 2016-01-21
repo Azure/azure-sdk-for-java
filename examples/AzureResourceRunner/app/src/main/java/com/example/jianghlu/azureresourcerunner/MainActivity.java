@@ -18,11 +18,11 @@ import com.microsoft.azure.management.resources.SubscriptionsOperations;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
 import com.microsoft.azure.management.resources.models.TenantIdDescription;
-import com.microsoft.rest.Page;
+import com.microsoft.azure.Page;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.credentials.AzureEnvironment;
-import com.microsoft.rest.credentials.UserTokenCredentials;
+import com.microsoft.azure.credentials.AzureEnvironment;
+import com.microsoft.azure.credentials.UserTokenCredentials;
 
 import java.net.CookieManager;
 import java.util.ArrayList;
