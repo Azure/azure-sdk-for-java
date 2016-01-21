@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.MetricDefinitionCollection;
 import com.microsoft.azure.management.website.models.PageImpl;
 import com.microsoft.azure.management.website.models.ResourceMetricCollection;
@@ -19,7 +20,6 @@ import com.microsoft.azure.management.website.models.Site;
 import com.microsoft.azure.management.website.models.VnetGateway;
 import com.microsoft.azure.management.website.models.VnetInfo;
 import com.microsoft.azure.management.website.models.VnetRoute;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

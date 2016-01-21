@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.ApplicationGateway;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -166,7 +165,7 @@ public final class ApplicationGatewaysOperationsImpl implements ApplicationGatew
     }
 
     private ServiceResponse<ApplicationGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ApplicationGateway, CloudException>()
                 .register(200, new TypeToken<ApplicationGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -287,7 +286,7 @@ public final class ApplicationGatewaysOperationsImpl implements ApplicationGatew
     }
 
     private ServiceResponse<PageImpl<ApplicationGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ApplicationGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -342,7 +341,7 @@ public final class ApplicationGatewaysOperationsImpl implements ApplicationGatew
     }
 
     private ServiceResponse<PageImpl<ApplicationGateway>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ApplicationGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -494,7 +493,7 @@ public final class ApplicationGatewaysOperationsImpl implements ApplicationGatew
     }
 
     private ServiceResponse<PageImpl<ApplicationGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ApplicationGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -544,7 +543,7 @@ public final class ApplicationGatewaysOperationsImpl implements ApplicationGatew
     }
 
     private ServiceResponse<PageImpl<ApplicationGateway>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ApplicationGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

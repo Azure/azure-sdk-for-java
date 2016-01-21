@@ -11,7 +11,7 @@
 package com.microsoft.azure.management.resources.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.BaseResource;
+import com.microsoft.azure.BaseResource;
 
 /**
  * Policy definition.

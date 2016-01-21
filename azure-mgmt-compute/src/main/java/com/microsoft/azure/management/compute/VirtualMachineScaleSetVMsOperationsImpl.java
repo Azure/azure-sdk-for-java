@@ -11,13 +11,11 @@
 package com.microsoft.azure.management.compute;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceView;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMListResult;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
-import com.microsoft.rest.serializer.JacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -237,7 +235,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
     }
 
     private ServiceResponse<VirtualMachineScaleSetVM> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVM, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVM, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetVM>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -319,7 +317,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
     }
 
     private ServiceResponse<VirtualMachineScaleSetVMInstanceView> getInstanceViewDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVMInstanceView, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVMInstanceView, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetVMInstanceView>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -351,7 +349,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
     }
 
@@ -383,7 +381,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VirtualMachineScaleSetVMListResult>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -398,7 +396,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
     }
 
     private ServiceResponse<VirtualMachineScaleSetVMListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVMListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVMListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetVMListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -616,7 +614,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
     }
 
     private ServiceResponse<VirtualMachineScaleSetVMListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVMListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetVMListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetVMListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

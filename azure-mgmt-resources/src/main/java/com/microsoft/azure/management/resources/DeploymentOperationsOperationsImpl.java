@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.DeploymentOperation;
 import com.microsoft.azure.management.resources.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -122,7 +121,7 @@ public final class DeploymentOperationsOperationsImpl implements DeploymentOpera
     }
 
     private ServiceResponse<DeploymentOperation> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentOperation, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentOperation, CloudException>()
                 .register(200, new TypeToken<DeploymentOperation>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -197,7 +196,7 @@ public final class DeploymentOperationsOperationsImpl implements DeploymentOpera
     }
 
     private ServiceResponse<PageImpl<DeploymentOperation>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>, CloudException>()
                 .register(200, new TypeToken<PageImpl<DeploymentOperation>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -247,7 +246,7 @@ public final class DeploymentOperationsOperationsImpl implements DeploymentOpera
     }
 
     private ServiceResponse<PageImpl<DeploymentOperation>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<DeploymentOperation>, CloudException>()
                 .register(200, new TypeToken<PageImpl<DeploymentOperation>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

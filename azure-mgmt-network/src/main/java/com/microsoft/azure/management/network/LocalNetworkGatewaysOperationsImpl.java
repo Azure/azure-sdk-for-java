@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.LocalNetworkGateway;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -172,7 +171,7 @@ public final class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGat
     }
 
     private ServiceResponse<LocalNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LocalNetworkGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<LocalNetworkGateway, CloudException>()
                 .register(200, new TypeToken<LocalNetworkGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -287,7 +286,7 @@ public final class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGat
     }
 
     private ServiceResponse<PageImpl<LocalNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<LocalNetworkGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -337,7 +336,7 @@ public final class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGat
     }
 
     private ServiceResponse<PageImpl<LocalNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<LocalNetworkGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

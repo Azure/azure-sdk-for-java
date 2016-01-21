@@ -11,12 +11,11 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TagDetails;
 import com.microsoft.azure.management.resources.models.TagValue;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -114,7 +113,7 @@ public final class TagsOperationsImpl implements TagsOperations {
     }
 
     private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -187,7 +186,7 @@ public final class TagsOperationsImpl implements TagsOperations {
     }
 
     private ServiceResponse<TagValue> createOrUpdateValueDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TagValue, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<TagValue, CloudException>()
                 .register(200, new TypeToken<TagValue>() { }.getType())
                 .register(201, new TypeToken<TagValue>() { }.getType())
                 .registerError(CloudException.class)
@@ -252,7 +251,7 @@ public final class TagsOperationsImpl implements TagsOperations {
     }
 
     private ServiceResponse<TagDetails> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TagDetails, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<TagDetails, CloudException>()
                 .register(200, new TypeToken<TagDetails>() { }.getType())
                 .register(201, new TypeToken<TagDetails>() { }.getType())
                 .registerError(CloudException.class)
@@ -317,7 +316,7 @@ public final class TagsOperationsImpl implements TagsOperations {
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -372,7 +371,7 @@ public final class TagsOperationsImpl implements TagsOperations {
     }
 
     private ServiceResponse<PageImpl<TagDetails>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TagDetails>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<TagDetails>, CloudException>()
                 .register(200, new TypeToken<PageImpl<TagDetails>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -422,7 +421,7 @@ public final class TagsOperationsImpl implements TagsOperations {
     }
 
     private ServiceResponse<PageImpl<TagDetails>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TagDetails>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<TagDetails>, CloudException>()
                 .register(200, new TypeToken<PageImpl<TagDetails>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

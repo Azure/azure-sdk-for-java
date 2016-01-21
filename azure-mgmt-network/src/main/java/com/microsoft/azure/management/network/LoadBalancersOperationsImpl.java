@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.LoadBalancer;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -168,7 +167,7 @@ public final class LoadBalancersOperationsImpl implements LoadBalancersOperation
     }
 
     private ServiceResponse<LoadBalancer> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LoadBalancer, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<LoadBalancer, CloudException>()
                 .register(200, new TypeToken<LoadBalancer>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -280,7 +279,7 @@ public final class LoadBalancersOperationsImpl implements LoadBalancersOperation
     }
 
     private ServiceResponse<PageImpl<LoadBalancer>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>()
                 .register(200, new TypeToken<PageImpl<LoadBalancer>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -344,7 +343,7 @@ public final class LoadBalancersOperationsImpl implements LoadBalancersOperation
     }
 
     private ServiceResponse<PageImpl<LoadBalancer>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>()
                 .register(200, new TypeToken<PageImpl<LoadBalancer>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -394,7 +393,7 @@ public final class LoadBalancersOperationsImpl implements LoadBalancersOperation
     }
 
     private ServiceResponse<PageImpl<LoadBalancer>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>()
                 .register(200, new TypeToken<PageImpl<LoadBalancer>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -444,7 +443,7 @@ public final class LoadBalancersOperationsImpl implements LoadBalancersOperation
     }
 
     private ServiceResponse<PageImpl<LoadBalancer>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<LoadBalancer>, CloudException>()
                 .register(200, new TypeToken<PageImpl<LoadBalancer>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

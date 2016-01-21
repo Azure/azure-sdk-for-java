@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.FeatureResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -95,7 +94,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -159,7 +158,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -232,7 +231,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     }
 
     private ServiceResponse<FeatureResult> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<FeatureResult, CloudException>()
                 .register(200, new TypeToken<FeatureResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -305,7 +304,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     }
 
     private ServiceResponse<FeatureResult> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<FeatureResult, CloudException>()
                 .register(200, new TypeToken<FeatureResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -355,7 +354,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -405,7 +404,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

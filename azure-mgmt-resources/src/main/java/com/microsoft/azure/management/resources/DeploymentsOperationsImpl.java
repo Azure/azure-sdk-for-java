@@ -11,15 +11,13 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.DeploymentExtended;
 import com.microsoft.azure.management.resources.models.DeploymentExtendedFilter;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
-import com.microsoft.rest.serializer.JacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -171,7 +169,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
     }
 
     private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Boolean, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -302,7 +300,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
     }
 
     private ServiceResponse<DeploymentExtended> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentExtended, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentExtended, CloudException>()
                 .register(200, new TypeToken<DeploymentExtended>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -375,7 +373,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
     }
 
     private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
     }
@@ -458,7 +456,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
     }
 
     private ServiceResponse<DeploymentValidateResult> validateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentValidateResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentValidateResult, CloudException>()
                 .register(200, new TypeToken<DeploymentValidateResult>() { }.getType())
                 .register(400, new TypeToken<DeploymentValidateResult>() { }.getType())
                 .registerError(CloudException.class)
@@ -486,7 +484,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
     }
 
@@ -512,7 +510,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PageImpl<DeploymentExtended>>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -527,7 +525,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
     }
 
     private ServiceResponse<PageImpl<DeploymentExtended>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>, CloudException>()
                 .register(200, new TypeToken<PageImpl<DeploymentExtended>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -577,7 +575,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
     }
 
     private ServiceResponse<PageImpl<DeploymentExtended>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>, CloudException>()
                 .register(200, new TypeToken<PageImpl<DeploymentExtended>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

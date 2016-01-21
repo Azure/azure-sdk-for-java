@@ -11,7 +11,7 @@
 package com.microsoft.azure.management.network.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.Page;
+import com.microsoft.azure.Page;
 import java.util.List;
 
 /**

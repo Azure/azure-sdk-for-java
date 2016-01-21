@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.storage;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCheckNameAvailabilityParameters;
@@ -19,9 +21,6 @@ import com.microsoft.azure.management.storage.models.StorageAccountKeys;
 import com.microsoft.azure.management.storage.models.StorageAccountListResult;
 import com.microsoft.azure.management.storage.models.StorageAccountRegenerateKeyParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountUpdateParameters;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -114,7 +113,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CheckNameAvailabilityResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<CheckNameAvailabilityResult, CloudException>()
                 .register(200, new TypeToken<CheckNameAvailabilityResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -244,7 +243,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -317,7 +316,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StorageAccount, CloudException>()
                 .register(200, new TypeToken<StorageAccount>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -401,7 +400,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StorageAccount, CloudException>()
                 .register(200, new TypeToken<StorageAccount>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -474,7 +473,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>()
                 .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -529,7 +528,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<StorageAccountListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>()
                 .register(200, new TypeToken<StorageAccountListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -593,7 +592,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<StorageAccountListResult> listByResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StorageAccountListResult, CloudException>()
                 .register(200, new TypeToken<StorageAccountListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -677,7 +676,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
     }
 
     private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>()
                 .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

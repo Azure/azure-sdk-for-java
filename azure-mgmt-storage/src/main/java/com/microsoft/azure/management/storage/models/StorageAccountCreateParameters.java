@@ -12,7 +12,7 @@ package com.microsoft.azure.management.storage.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
-import com.microsoft.rest.BaseResource;
+import com.microsoft.azure.BaseResource;
 
 /**
  * The parameters to provide for the account.

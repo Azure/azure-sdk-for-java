@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.CertificateCollection;
 import com.microsoft.azure.management.website.models.ClassicMobileServiceCollection;
 import com.microsoft.azure.management.website.models.GeoRegionCollection;
@@ -21,9 +23,6 @@ import com.microsoft.azure.management.website.models.ResourceNameAvailabilityReq
 import com.microsoft.azure.management.website.models.ServerFarmCollection;
 import com.microsoft.azure.management.website.models.SiteCollection;
 import com.microsoft.azure.management.website.models.User;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -104,7 +103,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<User> getSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<User, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -170,7 +169,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<User> updateSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<User, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -225,7 +224,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<GeoRegionCollection> getSubscriptionGeoRegionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GeoRegionCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<GeoRegionCollection, CloudException>()
                 .register(200, new TypeToken<GeoRegionCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -280,7 +279,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<CertificateCollection> getAllCertificatesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<CertificateCollection, CloudException>()
                 .register(200, new TypeToken<CertificateCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -339,7 +338,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<ServerFarmCollection> getAllServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -394,7 +393,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<SiteCollection> getAllSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -449,7 +448,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<HostingEnvironmentCollection> getAllHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -504,7 +503,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<ManagedHostingEnvironmentCollection> getAllManagedHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagedHostingEnvironmentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ManagedHostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<ManagedHostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -559,7 +558,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<ClassicMobileServiceCollection> getAllClassicMobileServicesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileServiceCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ClassicMobileServiceCollection, CloudException>()
                 .register(200, new TypeToken<ClassicMobileServiceCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -614,7 +613,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<Object> listPremierAddOnOffersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -678,7 +677,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -742,7 +741,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<Object> isHostingEnvironmentNameAvailableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -808,7 +807,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
     }
 
     private ServiceResponse<ResourceNameAvailability> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceNameAvailability, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceNameAvailability, CloudException>()
                 .register(200, new TypeToken<ResourceNameAvailability>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

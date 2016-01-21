@@ -11,12 +11,11 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.SourceControl;
 import com.microsoft.azure.management.website.models.SourceControlCollection;
 import com.microsoft.azure.management.website.models.User;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -90,7 +89,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
     }
 
     private ServiceResponse<SourceControlCollection> getSourceControlsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControlCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SourceControlCollection, CloudException>()
                 .register(200, new TypeToken<SourceControlCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -147,7 +146,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
     }
 
     private ServiceResponse<SourceControl> getSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SourceControl, CloudException>()
                 .register(200, new TypeToken<SourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -215,7 +214,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
     }
 
     private ServiceResponse<SourceControl> updateSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SourceControl, CloudException>()
                 .register(200, new TypeToken<SourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -263,7 +262,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
     }
 
     private ServiceResponse<User> getPublishingUserDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<User, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -322,7 +321,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
     }
 
     private ServiceResponse<User> updatePublishingUserDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<User, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

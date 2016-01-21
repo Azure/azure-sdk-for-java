@@ -11,12 +11,11 @@
 package com.microsoft.azure.management.compute;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.AvailabilitySet;
 import com.microsoft.azure.management.compute.models.AvailabilitySetListResult;
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResult;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -126,7 +125,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<AvailabilitySet> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AvailabilitySet, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<AvailabilitySet, CloudException>()
                 .register(200, new TypeToken<AvailabilitySet>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -199,7 +198,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response, retrofit);
@@ -272,7 +271,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<AvailabilitySet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AvailabilitySet, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<AvailabilitySet, CloudException>()
                 .register(200, new TypeToken<AvailabilitySet>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -336,7 +335,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<AvailabilitySetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AvailabilitySetListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<AvailabilitySetListResult, CloudException>()
                 .register(200, new TypeToken<AvailabilitySetListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -409,7 +408,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineSizeListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -459,7 +458,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<AvailabilitySetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AvailabilitySetListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<AvailabilitySetListResult, CloudException>()
                 .register(200, new TypeToken<AvailabilitySetListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -509,7 +508,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<VirtualMachineSizeListResult> listAvailableSizesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineSizeListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

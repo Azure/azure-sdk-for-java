@@ -11,12 +11,11 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.LocationListResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -98,7 +97,7 @@ public final class SubscriptionsOperationsImpl implements SubscriptionsOperation
     }
 
     private ServiceResponse<LocationListResult> listLocationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LocationListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<LocationListResult, CloudException>()
                 .register(200, new TypeToken<LocationListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -155,7 +154,7 @@ public final class SubscriptionsOperationsImpl implements SubscriptionsOperation
     }
 
     private ServiceResponse<Subscription> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Subscription, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Subscription, CloudException>()
                 .register(200, new TypeToken<Subscription>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -203,7 +202,7 @@ public final class SubscriptionsOperationsImpl implements SubscriptionsOperation
     }
 
     private ServiceResponse<PageImpl<Subscription>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Subscription>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<Subscription>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Subscription>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -253,7 +252,7 @@ public final class SubscriptionsOperationsImpl implements SubscriptionsOperation
     }
 
     private ServiceResponse<LocationListResult> listLocationsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LocationListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<LocationListResult, CloudException>()
                 .register(200, new TypeToken<LocationListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -303,7 +302,7 @@ public final class SubscriptionsOperationsImpl implements SubscriptionsOperation
     }
 
     private ServiceResponse<PageImpl<Subscription>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Subscription>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<Subscription>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Subscription>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

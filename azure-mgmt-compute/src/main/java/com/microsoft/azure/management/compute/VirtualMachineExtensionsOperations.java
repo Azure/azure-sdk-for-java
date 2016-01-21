@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

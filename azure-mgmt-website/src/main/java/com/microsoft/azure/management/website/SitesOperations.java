@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.BackupItem;
 import com.microsoft.azure.management.website.models.BackupItemCollection;
 import com.microsoft.azure.management.website.models.BackupRequest;
@@ -43,7 +44,6 @@ import com.microsoft.azure.management.website.models.StringDictionary;
 import com.microsoft.azure.management.website.models.User;
 import com.microsoft.azure.management.website.models.VnetGateway;
 import com.microsoft.azure.management.website.models.VnetInfo;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

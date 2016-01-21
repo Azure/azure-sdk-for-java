@@ -11,12 +11,10 @@
 package com.microsoft.azure.management.compute;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineImage;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
-import com.microsoft.rest.serializer.JacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -142,7 +140,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
     }
 
     private ServiceResponse<VirtualMachineImage> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineImage, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineImage, CloudException>()
                 .register(200, new TypeToken<VirtualMachineImage>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -182,7 +180,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute(), null);
     }
 
@@ -224,7 +222,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -239,7 +237,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
     }
 
     private ServiceResponse<List<VirtualMachineImageResource>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -312,7 +310,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
     }
 
     private ServiceResponse<List<VirtualMachineImageResource>> listOffersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -376,7 +374,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
     }
 
     private ServiceResponse<List<VirtualMachineImageResource>> listPublishersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -458,7 +456,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
     }
 
     private ServiceResponse<List<VirtualMachineImageResource>> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

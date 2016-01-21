@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.PolicyAssignment;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -143,7 +142,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -209,7 +208,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -282,7 +281,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PolicyAssignment> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>()
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -366,7 +365,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PolicyAssignment> createDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>()
                 .register(201, new TypeToken<PolicyAssignment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -439,7 +438,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PolicyAssignment> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>()
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -503,7 +502,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PolicyAssignment> deleteByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>()
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -578,7 +577,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PolicyAssignment> createByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>()
                 .register(201, new TypeToken<PolicyAssignment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -642,7 +641,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PolicyAssignment> getByIdDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PolicyAssignment, CloudException>()
                 .register(200, new TypeToken<PolicyAssignment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -699,7 +698,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -765,7 +764,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -815,7 +814,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -865,7 +864,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -915,7 +914,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -965,7 +964,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     }
 
     private ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<PolicyAssignment>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

@@ -11,10 +11,9 @@
 package com.microsoft.azure.management.compute;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineSizeListResult;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -103,7 +102,7 @@ public final class VirtualMachineSizesOperationsImpl implements VirtualMachineSi
     }
 
     private ServiceResponse<VirtualMachineSizeListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineSizeListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -153,7 +152,7 @@ public final class VirtualMachineSizesOperationsImpl implements VirtualMachineSi
     }
 
     private ServiceResponse<VirtualMachineSizeListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineSizeListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineSizeListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

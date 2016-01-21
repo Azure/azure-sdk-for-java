@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.BackupItem;
 import com.microsoft.azure.management.website.models.BackupItemCollection;
 import com.microsoft.azure.management.website.models.BackupRequest;
@@ -44,9 +46,6 @@ import com.microsoft.azure.management.website.models.StringDictionary;
 import com.microsoft.azure.management.website.models.User;
 import com.microsoft.azure.management.website.models.VnetGateway;
 import com.microsoft.azure.management.website.models.VnetInfo;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -166,7 +165,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetInfo> getSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -268,7 +267,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -359,7 +358,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -461,7 +460,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetInfo> updateSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -543,7 +542,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetInfo> getSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -636,7 +635,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -718,7 +717,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -811,7 +810,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetInfo> updateSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -893,7 +892,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>()
                 .register(200, new TypeToken<NetworkFeatures>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -985,7 +984,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>()
                 .register(200, new TypeToken<NetworkFeatures>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1068,7 +1067,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1159,7 +1158,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteOperationSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1243,7 +1242,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> swapSlotWithProductionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
@@ -1337,7 +1336,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> swapSlotsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
@@ -1422,7 +1421,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SlotDifferenceCollection> getSlotsDifferencesFromProductionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SlotDifferenceCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SlotDifferenceCollection, CloudException>()
                 .register(200, new TypeToken<SlotDifferenceCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1515,7 +1514,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SlotDifferenceCollection> getSlotsDifferencesSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SlotDifferenceCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SlotDifferenceCollection, CloudException>()
                 .register(200, new TypeToken<SlotDifferenceCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1599,7 +1598,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> applySlotConfigToProductionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1692,7 +1691,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> applySlotConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1774,7 +1773,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> resetSlotConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1847,7 +1846,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> resetProductionSlotConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1920,7 +1919,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SlotConfigNamesResource> getSlotConfigNamesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SlotConfigNamesResource, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SlotConfigNamesResource, CloudException>()
                 .register(200, new TypeToken<SlotConfigNamesResource>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2004,7 +2003,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SlotConfigNamesResource> updateSlotConfigNamesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SlotConfigNamesResource, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SlotConfigNamesResource, CloudException>()
                 .register(200, new TypeToken<SlotConfigNamesResource>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2079,7 +2078,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteCollection> getSiteSlotsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2149,7 +2148,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteCollection> getSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2224,7 +2223,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Site> getSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Site, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Site, CloudException>()
                 .register(200, new TypeToken<Site>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2372,7 +2371,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2456,7 +2455,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Site> getSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Site, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Site, CloudException>()
                 .register(200, new TypeToken<Site>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2618,7 +2617,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2702,7 +2701,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> recoverSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2795,7 +2794,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> recoverSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2895,7 +2894,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteSnapshotsOnSkuSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2986,7 +2985,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteSnapshotsOnSkuDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3077,7 +3076,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteSnapshotsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3177,7 +3176,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteSnapshotsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3245,7 +3244,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<DeletedSiteCollection> getDeletedSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeletedSiteCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeletedSiteCollection, CloudException>()
                 .register(200, new TypeToken<DeletedSiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3318,7 +3317,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<DeploymentCollection> getDeploymentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3400,7 +3399,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<DeploymentCollection> getDeploymentsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3482,7 +3481,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<DeploymentCollection> getInstanceDeploymentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3573,7 +3572,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<DeploymentCollection> getInstanceDeploymentsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3673,7 +3672,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> getInstanceDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3784,7 +3783,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> createInstanceDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3884,7 +3883,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteInstanceDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -3966,7 +3965,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> getDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4059,7 +4058,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> createDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4141,7 +4140,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4232,7 +4231,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> getDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4334,7 +4333,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> createDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4425,7 +4424,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4516,7 +4515,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> getInstanceDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4618,7 +4617,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Deployment> createInstanceDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4709,7 +4708,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteInstanceDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4782,7 +4781,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteInstanceCollection> getSiteInstanceIdentifiersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteInstanceCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteInstanceCollection, CloudException>()
                 .register(200, new TypeToken<SiteInstanceCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4864,7 +4863,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteInstanceCollection> getSiteInstanceIdentifiersSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteInstanceCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteInstanceCollection, CloudException>()
                 .register(200, new TypeToken<SiteInstanceCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -4946,7 +4945,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>()
                 .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5019,7 +5018,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>()
                 .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5101,7 +5100,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBinding> getSiteHostNameBindingDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5194,7 +5193,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBinding> createOrUpdateSiteHostNameBindingDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5276,7 +5275,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteHostNameBindingDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5367,7 +5366,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBinding> getSiteHostNameBindingSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5469,7 +5468,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBinding> createOrUpdateSiteHostNameBindingSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5560,7 +5559,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteHostNameBindingSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5633,7 +5632,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteConfig> getSiteConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5717,7 +5716,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteConfig> createOrUpdateSiteConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5801,7 +5800,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteConfig> updateSiteConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5883,7 +5882,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteConfig> getSiteConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -5976,7 +5975,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteConfig> createOrUpdateSiteConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6069,7 +6068,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteConfig> updateSiteConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6151,7 +6150,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> getSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6244,7 +6243,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6326,7 +6325,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6419,7 +6418,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> updateSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6492,7 +6491,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> getSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6576,7 +6575,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6649,7 +6648,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6733,7 +6732,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> updateSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6806,7 +6805,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> listSiteAppSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6888,7 +6887,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> listSiteAppSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -6972,7 +6971,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> updateSiteAppSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7065,7 +7064,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> updateSiteAppSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7138,7 +7137,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<ConnectionStringDictionary> listSiteConnectionStringsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7220,7 +7219,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<ConnectionStringDictionary> listSiteConnectionStringsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7304,7 +7303,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<ConnectionStringDictionary> updateSiteConnectionStringsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7397,7 +7396,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<ConnectionStringDictionary> updateSiteConnectionStringsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7470,7 +7469,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteAuthSettings> listSiteAuthSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7552,7 +7551,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteAuthSettings> listSiteAuthSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7636,7 +7635,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteAuthSettings> updateSiteAuthSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7729,7 +7728,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteAuthSettings> updateSiteAuthSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7909,7 +7908,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> listSiteMetadataDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -7991,7 +7990,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> listSiteMetadataSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8075,7 +8074,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> updateSiteMetadataDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8168,7 +8167,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<StringDictionary> updateSiteMetadataSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StringDictionary, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8241,7 +8240,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteLogsConfig> getSiteLogsConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8325,7 +8324,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteLogsConfig> updateSiteLogsConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8407,7 +8406,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteLogsConfig> getSiteLogsConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8500,7 +8499,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteLogsConfig> updateSiteLogsConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8580,7 +8579,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> listSitePremierAddOnsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8651,7 +8650,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> listSitePremierAddOnsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8731,7 +8730,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSitePremierAddOnDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8822,7 +8821,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> addSitePremierAddOnDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8902,7 +8901,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSitePremierAddOnDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -8991,7 +8990,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSitePremierAddOnSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9091,7 +9090,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> addSitePremierAddOnSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9180,7 +9179,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSitePremierAddOnSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9253,7 +9252,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> getSiteBackupConfigurationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9335,7 +9334,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> getSiteBackupConfigurationSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9428,7 +9427,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> updateSiteBackupConfigurationSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9512,7 +9511,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9596,7 +9595,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> backupSiteDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9680,7 +9679,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> backupSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9773,7 +9772,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> backupSiteDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9866,7 +9865,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> backupSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -9950,7 +9949,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RestoreRequest> discoverSiteRestoreDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10043,7 +10042,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RestoreRequest> discoverSiteRestoreSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10116,7 +10115,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItemCollection> listSiteBackupsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10198,7 +10197,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItemCollection> listSiteBackupsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10280,7 +10279,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> getSiteBackupStatusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10362,7 +10361,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> deleteBackupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10453,7 +10452,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> getSiteBackupStatusSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10544,7 +10543,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> deleteBackupSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10637,7 +10636,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> getSiteBackupStatusSecretsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10739,7 +10738,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> getSiteBackupStatusSecretsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10832,7 +10831,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RestoreResponse> restoreSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreResponse, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RestoreResponse, CloudException>()
                 .register(200, new TypeToken<RestoreResponse>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -10934,7 +10933,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RestoreResponse> restoreSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreResponse, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RestoreResponse, CloudException>()
                 .register(200, new TypeToken<RestoreResponse>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11007,7 +11006,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> getSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11091,7 +11090,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11164,7 +11163,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> listSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11246,7 +11245,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> getSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11339,7 +11338,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11421,7 +11420,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupRequest> listSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11503,7 +11502,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItemCollection> listSiteBackupsDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11576,7 +11575,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItemCollection> listSiteBackupsDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11660,7 +11659,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RestoreRequest> discoverSiteRestoreDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11753,7 +11752,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RestoreRequest> discoverSiteRestoreDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11828,7 +11827,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>()
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11912,7 +11911,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>()
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -11989,7 +11988,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<ResourceMetricCollection> getSiteMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12075,7 +12074,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<ResourceMetricCollection> getSiteMetricsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12157,7 +12156,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12230,7 +12229,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12314,7 +12313,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<InputStream> listSitePublishingProfileXmlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<InputStream, CloudException>()
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12407,7 +12406,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<InputStream> listSitePublishingProfileXmlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<InputStream, CloudException>()
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12493,7 +12492,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> restartSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12570,7 +12569,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> restartSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12643,7 +12642,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> startSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12725,7 +12724,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> startSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12798,7 +12797,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> stopSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12880,7 +12879,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> stopSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -12960,7 +12959,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> syncSiteRepositorySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13031,7 +13030,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> syncSiteRepositoryDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13113,7 +13112,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> generateNewSitePublishingPasswordSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13186,7 +13185,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> generateNewSitePublishingPasswordDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13268,7 +13267,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> getSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13361,7 +13360,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> createOrUpdateSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13443,7 +13442,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13536,7 +13535,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> updateSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13627,7 +13626,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> getSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13729,7 +13728,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> createOrUpdateSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13820,7 +13819,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> deleteSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -13922,7 +13921,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> updateSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14004,7 +14003,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14077,7 +14076,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14177,7 +14176,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteVnetGatewaySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -14289,7 +14288,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14400,7 +14399,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14491,7 +14490,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteVnetGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -14594,7 +14593,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14696,7 +14695,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14769,7 +14768,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>()
                 .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -14851,7 +14850,7 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>()
                 .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

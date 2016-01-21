@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -104,7 +103,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
     }
 
     private ServiceResponse<Provider> unregisterDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Provider, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Provider, CloudException>()
                 .register(200, new TypeToken<Provider>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -168,7 +167,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
     }
 
     private ServiceResponse<Provider> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Provider, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Provider, CloudException>()
                 .register(200, new TypeToken<Provider>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -225,7 +224,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
     }
 
     private ServiceResponse<PageImpl<Provider>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Provider>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -289,7 +288,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
     }
 
     private ServiceResponse<Provider> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Provider, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Provider, CloudException>()
                 .register(200, new TypeToken<Provider>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -339,7 +338,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
     }
 
     private ServiceResponse<PageImpl<Provider>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Provider>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

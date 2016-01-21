@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.DomainAvailablilityCheckResult;
 import com.microsoft.azure.management.website.models.DomainCollection;
 import com.microsoft.azure.management.website.models.DomainControlCenterSsoRequest;
@@ -17,7 +18,6 @@ import com.microsoft.azure.management.website.models.DomainRecommendationSearchP
 import com.microsoft.azure.management.website.models.DomainRegistrationInput;
 import com.microsoft.azure.management.website.models.NameIdentifier;
 import com.microsoft.azure.management.website.models.NameIdentifierCollection;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

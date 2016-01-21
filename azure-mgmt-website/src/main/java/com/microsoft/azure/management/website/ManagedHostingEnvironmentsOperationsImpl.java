@@ -11,15 +11,14 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.AddressResponse;
 import com.microsoft.azure.management.website.models.HostingEnvironment;
 import com.microsoft.azure.management.website.models.HostingEnvironmentCollection;
 import com.microsoft.azure.management.website.models.ManagedHostingEnvironment;
 import com.microsoft.azure.management.website.models.ServerFarmCollection;
 import com.microsoft.azure.management.website.models.SiteCollection;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -119,7 +118,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<ManagedHostingEnvironment> getManagedHostingEnvironmentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagedHostingEnvironment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ManagedHostingEnvironment, CloudException>()
                 .register(200, new TypeToken<ManagedHostingEnvironment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -293,7 +292,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<HostingEnvironmentCollection> getManagedHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -366,7 +365,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<AddressResponse> getManagedHostingEnvironmentVipsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AddressResponse, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<AddressResponse, CloudException>()
                 .register(200, new TypeToken<AddressResponse>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -448,7 +447,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<Object> getManagedHostingEnvironmentOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -526,7 +525,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<SiteCollection> getManagedHostingEnvironmentSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -599,7 +598,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -672,7 +671,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

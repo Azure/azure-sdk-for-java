@@ -11,10 +11,9 @@
 package com.microsoft.azure.management.storage;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.storage.models.UsageListResult;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -94,7 +93,7 @@ public final class UsageOperationsImpl implements UsageOperations {
     }
 
     private ServiceResponse<UsageListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<UsageListResult, CloudException>()
                 .register(200, new TypeToken<UsageListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

@@ -11,14 +11,13 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.CustomHeaderInterceptor;
 import com.microsoft.azure.management.network.models.DnsNameAvailabilityResult;
-import com.microsoft.rest.AzureClient;
-import com.microsoft.rest.AzureServiceClient;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.CustomHeaderInterceptor;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -57,11 +56,11 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.azureClient;
     }
 
-    /** The management credentials for Azure. */
+    /** Gets Azure subscription credentials. */
     private ServiceClientCredentials credentials;
 
     /**
-     * Gets The management credentials for Azure.
+     * Gets Gets Azure subscription credentials.
      *
      * @return the credentials value.
      */
@@ -123,11 +122,11 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.acceptLanguage = acceptLanguage;
     }
 
-    /** The retry timeout for Long Running Operations. */
+    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets The retry timeout for Long Running Operations.
+     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -136,12 +135,33 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Sets The retry timeout for Long Running Operations.
+     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      */
     public void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+    }
+
+    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    private boolean generateClientRequestId;
+
+    /**
+     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     *
+     * @return the generateClientRequestId value.
+     */
+    public boolean getGenerateClientRequestId() {
+        return this.generateClientRequestId;
+    }
+
+    /**
+     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     *
+     * @param generateClientRequestId the generateClientRequestId value.
+     */
+    public void setGenerateClientRequestId(boolean generateClientRequestId) {
+        this.generateClientRequestId = generateClientRequestId;
     }
 
     /**
@@ -344,6 +364,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     private void initialize() {
         this.apiVersion = "2015-06-15";
         this.acceptLanguage = "en-US";
+        this.longRunningOperationRetryTimeout = 30;
+        this.generateClientRequestId = true;
         this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         if (this.credentials != null) {
             this.credentials.applyCredentialsFilter(this.client);
@@ -414,7 +436,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     private ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DnsNameAvailabilityResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DnsNameAvailabilityResult, CloudException>()
                 .register(200, new TypeToken<DnsNameAvailabilityResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
