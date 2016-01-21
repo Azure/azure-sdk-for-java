@@ -11,14 +11,13 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuit;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitArpTable;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitRoutesTable;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitStats;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -169,7 +168,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<ExpressRouteCircuit> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuit, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuit, CloudException>()
                 .register(200, new TypeToken<ExpressRouteCircuit>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -299,7 +298,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -372,7 +371,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -445,7 +444,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStats>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStats>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStats>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -509,7 +508,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuit>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -564,7 +563,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -614,7 +613,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -664,7 +663,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -714,7 +713,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStats>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStats>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStats>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -764,7 +763,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuit>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -814,7 +813,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

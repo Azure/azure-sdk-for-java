@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.AddressResponse;
 import com.microsoft.azure.management.website.models.CsmUsageQuotaCollection;
 import com.microsoft.azure.management.website.models.HostingEnvironment;
@@ -25,7 +26,6 @@ import com.microsoft.azure.management.website.models.StampCapacityCollection;
 import com.microsoft.azure.management.website.models.UsageCollection;
 import com.microsoft.azure.management.website.models.WorkerPool;
 import com.microsoft.azure.management.website.models.WorkerPoolCollection;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

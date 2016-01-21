@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.AddressResponse;
 import com.microsoft.azure.management.website.models.CsmUsageQuotaCollection;
 import com.microsoft.azure.management.website.models.HostingEnvironment;
@@ -26,9 +28,6 @@ import com.microsoft.azure.management.website.models.StampCapacityCollection;
 import com.microsoft.azure.management.website.models.UsageCollection;
 import com.microsoft.azure.management.website.models.WorkerPool;
 import com.microsoft.azure.management.website.models.WorkerPoolCollection;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -129,7 +128,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<HostingEnvironment> getHostingEnvironmentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironment, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostingEnvironment, CloudException>()
                 .register(200, new TypeToken<HostingEnvironment>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -312,7 +311,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<List<HostingEnvironmentDiagnostics>> getHostingEnvironmentDiagnosticsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<HostingEnvironmentDiagnostics>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<HostingEnvironmentDiagnostics>, CloudException>()
                 .register(200, new TypeToken<List<HostingEnvironmentDiagnostics>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -394,7 +393,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<HostingEnvironmentDiagnostics> getHostingEnvironmentDiagnosticsItemDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentDiagnostics, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostingEnvironmentDiagnostics, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentDiagnostics>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -467,7 +466,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<StampCapacityCollection> getHostingEnvironmentCapacitiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StampCapacityCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<StampCapacityCollection, CloudException>()
                 .register(200, new TypeToken<StampCapacityCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -540,7 +539,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<AddressResponse> getHostingEnvironmentVipsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AddressResponse, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<AddressResponse, CloudException>()
                 .register(200, new TypeToken<AddressResponse>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -604,7 +603,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<HostingEnvironmentCollection> getHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -677,7 +676,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> rebootHostingEnvironmentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -753,7 +752,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> getHostingEnvironmentOperationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -835,7 +834,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> getHostingEnvironmentOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -915,7 +914,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -988,7 +987,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<MetricDefinition> getHostingEnvironmentMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinition, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<MetricDefinition, CloudException>()
                 .register(200, new TypeToken<MetricDefinition>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1063,7 +1062,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<CsmUsageQuotaCollection> getHostingEnvironmentUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>()
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1146,7 +1145,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMultiRoleMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1232,7 +1231,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentWebWorkerMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1305,7 +1304,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<MetricDefinitionCollection> getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1387,7 +1386,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<MetricDefinitionCollection> getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1460,7 +1459,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<UsageCollection> getHostingEnvironmentMultiRoleUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<UsageCollection, CloudException>()
                 .register(200, new TypeToken<UsageCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1542,7 +1541,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<UsageCollection> getHostingEnvironmentWebWorkerUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<UsageCollection, CloudException>()
                 .register(200, new TypeToken<UsageCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1617,7 +1616,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<SiteCollection> getHostingEnvironmentSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1690,7 +1689,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<ServerFarmCollection> getHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1763,7 +1762,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<ServerFarmCollection> getHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1836,7 +1835,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<WorkerPoolCollection> getMultiRolePoolsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<WorkerPoolCollection, CloudException>()
                 .register(200, new TypeToken<WorkerPoolCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1909,7 +1908,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<WorkerPool> getMultiRolePoolDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPool, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<WorkerPool, CloudException>()
                 .register(200, new TypeToken<WorkerPool>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2039,7 +2038,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<SkuInfoCollection> getMultiRolePoolSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfoCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SkuInfoCollection, CloudException>()
                 .register(200, new TypeToken<SkuInfoCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2112,7 +2111,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<WorkerPoolCollection> getWorkerPoolsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<WorkerPoolCollection, CloudException>()
                 .register(200, new TypeToken<WorkerPoolCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2194,7 +2193,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<WorkerPool> getWorkerPoolDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPool, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<WorkerPool, CloudException>()
                 .register(200, new TypeToken<WorkerPool>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2338,7 +2337,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<SkuInfoCollection> getWorkerPoolSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfoCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SkuInfoCollection, CloudException>()
                 .register(200, new TypeToken<SkuInfoCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2433,7 +2432,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> getWorkerPoolInstanceMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2524,7 +2523,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2608,7 +2607,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> getMultiRolePoolInstanceMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -2690,7 +2689,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
     }
 
     private ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

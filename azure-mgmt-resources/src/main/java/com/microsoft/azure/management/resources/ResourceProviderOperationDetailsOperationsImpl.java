@@ -11,10 +11,9 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.ResourceProviderOperationDetailListResult;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -105,7 +104,7 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
     }
 
     private ServiceResponse<ResourceProviderOperationDetailListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceProviderOperationDetailListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceProviderOperationDetailListResult, CloudException>()
                 .register(200, new TypeToken<ResourceProviderOperationDetailListResult>() { }.getType())
                 .register(204, new TypeToken<ResourceProviderOperationDetailListResult>() { }.getType())
                 .registerError(CloudException.class)
@@ -156,7 +155,7 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
     }
 
     private ServiceResponse<ResourceProviderOperationDetailListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceProviderOperationDetailListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceProviderOperationDetailListResult, CloudException>()
                 .register(200, new TypeToken<ResourceProviderOperationDetailListResult>() { }.getType())
                 .register(204, new TypeToken<ResourceProviderOperationDetailListResult>() { }.getType())
                 .registerError(CloudException.class)

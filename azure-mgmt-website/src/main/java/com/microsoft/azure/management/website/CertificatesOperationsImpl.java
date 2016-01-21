@@ -11,12 +11,11 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.Certificate;
 import com.microsoft.azure.management.website.models.CertificateCollection;
 import com.microsoft.azure.management.website.models.Csr;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -107,7 +106,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<CertificateCollection> getCertificatesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<CertificateCollection, CloudException>()
                 .register(200, new TypeToken<CertificateCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -180,7 +179,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Certificate> getCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Certificate, CloudException>()
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -264,7 +263,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Certificate> createOrUpdateCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Certificate, CloudException>()
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -337,7 +336,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Object> deleteCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -421,7 +420,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Certificate> updateCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Certificate, CloudException>()
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -485,7 +484,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<List<Csr>> getCsrsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<Csr>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<Csr>, CloudException>()
                 .register(200, new TypeToken<List<Csr>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -558,7 +557,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Csr> getCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Csr, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Csr, CloudException>()
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -642,7 +641,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Csr> createOrUpdateCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Csr, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Csr, CloudException>()
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -715,7 +714,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Object> deleteCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -799,7 +798,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     }
 
     private ServiceResponse<Csr> updateCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Csr, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Csr, CloudException>()
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.compute;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetInstanceView;
@@ -18,9 +20,6 @@ import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetListR
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetListSkusResult;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -281,7 +280,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<VirtualMachineScaleSet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSet, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSet, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSet>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -411,7 +410,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceViewDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetInstanceView, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetInstanceView, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetInstanceView>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -475,7 +474,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<VirtualMachineScaleSetListResult> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -530,7 +529,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -603,7 +602,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListSkusResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListSkusResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetListSkusResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -869,7 +868,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<VirtualMachineScaleSetListResult> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetListResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -919,7 +918,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -969,7 +968,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
     }
 
     private ServiceResponse<VirtualMachineScaleSetListSkusResult> listSkusNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListSkusResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualMachineScaleSetListSkusResult, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetListSkusResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

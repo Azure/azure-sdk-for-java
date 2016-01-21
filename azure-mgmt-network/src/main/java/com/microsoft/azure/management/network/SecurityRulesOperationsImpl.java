@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.SecurityRule;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -180,7 +179,7 @@ public final class SecurityRulesOperationsImpl implements SecurityRulesOperation
     }
 
     private ServiceResponse<SecurityRule> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SecurityRule, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<SecurityRule, CloudException>()
                 .register(200, new TypeToken<SecurityRule>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -315,7 +314,7 @@ public final class SecurityRulesOperationsImpl implements SecurityRulesOperation
     }
 
     private ServiceResponse<PageImpl<SecurityRule>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SecurityRule>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<SecurityRule>, CloudException>()
                 .register(200, new TypeToken<PageImpl<SecurityRule>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -365,7 +364,7 @@ public final class SecurityRulesOperationsImpl implements SecurityRulesOperation
     }
 
     private ServiceResponse<PageImpl<SecurityRule>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SecurityRule>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<SecurityRule>, CloudException>()
                 .register(200, new TypeToken<PageImpl<SecurityRule>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

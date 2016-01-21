@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -180,7 +179,7 @@ public final class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressR
     }
 
     private ServiceResponse<ExpressRouteCircuitPeering> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitPeering, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitPeering, CloudException>()
                 .register(200, new TypeToken<ExpressRouteCircuitPeering>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -315,7 +314,7 @@ public final class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressR
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitPeering>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -365,7 +364,7 @@ public final class ExpressRouteCircuitPeeringsOperationsImpl implements ExpressR
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitPeering>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitPeering>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitPeering>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

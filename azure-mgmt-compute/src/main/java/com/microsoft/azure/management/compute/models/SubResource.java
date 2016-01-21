@@ -10,7 +10,7 @@
 
 package com.microsoft.azure.management.compute.models;
 
-import com.microsoft.rest.BaseResource;
+import com.microsoft.azure.BaseResource;
 
 /**
  * The SubResource model.

@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.RouteTable;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -168,7 +167,7 @@ public final class RouteTablesOperationsImpl implements RouteTablesOperations {
     }
 
     private ServiceResponse<RouteTable> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteTable, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<RouteTable, CloudException>()
                 .register(200, new TypeToken<RouteTable>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -289,7 +288,7 @@ public final class RouteTablesOperationsImpl implements RouteTablesOperations {
     }
 
     private ServiceResponse<PageImpl<RouteTable>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -344,7 +343,7 @@ public final class RouteTablesOperationsImpl implements RouteTablesOperations {
     }
 
     private ServiceResponse<PageImpl<RouteTable>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -394,7 +393,7 @@ public final class RouteTablesOperationsImpl implements RouteTablesOperations {
     }
 
     private ServiceResponse<PageImpl<RouteTable>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -444,7 +443,7 @@ public final class RouteTablesOperationsImpl implements RouteTablesOperations {
     }
 
     private ServiceResponse<PageImpl<RouteTable>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<RouteTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<RouteTable>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetInstanceView;
@@ -17,7 +18,6 @@ import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetListR
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetListSkusResult;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

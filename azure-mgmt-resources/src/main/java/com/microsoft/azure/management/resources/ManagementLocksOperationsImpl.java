@@ -11,12 +11,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.ManagementLockObject;
 import com.microsoft.azure.management.resources.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
-import com.microsoft.rest.serializer.JacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -126,7 +124,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(201, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
@@ -247,7 +245,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(201, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
@@ -357,7 +355,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<Void> deleteAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -433,7 +431,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(201, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
@@ -498,7 +496,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<Void> deleteAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -563,7 +561,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<ManagementLockObject> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(204, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
@@ -637,7 +635,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<Void> deleteAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -664,7 +662,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAtResourceGroupLevelDelegate(call.execute(), null);
     }
 
@@ -689,7 +687,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PageImpl<ManagementLockObject>>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -704,7 +702,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -746,7 +744,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAtResourceLevelDelegate(call.execute(), null);
     }
 
@@ -791,7 +789,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PageImpl<ManagementLockObject>>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -806,7 +804,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -863,7 +861,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -885,7 +883,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listAtSubscriptionLevelDelegate(call.execute(), null);
     }
 
@@ -905,7 +903,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), JacksonUtils.serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PageImpl<ManagementLockObject>>(serviceCallback) {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -920,7 +918,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -970,7 +968,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1020,7 +1018,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1070,7 +1068,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listNextNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1120,7 +1118,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
     }
 
     private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

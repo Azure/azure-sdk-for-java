@@ -12,7 +12,7 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
-import com.microsoft.rest.BaseResource;
+import com.microsoft.azure.BaseResource;
 
 /**
  * The Resource model.

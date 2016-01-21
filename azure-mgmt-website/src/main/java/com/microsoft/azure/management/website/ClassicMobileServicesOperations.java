@@ -10,9 +10,9 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.ClassicMobileService;
 import com.microsoft.azure.management.website.models.ClassicMobileServiceCollection;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

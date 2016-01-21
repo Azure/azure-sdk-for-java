@@ -24,7 +24,7 @@ import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountListResult;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.credentials.UserTokenCredentials;
+import com.microsoft.azure.credentials.UserTokenCredentials;
 
 public class Navigator extends AppCompatActivity {
     SubscriptionInfo subscription;

@@ -10,9 +10,9 @@
 
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.ExpressRouteServiceProvider;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

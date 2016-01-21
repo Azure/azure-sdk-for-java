@@ -10,12 +10,12 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.DeploymentExtended;
 import com.microsoft.azure.management.resources.models.DeploymentExtendedFilter;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

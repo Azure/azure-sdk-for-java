@@ -11,12 +11,11 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGateway;
 import com.microsoft.azure.management.network.models.VpnClientParameters;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -173,7 +172,7 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
     }
 
     private ServiceResponse<VirtualNetworkGateway> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualNetworkGateway, CloudException>()
                 .register(200, new TypeToken<VirtualNetworkGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -288,7 +287,7 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkGateway>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -429,7 +428,7 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
     }
 
     private ServiceResponse<String> generatevpnclientpackageDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<String, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<String, CloudException>()
                 .register(202, new TypeToken<String>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -479,7 +478,7 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkGateway>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGateway>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGateway>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

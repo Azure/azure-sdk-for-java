@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.ClassicMobileService;
 import com.microsoft.azure.management.website.models.ClassicMobileServiceCollection;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -104,7 +103,7 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
     }
 
     private ServiceResponse<ClassicMobileServiceCollection> getClassicMobileServicesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileServiceCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ClassicMobileServiceCollection, CloudException>()
                 .register(200, new TypeToken<ClassicMobileServiceCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -177,7 +176,7 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
     }
 
     private ServiceResponse<ClassicMobileService> getClassicMobileServiceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileService, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ClassicMobileService, CloudException>()
                 .register(200, new TypeToken<ClassicMobileService>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -250,7 +249,7 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
     }
 
     private ServiceResponse<Object> deleteClassicMobileServiceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

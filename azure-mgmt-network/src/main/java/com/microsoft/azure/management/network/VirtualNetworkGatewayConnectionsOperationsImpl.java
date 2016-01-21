@@ -11,14 +11,13 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.ConnectionResetSharedKey;
 import com.microsoft.azure.management.network.models.ConnectionSharedKey;
 import com.microsoft.azure.management.network.models.ConnectionSharedKeyResult;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGatewayConnection;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -175,7 +174,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
     }
 
     private ServiceResponse<VirtualNetworkGatewayConnection> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnection, CloudException>()
                 .register(200, new TypeToken<VirtualNetworkGatewayConnection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -299,7 +298,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
     }
 
     private ServiceResponse<ConnectionSharedKeyResult> getSharedKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionSharedKeyResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ConnectionSharedKeyResult, CloudException>()
                 .register(200, new TypeToken<ConnectionSharedKeyResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -363,7 +362,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnection>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnection>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnection>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -527,7 +526,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnection>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnection>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnection>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

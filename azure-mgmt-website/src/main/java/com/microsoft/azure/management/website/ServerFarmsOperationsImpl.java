@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.MetricDefinitionCollection;
 import com.microsoft.azure.management.website.models.PageImpl;
 import com.microsoft.azure.management.website.models.ResourceMetricCollection;
@@ -20,9 +22,6 @@ import com.microsoft.azure.management.website.models.Site;
 import com.microsoft.azure.management.website.models.VnetGateway;
 import com.microsoft.azure.management.website.models.VnetInfo;
 import com.microsoft.azure.management.website.models.VnetRoute;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -114,7 +113,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<ServerFarmCollection> getServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -187,7 +186,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<ServerFarmWithRichSku> getServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmWithRichSku, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmWithRichSku, CloudException>()
                 .register(200, new TypeToken<ServerFarmWithRichSku>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -319,7 +318,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<Object> deleteServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -396,7 +395,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<ResourceMetricCollection> getServerFarmMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -469,7 +468,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<MetricDefinitionCollection> getServerFarmMetricDefintionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -542,7 +541,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<List<VnetInfo>> getVnetsForServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>()
                 .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -624,7 +623,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<VnetInfo> getVnetFromServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -707,7 +706,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<List<VnetRoute>> getRoutesForVnetDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRoute>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VnetRoute>, CloudException>()
                 .register(200, new TypeToken<List<VnetRoute>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -798,7 +797,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<List<VnetRoute>> getRouteForVnetDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRoute>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<List<VnetRoute>, CloudException>()
                 .register(200, new TypeToken<List<VnetRoute>>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -901,7 +900,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<VnetRoute> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRoute, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetRoute, CloudException>()
                 .register(200, new TypeToken<VnetRoute>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -994,7 +993,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<Object> deleteVnetRouteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1097,7 +1096,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<VnetRoute> updateVnetRouteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRoute, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetRoute, CloudException>()
                 .register(200, new TypeToken<VnetRoute>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -1190,7 +1189,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<VnetGateway> getServerFarmVnetGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1292,7 +1291,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<VnetGateway> updateServerFarmVnetGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1371,7 +1370,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<PageImpl<Site>> getServerFarmSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Site>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<Site>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Site>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1453,7 +1452,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<Object> rebootWorkerForServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1528,7 +1527,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<Object> restartSitesForServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1610,7 +1609,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<ServerFarmWithRichSku> getServerFarmOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmWithRichSku, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<ServerFarmWithRichSku, CloudException>()
                 .register(200, new TypeToken<ServerFarmWithRichSku>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -1660,7 +1659,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
     }
 
     private ServiceResponse<PageImpl<Site>> getServerFarmSitesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Site>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<Site>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Site>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

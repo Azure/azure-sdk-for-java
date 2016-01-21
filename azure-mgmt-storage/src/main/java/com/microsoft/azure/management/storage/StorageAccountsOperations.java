@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCheckNameAvailabilityParameters;
@@ -18,7 +19,6 @@ import com.microsoft.azure.management.storage.models.StorageAccountKeys;
 import com.microsoft.azure.management.storage.models.StorageAccountListResult;
 import com.microsoft.azure.management.storage.models.StorageAccountRegenerateKeyParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountUpdateParameters;
-import com.microsoft.rest.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.squareup.okhttp.ResponseBody;

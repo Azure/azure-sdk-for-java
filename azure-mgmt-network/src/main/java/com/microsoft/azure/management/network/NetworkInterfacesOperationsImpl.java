@@ -11,11 +11,10 @@
 package com.microsoft.azure.management.network;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.PageImpl;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -168,7 +167,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<NetworkInterface> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkInterface, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<NetworkInterface, CloudException>()
                 .register(200, new TypeToken<NetworkInterface>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -307,7 +306,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -380,7 +379,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -473,7 +472,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterfaceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkInterface, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<NetworkInterface, CloudException>()
                 .register(200, new TypeToken<NetworkInterface>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -528,7 +527,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -592,7 +591,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -642,7 +641,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -692,7 +691,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -742,7 +741,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -792,7 +791,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
     }
 
     private ServiceResponse<PageImpl<NetworkInterface>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);

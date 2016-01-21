@@ -11,6 +11,8 @@
 package com.microsoft.azure.management.website;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceResponseBuilder;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.DomainAvailablilityCheckResult;
 import com.microsoft.azure.management.website.models.DomainCollection;
 import com.microsoft.azure.management.website.models.DomainControlCenterSsoRequest;
@@ -18,9 +20,6 @@ import com.microsoft.azure.management.website.models.DomainRecommendationSearchP
 import com.microsoft.azure.management.website.models.DomainRegistrationInput;
 import com.microsoft.azure.management.website.models.NameIdentifier;
 import com.microsoft.azure.management.website.models.NameIdentifierCollection;
-import com.microsoft.rest.AzureServiceResponseBuilder;
-import com.microsoft.rest.CloudException;
-import com.microsoft.rest.serializer.AzureJacksonUtils;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -101,7 +100,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
     }
 
     private ServiceResponse<DomainCollection> getAllDomainsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DomainCollection, CloudException>()
                 .register(200, new TypeToken<DomainCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -156,7 +155,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
     }
 
     private ServiceResponse<DomainControlCenterSsoRequest> getDomainControlCenterSsoRequestDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainControlCenterSsoRequest, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DomainControlCenterSsoRequest, CloudException>()
                 .register(200, new TypeToken<DomainControlCenterSsoRequest>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -222,7 +221,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
     }
 
     private ServiceResponse<Object> validateDomainPurchaseInformationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -288,7 +287,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
     }
 
     private ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainAvailablilityCheckResult, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<DomainAvailablilityCheckResult, CloudException>()
                 .register(200, new TypeToken<DomainAvailablilityCheckResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
@@ -354,7 +353,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
     }
 
     private ServiceResponse<NameIdentifierCollection> listDomainRecommendationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NameIdentifierCollection, CloudException>(new AzureJacksonUtils())
+        return new AzureServiceResponseBuilder<NameIdentifierCollection, CloudException>()
                 .register(200, new TypeToken<NameIdentifierCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response, retrofit);
