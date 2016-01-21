@@ -11,6 +11,7 @@ public final class ClientConstants {
 	private ClientConstants() { }
 
 	public final static int AmqpsPort = 5671;
+	public final static int MaxPartitionKeyLength = 128;
 	
 	public final static Symbol ServerBusyError = Symbol.getSymbol(AmqpConstants.Vendor + ":server-busy");
 	public final static Symbol ArgumentError = Symbol.getSymbol(AmqpConstants.Vendor + ":argument-error");

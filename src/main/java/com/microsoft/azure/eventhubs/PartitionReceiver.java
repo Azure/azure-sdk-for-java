@@ -125,7 +125,7 @@ public final class PartitionReceiver
 	 * @throws AuthorizationFailedException
 	 * @throws InternalServerException
 	 */
-	public CompletableFuture<Collection<EventData>> receive() 
+	public CompletableFuture<Iterable<EventData>> receive() 
 			throws ServiceBusException
 	{
 		if (this.receiveHandler != null)
@@ -133,10 +133,10 @@ public final class PartitionReceiver
 			throw new IllegalStateException("Receive and onReceive cannot be performed side-by-side on a single instance of Receiver.");
 		}
 		
-		return this.internalReceiver.receive().thenApplyAsync(new Function<Collection<Message>, Collection<EventData>>()
+		return this.internalReceiver.receive().thenApplyAsync(new Function<Collection<Message>, Iterable<EventData>>()
 		{
 			@Override
-			public Collection<EventData> apply(Collection<Message> amqpMessages)
+			public Iterable<EventData> apply(Collection<Message> amqpMessages)
 			{
 				LinkedList<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages);
 				EventData lastEvent = events.getLast();
@@ -150,8 +150,9 @@ public final class PartitionReceiver
 		});		
 	}
 
-	public void close() {
+	public void close()
+	{
 		if (this.internalReceiver != null)
-		this.internalReceiver.close();		
+			this.internalReceiver.close();		
 	}
 }

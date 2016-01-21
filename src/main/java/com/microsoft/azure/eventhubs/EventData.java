@@ -32,7 +32,7 @@ public class EventData
 		this.closed = false;
 	}
 	
-	/*
+	/**
 	 * Internal Constructor - intended to be used only by the {@link PartitionReceiver} to Create #EventData out of #Message
 	 */
 	@SuppressWarnings("unchecked")
@@ -81,7 +81,7 @@ public class EventData
 	 *  	partitionSender.Send(eventData);
 	 *  </pre>
 	 * @param data the actual payload of data in bytes to be Sent to EventHubs.
-	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
+	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
 	public EventData(byte[] data)
 	{
@@ -113,7 +113,7 @@ public class EventData
 	 * @param data the byte[] where the payload of the Event to be sent to EventHubs is present
 	 * @param offset Offset in the byte[] to read from ; inclusive index
 	 * @param length length of the byte[] to be read, starting from offset
-	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
+	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
 	public EventData(byte[] data, final int offset, final int length)
 	{
@@ -143,7 +143,7 @@ public class EventData
 	 *  	partitionSender.Send(eventData);
 	 *  </pre>
 	 * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
-	 * @see to start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
+	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
 	public EventData(ByteBuffer buffer)
 	{

@@ -1,16 +1,8 @@
 package com.microsoft.azure.eventhubs;
 
 import java.util.*;
-import java.util.function.Consumer;
-
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.*;
-import org.apache.qpid.proton.message.Message;
-
-import com.microsoft.azure.servicebus.MessageSender;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import java.util.function.*;
+import org.apache.qpid.proton.message.*;
 
 /*
  * Internal utility class for EventData

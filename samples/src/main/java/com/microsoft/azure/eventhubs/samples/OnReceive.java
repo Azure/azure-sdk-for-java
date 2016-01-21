@@ -4,18 +4,16 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.*;
-
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.servicebus.*;
 
-public class OnReceiveSample
+public class OnReceive
 {
 
 	public static void main(String[] args) 
 			throws ServiceBusException, ExecutionException, InterruptedException, IOException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
-		
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
 		String partitionId = "0";
@@ -43,7 +41,7 @@ public class OnReceiveSample
 				System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s, Msg: %s", 
 						event.getSystemProperties().getOffset(), 
 						event.getSystemProperties().getSequenceNumber(), 
-						event.getSystemProperties().getEnqueuedTimeUtc(),
+						event.getSystemProperties().getEnqueuedTime(),
 						new String(event.getBody(), Charset.defaultCharset())));
 			}
 			

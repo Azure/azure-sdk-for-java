@@ -33,46 +33,51 @@ public class ReceiveTests extends TestBase
 			TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
 			
 			offsetReceiver = ehClient.createReceiver(cgName, partitionId, PartitionReceiver.StartOfStream).get();
-			List<EventData> startingEventsUsingOffsetReceiver = new LinkedList<EventData>(offsetReceiver.receive().get());
+			Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receive().get();
 			
-			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.size() > 0);
+			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
 			
 			// Test1: Validate DateTimeReceiver returns correct startingOffset with startOfEpoch
 			datetimeReceiver = ehClient.createReceiver(cgName, partitionId, Instant.EPOCH).get();
-			LinkedList<EventData> startingEventsUsingDateTimeReceiver = new LinkedList<EventData>(datetimeReceiver.receive().get());
+			Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receive().get();
 			
-			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.size() > 0);
+			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
 			
 			int counter = 0;
+			Iterator<EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
 			for(EventData eventDataUsingOffset: startingEventsUsingOffsetReceiver)
 			{
-				EventData eventDataUsingDateTime = startingEventsUsingDateTimeReceiver.get(counter);
+				EventData eventDataUsingDateTime = dateTimeIterator.next();
 				System.out.println(String.format("recv by offset: %s.", eventDataUsingOffset.getSystemProperties().getOffset()));
 				System.out.println(String.format("recv by dateTime: %s.", eventDataUsingDateTime.getSystemProperties().getOffset()));
 				
 				Assert.assertTrue(eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
 				
 				counter++;
-				if (startingEventsUsingDateTimeReceiver.size() <= counter)
+				if (!dateTimeIterator.hasNext())
 					break;
 			}
 			
 			datetimeReceiver.close();
 			
+			Iterator<EventData> offsetIterator = startingEventsUsingOffsetReceiver.iterator();
+			offsetIterator.next();
 			// Test2: pick a random event from OffsetReceiver and then validate DateTime receiver using SystemProperties
-			if (startingEventsUsingOffsetReceiver.size() <= 1) {
-				startingEventsUsingOffsetReceiver = new LinkedList<EventData>(offsetReceiver.receive().get());
+			if (!offsetIterator.hasNext()) {
+				startingEventsUsingOffsetReceiver = offsetReceiver.receive().get();
 			}
 			
-			Assert.assertTrue(startingEventsUsingOffsetReceiver.size() > 0);
+			Assert.assertTrue(startingEventsUsingOffsetReceiver.iterator().hasNext());
+			EventData nextEvent = startingEventsUsingOffsetReceiver.iterator().next();
 			datetimeReceiver = ehClient.createReceiver(cgName, partitionId, 
-				startingEventsUsingOffsetReceiver.get(0).getSystemProperties().getEnqueuedTime().minusMillis(1)).get();
+				nextEvent.getSystemProperties().getEnqueuedTime().minusMillis(1)).get();
 			
-			LinkedList<EventData> dateTimeEventsFromCustomOffset = new LinkedList<EventData>(datetimeReceiver.receive().get());
-			System.out.println(dateTimeEventsFromCustomOffset.get(0).getSystemProperties().getEnqueuedTime());
-			Assert.assertTrue(dateTimeEventsFromCustomOffset.size() > 0);
-			Assert.assertTrue(dateTimeEventsFromCustomOffset.get(0).getSystemProperties().getOffset().
-					equals(startingEventsUsingOffsetReceiver.get(0).getSystemProperties().getOffset()));
+			Iterable<EventData> dateTimeEventsFromCustomOffset = datetimeReceiver.receive().get();
+			Assert.assertTrue(dateTimeEventsFromCustomOffset.iterator().hasNext());
+			EventData firstEventAfterGivenTime = dateTimeEventsFromCustomOffset.iterator().next();
+			System.out.println(firstEventAfterGivenTime.getSystemProperties().getEnqueuedTime());
+			Assert.assertTrue(firstEventAfterGivenTime.getSystemProperties().getOffset().
+					equals(nextEvent.getSystemProperties().getOffset()));
 		}
 		finally
 		{

@@ -67,7 +67,7 @@ public class MessageSender extends ClientEntity
 		return this.sendPath;
 	}
 	
-	public CompletableFuture<Void> send(Message msg, long messageFormat)
+	public CompletableFuture<Void> send(Message msg, int messageFormat)
 	{
 		// TODO: fix allocation per call - use BufferPool
 		byte[] bytes = new byte[MaxMessageLength];
@@ -86,10 +86,20 @@ public class MessageSender extends ClientEntity
         return onSend;
 	}
 	
+	// accepts even if PartitionKey is null - and hence, the layer above this api is supposed to enforce
 	public CompletableFuture<Void> send(final Iterable<Message> messages, final String partitionKey)
 		throws ServiceBusException
 	{
-		// TODO: throw if messages <=1
+		if (messages == null || IteratorUtil.sizeEquals(messages.iterator(), 0))
+		{
+			throw new IllegalArgumentException("Sending Empty batch of messages is not allowed.");
+		}
+		
+		if (IteratorUtil.sizeEquals(messages.iterator(), 1))
+		{
+			Message firstMessage = messages.iterator().next();			
+			return this.send(firstMessage);
+		}
 		
 		// proton-j doesn't support multiple dataSections to be part of AmqpMessage
 		// here's the alternate approach provided by them: https://github.com/apache/qpid-proton/pull/54

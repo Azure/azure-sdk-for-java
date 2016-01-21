@@ -1,24 +1,25 @@
 package com.microsoft.azure.servicebus;
 
-public class IllegalConnectionStringFormatException extends IllegalArgumentException {
+public class IllegalConnectionStringFormatException extends IllegalArgumentException
+{
 
-	public IllegalConnectionStringFormatException() {
-		// TODO Auto-generated constructor stub
+	public IllegalConnectionStringFormatException()
+	{
 	}
 
-	public IllegalConnectionStringFormatException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public IllegalConnectionStringFormatException(String detail)
+	{
+		super(detail);
 	}
 
-	public IllegalConnectionStringFormatException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	public IllegalConnectionStringFormatException(Throwable cause)
+	{
+		super(cause);
 	}
 
-	public IllegalConnectionStringFormatException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
+	public IllegalConnectionStringFormatException(String detail, Throwable cause)
+	{
+		super(detail, cause);
 	}
 
 }

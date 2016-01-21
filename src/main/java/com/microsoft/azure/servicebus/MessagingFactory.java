@@ -24,6 +24,7 @@ public class MessagingFactory extends ClientEntity
 	
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
 	
+	// TODO: maintain refCount for reactor and close it if all MessagingFactory instances are closed
 	private static Reactor reactor;
 	
 	private final Connection connection;
@@ -39,8 +40,8 @@ public class MessagingFactory extends ClientEntity
 			this.startReactor();
 		else if (MessagingFactory.reactor == null)
 			MessagingFactory.reactor = reactor;
-		else if (MessagingFactory.reactor != reactor)
-			throw new IllegalArgumentException("argument 'reactor' is unexpected");
+		/* else if (MessagingFactory.reactor != reactor)
+			throw new IllegalArgumentException("argument 'reactor' is unexpected"); */
 		
 		this.connection = createConnection(builder);
 		this.operationTimeout = builder.getOperationTimeout();

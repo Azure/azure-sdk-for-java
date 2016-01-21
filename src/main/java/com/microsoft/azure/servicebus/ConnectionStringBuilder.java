@@ -1,13 +1,9 @@
 package com.microsoft.azure.servicebus;
 
-import java.io.*;
 import java.net.*;
 import java.time.*;
 import java.util.*;
 import java.util.regex.*;
-
-import org.apache.qpid.proton.engine.Endpoint;
-import org.apache.qpid.proton.engine.impl.StringUtils;
 
 /**
  * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
@@ -46,7 +42,6 @@ public class ConnectionStringBuilder
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 
-	// TODO: upgrade to public after implementing retryPolicy
 	private ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
 			final String sharedAccessKey, final Duration operationTimeout, final RetryPolicy retryPolicy)
 	{
@@ -69,9 +64,9 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Build connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
+	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
 	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required) 
-	 * @param entityPath Entity path
+	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
 	 * @param sharedAccessKeyName Shared Access Key name
 	 * @param sharedAccessKey Shared Access Key
 	 */

@@ -33,19 +33,22 @@ public class ReceiveByDateTime
 		
 		while (true)
 		{
-			receiver.receive().thenAccept(new Consumer<Collection<EventData>>()
+			receiver.receive().thenAccept(new Consumer<Iterable<EventData>>()
 			{
-				public void accept(Collection<EventData> receivedEvents)
+				public void accept(Iterable<EventData> receivedEvents)
 				{
-					System.out.println(String.format("ReceivedBatch Size: %s", receivedEvents != null ? receivedEvents.size() : 0));
-					
+					int batchSize = 0;
 					for(EventData receivedEvent: receivedEvents)
 					{
 						System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
 								receivedEvent.getSystemProperties().getOffset(), 
 								receivedEvent.getSystemProperties().getSequenceNumber(), 
 								receivedEvent.getSystemProperties().getEnqueuedTime()));
+						batchSize++;
 					}
+					
+					System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
+					
 				}
 			}).get();
 		}

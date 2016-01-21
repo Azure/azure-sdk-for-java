@@ -4,13 +4,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.message.Message;
-
 import com.microsoft.azure.servicebus.*;
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 // TODO: Implement Timeout on Send operation
 public final class PartitionSender
@@ -63,7 +57,7 @@ public final class PartitionSender
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
-		if (eventDatas == null)
+		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas.iterator(), 0))
 		{
 			throw new IllegalArgumentException("EventData batch cannot be empty.");
 		}
