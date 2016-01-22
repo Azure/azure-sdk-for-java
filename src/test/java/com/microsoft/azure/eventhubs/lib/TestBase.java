@@ -22,7 +22,7 @@ public abstract class TestBase
 	public static TestEventHubInfo checkoutTestEventHub()
 	{
 		HashMap<String, String> sasRule = new HashMap<String, String>();
-		sasRule.put(TestBase.SasRuleName, "----SasKey-----");
+		sasRule.put(TestBase.SasRuleName, "LHbmplGdVC7Lo7A1RAXXDgeHSM9WHIRvZmIt7m1y5w0=");
 		return new TestEventHubInfo("gojavago", "firstehub-ns", null, sasRule);
 	}
 	

@@ -6,8 +6,8 @@
   <artifactId>azure-eventhubs</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  
   <name>azure-eventhubs</name>
+  
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -15,21 +15,17 @@
   </properties>
 
   <dependencies>
-    	<dependency>
-  		<!-- groupId>org.apache.qpid</groupId>
-  		<artifactId>proton-j</artifactId>
-  		<version>0.10</version
-		-->
+    <dependency>
   		<groupId>org.apache.qpid</groupId>
   		<artifactId>proton-j</artifactId>
   		<scope>system</scope>
-        	<version>0.12.0-SNAPSHOT</version>
+        <version>0.12.0-SNAPSHOT</version>
   		<systemPath>\\thinker\public\protonj\proton-j-0.12.0-SNAPSHOT.jar</systemPath>
   	</dependency>
-	<dependency>
-  		<groupId>org.bouncycastle</groupId>
-  		<artifactId>bcpkix-jdk15on</artifactId>
-  		<version>1.47</version>
-  	</dependency>
+  	<dependency> 
+   		<groupId>org.bouncycastle</groupId> 
+   		<artifactId>bcpkix-jdk15on</artifactId> 
+   		<version>1.47</version> 
+   	</dependency>   	
   </dependencies>
 </project>

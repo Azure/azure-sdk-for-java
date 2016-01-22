@@ -20,4 +20,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>proton-j</name>
+			<type>2</type>
+			<location>D:/protonj/qpid-proton/proton-j</location>
+		</link>
+	</linkedResources>
 </projectDescription>

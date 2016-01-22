@@ -1,6 +1,7 @@
 package com.microsoft.azure.eventhubs.samples;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.*;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
@@ -16,7 +17,8 @@ public class ReceiveByDateTime
 	public static void main(String[] args) 
 			throws ServiceBusException, ExecutionException, InterruptedException, IOException
 	{
-		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
+		ConnectionStringBuilder connStr = new ConnectionStringBuilder("firstehub-ns", "gojavago", "RootManageSharedAccessKey", "LHbmplGdVC7Lo7A1RAXXDgeHSM9WHIRvZmIt7m1y5w0=");
+		// ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
 		
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
@@ -26,7 +28,7 @@ public class ReceiveByDateTime
 		PartitionReceiver receiver = ehClient.createEpochReceiver(
 				EventHubClient.DefaultConsumerGroupName, 
 				partitionId, 
-				Instant.now().minus(Duration.ofDays(5)),
+				Instant.now(),
 				2345).get();
 		
 		System.out.println("date-time receiver created...");
@@ -40,10 +42,11 @@ public class ReceiveByDateTime
 					int batchSize = 0;
 					for(EventData receivedEvent: receivedEvents)
 					{
-						System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
+						System.out.print(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
 								receivedEvent.getSystemProperties().getOffset(), 
 								receivedEvent.getSystemProperties().getSequenceNumber(), 
 								receivedEvent.getSystemProperties().getEnqueuedTime()));
+						System.out.println(String.format("| Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
 						batchSize++;
 					}
 					
