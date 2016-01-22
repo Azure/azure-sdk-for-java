@@ -16,12 +16,7 @@ public class Send
 	public static void main(String[] args) 
 			throws ServiceBusException, ExecutionException, InterruptedException, IOException
 	{
-		String username = "RootManageSharedAccessKey";
-		String password = "LHbmplGdVC7Lo7A1RAXXDgeHSM9WHIRvZmIt7m1y5w0=";
-		String namespaceName = "firstehub-ns";
-		
-		ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, "gojavago", username, password);
-		// ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
+		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
 		
 		Gson gson = new GsonBuilder().create();
 		
@@ -44,12 +39,6 @@ public class Send
 		
 		System.out.println(Instant.now() + ": Send Complete...");
 		System.in.read();
-		
-		while(true){
-		sender.send(sendEvent).get();
-		
-		System.out.println(Instant.now() + ": re-Send Complete...");
-		System.in.read();}
 	}
 
 	/**
