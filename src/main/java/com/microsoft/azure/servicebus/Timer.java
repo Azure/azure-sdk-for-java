@@ -1,8 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * An abstraction for a Scheduler functionality - which can later be replaced by a light-weight Thread
@@ -21,10 +20,6 @@ public final class Timer
 		{
 			case OneTimeRun:
 				executor.schedule(runnable, runAfter.getSeconds(), TimeUnit.SECONDS);
-				break;
-				
-			case RepeatRun:
-				executor.scheduleAtFixedRate(runnable, runAfter.getSeconds(), runAfter.getSeconds(), TimeUnit.SECONDS);
 				break;
 				
 			default:

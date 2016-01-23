@@ -34,7 +34,8 @@ public class SendLinkHandler extends BaseHandler
         }
 		
 		Delivery delivery = event.getDelivery();
-		if (delivery != null) {
+		if (delivery != null)
+		{
 			msgSender.onSendComplete(delivery.getTag(), delivery.getRemoteState());
 			delivery.settle();
 		}

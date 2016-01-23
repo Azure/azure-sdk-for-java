@@ -134,6 +134,7 @@ public class MessageSender extends ClientEntity
 			{
 				// TODO: is it intended for this purpose - else compute msg. size before hand.
 				dlv.clear();
+				
 				// TODO: Translate to completableFuture
 				throw new PayloadSizeExceededException("Size of the payload exceeded Maximum message size ");
 			}

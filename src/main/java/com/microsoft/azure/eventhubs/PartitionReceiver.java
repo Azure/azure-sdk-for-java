@@ -9,7 +9,6 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.*;
 
-// TODO: Implement timeout on Receive
 public final class PartitionReceiver
 {
 	private final String partitionId;
@@ -119,8 +118,8 @@ public final class PartitionReceiver
 	}
 	
 	/** 
-	 * Receive Events from an EventHub partition
-	 * @return
+	 * Receive a batch of {@link EventData}'s from an EventHub partition
+	 * @return Batch of {@link EventData}'s from the partition on which this receiver is created. returns 'null' if no {@link EventData} is present.
 	 * @throws ServerBusyException
 	 * @throws AuthorizationFailedException
 	 * @throws InternalServerException
@@ -139,10 +138,13 @@ public final class PartitionReceiver
 			public Iterable<EventData> apply(Collection<Message> amqpMessages)
 			{
 				LinkedList<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages);
-				EventData lastEvent = events.getLast();
-				if (lastEvent != null)
+				if (events != null)
 				{
-					PartitionReceiver.this.internalReceiver.setLastReceivedOffset(lastEvent.getSystemProperties().getOffset());
+					EventData lastEvent = events.getLast();
+					if (lastEvent != null)
+					{
+						PartitionReceiver.this.internalReceiver.setLastReceivedOffset(lastEvent.getSystemProperties().getOffset());
+					}
 				}
 				
 				return events;

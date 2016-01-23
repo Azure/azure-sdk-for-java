@@ -29,7 +29,8 @@ public class MessageReceiver extends ClientEntity
 	private final MessagingFactory underlyingFactory;
 	private final String name;
 	private final String receivePath;
-		
+	private final Runnable onOperationTimedout;
+	
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private CompletableFuture<MessageReceiver> linkOpen;
@@ -102,6 +103,28 @@ public class MessageReceiver extends ClientEntity
 		
 		this.pendingReceives = new ConcurrentLinkedQueue<WorkItem<Collection<Message>>>();
 		this.receiveHandler = receiveHandler;
+		
+		// onOperationTimeout delegate - per receive call
+		this.onOperationTimedout = new Runnable()
+		{
+			public void run()
+			{
+				while(MessageReceiver.this.pendingReceives.peek() != null)
+				{
+					if (MessageReceiver.this.pendingReceives.peek().getTimeoutTracker().remaining().getSeconds() < ClientConstants.TimerTolerance.getSeconds())
+					{
+						MessageReceiver.this.pendingReceives.poll().getWork().complete(null);
+						MessageReceiver.this.currentOperationTracker = null;
+					}
+					else 
+					{
+						MessageReceiver.this.currentOperationTracker = MessageReceiver.this.pendingReceives.peek().getTimeoutTracker();
+						MessageReceiver.this.scheduleOperationTimer();
+						break;
+					}
+				}
+			}
+		};
 	}
 	
 	public int getPrefetchCount()
@@ -148,6 +171,7 @@ public class MessageReceiver extends ClientEntity
 				if (this.pendingReceives.peek() != null)
 				{
 					this.currentOperationTracker = this.pendingReceives.peek().getTimeoutTracker();
+					this.scheduleOperationTimer();
 				}
 			}
 		}
@@ -197,8 +221,9 @@ public class MessageReceiver extends ClientEntity
 				}
 				else
 				{
-					this.pendingReceives.poll().getWork().complete(messages);
+					WorkItem<Collection<Message>> currentReceive = this.pendingReceives.poll();
 					this.currentOperationTracker = this.pendingReceives.peek() != null ? this.pendingReceives.peek().getTimeoutTracker() : null;
+					currentReceive.getWork().complete(messages);
 					this.sendFlow(messages.size());
 				}
 			}
@@ -264,6 +289,11 @@ public class MessageReceiver extends ClientEntity
 		}
 	}
 	
+	private void scheduleOperationTimer()
+	{
+		Timer.schedule(this.onOperationTimedout, this.currentOperationTracker.remaining(), TimerType.OneTimeRun);
+	}
+	
 	private Receiver createReceiveLink()
 	{	
 		Source source = new Source();
@@ -273,10 +303,12 @@ public class MessageReceiver extends ClientEntity
         if (this.lastReceivedOffset == null)
         {
         	long totalMilliSeconds;
-        	try {
+        	try
+        	{
         		// TODO: how to handle the case when : this.dateTime - epoch doesn't fit in a long !
 	        	totalMilliSeconds = this.dateTime.toEpochMilli();
-	        } catch(ArithmeticException ex)
+	        }
+        	catch(ArithmeticException ex)
         	{
         		totalMilliSeconds = Long.MAX_VALUE;
         	}
