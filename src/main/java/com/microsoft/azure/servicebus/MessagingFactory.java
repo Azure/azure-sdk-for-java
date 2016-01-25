@@ -14,7 +14,7 @@ import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
- * TODO: Manage reconnect
+ * Manage reconnect
  * TODO: Bring all Create's here - so that it can manage recreate/close scenario's
  */
 public class MessagingFactory extends ClientEntity
@@ -27,7 +27,9 @@ public class MessagingFactory extends ClientEntity
 	// TODO: maintain refCount for reactor and close it if all MessagingFactory instances are closed
 	private static Reactor reactor;
 	
-	private final Connection connection;
+	private ConnectionHandler connectionHandler;
+	private Connection connection;
+	private boolean waitingConnectionOpen;
 	
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
@@ -50,8 +52,9 @@ public class MessagingFactory extends ClientEntity
 	
 	private Connection createConnection(ConnectionStringBuilder builder)
 	{
-		ConnectionHandler handler = new ConnectionHandler(builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
-		return reactor.connection(handler);
+		ConnectionHandler connectionHandler = new ConnectionHandler(this, builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
+		this.waitingConnectionOpen = true;
+		return reactor.connection(connectionHandler);
 	}
 
 	private void startReactor() throws IOException
@@ -65,6 +68,19 @@ public class MessagingFactory extends ClientEntity
 	
 	Connection getConnection()
 	{
+		if (this.connection.getLocalState() != EndpointState.ACTIVE)
+		{
+			synchronized (this.connection)
+			{
+				if (this.connection.getLocalState() != EndpointState.ACTIVE && !this.waitingConnectionOpen)
+				{
+					this.connection.free();
+					this.connection = reactor.connection(connectionHandler);
+					this.waitingConnectionOpen = true;
+				}
+			}
+		}
+		
 		return this.connection;
 	}
 	
@@ -87,6 +103,15 @@ public class MessagingFactory extends ClientEntity
 	public static MessagingFactory create(final ConnectionStringBuilder connectionStringBuilder, Reactor reactor) throws IOException
 	{
 		return new MessagingFactory(connectionStringBuilder, reactor);
+	}
+	
+	// Contract: ConnectionHandler - MessagingFactory
+	public void onOpenComplete()
+	{
+		synchronized (this.connection)
+		{
+			this.waitingConnectionOpen = false;
+		}
 	}
 	
 	public static class RunReactor implements Runnable

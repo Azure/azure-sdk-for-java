@@ -8,7 +8,7 @@ import org.apache.qpid.proton.amqp.transport.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.*;
 
-import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.*;
 
 /**
  * ServiceBus <-> ProtonReactor interaction handles all
@@ -22,15 +22,17 @@ public final class ConnectionHandler extends BaseHandler
 	private final String hostname;
 	private final String username;
 	private final String password;
+	private final MessagingFactory messagingFactory;
 
 	// TODO: sasl mechanism should be passed - since currently it only supports
 	// sasKey/Value - simplified & directly passing username/password
-	public ConnectionHandler(final String hostname, final String username, final String password)
+	public ConnectionHandler(final MessagingFactory messagingFactory, final String hostname, final String username, final String password)
 	{
 		add(new Handshaker());
 		this.hostname = hostname;
 		this.username = username;
 		this.password = password;
+		this.messagingFactory = messagingFactory;
 	}
 
 	@Override
@@ -73,6 +75,13 @@ public final class ConnectionHandler extends BaseHandler
 		connection.setHostname(this.hostname + ":" + ClientConstants.AmqpsPort);
 		connection.setContainer(UUID.randomUUID().toString());
 		connection.open();
+	}
+	
+	@Override
+	public void onConnectionRemoteOpen(Event event)
+	{
+		Connection connection = event.getConnection();
+		this.messagingFactory.onOpenComplete();
 	}
 
 	private static SslDomain makeDomain(SslDomain.Mode mode)

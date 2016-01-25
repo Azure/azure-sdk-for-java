@@ -47,7 +47,7 @@ public class MessageReceiver extends ClientEntity
 	private TimeoutTracker currentOperationTracker;
 	private String lastReceivedOffset;
 	private AtomicInteger pingFlowCount;
-	private Instant lastReceivedAt;
+	private Instant lastCommunicatedAt;
 	
 	private boolean linkCreateScheduled;
 	private Object linkCreateLock;
@@ -172,7 +172,7 @@ public class MessageReceiver extends ClientEntity
 					// return all available msgs to application-layer and send 'link-flow' frame for prefetch
 					Collection<Message> returnMessages = this.prefetchedMessages;
 					this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
-					this.sendFlow(returnMessages.size());					
+					this.sendFlow(returnMessages.size());
 					return CompletableFuture.completedFuture(returnMessages);
 				}
 			}
@@ -187,12 +187,7 @@ public class MessageReceiver extends ClientEntity
 			{
 				if (this.pendingReceives.peek() != null)
 				{
-					if (Instant.now().isAfter(this.lastReceivedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
-							&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
-					{
-						this.sendFlow(1);
-						this.pingFlowCount.incrementAndGet();
-					}
+					this.sendPingFlow();
 					
 					this.currentOperationTracker = this.pendingReceives.peek().getTimeoutTracker();
 					this.scheduleOperationTimer();
@@ -209,7 +204,7 @@ public class MessageReceiver extends ClientEntity
 		{
 			if (exception == null)
 			{
-				this.lastReceivedAt = Instant.now();
+				this.lastCommunicatedAt = Instant.now();
 				this.linkOpen.complete(this);
 			}
 			else
@@ -231,7 +226,7 @@ public class MessageReceiver extends ClientEntity
 	// intended to be called by proton reactor handler 
 	public void onDelivery(Collection<Message> messages)
 	{
-		this.lastReceivedAt = Instant.now();
+		this.lastCommunicatedAt = Instant.now();
 		
 		if (this.receiveHandler != null)
 		{
@@ -405,6 +400,30 @@ public class MessageReceiver extends ClientEntity
 		{
 			this.scheduleRecreate(Duration.ofSeconds(0));
 		}		
+	}
+	
+	private void sendPingFlow()
+	{
+		if (this.receiveLink.getLocalState() == EndpointState.ACTIVE)
+		{
+			if (Instant.now().isAfter(this.lastCommunicatedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
+					&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
+			{
+				this.receiveLink.flow(1);
+				this.lastCommunicatedAt = Instant.now();
+				if(TRACE_LOGGER.isLoggable(Level.FINE))
+		        {
+		        	TRACE_LOGGER.log(Level.FINE,
+		        			String.format("MessageReceiver.sendPingFlow (linkname: %s), updated-link-credit: %s", this.receiveLink.getName(), this.receiveLink.getCredit()));
+		        }
+				
+				this.pingFlowCount.incrementAndGet();
+			}
+		}
+		else
+		{
+			this.scheduleRecreate(Duration.ofSeconds(0));
+		}
 	}
 	
 	private void scheduleRecreate(Duration runAfter)

@@ -64,10 +64,10 @@ public class EventHubClient extends ClientEntity
 	 * @return
 	 * @throws ServiceBusException
 	 */
-	public final CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
+	public final CompletableFuture<EventHubSender> createPartitionSender(final String partitionId)
 		throws ServiceBusException
 	{
-		return PartitionSender.Create(this.underlyingFactory, this.eventHubName, partitionId);
+		return EventHubSender.Create(this.underlyingFactory, this.eventHubName, partitionId);
 	}
 	
 	/** 

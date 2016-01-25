@@ -7,7 +7,7 @@ import java.util.function.*;
 import com.microsoft.azure.servicebus.*;
 
 // TODO: Implement Timeout on Send operation
-public final class PartitionSender
+public final class EventHubSender
 {
 	private final String partitionId;
 	private final String eventHubName;
@@ -15,7 +15,7 @@ public final class PartitionSender
 	
 	private MessageSender internalSender;
 		
-	private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId)
+	private EventHubSender(MessagingFactory factory, String eventHubName, String partitionId)
 	{
 		this.partitionId = partitionId;
 		this.eventHubName = eventHubName;
@@ -25,13 +25,13 @@ public final class PartitionSender
 	/**
 	 * Internal-Only: factory pattern to Create EventHubSender
 	 */
-	static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException
+	static CompletableFuture<EventHubSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException
 	{
-		final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
+		final EventHubSender sender = new EventHubSender(factory, eventHubName, partitionId);
 		return sender.createInternalSender()
-				.thenApplyAsync(new Function<Void, PartitionSender>()
+				.thenApplyAsync(new Function<Void, EventHubSender>()
 				{
-					public PartitionSender apply(Void a)
+					public EventHubSender apply(Void a)
 					{
 						return sender;
 					}
@@ -44,7 +44,7 @@ public final class PartitionSender
 				String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{
-					public void accept(MessageSender a) { PartitionSender.this.internalSender = a;}
+					public void accept(MessageSender a) { EventHubSender.this.internalSender = a;}
 				});
 	}
 
