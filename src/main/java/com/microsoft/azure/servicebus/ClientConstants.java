@@ -5,7 +5,8 @@ import org.apache.qpid.proton.amqp.*;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
-public final class ClientConstants {
+public final class ClientConstants
+{
 
 	// TODO: add trackingId which comes as part of Link.attach: properties={com.microsoft:tracking-id=}
 	private ClientConstants() { }
@@ -30,4 +31,6 @@ public final class ClientConstants {
 	public final static int DefaultMaxRetryCount = 10;
 	
 	public final static String ServiceBusClientTrace = "servicebus.trace";
+	
+	public final static int AmqpLinkDetachTimeoutInMin = 8;
 }

@@ -1,8 +1,10 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.*;
+import java.time.temporal.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 import java.util.logging.*;
 
 import org.apache.qpid.proton.amqp.*;
@@ -23,6 +25,7 @@ import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 public class MessageReceiver extends ClientEntity
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
+	private static final int PingFlowThreshold = 50;
 	
 	private final int prefetchCount; 
 	private final ConcurrentLinkedQueue<WorkItem<Collection<Message>>> pendingReceives;
@@ -43,6 +46,11 @@ public class MessageReceiver extends ClientEntity
 	
 	private TimeoutTracker currentOperationTracker;
 	private String lastReceivedOffset;
+	private AtomicInteger pingFlowCount;
+	private Instant lastReceivedAt;
+	
+	private boolean linkCreateScheduled;
+	private Object linkCreateLock;
 	
 	/**
 	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
@@ -87,6 +95,9 @@ public class MessageReceiver extends ClientEntity
 		this.epoch = epoch;
 		this.isEpochReceiver = isEpochReceiver;
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
+		this.pingFlowCount = new AtomicInteger();
+		this.linkCreateLock = new Object();
+		
 		if (offset != null)
 		{
 			this.lastReceivedOffset = offset;
@@ -100,6 +111,7 @@ public class MessageReceiver extends ClientEntity
 		this.receiveLink = this.createReceiveLink();
 		this.currentOperationTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		this.initializeLinkOpen(this.currentOperationTracker);
+		this.linkCreateScheduled = true;
 		
 		this.pendingReceives = new ConcurrentLinkedQueue<WorkItem<Collection<Message>>>();
 		this.receiveHandler = receiveHandler;
@@ -146,6 +158,11 @@ public class MessageReceiver extends ClientEntity
 	 */
 	public CompletableFuture<Collection<Message>> receive()
 	{
+		if (this.receiveLink.getLocalState() != EndpointState.ACTIVE)
+		{
+			this.scheduleRecreate(Duration.ofSeconds(0));
+		}
+		
 		if (!this.prefetchedMessages.isEmpty())
 		{
 			synchronized (this.prefetchedMessages)
@@ -170,6 +187,13 @@ public class MessageReceiver extends ClientEntity
 			{
 				if (this.pendingReceives.peek() != null)
 				{
+					if (Instant.now().isAfter(this.lastReceivedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
+							&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
+					{
+						this.sendFlow(1);
+						this.pingFlowCount.incrementAndGet();
+					}
+					
 					this.currentOperationTracker = this.pendingReceives.peek().getTimeoutTracker();
 					this.scheduleOperationTimer();
 				}
@@ -187,6 +211,7 @@ public class MessageReceiver extends ClientEntity
 			{
 				if (exception == null)
 				{
+					this.lastReceivedAt = Instant.now();
 					this.linkOpen.complete(this);
 				}
 				else
@@ -199,11 +224,18 @@ public class MessageReceiver extends ClientEntity
 				this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 			}
 		}
+		
+		synchronized (this.linkCreateLock)
+		{
+			this.linkCreateScheduled = false;
+		}
 	}
 	
 	// intended to be called by proton reactor handler 
 	public void onDelivery(Collection<Message> messages)
 	{
+		this.lastReceivedAt = Instant.now();
+		
 		if (this.receiveHandler != null)
 		{
 			this.receiveHandler.onReceiveMessages(messages);
@@ -353,8 +385,19 @@ public class MessageReceiver extends ClientEntity
 	{
 		if (this.receiveLink.getLocalState() == EndpointState.ACTIVE)
 		{
-			this.receiveLink.flow(credits);
-
+			synchronized(this.pingFlowCount)
+			{
+				if (this.pingFlowCount.get() < credits)
+				{
+					this.receiveLink.flow(credits - this.pingFlowCount.get());
+					this.pingFlowCount.set(0);
+				}
+				else 
+				{
+					this.pingFlowCount.set(this.pingFlowCount.get() - credits);
+				}
+			}
+			
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 	        {
 	        	TRACE_LOGGER.log(Level.FINE,
@@ -369,7 +412,15 @@ public class MessageReceiver extends ClientEntity
 	
 	private void scheduleRecreate(Duration runAfter)
 	{
-		Timer.schedule(
+		synchronized (this.linkCreateLock) 
+		{
+			if (this.linkCreateScheduled)
+			{
+				return;
+			}
+			
+			this.linkCreateScheduled = true;
+			Timer.schedule(
 				new Runnable()
 				{
 					@Override
@@ -383,6 +434,7 @@ public class MessageReceiver extends ClientEntity
 				},
 				runAfter,
 				TimerType.OneTimeRun);
+		}
 	}
 	
 	private void initializeLinkOpen(TimeoutTracker timeout)
