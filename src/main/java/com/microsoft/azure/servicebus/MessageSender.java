@@ -34,13 +34,12 @@ public class MessageSender extends ClientEntity
 	
 	public static final int MaxMessageLength = 255 * 1024;
 	
-	private final Object mapLock;
-	private final ConcurrentHashMap<byte[], CompletableFuture<Void>> pendingSendWaiters;
 	private final MessagingFactory underlyingFactory;
 	private final String sendPath;
 	private final Duration operationTimeout;
 	private final RetryPolicy retryPolicy;
 	
+	private ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> pendingSendWaiters;
 	private Sender sendLink;
 	private CompletableFuture<MessageSender> linkOpen; 
 	private AtomicLong nextTag;
@@ -73,10 +72,9 @@ public class MessageSender extends ClientEntity
 		this.initializeLinkOpen(this.currentOperationTracker);
 		this.linkCreateScheduled = true;
 		
-		this.pendingSendWaiters = new ConcurrentHashMap<byte[], CompletableFuture<Void>>();
+		this.pendingSendWaiters = new ConcurrentHashMap<byte[], ReplayableWorkItem<Void>>();
 		this.nextTag = new AtomicLong(0);
 		 
-		this.mapLock = new Object();
 		this.linkCreateLock = new Object();
 	}
 	
@@ -104,7 +102,11 @@ public class MessageSender extends ClientEntity
         assert sentMsgSize != encodedSize : "Contract of the ProtonJ library for Sender.Send API changed";
         
         CompletableFuture<Void> onSend = new CompletableFuture<Void>();
-        this.pendingSendWaiters.put(tag, onSend);
+        
+        synchronized (this.pendingSendWaiters)
+        {
+        	this.pendingSendWaiters.put(tag, new ReplayableWorkItem<Void>(bytes, sentMsgSize, messageFormat, onSend, this.operationTimeout));
+		}
         
         this.sendLink.advance();
         return onSend;
@@ -173,8 +175,12 @@ public class MessageSender extends ClientEntity
 		assert sentMsgSize != byteArrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
         
 		CompletableFuture<Void> onSend = new CompletableFuture<Void>();
-		this.pendingSendWaiters.put(tag, onSend);
-        
+		synchronized (this.pendingSendWaiters)
+		{
+			this.pendingSendWaiters.put(tag, 
+					new ReplayableWorkItem<Void>(bytes, sentMsgSize, AmqpConstants.AmqpBatchMessageFormat, onSend, this.operationTimeout));
+		}
+		
         this.sendLink.advance();
         return onSend;
 	}
@@ -204,7 +210,38 @@ public class MessageSender extends ClientEntity
 		{
 			this.currentOperationTracker = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
-			this.linkOpen.complete(this);
+			if (!this.linkOpen.isDone())
+			{
+				this.linkOpen.complete(this);
+			}
+			else if (!this.pendingSendWaiters.isEmpty())
+			{
+				synchronized(this.pendingSendWaiters)
+				{
+					ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> unacknowledgedSends = this.pendingSendWaiters;
+					this.pendingSendWaiters = new ConcurrentHashMap<byte[], ReplayableWorkItem<Void>>();
+					
+					unacknowledgedSends.forEachValue(1, new Consumer<ReplayableWorkItem<Void>>(){
+						@Override
+						public void accept(ReplayableWorkItem<Void> sendWork)
+						{
+							byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
+					        Delivery dlv = sendLink.delivery(tag);
+					        dlv.setMessageFormat(sendWork.getMessageFormat());
+					        
+					        int sentMsgSize = sendLink.send(sendWork.getMessage(), 0, sendWork.getEncodedMessageSize());
+					        assert sentMsgSize != sendWork.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
+					        
+					        CompletableFuture<Void> onSend = new CompletableFuture<Void>();
+					        pendingSendWaiters.put(tag, new ReplayableWorkItem<Void>(sendWork.getMessage(), sendWork.getEncodedMessageSize(), sendWork.getMessageFormat(), onSend, operationTimeout));
+					        
+					        sendLink.advance();
+						}
+					});
+					
+					unacknowledgedSends.clear();
+				}
+			}
 		}
 		else
 		{		
@@ -268,9 +305,9 @@ public class MessageSender extends ClientEntity
 	
 	public void onSendComplete(byte[] deliveryTag, DeliveryState outcome)
 	{
-		synchronized(this.mapLock)
+		synchronized(this.pendingSendWaiters)
         {
-			CompletableFuture<Void> pendingSend = this.pendingSendWaiters.get(deliveryTag);
+			CompletableFuture<Void> pendingSend = this.pendingSendWaiters.get(deliveryTag).getWork();
 			if (pendingSend != null)
 			{
 				if (outcome == Accepted.getInstance())

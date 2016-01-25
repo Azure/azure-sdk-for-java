@@ -207,22 +207,19 @@ public class MessageReceiver extends ClientEntity
 	{
 		synchronized (this.linkOpen)
 		{
-			if (!this.linkOpen.isDone())
+			if (exception == null)
 			{
-				if (exception == null)
-				{
-					this.lastReceivedAt = Instant.now();
-					this.linkOpen.complete(this);
-				}
-				else
-				{
-					this.linkOpen.completeExceptionally(exception);
-				}
-				
-				this.offsetInclusive = false; // re-open link always starts from the last received offset
-				this.currentOperationTracker = null;
-				this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
+				this.lastReceivedAt = Instant.now();
+				this.linkOpen.complete(this);
 			}
+			else
+			{
+				this.linkOpen.completeExceptionally(exception);
+			}
+			
+			this.offsetInclusive = false; // re-open link always starts from the last received offset
+			this.currentOperationTracker = null;
+			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 		}
 		
 		synchronized (this.linkCreateLock)
