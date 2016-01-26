@@ -18,6 +18,7 @@
 
 package com.microsoft.windowsazure.core.pipeline.apache;
 
+import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -26,7 +27,6 @@ import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class ApacheConfigSettings {
@@ -105,6 +105,19 @@ public class ApacheConfigSettings {
             @SuppressWarnings("unchecked")
             ServiceRequestFilter filter = (ServiceRequestFilter) properties.get("AuthFilter");
             httpClientBuilder.addInterceptorFirst(new FilterInterceptor(filter));
+        }
+
+        if (properties.containsKey(profile + Configuration.PROPERTY_HTTP_PROXY_HOST) &&
+                properties.containsKey(profile + Configuration.PROPERTY_HTTP_PROXY_PORT)) {
+            String proxyHost = (String) properties.get(profile + Configuration.PROPERTY_HTTP_PROXY_HOST);
+            int proxyPort = Integer.parseInt((String) properties.get(profile + Configuration.PROPERTY_HTTP_PROXY_PORT));
+            HttpHost proxy;
+            if (properties.containsKey(profile + Configuration.PROPERTY_HTTP_PROXY_SCHEME)) {
+                proxy = new HttpHost(proxyHost, proxyPort, (String) properties.get(profile + Configuration.PROPERTY_HTTP_PROXY_SCHEME));
+            } else {
+                proxy = new HttpHost(proxyHost, proxyPort);
+            }
+            httpClientBuilder.setProxy(proxy);
         }
 
         return httpClientBuilder;
