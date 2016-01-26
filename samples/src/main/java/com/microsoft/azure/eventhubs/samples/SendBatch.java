@@ -20,7 +20,7 @@ public class SendBatch
 		Gson gson = new GsonBuilder().create();
 		
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		PartitionSender sender = ehClient.createPartitionSender("0").get();
+		EventHubSender sender = ehClient.createPartitionSender("0").get();
 		
 		while (true)
 		{
