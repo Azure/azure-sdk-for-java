@@ -58,6 +58,12 @@ public class Configuration {
     public static final String PROPERTY_HTTP_PROXY_PORT = "http.proxyPort";
 
     /**
+     * Property name to control which scheme the Rest client uses to make a connection to the Proxy server. Default value
+     * is 'http'.
+     */
+    public static final String PROPERTY_HTTP_PROXY_SCHEME = "http.proxyScheme";
+
+    /**
      * The configuration properties.
      */
     private final Map<String, Object> properties;

@@ -50,10 +50,7 @@ public abstract class ServiceClient<TClient> implements
             String proxyHost = System.getProperty("http.proxyHost");
             String proxyPort = System.getProperty("http.proxyPort");
             if ((proxyHost != null) && (proxyPort != null)) {
-                HttpHost proxy = new HttpHost(proxyHost, Integer.parseInt(proxyPort));
-                if (proxy != null) {
-                    httpClientBuilder.setProxy(proxy);
-                }
+                httpClientBuilder.setProxy(new HttpHost(proxyHost, Integer.parseInt(proxyPort)));
             }
 
             this.httpClient = httpClientBuilder.build();
