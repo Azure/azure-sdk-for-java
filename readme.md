@@ -6,7 +6,7 @@ Windows Azure EventHubs is a high-throughput durable event injestion pipeline. V
 [Refer developer.md](developer.md) to find out how to contribute to EventHubs Java SDK.
 
 
-####To open the Windows Azure EventHubs Java SDK in Eclipse - please follow these standard "Maven to Eclipse" (for other IDE's bing.com should suggest) instructions:
+######Instructions to open the Windows Azure EventHubs Java SDK in Eclipse:
 
 1. Minimum jdk version required : 1.7
 2. Maven is expected to be installed and Configured - version > 3.3.9
