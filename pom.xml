@@ -3,15 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-eventhubs</artifactId>
+  <artifactId>azure-eventhubs-clients</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>azure-eventhubs</name>
   
-  <url>http://maven.apache.org</url>
-
+  <packaging>pom</packaging>
+  
+  <url>https://github.com/Azure/azure-event-hubs</url>
+  
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit-version>4.10</junit-version>
   </properties>
 
@@ -35,5 +34,9 @@
 		<scope>test</scope>
 	</dependency>
   </dependencies>
+
+  <modules> 
+     <module>azure-eventhubs</module>
+  </modules>
 
 </project>
