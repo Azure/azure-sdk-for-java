@@ -10,14 +10,14 @@ Refer to the [documentation](https://azure.microsoft.com/services/event-hubs/) t
 
 ##Instructions to open the Windows Azure EventHubs Java SDK in Eclipse:
 
-1. Minimum jdk version required : 1.7
-2. Maven is expected to be installed and Configured - version > 3.3.9
-3. After git-clone'ing to the project - open shell and navigate to the location where pom.xml is present
-4. Run these commands to prepare this maven project to be opened in Eclipse:
+1. Maven is expected to be installed and Configured - version > 3.3.9
+2. After git-clone'ing to the project - open shell and navigate to the location where the 'pom.xml' is present
+3. Run these commands to prepare this maven project to be opened in Eclipse:
   - mvn -Declipse.workspace=<path_to_workspace> eclipse:configure-workspace
   - mvn eclipse:eclipse
-5. Open Eclipse and use "Import Existing Maven projects" to open the project.
-
+4. Open Eclipse and use "Import Existing Maven projects" to open the project.
+5. If you see any Build Errors - make sure the Execution Environment is set to java sdk version 1.7 or higher
+	[got to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.7 or higher]
 
 ##Contributing
 [Refer to the developer.md](developer.md) to find out how to contribute to Event Hubs Java client.

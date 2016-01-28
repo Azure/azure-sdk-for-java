@@ -3,6 +3,7 @@ package com.microsoft.azure.eventhubs.exceptioncontracts;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.*;
@@ -15,23 +16,33 @@ public class ReceiverEpoch extends TestBase
 	@Test (expected = ReceiverDisconnectedException.class)
 	public void testEpochReceiver() throws Throwable
 	{
+		Assume.assumeTrue(TestBase.isServiceRun());
+		
 		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
 		try 
 		{
 			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
 			EventHubClient ehClient = EventHubClient.createFromConnectionString(connectionString.toString()).get();		
-			String cgName = eventHubInfo.getRandomConsumerGroup();
-			String partitionId = "0";
-			long epoch = 345632;
-			ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch, new EventCounter()).get();
-		
+			
 			try
 			{
-				ehClient.createEpochReceiver(cgName, partitionId, epoch - 10).get();
+				String cgName = eventHubInfo.getRandomConsumerGroup();
+				String partitionId = "0";
+				long epoch = 345632;
+				ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch, new EventCounter()).get();
+			
+				try
+				{
+					ehClient.createEpochReceiver(cgName, partitionId, epoch - 10).get();
+				}
+				catch(ExecutionException exp)
+				{
+					throw exp.getCause();
+				}
 			}
-			catch(ExecutionException exp)
+			finally
 			{
-				throw exp.getCause();
+				ehClient.close();
 			}
 		}
 		finally
