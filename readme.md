@@ -17,7 +17,7 @@ Refer to the [documentation](https://azure.microsoft.com/services/event-hubs/) t
   - mvn eclipse:eclipse
 4. Open Eclipse and use "Import Existing Maven projects" to open the project.
 5. If you see any Build Errors - make sure the Execution Environment is set to java sdk version 1.7 or higher
-	[got to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.7 or higher]
+  * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.7 or higher]
 
 ##Contributing
 [Refer to the developer.md](developer.md) to find out how to contribute to Event Hubs Java client.
