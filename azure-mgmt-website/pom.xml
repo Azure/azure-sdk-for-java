@@ -56,18 +56,18 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.rest</groupId>
+      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

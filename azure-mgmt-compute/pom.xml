@@ -56,23 +56,26 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.rest</groupId>
+      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-storage</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-network</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -80,7 +83,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.rest</groupId>
+      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
       <scope>test</scope>
     </dependency>
