@@ -96,7 +96,8 @@ begin receiving events:
    with the oldest available retained event in the partition and then continously deliver events until all available events 
    have been read. 
 2. **Time offset**. This option will start with the oldest event in the partition that has been received into the Event Hub 
-   after the given intant.
+   after the given instant.
+   
    ``` Java
    PartitionReceiver receiver = ehClient.createReceiver(
 				EventHubClient.DefaultConsumerGroupName, 
@@ -106,6 +107,7 @@ begin receiving events:
 3. **Absolute offset** This option is commonly used to resume receiving events after a previous receiver on the partition 
    has been aborted or suspended for any reason. The offset is a system-supplied string that should not be interpreted by
    the application. The next section will discuss scenarios for using this option.
+   
     ``` Java
    PartitionReceiver receiver = ehClient.createReceiver(
        EventHubClient.DefaultConsumerGroupName, 
