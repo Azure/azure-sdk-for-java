@@ -31,7 +31,7 @@ Azure Service Bus Messaging client.
 ```        
 
 Using an Event Hub connection string, which holds all required connection information including an authorization key or token 
-(see [Connection Strings](#ConnectionStrings)), you then create an *EventHubClient* instance.   
+(see [Connection Strings](#connection-strings)), you then create an *EventHubClient* instance.   
    
 ```Java
     EventHubClient ehClient = EventHubClient.createFromConnectionString(str).get();
@@ -70,7 +70,7 @@ The current release of Proton-J does not yet support the WebSocket protocol. If 
 in environments where tunneling over the HTTPS TCP port 443 is required due to Firewall policy reasons, please refer to
 the section [Publishing via HTTPS](#Publishing via HTTPS) below for a temporary alternative.         
 
-##Connection Strings [ConnectionStrings]
+##Connection Strings
 
 Azure Event Hubs and Azure Service Bus share a common format for connection strings. A connection string holds all required
 information to set up a connection with an Event Hub. The format is a simple property/value list of the form 
@@ -78,13 +78,9 @@ information to set up a connection with an Event Hub. The format is a simple pro
 
 | Property              |  Description                                               |
 |-----------------------|------------------------------------------------------------| 
-| Endpoint              | URI for the Event Hubs namespace. Typically has the form   |
-|                       | *sb://{namespace}.servicebus.windows.net/*                 |
-| EntityPath            | Relative path of the Event Hub in the namespace.           |
-|                       | Commonly this is just the Event Hub name                   |  
-| SharedAccessKeyName   | Name of a Shared Access Signature rule configured for      |
-|                       | the Event Hub or the Event Hub name. For publishers, the   |
-|                       | rule must include "Send" permissions.
+| Endpoint              | URI for the Event Hubs namespace. Typically has the form *sb://{namespace}.servicebus.windows.net/*   |
+| EntityPath            | Relative path of the Event Hub in the namespace. Commonly this is just the Event Hub name                   |  
+| SharedAccessKeyName   | Name of a Shared Access Signature rule configured for the Event Hub or the Event Hub name. For publishers, the rule must include "Send" permissions. |
 | SharedAccessKey       | Base64-encoded value of the Shared Access Key for the rule |
 | SharedAccessSignature | A previously issued Shared Access Signature token          |
  
@@ -127,7 +123,7 @@ The name of of the policy is commonly chosen by the Event Hub owner, and might b
 or the identifier of a publishing device, or some randomly chosen string uniquely assigned to the sender. 
 
 With publisher policies, the Event Hub owner will generally hold on to the signing key of a SAS rule conferring only "Send" 
-permission, and issue a send-only token to the publisher as described in the [Tokens](#Tokens) section above. This token is
+permission, and issue a send-only token to the publisher as described in the [Tokens](#tokens) section above. This token is
 scoped to the path shown above and can only be used to publish to this particular policy. 
 
 The special functionality of the publisher policy is twofold:
