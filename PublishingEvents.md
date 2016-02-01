@@ -177,7 +177,7 @@ option. To send to a partition you explicitly need to create a client object tha
 
 ```Java
     EventHubClient ehClient = EventHubClient.createFromConnectionString(str).get();
->		EventHubSender sender = ehClient.createPartitionSender("0").get();
+>	EventHubSender sender = ehClient.createPartitionSender("0").get();
     EventData sendEvent = new EventData(payloadBytes);
     sender.send(sendEvent).get();
 ```
