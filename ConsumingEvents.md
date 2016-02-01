@@ -89,7 +89,7 @@ You can create up to 20 such consumer groups on an Event Hub via the Azure porta
 Each Event Hub has a configurable event retention period, which defaults to one day and can be extended to seven days. 
 By contacting Microsoft product support you can ask for further extend the retention period to up to 30 days.
 
-Each Evennt Hub has three options for a consumer to pick at which point into the retained event stream it wants to 
+There are three options for a consumer to pick at which point into the retained event stream it wants to 
 begin receiving events:
 
 1. **Start of stream** Receive from the start of the retained stream, as shown in the example above. This option will start 
@@ -115,8 +115,6 @@ begin receiving events:
 	   savedOffset).get();
     ``` 
    
-
-
 
 ##Ownership, Failover, and Epochs
 
