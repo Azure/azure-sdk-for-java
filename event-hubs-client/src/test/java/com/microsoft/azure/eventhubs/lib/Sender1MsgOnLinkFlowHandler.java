@@ -7,6 +7,7 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
+import org.apache.qpid.proton.reactor.Handshaker;
 
 /**
  * Sends 1 Msg on the first onLinkFlow event
@@ -18,6 +19,8 @@ public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler
 	
 	public Sender1MsgOnLinkFlowHandler()
 	{
+		add(new Handshaker());
+		
 		this.firstFlow = new Object();
 		this.isFirstFlow = true;
 	}
