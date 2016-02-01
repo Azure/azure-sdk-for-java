@@ -3,8 +3,7 @@ package com.microsoft.azure.servicebus;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.*;
@@ -23,6 +22,7 @@ public class MessagingFactory extends ClientEntity
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
 	
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
+	private static final Object reactorLock = new Object();
 	
 	// TODO: maintain refCount for reactor and close it if all MessagingFactory instances are closed
 	private static Reactor reactor;
@@ -34,35 +34,50 @@ public class MessagingFactory extends ClientEntity
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 	
+	/**
+	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
+	 */
 	MessagingFactory(final ConnectionStringBuilder builder, final Reactor reactor) throws IOException
 	{
 		super("MessagingFactory" + UUID.randomUUID().toString());
 		
 		if (reactor == null)
 			this.startReactor();
-		else if (MessagingFactory.reactor == null)
-			MessagingFactory.reactor = reactor;
-		/* else if (MessagingFactory.reactor != reactor)
-			throw new IllegalArgumentException("argument 'reactor' is unexpected"); */
+		else
+		{
+			synchronized (MessagingFactory.reactorLock)
+			{
+				if (MessagingFactory.reactor == null)
+					MessagingFactory.reactor = reactor;
+			}
+		}
 		
-		this.connection = createConnection(builder);
+		this.connection = this.createConnection(builder);
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
 	}
 	
 	private Connection createConnection(ConnectionStringBuilder builder)
 	{
-		ConnectionHandler connectionHandler = new ConnectionHandler(this, builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
-		this.waitingConnectionOpen = true;
-		return reactor.connection(connectionHandler);
+		synchronized (MessagingFactory.reactorLock)
+		{
+			assert MessagingFactory.reactor != null;
+			
+			ConnectionHandler connectionHandler = new ConnectionHandler(this, builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
+			this.waitingConnectionOpen = true;
+			return reactor.connection(connectionHandler);
+		}
 	}
 
 	private void startReactor() throws IOException
 	{
-		if (reactor == null)
+		synchronized (MessagingFactory.reactorLock)
 		{
-			reactor = Proton.reactor();
-			new Thread(new RunReactor(reactor)).start();
+			if (MessagingFactory.reactor == null)
+			{
+				MessagingFactory.reactor = Proton.reactor();
+				new Thread(new RunReactor(MessagingFactory.reactor)).start();
+			}
 		}
 	}
 	
@@ -72,7 +87,9 @@ public class MessagingFactory extends ClientEntity
 		{
 			synchronized (this.connection)
 			{
-				if (this.connection.getLocalState() != EndpointState.ACTIVE && !this.waitingConnectionOpen)
+				if (this.connection.getLocalState() != EndpointState.ACTIVE && 
+						this.connection.getLocalState() != EndpointState.UNINITIALIZED && 
+						!this.waitingConnectionOpen)
 				{
 					this.connection.free();
 					this.connection = reactor.connection(connectionHandler);
