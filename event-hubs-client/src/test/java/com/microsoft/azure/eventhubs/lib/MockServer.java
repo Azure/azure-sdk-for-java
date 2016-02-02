@@ -21,14 +21,13 @@ public class MockServer implements Closeable
 	public final static String HostName = "127.0.0.1";
 	public final static int Port = 5671;
 	
-	public static Reactor reactor;
+	public Reactor reactor;
 	
-	private static MockServer server;
 	private Acceptor acceptor;
 	
-	private MockServer(Reactor reactor, BaseHandler handler) throws IOException
+	private MockServer(BaseHandler handler) throws IOException
 	{
-		MockServer.reactor = (reactor == null) ? Proton.reactor() : reactor;
+		this.reactor = Proton.reactor();
 		
 		if (reactor == null)
 		{
@@ -42,33 +41,29 @@ public class MockServer implements Closeable
 						TRACE_LOGGER.log(Level.FINE, "starting reactor instance.");
 				    }
 					
-					MockServer.reactor.run();
+					MockServer.this.reactor.run();
 				}
 			}).start();
 		}
 		
-		this.acceptor = MockServer.reactor.acceptor(MockServer.HostName, MockServer.Port, 
+		this.acceptor = this.reactor.acceptor(MockServer.HostName, MockServer.Port, 
 				handler == null ? new ServerTraceHandler() : handler);
 		
 	}
 
-	public static MockServer Create(Reactor reactor, BaseHandler handler) throws IOException
+	public static MockServer Create(BaseHandler handler) throws IOException
 	{
-		if (MockServer.server == null)
-		{
-			MockServer.server = new MockServer(reactor, handler);
-		}
-		
-		return MockServer.server;
+		MockServer server = new MockServer(handler);
+		return server;
 	}
 
 	@Override
 	public void close() throws IOException
 	{
-		if (MockServer.reactor != null)
+		if (this.reactor != null)
 		{
-			MockServer.reactor.free();
-			MockServer.reactor = null;
+			this.reactor.free();
+			this.reactor = null;
 		}
 	}
 }

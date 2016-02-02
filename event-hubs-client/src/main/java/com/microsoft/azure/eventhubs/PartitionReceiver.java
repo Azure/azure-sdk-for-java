@@ -6,7 +6,6 @@ import java.util.concurrent.*;
 import java.util.function.*;
 
 import org.apache.qpid.proton.message.Message;
-
 import com.microsoft.azure.servicebus.*;
 
 public final class PartitionReceiver
@@ -17,7 +16,6 @@ public final class PartitionReceiver
 	private boolean offsetInclusive;
 	private Instant startingDateTime;
 	private MessageReceiver internalReceiver; 
-	private ReceiveHandler receiveHandler;
 	private final MessagingFactory underlyingFactory;
 	private final String eventHubName;
 	private final String consumerGroupName;
@@ -37,8 +35,7 @@ public final class PartitionReceiver
 			final boolean offsetInclusive,
 			final Instant dateTime,
 			final Long epoch,
-			final boolean isEpochReceiver,
-			final ReceiveHandler receiveHandler) 
+			final boolean isEpochReceiver) 
 					throws ServiceBusException
 	{
 		this.underlyingFactory = factory;
@@ -50,7 +47,6 @@ public final class PartitionReceiver
 		this.startingDateTime = dateTime;
 		this.epoch = epoch;
 		this.isEpochReceiver = isEpochReceiver;
-		this.receiveHandler = receiveHandler;
 	}
 	
 	static CompletableFuture<PartitionReceiver> create(MessagingFactory factory, 
@@ -61,11 +57,10 @@ public final class PartitionReceiver
 			final boolean offsetInclusive,
 			final Instant dateTime,
 			final long epoch,
-			final boolean isEpochReceiver,
-			final ReceiveHandler receiveHandler) 
+			final boolean isEpochReceiver) 
 					throws ServiceBusException
 	{
-		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiveHandler);
+		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver);
 		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
 		{
 			public PartitionReceiver apply(Void a)
@@ -79,7 +74,7 @@ public final class PartitionReceiver
 	{
 		return MessageReceiver.create(this.underlyingFactory, UUID.randomUUID().toString(), 
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
-				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver, this.receiveHandler)
+				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver)
 				.thenAcceptAsync(new Consumer<MessageReceiver>()
 				{
 					public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
@@ -127,34 +122,26 @@ public final class PartitionReceiver
 	public CompletableFuture<Iterable<EventData>> receive() 
 			throws ServiceBusException
 	{
-		if (this.receiveHandler != null)
-		{
-			throw new IllegalStateException("Receive and onReceive cannot be performed side-by-side on a single instance of Receiver.");
-		}
-		
-		return this.internalReceiver.receive().thenApplyAsync(new Function<Collection<Message>, Iterable<EventData>>()
+		return this.internalReceiver.receive().thenApply(new Function<Collection<Message>, Iterable<EventData>>()
 		{
 			@Override
 			public Iterable<EventData> apply(Collection<Message> amqpMessages)
 			{
-				LinkedList<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages);
-				if (events != null)
-				{
-					EventData lastEvent = events.getLast();
-					if (lastEvent != null)
-					{
-						PartitionReceiver.this.internalReceiver.setLastReceivedOffset(lastEvent.getSystemProperties().getOffset());
-					}
-				}
-				
-				return events;
+				return EventDataUtil.toEventDataCollection(amqpMessages);
 			}			
-		});		
+		});
 	}
 
-	public void close()
+	public void setReceiveHandler(PartitionReceiveHandler receiveHandler)
+	{
+		this.internalReceiver.setReceiveHandler(receiveHandler);
+	}
+
+	public void close() throws ServiceBusException
 	{
 		if (this.internalReceiver != null)
-			this.internalReceiver.close();		
+		{
+			this.internalReceiver.close();
+		}
 	}
 }

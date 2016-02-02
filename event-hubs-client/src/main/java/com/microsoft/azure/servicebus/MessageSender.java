@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus;
 
+import java.nio.BufferOverflowException;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -32,7 +33,7 @@ public class MessageSender extends ClientEntity
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
 	
-	public static final int MaxMessageLength = 255 * 1024;
+	public static final int MaxMessageLength = 256 * 1024;
 	
 	private final MessagingFactory underlyingFactory;
 	private final String sendPath;
@@ -83,7 +84,7 @@ public class MessageSender extends ClientEntity
 		return this.sendPath;
 	}
 	
-	public CompletableFuture<Void> send(Message msg, int messageFormat)
+	public CompletableFuture<Void> send(Message msg, int messageFormat) throws PayloadSizeExceededException
 	{
 		if (this.sendLink.getLocalState() != EndpointState.ACTIVE)
 		{
@@ -92,7 +93,16 @@ public class MessageSender extends ClientEntity
 		
 		// TODO: fix allocation per call - use BufferPool
 		byte[] bytes = new byte[MaxMessageLength];
-		int encodedSize = msg.encode(bytes, 0, MaxMessageLength);
+		int encodedSize;
+		
+		try
+		{
+			encodedSize = msg.encode(bytes, 0, MaxMessageLength);
+		}
+		catch(BufferOverflowException exception)
+		{
+			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s", MaxMessageLength), exception);
+		}
 		
 		byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
         Delivery dlv = this.sendLink.delivery(tag);
@@ -157,18 +167,19 @@ public class MessageSender extends ClientEntity
 			byte[] messageBytes = new byte[MaxMessageLength];
 			int messageSizeBytes = amqpMessage.encode(messageBytes, 0, MaxMessageLength);
 			messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
-					
-			encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, MaxMessageLength - byteArrayOffset - 1);
 			
-			byteArrayOffset = byteArrayOffset + encodedSize;
-			if (MaxMessageLength <= byteArrayOffset)
+			try
+			{
+				encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, MaxMessageLength - byteArrayOffset - 1);
+			}
+			catch(BufferOverflowException exception)
 			{
 				// TODO: is it intended for this purpose - else compute msg. size before hand.
 				dlv.clear();
-				
-				// TODO: Translate to completableFuture
-				throw new PayloadSizeExceededException("Size of the payload exceeded Maximum message size ");
+				throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s", MaxMessageLength), exception);
 			}
+			
+			byteArrayOffset = byteArrayOffset + encodedSize;
 		}
 		
 		int sentMsgSize = this.sendLink.send(bytes, 0, byteArrayOffset);
@@ -185,12 +196,11 @@ public class MessageSender extends ClientEntity
         return onSend;
 	}
 	
-	public CompletableFuture<Void> send(Message msg)
+	public CompletableFuture<Void> send(Message msg) throws ServiceBusException
 	{
 		return this.send(msg, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 	
-	@Override
 	public void close()
 	{
 		if (this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE)
@@ -318,7 +328,7 @@ public class MessageSender extends ClientEntity
 				else 
 				{
 					// TODO: enumerate all cases - if we ever return failed delivery from Service - do they translate to exceptions ?
-					pendingSend.completeExceptionally(ServiceBusException.Create(false, outcome.toString()));
+					pendingSend.completeExceptionally(ServiceBusException.create(false, outcome.toString()));
 				}
 				
 				this.pendingSendWaiters.remove(deliveryTag);
@@ -378,5 +388,11 @@ public class MessageSender extends ClientEntity
 				}
 			, timeout.remaining()
 			, TimerType.OneTimeRun);
+	}
+
+	@Override
+	public CompletableFuture<Void> closeAsync() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

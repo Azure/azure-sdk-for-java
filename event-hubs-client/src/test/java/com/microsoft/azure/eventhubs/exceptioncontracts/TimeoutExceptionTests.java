@@ -15,16 +15,14 @@ public class TimeoutExceptionTests
 	@Test (expected = TimeoutException.class)
 	public void testReceiverOpenTimeoutException() throws Throwable
 	{
-		MockServer server = MockServer.Create(null, null);
-		
-		MessagingFactory factory = MessagingFactory.create(
-				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey"),
-				MockServer.reactor);
+		MockServer server = MockServer.Create(null);
+		MessagingFactory factory = MessagingFactory.createFromConnectionString(
+				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey").toString());
 				
 		try 
 		{
 			// this throws timeout as the Connector in MockServer doesn't have any AmqpConnection associated
-			MessageReceiver.create(factory, "receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false, null).get();
+			MessageReceiver.create(factory, "receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false).get();
 		}
 		catch(ExecutionException exp)
 		{

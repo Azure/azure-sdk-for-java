@@ -2,16 +2,16 @@ package com.microsoft.azure.eventhubs;
 
 import java.util.*;
 import org.apache.qpid.proton.message.Message;
-import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.servicebus.ReceiveHandler;
 
-public abstract class ReceiveHandler extends MessageReceiveHandler
+public abstract class PartitionReceiveHandler extends ReceiveHandler
 {
-	public abstract void onReceive(Collection<EventData> events);
+	public abstract void onReceive(Iterable<EventData> events);
 	
 	// TODO: Add OnError functionality
 	// TODO: return CompletableFuture<Void>
 	@Override
-	public void onReceiveMessages(Collection<Message> messages)
+	public void onReceiveMessages(LinkedList<Message> messages)
 	{
 		this.onReceive(EventDataUtil.toEventDataCollection(messages));
 	}

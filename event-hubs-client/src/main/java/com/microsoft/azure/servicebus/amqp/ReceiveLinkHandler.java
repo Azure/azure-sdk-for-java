@@ -102,6 +102,17 @@ public final class ReceiveLinkHandler extends BaseHandler
         	ErrorCondition condition = link.getRemoteCondition();
         	if (condition != null)
     		{
+        		if (condition.getCondition() == null)
+        		{
+        			if(TRACE_LOGGER.isLoggable(Level.FINE))
+        	        {
+        				TRACE_LOGGER.log(Level.FINE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+        	        }
+        			
+        			this.msgReceiver.onClose();
+        			return;
+        		}
+        		
     			if(TRACE_LOGGER.isLoggable(Level.WARNING))
     	        {
     				TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");

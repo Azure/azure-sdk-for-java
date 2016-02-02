@@ -32,20 +32,31 @@ public abstract class ServiceBusException extends Exception
 	   *  internal-only; Sub-classing is allowed for {@link ServiceBusException} 
 	   *  - but fx's other than ServiceBus sdk's cannot directly create instance & throw it
 	   */
-	  static ServiceBusException Create(final boolean isTransient, final String message)
+	  static ServiceBusException create(final boolean isTransient, final String message)
 	  {
 		  return new InternalServiceBusException(isTransient, message);
 	  }
 	  
+	  static ServiceBusException create(final boolean isTransient, Exception exception)
+	  {
+		  return new InternalServiceBusException(isTransient, exception);
+	  }
+	  
 	  private static final class InternalServiceBusException extends ServiceBusException
 	  {
-		  boolean isTransient;
+		boolean isTransient;
 		  
-		  public InternalServiceBusException(final boolean isTransient, final String message)
-		  {
-			  super(message);
-			  this.isTransient = isTransient;
-		  }
+		public InternalServiceBusException(final boolean isTransient, final String message)
+		{
+		  super(message);
+		  this.isTransient = isTransient;
+		}
+		  
+		public InternalServiceBusException(final boolean isTransient, Exception exception)
+		{
+			super(exception);
+			this.isTransient = isTransient;
+		}
 		  
 		@Override
 		public boolean getIsTransient()

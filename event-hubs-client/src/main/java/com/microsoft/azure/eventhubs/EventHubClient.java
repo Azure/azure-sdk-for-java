@@ -33,20 +33,35 @@ public class EventHubClient extends ClientEntity
 	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
 	 * @throws ServiceBusException
 	 */
-	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
+	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString,
+			final boolean receiveOnly)
 			throws ServiceBusException, IOException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
 		
-		return eventHubClient.createInternalSender()
+		if (receiveOnly)
+		{
+			return CompletableFuture.completedFuture(eventHubClient);
+		}
+		else 
+		{
+			return eventHubClient.createInternalSender()
 				.thenApplyAsync(new Function<Void, EventHubClient>()
 				{
+					@Override
 					public EventHubClient apply(Void a)
 					{
 						return eventHubClient;
 					}
 				});
+		}
+	}
+	
+	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
+			throws ServiceBusException, IOException
+	{
+		return EventHubClient.createFromConnectionString(connectionString, false);
 	}
 	
 	CompletableFuture<Void> createInternalSender() throws IllegalEntityException
@@ -210,13 +225,13 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NullEpoch, false, null);
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NullEpoch, false);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime)
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NullEpoch, false, null);
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NullEpoch, false);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final long epoch) 
@@ -234,39 +249,25 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch)
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true, null);
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch)
 		throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true, null);
+		return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true);
 	}
-	
-	/**
-	 * Use Epoch receiver to ensure that there is only *one* Receiver active per an EventHub Partition per consumer group.
-	 * EventHubs Service will ensure that the Receiver with highest epoch Value owns the Partition. 
-	 * This overload of CreateEpochReceiver is built to support EventProcessorHost pattern. Implement ReceiveHandler to process events.
-	 * @param consumerGroupName consumer group name
-	 * @param partitionId partition id of the EventHub
-	 * @param startingOffset starting offset to read the Stream from. By default Start of EventHub Stream is {@link PartitionReceiver#StartOfStream}. 
-	 * @param offsetInclusive should the first event to be read include the offset ?
-	 * @param epoch to make sure that there is only one Receiver
-	 * @param receiveHandler the implementation of {@link ReceiveHandler} which can process the received events 
-	 * @return
-	 * @throws IllegalEntityException
-	 * @throws ServerBusyException
-	 * @throws AuthorizationFailedException
-	 * @throws ReceiverDisconnectedException
-	 */
-	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch, ReceiveHandler receiveHandler) 
-			throws ServiceBusException
+
+	public void close()
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true, receiveHandler);
-	}
-	
-	public final void close()
-	{
+		// implement Async factory close
 		this.underlyingFactory.close();
+	}
+	
+	@Override
+	public CompletableFuture<Void> closeAsync() {
+		// implement Async factory close
+		this.underlyingFactory.close();
+		return null;
 	}
 }

@@ -25,10 +25,13 @@ public abstract class TestBase
 	{
 		HashMap<String, String> sasRule = new HashMap<String, String>();
 		sasRule.put(TestBase.SasRuleName, SasKey);
-		return new TestEventHubInfo("gojavago", "firstehub-ns", null, sasRule);
+		
+		// fill - in eventHub details which has atleast 4 partitions
+		return new TestEventHubInfo("deviceeventstream", "FirstEHub-ns", null, sasRule);
 	}
 	
-	public static ConnectionStringBuilder getConnectionString(TestEventHubInfo eventHubInfo) {
+	public static ConnectionStringBuilder getConnectionString(TestEventHubInfo eventHubInfo)
+	{
 		Map.Entry<String, String> sasRule = eventHubInfo.getSasRule();
 		return new ConnectionStringBuilder(eventHubInfo.getNamespaceName(), eventHubInfo.getName(), sasRule.getKey(), sasRule.getValue());
 	}

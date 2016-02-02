@@ -44,7 +44,7 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.InternalError)
 		{
-			return ServiceBusException.Create(false, errorCondition.getDescription());
+			return ServiceBusException.create(false, new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == ClientConstants.ArgumentError)
 		{
@@ -66,17 +66,21 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == ClientConstants.PartitionNotOwnedError)
 		{
-			return ServiceBusException.Create(false, errorCondition.getDescription());
+			return ServiceBusException.create(false, errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == ClientConstants.StoreLockLostError)
 		{
-			return ServiceBusException.Create(false, errorCondition.getDescription());
+			return ServiceBusException.create(false, errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced)
 		{
-			return new AmqpException(errorCondition);
+			return ServiceBusException.create(false, new AmqpException(errorCondition));
+		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded)
+		{
+			return ServiceBusException.create(false, new AmqpException(errorCondition));
 		}
 		
-		return ServiceBusException.Create(true, errorCondition.getDescription());
+		return ServiceBusException.create(true, errorCondition.getDescription());
 	}
 }

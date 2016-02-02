@@ -5,11 +5,12 @@ import java.util.logging.*;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 
+import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.MessageSender;
 
 public class SendLinkHandler extends BaseHandler
 {
-	private static final Logger TRACE_LOGGER = Logger.getLogger("eventhub.trace");
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
 	
 	private final String name;
 	private final MessageSender msgSender;

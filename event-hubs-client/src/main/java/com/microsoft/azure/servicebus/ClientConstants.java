@@ -23,7 +23,7 @@ public final class ClientConstants
 	public final static Symbol PublisherRevokedError = Symbol.getSymbol(AmqpConstants.Vendor + ":publisher-revoked");
 	public final static Symbol TimeoutError = Symbol.getSymbol(AmqpConstants.Vendor + ":timeout");
 	
-	public final static Duration TimerTolerance = Duration.ofSeconds(5);
+	public final static Duration TimerTolerance = Duration.ofSeconds(1);
 	
 	public final static Duration DefaultRetryMinBackoff = Duration.ofSeconds(0);
 	public final static Duration DefaultRetryMaxBackoff = Duration.ofSeconds(30);

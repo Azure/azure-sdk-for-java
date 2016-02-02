@@ -3,6 +3,7 @@ package com.microsoft.azure.servicebus;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.*;
 
 import org.apache.qpid.proton.Proton;
@@ -10,6 +11,7 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.*;
 
 import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
+import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -22,10 +24,10 @@ public class MessagingFactory extends ClientEntity
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
 	
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
-	private static final Object reactorLock = new Object();
 	
-	// TODO: maintain refCount for reactor and close it if all MessagingFactory instances are closed
-	private static Reactor reactor;
+	private Reactor reactor;
+	private Thread reactorThread;
+	private final Object reactorLock = new Object();
 	
 	private ConnectionHandler connectionHandler;
 	private Connection connection;
@@ -37,20 +39,11 @@ public class MessagingFactory extends ClientEntity
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
 	 */
-	MessagingFactory(final ConnectionStringBuilder builder, final Reactor reactor) throws IOException
+	MessagingFactory(final ConnectionStringBuilder builder) throws IOException
 	{
 		super("MessagingFactory" + UUID.randomUUID().toString());
 		
-		if (reactor == null)
-			this.startReactor();
-		else
-		{
-			synchronized (MessagingFactory.reactorLock)
-			{
-				if (MessagingFactory.reactor == null)
-					MessagingFactory.reactor = reactor;
-			}
-		}
+		this.startReactor();
 		
 		this.connection = this.createConnection(builder);
 		this.operationTimeout = builder.getOperationTimeout();
@@ -59,9 +52,9 @@ public class MessagingFactory extends ClientEntity
 	
 	private Connection createConnection(ConnectionStringBuilder builder)
 	{
-		synchronized (MessagingFactory.reactorLock)
+		synchronized (this.reactorLock)
 		{
-			assert MessagingFactory.reactor != null;
+			assert this.reactor != null;
 			
 			ConnectionHandler connectionHandler = new ConnectionHandler(this, builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
 			this.waitingConnectionOpen = true;
@@ -71,12 +64,14 @@ public class MessagingFactory extends ClientEntity
 
 	private void startReactor() throws IOException
 	{
-		synchronized (MessagingFactory.reactorLock)
+		synchronized (this.reactorLock)
 		{
-			if (MessagingFactory.reactor == null)
+			if (this.reactor == null)
 			{
-				MessagingFactory.reactor = Proton.reactor();
-				new Thread(new RunReactor(MessagingFactory.reactor)).start();
+				this.reactor = Proton.reactor(new ReactorHandler());
+				
+				this.reactorThread = new Thread(new RunReactor(this.reactor));
+				this.reactorThread.start();
 			}
 		}
 	}
@@ -114,12 +109,7 @@ public class MessagingFactory extends ClientEntity
 	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException
 	{
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-		return new MessagingFactory(builder, null);
-	}
-	
-	public static MessagingFactory create(final ConnectionStringBuilder connectionStringBuilder, Reactor reactor) throws IOException
-	{
-		return new MessagingFactory(connectionStringBuilder, reactor);
+		return new MessagingFactory(builder);
 	}
 	
 	// Contract: ConnectionHandler - MessagingFactory
@@ -130,7 +120,18 @@ public class MessagingFactory extends ClientEntity
 			this.waitingConnectionOpen = false;
 		}
 	}
-	
+
+	public void close()
+	{
+		this.reactor.free();
+	}
+
+	@Override
+	public CompletableFuture<Void> closeAsync()
+	{
+		return null;
+	}
+
 	public static class RunReactor implements Runnable
 	{
 		private Reactor r;
@@ -147,16 +148,17 @@ public class MessagingFactory extends ClientEntity
 				TRACE_LOGGER.log(Level.FINE, "starting reactor instance.");
 		    }
 			
-			this.r.run();
+			try
+			{
+				this.r.run();
+			}
+			catch (HandlerException handlerException)
+			{
+				if(TRACE_LOGGER.isLoggable(Level.WARNING))
+			    {
+					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor:" + handlerException.toString());
+			    }
+			}
 		}
 	}
-
-	@Override
-	public void close()
-	{
-		// TODO: Close all dependent links
-		this.connection.close();
-		this.connection.free();		
-	}
-
 }

@@ -7,11 +7,14 @@ import java.util.concurrent.*;
 import java.util.logging.*;
 
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.transport.*;
+import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.amqp.transport.Target;
 import org.apache.qpid.proton.driver.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
 import org.apache.qpid.proton.reactor.*;
+
 import org.junit.*;
 
 import com.microsoft.azure.eventhubs.*;
@@ -21,17 +24,43 @@ import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 
 public class ReceiverRetry extends TestBase
 {
-	@Test
-	public void testRetryWhenReceiveFails() throws Exception
+	Sender1MsgOnLinkFlowHandler recvFlowHandler;
+	TestData data;
+	MockServer server;
+	MessagingFactory factory;
+	
+	@Before
+	public void initializeMockServer()  throws Exception
 	{
-    	final TestData data = new TestData();
+		data = new TestData();
     	data.retryCount = 0;
     	
+    	// simulating error case in servicebus service:
     	// first flow --> Receiver.open succeeds.
     	// after that this will continuously throw InternalError
-    	Sender1MsgOnLinkFlowHandler recvFlowHandler = new Sender1MsgOnLinkFlowHandler()
+    	recvFlowHandler = new Sender1MsgOnLinkFlowHandler()
     	{
-			boolean firstRequest = true;			
+			boolean firstRequest = true;
+			
+	    	// simulate open behavior of servicebus service
+	    	@Override
+	        public void onLinkRemoteOpen(Event event)
+	    	{
+	            Link link = event.getLink();
+	            if (link.getLocalState() == EndpointState.UNINITIALIZED)
+	            {
+	                if (link.getRemoteTarget() != null)
+	                {
+	                    Target remoteTarget = link.getRemoteTarget();
+	                    Source localSource = new Source();
+	                    localSource.setAddress(remoteTarget.getAddress());
+	                    link.setSource(localSource);
+	                }
+	            }
+
+	            link.open();
+	        }
+	    	
 			@Override
 			public void onLinkFlow(Event event)
 			{
@@ -46,7 +75,7 @@ public class ReceiverRetry extends TestBase
 					Link link = event.getLink();
 					if (link.getLocalState()== EndpointState.ACTIVE)
 					{
-						link.setCondition(new ErrorCondition(AmqpErrorCode.InternalError, "SimulateInternalError"));
+						link.setCondition(new ErrorCondition(ClientConstants.ServerBusyError, "SimulateInternalError"));
 						data.retryCount++;
 						link.detach();
 						link.close();
@@ -55,28 +84,35 @@ public class ReceiverRetry extends TestBase
 			}
 		};
 		
-		MockServer server = MockServer.Create(null, recvFlowHandler);
+		server = MockServer.Create(recvFlowHandler);
+	}
+	
+	@Test
+	public void testRetryWhenReceiveFails() throws Exception
+	{
+		factory = MessagingFactory.createFromConnectionString(
+				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey").toString());
 		
-		MessagingFactory factory = MessagingFactory.create(
-				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey"),
-				MockServer.reactor);
-		
-		try 
-		{	
-			MessageReceiver receiver = MessageReceiver.create(factory, 
-					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false, null).get();
-			Collection<Message> messages = receiver.receive().get();
-			if (messages != null) {
-				receiver.receive().get();
-			}
-			
-			System.out.println(String.format("actual retries: %s", data.retryCount));
-			Assert.assertTrue(data.retryCount > 3);
-		}
-		finally
+		MessageReceiver receiver = MessageReceiver.create(factory, 
+					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false).get();
+		Collection<Message> messages = receiver.receive().get();
+		if (messages != null)
 		{
-			// server.close();
+			receiver.receive().get();
 		}
+		
+		System.out.println(String.format("actual retries: %s", data.retryCount));
+		Assert.assertTrue(data.retryCount > 3);
+	}
+	
+	@After
+	public void cleanup() throws IOException
+	{
+		/*if (server != null)
+			server.close();
+		
+		if (factory != null)
+			factory.close();*/
 	}
 
 	public class TestData
