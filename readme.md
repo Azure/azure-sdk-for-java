@@ -122,7 +122,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
 ```XML
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
-   		<artifactId>azure-eventhubs-clients</artifactId> 
+   		<artifactId>azure-eventhubs</artifactId> 
    		<version>0.6.0</version> 
    	</dependency>   
  ```

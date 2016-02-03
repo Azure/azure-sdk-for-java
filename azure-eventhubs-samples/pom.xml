@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>com.microsoft.azure</groupId>
+		<artifactId>azure-eventhubs-clients</artifactId>
+		<version>0.6.0-SNAPSHOT</version>
+  	</parent>
+  
+  	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>azure-eventhubs-samples</artifactId>
+	<name>azure-eventhubs-samples</name>
+	    
+	<dependencies>
+	 	<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-eventhubs</artifactId>
+		    <version>${project.parent.version}</version>
+	</dependency>
+	 	<dependency>
+	  		<groupId>com.google.code.gson</groupId>
+	  		<artifactId>gson</artifactId>
+	  		<version>2.3.1</version>
+	   </dependency>
+	</dependencies>
+
+</project>
