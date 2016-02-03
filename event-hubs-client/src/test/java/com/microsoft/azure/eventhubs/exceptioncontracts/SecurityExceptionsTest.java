@@ -12,9 +12,9 @@ import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
-public class SecurityExceptions extends TestBase
+public class SecurityExceptionsTest extends TestBase
 {
-	private static final Logger LOGGER = Logger.getLogger(SecurityExceptions.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SecurityExceptionsTest.class.getName());
 	
 	@Test (expected = AuthorizationFailedException.class)
 	public void testEventHubClientUnAuthorizedAccess() throws Throwable

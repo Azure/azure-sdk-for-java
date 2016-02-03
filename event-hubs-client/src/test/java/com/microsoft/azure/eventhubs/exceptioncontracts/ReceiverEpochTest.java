@@ -8,7 +8,7 @@ import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
-public class ReceiverEpoch extends TestBase
+public class ReceiverEpochTest extends TestBase
 {
 
 	@Test (expected = ReceiverDisconnectedException.class)

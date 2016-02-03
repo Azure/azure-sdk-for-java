@@ -9,7 +9,7 @@ import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
-public class EventHubClientTests extends TestBase
+public class EventHubClientTest extends TestBase
 {
 	
 	@Test()

@@ -16,7 +16,7 @@ import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
-public class ConcurrentReceivers
+public class ConcurrentReceiversTest
 {
 	TestEventHubInfo eventHubInfo;
 	ConnectionStringBuilder connStr;

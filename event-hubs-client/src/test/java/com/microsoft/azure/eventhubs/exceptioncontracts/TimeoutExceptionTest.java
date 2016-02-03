@@ -9,7 +9,7 @@ import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
 // TODO: Once ConnectionStringBuilder.setOperationTimeout() is implemented - reduce the timeout of this testcase
-public class TimeoutExceptionTests
+public class TimeoutExceptionTest
 {
 	
 	@Test (expected = TimeoutException.class)

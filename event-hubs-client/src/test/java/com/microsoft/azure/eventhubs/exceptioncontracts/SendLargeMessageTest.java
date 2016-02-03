@@ -20,7 +20,7 @@ import com.microsoft.azure.servicebus.ServiceBusException;
 
 import junit.framework.Assert;
 
-public class SendLargeMessage
+public class SendLargeMessageTest
 {
 	static TestEventHubInfo eventHubInfo;
 	static ConnectionStringBuilder connStr;

@@ -22,7 +22,7 @@ import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 
-public class ReceiverRetry extends TestBase
+public class ReceiverRetryTest extends TestBase
 {
 	Sender1MsgOnLinkFlowHandler recvFlowHandler;
 	TestData data;

@@ -12,7 +12,7 @@ import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 import com.microsoft.azure.servicebus.amqp.*;
 
-public class ReceiveTests extends TestBase
+public class ReceiveTest extends TestBase
 {
 	@Test()
 	public void testReceiverFilters() throws ServiceBusException, InterruptedException, ExecutionException, IOException
