@@ -1,8 +1,6 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import java.util.Collection;
 import java.util.concurrent.ExecutionException;
-
 import org.junit.Assume;
 import org.junit.Test;
 
@@ -29,8 +27,9 @@ public class ReceiverEpoch extends TestBase
 				String cgName = eventHubInfo.getRandomConsumerGroup();
 				String partitionId = "0";
 				long epoch = 345632;
-				ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch, new EventCounter()).get();
-			
+				PartitionReceiver receiver = ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch).get();
+				receiver.setReceiveHandler(new EventCounter());
+				
 				try
 				{
 					ehClient.createEpochReceiver(cgName, partitionId, epoch - 10).get();
@@ -51,7 +50,7 @@ public class ReceiverEpoch extends TestBase
 		}
 	}
 
-	public static final class EventCounter extends ReceiveHandler
+	public static final class EventCounter extends PartitionReceiveHandler
 	{
 		private long count;
 		
@@ -59,9 +58,9 @@ public class ReceiverEpoch extends TestBase
 		{ 
 			count = 0;
 		}
-		
+
 		@Override
-		public void onReceive(Collection<EventData> events)
+		public void onReceive(Iterable<EventData> events)
 		{
 			for(EventData event: events)
 			{
@@ -69,7 +68,12 @@ public class ReceiverEpoch extends TestBase
 						 this.count, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber(), event.getSystemProperties().getEnqueuedTime(), event.getSystemProperties().getPartitionKey()));
 			}		
 			
-			count++;
+			count++;			
+		}
+
+		@Override
+		public void onError(Exception exception)
+		{	
 		}
 		
 	}
