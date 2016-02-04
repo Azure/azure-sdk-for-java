@@ -118,7 +118,7 @@ public class MessageReceiver extends ClientEntity
 		this.currentOperationTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		
 		this.linkOpen = new CompletableFuture<MessageReceiver>();
-		this.scheduleLinkEventTimeout(this.currentOperationTracker, this.linkOpen, "open");
+		this.scheduleLinkOpenTimeout(this.currentOperationTracker);
 		this.linkCreateScheduled = true;
 		
 		this.pendingReceives = new ConcurrentLinkedQueue<WorkItem<Collection<Message>>>();
@@ -509,9 +509,7 @@ public class MessageReceiver extends ClientEntity
 		}
 	}
 	
-	private void scheduleLinkEventTimeout(final TimeoutTracker timeout, 
-			@SuppressWarnings("rawtypes") final CompletableFuture linkEvent, 
-			final String eventType)
+	private void scheduleLinkOpenTimeout(final TimeoutTracker timeout)
 	{
 		// timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
 		Timer.schedule(
@@ -519,19 +517,48 @@ public class MessageReceiver extends ClientEntity
 				{
 					public void run()
 					{
-						synchronized(linkEvent)
+						synchronized(linkOpen)
 						{
-							if (!linkEvent.isDone())
+							if (!linkOpen.isDone())
 							{
-								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", name, eventType));
+								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", name, "Open"));
 								if (TRACE_LOGGER.isLoggable(Level.WARNING))
 								{
 									TRACE_LOGGER.log(Level.WARNING, 
-											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", name, MessageReceiver.this.receivePath, eventType), 
+											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", name, MessageReceiver.this.receivePath, "Open"), 
 											operationTimedout);
 								}
 								
-								linkEvent.completeExceptionally(operationTimedout);
+								linkOpen.completeExceptionally(operationTimedout);
+							}
+						}
+					}
+				}
+			, timeout.remaining()
+			, TimerType.OneTimeRun);
+	}
+	
+	private void scheduleLinkCloseTimeout(final TimeoutTracker timeout)
+	{
+		// timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
+		Timer.schedule(
+			new Runnable()
+				{
+					public void run()
+					{
+						synchronized(linkClose)
+						{
+							if (!linkClose.isDone())
+							{
+								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", name, "Close"));
+								if (TRACE_LOGGER.isLoggable(Level.WARNING))
+								{
+									TRACE_LOGGER.log(Level.WARNING, 
+											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", name, MessageReceiver.this.receivePath, "Close"), 
+											operationTimedout);
+								}
+								
+								linkClose.completeExceptionally(operationTimedout);
 							}
 						}
 					}
@@ -584,7 +611,7 @@ public class MessageReceiver extends ClientEntity
 			if (!this.closeCalled)
 			{
 				this.receiveLink.close();
-				this.scheduleLinkEventTimeout(TimeoutTracker.create(this.operationTimeout), this.linkClose, "close");
+				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
 				this.closeCalled = true;
 			}
 		}

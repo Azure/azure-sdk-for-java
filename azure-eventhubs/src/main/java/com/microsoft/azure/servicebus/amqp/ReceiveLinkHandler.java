@@ -24,10 +24,8 @@ import com.microsoft.azure.servicebus.MessageReceiver;
  * ServiceBus <-> ProtonReactor interaction 
  * handles all recvLink - reactor events
  */
-public final class ReceiveLinkHandler extends BaseHandler
+public final class ReceiveLinkHandler extends BaseLinkHandler
 {
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
-	
 	private final String name;
 	private final MessageReceiver msgReceiver;
 	private final Object firstResponse;

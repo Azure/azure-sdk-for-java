@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.logging.*;
 
 import org.junit.*;
 
@@ -14,6 +15,8 @@ import com.microsoft.azure.servicebus.amqp.*;
 
 public class ReceiveTest extends TestBase
 {
+	private static final Logger TEST_LOGGER = Logger.getLogger(ReceiveTest.class.toString());
+	
 	@Test()
 	public void testReceiverFilters() throws ServiceBusException, InterruptedException, ExecutionException, IOException
 	{
@@ -50,8 +53,8 @@ public class ReceiveTest extends TestBase
 			for(EventData eventDataUsingOffset: startingEventsUsingOffsetReceiver)
 			{
 				EventData eventDataUsingDateTime = dateTimeIterator.next();
-				System.out.println(String.format("recv by offset: %s.", eventDataUsingOffset.getSystemProperties().getOffset()));
-				System.out.println(String.format("recv by dateTime: %s.", eventDataUsingDateTime.getSystemProperties().getOffset()));
+				TEST_LOGGER.log(Level.FINE, String.format("recv by offset: %s.", eventDataUsingOffset.getSystemProperties().getOffset()));
+				TEST_LOGGER.log(Level.FINE, String.format("recv by dateTime: %s.", eventDataUsingDateTime.getSystemProperties().getOffset()));
 				
 				Assert.assertTrue(eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
 				
@@ -77,7 +80,8 @@ public class ReceiveTest extends TestBase
 			Iterable<EventData> dateTimeEventsFromCustomOffset = datetimeReceiver.receive().get();
 			Assert.assertTrue(dateTimeEventsFromCustomOffset.iterator().hasNext());
 			EventData firstEventAfterGivenTime = dateTimeEventsFromCustomOffset.iterator().next();
-			System.out.println(firstEventAfterGivenTime.getSystemProperties().getEnqueuedTime());
+			TEST_LOGGER.log(Level.FINE, firstEventAfterGivenTime.getSystemProperties().getEnqueuedTime().toString());
+			
 			Assert.assertTrue(firstEventAfterGivenTime.getSystemProperties().getOffset().
 					equals(nextEvent.getSystemProperties().getOffset()));
 		}

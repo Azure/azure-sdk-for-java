@@ -60,9 +60,12 @@ public class EventData
 		this.properties = amqpMessage.getApplicationProperties() == null ? null 
 				: ((Map<String, String>)(amqpMessage.getApplicationProperties().getValue()));
 		
-		this.bodyData = ((Data) amqpMessage.getBody()).getValue();
+		
+		this.bodyData = amqpMessage.getBody() == null ? null : ((Data) amqpMessage.getBody()).getValue();
 		
 		this.isReceivedEvent = true;
+
+		amqpMessage.clear();
 	}
 	
 	/**
@@ -165,7 +168,7 @@ public class EventData
 	public byte[] getBody()
 	{
 		// TODO: enforce on-send constructor type 2
-		return this.bodyData.getArray();
+		return this.bodyData == null ? null : this.bodyData.getArray();
 	}
 	
 	/**

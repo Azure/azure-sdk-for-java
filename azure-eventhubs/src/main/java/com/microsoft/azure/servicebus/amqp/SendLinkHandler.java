@@ -8,10 +8,8 @@ import org.apache.qpid.proton.engine.*;
 import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.MessageSender;
 
-public class SendLinkHandler extends BaseHandler
+public class SendLinkHandler extends BaseLinkHandler
 {
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
-	
 	private final String name;
 	private final MessageSender msgSender;
 	private final Object firstFlow;

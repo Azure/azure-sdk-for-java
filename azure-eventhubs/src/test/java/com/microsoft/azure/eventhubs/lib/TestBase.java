@@ -6,8 +6,10 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
+import java.util.logging.Logger;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.sendrecv.ReceiveTest;
 import com.microsoft.azure.servicebus.*;
 
 /**
@@ -20,6 +22,8 @@ public abstract class TestBase
 	final static String NoSasKey = "---------SasKey-----------";
 	final static String SasKey = NoSasKey;
 	public final static String SasRuleName = "RootManageSharedAccessKey";
+	
+	public static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test.trace");
 	
 	public static TestEventHubInfo checkoutTestEventHub()
 	{

@@ -55,15 +55,13 @@ public class ConcurrentReceiversTest
 				{
 					ehClients[i] = EventHubClient.createFromConnectionString(connStr.toString(), true).get();
 					receivers[i] = ehClients[i].createReceiver(consumerGroupName, Integer.toString(i), Instant.now()).get();
-					receivers[i].setReceiveHandler(new EventCounter(Integer.toString(i)));
-					System.out.println("created receiver on partition: " + Integer.toString(i));
+					receivers[i].setReceiveHandler(new EventCounter());
 				}
 			}
 			finally
 			{
 				for (int i=0; i < partitionCount; i++)
 				{
-					System.out.println("closing receivers: " + Integer.toString(i));
 					if (receivers[i] != null)
 					{
 						receivers[i].close();
@@ -90,12 +88,10 @@ public class ConcurrentReceiversTest
 	public static final class EventCounter extends PartitionReceiveHandler
 	{
 		private long count;
-		private String partitionId;
-
-		public EventCounter(final String partitionId)
+		
+		public EventCounter()
 		{ 
 			count = 0;
-			this.partitionId = partitionId;
 		}
 		
 		@Override
@@ -103,9 +99,6 @@ public class ConcurrentReceiversTest
 		{
 			for(EventData event: events)
 			{
-				System.out.println(String.format("Partition(%s): Counter: %s, Offset: %s, SeqNo: %s, EnqueueTime: %s, PKey: %s", 
-						 this.partitionId, this.count, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber(), event.getSystemProperties().getEnqueuedTime(), event.getSystemProperties().getPartitionKey()));
-				
 				count++;
 			}
 		}

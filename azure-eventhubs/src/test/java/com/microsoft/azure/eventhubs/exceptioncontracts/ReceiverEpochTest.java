@@ -1,6 +1,8 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import java.util.concurrent.ExecutionException;
+
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 
@@ -28,7 +30,8 @@ public class ReceiverEpochTest extends TestBase
 				String partitionId = "0";
 				long epoch = 345632;
 				PartitionReceiver receiver = ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch).get();
-				receiver.setReceiveHandler(new EventCounter());
+				EventCounter counter = new EventCounter();
+				receiver.setReceiveHandler(counter);
 				
 				try
 				{
@@ -38,6 +41,8 @@ public class ReceiverEpochTest extends TestBase
 				{
 					throw exp.getCause();
 				}
+				
+				Assert.assertTrue(counter.count > 0);
 			}
 			finally
 			{
@@ -52,7 +57,7 @@ public class ReceiverEpochTest extends TestBase
 
 	public static final class EventCounter extends PartitionReceiveHandler
 	{
-		private long count;
+		public long count;
 		
 		public EventCounter()
 		{ 
@@ -62,12 +67,6 @@ public class ReceiverEpochTest extends TestBase
 		@Override
 		public void onReceive(Iterable<EventData> events)
 		{
-			for(EventData event: events)
-			{
-				System.out.println(String.format("Counter: %s, Offset: %s, SeqNo: %s, EnqueueTime: %s, PKey: %s", 
-						 this.count, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber(), event.getSystemProperties().getEnqueuedTime(), event.getSystemProperties().getPartitionKey()));
-			}		
-			
 			count++;			
 		}
 
