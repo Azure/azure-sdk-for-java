@@ -175,15 +175,9 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
             msg.decode(buffer, 0, read);
             
             messages.add(msg);
+            delivery.settle();
             
-            if (receiveLink.advance())
-            {
-            	delivery = receiveLink.current();
-            }
-            else
-            {    
-            	break;
-            }
+            delivery = receiveLink.current();
         }
         
         if (messages != null && messages.size() > 0)
