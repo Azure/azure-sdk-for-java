@@ -85,7 +85,10 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
                 }
         	}
         	
-        	receiver.flow(this.msgReceiver.getPrefetchCount());
+        	if (receiver.getCredit() < this.msgReceiver.getPrefetchCount())
+        	{
+        		receiver.flow(this.msgReceiver.getPrefetchCount() - receiver.getCredit());
+        	}
         }
 	}
 	
