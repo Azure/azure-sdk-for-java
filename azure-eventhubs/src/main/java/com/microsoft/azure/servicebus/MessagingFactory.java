@@ -123,7 +123,11 @@ public class MessagingFactory extends ClientEntity
 
 	public void close()
 	{
-		this.reactor.free();
+		if (this.connection != null && this.connection.getLocalState() != EndpointState.CLOSED)
+		{
+			this.connection.close();
+			this.connection.free();
+		}
 	}
 
 	@Override

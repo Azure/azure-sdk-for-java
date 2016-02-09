@@ -27,20 +27,14 @@ public class EventHubClient extends ClientEntity
 		this.eventHubName = connectionString.getEntityPath();
 	}
 	
-	/**
-	 * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
-	 * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
-	 * @throws ServiceBusException
-	 */
 	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString,
-			final boolean receiveOnly)
+			final boolean isReceiveOnly)
 			throws ServiceBusException, IOException
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
 		
-		if (receiveOnly)
+		if (isReceiveOnly)
 		{
 			return CompletableFuture.completedFuture(eventHubClient);
 		}
@@ -58,6 +52,14 @@ public class EventHubClient extends ClientEntity
 		}
 	}
 	
+	/**
+	 * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
+	 * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
+	 * The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+	 * 
+	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+	 * @throws ServiceBusException
+	 */
 	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
 			throws ServiceBusException, IOException
 	{
@@ -74,8 +76,8 @@ public class EventHubClient extends ClientEntity
 	}
 	
 	/**
-	 * Create a sender which can publish {@link EventData} directly to an EventHub partition
-	 * @param partitionId
+	 * Create an {@link EventHubSender} which can publish {@link EventData}'s directly to a specific EventHub partition
+	 * @param partitionId partitionId of EventHub to send the {@link EventData}'s to
 	 * @return
 	 * @throws ServiceBusException
 	 */
@@ -96,11 +98,25 @@ public class EventHubClient extends ClientEntity
 	}
 	
 	/**
-	 * Send {@link EventData} to eventHub.
+	 * Send {@link EventData} to EventHub.
+	 * 
+	 * There are 3 ways to send to EventHubs, each exposed as a method. Use this method to Send, if:
+	 * <pre>
+	 * a)  the send({@link EventData}) operation should be highly available and 
+	 * b)  the data needs to be evenly distributed among all partitions; exception being, when a subset of partitions are unavailable
+	 * </pre>
+	 * 
+	 * {@link #send(EventData)} send's the {@link EventData} to a Service Gateway, which in-turn will forward the {@link EventData} to one of the EventHubs' partitions. Here's the message forwarding algorithm:
+	 * <pre>
+	 * i.  Forward the {@link EventData}'s to EventHub partitions, by equally distributing the data among all partitions (ex: Round-robin the {@link EventData}'s to all EventHubs' partitions) 
+	 * ii. If one of the EventHub partitions is unavailable for a moment, the Service Gateway will automatically detect it and forward the message to another available partition - making the Send operation highly-available.
+	 * </pre>
 	 * @param data the {@link EventData} to be sent.
 	 * @return
 	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds 256k bytes
 	 * @throws ServiceBusException
+	 * @see {@link #send(EventData, String)}
+	 * @see {@link EventHubSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(EventData data) 
 			throws ServiceBusException
@@ -114,11 +130,22 @@ public class EventHubClient extends ClientEntity
 	}
 	
 	/**
-	 * Send a batch of {@link EventData}
-	 * @param eventDatas
+	 * Send a batch of {@link EventData} to EventHub. 
+	 * 
+	 * There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData)}, which is used to send single {@link EventData}.
+	 * 
+	 * <p> Sending a batch of {@link EventData}'s is useful in the following cases:
+	 * <pre>
+	 * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
+	 * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
+	 * </pre>
+	 * 
+	 * @param eventDatas batch of events to send to EventHub
 	 * @return
 	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} collection exceeds 256k bytes
 	 * @throws ServiceBusException
+	 * @see {@link #send(EventData, String)}
+	 * @see {@link EventHubSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
@@ -133,11 +160,21 @@ public class EventHubClient extends ClientEntity
 	
 	/**
 	 * Send {@link EventData} with a partitionKey to EventHub. All {@link EventData}'s with a partitionKey are guaranteed to land on the same partition.
-	 * @param eventData
-	 * @param partitionKey
+	 * 
+	 * <p>
+	 * There are 3 ways to send to EventHubs, each exposed as a method. Use this method to Send, if:
+	 * <pre>
+	 * i.  There is a need for correlation of events based on Sender instance; The sender can generate a UniqueId and set it as partitionKey - which on the received Message can be used for correlation
+	 * ii. The client wants to take control of distribution of data across partitions.
+	 * </pre>
+	 * 
+	 * @param eventData the {@link EventData} to be sent.
+	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
 	 * @return
-	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds 256k bytes
+	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds 256 K.bytes
 	 * @throws ServiceBusException
+	 * @see {@link #send(EventData)}
+	 * @see {@link EventHubSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(EventData eventData, String partitionKey) 
 			throws ServiceBusException
@@ -157,17 +194,22 @@ public class EventHubClient extends ClientEntity
 	
 	/**
 	 * Send a batch of {@link EventData} with the same partitionKey to EventHub.
-	 * All {@link EventData}'s with a partitionKey are guaranteed to land on the same partition.
+	 * 
+	 * There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData, String)}, which is the same type of Send and is used to send single {@link EventData}.
+	 * 
 	 * <p> Useful in the following cases:
 	 * <pre>
 	 * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs service.
-	 * ii.	Send multiple events in a Transaction. This is the reason why all events sent in a batch needs to have same partitionKey (so that they are sent to one partition only).
+	 * ii.	Send multiple events in One Transaction. This is the reason why all events sent in a batch needs to have same partitionKey (so that they are sent to one partition only).
 	 * </pre>
-	 * @param eventDatas
-	 * @param partitionKey
+	 * 
+	 * @param eventDatas the batch of events to send to EventHub
+	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
 	 * @return
-	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} collection exceeds 256k bytes
+	 * @throws PayloadSizeExceededException if the total size of the {@link EventData}'s exceeds 256k bytes
 	 * @throws ServiceBusException
+	 * @see {@link #send(EventData)}
+	 * @see {@link EventHubSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(final Collection<EventData> eventDatas, final String partitionKey) 
 		throws ServiceBusException

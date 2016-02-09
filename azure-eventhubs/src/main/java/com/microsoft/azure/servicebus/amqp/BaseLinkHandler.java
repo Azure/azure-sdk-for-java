@@ -15,7 +15,7 @@ public class BaseLinkHandler extends BaseHandler
 	protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
 	
 	@Override
-	public void onLinkRemoteOpen(Event event)
+	public void onLinkLocalClose(Event event)
 	{
 		Link link = event.getLink();
 		if (link != null)

@@ -52,11 +52,6 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
             	TRACE_LOGGER.log(Level.FINE,
             			String.format("ReceiveLinkHandler(name: %s) initial credit: %s", this.name, receiver.getCredit()));
             }
-            
-            if (receiver.getCredit() < this.msgReceiver.getPrefetchCount())
-            {
-                receiver.flow(this.msgReceiver.getPrefetchCount());
-            }
         }
     }
 	
@@ -64,8 +59,9 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 	public void onLinkRemoteOpen(Event event)
 	{
 		Link link = event.getLink();
-        if (link instanceof Receiver)
+        if (link != null && link instanceof Receiver)
         {
+        	Receiver receiver = (Receiver) link;
         	if (link.getRemoteSource() != null)
         	{
         		if(TRACE_LOGGER.isLoggable(Level.FINE))
@@ -88,6 +84,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
                 			String.format("ReceiveLinkHandler(name: %s): remote Target Source set to null. waiting for error.", this.name));
                 }
         	}
+        	
+        	receiver.flow(this.msgReceiver.getPrefetchCount());
         }
 	}
 	
@@ -155,6 +153,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 			}
 		}
         
+		LinkedList<Delivery> deliveries = new LinkedList<Delivery>();
         Delivery delivery = event.getDelivery();
         Receiver receiveLink = (Receiver) delivery.getLink();
         LinkedList<Message> messages = new LinkedList<Message>();
@@ -175,15 +174,26 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
             msg.decode(buffer, 0, read);
             
             messages.add(msg);
-            delivery.settle();
+            deliveries.add(delivery);
             
-            delivery = receiveLink.current();
+            if (!receiveLink.advance())
+            {
+            	break;
+            }
+            else
+            {
+            	delivery = receiveLink.current();
+            }
         }
         
         if (messages != null && messages.size() > 0)
         {
+        	for(Delivery unsettledDelivery: deliveries)
+        	{
+        		unsettledDelivery.settle();
+        	}
+        	
         	this.msgReceiver.onDelivery(messages);
-            
             if(TRACE_LOGGER.isLoggable(Level.FINE) && receiveLink != null)
             {
             	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "recvLink.onDelivery - linkCredit: %s", receiveLink.getCredit()));
