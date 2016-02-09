@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
     @Test
@@ -18,11 +19,11 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
         group.setTags(new HashMap<String, String>());
         group.getTags().put("department", "finance");
         group.getTags().put("tagname", "tagvalue");
-        resourceManagementClient.getResourceGroups().createOrUpdate(rgName, group);
+        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
         // List
-        Page<ResourceGroup> listResult = resourceManagementClient.getResourceGroups().list(null, null).getBody();
+        List<ResourceGroup> listResult = resourceManagementClient.getResourceGroupsOperations().list(null, null).getBody();
         ResourceGroup groupResult = null;
-        for (ResourceGroup rg : listResult.getItems()) {
+        for (ResourceGroup rg : listResult) {
             if (rg.getName().equals(rgName)) {
                 groupResult = rg;
                 break;
@@ -33,12 +34,12 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
         Assert.assertEquals("tagvalue", groupResult.getTags().get("tagname"));
         Assert.assertEquals(location, groupResult.getLocation());
         // Get
-        ResourceGroup getGroup = resourceManagementClient.getResourceGroups().get(rgName).getBody();
+        ResourceGroup getGroup = resourceManagementClient.getResourceGroupsOperations().get(rgName).getBody();
         Assert.assertNotNull(getGroup);
         Assert.assertEquals(rgName, getGroup.getName());
         Assert.assertEquals(location, getGroup.getLocation());
         // Delete
-        resourceManagementClient.getResourceGroups().delete(rgName);
-        Assert.assertFalse(resourceManagementClient.getResourceGroups().checkExistence(rgName).getBody());
+        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        Assert.assertFalse(resourceManagementClient.getResourceGroupsOperations().checkExistence(rgName).getBody());
     }
 }

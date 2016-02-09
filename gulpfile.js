@@ -16,12 +16,12 @@ var mappings = {
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/resources/2014-04-01-preview/swagger/resources.json',
+        'source': 'arm-resources/resources/2015-11-01/swagger/resources.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'subscriptions': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/subscriptions/2014-04-01-preview/swagger/subscriptions.json',
+        'source': 'arm-resources/subscriptions/2015-11-01/swagger/subscriptions.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'authorization': {
@@ -31,7 +31,7 @@ var mappings = {
     },
     'features': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/features/2014-08-01-preview/swagger/features.json',
+        'source': 'arm-resources/features/2015-12-01/swagger/features.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'network': {
