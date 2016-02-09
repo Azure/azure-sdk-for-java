@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class StorageAccountOperationsTests extends StorageManagementTestBase {
     private static String rgName = "javacsmrg";
@@ -24,12 +25,12 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         createClients();
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
-        resourceManagementClient.getResourceGroups().createOrUpdate(rgName, group);
+        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManagementClient.getResourceGroups().delete(rgName);
+        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
     }
 
     @Test
@@ -42,14 +43,14 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         parameters.setTags(new HashMap<String, String>());
         parameters.getTags().put("department", "finance");
         parameters.getTags().put("tagname", "tagvalue");
-        StorageAccount storageAccount = storageManagementClient.getStorageAccounts().create(rgName, accountName, parameters).getBody();
+        StorageAccount storageAccount = storageManagementClient.getStorageAccountsOperations().create(rgName, accountName, parameters).getBody();
         Assert.assertEquals(location, storageAccount.getLocation());
         Assert.assertEquals(AccountType.STANDARD_GRS, storageAccount.getAccountType());
         Assert.assertEquals(2, storageAccount.getTags().size());
         // List
-        StorageAccountListResult listResult = storageManagementClient.getStorageAccounts().list().getBody();
+        List<StorageAccount> listResult = storageManagementClient.getStorageAccountsOperations().list().getBody();
         StorageAccount storageResult = null;
-        for (StorageAccount sa : listResult.getValue()) {
+        for (StorageAccount sa : listResult) {
             if (sa.getName().equals(accountName)) {
                 storageResult = sa;
                 break;
@@ -60,17 +61,17 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         Assert.assertEquals("tagvalue", storageResult.getTags().get("tagname"));
         Assert.assertEquals(location, storageResult.getLocation());
         // Get
-        StorageAccount getResult = storageManagementClient.getStorageAccounts().getProperties(rgName, accountName).getBody();
+        StorageAccount getResult = storageManagementClient.getStorageAccountsOperations().getProperties(rgName, accountName).getBody();
         Assert.assertNotNull(getResult);
         Assert.assertEquals("finance", getResult.getTags().get("department"));
         Assert.assertEquals("tagvalue", getResult.getTags().get("tagname"));
         Assert.assertEquals(location, getResult.getLocation());
         // Delete
-        storageManagementClient.getStorageAccounts().delete(rgName, accountName);
+        storageManagementClient.getStorageAccountsOperations().delete(rgName, accountName);
         StorageAccountCheckNameAvailabilityParameters availabilityParameters = new StorageAccountCheckNameAvailabilityParameters();
         availabilityParameters.setName(accountName);
         availabilityParameters.setType("Microsoft.Storage/storageAccounts");
-        CheckNameAvailabilityResult availabilityResult = storageManagementClient.getStorageAccounts().checkNameAvailability(availabilityParameters).getBody();
+        CheckNameAvailabilityResult availabilityResult = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(availabilityParameters).getBody();
         Assert.assertTrue(availabilityResult.getNameAvailable());
     }
 }
