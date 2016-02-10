@@ -56,46 +56,48 @@ public class Navigator extends AppCompatActivity {
     }
 
     public void listResourceGroups(View view) {
-        final ProgressDialog progress = new ProgressDialog(this);
-        progress.setTitle("Please wait...");
-        progress.setMessage("Loading resource groups...");
-        rClient.getResourceGroupsOperations().listAsync(null, null, new ListOperationCallback<ResourceGroup>() {
-            @Override
-            public void failure(Throwable t) {
-                progress.dismiss();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "Failed to get resource groups", Toast.LENGTH_LONG);
-                    }
-                });
-            }
-
-            @Override
-            public void success(final ServiceResponse<List<ResourceGroup>> result) {
-                final ListView listView = (ListView) findViewById(R.id.main_content);
-                final ArrayAdapter adapter = new ArrayAdapter<ResourceGroup>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody()) {
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View view = super.getView(position, convertView, parent);
-                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-
-                        ResourceGroup group = result.getBody().get(position);
-                        text1.setText(group.getName());
-                        text2.setText("Location: " + group.getLocation());
-                        return view;
-                    }
-                };
-                progress.dismiss();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        listView.setAdapter(adapter);
-                    }
-                });
-            }
-        });
+        Intent intent = new Intent(this, ResourceOperator.class);
+        startActivity(intent);
+//        final ProgressDialog progress = new ProgressDialog(this);
+//        progress.setTitle("Please wait...");
+//        progress.setMessage("Loading resource groups...");
+//        rClient.getResourceGroupsOperations().listAsync(null, null, new ListOperationCallback<ResourceGroup>() {
+//            @Override
+//            public void failure(Throwable t) {
+//                progress.dismiss();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(getApplicationContext(), "Failed to get resource groups", Toast.LENGTH_LONG);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void success(final ServiceResponse<List<ResourceGroup>> result) {
+//                final ListView listView = (ListView) findViewById(R.id.main_content);
+//                final ArrayAdapter adapter = new ArrayAdapter<ResourceGroup>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody()) {
+//                    @Override
+//                    public View getView(int position, View convertView, ViewGroup parent) {
+//                        View view = super.getView(position, convertView, parent);
+//                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+//                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+//
+//                        ResourceGroup group = result.getBody().get(position);
+//                        text1.setText(group.getName());
+//                        text2.setText("Location: " + group.getLocation());
+//                        return view;
+//                    }
+//                };
+//                progress.dismiss();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        listView.setAdapter(adapter);
+//                    }
+//                });
+//            }
+//        });
     }
 
     public void listStorageAccounts(View view) {

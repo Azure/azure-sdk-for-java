@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private final static String CLIENT_ID = "1950a258-227b-4e31-a9cf-717495945fc2";
     private final static String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
     public ProgressDialog progress;
+    public TenantHandler tenantHandler;
+    public SubscriptionHandler subscriptionHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 self, CLIENT_ID, "common", REDIRECT_URI, PromptBehavior.REFRESH_SESSION, AzureEnvironment.AZURE
         );
         SubscriptionClient client = new SubscriptionClientImpl(credentials);
+        tenantHandler = new TenantHandler(new WeakReference<>(self));
+        subscriptionHandler = new SubscriptionHandler(new WeakReference<>(self));
         client.getTenantsOperations().listAsync(new ListOperationCallback<TenantIdDescription>() {
             @Override
             public void failure(final Throwable t) {
@@ -80,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void success(final ServiceResponse<List<TenantIdDescription>> serviceResponse) {
-                TenantHandler handler = new TenantHandler(new WeakReference<>(self));
-                handler.obtainMessage(0, serviceResponse.getBody()).sendToTarget();
+                self.tenantHandler.obtainMessage(0, serviceResponse.getBody()).sendToTarget();
             }
         });
         progress.show();
@@ -122,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void success(ServiceResponse<List<Subscription>> serviceResponse) {
-                        SubscriptionHandler handler = new SubscriptionHandler(activityRef);
-                        handler.obtainMessage(tenants.size(), new Pair<>(tenant, serviceResponse.getBody())).sendToTarget();
+                        activityRef.get().subscriptionHandler.obtainMessage(
+                                tenants.size(),
+                                new Pair<>(tenant, serviceResponse.getBody()))
+                            .sendToTarget();
                     }
                 });
             }
@@ -132,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static class SubscriptionHandler extends Handler {
         private WeakReference<MainActivity> activityRef;
-        private static ArrayList<SubscriptionInfo> subscriptionInfos = new ArrayList<>();
-        private static int tenantCount = 0;
+        private ArrayList<SubscriptionInfo> subscriptionInfos = new ArrayList<>();
+        private int tenantCount = 0;
 
         public SubscriptionHandler(WeakReference<MainActivity> activityRef) {
             this.activityRef = activityRef;

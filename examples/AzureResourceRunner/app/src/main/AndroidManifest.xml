@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,6 +30,10 @@
         <activity
             android:name=".Navigator"
             android:label="Navigator" />
+        <activity
+            android:name=".ResourceOperator"
+            android:label="@string/title_activity_resource_operator"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
