@@ -123,10 +123,11 @@ public class ResourceFragment extends Fragment {
     }
 
     public void createResourceGroup() {
-        EditText editText = (EditText) getActivity().findViewById(R.id.resource_group_name);
+        EditText name = (EditText) getActivity().findViewById(R.id.resource_group_name);
+        EditText location = (EditText) getActivity().findViewById(R.id.resource_group_location);
         ResourceGroup resourceGroup = new ResourceGroup();
-        resourceGroup.setLocation("westus");
-        resourceManagementClient.getResourceGroupsOperations().createOrUpdateAsync(editText.getText().toString(), resourceGroup, new ServiceCallback<ResourceGroup>() {
+        resourceGroup.setLocation(location.getText().toString());
+        resourceManagementClient.getResourceGroupsOperations().createOrUpdateAsync(name.getText().toString(), resourceGroup, new ServiceCallback<ResourceGroup>() {
             @Override
             public void failure(Throwable t) {
                 getActivity().runOnUiThread(new Runnable() {
@@ -143,6 +144,42 @@ public class ResourceFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(getActivity(), "Created", Toast.LENGTH_LONG).show();
+                        listResourceGroups();
+                    }
+                });
+            }
+        });
+    }
+
+    public void deleteResourceGroup() {
+        EditText name = (EditText) getActivity().findViewById(R.id.resource_group_name);
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Deleting resource group " + name.getText().toString() + ", please wait...");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.show();
+            }
+        });
+        resourceManagementClient.getResourceGroupsOperations().deleteAsync(name.getText().toString(), new ServiceCallback<Void>() {
+            @Override
+            public void failure(Throwable t) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "Failed to delete rg", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void success(ServiceResponse<Void> result) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_LONG).show();
                         listResourceGroups();
                     }
                 });
@@ -167,7 +204,12 @@ public class ResourceFragment extends Fragment {
                 createResourceGroup();
             }
         });
-
+        view.findViewById(R.id.resource_delete_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteResourceGroup();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

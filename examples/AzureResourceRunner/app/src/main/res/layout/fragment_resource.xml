@@ -28,12 +28,28 @@
             android:layout_height="wrap_content"
             android:id="@+id/resource_group_name"
             android:layout_weight="1"/>
-        <Button
+        <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location: "/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resource_group_location"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content" android:text="Create"
             android:id="@+id/resource_create_btn" />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content" android:text="Delete"
             android:id="@+id/resource_delete_btn" android:onClick="deleteResourceGroup" />
     </LinearLayout>
