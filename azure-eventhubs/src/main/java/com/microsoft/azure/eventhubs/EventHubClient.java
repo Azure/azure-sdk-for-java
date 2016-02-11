@@ -15,7 +15,7 @@ public class EventHubClient extends ClientEntity
 {
 	public static final String DefaultConsumerGroupName = "$Default";
 	
-	private final MessagingFactory underlyingFactory;
+	private MessagingFactory underlyingFactory;
 	private final String eventHubName;
 	
 	private MessageSender sender;
@@ -23,7 +23,6 @@ public class EventHubClient extends ClientEntity
 	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
 	{
 		super(UUID.randomUUID().toString());
-		this.underlyingFactory = MessagingFactory.createFromConnectionString(connectionString.toString());
 		this.eventHubName = connectionString.getEntityPath();
 	}
 	
@@ -34,21 +33,40 @@ public class EventHubClient extends ClientEntity
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
 		
+		
 		if (isReceiveOnly)
 		{
-			return CompletableFuture.completedFuture(eventHubClient);
+			return MessagingFactory.createFromConnectionString(connectionString.toString())
+					.thenApplyAsync(new Function<MessagingFactory, EventHubClient>()
+					{
+						@Override
+						public EventHubClient apply(MessagingFactory factory)
+						{
+							eventHubClient.underlyingFactory = factory;
+							return eventHubClient;
+						}
+					});
 		}
 		else 
 		{
-			return eventHubClient.createInternalSender()
-				.thenApplyAsync(new Function<Void, EventHubClient>()
-				{
-					@Override
-					public EventHubClient apply(Void a)
+			return MessagingFactory.createFromConnectionString(connectionString.toString())
+					.thenComposeAsync(new Function<MessagingFactory, CompletableFuture<EventHubClient>>()
 					{
-						return eventHubClient;
-					}
-				});
+						@Override
+						public CompletableFuture<EventHubClient> apply(MessagingFactory factory)
+						{
+							eventHubClient.underlyingFactory = factory;
+							return eventHubClient.createInternalSender()
+									.thenApplyAsync(new Function<Void, EventHubClient>()
+									{
+										@Override
+										public EventHubClient apply(Void a)
+										{
+											return eventHubClient;
+										}
+									});
+						}
+					});			
 		}
 	}
 	
@@ -66,7 +84,7 @@ public class EventHubClient extends ClientEntity
 		return EventHubClient.createFromConnectionString(connectionString, false);
 	}
 	
-	CompletableFuture<Void> createInternalSender() throws IllegalEntityException
+	CompletableFuture<Void> createInternalSender()
 	{
 		return MessageSender.Create(this.underlyingFactory, UUID.randomUUID().toString(), this.eventHubName)
 				.thenAcceptAsync(new Consumer<MessageSender>()

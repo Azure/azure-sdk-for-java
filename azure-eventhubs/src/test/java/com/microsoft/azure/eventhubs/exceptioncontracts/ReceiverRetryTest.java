@@ -92,7 +92,7 @@ public class ReceiverRetryTest extends TestBase
 	public void testRetryWhenReceiveFails() throws Exception
 	{
 		factory = MessagingFactory.createFromConnectionString(
-				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey").toString());
+				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey").toString()).get();
 		
 		MessageReceiver receiver = MessageReceiver.create(factory, 
 					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false).get();

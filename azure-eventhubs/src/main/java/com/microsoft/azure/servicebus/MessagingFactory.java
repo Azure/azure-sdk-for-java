@@ -1,6 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
+import java.nio.channels.*;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -35,6 +36,7 @@ public class MessagingFactory extends ClientEntity
 	
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
+	private CompletableFuture<MessagingFactory> open;
 	
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
@@ -45,12 +47,11 @@ public class MessagingFactory extends ClientEntity
 		
 		this.startReactor();
 		
-		this.connection = this.createConnection(builder);
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
 	}
 	
-	private Connection createConnection(ConnectionStringBuilder builder)
+	private void createConnection(ConnectionStringBuilder builder)
 	{
 		synchronized (this.reactorLock)
 		{
@@ -58,7 +59,8 @@ public class MessagingFactory extends ClientEntity
 			
 			ConnectionHandler connectionHandler = new ConnectionHandler(this, builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
 			this.waitingConnectionOpen = true;
-			return reactor.connection(connectionHandler);
+			this.connection = reactor.connection(connectionHandler);
+			this.open = new CompletableFuture<MessagingFactory>();
 		}
 	}
 
@@ -70,12 +72,13 @@ public class MessagingFactory extends ClientEntity
 			{
 				this.reactor = Proton.reactor(new ReactorHandler());
 				
-				this.reactorThread = new Thread(new RunReactor(this.reactor));
+				this.reactorThread = new Thread(new RunReactor(this, this.reactor));
 				this.reactorThread.start();
 			}
 		}
 	}
 	
+	// Todo: async
 	Connection getConnection()
 	{
 		if (this.connection.getLocalState() != EndpointState.ACTIVE)
@@ -106,18 +109,29 @@ public class MessagingFactory extends ClientEntity
 		return this.retryPolicy;
 	}
 	
-	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException
+	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString) throws IOException
 	{
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-		return new MessagingFactory(builder);
+		MessagingFactory messagingFactory = new MessagingFactory(builder);
+		
+		messagingFactory.createConnection(builder);
+		return messagingFactory.open;
 	}
 	
 	// Contract: ConnectionHandler - MessagingFactory
-	public void onOpenComplete()
+	public void onOpenComplete(Exception exception)
 	{
 		synchronized (this.connection)
 		{
 			this.waitingConnectionOpen = false;
+			if (exception == null)
+			{
+				this.open.complete(this);
+			}
+			else
+			{
+				this.open.completeExceptionally(exception);
+			}
 		}
 	}
 
@@ -139,10 +153,12 @@ public class MessagingFactory extends ClientEntity
 	public static class RunReactor implements Runnable
 	{
 		private Reactor r;
+		private MessagingFactory messagingFactory;
 		
-		public RunReactor(Reactor r)
+		public RunReactor(MessagingFactory owner, Reactor r)
 		{
 			this.r = r;
+			this.messagingFactory = owner;
 		}
 		
 		public void run()
@@ -158,9 +174,17 @@ public class MessagingFactory extends ClientEntity
 			}
 			catch (HandlerException handlerException)
 			{
+				if (handlerException.getCause() != null && handlerException.getCause() instanceof UnresolvedAddressException)
+				{
+					UnresolvedAddressException unresolvedAddressException = (UnresolvedAddressException) handlerException.getCause();
+					this.messagingFactory.onOpenComplete(unresolvedAddressException);
+					return;
+				}
+				
 				if(TRACE_LOGGER.isLoggable(Level.WARNING))
 			    {
-					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor:" + handlerException.toString());
+					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor: " + handlerException.toString());
+					handlerException.printStackTrace();
 			    }
 			}
 		}

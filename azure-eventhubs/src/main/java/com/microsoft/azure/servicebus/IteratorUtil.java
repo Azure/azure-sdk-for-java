@@ -24,4 +24,15 @@ public final class IteratorUtil
 			return sizeEquals(iterator, expectedSize - 1);
 		}
 	}
+	
+	public static <T> T getLast(Iterator<T> iterator)
+	{
+		T last = null;
+		while(iterator.hasNext())
+		{
+			last = iterator.next();
+		}
+		
+		return last;
+	}
 }

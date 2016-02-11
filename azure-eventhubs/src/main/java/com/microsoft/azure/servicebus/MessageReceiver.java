@@ -34,6 +34,7 @@ public class MessageReceiver extends ClientEntity
 	private final String receivePath;
 	private final Runnable onOperationTimedout;
 	private final Duration operationTimeout;
+	private final Object prefetchedMessagesLock;
 	
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
@@ -74,7 +75,7 @@ public class MessageReceiver extends ClientEntity
 	{
 		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, dateTime, prefetchCount, epoch, isEpochReceiver);
 		
-		ReceiveLinkHandler handler = new ReceiveLinkHandler(name, msgReceiver);
+		ReceiveLinkHandler handler = new ReceiveLinkHandler(msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
 
 		return msgReceiver.linkOpen;
@@ -103,7 +104,8 @@ public class MessageReceiver extends ClientEntity
 		this.linkCreateLock = new Object();
 		this.receiveHandlerLock = new Object();
 		this.linkClose = new CompletableFuture<Void>();
-
+		this.prefetchedMessagesLock = new Object();
+		
 		if (offset != null)
 		{
 			this.lastReceivedOffset = offset;
@@ -174,15 +176,16 @@ public class MessageReceiver extends ClientEntity
 		
 		if (!this.prefetchedMessages.isEmpty())
 		{
-			synchronized (this.prefetchedMessages)
+			synchronized (this.prefetchedMessagesLock)
 			{
 				if (!this.prefetchedMessages.isEmpty())
 				{
-					// return all available msgs to application-layer and send 'link-flow' frame for prefetch
-					Collection<Message> returnMessages = this.prefetchedMessages;
+					Queue<Message> returnMessages = this.prefetchedMessages;
 					this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 					this.sendFlow(returnMessages.size());
-					return CompletableFuture.completedFuture(returnMessages);
+					
+					this.lastReceivedOffset = IteratorUtil.getLast(returnMessages.iterator()).getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
+					return CompletableFuture.completedFuture((Collection<Message>) returnMessages);
 				}
 			}
 		}
@@ -281,23 +284,25 @@ public class MessageReceiver extends ClientEntity
 			}
 		}		
 		else
-		{
-			synchronized (this.pendingReceives)
+		{	
+			WorkItem<Collection<Message>> currentReceive = this.pendingReceives.poll();
+			
+			if (currentReceive == null)
 			{
-				if (this.pendingReceives.isEmpty())
+				synchronized (this.prefetchedMessagesLock)
 				{
 					this.prefetchedMessages.addAll(messages);
 					this.currentOperationTracker = null;
 				}
-				else
-				{
-					WorkItem<Collection<Message>> currentReceive = this.pendingReceives.poll();
-					this.currentOperationTracker = this.pendingReceives.peek() != null ? this.pendingReceives.peek().getTimeoutTracker() : null;
-					currentReceive.getWork().complete(messages);
-					this.sendFlow(messages.size());
-				}
-				
+			}
+			else 
+			{
+				WorkItem<Collection<Message>> topPendingReceive = this.pendingReceives.peek();
+				this.currentOperationTracker = topPendingReceive != null ? topPendingReceive.getTimeoutTracker() : null;
+				this.sendFlow(messages.size());
+
 				this.lastReceivedOffset = messages.getLast().getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
+				currentReceive.getWork().complete(messages);
 			}
 		}
 		
@@ -341,7 +346,7 @@ public class MessageReceiver extends ClientEntity
 					{
 						TRACE_LOGGER.log(Level.WARNING, 
 								String.format(Locale.US, "%s: LinkName (%s), receiverpath (%s): encountered Exception (%s) while receiving from ServiceBus service.", 
-										Instant.now().toString(), this.getClientId(), this.receivePath, completionException.getClass()));
+										Instant.now().toString(), this.receiveLink.getName(), this.receivePath, completionException.getClass()));
 					}
 					
 					this.receiveHandler.onError(completionException);
@@ -405,9 +410,12 @@ public class MessageReceiver extends ClientEntity
         Map<Symbol, UnknownDescribedType> filterMap = Collections.singletonMap(AmqpConstants.StringFilter, filter);
         source.setFilter(filterMap);
         
-		Session ssn = this.underlyingFactory.getConnection().session();
+        Connection connection = this.underlyingFactory.getConnection();
+		Session ssn = connection.session();
 		
-		Receiver receiver = ssn.receiver(name);
+		String receiveLinkName = this.getClientId();
+		receiveLinkName = receiveLinkName.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer());
+		Receiver receiver = ssn.receiver(receiveLinkName);
 		receiver.setSource(source);
 		receiver.setTarget(new Target());
 		
@@ -433,24 +441,31 @@ public class MessageReceiver extends ClientEntity
 	{
 		if (this.receiveLink.getLocalState() == EndpointState.ACTIVE)
 		{
-			synchronized(this.pingFlowCount)
+			if (this.pingFlowCount.get() != 0)
 			{
-				if (this.pingFlowCount.get() < credits)
+				synchronized(this.pingFlowCount)
 				{
-					this.receiveLink.flow(credits - this.pingFlowCount.get());
-					this.pingFlowCount.set(0);
+					if (this.pingFlowCount.get() < credits)
+					{
+						this.receiveLink.flow(credits - this.pingFlowCount.get());
+						this.pingFlowCount.set(0);
+					}
+					else 
+					{
+						this.pingFlowCount.set(this.pingFlowCount.get() - credits);
+					}
 				}
-				else 
-				{
-					this.pingFlowCount.set(this.pingFlowCount.get() - credits);
-				}
+				
+				if(TRACE_LOGGER.isLoggable(Level.FINE))
+		        {
+		        	TRACE_LOGGER.log(Level.FINE,
+		        			String.format("MessageReceiver.sendFlow (linkname: %s), updated-link-credit: %s", this.receiveLink.getName(), this.receiveLink.getCredit()));
+		        }
 			}
-			
-			if(TRACE_LOGGER.isLoggable(Level.FINE))
-	        {
-	        	TRACE_LOGGER.log(Level.FINE,
-	        			String.format("MessageReceiver.sendFlow (linkname: %s), updated-link-credit: %s", this.receiveLink.getName(), this.receiveLink.getCredit()));
-	        }
+			else
+			{
+				this.receiveLink.flow(credits);
+			}
 		}
 		else
 		{
@@ -499,7 +514,7 @@ public class MessageReceiver extends ClientEntity
 					public void run()
 					{
 						MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink();
-						ReceiveLinkHandler handler = new ReceiveLinkHandler(name, MessageReceiver.this);
+						ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
 						BaseHandler.setHandler(MessageReceiver.this.receiveLink, handler);
 						MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
 					}
@@ -521,11 +536,11 @@ public class MessageReceiver extends ClientEntity
 						{
 							if (!linkOpen.isDone())
 							{
-								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", name, "Open"));
+								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", MessageReceiver.this.receiveLink.getName(), "Open"));
 								if (TRACE_LOGGER.isLoggable(Level.WARNING))
 								{
 									TRACE_LOGGER.log(Level.WARNING, 
-											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", name, MessageReceiver.this.receivePath, "Open"), 
+											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Open"), 
 											operationTimedout);
 								}
 								
@@ -550,11 +565,11 @@ public class MessageReceiver extends ClientEntity
 						{
 							if (!linkClose.isDone())
 							{
-								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", name, "Close"));
+								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", MessageReceiver.this.receiveLink.getName(), "Close"));
 								if (TRACE_LOGGER.isLoggable(Level.WARNING))
 								{
 									TRACE_LOGGER.log(Level.WARNING, 
-											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", name, MessageReceiver.this.receivePath, "Close"), 
+											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Close"), 
 											operationTimedout);
 								}
 								

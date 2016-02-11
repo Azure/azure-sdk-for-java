@@ -26,14 +26,12 @@ import com.microsoft.azure.servicebus.MessageReceiver;
  */
 public final class ReceiveLinkHandler extends BaseLinkHandler
 {
-	private final String name;
 	private final MessageReceiver msgReceiver;
 	private final Object firstResponse;
 	private boolean isFirstResponse;
 	
-	public ReceiveLinkHandler(final String name, final MessageReceiver receiver)
+	public ReceiveLinkHandler(final MessageReceiver receiver)
 	{
-		this.name = name;
 		this.msgReceiver = receiver;
 		this.firstResponse = new Object();
 		this.isFirstResponse = true;
@@ -50,7 +48,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
             if(TRACE_LOGGER.isLoggable(Level.FINE))
             {
             	TRACE_LOGGER.log(Level.FINE,
-            			String.format("ReceiveLinkHandler(name: %s) initial credit: %s", this.name, receiver.getCredit()));
+            			String.format("ReceiveLinkHandler(name: %s) initial credit: %s", receiver.getName(), receiver.getCredit()));
             }
         }
     }
@@ -67,7 +65,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         		if(TRACE_LOGGER.isLoggable(Level.FINE))
                 {
                 	TRACE_LOGGER.log(Level.FINE,
-                			String.format("ReceiveLinkHandler(name: %s) RemoteSource: %s", this.name, link.getRemoteSource()));
+                			String.format("ReceiveLinkHandler(name: %s) RemoteSource: %s", receiver.getName(), link.getRemoteSource()));
                 }
         		
         		synchronized (this.firstResponse)
@@ -81,7 +79,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         		if(TRACE_LOGGER.isLoggable(Level.FINE))
                 {
                 	TRACE_LOGGER.log(Level.FINE,
-                			String.format("ReceiveLinkHandler(name: %s): remote Target Source set to null. waiting for error.", this.name));
+                			String.format("ReceiveLinkHandler(name: %s): remote Target Source set to null. waiting for error.", receiver.getName()));
                 }
         	}
         	

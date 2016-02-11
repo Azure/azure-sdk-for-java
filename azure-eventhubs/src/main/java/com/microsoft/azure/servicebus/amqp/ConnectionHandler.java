@@ -34,7 +34,7 @@ public final class ConnectionHandler extends BaseHandler
 		this.password = password;
 		this.messagingFactory = messagingFactory;
 	}
-
+	
 	@Override
 	public void onConnectionBound(Event event)
 	{
@@ -45,6 +45,15 @@ public final class ConnectionHandler extends BaseHandler
 
 		Sasl sasl = transport.sasl();
 		sasl.plain(this.username, this.password);
+	}
+	
+	@Override
+	public void onConnectionUnbound(Event event)
+	{
+		if (TRACE_LOGGER.isLoggable(Level.WARNING))
+		{
+			TRACE_LOGGER.log(Level.WARNING, "Connection.onConnectionUnbound: hostname[" + event.getConnection().getHostname() + "]");
+		}
 	}
 
 	@Override
@@ -80,8 +89,12 @@ public final class ConnectionHandler extends BaseHandler
 	@Override
 	public void onConnectionRemoteOpen(Event event)
 	{
-		Connection connection = event.getConnection();
-		this.messagingFactory.onOpenComplete();
+		if (TRACE_LOGGER.isLoggable(Level.FINE))
+		{
+			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + "]");
+		}
+		
+		this.messagingFactory.onOpenComplete(null);
 	}
 
 	private static SslDomain makeDomain(SslDomain.Mode mode)

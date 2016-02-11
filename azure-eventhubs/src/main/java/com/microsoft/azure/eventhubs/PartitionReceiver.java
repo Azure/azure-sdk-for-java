@@ -60,6 +60,11 @@ public final class PartitionReceiver
 			final boolean isEpochReceiver) 
 					throws ServiceBusException
 	{
+		if (StringUtil.isNullOrWhiteSpace(consumerGroupName))
+		{
+			throw new IllegalArgumentException("specify valid string for argument - 'consumerGroupName'");
+		}
+			
 		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver);
 		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
 		{

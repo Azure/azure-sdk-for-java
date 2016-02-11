@@ -17,7 +17,7 @@ public class TimeoutExceptionTest
 	{
 		MockServer server = MockServer.Create(null);
 		MessagingFactory factory = MessagingFactory.createFromConnectionString(
-				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey").toString());
+				new ConnectionStringBuilder("Endpoint=amqps://localhost;SharedAccessKeyName=somename;EntityPath=eventhub1;SharedAccessKey=somekey").toString()).get();
 				
 		try 
 		{

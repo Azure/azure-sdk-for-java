@@ -10,14 +10,12 @@ import com.microsoft.azure.servicebus.MessageSender;
 
 public class SendLinkHandler extends BaseLinkHandler
 {
-	private final String name;
 	private final MessageSender msgSender;
 	private final Object firstFlow;
 	private boolean isFirstFlow;
 	
-	public SendLinkHandler(final String name, final MessageSender sender)
+	public SendLinkHandler(final MessageSender sender)
 	{
-		this.name = name;
 		this.msgSender = sender;
 		this.firstFlow = new Object();
 		this.isFirstFlow = true;
