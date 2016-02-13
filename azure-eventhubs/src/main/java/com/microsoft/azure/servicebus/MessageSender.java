@@ -3,6 +3,7 @@ package com.microsoft.azure.servicebus;
 import java.nio.BufferOverflowException;
 import java.time.*;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 import java.util.function.*;
@@ -88,7 +89,7 @@ public class MessageSender extends ClientEntity
 	
 	public CompletableFuture<Void> send(Message msg, int messageFormat) throws PayloadSizeExceededException
 	{
-		if (this.sendLink.getLocalState() != EndpointState.ACTIVE)
+		if (this.sendLink.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.scheduleRecreate(Duration.ofSeconds(0));
 		}
@@ -115,11 +116,8 @@ public class MessageSender extends ClientEntity
         
         CompletableFuture<Void> onSend = new CompletableFuture<Void>();
         
-        synchronized (this.pendingSendWaiters)
-        {
-        	this.pendingSendWaiters.put(tag, new ReplayableWorkItem<Void>(bytes, sentMsgSize, messageFormat, onSend, this.operationTimeout));
-		}
-        
+        this.pendingSendWaiters.put(tag, new ReplayableWorkItem<Void>(bytes, sentMsgSize, messageFormat, onSend, this.operationTimeout));
+		
         this.sendLink.advance();
         return onSend;
 	}
@@ -139,7 +137,7 @@ public class MessageSender extends ClientEntity
 			return this.send(firstMessage);
 		}
 		
-		if (this.sendLink.getLocalState() != EndpointState.ACTIVE)
+		if (this.sendLink.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.scheduleRecreate(Duration.ofSeconds(0));
 		}
@@ -188,11 +186,8 @@ public class MessageSender extends ClientEntity
 		assert sentMsgSize != byteArrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
         
 		CompletableFuture<Void> onSend = new CompletableFuture<Void>();
-		synchronized (this.pendingSendWaitersLock)
-		{
-			this.pendingSendWaiters.put(tag, 
+		this.pendingSendWaiters.put(tag, 
 					new ReplayableWorkItem<Void>(bytes, sentMsgSize, AmqpConstants.AmqpBatchMessageFormat, onSend, this.operationTimeout));
-		}
 		
         this.sendLink.advance();
         return onSend;
@@ -228,31 +223,31 @@ public class MessageSender extends ClientEntity
 			}
 			else if (!this.pendingSendWaiters.isEmpty())
 			{
-				ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> unacknowledgedSends = null;
-				synchronized(this.pendingSendWaitersLock)
-				{
-					unacknowledgedSends = this.pendingSendWaiters;
-					this.pendingSendWaiters = new ConcurrentHashMap<byte[], ReplayableWorkItem<Void>>();
-				}
-				
-				unacknowledgedSends.forEachValue(1, new Consumer<ReplayableWorkItem<Void>>()
-				{
-					@Override
-					public void accept(ReplayableWorkItem<Void> sendWork)
+				ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> unacknowledgedSends = new ConcurrentHashMap<>();
+				unacknowledgedSends.putAll(this.pendingSendWaiters);
+								
+				if (unacknowledgedSends.size() > 0)
+					unacknowledgedSends.forEachEntry(1, new Consumer<Map.Entry<byte[], ReplayableWorkItem<Void>>>()
 					{
-						byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
-				        Delivery dlv = sendLink.delivery(tag);
-				        dlv.setMessageFormat(sendWork.getMessageFormat());
-				        
-				        int sentMsgSize = sendLink.send(sendWork.getMessage(), 0, sendWork.getEncodedMessageSize());
-				        assert sentMsgSize != sendWork.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
-				        
-				        CompletableFuture<Void> onSend = new CompletableFuture<Void>();
-				        pendingSendWaiters.put(tag, new ReplayableWorkItem<Void>(sendWork.getMessage(), sendWork.getEncodedMessageSize(), sendWork.getMessageFormat(), onSend, operationTimeout));
-				        
-				        sendLink.advance();
-					}
-				});
+						@Override
+						public void accept(Entry<byte[], ReplayableWorkItem<Void>> sendWork) {
+							ReplayableWorkItem<Void> pendingSend = MessageSender.this.pendingSendWaiters.remove(sendWork.getKey());
+							if (pendingSend != null)
+							{
+								byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
+						        Delivery dlv = sendLink.delivery(tag);
+						        dlv.setMessageFormat(pendingSend.getMessageFormat());
+						        
+						        int sentMsgSize = sendLink.send(pendingSend.getMessage(), 0, pendingSend.getEncodedMessageSize());
+						        assert sentMsgSize != pendingSend.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
+						        
+						        CompletableFuture<Void> onSend = new CompletableFuture<Void>();
+						        pendingSendWaiters.put(tag, new ReplayableWorkItem<Void>(pendingSend.getMessage(), pendingSend.getEncodedMessageSize(), pendingSend.getMessageFormat(), onSend, operationTimeout));
+						        
+						        sendLink.advance();
+							}
+						}
+					});
 				
 				unacknowledgedSends.clear();
 			}
@@ -295,26 +290,33 @@ public class MessageSender extends ClientEntity
 	{
 		synchronized(this.linkCreateLock)
 		{
-			if (!this.linkCreateScheduled)
+			if (this.linkCreateScheduled)
 			{
-				this.linkCreateScheduled = true;
-		
-				Timer.schedule(
-					new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							MessageSender.this.sendLink = MessageSender.this.createSendLink();
-							SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
-							BaseHandler.setHandler(MessageSender.this.sendLink, handler);
-							MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
-						}
-					},
-					runAfter,
-					TimerType.OneTimeRun);
+				return;
 			}
+			
+			this.linkCreateScheduled = true;
 		}
+				
+		Timer.schedule(
+			new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if (MessageSender.this.sendLink.getRemoteState() != EndpointState.CLOSED)
+					{
+						return;
+					}
+					
+					MessageSender.this.sendLink = MessageSender.this.createSendLink();
+					SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
+					BaseHandler.setHandler(MessageSender.this.sendLink, handler);
+					MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
+				}
+			},
+			runAfter,
+			TimerType.OneTimeRun);
 	}
 	
 	public void onSendComplete(byte[] deliveryTag, DeliveryState outcome)

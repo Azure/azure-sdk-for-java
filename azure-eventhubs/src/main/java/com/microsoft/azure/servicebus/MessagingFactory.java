@@ -29,6 +29,7 @@ public class MessagingFactory extends ClientEntity
 	private Reactor reactor;
 	private Thread reactorThread;
 	private final Object reactorLock = new Object();
+	private final Object connectionLock = new Object();
 	
 	private ConnectionHandler connectionHandler;
 	private Connection connection;
@@ -81,13 +82,11 @@ public class MessagingFactory extends ClientEntity
 	// Todo: async
 	Connection getConnection()
 	{
-		if (this.connection.getLocalState() != EndpointState.ACTIVE)
+		if (this.connection.getLocalState() == EndpointState.CLOSED)
 		{
-			synchronized (this.connection)
+			synchronized (this.connectionLock)
 			{
-				if (this.connection.getLocalState() != EndpointState.ACTIVE && 
-						this.connection.getLocalState() != EndpointState.UNINITIALIZED && 
-						!this.waitingConnectionOpen)
+				if (this.connection.getLocalState() == EndpointState.CLOSED && !this.waitingConnectionOpen)
 				{
 					this.connection.free();
 					this.connection = reactor.connection(connectionHandler);
@@ -121,7 +120,7 @@ public class MessagingFactory extends ClientEntity
 	// Contract: ConnectionHandler - MessagingFactory
 	public void onOpenComplete(Exception exception)
 	{
-		synchronized (this.connection)
+		synchronized (this.connectionLock)
 		{
 			this.waitingConnectionOpen = false;
 			if (exception == null)
@@ -137,9 +136,13 @@ public class MessagingFactory extends ClientEntity
 
 	public void close()
 	{
-		if (this.connection != null && this.connection.getLocalState() != EndpointState.CLOSED)
+		if (this.connection != null)
 		{
-			this.connection.close();
+			if (this.connection.getLocalState() != EndpointState.CLOSED)
+			{
+				this.connection.close();
+			}
+			
 			this.connection.free();
 		}
 	}
@@ -147,7 +150,10 @@ public class MessagingFactory extends ClientEntity
 	@Override
 	public CompletableFuture<Void> closeAsync()
 	{
-		return null;
+		this.close();
+		
+		// TODO - hook up onRemoteClose & timeout 
+		return CompletableFuture.completedFuture(null);
 	}
 
 	public static class RunReactor implements Runnable

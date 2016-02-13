@@ -57,11 +57,5 @@ public class MockServer implements Closeable
 		{
 			this.acceptor.close();
 		}
-		
-		if (this.reactor != null)
-		{
-			this.reactor.free();
-			this.reactor = null;
-		}
 	}
 }

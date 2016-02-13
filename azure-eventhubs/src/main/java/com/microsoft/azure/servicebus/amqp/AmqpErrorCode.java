@@ -18,4 +18,6 @@ public final class AmqpErrorCode
 	public static final Symbol PayloadSizeExceeded = Symbol.getSymbol("amqp:link:message-size-exceeded");
 	public static final Symbol AmqpLinkDetachForced = Symbol.getSymbol("amqp:link:detach-forced");
 
+	// connection errors
+	public static final Symbol ConnectionForced = Symbol.getSymbol("amqp:connection:forced");
 }

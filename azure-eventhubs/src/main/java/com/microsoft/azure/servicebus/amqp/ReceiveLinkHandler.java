@@ -96,6 +96,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 		Link link = event.getLink();
         if (link instanceof Receiver)
         {
+        	link.close();
+    		
         	ErrorCondition condition = link.getRemoteCondition();
         	if (condition != null)
     		{
@@ -116,7 +118,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
     	        }
             } 
     		
-    		this.msgReceiver.onError(condition);
+        	this.msgReceiver.onError(condition);
         }
 	}
 	
@@ -133,9 +135,9 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         		if (TRACE_LOGGER.isLoggable(Level.WARNING))
         		TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteDetach: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
             }
-        	
-        	this.msgReceiver.onError(condition);
+
             link.close();
+            this.msgReceiver.onError(condition);
         }
 	}
 	

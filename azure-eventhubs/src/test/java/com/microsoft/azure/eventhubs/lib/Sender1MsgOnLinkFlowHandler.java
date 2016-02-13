@@ -4,10 +4,13 @@ import java.util.*;
 import java.util.logging.Level;
 
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
 import org.apache.qpid.proton.reactor.Handshaker;
+
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 /**
  * Sends 1 Msg on the first onLinkFlow event
@@ -39,6 +42,10 @@ public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler
 						Map<String, String> properties = new HashMap<String, String>();
 						properties.put("testkey", "testvalue");
 						msg.setApplicationProperties(new ApplicationProperties(properties));
+						Map<Symbol, Object> annotations = new HashMap<Symbol, Object>();
+						annotations.put(AmqpConstants.Offset, "11111111");
+						MessageAnnotations msgAnnotation = new MessageAnnotations(annotations);
+						msg.setMessageAnnotations(msgAnnotation);
 						int length = msg.encode(bytes,  0,  4 * 1024);
 						
 						byte[] tag = String.valueOf(1).getBytes();

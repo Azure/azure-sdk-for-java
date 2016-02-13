@@ -20,7 +20,7 @@
 	<repositories>
 		<repository>
 			<id>qpid protonj</id>
-			<url>https://repository.apache.org/content/repositories/orgapacheqpid-1061/</url>
+			<url>https://repository.apache.org/content/repositories/orgapacheqpid-1063/</url>
 		</repository>
 	</repositories>
 
