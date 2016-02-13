@@ -75,6 +75,7 @@ public class SendLinkHandler extends BaseLinkHandler
     	        }
             } 
     		
+    		link.close();
     		this.msgSender.onError(condition);
         }
 	}

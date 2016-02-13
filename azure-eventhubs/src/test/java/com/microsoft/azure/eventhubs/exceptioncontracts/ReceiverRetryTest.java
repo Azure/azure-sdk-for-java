@@ -88,7 +88,7 @@ public class ReceiverRetryTest extends TestBase
 		server = MockServer.Create(recvFlowHandler);
 	}
 	
-	// TODO: @Test
+	@Test
 	public void testRetryWhenReceiveFails() throws Exception
 	{
 		factory = MessagingFactory.createFromConnectionString(
@@ -109,11 +109,11 @@ public class ReceiverRetryTest extends TestBase
 	@After
 	public void cleanup() throws IOException
 	{
-		if (server != null)
-			server.close();
-		
 		if (factory != null)
 			factory.close();
+	
+		if (server != null)
+			server.close();
 	}
 
 	public class TestData

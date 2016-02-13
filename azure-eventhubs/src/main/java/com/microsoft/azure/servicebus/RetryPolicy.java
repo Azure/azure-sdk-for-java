@@ -17,11 +17,8 @@ public abstract class RetryPolicy
 	
 	public void incrementRetryCount(String clientId)
 	{
-		synchronized (clientId)
-		{
-			Integer retryCount = this.retryCounts.get(clientId);
-			this.retryCounts.put(clientId, retryCount == null ? 1 : retryCount + 1);
-		}
+		Integer retryCount = this.retryCounts.get(clientId);
+		this.retryCounts.put(clientId, retryCount == null ? 1 : retryCount + 1);
 	}
 	
 	public void resetRetryCount(String clientId)
@@ -29,10 +26,7 @@ public abstract class RetryPolicy
 		Integer currentRetryCount = this.retryCounts.get(clientId);
 		if (currentRetryCount != null && currentRetryCount != 0)
 		{
-			synchronized (clientId)
-			{
-				this.retryCounts.put(clientId, 0);
-			}
+			this.retryCounts.put(clientId, 0);
 		}
 	}
 	
@@ -61,13 +55,10 @@ public abstract class RetryPolicy
 	
 	protected int getRetryCount(String clientId)
 	{
-		synchronized(clientId)
-		{
-			Integer retryCount = this.retryCounts.get(clientId);
-			return retryCount == null ? 0 : retryCount;
-		}
+		Integer retryCount = this.retryCounts.get(clientId);
+		return retryCount == null ? 0 : retryCount;
 	}
-	
+
 	/**
 	 * return returns 'null' Duration when not Allowed
 	 */

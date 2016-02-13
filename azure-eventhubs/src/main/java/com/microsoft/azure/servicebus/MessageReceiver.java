@@ -34,11 +34,10 @@ public class MessageReceiver extends ClientEntity
 	private final String receivePath;
 	private final Runnable onOperationTimedout;
 	private final Duration operationTimeout;
-	private final Object prefetchedMessagesLock;
 	
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
-	private CompletableFuture<MessageReceiver> linkOpen;
+	private WorkItem<MessageReceiver> linkOpen;
 	private CompletableFuture<Void> linkClose;
 	private boolean closeCalled;
 	
@@ -50,7 +49,6 @@ public class MessageReceiver extends ClientEntity
 	private Instant dateTime;
 	private boolean offsetInclusive;
 	
-	private TimeoutTracker currentOperationTracker;
 	private String lastReceivedOffset;
 	private AtomicInteger pingFlowCount;
 	private Instant lastCommunicatedAt;
@@ -78,7 +76,7 @@ public class MessageReceiver extends ClientEntity
 		ReceiveLinkHandler handler = new ReceiveLinkHandler(msgReceiver);
 		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
 
-		return msgReceiver.linkOpen;
+		return msgReceiver.linkOpen.getWork();
 	}
 	
 	private MessageReceiver(final MessagingFactory factory, 
@@ -104,7 +102,6 @@ public class MessageReceiver extends ClientEntity
 		this.linkCreateLock = new Object();
 		this.receiveHandlerLock = new Object();
 		this.linkClose = new CompletableFuture<Void>();
-		this.prefetchedMessagesLock = new Object();
 		
 		if (offset != null)
 		{
@@ -117,10 +114,9 @@ public class MessageReceiver extends ClientEntity
 		}
 		
 		this.receiveLink = this.createReceiveLink();
-		this.currentOperationTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		
-		this.linkOpen = new CompletableFuture<MessageReceiver>();
-		this.scheduleLinkOpenTimeout(this.currentOperationTracker);
+		this.linkOpen = new WorkItem<MessageReceiver>(new CompletableFuture<MessageReceiver>(), this.operationTimeout);
+		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
 		this.linkCreateScheduled = true;
 		
 		this.pendingReceives = new ConcurrentLinkedQueue<WorkItem<Collection<Message>>>();
@@ -130,31 +126,23 @@ public class MessageReceiver extends ClientEntity
 		{
 			public void run()
 			{
-				while(MessageReceiver.this.pendingReceives.peek() != null)
+				WorkItem<Collection<Message>> topWorkItem = null;
+				while((topWorkItem = MessageReceiver.this.pendingReceives.peek()) != null)
 				{
-					WorkItem<Collection<Message>> topWorkItem = MessageReceiver.this.pendingReceives.peek();
-					if (topWorkItem.getTimeoutTracker().remaining().getSeconds() < ClientConstants.TimerTolerance.getSeconds())
+					if (topWorkItem.getTimeoutTracker().remaining().getSeconds() <= 0)
 					{
-						synchronized (MessageReceiver.this.pendingReceives)
+						WorkItem<Collection<Message>> dequedWorkItem = MessageReceiver.this.pendingReceives.poll();
+						if (dequedWorkItem == topWorkItem)
 						{
-							WorkItem<Collection<Message>> dequedWorkItem = MessageReceiver.this.pendingReceives.poll();
-							if (dequedWorkItem != null)
-							{
-								dequedWorkItem.getWork().complete(null);
-							}
+							dequedWorkItem.getWork().complete(null);
 						}
 					}
-					else 
+					else
 					{
-						WorkItem<Collection<Message>> topWorkItemToBeTimedOut = MessageReceiver.this.pendingReceives.peek();
-						MessageReceiver.this.currentOperationTracker = topWorkItemToBeTimedOut.getTimeoutTracker();
-						MessageReceiver.this.scheduleOperationTimer();
-
+						MessageReceiver.this.scheduleOperationTimer(topWorkItem.getTimeoutTracker());
 						return;
 					}
 				}
-				
-				MessageReceiver.this.currentOperationTracker = null;
 			}
 		};
 	}
@@ -169,43 +157,45 @@ public class MessageReceiver extends ClientEntity
 	 */
 	public CompletableFuture<Collection<Message>> receive()
 	{
-		if (this.receiveLink.getLocalState() != EndpointState.ACTIVE)
+		if (this.receiveLink.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.scheduleRecreate(Duration.ofSeconds(0));
 		}
 		
-		if (!this.prefetchedMessages.isEmpty())
+		List<Message> returnMessages = null;
+		Message currentMessage = null;
+		Message lastMessage = null;
+		while ((currentMessage = this.prefetchedMessages.poll()) != null) 
 		{
-			synchronized (this.prefetchedMessagesLock)
+			if (returnMessages == null)
 			{
-				if (!this.prefetchedMessages.isEmpty())
-				{
-					Queue<Message> returnMessages = this.prefetchedMessages;
-					this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
-					this.sendFlow(returnMessages.size());
-					
-					this.lastReceivedOffset = IteratorUtil.getLast(returnMessages.iterator()).getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
-					return CompletableFuture.completedFuture((Collection<Message>) returnMessages);
-				}
+				returnMessages = new LinkedList<Message>();
 			}
+			
+			returnMessages.add(currentMessage);
+			lastMessage = currentMessage;
+		}
+		
+		if (returnMessages != null)
+		{
+			this.sendFlow(returnMessages.size());
+			
+			this.lastReceivedOffset = lastMessage.getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
+			return CompletableFuture.completedFuture((Collection<Message>) returnMessages);
+		}
+		
+		if (this.pendingReceives.isEmpty())
+		{
+			this.scheduleOperationTimer(TimeoutTracker.create(this.operationTimeout));
 		}
 		
 		CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<Collection<Message>>();
 		this.pendingReceives.offer(new WorkItem<Collection<Message>>(onReceive, this.operationTimeout));
 		
-		if (this.currentOperationTracker == null && this.pendingReceives.peek() != null)
+		WorkItem<Collection<Message>> topWorkItem = this.pendingReceives.peek();
+		if (topWorkItem != null)
 		{
-			synchronized (this.pendingReceives)
-			{
-				WorkItem<Collection<Message>> topWorkItem = this.pendingReceives.peek();
-				if (topWorkItem != null)
-				{
-					this.sendPingFlow();
-					
-					this.currentOperationTracker = topWorkItem.getTimeoutTracker();
-					this.scheduleOperationTimer();
-				}
-			}
+			this.sendPingFlow();
 		}
 		
 		return onReceive;
@@ -226,15 +216,14 @@ public class MessageReceiver extends ClientEntity
 			if (exception == null)
 			{
 				this.lastCommunicatedAt = Instant.now();
-				this.linkOpen.complete(this);
+				this.linkOpen.getWork().complete(this);
 			}
 			else
 			{
-				this.linkOpen.completeExceptionally(exception);
+				this.linkOpen.getWork().completeExceptionally(exception);
 			}
 			
 			this.offsetInclusive = false; // re-open link always starts from the last received offset
-			this.currentOperationTracker = null;
 			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 		}
 		
@@ -251,61 +240,58 @@ public class MessageReceiver extends ClientEntity
 		
 		if (this.receiveHandler != null)
 		{
+			ReceiveHandler localReceiveHandler = null;
 			synchronized (this.receiveHandlerLock)
 			{
-				if (this.receiveHandler != null) 
-				{
-					assert messages != null && messages.size() > 0;
-					
-					try
-					{
-						this.receiveHandler.onReceiveMessages(messages);
-						this.lastReceivedOffset = messages.getLast().getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
-					}
-					catch (RuntimeException exception)
-					{
-						throw exception;
-					}
-					catch (Exception exception)
-					{
-						if (TRACE_LOGGER.isLoggable(Level.WARNING))
-						{
-							TRACE_LOGGER.log(Level.WARNING, 
-									String.format(Locale.US, "%s: LinkName (%s), receiverpath (%s): encountered Exception (%s) while running user-code", 
-											Instant.now().toString(), this.name, this.receivePath, exception.getClass()));
-						}
-						
-						this.receiveHandler.onError(exception);
-					}
-					
-					this.currentOperationTracker = TimeoutTracker.create(this.operationTimeout);
-					this.sendFlow(messages.size());
-				}
+				localReceiveHandler = this.receiveHandler;
 			}
-		}		
-		else
-		{	
-			WorkItem<Collection<Message>> currentReceive = this.pendingReceives.poll();
 			
-			if (currentReceive == null)
+			if (localReceiveHandler != null) 
 			{
-				synchronized (this.prefetchedMessagesLock)
+				assert messages != null && messages.size() > 0;
+				
+				try
 				{
-					this.prefetchedMessages.addAll(messages);
-					this.currentOperationTracker = null;
+					localReceiveHandler.onReceiveMessages(messages);
+					this.lastReceivedOffset = messages.getLast().getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
+					this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 				}
-			}
-			else 
-			{
-				WorkItem<Collection<Message>> topPendingReceive = this.pendingReceives.peek();
-				this.currentOperationTracker = topPendingReceive != null ? topPendingReceive.getTimeoutTracker() : null;
+				catch (RuntimeException exception)
+				{
+					throw exception;
+				}
+				catch (Exception exception)
+				{
+					if (TRACE_LOGGER.isLoggable(Level.WARNING))
+					{
+						TRACE_LOGGER.log(Level.WARNING, 
+								String.format(Locale.US, "%s: LinkName (%s), receiverpath (%s): encountered Exception (%s) while running user-code", 
+										Instant.now().toString(), this.name, this.receivePath, exception.getClass()));
+					}
+					
+					localReceiveHandler.onError(exception);
+				}
+				
 				this.sendFlow(messages.size());
-
-				this.lastReceivedOffset = messages.getLast().getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
-				currentReceive.getWork().complete(messages);
-			}
-		}
+				return;
+			}		
+		}		
+	
+		WorkItem<Collection<Message>> currentReceive = this.pendingReceives.poll();
 		
+		if (currentReceive == null)
+		{
+			this.prefetchedMessages.addAll(messages);
+		}
+		else 
+		{
+			this.sendFlow(messages.size());
+
+			this.lastReceivedOffset = messages.getLast().getMessageAnnotations().getValue().get(AmqpConstants.Offset).toString();
+			CompletableFuture<Collection<Message>> future = currentReceive.getWork();
+			future.complete(messages);
+		}
+	
 		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 	}
 	
@@ -313,12 +299,16 @@ public class MessageReceiver extends ClientEntity
 	{		
 		Exception completionException = ExceptionUtil.toException(error);
 		
-		// if CurrentOpTracker is null - no operation is in progress
-		Duration remainingTime = this.currentOperationTracker == null 
+		WorkItem<Collection<Message>> currentReceive = this.pendingReceives.peek();
+		
+		TimeoutTracker currentOperationTracker = currentReceive != null 
+				? currentReceive.getTimeoutTracker() 
+				: (this.linkOpen.getWork().isDone() ? null : this.linkOpen.getTimeoutTracker());
+		Duration remainingTime = currentOperationTracker == null 
 						? Duration.ofSeconds(0)
-						: (this.currentOperationTracker.elapsed().compareTo(this.operationTimeout) > 0) 
+						: (currentOperationTracker.elapsed().compareTo(this.operationTimeout) > 0) 
 								? Duration.ofSeconds(0) 
-								: this.operationTimeout.minus(this.currentOperationTracker.elapsed());
+								: this.operationTimeout.minus(currentOperationTracker.elapsed());
 		Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), completionException, remainingTime);
 		
 		if (retryInterval != null)
@@ -327,13 +317,10 @@ public class MessageReceiver extends ClientEntity
 			return;
 		}
 		
-		synchronized (this.linkOpen)
+		if (!this.linkOpen.getWork().isDone())
 		{
-			if (!this.linkOpen.isDone())
-			{
-				this.onOpenComplete(completionException);
-				return;
-			}
+			this.onOpenComplete(completionException);
+			return;
 		}
 		
 		if (completionException != null && this.receiveHandler != null)
@@ -353,30 +340,30 @@ public class MessageReceiver extends ClientEntity
 				}
 			}
 		}
-		else if (this.pendingReceives != null && !this.pendingReceives.isEmpty())
+		else
 		{
-			synchronized (this.pendingReceives)
+			WorkItem<Collection<Message>> workItem = null;
+			while ((workItem = this.pendingReceives.poll()) != null)
 			{
-				if (this.pendingReceives != null && !this.pendingReceives.isEmpty())
-					while (this.pendingReceives.peek() != null)
-					{
-						WorkItem<Collection<Message>> workItem = this.pendingReceives.poll();
-						if (completionException instanceof ServiceBusException && ((ServiceBusException) completionException).getIsTransient())
-						{
-							workItem.getWork().complete(null);
-						}
-						else
-						{
-							workItem.getWork().completeExceptionally(completionException);
-						}
-					}
+				CompletableFuture<Collection<Message>> future = workItem.getWork();
+				if (completionException instanceof ServiceBusException && ((ServiceBusException) completionException).getIsTransient())
+				{
+					future.complete(null);
+				}
+				else
+				{
+					future.completeExceptionally(completionException);
+				}
 			}
 		}
 	}
 	
-	private void scheduleOperationTimer()
+	private void scheduleOperationTimer(TimeoutTracker tracker)
 	{
-		Timer.schedule(this.onOperationTimedout, this.currentOperationTracker.remaining(), TimerType.OneTimeRun);
+		if (tracker != null)
+		{
+			Timer.schedule(this.onOperationTimedout, tracker.remaining(), TimerType.OneTimeRun);
+		}
 	}
 	
 	private Receiver createReceiveLink()
@@ -439,21 +426,19 @@ public class MessageReceiver extends ClientEntity
 	 */
 	private void sendFlow(int credits)
 	{
-		if (this.receiveLink.getLocalState() == EndpointState.ACTIVE)
+		if (this.receiveLink.getRemoteState() != EndpointState.CLOSED)
 		{
-			if (this.pingFlowCount.get() != 0)
+			int currentPingFlow = this.pingFlowCount.get();
+			if (currentPingFlow > 0)
 			{
-				synchronized(this.pingFlowCount)
+				if (currentPingFlow < credits)
 				{
-					if (this.pingFlowCount.get() < credits)
-					{
-						this.receiveLink.flow(credits - this.pingFlowCount.get());
-						this.pingFlowCount.set(0);
-					}
-					else 
-					{
-						this.pingFlowCount.set(this.pingFlowCount.get() - credits);
-					}
+					this.receiveLink.flow(credits - currentPingFlow);
+					this.pingFlowCount.set(0);
+				}
+				else 
+				{
+					this.pingFlowCount.set(currentPingFlow - credits);
 				}
 				
 				if(TRACE_LOGGER.isLoggable(Level.FINE))
@@ -475,7 +460,7 @@ public class MessageReceiver extends ClientEntity
 	
 	private void sendPingFlow()
 	{
-		if (this.receiveLink.getLocalState() == EndpointState.ACTIVE)
+		if (this.receiveLink.getRemoteState() != EndpointState.CLOSED)
 		{
 			if (Instant.now().isAfter(this.lastCommunicatedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
 					&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
@@ -507,21 +492,27 @@ public class MessageReceiver extends ClientEntity
 			}
 			
 			this.linkCreateScheduled = true;
-			Timer.schedule(
-				new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink();
-						ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
-						BaseHandler.setHandler(MessageReceiver.this.receiveLink, handler);
-						MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
-					}
-				},
-				runAfter,
-				TimerType.OneTimeRun);
 		}
+		
+		Timer.schedule(
+			new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if (MessageReceiver.this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+					{
+						return;
+					}
+					
+					MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink();
+					ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
+					BaseHandler.setHandler(MessageReceiver.this.receiveLink, handler);
+					MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
+				}
+			},
+			runAfter,
+			TimerType.OneTimeRun);
 	}
 	
 	private void scheduleLinkOpenTimeout(final TimeoutTracker timeout)
@@ -532,20 +523,17 @@ public class MessageReceiver extends ClientEntity
 				{
 					public void run()
 					{
-						synchronized(linkOpen)
+						if (!linkOpen.getWork().isDone())
 						{
-							if (!linkOpen.isDone())
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", MessageReceiver.this.receiveLink.getName(), "Open"));
+							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
-								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", MessageReceiver.this.receiveLink.getName(), "Open"));
-								if (TRACE_LOGGER.isLoggable(Level.WARNING))
-								{
-									TRACE_LOGGER.log(Level.WARNING, 
-											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Open"), 
-											operationTimedout);
-								}
-								
-								linkOpen.completeExceptionally(operationTimedout);
+								TRACE_LOGGER.log(Level.WARNING, 
+										String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Open"), 
+										operationTimedout);
 							}
+							
+							linkOpen.getWork().completeExceptionally(operationTimedout);
 						}
 					}
 				}
