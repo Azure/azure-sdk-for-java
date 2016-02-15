@@ -16,11 +16,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -72,7 +72,7 @@ public final class UsageOperationsImpl implements UsageOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.getSubscriptionId(), lastId, batchSize, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getUsageDelegate(call.execute(), null);
+        return getUsageDelegate(call.execute());
     }
 
     /**
@@ -109,9 +109,9 @@ public final class UsageOperationsImpl implements UsageOperations {
         Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.getSubscriptionId(), lastId, batchSize, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getUsageDelegate(response, retrofit));
+                    serviceCallback.success(getUsageDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -120,11 +120,11 @@ public final class UsageOperationsImpl implements UsageOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getUsageDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getUsageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

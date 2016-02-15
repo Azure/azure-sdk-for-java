@@ -23,13 +23,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -92,11 +92,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.delete(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -127,7 +127,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -158,9 +158,9 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.get(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ExpressRouteCircuit>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -169,11 +169,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<ExpressRouteCircuit> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ExpressRouteCircuit> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ExpressRouteCircuit, CloudException>()
                 .register(200, new TypeToken<ExpressRouteCircuit>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -222,11 +222,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, circuitName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ExpressRouteCircuit>() { }.getType(), serviceCallback);
             }
         });
@@ -257,7 +257,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> response = listArpTableDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> response = listArpTableDelegate(call.execute());
         List<ExpressRouteCircuitArpTable> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listArpTableNext(response.getBody().getNextPageLink());
@@ -294,15 +294,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitArpTable>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> result = listArpTableDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> result = listArpTableDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listArpTableNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -312,11 +312,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTable>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -343,7 +343,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> response = listRoutesTableDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> response = listRoutesTableDelegate(call.execute());
         List<ExpressRouteCircuitRoutesTable> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listRoutesTableNext(response.getBody().getNextPageLink());
@@ -380,15 +380,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitRoutesTable>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> result = listRoutesTableDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> result = listRoutesTableDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listRoutesTableNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -398,11 +398,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTable>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -429,7 +429,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listStats(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ExpressRouteCircuitStats>> response = listStatsDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ExpressRouteCircuitStats>> response = listStatsDelegate(call.execute());
         List<ExpressRouteCircuitStats> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listStatsNext(response.getBody().getNextPageLink());
@@ -466,15 +466,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listStats(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitStats>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> result = listStatsDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> result = listStatsDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listStatsNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -484,11 +484,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStats>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStats>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -511,10 +511,10 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ExpressRouteCircuit>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ExpressRouteCircuit>> response = listDelegate(call.execute());
         List<ExpressRouteCircuit> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getExpressRouteCircuitsOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -543,15 +543,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuit>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getExpressRouteCircuitsOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -561,11 +561,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -584,10 +584,10 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ExpressRouteCircuit>> response = listAllDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ExpressRouteCircuit>> response = listAllDelegate(call.execute());
         List<ExpressRouteCircuit> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getExpressRouteCircuitsOperations().listAllNext(response.getBody().getNextPageLink());
+            response = listAllNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -611,15 +611,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuit>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listAllDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getExpressRouteCircuitsOperations().listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -629,11 +629,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -650,7 +650,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listArpTableNext(nextPageLink, this.client.getAcceptLanguage());
-        return listArpTableNextDelegate(call.execute(), null);
+        return listArpTableNextDelegate(call.execute());
     }
 
     /**
@@ -668,15 +668,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listArpTableNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitArpTable>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> result = listArpTableNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> result = listArpTableNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listArpTableNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -686,11 +686,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> listArpTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTable>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -707,7 +707,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listRoutesTableNext(nextPageLink, this.client.getAcceptLanguage());
-        return listRoutesTableNextDelegate(call.execute(), null);
+        return listRoutesTableNextDelegate(call.execute());
     }
 
     /**
@@ -725,15 +725,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listRoutesTableNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitRoutesTable>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> result = listRoutesTableNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> result = listRoutesTableNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listRoutesTableNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -743,11 +743,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> listRoutesTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTable>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTable>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -764,7 +764,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listStatsNext(nextPageLink, this.client.getAcceptLanguage());
-        return listStatsNextDelegate(call.execute(), null);
+        return listStatsNextDelegate(call.execute());
     }
 
     /**
@@ -782,15 +782,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listStatsNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitStats>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> result = listStatsNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuitStats>> result = listStatsNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listStatsNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -800,11 +800,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuitStats>> listStatsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStats>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStats>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -821,7 +821,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -839,15 +839,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuit>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -857,11 +857,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -878,7 +878,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAllNextDelegate(call.execute(), null);
+        return listAllNextDelegate(call.execute());
     }
 
     /**
@@ -896,15 +896,15 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuit>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listAllNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ExpressRouteCircuit>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -914,11 +914,11 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         return call;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ExpressRouteCircuit>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuit>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuit>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

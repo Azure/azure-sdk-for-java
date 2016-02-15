@@ -32,13 +32,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -85,7 +85,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentDelegate(call.execute(), null);
+        return getHostingEnvironmentDelegate(call.execute());
     }
 
     /**
@@ -116,9 +116,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostingEnvironment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -127,11 +127,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<HostingEnvironment> getHostingEnvironmentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostingEnvironment> getHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostingEnvironment, CloudException>()
                 .register(200, new TypeToken<HostingEnvironment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -180,11 +180,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.createOrUpdateHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), hostingEnvironmentEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<HostingEnvironment>() { }.getType(), serviceCallback);
             }
         });
@@ -233,11 +233,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.deleteHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCallback);
             }
         });
@@ -268,7 +268,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentDiagnostics(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentDiagnosticsDelegate(call.execute(), null);
+        return getHostingEnvironmentDiagnosticsDelegate(call.execute());
     }
 
     /**
@@ -299,9 +299,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentDiagnostics(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<HostingEnvironmentDiagnostics>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentDiagnosticsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentDiagnosticsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -310,11 +310,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<List<HostingEnvironmentDiagnostics>> getHostingEnvironmentDiagnosticsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<HostingEnvironmentDiagnostics>> getHostingEnvironmentDiagnosticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<HostingEnvironmentDiagnostics>, CloudException>()
                 .register(200, new TypeToken<List<HostingEnvironmentDiagnostics>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -345,7 +345,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentDiagnosticsItem(resourceGroupName, name, diagnosticsName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentDiagnosticsItemDelegate(call.execute(), null);
+        return getHostingEnvironmentDiagnosticsItemDelegate(call.execute());
     }
 
     /**
@@ -381,9 +381,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentDiagnosticsItem(resourceGroupName, name, diagnosticsName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostingEnvironmentDiagnostics>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentDiagnosticsItemDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentDiagnosticsItemDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -392,11 +392,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<HostingEnvironmentDiagnostics> getHostingEnvironmentDiagnosticsItemDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostingEnvironmentDiagnostics> getHostingEnvironmentDiagnosticsItemDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostingEnvironmentDiagnostics, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentDiagnostics>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -423,7 +423,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentCapacities(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentCapacitiesDelegate(call.execute(), null);
+        return getHostingEnvironmentCapacitiesDelegate(call.execute());
     }
 
     /**
@@ -454,9 +454,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentCapacities(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StampCapacityCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentCapacitiesDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentCapacitiesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -465,11 +465,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<StampCapacityCollection> getHostingEnvironmentCapacitiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StampCapacityCollection> getHostingEnvironmentCapacitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StampCapacityCollection, CloudException>()
                 .register(200, new TypeToken<StampCapacityCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -496,7 +496,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentVips(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentVipsDelegate(call.execute(), null);
+        return getHostingEnvironmentVipsDelegate(call.execute());
     }
 
     /**
@@ -527,9 +527,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentVips(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<AddressResponse>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentVipsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentVipsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -538,11 +538,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<AddressResponse> getHostingEnvironmentVipsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<AddressResponse> getHostingEnvironmentVipsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<AddressResponse, CloudException>()
                 .register(200, new TypeToken<AddressResponse>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -565,7 +565,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironments(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentsDelegate(call.execute(), null);
+        return getHostingEnvironmentsDelegate(call.execute());
     }
 
     /**
@@ -591,9 +591,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironments(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -602,11 +602,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<HostingEnvironmentCollection> getHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostingEnvironmentCollection> getHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -633,7 +633,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.rebootHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return rebootHostingEnvironmentDelegate(call.execute(), null);
+        return rebootHostingEnvironmentDelegate(call.execute());
     }
 
     /**
@@ -664,9 +664,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.rebootHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(rebootHostingEnvironmentDelegate(response, retrofit));
+                    serviceCallback.success(rebootHostingEnvironmentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -675,14 +675,14 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> rebootHostingEnvironmentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> rebootHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(409, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -709,7 +709,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentOperations(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentOperationsDelegate(call.execute(), null);
+        return getHostingEnvironmentOperationsDelegate(call.execute());
     }
 
     /**
@@ -740,9 +740,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentOperations(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentOperationsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentOperationsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -751,11 +751,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> getHostingEnvironmentOperationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getHostingEnvironmentOperationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -786,7 +786,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentOperationDelegate(call.execute(), null);
+        return getHostingEnvironmentOperationDelegate(call.execute());
     }
 
     /**
@@ -822,9 +822,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentOperationDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentOperationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -833,14 +833,14 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> getHostingEnvironmentOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getHostingEnvironmentOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(500, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -869,7 +869,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentMetricsDelegate(call.execute(), null);
+        return getHostingEnvironmentMetricsDelegate(call.execute());
     }
 
     /**
@@ -902,9 +902,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -913,11 +913,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -944,7 +944,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentMetricDefinitionsDelegate(call.execute(), null);
+        return getHostingEnvironmentMetricDefinitionsDelegate(call.execute());
     }
 
     /**
@@ -975,9 +975,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<MetricDefinition>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentMetricDefinitionsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentMetricDefinitionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -986,11 +986,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<MetricDefinition> getHostingEnvironmentMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<MetricDefinition> getHostingEnvironmentMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<MetricDefinition, CloudException>()
                 .register(200, new TypeToken<MetricDefinition>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1018,7 +1018,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentUsagesDelegate(call.execute(), null);
+        return getHostingEnvironmentUsagesDelegate(call.execute());
     }
 
     /**
@@ -1050,9 +1050,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentUsagesDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentUsagesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1061,11 +1061,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<CsmUsageQuotaCollection> getHostingEnvironmentUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CsmUsageQuotaCollection> getHostingEnvironmentUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>()
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1097,7 +1097,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.getSubscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentMultiRoleMetricsDelegate(call.execute(), null);
+        return getHostingEnvironmentMultiRoleMetricsDelegate(call.execute());
     }
 
     /**
@@ -1133,9 +1133,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.getSubscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentMultiRoleMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentMultiRoleMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1144,11 +1144,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMultiRoleMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMultiRoleMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1181,7 +1181,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentWebWorkerMetricsDelegate(call.execute(), null);
+        return getHostingEnvironmentWebWorkerMetricsDelegate(call.execute());
     }
 
     /**
@@ -1219,9 +1219,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentWebWorkerMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentWebWorkerMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1230,11 +1230,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentWebWorkerMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceMetricCollection> getHostingEnvironmentWebWorkerMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1261,7 +1261,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(call.execute(), null);
+        return getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(call.execute());
     }
 
     /**
@@ -1292,9 +1292,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1303,11 +1303,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<MetricDefinitionCollection> getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<MetricDefinitionCollection> getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1338,7 +1338,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(call.execute(), null);
+        return getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(call.execute());
     }
 
     /**
@@ -1374,9 +1374,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1385,11 +1385,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<MetricDefinitionCollection> getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<MetricDefinitionCollection> getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1416,7 +1416,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleUsages(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentMultiRoleUsagesDelegate(call.execute(), null);
+        return getHostingEnvironmentMultiRoleUsagesDelegate(call.execute());
     }
 
     /**
@@ -1447,9 +1447,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleUsages(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<UsageCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentMultiRoleUsagesDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentMultiRoleUsagesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1458,11 +1458,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<UsageCollection> getHostingEnvironmentMultiRoleUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<UsageCollection> getHostingEnvironmentMultiRoleUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<UsageCollection, CloudException>()
                 .register(200, new TypeToken<UsageCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1493,7 +1493,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerUsages(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentWebWorkerUsagesDelegate(call.execute(), null);
+        return getHostingEnvironmentWebWorkerUsagesDelegate(call.execute());
     }
 
     /**
@@ -1529,9 +1529,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerUsages(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<UsageCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentWebWorkerUsagesDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentWebWorkerUsagesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1540,11 +1540,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<UsageCollection> getHostingEnvironmentWebWorkerUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<UsageCollection> getHostingEnvironmentWebWorkerUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<UsageCollection, CloudException>()
                 .register(200, new TypeToken<UsageCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1572,7 +1572,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentSitesDelegate(call.execute(), null);
+        return getHostingEnvironmentSitesDelegate(call.execute());
     }
 
     /**
@@ -1604,9 +1604,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentSitesDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentSitesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1615,11 +1615,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<SiteCollection> getHostingEnvironmentSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteCollection> getHostingEnvironmentSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1646,7 +1646,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentServerFarmsDelegate(call.execute(), null);
+        return getHostingEnvironmentServerFarmsDelegate(call.execute());
     }
 
     /**
@@ -1677,9 +1677,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentServerFarmsDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentServerFarmsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1688,11 +1688,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<ServerFarmCollection> getHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmCollection> getHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1719,7 +1719,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getHostingEnvironmentWebHostingPlansDelegate(call.execute(), null);
+        return getHostingEnvironmentWebHostingPlansDelegate(call.execute());
     }
 
     /**
@@ -1750,9 +1750,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getHostingEnvironmentWebHostingPlansDelegate(response, retrofit));
+                    serviceCallback.success(getHostingEnvironmentWebHostingPlansDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1761,11 +1761,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<ServerFarmCollection> getHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmCollection> getHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1792,7 +1792,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getMultiRolePools(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getMultiRolePoolsDelegate(call.execute(), null);
+        return getMultiRolePoolsDelegate(call.execute());
     }
 
     /**
@@ -1823,9 +1823,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getMultiRolePools(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<WorkerPoolCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getMultiRolePoolsDelegate(response, retrofit));
+                    serviceCallback.success(getMultiRolePoolsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1834,11 +1834,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<WorkerPoolCollection> getMultiRolePoolsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<WorkerPoolCollection> getMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<WorkerPoolCollection, CloudException>()
                 .register(200, new TypeToken<WorkerPoolCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1865,7 +1865,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getMultiRolePool(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getMultiRolePoolDelegate(call.execute(), null);
+        return getMultiRolePoolDelegate(call.execute());
     }
 
     /**
@@ -1896,9 +1896,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getMultiRolePool(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<WorkerPool>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getMultiRolePoolDelegate(response, retrofit));
+                    serviceCallback.success(getMultiRolePoolDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1907,11 +1907,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<WorkerPool> getMultiRolePoolDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<WorkerPool> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<WorkerPool, CloudException>()
                 .register(200, new TypeToken<WorkerPool>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1960,11 +1960,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.createOrUpdateMultiRolePool(resourceGroupName, name, this.client.getSubscriptionId(), multiRolePoolEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<WorkerPool>() { }.getType(), serviceCallback);
             }
         });
@@ -1995,7 +1995,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getMultiRolePoolSkus(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getMultiRolePoolSkusDelegate(call.execute(), null);
+        return getMultiRolePoolSkusDelegate(call.execute());
     }
 
     /**
@@ -2026,9 +2026,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getMultiRolePoolSkus(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SkuInfoCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getMultiRolePoolSkusDelegate(response, retrofit));
+                    serviceCallback.success(getMultiRolePoolSkusDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2037,11 +2037,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<SkuInfoCollection> getMultiRolePoolSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SkuInfoCollection> getMultiRolePoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SkuInfoCollection, CloudException>()
                 .register(200, new TypeToken<SkuInfoCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2068,7 +2068,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getWorkerPools(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getWorkerPoolsDelegate(call.execute(), null);
+        return getWorkerPoolsDelegate(call.execute());
     }
 
     /**
@@ -2099,9 +2099,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getWorkerPools(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<WorkerPoolCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getWorkerPoolsDelegate(response, retrofit));
+                    serviceCallback.success(getWorkerPoolsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2110,11 +2110,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<WorkerPoolCollection> getWorkerPoolsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<WorkerPoolCollection> getWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<WorkerPoolCollection, CloudException>()
                 .register(200, new TypeToken<WorkerPoolCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2145,7 +2145,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getWorkerPoolDelegate(call.execute(), null);
+        return getWorkerPoolDelegate(call.execute());
     }
 
     /**
@@ -2181,9 +2181,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<WorkerPool>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getWorkerPoolDelegate(response, retrofit));
+                    serviceCallback.success(getWorkerPoolDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2192,11 +2192,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<WorkerPool> getWorkerPoolDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<WorkerPool> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<WorkerPool, CloudException>()
                 .register(200, new TypeToken<WorkerPool>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2250,11 +2250,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.createOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), workerPoolEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<WorkerPool>() { }.getType(), serviceCallback);
             }
         });
@@ -2289,7 +2289,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getWorkerPoolSkus(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getWorkerPoolSkusDelegate(call.execute(), null);
+        return getWorkerPoolSkusDelegate(call.execute());
     }
 
     /**
@@ -2325,9 +2325,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getWorkerPoolSkus(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SkuInfoCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getWorkerPoolSkusDelegate(response, retrofit));
+                    serviceCallback.success(getWorkerPoolSkusDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2336,11 +2336,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<SkuInfoCollection> getWorkerPoolSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SkuInfoCollection> getWorkerPoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SkuInfoCollection, CloudException>()
                 .register(200, new TypeToken<SkuInfoCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2377,7 +2377,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getWorkerPoolInstanceMetricsDelegate(call.execute(), null);
+        return getWorkerPoolInstanceMetricsDelegate(call.execute());
     }
 
     /**
@@ -2420,9 +2420,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getWorkerPoolInstanceMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getWorkerPoolInstanceMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2431,11 +2431,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> getWorkerPoolInstanceMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getWorkerPoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2470,7 +2470,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getWorkerPoolInstanceMetricDefinitions(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getWorkerPoolInstanceMetricDefinitionsDelegate(call.execute(), null);
+        return getWorkerPoolInstanceMetricDefinitionsDelegate(call.execute());
     }
 
     /**
@@ -2511,9 +2511,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getWorkerPoolInstanceMetricDefinitions(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getWorkerPoolInstanceMetricDefinitionsDelegate(response, retrofit));
+                    serviceCallback.success(getWorkerPoolInstanceMetricDefinitionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2522,11 +2522,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2558,7 +2558,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.getSubscriptionId(), details, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getMultiRolePoolInstanceMetricsDelegate(call.execute(), null);
+        return getMultiRolePoolInstanceMetricsDelegate(call.execute());
     }
 
     /**
@@ -2595,9 +2595,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.getSubscriptionId(), details, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getMultiRolePoolInstanceMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getMultiRolePoolInstanceMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2606,11 +2606,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> getMultiRolePoolInstanceMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getMultiRolePoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2641,7 +2641,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getMultiRolePoolInstanceMetricDefinitions(resourceGroupName, name, instance, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getMultiRolePoolInstanceMetricDefinitionsDelegate(call.execute(), null);
+        return getMultiRolePoolInstanceMetricDefinitionsDelegate(call.execute());
     }
 
     /**
@@ -2677,9 +2677,9 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.getMultiRolePoolInstanceMetricDefinitions(resourceGroupName, name, instance, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getMultiRolePoolInstanceMetricDefinitionsDelegate(response, retrofit));
+                    serviceCallback.success(getMultiRolePoolInstanceMetricDefinitionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2688,11 +2688,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         return call;
     }
 
-    private ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2735,11 +2735,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.suspendHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<SiteCollection>() { }.getType(), serviceCallback);
             }
         });
@@ -2786,11 +2786,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         Call<ResponseBody> call = service.resumeHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<SiteCollection>() { }.getType(), serviceCallback);
             }
         });

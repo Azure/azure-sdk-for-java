@@ -20,13 +20,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -89,11 +89,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.delete(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -125,7 +125,7 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -157,9 +157,9 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PublicIPAddress>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -168,11 +168,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         return call;
     }
 
-    private ServiceResponse<PublicIPAddress> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PublicIPAddress> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PublicIPAddress, CloudException>()
                 .register(200, new TypeToken<PublicIPAddress>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -221,11 +221,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<PublicIPAddress>() { }.getType(), serviceCallback);
             }
         });
@@ -248,10 +248,10 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<PublicIPAddress>> response = listAllDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<PublicIPAddress>> response = listAllDelegate(call.execute());
         List<PublicIPAddress> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getPublicIPAddressesOperations().listAllNext(response.getBody().getNextPageLink());
+            response = listAllNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -275,15 +275,15 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<PublicIPAddress>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<PublicIPAddress>> result = listAllDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<PublicIPAddress>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getPublicIPAddressesOperations().listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -293,11 +293,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<PublicIPAddress>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<PublicIPAddress>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<PublicIPAddress>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PublicIPAddress>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -320,10 +320,10 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<PublicIPAddress>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<PublicIPAddress>> response = listDelegate(call.execute());
         List<PublicIPAddress> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getPublicIPAddressesOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -352,15 +352,15 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<PublicIPAddress>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<PublicIPAddress>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<PublicIPAddress>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getPublicIPAddressesOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -370,11 +370,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<PublicIPAddress>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<PublicIPAddress>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<PublicIPAddress>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PublicIPAddress>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -391,7 +391,7 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAllNextDelegate(call.execute(), null);
+        return listAllNextDelegate(call.execute());
     }
 
     /**
@@ -409,15 +409,15 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<PublicIPAddress>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<PublicIPAddress>> result = listAllNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<PublicIPAddress>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -427,11 +427,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<PublicIPAddress>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<PublicIPAddress>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<PublicIPAddress>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PublicIPAddress>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -448,7 +448,7 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -466,15 +466,15 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<PublicIPAddress>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<PublicIPAddress>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<PublicIPAddress>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -484,11 +484,11 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<PublicIPAddress>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<PublicIPAddress>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<PublicIPAddress>, CloudException>()
                 .register(200, new TypeToken<PageImpl<PublicIPAddress>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

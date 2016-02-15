@@ -18,11 +18,11 @@ import com.microsoft.azure.management.website.models.ClassicMobileServiceCollect
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -65,7 +65,7 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getClassicMobileServices(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getClassicMobileServicesDelegate(call.execute(), null);
+        return getClassicMobileServicesDelegate(call.execute());
     }
 
     /**
@@ -91,9 +91,9 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
         Call<ResponseBody> call = service.getClassicMobileServices(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getClassicMobileServicesDelegate(response, retrofit));
+                    serviceCallback.success(getClassicMobileServicesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -102,11 +102,11 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
         return call;
     }
 
-    private ServiceResponse<ClassicMobileServiceCollection> getClassicMobileServicesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ClassicMobileServiceCollection> getClassicMobileServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ClassicMobileServiceCollection, CloudException>()
                 .register(200, new TypeToken<ClassicMobileServiceCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -133,7 +133,7 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getClassicMobileService(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getClassicMobileServiceDelegate(call.execute(), null);
+        return getClassicMobileServiceDelegate(call.execute());
     }
 
     /**
@@ -164,9 +164,9 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
         Call<ResponseBody> call = service.getClassicMobileService(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ClassicMobileService>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getClassicMobileServiceDelegate(response, retrofit));
+                    serviceCallback.success(getClassicMobileServiceDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -175,11 +175,11 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
         return call;
     }
 
-    private ServiceResponse<ClassicMobileService> getClassicMobileServiceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ClassicMobileService> getClassicMobileServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ClassicMobileService, CloudException>()
                 .register(200, new TypeToken<ClassicMobileService>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -206,7 +206,7 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteClassicMobileService(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteClassicMobileServiceDelegate(call.execute(), null);
+        return deleteClassicMobileServiceDelegate(call.execute());
     }
 
     /**
@@ -237,9 +237,9 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
         Call<ResponseBody> call = service.deleteClassicMobileService(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteClassicMobileServiceDelegate(response, retrofit));
+                    serviceCallback.success(deleteClassicMobileServiceDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -248,11 +248,11 @@ public final class ClassicMobileServicesOperationsImpl implements ClassicMobileS
         return call;
     }
 
-    private ServiceResponse<Object> deleteClassicMobileServiceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteClassicMobileServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

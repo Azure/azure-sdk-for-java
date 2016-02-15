@@ -14,9 +14,9 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CustomHeaderInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
 
 /**
  * Initializes a new instance of the SubscriptionClient class.
@@ -135,7 +135,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
      * @return the SubscriptionsOperations object.
      */
     public SubscriptionsOperations getSubscriptionsOperations() {
-        return new SubscriptionsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new SubscriptionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -143,7 +143,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
      * @return the TenantsOperations object.
      */
     public TenantsOperations getTenantsOperations() {
-        return new TenantsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new TenantsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -189,26 +189,28 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
      *
      * @param baseUri the base URI of the host
      * @param credentials the management credentials for Azure
-     * @param client the {@link OkHttpClient} client to use for REST calls
+     * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public SubscriptionClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient client, Retrofit.Builder retrofitBuilder) {
-        super(client, retrofitBuilder);
+    public SubscriptionClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+        super(clientBuilder, retrofitBuilder);
         this.baseUri = baseUri;
         this.credentials = credentials;
         initialize();
     }
 
-    private void initialize() {
+    @Override
+    protected void initialize() {
         this.apiVersion = "2015-11-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
+        this.clientBuilder.interceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         if (this.credentials != null) {
-            this.credentials.applyCredentialsFilter(this.client);
+            this.credentials.applyCredentialsFilter(clientBuilder);
         }
-        this.azureClient = new AzureClient(client, retrofitBuilder);
+        super.initialize();
+        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
         this.retrofitBuilder.baseUrl(baseUri);
     }

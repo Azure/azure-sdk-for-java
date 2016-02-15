@@ -18,12 +18,12 @@ import com.microsoft.azure.management.storage.models.Usage;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -62,8 +62,9 @@ public final class UsageOperationsImpl implements UsageOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<Usage>> response = listDelegate(call.execute(), null);
-        return new ServiceResponse<>(response.getBody().getItems(), response.getResponse());
+        ServiceResponse<PageImpl<Usage>> response = listDelegate(call.execute());
+        List<Usage> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
@@ -84,9 +85,9 @@ public final class UsageOperationsImpl implements UsageOperations {
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<Usage>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<Usage>> result = listDelegate(response, null);
+                    ServiceResponse<PageImpl<Usage>> result = listDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -96,11 +97,11 @@ public final class UsageOperationsImpl implements UsageOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Usage>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<Usage>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<Usage>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Usage>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

@@ -23,13 +23,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -98,11 +98,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.capture(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<VirtualMachineCaptureResult>() { }.getType(), serviceCallback);
             }
         });
@@ -155,11 +155,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<VirtualMachine>() { }.getType(), serviceCallback);
             }
         });
@@ -206,11 +206,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.delete(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -242,7 +242,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -274,9 +274,9 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VirtualMachine>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -285,11 +285,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<VirtualMachine> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualMachine> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VirtualMachine, CloudException>()
                 .register(200, new TypeToken<VirtualMachine>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -332,11 +332,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.deallocate(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -367,7 +367,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return generalizeDelegate(call.execute(), null);
+        return generalizeDelegate(call.execute());
     }
 
     /**
@@ -398,9 +398,9 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(generalizeDelegate(response, retrofit));
+                    serviceCallback.success(generalizeDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -409,10 +409,10 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<Void> generalizeDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> generalizeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(200, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -435,10 +435,10 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachine>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualMachine>> response = listDelegate(call.execute());
         List<VirtualMachine> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getVirtualMachinesOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -467,15 +467,15 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachine>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachine>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachine>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getVirtualMachinesOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -485,11 +485,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachine>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachine>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachine>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachine>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -508,7 +508,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachine>> response = listAllDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualMachine>> response = listAllDelegate(call.execute());
         List<VirtualMachine> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listAllNext(response.getBody().getNextPageLink());
@@ -535,15 +535,15 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachine>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachine>> result = listAllDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachine>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -553,11 +553,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachine>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachine>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachine>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachine>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -584,10 +584,10 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineSize>> response = listAvailableSizesDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualMachineSize>> response = listAvailableSizesDelegate(call.execute());
         List<VirtualMachineSize> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getVirtualMachinesOperations().listAvailableSizesNext(response.getBody().getNextPageLink());
+            response = listAvailableSizesNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -621,15 +621,15 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineSize>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getVirtualMachinesOperations().listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -639,11 +639,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSize>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineSize>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -686,11 +686,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.powerOff(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -737,11 +737,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.restart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -788,11 +788,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.start(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -813,7 +813,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -831,15 +831,15 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachine>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachine>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachine>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -849,11 +849,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachine>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachine>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachine>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachine>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -870,7 +870,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAllNextDelegate(call.execute(), null);
+        return listAllNextDelegate(call.execute());
     }
 
     /**
@@ -888,15 +888,15 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachine>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachine>> result = listAllNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachine>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -906,11 +906,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachine>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachine>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachine>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachine>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -927,7 +927,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAvailableSizesNextDelegate(call.execute(), null);
+        return listAvailableSizesNextDelegate(call.execute());
     }
 
     /**
@@ -945,15 +945,15 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineSize>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -963,11 +963,11 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSize>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineSize>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

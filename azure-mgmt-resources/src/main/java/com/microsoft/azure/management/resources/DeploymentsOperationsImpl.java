@@ -24,13 +24,13 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.ServiceResponseEmptyCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -93,11 +93,11 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.delete(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -128,7 +128,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<Void> call = service.checkExistence(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return checkExistenceDelegate(call.execute(), null);
+        return checkExistenceDelegate(call.execute());
     }
 
     /**
@@ -159,9 +159,9 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<Void> call = service.checkExistence(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
             @Override
-            public void onResponse(Response<Void> response, Retrofit retrofit) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
-                    serviceCallback.success(checkExistenceDelegate(response, retrofit));
+                    serviceCallback.success(checkExistenceDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -170,12 +170,12 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Boolean, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .buildEmpty(response, retrofit);
+                .buildEmpty(response);
     }
 
     /**
@@ -224,11 +224,11 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, deploymentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<DeploymentExtended>() { }.getType(), serviceCallback);
             }
         });
@@ -259,7 +259,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -290,9 +290,9 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.get(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeploymentExtended>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -301,11 +301,11 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentExtended> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeploymentExtended> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentExtended, CloudException>()
                 .register(200, new TypeToken<DeploymentExtended>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -332,7 +332,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.cancel(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return cancelDelegate(call.execute(), null);
+        return cancelDelegate(call.execute());
     }
 
     /**
@@ -363,9 +363,9 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.cancel(resourceGroupName, deploymentName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(cancelDelegate(response, retrofit));
+                    serviceCallback.success(cancelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -374,10 +374,10 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -409,7 +409,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.validate(resourceGroupName, deploymentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return validateDelegate(call.execute(), null);
+        return validateDelegate(call.execute());
     }
 
     /**
@@ -446,9 +446,9 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.validate(resourceGroupName, deploymentName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeploymentValidateResult>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(validateDelegate(response, retrofit));
+                    serviceCallback.success(validateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -457,12 +457,12 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentValidateResult> validateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeploymentValidateResult> validateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentValidateResult, CloudException>()
                 .register(200, new TypeToken<DeploymentValidateResult>() { }.getType())
                 .register(400, new TypeToken<DeploymentValidateResult>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -487,7 +487,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<DeploymentExtended>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<DeploymentExtended>> response = listDelegate(call.execute());
         List<DeploymentExtended> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listNext(response.getBody().getNextPageLink());
@@ -521,15 +521,15 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<DeploymentExtended>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<DeploymentExtended>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<DeploymentExtended>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -539,11 +539,11 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<DeploymentExtended>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<DeploymentExtended>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>, CloudException>()
                 .register(200, new TypeToken<PageImpl<DeploymentExtended>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -560,7 +560,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -578,15 +578,15 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<DeploymentExtended>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<DeploymentExtended>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<DeploymentExtended>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -596,11 +596,11 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<DeploymentExtended>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<DeploymentExtended>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<DeploymentExtended>, CloudException>()
                 .register(200, new TypeToken<PageImpl<DeploymentExtended>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

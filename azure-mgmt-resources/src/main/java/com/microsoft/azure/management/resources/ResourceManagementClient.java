@@ -13,9 +13,9 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.serializer.JacksonMapperAdapter;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
 import java.util.List;
+import okhttp3.Interceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 /**
  * The interface for ResourceManagementClient class.
@@ -155,10 +155,10 @@ public interface ResourceManagementClient {
     TagsOperations getTagsOperations();
 
     /**
-     * Gets the DeploymentOperations object to access its operations.
-     * @return the DeploymentOperations object.
+     * Gets the DeploymentOperationsOperations object to access its operations.
+     * @return the DeploymentOperationsOperations object.
      */
-    DeploymentOperations getDeploymentOperations();
+    DeploymentOperationsOperations getDeploymentOperationsOperations();
 
     /**
      * Gets the ResourceProviderOperationDetailsOperations object to access its operations.

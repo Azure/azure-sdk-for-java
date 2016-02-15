@@ -20,12 +20,12 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -68,7 +68,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getCertificates(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getCertificatesDelegate(call.execute(), null);
+        return getCertificatesDelegate(call.execute());
     }
 
     /**
@@ -94,9 +94,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.getCertificates(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<CertificateCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getCertificatesDelegate(response, retrofit));
+                    serviceCallback.success(getCertificatesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -105,11 +105,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<CertificateCollection> getCertificatesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CertificateCollection> getCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<CertificateCollection, CloudException>()
                 .register(200, new TypeToken<CertificateCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -136,7 +136,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getCertificate(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getCertificateDelegate(call.execute(), null);
+        return getCertificateDelegate(call.execute());
     }
 
     /**
@@ -167,9 +167,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.getCertificate(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getCertificateDelegate(response, retrofit));
+                    serviceCallback.success(getCertificateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -178,11 +178,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Certificate> getCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Certificate> getCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Certificate, CloudException>()
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -214,7 +214,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(certificateEnvelope);
         Call<ResponseBody> call = service.createOrUpdateCertificate(resourceGroupName, name, this.client.getSubscriptionId(), certificateEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateCertificateDelegate(call.execute(), null);
+        return createOrUpdateCertificateDelegate(call.execute());
     }
 
     /**
@@ -251,9 +251,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.createOrUpdateCertificate(resourceGroupName, name, this.client.getSubscriptionId(), certificateEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateCertificateDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateCertificateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -262,11 +262,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Certificate> createOrUpdateCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Certificate> createOrUpdateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Certificate, CloudException>()
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteCertificate(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteCertificateDelegate(call.execute(), null);
+        return deleteCertificateDelegate(call.execute());
     }
 
     /**
@@ -324,9 +324,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.deleteCertificate(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteCertificateDelegate(response, retrofit));
+                    serviceCallback.success(deleteCertificateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -335,11 +335,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Object> deleteCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -371,7 +371,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(certificateEnvelope);
         Call<ResponseBody> call = service.updateCertificate(resourceGroupName, name, this.client.getSubscriptionId(), certificateEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateCertificateDelegate(call.execute(), null);
+        return updateCertificateDelegate(call.execute());
     }
 
     /**
@@ -408,9 +408,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.updateCertificate(resourceGroupName, name, this.client.getSubscriptionId(), certificateEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateCertificateDelegate(response, retrofit));
+                    serviceCallback.success(updateCertificateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -419,11 +419,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Certificate> updateCertificateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Certificate> updateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Certificate, CloudException>()
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -446,7 +446,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getCsrs(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getCsrsDelegate(call.execute(), null);
+        return getCsrsDelegate(call.execute());
     }
 
     /**
@@ -472,9 +472,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.getCsrs(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<Csr>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getCsrsDelegate(response, retrofit));
+                    serviceCallback.success(getCsrsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -483,11 +483,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<List<Csr>> getCsrsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<Csr>> getCsrsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<Csr>, CloudException>()
                 .register(200, new TypeToken<List<Csr>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -514,7 +514,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getCsr(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getCsrDelegate(call.execute(), null);
+        return getCsrDelegate(call.execute());
     }
 
     /**
@@ -545,9 +545,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.getCsr(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Csr>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getCsrDelegate(response, retrofit));
+                    serviceCallback.success(getCsrDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -556,11 +556,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Csr> getCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Csr> getCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Csr, CloudException>()
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -592,7 +592,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(csrEnvelope);
         Call<ResponseBody> call = service.createOrUpdateCsr(resourceGroupName, name, this.client.getSubscriptionId(), csrEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateCsrDelegate(call.execute(), null);
+        return createOrUpdateCsrDelegate(call.execute());
     }
 
     /**
@@ -629,9 +629,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.createOrUpdateCsr(resourceGroupName, name, this.client.getSubscriptionId(), csrEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Csr>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateCsrDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateCsrDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -640,11 +640,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Csr> createOrUpdateCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Csr> createOrUpdateCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Csr, CloudException>()
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -671,7 +671,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteCsr(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteCsrDelegate(call.execute(), null);
+        return deleteCsrDelegate(call.execute());
     }
 
     /**
@@ -702,9 +702,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.deleteCsr(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteCsrDelegate(response, retrofit));
+                    serviceCallback.success(deleteCsrDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -713,11 +713,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Object> deleteCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -749,7 +749,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(csrEnvelope);
         Call<ResponseBody> call = service.updateCsr(resourceGroupName, name, this.client.getSubscriptionId(), csrEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateCsrDelegate(call.execute(), null);
+        return updateCsrDelegate(call.execute());
     }
 
     /**
@@ -786,9 +786,9 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         Call<ResponseBody> call = service.updateCsr(resourceGroupName, name, this.client.getSubscriptionId(), csrEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Csr>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateCsrDelegate(response, retrofit));
+                    serviceCallback.success(updateCsrDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -797,11 +797,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         return call;
     }
 
-    private ServiceResponse<Csr> updateCsrDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Csr> updateCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Csr, CloudException>()
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

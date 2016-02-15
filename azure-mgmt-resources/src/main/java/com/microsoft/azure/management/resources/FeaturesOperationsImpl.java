@@ -19,12 +19,12 @@ import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -63,7 +63,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<FeatureResult>> response = listAllDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<FeatureResult>> response = listAllDelegate(call.execute());
         List<FeatureResult> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listAllNext(response.getBody().getNextPageLink());
@@ -90,15 +90,15 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<FeatureResult>> result = listAllDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<FeatureResult>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -108,11 +108,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<FeatureResult>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -135,7 +135,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<FeatureResult>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<FeatureResult>> response = listDelegate(call.execute());
         List<FeatureResult> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listNext(response.getBody().getNextPageLink());
@@ -167,15 +167,15 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<FeatureResult>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<FeatureResult>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -185,11 +185,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<FeatureResult>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -216,7 +216,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -247,9 +247,9 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<FeatureResult>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -258,11 +258,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<FeatureResult> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<FeatureResult> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<FeatureResult, CloudException>()
                 .register(200, new TypeToken<FeatureResult>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -289,7 +289,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return registerDelegate(call.execute(), null);
+        return registerDelegate(call.execute());
     }
 
     /**
@@ -320,9 +320,9 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<FeatureResult>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(registerDelegate(response, retrofit));
+                    serviceCallback.success(registerDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -331,11 +331,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<FeatureResult> registerDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<FeatureResult> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<FeatureResult, CloudException>()
                 .register(200, new TypeToken<FeatureResult>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -352,7 +352,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAllNextDelegate(call.execute(), null);
+        return listAllNextDelegate(call.execute());
     }
 
     /**
@@ -370,15 +370,15 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<FeatureResult>> result = listAllNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<FeatureResult>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -388,11 +388,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<FeatureResult>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -409,7 +409,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -427,15 +427,15 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<FeatureResult>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<FeatureResult>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -445,11 +445,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<FeatureResult>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<FeatureResult>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

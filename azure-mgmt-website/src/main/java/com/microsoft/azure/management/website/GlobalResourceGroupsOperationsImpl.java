@@ -18,11 +18,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -69,7 +69,7 @@ public final class GlobalResourceGroupsOperationsImpl implements GlobalResourceG
         }
         Validator.validate(moveResourceEnvelope);
         Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.getSubscriptionId(), moveResourceEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return moveResourcesDelegate(call.execute(), null);
+        return moveResourcesDelegate(call.execute());
     }
 
     /**
@@ -100,9 +100,9 @@ public final class GlobalResourceGroupsOperationsImpl implements GlobalResourceG
         Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.getSubscriptionId(), moveResourceEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(moveResourcesDelegate(response, retrofit));
+                    serviceCallback.success(moveResourcesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -111,10 +111,10 @@ public final class GlobalResourceGroupsOperationsImpl implements GlobalResourceG
         return call;
     }
 
-    private ServiceResponse<Void> moveResourcesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> moveResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

@@ -23,13 +23,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -98,11 +98,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<VirtualNetworkGatewayConnection>() { }.getType(), serviceCallback);
             }
         });
@@ -133,7 +133,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -164,9 +164,9 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VirtualNetworkGatewayConnection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -175,11 +175,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         return call;
     }
 
-    private ServiceResponse<VirtualNetworkGatewayConnection> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualNetworkGatewayConnection> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnection, CloudException>()
                 .register(200, new TypeToken<VirtualNetworkGatewayConnection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -222,11 +222,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -257,7 +257,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSharedKeyDelegate(call.execute(), null);
+        return getSharedKeyDelegate(call.execute());
     }
 
     /**
@@ -288,9 +288,9 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyResult>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSharedKeyDelegate(response, retrofit));
+                    serviceCallback.success(getSharedKeyDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -299,11 +299,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         return call;
     }
 
-    private ServiceResponse<ConnectionSharedKeyResult> getSharedKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ConnectionSharedKeyResult> getSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ConnectionSharedKeyResult, CloudException>()
                 .register(200, new TypeToken<ConnectionSharedKeyResult>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -326,10 +326,10 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> response = listDelegate(call.execute());
         List<VirtualNetworkGatewayConnection> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getVirtualNetworkGatewayConnectionsOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -358,15 +358,15 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualNetworkGatewayConnection>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getVirtualNetworkGatewayConnectionsOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -376,11 +376,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnection>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnection>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -429,11 +429,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ConnectionResetSharedKey>() { }.getType(), serviceCallback);
             }
         });
@@ -486,11 +486,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ConnectionSharedKey>() { }.getType(), serviceCallback);
             }
         });
@@ -511,7 +511,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -529,15 +529,15 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualNetworkGatewayConnection>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -547,11 +547,11 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnection>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnection>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

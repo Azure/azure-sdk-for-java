@@ -23,12 +23,12 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -75,7 +75,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentDelegate(call.execute());
     }
 
     /**
@@ -106,9 +106,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ManagedHostingEnvironment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -117,11 +117,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<ManagedHostingEnvironment> getManagedHostingEnvironmentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ManagedHostingEnvironment> getManagedHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ManagedHostingEnvironment, CloudException>()
                 .register(200, new TypeToken<ManagedHostingEnvironment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -170,11 +170,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.createOrUpdateManagedHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), managedHostingEnvironmentEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<HostingEnvironment>() { }.getType(), serviceCallback);
             }
         });
@@ -223,11 +223,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.deleteManagedHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCallback);
             }
         });
@@ -254,7 +254,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironments(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentsDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentsDelegate(call.execute());
     }
 
     /**
@@ -280,9 +280,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironments(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentsDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -291,11 +291,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<HostingEnvironmentCollection> getManagedHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostingEnvironmentCollection> getManagedHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -322,7 +322,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironmentVips(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentVipsDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentVipsDelegate(call.execute());
     }
 
     /**
@@ -353,9 +353,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironmentVips(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<AddressResponse>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentVipsDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentVipsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -364,11 +364,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<AddressResponse> getManagedHostingEnvironmentVipsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<AddressResponse> getManagedHostingEnvironmentVipsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<AddressResponse, CloudException>()
                 .register(200, new TypeToken<AddressResponse>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -399,7 +399,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentOperationDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentOperationDelegate(call.execute());
     }
 
     /**
@@ -435,9 +435,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentOperationDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentOperationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -446,14 +446,14 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<Object> getManagedHostingEnvironmentOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getManagedHostingEnvironmentOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(500, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -481,7 +481,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentSitesDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentSitesDelegate(call.execute());
     }
 
     /**
@@ -513,9 +513,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentSitesDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentSitesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -524,11 +524,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<SiteCollection> getManagedHostingEnvironmentSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteCollection> getManagedHostingEnvironmentSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -555,7 +555,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentWebHostingPlansDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentWebHostingPlansDelegate(call.execute());
     }
 
     /**
@@ -586,9 +586,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentWebHostingPlansDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentWebHostingPlansDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -597,11 +597,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -628,7 +628,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getManagedHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentServerFarmsDelegate(call.execute(), null);
+        return getManagedHostingEnvironmentServerFarmsDelegate(call.execute());
     }
 
     /**
@@ -659,9 +659,9 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> call = service.getManagedHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getManagedHostingEnvironmentServerFarmsDelegate(response, retrofit));
+                    serviceCallback.success(getManagedHostingEnvironmentServerFarmsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -670,11 +670,11 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         return call;
     }
 
-    private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

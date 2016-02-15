@@ -21,11 +21,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -64,7 +64,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getGetTopLevelDomainsDelegate(call.execute(), null);
+        return getGetTopLevelDomainsDelegate(call.execute());
     }
 
     /**
@@ -85,9 +85,9 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<TopLevelDomainCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getGetTopLevelDomainsDelegate(response, retrofit));
+                    serviceCallback.success(getGetTopLevelDomainsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -96,11 +96,11 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         return call;
     }
 
-    private ServiceResponse<TopLevelDomainCollection> getGetTopLevelDomainsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TopLevelDomainCollection> getGetTopLevelDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<TopLevelDomainCollection, CloudException>()
                 .register(200, new TypeToken<TopLevelDomainCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getTopLevelDomainDelegate(call.execute(), null);
+        return getTopLevelDomainDelegate(call.execute());
     }
 
     /**
@@ -149,9 +149,9 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<TopLevelDomain>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getTopLevelDomainDelegate(response, retrofit));
+                    serviceCallback.success(getTopLevelDomainDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -160,11 +160,11 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         return call;
     }
 
-    private ServiceResponse<TopLevelDomain> getTopLevelDomainDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TopLevelDomain> getTopLevelDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<TopLevelDomain, CloudException>()
                 .register(200, new TypeToken<TopLevelDomain>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -192,7 +192,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         }
         Validator.validate(agreementOption);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), agreementOption, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listTopLevelDomainAgreementsDelegate(call.execute(), null);
+        return listTopLevelDomainAgreementsDelegate(call.execute());
     }
 
     /**
@@ -224,9 +224,9 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), agreementOption, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listTopLevelDomainAgreementsDelegate(response, retrofit));
+                    serviceCallback.success(listTopLevelDomainAgreementsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -235,11 +235,11 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         return call;
     }
 
-    private ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreementsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreementsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<TldLegalAgreementCollection, CloudException>()
                 .register(200, new TypeToken<TldLegalAgreementCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

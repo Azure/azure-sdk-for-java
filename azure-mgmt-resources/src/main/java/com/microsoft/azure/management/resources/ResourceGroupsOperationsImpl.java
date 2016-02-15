@@ -24,13 +24,13 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.ServiceResponseEmptyCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -75,7 +75,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute());
         List<GenericResource> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listResourcesNext(response.getBody().getNextPageLink());
@@ -109,15 +109,15 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<GenericResource>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<GenericResource>> result = listResourcesDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<GenericResource>> result = listResourcesDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listResourcesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -127,11 +127,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<GenericResource>> listResourcesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<GenericResource>> listResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<GenericResource>, CloudException>()
                 .register(200, new TypeToken<PageImpl<GenericResource>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<Void> call = service.checkExistence(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return checkExistenceDelegate(call.execute(), null);
+        return checkExistenceDelegate(call.execute());
     }
 
     /**
@@ -180,9 +180,9 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<Void> call = service.checkExistence(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
             @Override
-            public void onResponse(Response<Void> response, Retrofit retrofit) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
-                    serviceCallback.success(checkExistenceDelegate(response, retrofit));
+                    serviceCallback.success(checkExistenceDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -191,12 +191,12 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Boolean, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .buildEmpty(response, retrofit);
+                .buildEmpty(response);
     }
 
     /**
@@ -224,7 +224,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateDelegate(call.execute(), null);
+        return createOrUpdateDelegate(call.execute());
     }
 
     /**
@@ -256,9 +256,9 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceGroup>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -267,12 +267,12 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<ResourceGroup> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceGroup> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceGroup, CloudException>()
                 .register(201, new TypeToken<ResourceGroup>() { }.getType())
                 .register(200, new TypeToken<ResourceGroup>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -310,11 +310,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.delete(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -341,7 +341,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -367,9 +367,9 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.get(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceGroup>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -378,11 +378,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<ResourceGroup> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceGroup> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceGroup, CloudException>()
                 .register(200, new TypeToken<ResourceGroup>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -410,7 +410,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.patch(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return patchDelegate(call.execute(), null);
+        return patchDelegate(call.execute());
     }
 
     /**
@@ -442,9 +442,9 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.patch(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceGroup>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(patchDelegate(response, retrofit));
+                    serviceCallback.success(patchDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -453,11 +453,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<ResourceGroup> patchDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceGroup> patchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceGroup, CloudException>()
                 .register(200, new TypeToken<ResourceGroup>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -478,10 +478,10 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute());
         List<ResourceGroup> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getResourceGroupsOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -507,15 +507,15 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ResourceGroup>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ResourceGroup>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ResourceGroup>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getResourceGroupsOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -525,11 +525,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<ResourceGroup>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ResourceGroup>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ResourceGroup>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -546,7 +546,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listResourcesNext(nextPageLink, this.client.getAcceptLanguage());
-        return listResourcesNextDelegate(call.execute(), null);
+        return listResourcesNextDelegate(call.execute());
     }
 
     /**
@@ -564,15 +564,15 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.listResourcesNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<GenericResource>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<GenericResource>> result = listResourcesNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<GenericResource>> result = listResourcesNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listResourcesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -582,11 +582,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<GenericResource>> listResourcesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<GenericResource>> listResourcesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<GenericResource>, CloudException>()
                 .register(200, new TypeToken<PageImpl<GenericResource>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -603,7 +603,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -621,15 +621,15 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ResourceGroup>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ResourceGroup>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ResourceGroup>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -639,11 +639,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         return call;
     }
 
-    private ServiceResponse<PageImpl<ResourceGroup>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ResourceGroup>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ResourceGroup>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

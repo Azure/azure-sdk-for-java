@@ -14,9 +14,9 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CustomHeaderInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
 
 /**
  * Initializes a new instance of the WebSiteManagementClient class.
@@ -156,7 +156,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the CertificatesOperations object.
      */
     public CertificatesOperations getCertificatesOperations() {
-        return new CertificatesOperationsImpl(this.retrofitBuilder.build(), this);
+        return new CertificatesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -164,7 +164,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the ClassicMobileServicesOperations object.
      */
     public ClassicMobileServicesOperations getClassicMobileServicesOperations() {
-        return new ClassicMobileServicesOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ClassicMobileServicesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the DomainsOperations object.
      */
     public DomainsOperations getDomainsOperations() {
-        return new DomainsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new DomainsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -180,7 +180,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the GlobalOperations object.
      */
     public GlobalOperations getGlobalOperations() {
-        return new GlobalOperationsImpl(this.retrofitBuilder.build(), this);
+        return new GlobalOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -188,7 +188,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the GlobalDomainRegistrationOperations object.
      */
     public GlobalDomainRegistrationOperations getGlobalDomainRegistrationOperations() {
-        return new GlobalDomainRegistrationOperationsImpl(this.retrofitBuilder.build(), this);
+        return new GlobalDomainRegistrationOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -196,7 +196,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the GlobalResourceGroupsOperations object.
      */
     public GlobalResourceGroupsOperations getGlobalResourceGroupsOperations() {
-        return new GlobalResourceGroupsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new GlobalResourceGroupsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -204,7 +204,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the HostingEnvironmentsOperations object.
      */
     public HostingEnvironmentsOperations getHostingEnvironmentsOperations() {
-        return new HostingEnvironmentsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new HostingEnvironmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -212,7 +212,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the ManagedHostingEnvironmentsOperations object.
      */
     public ManagedHostingEnvironmentsOperations getManagedHostingEnvironmentsOperations() {
-        return new ManagedHostingEnvironmentsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ManagedHostingEnvironmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -220,7 +220,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the ProviderOperations object.
      */
     public ProviderOperations getProviderOperations() {
-        return new ProviderOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ProviderOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -228,7 +228,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the ServerFarmsOperations object.
      */
     public ServerFarmsOperations getServerFarmsOperations() {
-        return new ServerFarmsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ServerFarmsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -236,7 +236,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the SitesOperations object.
      */
     public SitesOperations getSitesOperations() {
-        return new SitesOperationsImpl(this.retrofitBuilder.build(), this);
+        return new SitesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -244,7 +244,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the TopLevelDomainsOperations object.
      */
     public TopLevelDomainsOperations getTopLevelDomainsOperations() {
-        return new TopLevelDomainsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new TopLevelDomainsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -252,7 +252,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      * @return the UsageOperations object.
      */
     public UsageOperations getUsageOperations() {
-        return new UsageOperationsImpl(this.retrofitBuilder.build(), this);
+        return new UsageOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -298,26 +298,28 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      *
      * @param baseUri the base URI of the host
      * @param credentials the management credentials for Azure
-     * @param client the {@link OkHttpClient} client to use for REST calls
+     * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public WebSiteManagementClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient client, Retrofit.Builder retrofitBuilder) {
-        super(client, retrofitBuilder);
+    public WebSiteManagementClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+        super(clientBuilder, retrofitBuilder);
         this.baseUri = baseUri;
         this.credentials = credentials;
         initialize();
     }
 
-    private void initialize() {
+    @Override
+    protected void initialize() {
         this.apiVersion = "2015-08-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
+        this.clientBuilder.interceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         if (this.credentials != null) {
-            this.credentials.applyCredentialsFilter(this.client);
+            this.credentials.applyCredentialsFilter(clientBuilder);
         }
-        this.azureClient = new AzureClient(client, retrofitBuilder);
+        super.initialize();
+        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
         this.retrofitBuilder.baseUrl(baseUri);
     }
