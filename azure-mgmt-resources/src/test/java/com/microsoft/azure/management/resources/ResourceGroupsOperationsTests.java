@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.Page;
+
 import org.junit.Assert;
 import org.junit.Test;
 

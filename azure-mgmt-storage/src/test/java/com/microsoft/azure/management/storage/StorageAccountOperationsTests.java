@@ -6,8 +6,6 @@ import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResult
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCheckNameAvailabilityParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.management.storage.models.StorageAccountListResult;
-import com.microsoft.azure.Page;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

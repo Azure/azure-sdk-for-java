@@ -3,7 +3,7 @@ package com.microsoft.azure.management.storage;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class StorageManagementTestBase {
     protected static ResourceManagementClient resourceManagementClient;

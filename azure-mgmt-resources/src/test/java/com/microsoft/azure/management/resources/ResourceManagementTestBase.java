@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class ResourceManagementTestBase {
     protected ResourceManagementClient resourceManagementClient;

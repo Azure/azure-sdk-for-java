@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.management.compute.models.HardwareProfile;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
@@ -23,6 +22,7 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
