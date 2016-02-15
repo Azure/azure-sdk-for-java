@@ -24,13 +24,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -99,11 +99,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, name, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<VirtualMachineScaleSet>() { }.getType(), serviceCallback);
             }
         });
@@ -152,11 +152,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.deallocate(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), vmInstanceIDs, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -203,11 +203,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.delete(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -238,7 +238,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -269,9 +269,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.get(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VirtualMachineScaleSet>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -280,11 +280,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSet> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualMachineScaleSet> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSet, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSet>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -333,11 +333,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.deleteInstances(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), vmInstanceIDs, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -368,7 +368,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceView(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getInstanceViewDelegate(call.execute(), null);
+        return getInstanceViewDelegate(call.execute());
     }
 
     /**
@@ -399,9 +399,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.getInstanceView(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VirtualMachineScaleSetInstanceView>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceViewDelegate(response, retrofit));
+                    serviceCallback.success(getInstanceViewDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -410,11 +410,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceViewDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualMachineScaleSetInstanceView> getInstanceViewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VirtualMachineScaleSetInstanceView, CloudException>()
                 .register(200, new TypeToken<VirtualMachineScaleSetInstanceView>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -437,10 +437,10 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSet>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualMachineScaleSet>> response = listDelegate(call.execute());
         List<VirtualMachineScaleSet> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getVirtualMachineScaleSetsOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -469,15 +469,15 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSet>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getVirtualMachineScaleSetsOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -487,11 +487,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -510,10 +510,10 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSet>> response = listAllDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualMachineScaleSet>> response = listAllDelegate(call.execute());
         List<VirtualMachineScaleSet> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getVirtualMachineScaleSetsOperations().listAllNext(response.getBody().getNextPageLink());
+            response = listAllNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -537,15 +537,15 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSet>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listAllDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getVirtualMachineScaleSetsOperations().listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -555,11 +555,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -586,7 +586,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSkus(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> response = listSkusDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> response = listSkusDelegate(call.execute());
         List<VirtualMachineScaleSetSku> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listSkusNext(response.getBody().getNextPageLink());
@@ -623,15 +623,15 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.listSkus(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSetSku>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> result = listSkusDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> result = listSkusDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listSkusNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -641,11 +641,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> listSkusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetSku>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetSku>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -690,11 +690,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.powerOff(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), vmInstanceIDs, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -743,11 +743,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.restart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), vmInstanceIDs, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -796,11 +796,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.start(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), vmInstanceIDs, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -853,11 +853,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.updateInstances(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), vmInstanceIDs, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -878,7 +878,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -896,15 +896,15 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSet>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -914,11 +914,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -935,7 +935,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAllNextDelegate(call.execute(), null);
+        return listAllNextDelegate(call.execute());
     }
 
     /**
@@ -953,15 +953,15 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSet>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listAllNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineScaleSet>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -971,11 +971,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSet>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSet>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSet>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -992,7 +992,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSkusNext(nextPageLink, this.client.getAcceptLanguage());
-        return listSkusNextDelegate(call.execute(), null);
+        return listSkusNextDelegate(call.execute());
     }
 
     /**
@@ -1010,15 +1010,15 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         Call<ResponseBody> call = service.listSkusNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSetSku>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> result = listSkusNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> result = listSkusNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listSkusNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1028,11 +1028,11 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         return call;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> listSkusNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> listSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetSku>, CloudException>()
                 .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetSku>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

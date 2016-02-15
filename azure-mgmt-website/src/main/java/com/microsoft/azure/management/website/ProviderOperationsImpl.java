@@ -20,11 +20,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -60,7 +60,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSourceControls(this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSourceControlsDelegate(call.execute(), null);
+        return getSourceControlsDelegate(call.execute());
     }
 
     /**
@@ -77,9 +77,9 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         Call<ResponseBody> call = service.getSourceControls(this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SourceControlCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSourceControlsDelegate(response, retrofit));
+                    serviceCallback.success(getSourceControlsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -88,11 +88,11 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         return call;
     }
 
-    private ServiceResponse<SourceControlCollection> getSourceControlsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SourceControlCollection> getSourceControlsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SourceControlCollection, CloudException>()
                 .register(200, new TypeToken<SourceControlCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSourceControlDelegate(call.execute(), null);
+        return getSourceControlDelegate(call.execute());
     }
 
     /**
@@ -134,9 +134,9 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSourceControlDelegate(response, retrofit));
+                    serviceCallback.success(getSourceControlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -145,11 +145,11 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         return call;
     }
 
-    private ServiceResponse<SourceControl> getSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SourceControl> getSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SourceControl, CloudException>()
                 .register(200, new TypeToken<SourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -174,7 +174,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         }
         Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSourceControlDelegate(call.execute(), null);
+        return updateSourceControlDelegate(call.execute());
     }
 
     /**
@@ -202,9 +202,9 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSourceControlDelegate(response, retrofit));
+                    serviceCallback.success(updateSourceControlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -213,11 +213,11 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         return call;
     }
 
-    private ServiceResponse<SourceControl> updateSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SourceControl> updateSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SourceControl, CloudException>()
                 .register(200, new TypeToken<SourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -233,7 +233,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getPublishingUser(this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getPublishingUserDelegate(call.execute(), null);
+        return getPublishingUserDelegate(call.execute());
     }
 
     /**
@@ -250,9 +250,9 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         Call<ResponseBody> call = service.getPublishingUser(this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<User>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getPublishingUserDelegate(response, retrofit));
+                    serviceCallback.success(getPublishingUserDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -261,11 +261,11 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         return call;
     }
 
-    private ServiceResponse<User> getPublishingUserDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<User> getPublishingUserDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -286,7 +286,7 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         }
         Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updatePublishingUserDelegate(call.execute(), null);
+        return updatePublishingUserDelegate(call.execute());
     }
 
     /**
@@ -309,9 +309,9 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<User>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updatePublishingUserDelegate(response, retrofit));
+                    serviceCallback.success(updatePublishingUserDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -320,11 +320,11 @@ public final class ProviderOperationsImpl implements ProviderOperations {
         return call;
     }
 
-    private ServiceResponse<User> updatePublishingUserDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<User> updatePublishingUserDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

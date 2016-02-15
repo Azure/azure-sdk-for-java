@@ -14,9 +14,9 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CustomHeaderInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.squareup.okhttp.OkHttpClient;
 import java.util.UUID;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
 
 /**
  * Initializes a new instance of the ResourceManagementClient class.
@@ -156,7 +156,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the DeploymentsOperations object.
      */
     public DeploymentsOperations getDeploymentsOperations() {
-        return new DeploymentsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new DeploymentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -164,7 +164,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the ProvidersOperations object.
      */
     public ProvidersOperations getProvidersOperations() {
-        return new ProvidersOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ProvidersOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the ResourceGroupsOperations object.
      */
     public ResourceGroupsOperations getResourceGroupsOperations() {
-        return new ResourceGroupsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ResourceGroupsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -180,7 +180,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the ResourcesOperations object.
      */
     public ResourcesOperations getResourcesOperations() {
-        return new ResourcesOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ResourcesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -188,15 +188,15 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the TagsOperations object.
      */
     public TagsOperations getTagsOperations() {
-        return new TagsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new TagsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the DeploymentOperations object to access its operations.
-     * @return the DeploymentOperations object.
+     * Gets the DeploymentOperationsOperations object to access its operations.
+     * @return the DeploymentOperationsOperations object.
      */
-    public DeploymentOperations getDeploymentOperations() {
-        return new DeploymentOperationsImpl(this.retrofitBuilder.build(), this);
+    public DeploymentOperationsOperations getDeploymentOperationsOperations() {
+        return new DeploymentOperationsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -204,7 +204,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the ResourceProviderOperationDetailsOperations object.
      */
     public ResourceProviderOperationDetailsOperations getResourceProviderOperationDetailsOperations() {
-        return new ResourceProviderOperationDetailsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new ResourceProviderOperationDetailsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -212,7 +212,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the PolicyDefinitionsOperations object.
      */
     public PolicyDefinitionsOperations getPolicyDefinitionsOperations() {
-        return new PolicyDefinitionsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new PolicyDefinitionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -220,7 +220,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @return the PolicyAssignmentsOperations object.
      */
     public PolicyAssignmentsOperations getPolicyAssignmentsOperations() {
-        return new PolicyAssignmentsOperationsImpl(this.retrofitBuilder.build(), this);
+        return new PolicyAssignmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -266,26 +266,28 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      *
      * @param baseUri the base URI of the host
      * @param credentials the management credentials for Azure
-     * @param client the {@link OkHttpClient} client to use for REST calls
+     * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public ResourceManagementClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient client, Retrofit.Builder retrofitBuilder) {
-        super(client, retrofitBuilder);
+    public ResourceManagementClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+        super(clientBuilder, retrofitBuilder);
         this.baseUri = baseUri;
         this.credentials = credentials;
         initialize();
     }
 
-    private void initialize() {
+    @Override
+    protected void initialize() {
         this.apiVersion = "2015-11-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.getClientInterceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
+        this.clientBuilder.interceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
         if (this.credentials != null) {
-            this.credentials.applyCredentialsFilter(this.client);
+            this.credentials.applyCredentialsFilter(clientBuilder);
         }
-        this.azureClient = new AzureClient(client, retrofitBuilder);
+        super.initialize();
+        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder);
         this.azureClient.setCredentials(this.credentials);
         this.retrofitBuilder.baseUrl(baseUri);
     }

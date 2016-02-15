@@ -27,13 +27,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -76,7 +76,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarms(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getServerFarmsDelegate(call.execute(), null);
+        return getServerFarmsDelegate(call.execute());
     }
 
     /**
@@ -102,9 +102,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarms(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getServerFarmsDelegate(response, retrofit));
+                    serviceCallback.success(getServerFarmsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -113,11 +113,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<ServerFarmCollection> getServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmCollection> getServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -144,7 +144,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getServerFarmDelegate(call.execute(), null);
+        return getServerFarmDelegate(call.execute());
     }
 
     /**
@@ -175,9 +175,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSku>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getServerFarmDelegate(response, retrofit));
+                    serviceCallback.success(getServerFarmDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -186,11 +186,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<ServerFarmWithRichSku> getServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmWithRichSku> getServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmWithRichSku, CloudException>()
                 .register(200, new TypeToken<ServerFarmWithRichSku>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -241,11 +241,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), serverFarmEnvelope, allowPendingState, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ServerFarmWithRichSku>() { }.getType(), serviceCallback);
             }
         });
@@ -276,7 +276,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteServerFarmDelegate(call.execute(), null);
+        return deleteServerFarmDelegate(call.execute());
     }
 
     /**
@@ -307,9 +307,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.deleteServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteServerFarmDelegate(response, retrofit));
+                    serviceCallback.success(deleteServerFarmDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -318,11 +318,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -351,7 +351,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getServerFarmMetricsDelegate(call.execute(), null);
+        return getServerFarmMetricsDelegate(call.execute());
     }
 
     /**
@@ -384,9 +384,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getServerFarmMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getServerFarmMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -395,11 +395,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceMetricCollection> getServerFarmMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceMetricCollection> getServerFarmMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -426,7 +426,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarmMetricDefintions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getServerFarmMetricDefintionsDelegate(call.execute(), null);
+        return getServerFarmMetricDefintionsDelegate(call.execute());
     }
 
     /**
@@ -457,9 +457,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarmMetricDefintions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getServerFarmMetricDefintionsDelegate(response, retrofit));
+                    serviceCallback.success(getServerFarmMetricDefintionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -468,11 +468,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<MetricDefinitionCollection> getServerFarmMetricDefintionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<MetricDefinitionCollection> getServerFarmMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -499,7 +499,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getVnetsForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getVnetsForServerFarmDelegate(call.execute(), null);
+        return getVnetsForServerFarmDelegate(call.execute());
     }
 
     /**
@@ -530,9 +530,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getVnetsForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getVnetsForServerFarmDelegate(response, retrofit));
+                    serviceCallback.success(getVnetsForServerFarmDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -541,11 +541,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<List<VnetInfo>> getVnetsForServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VnetInfo>> getVnetsForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>()
                 .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -576,7 +576,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getVnetFromServerFarm(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getVnetFromServerFarmDelegate(call.execute(), null);
+        return getVnetFromServerFarmDelegate(call.execute());
     }
 
     /**
@@ -612,9 +612,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getVnetFromServerFarm(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getVnetFromServerFarmDelegate(response, retrofit));
+                    serviceCallback.success(getVnetFromServerFarmDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -623,12 +623,12 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> getVnetFromServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> getVnetFromServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -659,7 +659,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getRoutesForVnet(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getRoutesForVnetDelegate(call.execute(), null);
+        return getRoutesForVnetDelegate(call.execute());
     }
 
     /**
@@ -695,9 +695,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getRoutesForVnet(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VnetRoute>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getRoutesForVnetDelegate(response, retrofit));
+                    serviceCallback.success(getRoutesForVnetDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -706,11 +706,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<List<VnetRoute>> getRoutesForVnetDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VnetRoute>> getRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VnetRoute>, CloudException>()
                 .register(200, new TypeToken<List<VnetRoute>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -745,7 +745,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getRouteForVnet(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getRouteForVnetDelegate(call.execute(), null);
+        return getRouteForVnetDelegate(call.execute());
     }
 
     /**
@@ -786,9 +786,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getRouteForVnet(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VnetRoute>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getRouteForVnetDelegate(response, retrofit));
+                    serviceCallback.success(getRouteForVnetDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -797,12 +797,12 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<List<VnetRoute>> getRouteForVnetDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VnetRoute>> getRouteForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VnetRoute>, CloudException>()
                 .register(200, new TypeToken<List<VnetRoute>>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -842,7 +842,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         }
         Validator.validate(route);
         Call<ResponseBody> call = service.createOrUpdateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), route, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateVnetRouteDelegate(call.execute(), null);
+        return createOrUpdateVnetRouteDelegate(call.execute());
     }
 
     /**
@@ -889,9 +889,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.createOrUpdateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), route, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetRoute>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateVnetRouteDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateVnetRouteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -900,13 +900,13 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<VnetRoute> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetRoute> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetRoute, CloudException>()
                 .register(200, new TypeToken<VnetRoute>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -941,7 +941,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteVnetRouteDelegate(call.execute(), null);
+        return deleteVnetRouteDelegate(call.execute());
     }
 
     /**
@@ -982,9 +982,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.deleteVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteVnetRouteDelegate(response, retrofit));
+                    serviceCallback.success(deleteVnetRouteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -993,12 +993,12 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteVnetRouteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1038,7 +1038,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         }
         Validator.validate(route);
         Call<ResponseBody> call = service.updateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), route, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateVnetRouteDelegate(call.execute(), null);
+        return updateVnetRouteDelegate(call.execute());
     }
 
     /**
@@ -1085,9 +1085,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.updateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.getSubscriptionId(), route, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetRoute>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateVnetRouteDelegate(response, retrofit));
+                    serviceCallback.success(updateVnetRouteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1096,13 +1096,13 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<VnetRoute> updateVnetRouteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetRoute> updateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetRoute, CloudException>()
                 .register(200, new TypeToken<VnetRoute>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1137,7 +1137,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getServerFarmVnetGatewayDelegate(call.execute(), null);
+        return getServerFarmVnetGatewayDelegate(call.execute());
     }
 
     /**
@@ -1178,9 +1178,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getServerFarmVnetGatewayDelegate(response, retrofit));
+                    serviceCallback.success(getServerFarmVnetGatewayDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1189,11 +1189,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<VnetGateway> getServerFarmVnetGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetGateway> getServerFarmVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1233,7 +1233,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateServerFarmVnetGatewayDelegate(call.execute(), null);
+        return updateServerFarmVnetGatewayDelegate(call.execute());
     }
 
     /**
@@ -1280,9 +1280,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.updateServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateServerFarmVnetGatewayDelegate(response, retrofit));
+                    serviceCallback.success(updateServerFarmVnetGatewayDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1291,11 +1291,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<VnetGateway> updateServerFarmVnetGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetGateway> updateServerFarmVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1325,7 +1325,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.getSubscriptionId(), skipToken, filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<Site>> response = getServerFarmSitesDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<Site>> response = getServerFarmSitesDelegate(call.execute());
         List<Site> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = getServerFarmSitesNext(response.getBody().getNextPageLink());
@@ -1365,15 +1365,15 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.getSubscriptionId(), skipToken, filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<Site>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<Site>> result = getServerFarmSitesDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<Site>> result = getServerFarmSitesDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         getServerFarmSitesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1383,11 +1383,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Site>> getServerFarmSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<Site>> getServerFarmSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<Site>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Site>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1418,7 +1418,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.rebootWorkerForServerFarm(resourceGroupName, name, workerName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return rebootWorkerForServerFarmDelegate(call.execute(), null);
+        return rebootWorkerForServerFarmDelegate(call.execute());
     }
 
     /**
@@ -1454,9 +1454,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.rebootWorkerForServerFarm(resourceGroupName, name, workerName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(rebootWorkerForServerFarmDelegate(response, retrofit));
+                    serviceCallback.success(rebootWorkerForServerFarmDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1465,11 +1465,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<Object> rebootWorkerForServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> rebootWorkerForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1497,7 +1497,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return restartSitesForServerFarmDelegate(call.execute(), null);
+        return restartSitesForServerFarmDelegate(call.execute());
     }
 
     /**
@@ -1529,9 +1529,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSitesForServerFarmDelegate(response, retrofit));
+                    serviceCallback.success(restartSitesForServerFarmDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1540,11 +1540,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<Object> restartSitesForServerFarmDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> restartSitesForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1575,7 +1575,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarmOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getServerFarmOperationDelegate(call.execute(), null);
+        return getServerFarmOperationDelegate(call.execute());
     }
 
     /**
@@ -1611,9 +1611,9 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarmOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSku>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getServerFarmOperationDelegate(response, retrofit));
+                    serviceCallback.success(getServerFarmOperationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1622,11 +1622,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<ServerFarmWithRichSku> getServerFarmOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmWithRichSku> getServerFarmOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmWithRichSku, CloudException>()
                 .register(200, new TypeToken<ServerFarmWithRichSku>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1643,7 +1643,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getServerFarmSitesNext(nextPageLink, this.client.getAcceptLanguage());
-        return getServerFarmSitesNextDelegate(call.execute(), null);
+        return getServerFarmSitesNextDelegate(call.execute());
     }
 
     /**
@@ -1661,15 +1661,15 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         Call<ResponseBody> call = service.getServerFarmSitesNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<Site>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<Site>> result = getServerFarmSitesNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<Site>> result = getServerFarmSitesNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         getServerFarmSitesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1679,11 +1679,11 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         return call;
     }
 
-    private ServiceResponse<PageImpl<Site>> getServerFarmSitesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<Site>> getServerFarmSitesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<Site>, CloudException>()
                 .register(200, new TypeToken<PageImpl<Site>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

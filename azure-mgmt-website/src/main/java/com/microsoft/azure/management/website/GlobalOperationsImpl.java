@@ -27,11 +27,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -70,7 +70,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSubscriptionPublishingCredentialsDelegate(call.execute(), null);
+        return getSubscriptionPublishingCredentialsDelegate(call.execute());
     }
 
     /**
@@ -91,9 +91,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<User>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSubscriptionPublishingCredentialsDelegate(response, retrofit));
+                    serviceCallback.success(getSubscriptionPublishingCredentialsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -102,11 +102,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<User> getSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<User> getSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -130,7 +130,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         }
         Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.getSubscriptionId(), requestMessage, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSubscriptionPublishingCredentialsDelegate(call.execute(), null);
+        return updateSubscriptionPublishingCredentialsDelegate(call.execute());
     }
 
     /**
@@ -157,9 +157,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.getSubscriptionId(), requestMessage, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<User>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSubscriptionPublishingCredentialsDelegate(response, retrofit));
+                    serviceCallback.success(updateSubscriptionPublishingCredentialsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -168,11 +168,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<User> updateSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<User> updateSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<User, CloudException>()
                 .register(200, new TypeToken<User>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSubscriptionGeoRegionsDelegate(call.execute(), null);
+        return getSubscriptionGeoRegionsDelegate(call.execute());
     }
 
     /**
@@ -212,9 +212,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<GeoRegionCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSubscriptionGeoRegionsDelegate(response, retrofit));
+                    serviceCallback.success(getSubscriptionGeoRegionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -223,11 +223,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<GeoRegionCollection> getSubscriptionGeoRegionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<GeoRegionCollection> getSubscriptionGeoRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<GeoRegionCollection, CloudException>()
                 .register(200, new TypeToken<GeoRegionCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -246,7 +246,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllCertificates(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllCertificatesDelegate(call.execute(), null);
+        return getAllCertificatesDelegate(call.execute());
     }
 
     /**
@@ -267,9 +267,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getAllCertificates(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<CertificateCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllCertificatesDelegate(response, retrofit));
+                    serviceCallback.success(getAllCertificatesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -278,11 +278,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<CertificateCollection> getAllCertificatesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CertificateCollection> getAllCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<CertificateCollection, CloudException>()
                 .register(200, new TypeToken<CertificateCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -303,7 +303,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllServerFarms(this.client.getSubscriptionId(), detailed, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllServerFarmsDelegate(call.execute(), null);
+        return getAllServerFarmsDelegate(call.execute());
     }
 
     /**
@@ -326,9 +326,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getAllServerFarms(this.client.getSubscriptionId(), detailed, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllServerFarmsDelegate(response, retrofit));
+                    serviceCallback.success(getAllServerFarmsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -337,11 +337,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<ServerFarmCollection> getAllServerFarmsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ServerFarmCollection> getAllServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>()
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -360,7 +360,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllSites(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllSitesDelegate(call.execute(), null);
+        return getAllSitesDelegate(call.execute());
     }
 
     /**
@@ -381,9 +381,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getAllSites(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllSitesDelegate(response, retrofit));
+                    serviceCallback.success(getAllSitesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -392,11 +392,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<SiteCollection> getAllSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteCollection> getAllSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -415,7 +415,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllHostingEnvironmentsDelegate(call.execute(), null);
+        return getAllHostingEnvironmentsDelegate(call.execute());
     }
 
     /**
@@ -436,9 +436,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllHostingEnvironmentsDelegate(response, retrofit));
+                    serviceCallback.success(getAllHostingEnvironmentsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -447,11 +447,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<HostingEnvironmentCollection> getAllHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostingEnvironmentCollection> getAllHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<HostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -470,7 +470,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllManagedHostingEnvironmentsDelegate(call.execute(), null);
+        return getAllManagedHostingEnvironmentsDelegate(call.execute());
     }
 
     /**
@@ -491,9 +491,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ManagedHostingEnvironmentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllManagedHostingEnvironmentsDelegate(response, retrofit));
+                    serviceCallback.success(getAllManagedHostingEnvironmentsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -502,11 +502,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<ManagedHostingEnvironmentCollection> getAllManagedHostingEnvironmentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ManagedHostingEnvironmentCollection> getAllManagedHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ManagedHostingEnvironmentCollection, CloudException>()
                 .register(200, new TypeToken<ManagedHostingEnvironmentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -525,7 +525,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllClassicMobileServicesDelegate(call.execute(), null);
+        return getAllClassicMobileServicesDelegate(call.execute());
     }
 
     /**
@@ -546,9 +546,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllClassicMobileServicesDelegate(response, retrofit));
+                    serviceCallback.success(getAllClassicMobileServicesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -557,11 +557,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<ClassicMobileServiceCollection> getAllClassicMobileServicesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ClassicMobileServiceCollection> getAllClassicMobileServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ClassicMobileServiceCollection, CloudException>()
                 .register(200, new TypeToken<ClassicMobileServiceCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -580,7 +580,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listPremierAddOnOffersDelegate(call.execute(), null);
+        return listPremierAddOnOffersDelegate(call.execute());
     }
 
     /**
@@ -601,9 +601,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listPremierAddOnOffersDelegate(response, retrofit));
+                    serviceCallback.success(listPremierAddOnOffersDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -612,11 +612,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<Object> listPremierAddOnOffersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> listPremierAddOnOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -639,7 +639,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return isHostingEnvironmentWithLegacyNameAvailableDelegate(call.execute(), null);
+        return isHostingEnvironmentWithLegacyNameAvailableDelegate(call.execute());
     }
 
     /**
@@ -665,9 +665,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(isHostingEnvironmentWithLegacyNameAvailableDelegate(response, retrofit));
+                    serviceCallback.success(isHostingEnvironmentWithLegacyNameAvailableDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -676,11 +676,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -703,7 +703,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.getSubscriptionId(), name, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return isHostingEnvironmentNameAvailableDelegate(call.execute(), null);
+        return isHostingEnvironmentNameAvailableDelegate(call.execute());
     }
 
     /**
@@ -729,9 +729,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.getSubscriptionId(), name, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(isHostingEnvironmentNameAvailableDelegate(response, retrofit));
+                    serviceCallback.success(isHostingEnvironmentNameAvailableDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -740,11 +740,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<Object> isHostingEnvironmentNameAvailableDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> isHostingEnvironmentNameAvailableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -768,7 +768,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return checkNameAvailabilityDelegate(call.execute(), null);
+        return checkNameAvailabilityDelegate(call.execute());
     }
 
     /**
@@ -795,9 +795,9 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceNameAvailability>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkNameAvailabilityDelegate(response, retrofit));
+                    serviceCallback.success(checkNameAvailabilityDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -806,11 +806,11 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceNameAvailability> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceNameAvailability> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceNameAvailability, CloudException>()
                 .register(200, new TypeToken<ResourceNameAvailability>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

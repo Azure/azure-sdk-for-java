@@ -18,12 +18,12 @@ import com.microsoft.azure.management.compute.models.VirtualMachineImageResource
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -78,7 +78,7 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(location, publisherName, type, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -119,9 +119,9 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         Call<ResponseBody> call = service.get(location, publisherName, type, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VirtualMachineExtensionImage>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -130,11 +130,11 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         return call;
     }
 
-    private ServiceResponse<VirtualMachineExtensionImage> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VirtualMachineExtensionImage> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VirtualMachineExtensionImage, CloudException>()
                 .register(200, new TypeToken<VirtualMachineExtensionImage>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -161,7 +161,7 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listTypes(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listTypesDelegate(call.execute(), null);
+        return listTypesDelegate(call.execute());
     }
 
     /**
@@ -192,9 +192,9 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         Call<ResponseBody> call = service.listTypes(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listTypesDelegate(response, retrofit));
+                    serviceCallback.success(listTypesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -203,11 +203,11 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listTypesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VirtualMachineImageResource>> listTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -241,7 +241,7 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, orderBy, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listVersionsDelegate(call.execute(), null);
+        return listVersionsDelegate(call.execute());
     }
 
     /**
@@ -280,9 +280,9 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, orderBy, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listVersionsDelegate(response, retrofit));
+                    serviceCallback.success(listVersionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -291,11 +291,11 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         return call;
     }
 
-    private ServiceResponse<List<VirtualMachineImageResource>> listVersionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VirtualMachineImageResource>> listVersionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

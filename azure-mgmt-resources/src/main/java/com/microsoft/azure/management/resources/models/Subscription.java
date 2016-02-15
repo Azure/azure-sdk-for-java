@@ -36,6 +36,11 @@ public class Subscription {
     private String state;
 
     /**
+     * Gets or sets the subscription policies.
+     */
+    private SubscriptionPolicies subscriptionPolicies;
+
+    /**
      * Get the id value.
      *
      * @return the id value
@@ -105,6 +110,24 @@ public class Subscription {
      */
     public void setState(String state) {
         this.state = state;
+    }
+
+    /**
+     * Get the subscriptionPolicies value.
+     *
+     * @return the subscriptionPolicies value
+     */
+    public SubscriptionPolicies getSubscriptionPolicies() {
+        return this.subscriptionPolicies;
+    }
+
+    /**
+     * Set the subscriptionPolicies value.
+     *
+     * @param subscriptionPolicies the subscriptionPolicies value to set
+     */
+    public void setSubscriptionPolicies(SubscriptionPolicies subscriptionPolicies) {
+        this.subscriptionPolicies = subscriptionPolicies;
     }
 
 }

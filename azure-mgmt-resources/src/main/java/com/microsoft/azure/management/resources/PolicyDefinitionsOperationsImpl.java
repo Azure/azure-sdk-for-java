@@ -18,11 +18,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -70,7 +70,7 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateDelegate(call.execute(), null);
+        return createOrUpdateDelegate(call.execute());
     }
 
     /**
@@ -102,9 +102,9 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PolicyDefinition>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -113,11 +113,11 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         return call;
     }
 
-    private ServiceResponse<PolicyDefinition> createOrUpdateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PolicyDefinition> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PolicyDefinition, CloudException>()
                 .register(201, new TypeToken<PolicyDefinition>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -140,7 +140,7 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -166,9 +166,9 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         Call<ResponseBody> call = service.get(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<PolicyDefinition>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -177,11 +177,11 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         return call;
     }
 
-    private ServiceResponse<PolicyDefinition> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PolicyDefinition> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PolicyDefinition, CloudException>()
                 .register(200, new TypeToken<PolicyDefinition>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -204,7 +204,7 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDelegate(call.execute(), null);
+        return deleteDelegate(call.execute());
     }
 
     /**
@@ -230,9 +230,9 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDelegate(response, retrofit));
+                    serviceCallback.success(deleteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -241,10 +241,10 @@ public final class PolicyDefinitionsOperationsImpl implements PolicyDefinitionsO
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(200, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

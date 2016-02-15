@@ -19,11 +19,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -66,7 +66,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDomains(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDomainsDelegate(call.execute(), null);
+        return getDomainsDelegate(call.execute());
     }
 
     /**
@@ -92,9 +92,9 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         Call<ResponseBody> call = service.getDomains(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DomainCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDomainsDelegate(response, retrofit));
+                    serviceCallback.success(getDomainsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -103,11 +103,11 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         return call;
     }
 
-    private ServiceResponse<DomainCollection> getDomainsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DomainCollection> getDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DomainCollection, CloudException>()
                 .register(200, new TypeToken<DomainCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -134,7 +134,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDomainDelegate(call.execute(), null);
+        return getDomainDelegate(call.execute());
     }
 
     /**
@@ -165,9 +165,9 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         Call<ResponseBody> call = service.getDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Domain>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDomainDelegate(response, retrofit));
+                    serviceCallback.success(getDomainDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -176,11 +176,11 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         return call;
     }
 
-    private ServiceResponse<Domain> getDomainDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Domain> getDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Domain, CloudException>()
                 .register(200, new TypeToken<Domain>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -212,7 +212,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         }
         Validator.validate(domain);
         Call<ResponseBody> call = service.createOrUpdateDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), domain, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateDomainDelegate(call.execute(), null);
+        return createOrUpdateDomainDelegate(call.execute());
     }
 
     /**
@@ -249,9 +249,9 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         Call<ResponseBody> call = service.createOrUpdateDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), domain, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Domain>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateDomainDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateDomainDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -260,12 +260,12 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         return call;
     }
 
-    private ServiceResponse<Domain> createOrUpdateDomainDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Domain> createOrUpdateDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Domain, CloudException>()
                 .register(202, new TypeToken<Domain>() { }.getType())
                 .register(200, new TypeToken<Domain>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), forceHardDeleteDomain, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDomainDelegate(call.execute(), null);
+        return deleteDomainDelegate(call.execute());
     }
 
     /**
@@ -325,9 +325,9 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), forceHardDeleteDomain, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDomainDelegate(response, retrofit));
+                    serviceCallback.success(deleteDomainDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -336,11 +336,11 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteDomainDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(204, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -372,7 +372,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         }
         Validator.validate(domain);
         Call<ResponseBody> call = service.updateDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), domain, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateDomainDelegate(call.execute(), null);
+        return updateDomainDelegate(call.execute());
     }
 
     /**
@@ -409,9 +409,9 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         Call<ResponseBody> call = service.updateDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), domain, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Domain>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateDomainDelegate(response, retrofit));
+                    serviceCallback.success(updateDomainDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -420,12 +420,12 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         return call;
     }
 
-    private ServiceResponse<Domain> updateDomainDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Domain> updateDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Domain, CloudException>()
                 .register(202, new TypeToken<Domain>() { }.getType())
                 .register(200, new TypeToken<Domain>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -456,7 +456,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDomainOperation(resourceGroupName, domainName, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDomainOperationDelegate(call.execute(), null);
+        return getDomainOperationDelegate(call.execute());
     }
 
     /**
@@ -492,9 +492,9 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         Call<ResponseBody> call = service.getDomainOperation(resourceGroupName, domainName, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Domain>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDomainOperationDelegate(response, retrofit));
+                    serviceCallback.success(getDomainOperationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -503,13 +503,13 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         return call;
     }
 
-    private ServiceResponse<Domain> getDomainOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Domain> getDomainOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Domain, CloudException>()
                 .register(202, new TypeToken<Domain>() { }.getType())
                 .register(200, new TypeToken<Domain>() { }.getType())
                 .register(500, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

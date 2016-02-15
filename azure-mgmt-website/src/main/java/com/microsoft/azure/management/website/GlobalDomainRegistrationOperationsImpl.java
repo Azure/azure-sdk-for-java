@@ -24,11 +24,11 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -67,7 +67,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getAllDomains(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getAllDomainsDelegate(call.execute(), null);
+        return getAllDomainsDelegate(call.execute());
     }
 
     /**
@@ -88,9 +88,9 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         Call<ResponseBody> call = service.getAllDomains(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DomainCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAllDomainsDelegate(response, retrofit));
+                    serviceCallback.success(getAllDomainsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -99,11 +99,11 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         return call;
     }
 
-    private ServiceResponse<DomainCollection> getAllDomainsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DomainCollection> getAllDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DomainCollection, CloudException>()
                 .register(200, new TypeToken<DomainCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDomainControlCenterSsoRequestDelegate(call.execute(), null);
+        return getDomainControlCenterSsoRequestDelegate(call.execute());
     }
 
     /**
@@ -143,9 +143,9 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DomainControlCenterSsoRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDomainControlCenterSsoRequestDelegate(response, retrofit));
+                    serviceCallback.success(getDomainControlCenterSsoRequestDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -154,11 +154,11 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         return call;
     }
 
-    private ServiceResponse<DomainControlCenterSsoRequest> getDomainControlCenterSsoRequestDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DomainControlCenterSsoRequest> getDomainControlCenterSsoRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DomainControlCenterSsoRequest, CloudException>()
                 .register(200, new TypeToken<DomainControlCenterSsoRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -182,7 +182,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         }
         Validator.validate(domainRegistrationInput);
         Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.getSubscriptionId(), domainRegistrationInput, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return validateDomainPurchaseInformationDelegate(call.execute(), null);
+        return validateDomainPurchaseInformationDelegate(call.execute());
     }
 
     /**
@@ -209,9 +209,9 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.getSubscriptionId(), domainRegistrationInput, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(validateDomainPurchaseInformationDelegate(response, retrofit));
+                    serviceCallback.success(validateDomainPurchaseInformationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -220,11 +220,11 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         return call;
     }
 
-    private ServiceResponse<Object> validateDomainPurchaseInformationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> validateDomainPurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -248,7 +248,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         }
         Validator.validate(identifier);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), identifier, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return checkDomainAvailabilityDelegate(call.execute(), null);
+        return checkDomainAvailabilityDelegate(call.execute());
     }
 
     /**
@@ -275,9 +275,9 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), identifier, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResult>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkDomainAvailabilityDelegate(response, retrofit));
+                    serviceCallback.success(checkDomainAvailabilityDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -286,11 +286,11 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         return call;
     }
 
-    private ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DomainAvailablilityCheckResult, CloudException>()
                 .register(200, new TypeToken<DomainAvailablilityCheckResult>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -314,7 +314,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.listDomainRecommendations(this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listDomainRecommendationsDelegate(call.execute(), null);
+        return listDomainRecommendationsDelegate(call.execute());
     }
 
     /**
@@ -341,9 +341,9 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         Call<ResponseBody> call = service.listDomainRecommendations(this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<NameIdentifierCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listDomainRecommendationsDelegate(response, retrofit));
+                    serviceCallback.success(listDomainRecommendationsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -352,11 +352,11 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         return call;
     }
 
-    private ServiceResponse<NameIdentifierCollection> listDomainRecommendationsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NameIdentifierCollection> listDomainRecommendationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<NameIdentifierCollection, CloudException>()
                 .register(200, new TypeToken<NameIdentifierCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

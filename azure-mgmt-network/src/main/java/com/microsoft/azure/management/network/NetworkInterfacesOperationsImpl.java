@@ -20,13 +20,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -89,11 +89,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.delete(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
             }
         });
@@ -125,7 +125,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -157,9 +157,9 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<NetworkInterface>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -168,11 +168,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<NetworkInterface> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NetworkInterface> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<NetworkInterface, CloudException>()
                 .register(200, new TypeToken<NetworkInterface>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -221,11 +221,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<NetworkInterface>() { }.getType(), serviceCallback);
             }
         });
@@ -260,7 +260,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<NetworkInterface>> response = listVirtualMachineScaleSetVMNetworkInterfacesDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<NetworkInterface>> response = listVirtualMachineScaleSetVMNetworkInterfacesDelegate(call.execute());
         List<NetworkInterface> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listVirtualMachineScaleSetVMNetworkInterfacesNext(response.getBody().getNextPageLink());
@@ -302,15 +302,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetVMNetworkInterfacesDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetVMNetworkInterfacesDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -320,11 +320,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -351,7 +351,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<NetworkInterface>> response = listVirtualMachineScaleSetNetworkInterfacesDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<NetworkInterface>> response = listVirtualMachineScaleSetNetworkInterfacesDelegate(call.execute());
         List<NetworkInterface> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listVirtualMachineScaleSetNetworkInterfacesNext(response.getBody().getNextPageLink());
@@ -388,15 +388,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetNetworkInterfacesDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetNetworkInterfacesDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listVirtualMachineScaleSetNetworkInterfacesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -406,11 +406,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -446,7 +446,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
-        return getVirtualMachineScaleSetNetworkInterfaceDelegate(call.execute(), null);
+        return getVirtualMachineScaleSetNetworkInterfaceDelegate(call.execute());
     }
 
     /**
@@ -488,9 +488,9 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<NetworkInterface>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getVirtualMachineScaleSetNetworkInterfaceDelegate(response, retrofit));
+                    serviceCallback.success(getVirtualMachineScaleSetNetworkInterfaceDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -499,11 +499,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterfaceDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterfaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<NetworkInterface, CloudException>()
                 .register(200, new TypeToken<NetworkInterface>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -522,10 +522,10 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<NetworkInterface>> response = listAllDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<NetworkInterface>> response = listAllDelegate(call.execute());
         List<NetworkInterface> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getNetworkInterfacesOperations().listAllNext(response.getBody().getNextPageLink());
+            response = listAllNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -549,15 +549,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listAllDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getNetworkInterfacesOperations().listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -567,11 +567,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listAllDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -594,10 +594,10 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<NetworkInterface>> response = listDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<NetworkInterface>> response = listDelegate(call.execute());
         List<NetworkInterface> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
-            response = client.getNetworkInterfacesOperations().listNext(response.getBody().getNextPageLink());
+            response = listNext(response.getBody().getNextPageLink());
             result.addAll(response.getBody().getItems());
         }
         return new ServiceResponse<>(result, response.getResponse());
@@ -626,15 +626,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        client.getNetworkInterfacesOperations().listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -644,11 +644,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -665,7 +665,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
-        return listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(call.execute(), null);
+        return listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(call.execute());
     }
 
     /**
@@ -683,15 +683,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -701,11 +701,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfacesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -722,7 +722,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
-        return listVirtualMachineScaleSetNetworkInterfacesNextDelegate(call.execute(), null);
+        return listVirtualMachineScaleSetNetworkInterfacesNextDelegate(call.execute());
     }
 
     /**
@@ -740,15 +740,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfacesNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetNetworkInterfacesNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listVirtualMachineScaleSetNetworkInterfacesNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listVirtualMachineScaleSetNetworkInterfacesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -758,11 +758,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfacesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -779,7 +779,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAllNextDelegate(call.execute(), null);
+        return listAllNextDelegate(call.execute());
     }
 
     /**
@@ -797,15 +797,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listAllNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -815,11 +815,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listAllNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -836,7 +836,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute(), null);
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -854,15 +854,15 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<NetworkInterface>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<NetworkInterface>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<NetworkInterface>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -872,11 +872,11 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         return call;
     }
 
-    private ServiceResponse<PageImpl<NetworkInterface>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<NetworkInterface>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterface>, CloudException>()
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

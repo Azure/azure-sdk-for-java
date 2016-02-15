@@ -20,12 +20,12 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -77,7 +77,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateAtResourceGroupLevelDelegate(call.execute(), null);
+        return createOrUpdateAtResourceGroupLevelDelegate(call.execute());
     }
 
     /**
@@ -114,9 +114,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ManagementLockObject>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateAtResourceGroupLevelDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateAtResourceGroupLevelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -125,12 +125,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceGroupLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(201, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -178,7 +178,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateAtResourceLevelDelegate(call.execute(), null);
+        return createOrUpdateAtResourceLevelDelegate(call.execute());
     }
 
     /**
@@ -235,9 +235,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ManagementLockObject>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateAtResourceLevelDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateAtResourceLevelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -246,12 +246,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ManagementLockObject> createOrUpdateAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(201, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -294,7 +294,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteAtResourceLevelDelegate(call.execute(), null);
+        return deleteAtResourceLevelDelegate(call.execute());
     }
 
     /**
@@ -345,9 +345,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteAtResourceLevelDelegate(response, retrofit));
+                    serviceCallback.success(deleteAtResourceLevelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -356,12 +356,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<Void> deleteAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -389,7 +389,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdateAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateAtSubscriptionLevelDelegate(call.execute(), null);
+        return createOrUpdateAtSubscriptionLevelDelegate(call.execute());
     }
 
     /**
@@ -421,9 +421,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.createOrUpdateAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ManagementLockObject>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateAtSubscriptionLevelDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateAtSubscriptionLevelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -432,12 +432,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ManagementLockObject> createOrUpdateAtSubscriptionLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(201, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -460,7 +460,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteAtSubscriptionLevelDelegate(call.execute(), null);
+        return deleteAtSubscriptionLevelDelegate(call.execute());
     }
 
     /**
@@ -486,9 +486,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.deleteAtSubscriptionLevel(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteAtSubscriptionLevelDelegate(response, retrofit));
+                    serviceCallback.success(deleteAtSubscriptionLevelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -497,12 +497,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<Void> deleteAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteAtSubscriptionLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -525,7 +525,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDelegate(call.execute(), null);
+        return getDelegate(call.execute());
     }
 
     /**
@@ -551,9 +551,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.get(lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ManagementLockObject>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response, retrofit));
+                    serviceCallback.success(getDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -562,12 +562,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<ManagementLockObject> getDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ManagementLockObject> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ManagementLockObject, CloudException>()
                 .register(200, new TypeToken<ManagementLockObject>() { }.getType())
                 .register(204, new TypeToken<ManagementLockObject>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -594,7 +594,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteAtResourceGroupLevel(resourceGroup, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteAtResourceGroupLevelDelegate(call.execute(), null);
+        return deleteAtResourceGroupLevelDelegate(call.execute());
     }
 
     /**
@@ -625,9 +625,9 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.deleteAtResourceGroupLevel(resourceGroup, lockName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteAtResourceGroupLevelDelegate(response, retrofit));
+                    serviceCallback.success(deleteAtResourceGroupLevelDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -636,12 +636,12 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<Void> deleteAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteAtResourceGroupLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -665,7 +665,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ManagementLockObject>> response = listAtResourceGroupLevelDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ManagementLockObject>> response = listAtResourceGroupLevelDelegate(call.execute());
         List<ManagementLockObject> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listAtResourceGroupLevelNext(response.getBody().getNextPageLink());
@@ -698,15 +698,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listAtResourceGroupLevel(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceGroupLevelDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceGroupLevelDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAtResourceGroupLevelNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -716,11 +716,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -760,7 +760,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ManagementLockObject>> response = listAtResourceLevelDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ManagementLockObject>> response = listAtResourceLevelDelegate(call.execute());
         List<ManagementLockObject> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listAtResourceLevelNext(response.getBody().getNextPageLink());
@@ -813,15 +813,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceLevelDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceLevelDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAtResourceLevelNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -831,11 +831,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -855,7 +855,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNext(nextLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ManagementLockObject>> response = listNextDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ManagementLockObject>> response = listNextDelegate(call.execute());
         List<ManagementLockObject> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listNextNext(response.getBody().getNextPageLink());
@@ -883,15 +883,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listNext(nextLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -901,11 +901,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -925,7 +925,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<ManagementLockObject>> response = listAtSubscriptionLevelDelegate(call.execute(), null);
+        ServiceResponse<PageImpl<ManagementLockObject>> response = listAtSubscriptionLevelDelegate(call.execute());
         List<ManagementLockObject> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
             response = listAtSubscriptionLevelNext(response.getBody().getNextPageLink());
@@ -953,15 +953,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listAtSubscriptionLevel(this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtSubscriptionLevelDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtSubscriptionLevelDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAtSubscriptionLevelNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                         }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -971,11 +971,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -992,7 +992,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceGroupLevelNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAtResourceGroupLevelNextDelegate(call.execute(), null);
+        return listAtResourceGroupLevelNextDelegate(call.execute());
     }
 
     /**
@@ -1010,15 +1010,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listAtResourceGroupLevelNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceGroupLevelNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceGroupLevelNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAtResourceGroupLevelNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1028,11 +1028,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceGroupLevelNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1049,7 +1049,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtResourceLevelNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAtResourceLevelNextDelegate(call.execute(), null);
+        return listAtResourceLevelNextDelegate(call.execute());
     }
 
     /**
@@ -1067,15 +1067,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listAtResourceLevelNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceLevelNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtResourceLevelNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAtResourceLevelNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1085,11 +1085,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtResourceLevelNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1106,7 +1106,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listNextNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextNextDelegate(call.execute(), null);
+        return listNextNextDelegate(call.execute());
     }
 
     /**
@@ -1124,15 +1124,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listNextNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listNextNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listNextNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listNextNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1142,11 +1142,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listNextNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listNextNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1163,7 +1163,7 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAtSubscriptionLevelNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAtSubscriptionLevelNextDelegate(call.execute(), null);
+        return listAtSubscriptionLevelNextDelegate(call.execute());
     }
 
     /**
@@ -1181,15 +1181,15 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         Call<ResponseBody> call = service.listAtSubscriptionLevelNext(nextPageLink, this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<ManagementLockObject>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtSubscriptionLevelNextDelegate(response, retrofit);
+                    ServiceResponse<PageImpl<ManagementLockObject>> result = listAtSubscriptionLevelNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
                         listAtSubscriptionLevelNextAsync(result.getBody().getNextPageLink(), serviceCallback);
                     } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), response));
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -1199,11 +1199,11 @@ public final class ManagementLocksOperationsImpl implements ManagementLocksOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNextDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ManagementLockObject>> listAtSubscriptionLevelNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ManagementLockObject>, CloudException>()
                 .register(200, new TypeToken<PageImpl<ManagementLockObject>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

@@ -25,13 +25,13 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -75,7 +75,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         }
         Validator.validate(accountName);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), accountName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return checkNameAvailabilityDelegate(call.execute(), null);
+        return checkNameAvailabilityDelegate(call.execute());
     }
 
     /**
@@ -102,9 +102,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), accountName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResult>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkNameAvailabilityDelegate(response, retrofit));
+                    serviceCallback.success(checkNameAvailabilityDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -113,11 +113,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<CheckNameAvailabilityResult, CloudException>()
                 .register(200, new TypeToken<CheckNameAvailabilityResult>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -166,11 +166,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.create(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<StorageAccount>() { }.getType(), serviceCallback);
             }
         });
@@ -201,7 +201,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDelegate(call.execute(), null);
+        return deleteDelegate(call.execute());
     }
 
     /**
@@ -232,9 +232,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDelegate(response, retrofit));
+                    serviceCallback.success(deleteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -243,11 +243,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>()
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -274,7 +274,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getProperties(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getPropertiesDelegate(call.execute(), null);
+        return getPropertiesDelegate(call.execute());
     }
 
     /**
@@ -305,9 +305,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.getProperties(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StorageAccount>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getPropertiesDelegate(response, retrofit));
+                    serviceCallback.success(getPropertiesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -316,11 +316,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StorageAccount, CloudException>()
                 .register(200, new TypeToken<StorageAccount>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -352,7 +352,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         }
         Validator.validate(parameters);
         Call<ResponseBody> call = service.update(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateDelegate(call.execute(), null);
+        return updateDelegate(call.execute());
     }
 
     /**
@@ -389,9 +389,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.update(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StorageAccount>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateDelegate(response, retrofit));
+                    serviceCallback.success(updateDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -400,11 +400,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StorageAccount, CloudException>()
                 .register(200, new TypeToken<StorageAccount>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -431,7 +431,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listKeys(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listKeysDelegate(call.execute(), null);
+        return listKeysDelegate(call.execute());
     }
 
     /**
@@ -462,9 +462,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.listKeys(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StorageAccountKeys>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listKeysDelegate(response, retrofit));
+                    serviceCallback.success(listKeysDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -473,11 +473,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>()
                 .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -496,8 +496,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<StorageAccount>> response = listDelegate(call.execute(), null);
-        return new ServiceResponse<>(response.getBody().getItems(), response.getResponse());
+        ServiceResponse<PageImpl<StorageAccount>> response = listDelegate(call.execute());
+        List<StorageAccount> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
@@ -518,9 +519,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<StorageAccount>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<StorageAccount>> result = listDelegate(response, null);
+                    ServiceResponse<PageImpl<StorageAccount>> result = listDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -530,11 +531,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<StorageAccount>> listDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<StorageAccount>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<StorageAccount>, CloudException>()
                 .register(200, new TypeToken<PageImpl<StorageAccount>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -557,8 +558,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<StorageAccount>> response = listByResourceGroupDelegate(call.execute(), null);
-        return new ServiceResponse<>(response.getBody().getItems(), response.getResponse());
+        ServiceResponse<PageImpl<StorageAccount>> response = listByResourceGroupDelegate(call.execute());
+        List<StorageAccount> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
@@ -584,9 +586,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<StorageAccount>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<StorageAccount>> result = listByResourceGroupDelegate(response, null);
+                    ServiceResponse<PageImpl<StorageAccount>> result = listByResourceGroupDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -596,11 +598,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<PageImpl<StorageAccount>> listByResourceGroupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<StorageAccount>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<StorageAccount>, CloudException>()
                 .register(200, new TypeToken<PageImpl<StorageAccount>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -632,7 +634,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         }
         Validator.validate(regenerateKey);
         Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.getSubscriptionId(), regenerateKey, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return regenerateKeyDelegate(call.execute(), null);
+        return regenerateKeyDelegate(call.execute());
     }
 
     /**
@@ -669,9 +671,9 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.getSubscriptionId(), regenerateKey, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StorageAccountKeys>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(regenerateKeyDelegate(response, retrofit));
+                    serviceCallback.success(regenerateKeyDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -680,11 +682,11 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         return call;
     }
 
-    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>()
                 .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }

@@ -19,20 +19,20 @@ import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGatewayConnection;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.squareup.okhttp.ResponseBody;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.Headers;
-import retrofit.http.HTTP;
-import retrofit.http.Path;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Query;
-import retrofit.http.Url;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined

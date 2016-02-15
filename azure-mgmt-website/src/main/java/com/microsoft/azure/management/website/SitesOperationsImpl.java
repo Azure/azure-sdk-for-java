@@ -50,14 +50,14 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import com.squareup.okhttp.ResponseBody;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -112,7 +112,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionSlotDelegate(call.execute(), null);
+        return getSiteVNETConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -153,9 +153,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteVNETConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -164,11 +164,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> getSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> getSiteVNETConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -208,7 +208,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteVNETConnectionSlotDelegate(call.execute(), null);
+        return createOrUpdateSiteVNETConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -255,9 +255,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteVNETConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -266,11 +266,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -305,7 +305,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteVNETConnectionSlotDelegate(call.execute(), null);
+        return deleteSiteVNETConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -346,9 +346,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteVNETConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteVNETConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -357,11 +357,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteVNETConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -401,7 +401,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteVNETConnectionSlotDelegate(call.execute(), null);
+        return updateSiteVNETConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -448,9 +448,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteVNETConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -459,11 +459,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> updateSiteVNETConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> updateSiteVNETConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -494,7 +494,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionDelegate(call.execute(), null);
+        return getSiteVNETConnectionDelegate(call.execute());
     }
 
     /**
@@ -530,9 +530,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionDelegate(response, retrofit));
+                    serviceCallback.success(getSiteVNETConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -541,11 +541,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> getSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> getSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -581,7 +581,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteVNETConnectionDelegate(call.execute(), null);
+        return createOrUpdateSiteVNETConnectionDelegate(call.execute());
     }
 
     /**
@@ -623,9 +623,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteVNETConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -634,11 +634,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -669,7 +669,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteVNETConnectionDelegate(call.execute(), null);
+        return deleteSiteVNETConnectionDelegate(call.execute());
     }
 
     /**
@@ -705,9 +705,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteVNETConnectionDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteVNETConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -716,11 +716,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -756,7 +756,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteVNETConnectionDelegate(call.execute(), null);
+        return updateSiteVNETConnectionDelegate(call.execute());
     }
 
     /**
@@ -798,9 +798,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteVNETConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -809,11 +809,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetInfo> updateSiteVNETConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetInfo> updateSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetInfo, CloudException>()
                 .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -844,7 +844,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteNetworkFeaturesDelegate(call.execute(), null);
+        return getSiteNetworkFeaturesDelegate(call.execute());
     }
 
     /**
@@ -880,9 +880,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<NetworkFeatures>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteNetworkFeaturesDelegate(response, retrofit));
+                    serviceCallback.success(getSiteNetworkFeaturesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -891,12 +891,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>()
                 .register(200, new TypeToken<NetworkFeatures>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -931,7 +931,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteNetworkFeaturesSlotDelegate(call.execute(), null);
+        return getSiteNetworkFeaturesSlotDelegate(call.execute());
     }
 
     /**
@@ -972,9 +972,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<NetworkFeatures>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteNetworkFeaturesSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteNetworkFeaturesSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -983,12 +983,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>()
                 .register(200, new TypeToken<NetworkFeatures>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1019,7 +1019,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteOperationDelegate(call.execute(), null);
+        return getSiteOperationDelegate(call.execute());
     }
 
     /**
@@ -1055,9 +1055,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteOperationDelegate(response, retrofit));
+                    serviceCallback.success(getSiteOperationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1066,11 +1066,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteOperationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1105,7 +1105,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteOperationSlotDelegate(call.execute(), null);
+        return getSiteOperationSlotDelegate(call.execute());
     }
 
     /**
@@ -1146,9 +1146,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteOperationSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteOperationSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1157,11 +1157,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteOperationSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteOperationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1193,7 +1193,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return swapSlotWithProductionDelegate(call.execute(), null);
+        return swapSlotWithProductionDelegate(call.execute());
     }
 
     /**
@@ -1230,9 +1230,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(swapSlotWithProductionDelegate(response, retrofit));
+                    serviceCallback.success(swapSlotWithProductionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1241,12 +1241,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> swapSlotWithProductionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> swapSlotWithProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1282,7 +1282,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return swapSlotsSlotDelegate(call.execute(), null);
+        return swapSlotsSlotDelegate(call.execute());
     }
 
     /**
@@ -1324,9 +1324,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(swapSlotsSlotDelegate(response, retrofit));
+                    serviceCallback.success(swapSlotsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1335,12 +1335,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> swapSlotsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> swapSlotsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1372,7 +1372,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSlotsDifferencesFromProductionDelegate(call.execute(), null);
+        return getSlotsDifferencesFromProductionDelegate(call.execute());
     }
 
     /**
@@ -1409,9 +1409,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SlotDifferenceCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSlotsDifferencesFromProductionDelegate(response, retrofit));
+                    serviceCallback.success(getSlotsDifferencesFromProductionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1420,11 +1420,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SlotDifferenceCollection> getSlotsDifferencesFromProductionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SlotDifferenceCollection> getSlotsDifferencesFromProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SlotDifferenceCollection, CloudException>()
                 .register(200, new TypeToken<SlotDifferenceCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1460,7 +1460,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSlotsDifferencesSlotDelegate(call.execute(), null);
+        return getSlotsDifferencesSlotDelegate(call.execute());
     }
 
     /**
@@ -1502,9 +1502,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SlotDifferenceCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSlotsDifferencesSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSlotsDifferencesSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1513,11 +1513,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SlotDifferenceCollection> getSlotsDifferencesSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SlotDifferenceCollection> getSlotsDifferencesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SlotDifferenceCollection, CloudException>()
                 .register(200, new TypeToken<SlotDifferenceCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1549,7 +1549,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return applySlotConfigToProductionDelegate(call.execute(), null);
+        return applySlotConfigToProductionDelegate(call.execute());
     }
 
     /**
@@ -1586,9 +1586,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(applySlotConfigToProductionDelegate(response, retrofit));
+                    serviceCallback.success(applySlotConfigToProductionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1597,11 +1597,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> applySlotConfigToProductionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> applySlotConfigToProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1637,7 +1637,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return applySlotConfigSlotDelegate(call.execute(), null);
+        return applySlotConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -1679,9 +1679,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(applySlotConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(applySlotConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1690,11 +1690,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> applySlotConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> applySlotConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1725,7 +1725,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return resetSlotConfigSlotDelegate(call.execute(), null);
+        return resetSlotConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -1761,9 +1761,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(resetSlotConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(resetSlotConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1772,11 +1772,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> resetSlotConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> resetSlotConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1803,7 +1803,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return resetProductionSlotConfigDelegate(call.execute(), null);
+        return resetProductionSlotConfigDelegate(call.execute());
     }
 
     /**
@@ -1834,9 +1834,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(resetProductionSlotConfigDelegate(response, retrofit));
+                    serviceCallback.success(resetProductionSlotConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1845,11 +1845,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> resetProductionSlotConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> resetProductionSlotConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1876,7 +1876,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSlotConfigNamesDelegate(call.execute(), null);
+        return getSlotConfigNamesDelegate(call.execute());
     }
 
     /**
@@ -1907,9 +1907,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SlotConfigNamesResource>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSlotConfigNamesDelegate(response, retrofit));
+                    serviceCallback.success(getSlotConfigNamesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1918,11 +1918,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SlotConfigNamesResource> getSlotConfigNamesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SlotConfigNamesResource> getSlotConfigNamesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SlotConfigNamesResource, CloudException>()
                 .register(200, new TypeToken<SlotConfigNamesResource>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -1954,7 +1954,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(slotConfigNames);
         Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.getSubscriptionId(), slotConfigNames, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSlotConfigNamesDelegate(call.execute(), null);
+        return updateSlotConfigNamesDelegate(call.execute());
     }
 
     /**
@@ -1991,9 +1991,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.getSubscriptionId(), slotConfigNames, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SlotConfigNamesResource>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSlotConfigNamesDelegate(response, retrofit));
+                    serviceCallback.success(updateSlotConfigNamesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2002,11 +2002,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SlotConfigNamesResource> updateSlotConfigNamesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SlotConfigNamesResource> updateSlotConfigNamesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SlotConfigNamesResource, CloudException>()
                 .register(200, new TypeToken<SlotConfigNamesResource>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2034,7 +2034,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSlotsDelegate(call.execute(), null);
+        return getSiteSlotsDelegate(call.execute());
     }
 
     /**
@@ -2066,9 +2066,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSlotsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSlotsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2077,11 +2077,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteCollection> getSiteSlotsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteCollection> getSiteSlotsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2107,7 +2107,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSitesDelegate(call.execute(), null);
+        return getSitesDelegate(call.execute());
     }
 
     /**
@@ -2136,9 +2136,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitesDelegate(response, retrofit));
+                    serviceCallback.success(getSitesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2147,11 +2147,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteCollection> getSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteCollection> getSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteCollection, CloudException>()
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2179,7 +2179,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteDelegate(call.execute(), null);
+        return getSiteDelegate(call.execute());
     }
 
     /**
@@ -2211,9 +2211,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Site>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteDelegate(response, retrofit));
+                    serviceCallback.success(getSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2222,11 +2222,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Site> getSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Site> getSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Site, CloudException>()
                 .register(200, new TypeToken<Site>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2285,11 +2285,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<Site>() { }.getType(), serviceCallback);
             }
         });
@@ -2324,7 +2324,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteDelegate(call.execute(), null);
+        return deleteSiteDelegate(call.execute());
     }
 
     /**
@@ -2359,9 +2359,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2370,11 +2370,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2406,7 +2406,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSlotDelegate(call.execute(), null);
+        return getSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -2443,9 +2443,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Site>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2454,11 +2454,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Site> getSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Site> getSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Site, CloudException>()
                 .register(200, new TypeToken<Site>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2522,11 +2522,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<Site>() { }.getType(), serviceCallback);
             }
         });
@@ -2565,7 +2565,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteSlotDelegate(call.execute(), null);
+        return deleteSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -2605,9 +2605,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2616,11 +2616,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2652,7 +2652,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(snapshot);
         Call<ResponseBody> call = service.recoverSite(resourceGroupName, name, this.client.getSubscriptionId(), snapshot, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return recoverSiteDelegate(call.execute(), null);
+        return recoverSiteDelegate(call.execute());
     }
 
     /**
@@ -2689,9 +2689,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.recoverSite(resourceGroupName, name, this.client.getSubscriptionId(), snapshot, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(recoverSiteDelegate(response, retrofit));
+                    serviceCallback.success(recoverSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2700,11 +2700,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> recoverSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> recoverSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2740,7 +2740,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(snapshot);
         Call<ResponseBody> call = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), snapshot, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return recoverSiteSlotDelegate(call.execute(), null);
+        return recoverSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -2782,9 +2782,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), snapshot, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(recoverSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(recoverSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2793,11 +2793,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> recoverSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> recoverSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2836,7 +2836,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSnapshotsOnSkuSlot(name, resourceGroupName, slot, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSnapshotsOnSkuSlotDelegate(call.execute(), null);
+        return getSiteSnapshotsOnSkuSlotDelegate(call.execute());
     }
 
     /**
@@ -2882,9 +2882,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSnapshotsOnSkuSlot(name, resourceGroupName, slot, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSnapshotsOnSkuSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSnapshotsOnSkuSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2893,11 +2893,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteSnapshotsOnSkuSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteSnapshotsOnSkuSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -2932,7 +2932,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSnapshotsOnSku(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSnapshotsOnSkuDelegate(call.execute(), null);
+        return getSiteSnapshotsOnSkuDelegate(call.execute());
     }
 
     /**
@@ -2973,9 +2973,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSnapshotsOnSku(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSnapshotsOnSkuDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSnapshotsOnSkuDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2984,11 +2984,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteSnapshotsOnSkuDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteSnapshotsOnSkuDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3023,7 +3023,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSnapshots(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSnapshotsDelegate(call.execute(), null);
+        return getSiteSnapshotsDelegate(call.execute());
     }
 
     /**
@@ -3064,9 +3064,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSnapshots(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSnapshotsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSnapshotsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3075,11 +3075,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteSnapshotsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteSnapshotsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3118,7 +3118,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSnapshotsSlot(name, resourceGroupName, slot, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSnapshotsSlotDelegate(call.execute(), null);
+        return getSiteSnapshotsSlotDelegate(call.execute());
     }
 
     /**
@@ -3164,9 +3164,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSnapshotsSlot(name, resourceGroupName, slot, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSnapshotsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSnapshotsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3175,11 +3175,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteSnapshotsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteSnapshotsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3204,7 +3204,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeletedSitesDelegate(call.execute(), null);
+        return getDeletedSitesDelegate(call.execute());
     }
 
     /**
@@ -3232,9 +3232,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeletedSiteCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeletedSitesDelegate(response, retrofit));
+                    serviceCallback.success(getDeletedSitesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3243,11 +3243,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<DeletedSiteCollection> getDeletedSitesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeletedSiteCollection> getDeletedSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeletedSiteCollection, CloudException>()
                 .register(200, new TypeToken<DeletedSiteCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3274,7 +3274,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentsDelegate(call.execute(), null);
+        return getDeploymentsDelegate(call.execute());
     }
 
     /**
@@ -3305,9 +3305,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeploymentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentsDelegate(response, retrofit));
+                    serviceCallback.success(getDeploymentsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3316,11 +3316,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentCollection> getDeploymentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeploymentCollection> getDeploymentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3351,7 +3351,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentsSlotDelegate(call.execute(), null);
+        return getDeploymentsSlotDelegate(call.execute());
     }
 
     /**
@@ -3387,9 +3387,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeploymentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getDeploymentsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3398,11 +3398,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentCollection> getDeploymentsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeploymentCollection> getDeploymentsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3433,7 +3433,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getInstanceDeploymentsDelegate(call.execute(), null);
+        return getInstanceDeploymentsDelegate(call.execute());
     }
 
     /**
@@ -3469,9 +3469,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeploymentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentsDelegate(response, retrofit));
+                    serviceCallback.success(getInstanceDeploymentsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3480,11 +3480,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentCollection> getInstanceDeploymentsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeploymentCollection> getInstanceDeploymentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3519,7 +3519,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getInstanceDeploymentsSlotDelegate(call.execute(), null);
+        return getInstanceDeploymentsSlotDelegate(call.execute());
     }
 
     /**
@@ -3560,9 +3560,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<DeploymentCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getInstanceDeploymentsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3571,11 +3571,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<DeploymentCollection> getInstanceDeploymentsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DeploymentCollection> getInstanceDeploymentsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>()
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3614,7 +3614,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getInstanceDeploymentSlotDelegate(call.execute(), null);
+        return getInstanceDeploymentSlotDelegate(call.execute());
     }
 
     /**
@@ -3660,9 +3660,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentSlotDelegate(response, retrofit));
+                    serviceCallback.success(getInstanceDeploymentSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3671,11 +3671,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> getInstanceDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> getInstanceDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3719,7 +3719,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createInstanceDeploymentSlotDelegate(call.execute(), null);
+        return createInstanceDeploymentSlotDelegate(call.execute());
     }
 
     /**
@@ -3771,9 +3771,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createInstanceDeploymentSlotDelegate(response, retrofit));
+                    serviceCallback.success(createInstanceDeploymentSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3782,11 +3782,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> createInstanceDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> createInstanceDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3825,7 +3825,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteInstanceDeploymentSlotDelegate(call.execute(), null);
+        return deleteInstanceDeploymentSlotDelegate(call.execute());
     }
 
     /**
@@ -3871,9 +3871,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteInstanceDeploymentSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteInstanceDeploymentSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3882,11 +3882,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteInstanceDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteInstanceDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -3917,7 +3917,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentDelegate(call.execute(), null);
+        return getDeploymentDelegate(call.execute());
     }
 
     /**
@@ -3953,9 +3953,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentDelegate(response, retrofit));
+                    serviceCallback.success(getDeploymentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -3964,11 +3964,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> getDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> getDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4004,7 +4004,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createDeploymentDelegate(call.execute(), null);
+        return createDeploymentDelegate(call.execute());
     }
 
     /**
@@ -4046,9 +4046,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createDeploymentDelegate(response, retrofit));
+                    serviceCallback.success(createDeploymentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4057,11 +4057,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> createDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> createDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4092,7 +4092,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDeploymentDelegate(call.execute(), null);
+        return deleteDeploymentDelegate(call.execute());
     }
 
     /**
@@ -4128,9 +4128,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDeploymentDelegate(response, retrofit));
+                    serviceCallback.success(deleteDeploymentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4139,11 +4139,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4178,7 +4178,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentSlotDelegate(call.execute(), null);
+        return getDeploymentSlotDelegate(call.execute());
     }
 
     /**
@@ -4219,9 +4219,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentSlotDelegate(response, retrofit));
+                    serviceCallback.success(getDeploymentSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4230,11 +4230,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> getDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> getDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4274,7 +4274,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createDeploymentSlotDelegate(call.execute(), null);
+        return createDeploymentSlotDelegate(call.execute());
     }
 
     /**
@@ -4321,9 +4321,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createDeploymentSlotDelegate(response, retrofit));
+                    serviceCallback.success(createDeploymentSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4332,11 +4332,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> createDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> createDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4371,7 +4371,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDeploymentSlotDelegate(call.execute(), null);
+        return deleteDeploymentSlotDelegate(call.execute());
     }
 
     /**
@@ -4412,9 +4412,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDeploymentSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteDeploymentSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4423,11 +4423,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteDeploymentSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4462,7 +4462,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getInstanceDeploymentDelegate(call.execute(), null);
+        return getInstanceDeploymentDelegate(call.execute());
     }
 
     /**
@@ -4503,9 +4503,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentDelegate(response, retrofit));
+                    serviceCallback.success(getInstanceDeploymentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4514,11 +4514,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> getInstanceDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> getInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4558,7 +4558,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createInstanceDeploymentDelegate(call.execute(), null);
+        return createInstanceDeploymentDelegate(call.execute());
     }
 
     /**
@@ -4605,9 +4605,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createInstanceDeploymentDelegate(response, retrofit));
+                    serviceCallback.success(createInstanceDeploymentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4616,11 +4616,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Deployment> createInstanceDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Deployment> createInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Deployment, CloudException>()
                 .register(200, new TypeToken<Deployment>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4655,7 +4655,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteInstanceDeploymentDelegate(call.execute(), null);
+        return deleteInstanceDeploymentDelegate(call.execute());
     }
 
     /**
@@ -4696,9 +4696,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteInstanceDeploymentDelegate(response, retrofit));
+                    serviceCallback.success(deleteInstanceDeploymentDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4707,11 +4707,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteInstanceDeploymentDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4738,7 +4738,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteInstanceIdentifiersDelegate(call.execute(), null);
+        return getSiteInstanceIdentifiersDelegate(call.execute());
     }
 
     /**
@@ -4769,9 +4769,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteInstanceCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteInstanceIdentifiersDelegate(response, retrofit));
+                    serviceCallback.success(getSiteInstanceIdentifiersDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4780,11 +4780,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteInstanceCollection> getSiteInstanceIdentifiersDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteInstanceCollection> getSiteInstanceIdentifiersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteInstanceCollection, CloudException>()
                 .register(200, new TypeToken<SiteInstanceCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4815,7 +4815,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteInstanceIdentifiersSlotDelegate(call.execute(), null);
+        return getSiteInstanceIdentifiersSlotDelegate(call.execute());
     }
 
     /**
@@ -4851,9 +4851,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteInstanceCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteInstanceIdentifiersSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteInstanceIdentifiersSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4862,11 +4862,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteInstanceCollection> getSiteInstanceIdentifiersSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteInstanceCollection> getSiteInstanceIdentifiersSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteInstanceCollection, CloudException>()
                 .register(200, new TypeToken<SiteInstanceCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4897,7 +4897,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteHostNameBindingsSlotDelegate(call.execute(), null);
+        return getSiteHostNameBindingsSlotDelegate(call.execute());
     }
 
     /**
@@ -4933,9 +4933,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostNameBindingCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteHostNameBindingsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -4944,11 +4944,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>()
                 .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -4975,7 +4975,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteHostNameBindingsDelegate(call.execute(), null);
+        return getSiteHostNameBindingsDelegate(call.execute());
     }
 
     /**
@@ -5006,9 +5006,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostNameBindingCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteHostNameBindingsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5017,11 +5017,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>()
                 .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5052,7 +5052,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteHostNameBindingDelegate(call.execute(), null);
+        return getSiteHostNameBindingDelegate(call.execute());
     }
 
     /**
@@ -5088,9 +5088,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostNameBinding>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingDelegate(response, retrofit));
+                    serviceCallback.success(getSiteHostNameBindingDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5099,11 +5099,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<HostNameBinding> getSiteHostNameBindingDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostNameBinding> getSiteHostNameBindingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5139,7 +5139,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(hostNameBinding);
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.getSubscriptionId(), hostNameBinding, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteHostNameBindingDelegate(call.execute(), null);
+        return createOrUpdateSiteHostNameBindingDelegate(call.execute());
     }
 
     /**
@@ -5181,9 +5181,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.getSubscriptionId(), hostNameBinding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostNameBinding>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteHostNameBindingDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteHostNameBindingDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5192,11 +5192,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<HostNameBinding> createOrUpdateSiteHostNameBindingDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostNameBinding> createOrUpdateSiteHostNameBindingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5227,7 +5227,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteHostNameBindingDelegate(call.execute(), null);
+        return deleteSiteHostNameBindingDelegate(call.execute());
     }
 
     /**
@@ -5263,9 +5263,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteHostNameBindingDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteHostNameBindingDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5274,11 +5274,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteHostNameBindingDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteHostNameBindingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5313,7 +5313,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteHostNameBindingSlotDelegate(call.execute(), null);
+        return getSiteHostNameBindingSlotDelegate(call.execute());
     }
 
     /**
@@ -5354,9 +5354,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostNameBinding>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteHostNameBindingSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5365,11 +5365,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<HostNameBinding> getSiteHostNameBindingSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostNameBinding> getSiteHostNameBindingSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5409,7 +5409,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(hostNameBinding);
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.getSubscriptionId(), hostNameBinding, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteHostNameBindingSlotDelegate(call.execute(), null);
+        return createOrUpdateSiteHostNameBindingSlotDelegate(call.execute());
     }
 
     /**
@@ -5456,9 +5456,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.getSubscriptionId(), hostNameBinding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<HostNameBinding>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteHostNameBindingSlotDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteHostNameBindingSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5467,11 +5467,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<HostNameBinding> createOrUpdateSiteHostNameBindingSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<HostNameBinding> createOrUpdateSiteHostNameBindingSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBinding, CloudException>()
                 .register(200, new TypeToken<HostNameBinding>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5506,7 +5506,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteHostNameBindingSlotDelegate(call.execute(), null);
+        return deleteSiteHostNameBindingSlotDelegate(call.execute());
     }
 
     /**
@@ -5547,9 +5547,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteHostNameBindingSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteHostNameBindingSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5558,11 +5558,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteHostNameBindingSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteHostNameBindingSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5589,7 +5589,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteConfigDelegate(call.execute(), null);
+        return getSiteConfigDelegate(call.execute());
     }
 
     /**
@@ -5620,9 +5620,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteConfigDelegate(response, retrofit));
+                    serviceCallback.success(getSiteConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5631,11 +5631,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteConfig> getSiteConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteConfig> getSiteConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5667,7 +5667,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteConfigDelegate(call.execute(), null);
+        return createOrUpdateSiteConfigDelegate(call.execute());
     }
 
     /**
@@ -5704,9 +5704,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteConfigDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5715,11 +5715,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteConfig> createOrUpdateSiteConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteConfig> createOrUpdateSiteConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5751,7 +5751,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteConfigDelegate(call.execute(), null);
+        return updateSiteConfigDelegate(call.execute());
     }
 
     /**
@@ -5788,9 +5788,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConfigDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5799,11 +5799,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteConfig> updateSiteConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteConfig> updateSiteConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5834,7 +5834,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteConfigSlotDelegate(call.execute(), null);
+        return getSiteConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -5870,9 +5870,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5881,11 +5881,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteConfig> getSiteConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteConfig> getSiteConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -5921,7 +5921,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteConfigSlotDelegate(call.execute(), null);
+        return createOrUpdateSiteConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -5963,9 +5963,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -5974,11 +5974,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteConfig> createOrUpdateSiteConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteConfig> createOrUpdateSiteConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6014,7 +6014,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteConfigSlotDelegate(call.execute(), null);
+        return updateSiteConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -6056,9 +6056,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6067,11 +6067,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteConfig> updateSiteConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteConfig> updateSiteConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteConfig, CloudException>()
                 .register(200, new TypeToken<SiteConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6102,7 +6102,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSourceControlSlotDelegate(call.execute(), null);
+        return getSiteSourceControlSlotDelegate(call.execute());
     }
 
     /**
@@ -6138,9 +6138,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSourceControlSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSourceControlSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6149,11 +6149,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteSourceControl> getSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteSourceControl> getSiteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6189,7 +6189,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteSourceControlSlotDelegate(call.execute(), null);
+        return createOrUpdateSiteSourceControlSlotDelegate(call.execute());
     }
 
     /**
@@ -6231,9 +6231,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteSourceControlSlotDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteSourceControlSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6242,11 +6242,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6277,7 +6277,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteSourceControlSlotDelegate(call.execute(), null);
+        return deleteSiteSourceControlSlotDelegate(call.execute());
     }
 
     /**
@@ -6313,9 +6313,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSourceControlSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteSourceControlSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6324,11 +6324,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6364,7 +6364,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteSourceControlSlotDelegate(call.execute(), null);
+        return updateSiteSourceControlSlotDelegate(call.execute());
     }
 
     /**
@@ -6406,9 +6406,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteSourceControlSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteSourceControlSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6417,11 +6417,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteSourceControl> updateSiteSourceControlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteSourceControl> updateSiteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6448,7 +6448,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSourceControlDelegate(call.execute(), null);
+        return getSiteSourceControlDelegate(call.execute());
     }
 
     /**
@@ -6479,9 +6479,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSourceControlDelegate(response, retrofit));
+                    serviceCallback.success(getSiteSourceControlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6490,11 +6490,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteSourceControl> getSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteSourceControl> getSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6526,7 +6526,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteSourceControlDelegate(call.execute(), null);
+        return createOrUpdateSiteSourceControlDelegate(call.execute());
     }
 
     /**
@@ -6563,9 +6563,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteSourceControlDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteSourceControlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6574,11 +6574,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6605,7 +6605,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteSourceControlDelegate(call.execute(), null);
+        return deleteSiteSourceControlDelegate(call.execute());
     }
 
     /**
@@ -6636,9 +6636,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSourceControlDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteSourceControlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6647,11 +6647,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6683,7 +6683,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteSourceControlDelegate(call.execute(), null);
+        return updateSiteSourceControlDelegate(call.execute());
     }
 
     /**
@@ -6720,9 +6720,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteSourceControlDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteSourceControlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6731,11 +6731,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteSourceControl> updateSiteSourceControlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteSourceControl> updateSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>()
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6762,7 +6762,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteAppSettingsDelegate(call.execute(), null);
+        return listSiteAppSettingsDelegate(call.execute());
     }
 
     /**
@@ -6793,9 +6793,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAppSettingsDelegate(response, retrofit));
+                    serviceCallback.success(listSiteAppSettingsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6804,11 +6804,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> listSiteAppSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> listSiteAppSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6839,7 +6839,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteAppSettingsSlotDelegate(call.execute(), null);
+        return listSiteAppSettingsSlotDelegate(call.execute());
     }
 
     /**
@@ -6875,9 +6875,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAppSettingsSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteAppSettingsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6886,11 +6886,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> listSiteAppSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> listSiteAppSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -6922,7 +6922,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(appSettings);
         Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.getSubscriptionId(), appSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteAppSettingsDelegate(call.execute(), null);
+        return updateSiteAppSettingsDelegate(call.execute());
     }
 
     /**
@@ -6959,9 +6959,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.getSubscriptionId(), appSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAppSettingsDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteAppSettingsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -6970,11 +6970,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> updateSiteAppSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> updateSiteAppSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7010,7 +7010,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(appSettings);
         Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), appSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteAppSettingsSlotDelegate(call.execute(), null);
+        return updateSiteAppSettingsSlotDelegate(call.execute());
     }
 
     /**
@@ -7052,9 +7052,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), appSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAppSettingsSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteAppSettingsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7063,11 +7063,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> updateSiteAppSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> updateSiteAppSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7094,7 +7094,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteConnectionStringsDelegate(call.execute(), null);
+        return listSiteConnectionStringsDelegate(call.execute());
     }
 
     /**
@@ -7125,9 +7125,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteConnectionStringsDelegate(response, retrofit));
+                    serviceCallback.success(listSiteConnectionStringsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7136,11 +7136,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<ConnectionStringDictionary> listSiteConnectionStringsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ConnectionStringDictionary> listSiteConnectionStringsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7171,7 +7171,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteConnectionStringsSlotDelegate(call.execute(), null);
+        return listSiteConnectionStringsSlotDelegate(call.execute());
     }
 
     /**
@@ -7207,9 +7207,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteConnectionStringsSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteConnectionStringsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7218,11 +7218,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<ConnectionStringDictionary> listSiteConnectionStringsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ConnectionStringDictionary> listSiteConnectionStringsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7254,7 +7254,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionStrings);
         Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.getSubscriptionId(), connectionStrings, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteConnectionStringsDelegate(call.execute(), null);
+        return updateSiteConnectionStringsDelegate(call.execute());
     }
 
     /**
@@ -7291,9 +7291,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.getSubscriptionId(), connectionStrings, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConnectionStringsDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteConnectionStringsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7302,11 +7302,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<ConnectionStringDictionary> updateSiteConnectionStringsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ConnectionStringDictionary> updateSiteConnectionStringsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7342,7 +7342,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionStrings);
         Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), connectionStrings, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteConnectionStringsSlotDelegate(call.execute(), null);
+        return updateSiteConnectionStringsSlotDelegate(call.execute());
     }
 
     /**
@@ -7384,9 +7384,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), connectionStrings, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConnectionStringsSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteConnectionStringsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7395,11 +7395,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<ConnectionStringDictionary> updateSiteConnectionStringsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ConnectionStringDictionary> updateSiteConnectionStringsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ConnectionStringDictionary, CloudException>()
                 .register(200, new TypeToken<ConnectionStringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7426,7 +7426,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteAuthSettingsDelegate(call.execute(), null);
+        return listSiteAuthSettingsDelegate(call.execute());
     }
 
     /**
@@ -7457,9 +7457,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteAuthSettings>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAuthSettingsDelegate(response, retrofit));
+                    serviceCallback.success(listSiteAuthSettingsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7468,11 +7468,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteAuthSettings> listSiteAuthSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteAuthSettings> listSiteAuthSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7503,7 +7503,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteAuthSettingsSlotDelegate(call.execute(), null);
+        return listSiteAuthSettingsSlotDelegate(call.execute());
     }
 
     /**
@@ -7539,9 +7539,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteAuthSettings>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAuthSettingsSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteAuthSettingsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7550,11 +7550,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteAuthSettings> listSiteAuthSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteAuthSettings> listSiteAuthSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7586,7 +7586,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteAuthSettings);
         Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.getSubscriptionId(), siteAuthSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteAuthSettingsDelegate(call.execute(), null);
+        return updateSiteAuthSettingsDelegate(call.execute());
     }
 
     /**
@@ -7623,9 +7623,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.getSubscriptionId(), siteAuthSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteAuthSettings>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAuthSettingsDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteAuthSettingsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7634,11 +7634,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteAuthSettings> updateSiteAuthSettingsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteAuthSettings> updateSiteAuthSettingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7674,7 +7674,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteAuthSettings);
         Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteAuthSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteAuthSettingsSlotDelegate(call.execute(), null);
+        return updateSiteAuthSettingsSlotDelegate(call.execute());
     }
 
     /**
@@ -7716,9 +7716,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteAuthSettings, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteAuthSettings>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAuthSettingsSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteAuthSettingsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7727,11 +7727,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteAuthSettings> updateSiteAuthSettingsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteAuthSettings> updateSiteAuthSettingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteAuthSettings, CloudException>()
                 .register(200, new TypeToken<SiteAuthSettings>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7774,11 +7774,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSitePublishingCredentials(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<User>() { }.getType(), serviceCallback);
             }
         });
@@ -7830,11 +7830,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 serviceCallback.failure(t);
             }
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<User>() { }.getType(), serviceCallback);
             }
         });
@@ -7865,7 +7865,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteMetadataDelegate(call.execute(), null);
+        return listSiteMetadataDelegate(call.execute());
     }
 
     /**
@@ -7896,9 +7896,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteMetadataDelegate(response, retrofit));
+                    serviceCallback.success(listSiteMetadataDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7907,11 +7907,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> listSiteMetadataDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> listSiteMetadataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -7942,7 +7942,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteMetadataSlotDelegate(call.execute(), null);
+        return listSiteMetadataSlotDelegate(call.execute());
     }
 
     /**
@@ -7978,9 +7978,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteMetadataSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteMetadataSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -7989,11 +7989,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> listSiteMetadataSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> listSiteMetadataSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8025,7 +8025,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(metadata);
         Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.getSubscriptionId(), metadata, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteMetadataDelegate(call.execute(), null);
+        return updateSiteMetadataDelegate(call.execute());
     }
 
     /**
@@ -8062,9 +8062,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.getSubscriptionId(), metadata, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteMetadataDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteMetadataDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8073,11 +8073,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> updateSiteMetadataDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> updateSiteMetadataDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8113,7 +8113,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(metadata);
         Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), metadata, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteMetadataSlotDelegate(call.execute(), null);
+        return updateSiteMetadataSlotDelegate(call.execute());
     }
 
     /**
@@ -8155,9 +8155,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), metadata, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<StringDictionary>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteMetadataSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteMetadataSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8166,11 +8166,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<StringDictionary> updateSiteMetadataSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<StringDictionary> updateSiteMetadataSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<StringDictionary, CloudException>()
                 .register(200, new TypeToken<StringDictionary>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8197,7 +8197,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteLogsConfigDelegate(call.execute(), null);
+        return getSiteLogsConfigDelegate(call.execute());
     }
 
     /**
@@ -8228,9 +8228,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteLogsConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteLogsConfigDelegate(response, retrofit));
+                    serviceCallback.success(getSiteLogsConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8239,11 +8239,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteLogsConfig> getSiteLogsConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteLogsConfig> getSiteLogsConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8275,7 +8275,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteLogsConfig);
         Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.getSubscriptionId(), siteLogsConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteLogsConfigDelegate(call.execute(), null);
+        return updateSiteLogsConfigDelegate(call.execute());
     }
 
     /**
@@ -8312,9 +8312,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.getSubscriptionId(), siteLogsConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteLogsConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteLogsConfigDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteLogsConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8323,11 +8323,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteLogsConfig> updateSiteLogsConfigDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteLogsConfig> updateSiteLogsConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8358,7 +8358,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteLogsConfigSlotDelegate(call.execute(), null);
+        return getSiteLogsConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -8394,9 +8394,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteLogsConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteLogsConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteLogsConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8405,11 +8405,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteLogsConfig> getSiteLogsConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteLogsConfig> getSiteLogsConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8445,7 +8445,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(siteLogsConfig);
         Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteLogsConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteLogsConfigSlotDelegate(call.execute(), null);
+        return updateSiteLogsConfigSlotDelegate(call.execute());
     }
 
     /**
@@ -8487,9 +8487,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteLogsConfig, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<SiteLogsConfig>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteLogsConfigSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteLogsConfigSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8498,11 +8498,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<SiteLogsConfig> updateSiteLogsConfigSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<SiteLogsConfig> updateSiteLogsConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteLogsConfig, CloudException>()
                 .register(200, new TypeToken<SiteLogsConfig>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8532,7 +8532,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSitePremierAddOnsSlotDelegate(call.execute(), null);
+        return listSitePremierAddOnsSlotDelegate(call.execute());
     }
 
     /**
@@ -8567,9 +8567,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePremierAddOnsSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSitePremierAddOnsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8578,11 +8578,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> listSitePremierAddOnsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> listSitePremierAddOnsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8608,7 +8608,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSitePremierAddOnsDelegate(call.execute(), null);
+        return listSitePremierAddOnsDelegate(call.execute());
     }
 
     /**
@@ -8638,9 +8638,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePremierAddOnsDelegate(response, retrofit));
+                    serviceCallback.success(listSitePremierAddOnsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8649,11 +8649,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> listSitePremierAddOnsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> listSitePremierAddOnsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8683,7 +8683,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSitePremierAddOnDelegate(call.execute(), null);
+        return getSitePremierAddOnDelegate(call.execute());
     }
 
     /**
@@ -8718,9 +8718,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitePremierAddOnDelegate(response, retrofit));
+                    serviceCallback.success(getSitePremierAddOnDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8729,11 +8729,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSitePremierAddOnDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSitePremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8768,7 +8768,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(premierAddOn);
         Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.getSubscriptionId(), premierAddOn, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return addSitePremierAddOnDelegate(call.execute(), null);
+        return addSitePremierAddOnDelegate(call.execute());
     }
 
     /**
@@ -8809,9 +8809,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.getSubscriptionId(), premierAddOn, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addSitePremierAddOnDelegate(response, retrofit));
+                    serviceCallback.success(addSitePremierAddOnDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8820,11 +8820,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> addSitePremierAddOnDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> addSitePremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8854,7 +8854,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSitePremierAddOnDelegate(call.execute(), null);
+        return deleteSitePremierAddOnDelegate(call.execute());
     }
 
     /**
@@ -8889,9 +8889,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSitePremierAddOnDelegate(response, retrofit));
+                    serviceCallback.success(deleteSitePremierAddOnDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8900,11 +8900,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSitePremierAddOnDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSitePremierAddOnDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -8938,7 +8938,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSitePremierAddOnSlotDelegate(call.execute(), null);
+        return getSitePremierAddOnSlotDelegate(call.execute());
     }
 
     /**
@@ -8978,9 +8978,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitePremierAddOnSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSitePremierAddOnSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -8989,11 +8989,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSitePremierAddOnSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSitePremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9032,7 +9032,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(premierAddOn);
         Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.getSubscriptionId(), premierAddOn, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return addSitePremierAddOnSlotDelegate(call.execute(), null);
+        return addSitePremierAddOnSlotDelegate(call.execute());
     }
 
     /**
@@ -9078,9 +9078,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.getSubscriptionId(), premierAddOn, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addSitePremierAddOnSlotDelegate(response, retrofit));
+                    serviceCallback.success(addSitePremierAddOnSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9089,11 +9089,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> addSitePremierAddOnSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> addSitePremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9127,7 +9127,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSitePremierAddOnSlotDelegate(call.execute(), null);
+        return deleteSitePremierAddOnSlotDelegate(call.execute());
     }
 
     /**
@@ -9167,9 +9167,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSitePremierAddOnSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteSitePremierAddOnSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9178,11 +9178,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSitePremierAddOnSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSitePremierAddOnSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9209,7 +9209,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupConfigurationDelegate(call.execute(), null);
+        return getSiteBackupConfigurationDelegate(call.execute());
     }
 
     /**
@@ -9240,9 +9240,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupConfigurationDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupConfigurationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9251,11 +9251,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> getSiteBackupConfigurationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> getSiteBackupConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9286,7 +9286,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupConfigurationSlotDelegate(call.execute(), null);
+        return getSiteBackupConfigurationSlotDelegate(call.execute());
     }
 
     /**
@@ -9322,9 +9322,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupConfigurationSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupConfigurationSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9333,11 +9333,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> getSiteBackupConfigurationSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> getSiteBackupConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9373,7 +9373,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteBackupConfigurationSlotDelegate(call.execute(), null);
+        return updateSiteBackupConfigurationSlotDelegate(call.execute());
     }
 
     /**
@@ -9415,9 +9415,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteBackupConfigurationSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteBackupConfigurationSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9426,11 +9426,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9462,7 +9462,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteBackupConfigurationDelegate(call.execute(), null);
+        return updateSiteBackupConfigurationDelegate(call.execute());
     }
 
     /**
@@ -9499,9 +9499,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteBackupConfigurationDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteBackupConfigurationDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9510,11 +9510,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9546,7 +9546,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.backupSiteDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return backupSiteDeprecatedDelegate(call.execute(), null);
+        return backupSiteDeprecatedDelegate(call.execute());
     }
 
     /**
@@ -9583,9 +9583,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.backupSiteDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(backupSiteDeprecatedDelegate(response, retrofit));
+                    serviceCallback.success(backupSiteDeprecatedDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9594,11 +9594,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> backupSiteDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> backupSiteDeprecatedDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9630,7 +9630,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return backupSiteDelegate(call.execute(), null);
+        return backupSiteDelegate(call.execute());
     }
 
     /**
@@ -9667,9 +9667,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(backupSiteDelegate(response, retrofit));
+                    serviceCallback.success(backupSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9678,11 +9678,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> backupSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> backupSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9718,7 +9718,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.backupSiteDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return backupSiteDeprecatedSlotDelegate(call.execute(), null);
+        return backupSiteDeprecatedSlotDelegate(call.execute());
     }
 
     /**
@@ -9760,9 +9760,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.backupSiteDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(backupSiteDeprecatedSlotDelegate(response, retrofit));
+                    serviceCallback.success(backupSiteDeprecatedSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9771,11 +9771,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> backupSiteDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> backupSiteDeprecatedSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9811,7 +9811,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return backupSiteSlotDelegate(call.execute(), null);
+        return backupSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -9853,9 +9853,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(backupSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(backupSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9864,11 +9864,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> backupSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> backupSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9900,7 +9900,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return discoverSiteRestoreDelegate(call.execute(), null);
+        return discoverSiteRestoreDelegate(call.execute());
     }
 
     /**
@@ -9937,9 +9937,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RestoreRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(discoverSiteRestoreDelegate(response, retrofit));
+                    serviceCallback.success(discoverSiteRestoreDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -9948,11 +9948,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RestoreRequest> discoverSiteRestoreDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RestoreRequest> discoverSiteRestoreDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -9988,7 +9988,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return discoverSiteRestoreSlotDelegate(call.execute(), null);
+        return discoverSiteRestoreSlotDelegate(call.execute());
     }
 
     /**
@@ -10030,9 +10030,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RestoreRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(discoverSiteRestoreSlotDelegate(response, retrofit));
+                    serviceCallback.success(discoverSiteRestoreSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10041,11 +10041,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RestoreRequest> discoverSiteRestoreSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RestoreRequest> discoverSiteRestoreSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10072,7 +10072,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupsDelegate(call.execute(), null);
+        return listSiteBackupsDelegate(call.execute());
     }
 
     /**
@@ -10103,9 +10103,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItemCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupsDelegate(response, retrofit));
+                    serviceCallback.success(listSiteBackupsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10114,11 +10114,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItemCollection> listSiteBackupsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItemCollection> listSiteBackupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10149,7 +10149,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupsSlotDelegate(call.execute(), null);
+        return listSiteBackupsSlotDelegate(call.execute());
     }
 
     /**
@@ -10185,9 +10185,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItemCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupsSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteBackupsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10196,11 +10196,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItemCollection> listSiteBackupsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItemCollection> listSiteBackupsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10231,7 +10231,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupStatusDelegate(call.execute(), null);
+        return getSiteBackupStatusDelegate(call.execute());
     }
 
     /**
@@ -10267,9 +10267,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupStatusDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10278,11 +10278,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> getSiteBackupStatusDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> getSiteBackupStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10313,7 +10313,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteBackupDelegate(call.execute(), null);
+        return deleteBackupDelegate(call.execute());
     }
 
     /**
@@ -10349,9 +10349,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteBackupDelegate(response, retrofit));
+                    serviceCallback.success(deleteBackupDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10360,11 +10360,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> deleteBackupDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> deleteBackupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10399,7 +10399,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupStatusSlotDelegate(call.execute(), null);
+        return getSiteBackupStatusSlotDelegate(call.execute());
     }
 
     /**
@@ -10440,9 +10440,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupStatusSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10451,11 +10451,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> getSiteBackupStatusSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> getSiteBackupStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10490,7 +10490,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteBackupSlotDelegate(call.execute(), null);
+        return deleteBackupSlotDelegate(call.execute());
     }
 
     /**
@@ -10531,9 +10531,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteBackupSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteBackupSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10542,11 +10542,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> deleteBackupSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> deleteBackupSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10582,7 +10582,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupStatusSecretsDelegate(call.execute(), null);
+        return getSiteBackupStatusSecretsDelegate(call.execute());
     }
 
     /**
@@ -10624,9 +10624,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusSecretsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupStatusSecretsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10635,11 +10635,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> getSiteBackupStatusSecretsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> getSiteBackupStatusSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10679,7 +10679,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupStatusSecretsSlotDelegate(call.execute(), null);
+        return getSiteBackupStatusSecretsSlotDelegate(call.execute());
     }
 
     /**
@@ -10726,9 +10726,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusSecretsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupStatusSecretsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10737,11 +10737,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItem> getSiteBackupStatusSecretsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItem> getSiteBackupStatusSecretsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>()
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10777,7 +10777,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.restoreSite(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return restoreSiteDelegate(call.execute(), null);
+        return restoreSiteDelegate(call.execute());
     }
 
     /**
@@ -10819,9 +10819,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.restoreSite(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RestoreResponse>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restoreSiteDelegate(response, retrofit));
+                    serviceCallback.success(restoreSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10830,11 +10830,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RestoreResponse> restoreSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RestoreResponse> restoreSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RestoreResponse, CloudException>()
                 .register(200, new TypeToken<RestoreResponse>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10874,7 +10874,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return restoreSiteSlotDelegate(call.execute(), null);
+        return restoreSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -10921,9 +10921,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RestoreResponse>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restoreSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(restoreSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -10932,11 +10932,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RestoreResponse> restoreSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RestoreResponse> restoreSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RestoreResponse, CloudException>()
                 .register(200, new TypeToken<RestoreResponse>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -10963,7 +10963,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupConfigurationDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupConfigurationDeprecatedDelegate(call.execute(), null);
+        return getSiteBackupConfigurationDeprecatedDelegate(call.execute());
     }
 
     /**
@@ -10994,9 +10994,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupConfigurationDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupConfigurationDeprecatedDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupConfigurationDeprecatedDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11005,11 +11005,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> getSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> getSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11041,7 +11041,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfigurationDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteBackupConfigurationDeprecatedDelegate(call.execute(), null);
+        return updateSiteBackupConfigurationDeprecatedDelegate(call.execute());
     }
 
     /**
@@ -11078,9 +11078,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteBackupConfigurationDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteBackupConfigurationDeprecatedDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteBackupConfigurationDeprecatedDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11089,11 +11089,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11120,7 +11120,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackupConfigurationDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupConfigurationDeprecatedDelegate(call.execute(), null);
+        return listSiteBackupConfigurationDeprecatedDelegate(call.execute());
     }
 
     /**
@@ -11151,9 +11151,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteBackupConfigurationDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupConfigurationDeprecatedDelegate(response, retrofit));
+                    serviceCallback.success(listSiteBackupConfigurationDeprecatedDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11162,11 +11162,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> listSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> listSiteBackupConfigurationDeprecatedDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11197,7 +11197,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupConfigurationDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupConfigurationDeprecatedSlotDelegate(call.execute(), null);
+        return getSiteBackupConfigurationDeprecatedSlotDelegate(call.execute());
     }
 
     /**
@@ -11233,9 +11233,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteBackupConfigurationDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupConfigurationDeprecatedSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteBackupConfigurationDeprecatedSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11244,11 +11244,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> getSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> getSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11284,7 +11284,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfigurationDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteBackupConfigurationDeprecatedSlotDelegate(call.execute(), null);
+        return updateSiteBackupConfigurationDeprecatedSlotDelegate(call.execute());
     }
 
     /**
@@ -11326,9 +11326,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteBackupConfigurationDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteBackupConfigurationDeprecatedSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteBackupConfigurationDeprecatedSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11337,11 +11337,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> updateSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11372,7 +11372,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackupConfigurationDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupConfigurationDeprecatedSlotDelegate(call.execute(), null);
+        return listSiteBackupConfigurationDeprecatedSlotDelegate(call.execute());
     }
 
     /**
@@ -11408,9 +11408,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteBackupConfigurationDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupConfigurationDeprecatedSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteBackupConfigurationDeprecatedSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11419,11 +11419,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupRequest> listSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupRequest> listSiteBackupConfigurationDeprecatedSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupRequest, CloudException>()
                 .register(200, new TypeToken<BackupRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11454,7 +11454,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackupsDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupsDeprecatedSlotDelegate(call.execute(), null);
+        return listSiteBackupsDeprecatedSlotDelegate(call.execute());
     }
 
     /**
@@ -11490,9 +11490,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteBackupsDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItemCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupsDeprecatedSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteBackupsDeprecatedSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11501,11 +11501,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItemCollection> listSiteBackupsDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItemCollection> listSiteBackupsDeprecatedSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11532,7 +11532,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackupsDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupsDeprecatedDelegate(call.execute(), null);
+        return listSiteBackupsDeprecatedDelegate(call.execute());
     }
 
     /**
@@ -11563,9 +11563,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteBackupsDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<BackupItemCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupsDeprecatedDelegate(response, retrofit));
+                    serviceCallback.success(listSiteBackupsDeprecatedDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11574,11 +11574,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<BackupItemCollection> listSiteBackupsDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<BackupItemCollection> listSiteBackupsDeprecatedDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>()
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11610,7 +11610,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestoreDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return discoverSiteRestoreDeprecatedDelegate(call.execute(), null);
+        return discoverSiteRestoreDeprecatedDelegate(call.execute());
     }
 
     /**
@@ -11647,9 +11647,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.discoverSiteRestoreDeprecated(resourceGroupName, name, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RestoreRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(discoverSiteRestoreDeprecatedDelegate(response, retrofit));
+                    serviceCallback.success(discoverSiteRestoreDeprecatedDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11658,11 +11658,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RestoreRequest> discoverSiteRestoreDeprecatedDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RestoreRequest> discoverSiteRestoreDeprecatedDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11698,7 +11698,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestoreDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return discoverSiteRestoreDeprecatedSlotDelegate(call.execute(), null);
+        return discoverSiteRestoreDeprecatedSlotDelegate(call.execute());
     }
 
     /**
@@ -11740,9 +11740,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.discoverSiteRestoreDeprecatedSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RestoreRequest>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(discoverSiteRestoreDeprecatedSlotDelegate(response, retrofit));
+                    serviceCallback.success(discoverSiteRestoreDeprecatedSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11751,11 +11751,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RestoreRequest> discoverSiteRestoreDeprecatedSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RestoreRequest> discoverSiteRestoreDeprecatedSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RestoreRequest, CloudException>()
                 .register(200, new TypeToken<RestoreRequest>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11783,7 +11783,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteUsagesDelegate(call.execute(), null);
+        return getSiteUsagesDelegate(call.execute());
     }
 
     /**
@@ -11815,9 +11815,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesDelegate(response, retrofit));
+                    serviceCallback.success(getSiteUsagesDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11826,11 +11826,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>()
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11862,7 +11862,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteUsagesSlotDelegate(call.execute(), null);
+        return getSiteUsagesSlotDelegate(call.execute());
     }
 
     /**
@@ -11899,9 +11899,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteUsagesSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11910,11 +11910,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>()
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -11943,7 +11943,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricsDelegate(call.execute(), null);
+        return getSiteMetricsDelegate(call.execute());
     }
 
     /**
@@ -11976,9 +11976,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -11987,11 +11987,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceMetricCollection> getSiteMetricsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceMetricCollection> getSiteMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12024,7 +12024,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricsSlotDelegate(call.execute(), null);
+        return getSiteMetricsSlotDelegate(call.execute());
     }
 
     /**
@@ -12062,9 +12062,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteMetricsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12073,11 +12073,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<ResourceMetricCollection> getSiteMetricsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ResourceMetricCollection> getSiteMetricsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>()
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12108,7 +12108,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricDefinitionsSlotDelegate(call.execute(), null);
+        return getSiteMetricDefinitionsSlotDelegate(call.execute());
     }
 
     /**
@@ -12144,9 +12144,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricDefinitionsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteMetricDefinitionsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12155,11 +12155,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12186,7 +12186,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricDefinitionsDelegate(call.execute(), null);
+        return getSiteMetricDefinitionsDelegate(call.execute());
     }
 
     /**
@@ -12217,9 +12217,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricDefinitionsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteMetricDefinitionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12228,11 +12228,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>()
                 .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12264,7 +12264,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(options);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), options, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSitePublishingProfileXmlDelegate(call.execute(), null);
+        return listSitePublishingProfileXmlDelegate(call.execute());
     }
 
     /**
@@ -12301,9 +12301,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), options, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePublishingProfileXmlDelegate(response, retrofit));
+                    serviceCallback.success(listSitePublishingProfileXmlDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12312,11 +12312,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<InputStream> listSitePublishingProfileXmlDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<InputStream> listSitePublishingProfileXmlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<InputStream, CloudException>()
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12352,7 +12352,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(options);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), options, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSitePublishingProfileXmlSlotDelegate(call.execute(), null);
+        return listSitePublishingProfileXmlSlotDelegate(call.execute());
     }
 
     /**
@@ -12394,9 +12394,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), options, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePublishingProfileXmlSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSitePublishingProfileXmlSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12405,11 +12405,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<InputStream> listSitePublishingProfileXmlSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<InputStream> listSitePublishingProfileXmlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<InputStream, CloudException>()
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12442,7 +12442,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return restartSiteSlotDelegate(call.execute(), null);
+        return restartSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -12480,9 +12480,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(restartSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12491,11 +12491,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> restartSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> restartSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12524,7 +12524,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return restartSiteDelegate(call.execute(), null);
+        return restartSiteDelegate(call.execute());
     }
 
     /**
@@ -12557,9 +12557,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSiteDelegate(response, retrofit));
+                    serviceCallback.success(restartSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12568,11 +12568,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> restartSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> restartSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12599,7 +12599,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return startSiteDelegate(call.execute(), null);
+        return startSiteDelegate(call.execute());
     }
 
     /**
@@ -12630,9 +12630,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(startSiteDelegate(response, retrofit));
+                    serviceCallback.success(startSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12641,11 +12641,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> startSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> startSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12676,7 +12676,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return startSiteSlotDelegate(call.execute(), null);
+        return startSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -12712,9 +12712,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(startSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(startSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12723,11 +12723,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> startSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> startSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12754,7 +12754,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return stopSiteDelegate(call.execute(), null);
+        return stopSiteDelegate(call.execute());
     }
 
     /**
@@ -12785,9 +12785,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(stopSiteDelegate(response, retrofit));
+                    serviceCallback.success(stopSiteDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12796,11 +12796,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> stopSiteDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> stopSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12831,7 +12831,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return stopSiteSlotDelegate(call.execute(), null);
+        return stopSiteSlotDelegate(call.execute());
     }
 
     /**
@@ -12867,9 +12867,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(stopSiteSlotDelegate(response, retrofit));
+                    serviceCallback.success(stopSiteSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12878,11 +12878,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> stopSiteSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> stopSiteSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12912,7 +12912,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return syncSiteRepositorySlotDelegate(call.execute(), null);
+        return syncSiteRepositorySlotDelegate(call.execute());
     }
 
     /**
@@ -12947,9 +12947,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(syncSiteRepositorySlotDelegate(response, retrofit));
+                    serviceCallback.success(syncSiteRepositorySlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -12958,11 +12958,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> syncSiteRepositorySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> syncSiteRepositorySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -12988,7 +12988,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return syncSiteRepositoryDelegate(call.execute(), null);
+        return syncSiteRepositoryDelegate(call.execute());
     }
 
     /**
@@ -13018,9 +13018,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(syncSiteRepositoryDelegate(response, retrofit));
+                    serviceCallback.success(syncSiteRepositoryDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13029,11 +13029,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> syncSiteRepositoryDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> syncSiteRepositoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13064,7 +13064,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return generateNewSitePublishingPasswordSlotDelegate(call.execute(), null);
+        return generateNewSitePublishingPasswordSlotDelegate(call.execute());
     }
 
     /**
@@ -13100,9 +13100,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(generateNewSitePublishingPasswordSlotDelegate(response, retrofit));
+                    serviceCallback.success(generateNewSitePublishingPasswordSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13111,11 +13111,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> generateNewSitePublishingPasswordSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> generateNewSitePublishingPasswordSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13142,7 +13142,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return generateNewSitePublishingPasswordDelegate(call.execute(), null);
+        return generateNewSitePublishingPasswordDelegate(call.execute());
     }
 
     /**
@@ -13173,9 +13173,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(generateNewSitePublishingPasswordDelegate(response, retrofit));
+                    serviceCallback.success(generateNewSitePublishingPasswordDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13184,11 +13184,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> generateNewSitePublishingPasswordDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> generateNewSitePublishingPasswordDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13219,7 +13219,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteRelayServiceConnectionDelegate(call.execute(), null);
+        return getSiteRelayServiceConnectionDelegate(call.execute());
     }
 
     /**
@@ -13255,9 +13255,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteRelayServiceConnectionDelegate(response, retrofit));
+                    serviceCallback.success(getSiteRelayServiceConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13266,11 +13266,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> getSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> getSiteRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13306,7 +13306,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteRelayServiceConnectionDelegate(call.execute(), null);
+        return createOrUpdateSiteRelayServiceConnectionDelegate(call.execute());
     }
 
     /**
@@ -13348,9 +13348,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteRelayServiceConnectionDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteRelayServiceConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13359,11 +13359,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> createOrUpdateSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> createOrUpdateSiteRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13394,7 +13394,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteRelayServiceConnectionDelegate(call.execute(), null);
+        return deleteSiteRelayServiceConnectionDelegate(call.execute());
     }
 
     /**
@@ -13430,9 +13430,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteRelayServiceConnectionDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteRelayServiceConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13441,11 +13441,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13481,7 +13481,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteRelayServiceConnectionDelegate(call.execute(), null);
+        return updateSiteRelayServiceConnectionDelegate(call.execute());
     }
 
     /**
@@ -13523,9 +13523,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteRelayServiceConnectionDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteRelayServiceConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13534,11 +13534,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> updateSiteRelayServiceConnectionDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> updateSiteRelayServiceConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13573,7 +13573,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteRelayServiceConnectionSlotDelegate(call.execute(), null);
+        return getSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -13614,9 +13614,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteRelayServiceConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteRelayServiceConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13625,11 +13625,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> getSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> getSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13669,7 +13669,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteRelayServiceConnectionSlotDelegate(call.execute(), null);
+        return createOrUpdateSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -13716,9 +13716,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteRelayServiceConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteRelayServiceConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13727,11 +13727,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> createOrUpdateSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> createOrUpdateSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13766,7 +13766,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteRelayServiceConnectionSlotDelegate(call.execute(), null);
+        return deleteSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -13807,9 +13807,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteRelayServiceConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(deleteSiteRelayServiceConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13818,11 +13818,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> deleteSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> deleteSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13862,7 +13862,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteRelayServiceConnectionSlotDelegate(call.execute(), null);
+        return updateSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
     /**
@@ -13909,9 +13909,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteRelayServiceConnectionSlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteRelayServiceConnectionSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13920,11 +13920,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> updateSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> updateSiteRelayServiceConnectionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -13955,7 +13955,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteRelayServiceConnectionsSlotDelegate(call.execute(), null);
+        return listSiteRelayServiceConnectionsSlotDelegate(call.execute());
     }
 
     /**
@@ -13991,9 +13991,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteRelayServiceConnectionsSlotDelegate(response, retrofit));
+                    serviceCallback.success(listSiteRelayServiceConnectionsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14002,11 +14002,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14033,7 +14033,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteRelayServiceConnectionsDelegate(call.execute(), null);
+        return listSiteRelayServiceConnectionsDelegate(call.execute());
     }
 
     /**
@@ -14064,9 +14064,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteRelayServiceConnectionsDelegate(response, retrofit));
+                    serviceCallback.success(listSiteRelayServiceConnectionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14075,11 +14075,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>()
                 .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14118,7 +14118,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVnetGatewaySlotDelegate(call.execute(), null);
+        return getSiteVnetGatewaySlotDelegate(call.execute());
     }
 
     /**
@@ -14164,9 +14164,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVnetGatewaySlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteVnetGatewaySlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14175,12 +14175,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteVnetGatewaySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteVnetGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14224,7 +14224,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteVNETConnectionGatewaySlotDelegate(call.execute(), null);
+        return createOrUpdateSiteVNETConnectionGatewaySlotDelegate(call.execute());
     }
 
     /**
@@ -14276,9 +14276,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewaySlotDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewaySlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14287,11 +14287,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14335,7 +14335,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteVNETConnectionGatewaySlotDelegate(call.execute(), null);
+        return updateSiteVNETConnectionGatewaySlotDelegate(call.execute());
     }
 
     /**
@@ -14387,9 +14387,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionGatewaySlotDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteVNETConnectionGatewaySlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14398,11 +14398,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14437,7 +14437,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVnetGatewayDelegate(call.execute(), null);
+        return getSiteVnetGatewayDelegate(call.execute());
     }
 
     /**
@@ -14478,9 +14478,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVnetGatewayDelegate(response, retrofit));
+                    serviceCallback.success(getSiteVnetGatewayDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14489,12 +14489,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<Object> getSiteVnetGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> getSiteVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>()
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14534,7 +14534,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteVNETConnectionGatewayDelegate(call.execute(), null);
+        return createOrUpdateSiteVNETConnectionGatewayDelegate(call.execute());
     }
 
     /**
@@ -14581,9 +14581,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewayDelegate(response, retrofit));
+                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewayDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14592,11 +14592,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14636,7 +14636,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteVNETConnectionGatewayDelegate(call.execute(), null);
+        return updateSiteVNETConnectionGatewayDelegate(call.execute());
     }
 
     /**
@@ -14683,9 +14683,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionGatewayDelegate(response, retrofit));
+                    serviceCallback.success(updateSiteVNETConnectionGatewayDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14694,11 +14694,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>()
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14725,7 +14725,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionsDelegate(call.execute(), null);
+        return getSiteVNETConnectionsDelegate(call.execute());
     }
 
     /**
@@ -14756,9 +14756,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionsDelegate(response, retrofit));
+                    serviceCallback.success(getSiteVNETConnectionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14767,11 +14767,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>()
                 .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
     /**
@@ -14802,7 +14802,7 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionsSlotDelegate(call.execute(), null);
+        return getSiteVNETConnectionsSlotDelegate(call.execute());
     }
 
     /**
@@ -14838,9 +14838,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
             @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionsSlotDelegate(response, retrofit));
+                    serviceCallback.success(getSiteVNETConnectionsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -14849,11 +14849,11 @@ public final class SitesOperationsImpl implements SitesOperations {
         return call;
     }
 
-    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlotDelegate(Response<ResponseBody> response, Retrofit retrofit) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>()
                 .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
-                .build(response, retrofit);
+                .build(response);
     }
 
 }
