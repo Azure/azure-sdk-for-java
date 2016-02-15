@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AzureResourceRunner</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="microsoft_azure">Microsoft Azure</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_subscription_selection">SubscriptionSelection</string>
     <string name="subscription_title">Select a subscription</string>
@@ -12,4 +12,11 @@
     <string name="list_sa_btn">List storage accounts!</string>
     <string name="list_vm_btn">List Virtual Machines!</string>
     <string name="logout_button">Click to log out</string>
+    <string name="title_activity_resource_operator">ResourceOperator</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -11,20 +11,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.compute.ComputeManagementClient;
 import com.microsoft.azure.management.compute.ComputeManagementClientImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.StorageAccountListResult;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.azure.credentials.UserTokenCredentials;
+
+import java.util.List;
 
 public class Navigator extends AppCompatActivity {
     SubscriptionInfo subscription;
@@ -55,53 +56,55 @@ public class Navigator extends AppCompatActivity {
     }
 
     public void listResourceGroups(View view) {
-        final ProgressDialog progress = new ProgressDialog(this);
-        progress.setTitle("Please wait...");
-        progress.setMessage("Loading resource groups...");
-        rClient.getResourceGroups().listAsync(null, null, new ServiceCallback<PageImpl<ResourceGroup>>() {
-            @Override
-            public void failure(Throwable t) {
-                progress.dismiss();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "Failed to get resource groups", Toast.LENGTH_LONG);
-                    }
-                });
-            }
-
-            @Override
-            public void success(final ServiceResponse<PageImpl<ResourceGroup>> result) {
-                final ListView listView = (ListView) findViewById(R.id.main_content);
-                final ArrayAdapter adapter = new ArrayAdapter<ResourceGroup>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody().getItems()) {
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View view = super.getView(position, convertView, parent);
-                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-
-                        ResourceGroup group = result.getBody().getItems().get(position);
-                        text1.setText(group.getName());
-                        text2.setText("Location: " + group.getLocation());
-                        return view;
-                    }
-                };
-                progress.dismiss();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        listView.setAdapter(adapter);
-                    }
-                });
-            }
-        });
+        Intent intent = new Intent(this, ResourceOperator.class);
+        startActivity(intent);
+//        final ProgressDialog progress = new ProgressDialog(this);
+//        progress.setTitle("Please wait...");
+//        progress.setMessage("Loading resource groups...");
+//        rClient.getResourceGroupsOperations().listAsync(null, null, new ListOperationCallback<ResourceGroup>() {
+//            @Override
+//            public void failure(Throwable t) {
+//                progress.dismiss();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(getApplicationContext(), "Failed to get resource groups", Toast.LENGTH_LONG);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void success(final ServiceResponse<List<ResourceGroup>> result) {
+//                final ListView listView = (ListView) findViewById(R.id.main_content);
+//                final ArrayAdapter adapter = new ArrayAdapter<ResourceGroup>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody()) {
+//                    @Override
+//                    public View getView(int position, View convertView, ViewGroup parent) {
+//                        View view = super.getView(position, convertView, parent);
+//                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+//                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+//
+//                        ResourceGroup group = result.getBody().get(position);
+//                        text1.setText(group.getName());
+//                        text2.setText("Location: " + group.getLocation());
+//                        return view;
+//                    }
+//                };
+//                progress.dismiss();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        listView.setAdapter(adapter);
+//                    }
+//                });
+//            }
+//        });
     }
 
     public void listStorageAccounts(View view) {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setTitle("Please wait...");
         progress.setMessage("Loading storage accounts...");
-        sClient.getStorageAccounts().listAsync(new ServiceCallback<StorageAccountListResult>() {
+        sClient.getStorageAccountsOperations().listAsync(new ServiceCallback<List<StorageAccount>>() {
             @Override
             public void failure(Throwable t) {
                 progress.dismiss();
@@ -114,16 +117,16 @@ public class Navigator extends AppCompatActivity {
             }
 
             @Override
-            public void success(final ServiceResponse<StorageAccountListResult> result) {
+            public void success(final ServiceResponse<List<StorageAccount>> result) {
                 final ListView listView = (ListView) findViewById(R.id.main_content);
-                final ArrayAdapter adapter = new ArrayAdapter<StorageAccount>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody().getValue()) {
+                final ArrayAdapter adapter = new ArrayAdapter<StorageAccount>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody()) {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
                         TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
-                        StorageAccount account = result.getBody().getValue().get(position);
+                        StorageAccount account = result.getBody().get(position);
                         text1.setText(account.getName());
                         text2.setText("Type: " + account.getType() + "\t" + "Location: " + account.getPrimaryLocation() + ", " + account.getSecondaryLocation());
                         return view;
@@ -144,7 +147,7 @@ public class Navigator extends AppCompatActivity {
         final ProgressDialog progress = new ProgressDialog(this);
         progress.setTitle("Please wait...");
         progress.setMessage("Loading storage accounts...");
-        cClient.getVirtualMachines().listAllAsync(new ServiceCallback<com.microsoft.azure.management.compute.models.PageImpl<VirtualMachine>>() {
+        cClient.getVirtualMachinesOperations().listAllAsync(new ListOperationCallback<VirtualMachine>() {
             @Override
             public void failure(Throwable t) {
                 progress.dismiss();
@@ -157,16 +160,16 @@ public class Navigator extends AppCompatActivity {
             }
 
             @Override
-            public void success(final ServiceResponse<com.microsoft.azure.management.compute.models.PageImpl<VirtualMachine>> result) {
+            public void success(final ServiceResponse<List<VirtualMachine>> result) {
                 final ListView listView = (ListView) findViewById(R.id.main_content);
-                final ArrayAdapter adapter = new ArrayAdapter<VirtualMachine>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody().getItems()) {
+                final ArrayAdapter adapter = new ArrayAdapter<VirtualMachine>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, result.getBody()) {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
                         TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
-                        VirtualMachine vm = result.getBody().getItems().get(position);
+                        VirtualMachine vm = result.getBody().get(position);
                         text1.setText(vm.getName());
                         String desc = "";
                         if (vm.getPlan() != null) {

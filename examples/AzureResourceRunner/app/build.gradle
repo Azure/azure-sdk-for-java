@@ -58,6 +58,8 @@ repositories {
 }
 
 
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -65,7 +67,8 @@ dependencies {
     compile 'com.microsoft.azure:azure-mgmt-resources:1.0.0-SNAPSHOT'
     compile 'com.microsoft.azure:azure-mgmt-storage:1.0.0-SNAPSHOT'
     compile 'com.microsoft.azure:azure-mgmt-compute:1.0.0-SNAPSHOT'
-    compile 'com.microsoft.rest:azure-client-runtime:0.0.4-SNAPSHOT'
-    compile 'com.microsoft.rest:azure-android-client-authentication:0.0.1-SNAPSHOT'
+    compile 'com.microsoft.azure:azure-client-runtime:1.0.0-SNAPSHOT'
+    compile 'com.microsoft.azure:azure-android-client-authentication:1.0.0-SNAPSHOT'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
 }

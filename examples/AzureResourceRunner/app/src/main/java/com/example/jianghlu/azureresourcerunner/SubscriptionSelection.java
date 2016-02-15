@@ -48,7 +48,7 @@ public class SubscriptionSelection extends AppCompatActivity {
         subListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), Navigator.class);
+                Intent intent = new Intent(getApplicationContext(), ResourceOperator.class);
                 intent.putExtra("subscription", subscriptionList.get(position));
                 startActivity(intent);
             }
