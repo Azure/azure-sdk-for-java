@@ -5,8 +5,7 @@ import java.nio.channels.*;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 import java.util.logging.*;
 
 import org.apache.qpid.proton.Proton;
@@ -71,13 +70,9 @@ public class MessagingFactory extends ClientEntity
 
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
-		// if (this.reactor == null || this.reactor.quiesced())
-		// {
-			this.reactor = Proton.reactor(reactorHandler);
-			
-			this.reactorThread = new Thread(new RunReactor(this, this.reactor));
-			this.reactorThread.start();
-		// }
+		this.reactor = Proton.reactor(reactorHandler);
+		this.reactorThread = new Thread(new RunReactor(this, this.reactor));
+		this.reactorThread.start();
 	}
 	
 	// Todo: async
@@ -119,7 +114,7 @@ public class MessagingFactory extends ClientEntity
 	CompletableFuture<Connection> getConnectionAsync()
 	{
 		this.getConnection();
-		return this.openConnection;
+		return this.openConnection == null ? CompletableFuture.completedFuture(this.connection): this.openConnection;
 	}
 	
 	public Duration getOperationTimeout()
@@ -171,6 +166,7 @@ public class MessagingFactory extends ClientEntity
 	{
 		this.connection.close();
 		
+		// dispatch the TransportError to all dependent registered links
 		for (Link link : this.links)
 		{
 			Receiver receiver = (Receiver) link;

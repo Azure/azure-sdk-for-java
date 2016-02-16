@@ -48,7 +48,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
             if(TRACE_LOGGER.isLoggable(Level.FINE))
             {
             	TRACE_LOGGER.log(Level.FINE,
-            			String.format("ReceiveLinkHandler(name: %s) initial credit: %s", receiver.getName(), receiver.getCredit()));
+            			String.format("linkName[%s], initialCredit[%s]", receiver.getName(), receiver.getCredit()));
             }
         }
     }
@@ -64,8 +64,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         	{
         		if(TRACE_LOGGER.isLoggable(Level.FINE))
                 {
-                	TRACE_LOGGER.log(Level.FINE,
-                			String.format("ReceiveLinkHandler(name: %s) RemoteSource: %s", receiver.getName(), link.getRemoteSource()));
+                	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], remoteSource[%s]", receiver.getName(), link.getRemoteSource()));
                 }
         		
         		synchronized (this.firstResponse)
@@ -79,7 +78,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         		if(TRACE_LOGGER.isLoggable(Level.FINE))
                 {
                 	TRACE_LOGGER.log(Level.FINE,
-                			String.format("ReceiveLinkHandler(name: %s): remote Target Source set to null. waiting for error.", receiver.getName()));
+                			String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", receiver.getName()));
                 }
         	}
         	
@@ -111,7 +110,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
     		{
     			if(TRACE_LOGGER.isLoggable(Level.FINE))
     	        {
-    				TRACE_LOGGER.log(Level.FINE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+    				TRACE_LOGGER.log(Level.FINE, "linkName["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
     	        }
     			
     			this.msgReceiver.onClose();
@@ -120,7 +119,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
     		
 			if(TRACE_LOGGER.isLoggable(Level.WARNING))
 	        {
-				TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+				TRACE_LOGGER.log(Level.WARNING, "linkName["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
 	        }
         } 
 		
@@ -138,7 +137,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         	if (condition != null)
         	{
         		if (TRACE_LOGGER.isLoggable(Level.WARNING))
-        		TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteDetach: name[" + link.getName() + "] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+        		TRACE_LOGGER.log(Level.WARNING, "linkName[" + link.getName() + "] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
             }
 
             link.close();
@@ -168,12 +167,6 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         
         while (delivery != null && delivery.isReadable() && !delivery.isPartial())
         {    
-        	if(TRACE_LOGGER.isLoggable(Level.FINE))
-            {
-        		TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "recvLink.onDelivery (name: %s) invalid delivery - deliveryTag: %s, isReadable(): %s, isPartial(): %s"
-            					, receiveLink.getName() , new String(delivery.getTag()), delivery.isReadable(), delivery.isPartial()));
-            }
-        	
         	int size = delivery.pending();
             byte[] buffer = new byte[size];
             int read = receiveLink.recv(buffer, 0, buffer.length);
@@ -204,7 +197,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         	this.msgReceiver.onDelivery(messages);
             if(TRACE_LOGGER.isLoggable(Level.FINE) && receiveLink != null)
             {
-            	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "recvLink.onDelivery - linkCredit: %s", receiveLink.getCredit()));
+            	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], linkCredit[%s]", receiveLink.getName(), receiveLink.getCredit()));
             }
         }
     }
