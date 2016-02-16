@@ -29,10 +29,20 @@ public final class ConnectionHandler extends BaseHandler
 	public ConnectionHandler(final MessagingFactory messagingFactory, final String hostname, final String username, final String password)
 	{
 		add(new Handshaker());
+		
 		this.hostname = hostname;
 		this.username = username;
 		this.password = password;
 		this.messagingFactory = messagingFactory;
+	}
+
+	@Override
+	public void onConnectionInit(Event event)
+	{
+		Connection connection = event.getConnection();
+		connection.setHostname(this.hostname + ":" + ClientConstants.AmqpsPort);
+		connection.setContainer(UUID.randomUUID().toString());
+		connection.open();
 	}
 	
 	@Override
@@ -74,15 +84,8 @@ public final class ConnectionHandler extends BaseHandler
 				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "Error (no description returned).");
 			}
 		}
-	}
-
-	@Override
-	public void onConnectionInit(Event event)
-	{
-		Connection connection = event.getConnection();
-		connection.setHostname(this.hostname + ":" + ClientConstants.AmqpsPort);
-		connection.setContainer(UUID.randomUUID().toString());
-		connection.open();
+		
+		this.messagingFactory.onConnectionError(condition);
 	}
 	
 	@Override

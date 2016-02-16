@@ -3,16 +3,18 @@ package com.microsoft.azure.servicebus;
 import java.io.IOException;
 import java.nio.channels.*;
 import java.time.Duration;
+import java.util.LinkedList;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.*;
 import java.util.logging.*;
 
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.reactor.*;
 
-import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
-import com.microsoft.azure.servicebus.amqp.ReactorHandler;
+import com.microsoft.azure.servicebus.amqp.*;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -28,7 +30,6 @@ public class MessagingFactory extends ClientEntity
 	
 	private Reactor reactor;
 	private Thread reactorThread;
-	private final Object reactorLock = new Object();
 	private final Object connectionLock = new Object();
 	
 	private ConnectionHandler connectionHandler;
@@ -38,6 +39,9 @@ public class MessagingFactory extends ClientEntity
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 	private CompletableFuture<MessagingFactory> open;
+	private CompletableFuture<Connection> openConnection;
+	
+	public LinkedList<Link> links;
 	
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
@@ -46,37 +50,29 @@ public class MessagingFactory extends ClientEntity
 	{
 		super("MessagingFactory" + UUID.randomUUID().toString());
 		
-		this.startReactor();
+		this.startReactor(new ReactorHandler());
 		
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
+		this.links = new LinkedList<Link>();
 	}
 	
 	private void createConnection(ConnectionStringBuilder builder)
 	{
-		synchronized (this.reactorLock)
-		{
-			assert this.reactor != null;
-			
-			ConnectionHandler connectionHandler = new ConnectionHandler(this, builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
-			this.waitingConnectionOpen = true;
-			this.connection = reactor.connection(connectionHandler);
-			this.open = new CompletableFuture<MessagingFactory>();
-		}
+		assert this.reactor != null;
+		
+		this.connectionHandler = new ConnectionHandler(this, 
+				builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
+		this.waitingConnectionOpen = true;
+		this.connection = reactor.connection(this.connectionHandler);
+		this.open = new CompletableFuture<MessagingFactory>();
 	}
 
-	private void startReactor() throws IOException
+	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
-		synchronized (this.reactorLock)
-		{
-			if (this.reactor == null)
-			{
-				this.reactor = Proton.reactor(new ReactorHandler());
-				
-				this.reactorThread = new Thread(new RunReactor(this, this.reactor));
-				this.reactorThread.start();
-			}
-		}
+		this.reactor = Proton.reactor(reactorHandler);
+		this.reactorThread = new Thread(new RunReactor(this, this.reactor));
+		this.reactorThread.start();
 	}
 	
 	// Todo: async
@@ -86,16 +82,39 @@ public class MessagingFactory extends ClientEntity
 		{
 			synchronized (this.connectionLock)
 			{
-				if (this.connection.getLocalState() == EndpointState.CLOSED && !this.waitingConnectionOpen)
+				if (this.connection.getLocalState() == EndpointState.CLOSED 
+						&& !this.waitingConnectionOpen)
 				{
 					this.connection.free();
-					this.connection = reactor.connection(connectionHandler);
+					try {
+						this.startReactor(new ReactorHandler() {
+							@Override
+							public void onReactorInit(Event e)
+							{
+								super.onReactorInit(e);
+								
+								Reactor reactor = e.getReactor();
+								MessagingFactory.this.connection = reactor.connection(MessagingFactory.this.connectionHandler);
+							}
+						});
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					this.openConnection = new CompletableFuture<Connection>();
 					this.waitingConnectionOpen = true;
 				}
 			}
 		}
 		
 		return this.connection;
+	}
+	
+	CompletableFuture<Connection> getConnectionAsync()
+	{
+		this.getConnection();
+		return this.openConnection == null ? CompletableFuture.completedFuture(this.connection): this.openConnection;
 	}
 	
 	public Duration getOperationTimeout()
@@ -123,13 +142,42 @@ public class MessagingFactory extends ClientEntity
 		synchronized (this.connectionLock)
 		{
 			this.waitingConnectionOpen = false;
-			if (exception == null)
+		}
+		
+		if (exception == null)
+		{
+			this.open.complete(this);
+			if(this.openConnection != null)
 			{
-				this.open.complete(this);
+				this.openConnection.complete(this.connection);
 			}
-			else
+		}
+		else
+		{
+			this.open.completeExceptionally(exception);
+			if (this.openConnection != null)
 			{
-				this.open.completeExceptionally(exception);
+				this.openConnection.completeExceptionally(exception);
+			}
+		}
+	}
+	
+	public void onConnectionError(ErrorCondition error)
+	{
+		this.connection.close();
+		
+		// dispatch the TransportError to all dependent registered links
+		for (Link link : this.links)
+		{
+			Receiver receiver = (Receiver) link;
+			if (receiver!=null)
+			{
+				Handler handler = BaseHandler.getHandler(receiver);
+				if (handler != null && handler instanceof ReceiveLinkHandler)
+				{
+					ReceiveLinkHandler recvLinkHandler = (ReceiveLinkHandler) handler;
+					recvLinkHandler.processOnClose(receiver, error);
+				}
 			}
 		}
 	}

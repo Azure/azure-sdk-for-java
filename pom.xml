@@ -16,14 +16,6 @@
 	  	<junit-version>4.10</junit-version>
 	</properties>
 	
-	<!-- TODO: remove this once protonj is on Maven repo-->
-	<repositories>
-		<repository>
-			<id>qpid protonj</id>
-			<url>https://repository.apache.org/content/repositories/orgapacheqpid-1063/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>

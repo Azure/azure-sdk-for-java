@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus;
 
+import java.io.IOException;
 import java.time.*;
 import java.time.temporal.*;
 import java.util.*;
@@ -56,29 +57,6 @@ public class MessageReceiver extends ClientEntity
 	private boolean linkCreateScheduled;
 	private Object linkCreateLock;
 	
-	/**
-	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
-	 * Connection has to be associated with Reactor before Creating a receiver on it.
-	 */
-	public static CompletableFuture<MessageReceiver> create(
-			final MessagingFactory factory, 
-			final String name, 
-			final String recvPath, 
-			final String offset,
-			final boolean offsetInclusive,
-			final Instant dateTime,
-			final int prefetchCount,
-			final long epoch,
-			final boolean isEpochReceiver)
-	{
-		MessageReceiver msgReceiver = new MessageReceiver(factory, name, recvPath, offset, offsetInclusive, dateTime, prefetchCount, epoch, isEpochReceiver);
-		
-		ReceiveLinkHandler handler = new ReceiveLinkHandler(msgReceiver);
-		BaseHandler.setHandler(msgReceiver.receiveLink, handler);
-
-		return msgReceiver.linkOpen.getWork();
-	}
-	
 	private MessageReceiver(final MessagingFactory factory, 
 			final String name, 
 			final String recvPath, 
@@ -113,12 +91,6 @@ public class MessageReceiver extends ClientEntity
 			this.dateTime = dateTime;
 		}
 		
-		this.receiveLink = this.createReceiveLink();
-		
-		this.linkOpen = new WorkItem<MessageReceiver>(new CompletableFuture<MessageReceiver>(), this.operationTimeout);
-		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
-		this.linkCreateScheduled = true;
-		
 		this.pendingReceives = new ConcurrentLinkedQueue<WorkItem<Collection<Message>>>();
 		
 		// onOperationTimeout delegate - per receive call
@@ -147,6 +119,44 @@ public class MessageReceiver extends ClientEntity
 		};
 	}
 	
+	/**
+	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
+	 * Connection has to be associated with Reactor before Creating a receiver on it.
+	 */
+	public static CompletableFuture<MessageReceiver> create(
+			final MessagingFactory factory, 
+			final String name, 
+			final String recvPath, 
+			final String offset,
+			final boolean offsetInclusive,
+			final Instant dateTime,
+			final int prefetchCount,
+			final long epoch,
+			final boolean isEpochReceiver)
+	{
+		MessageReceiver msgReceiver = new MessageReceiver(
+			factory, 
+			name, 
+			recvPath, 
+			offset, 
+			offsetInclusive, 
+			dateTime, 
+			prefetchCount, 
+			epoch, 
+			isEpochReceiver);
+		return msgReceiver.createLink();
+	}
+	
+	private CompletableFuture<MessageReceiver> createLink()
+	{
+		this.receiveLink = this.createReceiveLink(true);
+		
+		this.linkOpen = new WorkItem<MessageReceiver>(new CompletableFuture<MessageReceiver>(), this.operationTimeout);
+		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
+		this.linkCreateScheduled = true;
+		return this.linkOpen.getWork();
+	}
+	
 	public int getPrefetchCount()
 	{
 		return this.prefetchCount;
@@ -157,7 +167,7 @@ public class MessageReceiver extends ClientEntity
 	 */
 	public CompletableFuture<Collection<Message>> receive()
 	{
-		if (this.receiveLink.getRemoteState() == EndpointState.CLOSED)
+		if (this.receiveLink.getLocalState() == EndpointState.CLOSED)
 		{
 			this.scheduleRecreate(Duration.ofSeconds(0));
 		}
@@ -217,6 +227,7 @@ public class MessageReceiver extends ClientEntity
 			{
 				this.lastCommunicatedAt = Instant.now();
 				this.linkOpen.getWork().complete(this);
+				this.underlyingFactory.links.add(this.receiveLink);
 			}
 			else
 			{
@@ -366,7 +377,7 @@ public class MessageReceiver extends ClientEntity
 		}
 	}
 	
-	private Receiver createReceiveLink()
+	private Receiver createReceiveLink(boolean isConnectionAsync)
 	{	
 		Source source = new Source();
         source.setAddress(receivePath);
@@ -397,7 +408,19 @@ public class MessageReceiver extends ClientEntity
         Map<Symbol, UnknownDescribedType> filterMap = Collections.singletonMap(AmqpConstants.StringFilter, filter);
         source.setFilter(filterMap);
         
-        Connection connection = this.underlyingFactory.getConnection();
+        Connection connection = null;
+        
+		try {
+			connection = !isConnectionAsync ? this.underlyingFactory.getConnection()
+					: this.underlyingFactory.getConnectionAsync().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Session ssn = connection.session();
 		
 		String receiveLinkName = this.getClientId();
@@ -417,7 +440,10 @@ public class MessageReceiver extends ClientEntity
         
         ssn.open();
         receiver.open();
-                
+        
+        ReceiveLinkHandler handler = new ReceiveLinkHandler(this);
+        BaseHandler.setHandler(receiver, handler);
+        
         return receiver;
 	}
 	
@@ -426,7 +452,7 @@ public class MessageReceiver extends ClientEntity
 	 */
 	private void sendFlow(int credits)
 	{
-		if (this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+		if (this.receiveLink.getLocalState() != EndpointState.CLOSED)
 		{
 			int currentPingFlow = this.pingFlowCount.get();
 			if (currentPingFlow > 0)
@@ -460,7 +486,7 @@ public class MessageReceiver extends ClientEntity
 	
 	private void sendPingFlow()
 	{
-		if (this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+		if (this.receiveLink.getLocalState() != EndpointState.CLOSED)
 		{
 			if (Instant.now().isAfter(this.lastCommunicatedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
 					&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
@@ -500,14 +526,18 @@ public class MessageReceiver extends ClientEntity
 				@Override
 				public void run()
 				{
-					if (MessageReceiver.this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+					if (MessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
 					{
 						return;
 					}
 					
-					MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink();
-					ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
-					BaseHandler.setHandler(MessageReceiver.this.receiveLink, handler);
+					MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink(true);
+					
+					synchronized (MessageReceiver.this.linkCreateLock) 
+					{
+						MessageReceiver.this.linkCreateScheduled = false;
+					}
+					
 					MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
 				}
 			},
