@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus;
 
+import java.io.IOException;
 import java.time.*;
 import java.time.temporal.*;
 import java.util.*;
@@ -113,7 +114,7 @@ public class MessageReceiver extends ClientEntity
 			this.dateTime = dateTime;
 		}
 		
-		this.receiveLink = this.createReceiveLink();
+		this.receiveLink = this.createReceiveLink(false);
 		
 		this.linkOpen = new WorkItem<MessageReceiver>(new CompletableFuture<MessageReceiver>(), this.operationTimeout);
 		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
@@ -157,7 +158,7 @@ public class MessageReceiver extends ClientEntity
 	 */
 	public CompletableFuture<Collection<Message>> receive()
 	{
-		if (this.receiveLink.getRemoteState() == EndpointState.CLOSED)
+		if (this.receiveLink.getLocalState() == EndpointState.CLOSED)
 		{
 			this.scheduleRecreate(Duration.ofSeconds(0));
 		}
@@ -217,6 +218,7 @@ public class MessageReceiver extends ClientEntity
 			{
 				this.lastCommunicatedAt = Instant.now();
 				this.linkOpen.getWork().complete(this);
+				this.underlyingFactory.links.add(this.receiveLink);
 			}
 			else
 			{
@@ -366,7 +368,7 @@ public class MessageReceiver extends ClientEntity
 		}
 	}
 	
-	private Receiver createReceiveLink()
+	private Receiver createReceiveLink(boolean isConnectionAsync)
 	{	
 		Source source = new Source();
         source.setAddress(receivePath);
@@ -397,7 +399,18 @@ public class MessageReceiver extends ClientEntity
         Map<Symbol, UnknownDescribedType> filterMap = Collections.singletonMap(AmqpConstants.StringFilter, filter);
         source.setFilter(filterMap);
         
-        Connection connection = this.underlyingFactory.getConnection();
+        Connection connection = null;
+		try {
+			connection = !isConnectionAsync ? this.underlyingFactory.getConnection()
+					: this.underlyingFactory.getConnectionAsync().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Session ssn = connection.session();
 		
 		String receiveLinkName = this.getClientId();
@@ -417,7 +430,7 @@ public class MessageReceiver extends ClientEntity
         
         ssn.open();
         receiver.open();
-                
+        
         return receiver;
 	}
 	
@@ -426,7 +439,7 @@ public class MessageReceiver extends ClientEntity
 	 */
 	private void sendFlow(int credits)
 	{
-		if (this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+		if (this.receiveLink.getLocalState() != EndpointState.CLOSED)
 		{
 			int currentPingFlow = this.pingFlowCount.get();
 			if (currentPingFlow > 0)
@@ -460,7 +473,7 @@ public class MessageReceiver extends ClientEntity
 	
 	private void sendPingFlow()
 	{
-		if (this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+		if (this.receiveLink.getLocalState() != EndpointState.CLOSED)
 		{
 			if (Instant.now().isAfter(this.lastCommunicatedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
 					&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
@@ -500,14 +513,20 @@ public class MessageReceiver extends ClientEntity
 				@Override
 				public void run()
 				{
-					if (MessageReceiver.this.receiveLink.getRemoteState() != EndpointState.CLOSED)
+					if (MessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
 					{
 						return;
 					}
 					
-					MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink();
+					MessageReceiver.this.receiveLink = MessageReceiver.this.createReceiveLink(true);
 					ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
 					BaseHandler.setHandler(MessageReceiver.this.receiveLink, handler);
+					
+					synchronized (MessageReceiver.this.linkCreateLock) 
+					{
+						MessageReceiver.this.linkCreateScheduled = false;
+					}
+					
 					MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
 				}
 			},

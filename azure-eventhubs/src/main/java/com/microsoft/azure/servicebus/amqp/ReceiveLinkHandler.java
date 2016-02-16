@@ -96,30 +96,35 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 		Link link = event.getLink();
         if (link instanceof Receiver)
         {
-        	link.close();
-    		
         	ErrorCondition condition = link.getRemoteCondition();
-        	if (condition != null)
-    		{
-        		if (condition.getCondition() == null)
-        		{
-        			if(TRACE_LOGGER.isLoggable(Level.FINE))
-        	        {
-        				TRACE_LOGGER.log(Level.FINE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
-        	        }
-        			
-        			this.msgReceiver.onClose();
-        			return;
-        		}
-        		
-    			if(TRACE_LOGGER.isLoggable(Level.WARNING))
-    	        {
-    				TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
-    	        }
-            } 
-    		
-        	this.msgReceiver.onError(condition);
+        	this.processOnClose((Receiver) link, condition);	
         }
+	}
+	
+	public void processOnClose(Receiver link, ErrorCondition condition)
+	{
+		link.close();
+		
+    	if (condition != null)
+		{
+    		if (condition.getCondition() == null)
+    		{
+    			if(TRACE_LOGGER.isLoggable(Level.FINE))
+    	        {
+    				TRACE_LOGGER.log(Level.FINE, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+    	        }
+    			
+    			this.msgReceiver.onClose();
+    			return;
+    		}
+    		
+			if(TRACE_LOGGER.isLoggable(Level.WARNING))
+	        {
+				TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteClose: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+	        }
+        } 
+		
+    	this.msgReceiver.onError(condition);
 	}
 	
 	
@@ -133,7 +138,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         	if (condition != null)
         	{
         		if (TRACE_LOGGER.isLoggable(Level.WARNING))
-        		TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteDetach: name["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
+        		TRACE_LOGGER.log(Level.WARNING, "recvLink.onLinkRemoteDetach: name[" + link.getName() + "] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
             }
 
             link.close();
