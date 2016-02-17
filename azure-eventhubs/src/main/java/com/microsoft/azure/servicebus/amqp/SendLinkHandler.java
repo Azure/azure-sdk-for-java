@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus.amqp;
 
+import java.util.Locale;
 import java.util.logging.*;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -19,6 +20,37 @@ public class SendLinkHandler extends BaseLinkHandler
 		this.msgSender = sender;
 		this.firstFlow = new Object();
 		this.isFirstFlow = true;
+	}
+	
+	@Override
+	public void onLinkRemoteOpen(Event event)
+	{
+		Link link = event.getLink();
+        if (link != null && link instanceof Sender)
+        {
+        	Sender sender = (Sender) link;
+        	if (link.getRemoteTarget() != null)
+        	{
+        		if(TRACE_LOGGER.isLoggable(Level.FINE))
+                {
+                	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
+                }
+        		
+        		synchronized (this.firstFlow)
+        		{
+					this.isFirstFlow = false;
+	        		this.msgSender.onOpenComplete(null);
+        		}
+        	}
+        	else
+        	{
+        		if(TRACE_LOGGER.isLoggable(Level.FINE))
+                {
+                	TRACE_LOGGER.log(Level.FINE,
+                			String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", sender.getName()));
+                }
+        	}
+        }
 	}
 
 	@Override

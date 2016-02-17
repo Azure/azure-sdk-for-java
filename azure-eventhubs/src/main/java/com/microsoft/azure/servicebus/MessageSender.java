@@ -55,8 +55,11 @@ public class MessageSender extends ClientEntity
 			final String senderPath)
 	{
 		MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
-		SendLinkHandler handler = new SendLinkHandler(msgSender);
-		BaseHandler.setHandler(msgSender.sendLink, handler);
+		msgSender.sendLink = msgSender.createSendLink();
+		msgSender.currentOperationTracker = TimeoutTracker.create(factory.getOperationTimeout());
+		msgSender.initializeLinkOpen(msgSender.currentOperationTracker);
+		msgSender.linkCreateScheduled = true;
+		
 		return msgSender.linkOpen;
 	}
 	
@@ -69,10 +72,6 @@ public class MessageSender extends ClientEntity
 		
 		// clone ?
 		this.retryPolicy = factory.getRetryPolicy();
-		this.sendLink = this.createSendLink();
-		this.currentOperationTracker = TimeoutTracker.create(factory.getOperationTimeout());
-		this.initializeLinkOpen(this.currentOperationTracker);
-		this.linkCreateScheduled = true;
 		
 		this.pendingSendWaiters = new ConcurrentHashMap<byte[], ReplayableWorkItem<Void>>();
 		this.nextTag = new AtomicLong(0);
@@ -153,7 +152,7 @@ public class MessageSender extends ClientEntity
 		int encodedSize = batchMessage.encode(bytes, 0, MaxMessageLength);
 		int byteArrayOffset = encodedSize;
 		
-		byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
+		byte[] tag = String.valueOf(this.nextTag.incrementAndGet()).getBytes();
         Delivery dlv = this.sendLink.delivery(tag);
         dlv.setMessageFormat(AmqpConstants.AmqpBatchMessageFormat);
         
@@ -309,8 +308,6 @@ public class MessageSender extends ClientEntity
 					}
 					
 					MessageSender.this.sendLink = MessageSender.this.createSendLink();
-					SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
-					BaseHandler.setHandler(MessageSender.this.sendLink, handler);
 					MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
 				}
 			},
@@ -320,8 +317,8 @@ public class MessageSender extends ClientEntity
 	
 	public void onSendComplete(final byte[] deliveryTag, final DeliveryState outcome)
 	{
-		ReplayableWorkItem<Void> pendingSendWorkItem = null;
-		pendingSendWorkItem = this.pendingSendWaiters.get(deliveryTag);
+		TRACE_LOGGER.log(Level.FINE, String.format("linkName[%s]", this.sendLink.getName()));
+		ReplayableWorkItem<Void> pendingSendWorkItem = this.pendingSendWaiters.get(deliveryTag);
         
 		if (pendingSendWorkItem != null)
 		{
@@ -390,7 +387,16 @@ public class MessageSender extends ClientEntity
 	
 	private Sender createSendLink()
 	{
-		Connection connection = this.underlyingFactory.getConnection();
+		Connection connection = null;
+		try {
+			connection = this.underlyingFactory.getConnectionAsync().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
 		Session session = connection.session();
         session.open();
         
@@ -407,6 +413,9 @@ public class MessageSender extends ClientEntity
         
         sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
         
+        SendLinkHandler handler = new SendLinkHandler(this);
+        BaseHandler.setHandler(sender, handler);
+		
         sender.open();
         return sender;
 	}
