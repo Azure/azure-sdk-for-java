@@ -169,14 +169,22 @@ public class MessagingFactory extends ClientEntity
 		// dispatch the TransportError to all dependent registered links
 		for (Link link : this.links)
 		{
-			Receiver receiver = (Receiver) link;
-			if (receiver!=null)
+			if (link instanceof Receiver)
 			{
-				Handler handler = BaseHandler.getHandler(receiver);
+				Handler handler = BaseHandler.getHandler((Receiver) link);
 				if (handler != null && handler instanceof ReceiveLinkHandler)
 				{
 					ReceiveLinkHandler recvLinkHandler = (ReceiveLinkHandler) handler;
-					recvLinkHandler.processOnClose(receiver, error);
+					recvLinkHandler.processOnClose(link, error);
+				}
+			}
+			else if(link instanceof Sender)
+			{
+				Handler handler = BaseHandler.getHandler((Sender) link);
+				if (handler != null && handler instanceof ReceiveLinkHandler)
+				{
+					SendLinkHandler sendLinkHandler = (SendLinkHandler) handler;
+					sendLinkHandler.processOnClose(link, error);
 				}
 			}
 		}

@@ -96,11 +96,11 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         if (link instanceof Receiver)
         {
         	ErrorCondition condition = link.getRemoteCondition();
-        	this.processOnClose((Receiver) link, condition);	
+        	this.processOnClose(link, condition);	
         }
 	}
 	
-	public void processOnClose(Receiver link, ErrorCondition condition)
+	public void processOnClose(Link link, ErrorCondition condition)
 	{
 		link.close();
 		

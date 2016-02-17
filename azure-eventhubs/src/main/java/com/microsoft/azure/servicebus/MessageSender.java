@@ -40,7 +40,6 @@ public class MessageSender extends ClientEntity
 	private final String sendPath;
 	private final Duration operationTimeout;
 	private final RetryPolicy retryPolicy;
-	private final Object pendingSendWaitersLock;
 	
 	private ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> pendingSendWaiters;
 	private Sender sendLink;
@@ -67,7 +66,6 @@ public class MessageSender extends ClientEntity
 		this.sendPath = senderPath;
 		this.underlyingFactory = factory;
 		this.operationTimeout = factory.getOperationTimeout();
-		this.pendingSendWaitersLock = new Object();
 		
 		// clone ?
 		this.retryPolicy = factory.getRetryPolicy();
@@ -230,7 +228,8 @@ public class MessageSender extends ClientEntity
 					unacknowledgedSends.forEachEntry(1, new Consumer<Map.Entry<byte[], ReplayableWorkItem<Void>>>()
 					{
 						@Override
-						public void accept(Entry<byte[], ReplayableWorkItem<Void>> sendWork) {
+						public void accept(Entry<byte[], ReplayableWorkItem<Void>> sendWork)
+						{
 							ReplayableWorkItem<Void> pendingSend = MessageSender.this.pendingSendWaiters.remove(sendWork.getKey());
 							if (pendingSend != null)
 							{
@@ -319,21 +318,44 @@ public class MessageSender extends ClientEntity
 			TimerType.OneTimeRun);
 	}
 	
-	public void onSendComplete(byte[] deliveryTag, DeliveryState outcome)
+	public void onSendComplete(final byte[] deliveryTag, final DeliveryState outcome)
 	{
 		ReplayableWorkItem<Void> pendingSendWorkItem = null;
-		synchronized(this.pendingSendWaitersLock)
-        {
-			pendingSendWorkItem = this.pendingSendWaiters.get(deliveryTag);
-        }
-		
+		pendingSendWorkItem = this.pendingSendWaiters.get(deliveryTag);
+        
 		if (pendingSendWorkItem != null)
 		{
 			CompletableFuture<Void> pendingSend = pendingSendWorkItem.getWork();
-			if (outcome == Accepted.getInstance())
+			if (outcome instanceof Accepted)
 			{
 				this.retryPolicy.resetRetryCount(this.getClientId());
 				pendingSend.complete(null);
+			}
+			else if (outcome instanceof Rejected)
+			{
+				Rejected rejected = (Rejected) outcome;
+				ErrorCondition error = rejected.getError();
+				Exception exception = ExceptionUtil.toException(error);
+
+				Duration retryInterval = this.retryPolicy.getNextRetryInterval(
+						this.getClientId(), exception, pendingSendWorkItem.getTimeoutTracker().remaining());
+				if (retryInterval == null)
+				{
+					pendingSend.completeExceptionally(exception);
+				}
+				else
+				{
+					Timer.schedule(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							MessageSender.this.reSend(deliveryTag);
+						}
+					}, retryInterval, TimerType.OneTimeRun);
+					
+					return;
+				}
 			}
 			else 
 			{
@@ -345,6 +367,27 @@ public class MessageSender extends ClientEntity
 		}
 	}
 
+	private void reSend(Object deliveryTag)
+	{
+		ReplayableWorkItem<Void> pendingSend = this.pendingSendWaiters.remove(deliveryTag);
+		if (pendingSend != null)
+		{
+			byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
+	        Delivery dlv = this.sendLink.delivery(tag);
+	        dlv.setMessageFormat(pendingSend.getMessageFormat());
+	        
+	        int sentMsgSize = this.sendLink.send(pendingSend.getMessage(), 0, pendingSend.getEncodedMessageSize());
+	        assert sentMsgSize != pendingSend.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
+	        
+	        CompletableFuture<Void> onSend = new CompletableFuture<Void>();
+	        this.pendingSendWaiters.put(tag, 
+	        		new ReplayableWorkItem<Void>(pendingSend.getMessage(), 
+	        				pendingSend.getEncodedMessageSize(), pendingSend.getMessageFormat(), onSend, operationTimeout));
+	        
+	        this.sendLink.advance();
+		}
+	}
+	
 	private Sender createSendLink()
 	{
 		Connection connection = this.underlyingFactory.getConnection();
@@ -403,7 +446,8 @@ public class MessageSender extends ClientEntity
 	}
 
 	@Override
-	public CompletableFuture<Void> closeAsync() {
+	public CompletableFuture<Void> closeAsync()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}

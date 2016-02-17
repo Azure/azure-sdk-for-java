@@ -25,12 +25,16 @@ public class SendLinkHandler extends BaseLinkHandler
     public void onDelivery(Event event)
 	{		
 		Sender sender = (Sender) event.getLink();
+		Delivery delivery = event.getDelivery();
+		
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
-            TRACE_LOGGER.log(Level.FINE, "sendLink.onDelivery: name["+sender.getName()+"] : unsettled[" + sender.getUnsettled() + "] : credit[" + sender.getCredit()+ "]");
+            TRACE_LOGGER.log(Level.FINE, 
+            		"linkName[" + sender.getName() + 
+            		"], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "], deliveryState[" + delivery.getRemoteState() + 
+            		"], delivery.isBuffered[" + delivery.isBuffered() +"]");
         }
 		
-		Delivery delivery = event.getDelivery();
 		if (delivery != null)
 		{
 			msgSender.onSendComplete(delivery.getTag(), delivery.getRemoteState());
@@ -56,7 +60,7 @@ public class SendLinkHandler extends BaseLinkHandler
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
 			Sender sender = (Sender) event.getLink();
-			TRACE_LOGGER.log(Level.FINE, "sendLink.onFlow: name[" + sender.getName() + "] : unsettled[" + sender.getUnsettled() + "] : credit[" + sender.getCredit()+ "]");
+			TRACE_LOGGER.log(Level.FINE, "linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "]");
         }
 	}
 	
@@ -67,16 +71,28 @@ public class SendLinkHandler extends BaseLinkHandler
         if (link instanceof Sender)
         {
         	ErrorCondition condition = link.getRemoteCondition();
-    		if (condition != null)
-    		{
-    			if(TRACE_LOGGER.isLoggable(Level.WARNING))
-    	        {
-    				TRACE_LOGGER.log(Level.WARNING, "sendLink.onLinkRemoteClose: name[" + link.getName() + "] : ErrorCondition[" + condition.getDescription() + "]");
-    	        }
-            } 
-    		
-    		link.close();
-    		this.msgSender.onError(condition);
+    		this.processOnClose(link, condition);
         }
+	}
+	
+	@Override
+	public void onLinkRemoteDetach(Event event)
+	{
+		this.onLinkRemoteClose(event);
+	}
+	
+	// TODO: abstract this out to an interface - as a connection-child
+	public void processOnClose(Link link, ErrorCondition condition)
+	{
+		if (condition != null)
+		{
+			if(TRACE_LOGGER.isLoggable(Level.FINE))
+	        {
+				TRACE_LOGGER.log(Level.FINE, "linkName[" + link.getName() + "], ErrorCondition[" + condition.getDescription() + "]");
+	        }
+        }
+		
+		link.close();
+		this.msgSender.onError(condition);
 	}
 }
