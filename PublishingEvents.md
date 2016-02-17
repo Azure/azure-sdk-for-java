@@ -111,35 +111,6 @@ The publisher example shown in the overview above sends an event into the Event 
 the preferred and most flexible and reliable option. For specific needs, Event Hubs offers two extra options to 
 qualify send operations: Publisher policies and partion addressing.     
 
-###Publisher Policies
-
-To a publisher, a publisher policy is largely just a suffix appended to the Event Hub path, which has the form 
-
-```
-<event-hub-name>/publishers/<policyname>
-```  
-
-The name of of the policy is commonly chosen by the Event Hub owner, and might be the name of the publisher's account
-or the identifier of a publishing device, or some randomly chosen string uniquely assigned to the sender. 
-
-With publisher policies, the Event Hub owner will generally hold on to the signing key of a SAS rule conferring only "Send" 
-permission, and issue a send-only token to the publisher as described in the [Tokens](#tokens) section above. This token is
-scoped to the path shown above and can only be used to publish to this particular policy. 
-
-The special functionality of the publisher policy is twofold:
-
-* The Event Hub owner can issue a very long-lived token to the publisher whose expiration may be several months or even years 
-  into the future. Should the owner suspect that the publisher has been compromised or acts maliciously, the Event Hub owner 
-  can revoke access for this particular publisher instead of having to invalidate the signing key and thus revoking all tokens.
-  The revocation gesture is an HTTPS management operation that is documented [here].
-* Each event that is sent via a publisher policy has its PartitionKey property set, on the Event Hub side, to the publisher 
-  name to prevent publisher spoofing. The publisher has no control over the value of this field when sending via a publisher
-  policy. The property therefore serves as proof to the event consumer that the publisher was indeed in possesion of a valid 
-  token for the publisher policy. The alternative to this mechanism is some form of digital signature applied to the payload. 
-  
- There are some potential availability and reliability caveats associated with using punblisher policies that are discussed 
- in the following section about partition addressing.
-
 ###Partition Addressing
 
 Any Event Hub's event store is split up into at least 4 partitions, each maintaining a separate event log. You can think 
@@ -181,6 +152,10 @@ option. To send to a partition you explicitly need to create a client object tha
     EventData sendEvent = new EventData(payloadBytes);
     sender.send(sendEvent).get();
 ```
+
+#### Publisher Policies
+
+Event Hub Publisher Policies are not yet supported by this client and will be supported in a future release.
  
 ####Special considerations for partitions and publisher policies
 
