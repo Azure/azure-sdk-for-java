@@ -28,7 +28,6 @@ import com.microsoft.azure.management.websites.models.SourceControlListResponse;
 import com.microsoft.azure.management.websites.models.SourceControlUpdateParameters;
 import com.microsoft.azure.management.websites.models.SourceControlUpdateResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;

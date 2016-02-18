@@ -39,6 +39,13 @@ public final class EnumUtility {
                 return value;
             }
         }
+
+        // name could also be a numeric value
+        int index = Integer.parseInt(name);
+        if (index < values.size() && index >= 0) {
+            return (T) values.toArray()[index];
+        }
+
         throw new IllegalArgumentException(
                 "No enum constant " + enumClass.getCanonicalName() + "." + name);
     }

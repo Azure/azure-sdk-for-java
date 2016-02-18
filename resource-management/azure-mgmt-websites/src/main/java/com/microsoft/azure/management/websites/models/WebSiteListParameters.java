@@ -24,7 +24,6 @@
 package com.microsoft.azure.management.websites.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
-
 import java.util.ArrayList;
 
 /**

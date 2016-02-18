@@ -25,7 +25,6 @@ package com.microsoft.azure.management.websites.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
