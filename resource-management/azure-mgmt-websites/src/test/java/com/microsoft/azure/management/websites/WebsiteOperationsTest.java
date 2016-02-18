@@ -46,6 +46,8 @@ public class WebsiteOperationsTest extends WebsiteManagementIntegrationTestBase 
         planName = "testjavaplan" + randomString(5);
         location = "westus";
         addRegexRule("testjava[a-z]{10}");
+        addRegexRule("testjavasite[a-z]{5}");
+        addRegexRule("testjavaplan[a-z]{5}");
         createResourceManagementClient();
         createWebsiteManagementClient();
         setupTest(WebsiteOperationsTest.class.getSimpleName());
