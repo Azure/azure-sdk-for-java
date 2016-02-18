@@ -1,6 +1,7 @@
 package com.microsoft.azure.eventhubs;
 
 import java.io.*;
+import java.nio.channels.*;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -132,6 +133,7 @@ public class EventHubClient extends ClientEntity
 	 * @return
 	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds 256k bytes
 	 * @throws ServiceBusException
+	 * @throws UnresolvedAddressException if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.) 
 	 * @see {@link #send(EventData, String)}
 	 * @see {@link EventHubSender#send(EventData)} 
 	 */

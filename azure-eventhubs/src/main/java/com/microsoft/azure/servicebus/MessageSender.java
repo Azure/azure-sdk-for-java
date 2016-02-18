@@ -56,12 +56,17 @@ public class MessageSender extends ClientEntity
 			final String sendLinkName,
 			final String senderPath)
 	{
-		MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
-		msgSender.sendLink = msgSender.createSendLink();
+		final MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
 		msgSender.openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		msgSender.initializeLinkOpen(msgSender.openLinkTracker);
 		msgSender.linkCreateScheduled = true;
-		
+		Timer.schedule(new Runnable() {
+			@Override
+			public void run()
+			{
+				msgSender.sendLink = msgSender.createSendLink();
+			}
+		}, Duration.ofSeconds(0), TimerType.OneTimeRun);
 		return msgSender.linkFirstOpen;
 	}
 	
@@ -239,11 +244,6 @@ public class MessageSender extends ClientEntity
 	
 	public void onOpenComplete(Exception completionException)
 	{
-		synchronized(this.linkCreateLock)
-		{
-			this.linkCreateScheduled = false;
-		}
-		
 		if (completionException == null)
 		{
 			this.openLinkTracker = null;
@@ -286,12 +286,21 @@ public class MessageSender extends ClientEntity
 		{		
 			this.linkFirstOpen.completeExceptionally(completionException);
 		}
+		
+		synchronized(this.linkCreateLock)
+		{
+			this.linkCreateScheduled = false;
+		}
 	}
 	
 	public void onError(ErrorCondition error)
 	{
 		Exception completionException = ExceptionUtil.toException(error);
-		
+		this.onError(completionException);
+	}
+	
+	public void onError(Exception completionException)
+	{
 		Duration remainingTime = this.openLinkTracker == null 
 						? this.operationTimeout
 						: (this.openLinkTracker.elapsed().compareTo(this.operationTimeout) > 0) 
@@ -310,14 +319,7 @@ public class MessageSender extends ClientEntity
 			return;
 		}
 		
-		synchronized (this.linkFirstOpen)
-		{
-			if (!this.linkFirstOpen.isDone())
-			{
-				this.onOpenComplete(completionException);
-				return;
-			}
-		}
+		this.onOpenComplete(completionException);
 	}
 	
 	private void scheduleRecreate(Duration runAfter)
@@ -343,7 +345,13 @@ public class MessageSender extends ClientEntity
 						return;
 					}
 					
-					MessageSender.this.sendLink = MessageSender.this.createSendLink();
+					Sender sender = MessageSender.this.createSendLink();
+					if (sender != null)
+					{
+						MessageSender.this.underlyingFactory.links.remove(MessageSender.this.sendLink);
+						MessageSender.this.sendLink = sender;
+					}
+					
 					MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
 				}
 			},
@@ -423,14 +431,20 @@ public class MessageSender extends ClientEntity
 	private Sender createSendLink()
 	{
 		Connection connection = null;
-		try {
+		try
+		{
 			// TODO throw it on the appropriate operation
 			connection = this.underlyingFactory.getConnectionAsync().get();
-		} catch (InterruptedException e) {
-			this.lastKnownLinkError = e;
-		} catch (ExecutionException e) {
-			this.lastKnownLinkError = e;
-		}
+		} 
+		catch (InterruptedException|ExecutionException exception)
+		{
+			Throwable throwable = exception.getCause();
+			if (throwable != null && throwable instanceof Exception)
+			{
+				this.onError((Exception) throwable);
+				return null;
+			}
+		} 
 		
 		Session session = connection.session();
         session.open();
