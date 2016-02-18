@@ -74,14 +74,14 @@ public final class ConnectionHandler extends BaseHandler
 		{
 			if (TRACE_LOGGER.isLoggable(Level.WARNING))
 			{
-				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "Error: " + condition.getDescription());
+				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[" + condition.getDescription() + "]");
 			}
 		}
 		else
 		{
 			if (TRACE_LOGGER.isLoggable(Level.WARNING))
 			{
-				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "Error (no description returned).");
+				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[no description returned]");
 			}
 		}
 		

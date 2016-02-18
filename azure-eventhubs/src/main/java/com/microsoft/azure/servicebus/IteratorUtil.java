@@ -8,21 +8,26 @@ public final class IteratorUtil
 	{
 	}
 
-	public static boolean sizeEquals(Iterator iterator, int expectedSize)
+	public static <T> boolean sizeEquals(Iterable<T> iterable, int expectedSize)
 	{
-		if (expectedSize == 0)
+		Iterator<T> iterator = iterable.iterator();
+		
+		int currentSize = 0;
+		while(iterator.hasNext())
 		{
-			return !iterator.hasNext();
+			if (expectedSize > currentSize)
+			{
+				currentSize++;
+				iterator.next();
+				continue;
+			}
+			else
+			{
+				return false;
+			}
 		}
-		else if (!iterator.hasNext())
-		{
-			return false;
-		}
-		else 
-		{
-			iterator.next();
-			return sizeEquals(iterator, expectedSize - 1);
-		}
+		
+		return true;		
 	}
 	
 	public static <T> T getLast(Iterator<T> iterator)

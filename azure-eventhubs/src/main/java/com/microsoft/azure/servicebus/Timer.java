@@ -14,12 +14,16 @@ public final class Timer
 	{
 	}
 
-	public static void schedule(Runnable runnable, Duration runAfter, TimerType timerType)
+	public static void schedule(Runnable runnable, Duration runFrequency, TimerType timerType)
 	{
 		switch (timerType)
 		{
 			case OneTimeRun:
-				executor.schedule(runnable, runAfter.getSeconds(), TimeUnit.SECONDS);
+				executor.schedule(runnable, runFrequency.getSeconds(), TimeUnit.SECONDS);
+				break;
+			
+			case RepeatRun:
+				executor.scheduleWithFixedDelay(runnable, runFrequency.getSeconds(), runFrequency.getSeconds(), TimeUnit.SECONDS);
 				break;
 				
 			default:

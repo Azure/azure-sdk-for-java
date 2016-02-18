@@ -57,11 +57,11 @@ public final class EventHubSender
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
-		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas.iterator(), 0))
+		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0))
 		{
 			throw new IllegalArgumentException("EventData batch cannot be empty.");
 		}
 		
-		return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas), null);
+		return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
 	}
 }

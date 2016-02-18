@@ -81,6 +81,6 @@ final class ExceptionUtil
 			return ServiceBusException.create(false, new AmqpException(errorCondition));
 		}
 		
-		return ServiceBusException.create(true, errorCondition.getDescription());
+		return ServiceBusException.create(ClientConstants.DefaultIsTransient, errorCondition.getDescription());
 	}
 }

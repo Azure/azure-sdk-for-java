@@ -56,21 +56,21 @@ public class SendLinkHandler extends BaseLinkHandler
 	@Override
     public void onDelivery(Event event)
 	{		
-		Sender sender = (Sender) event.getLink();
 		Delivery delivery = event.getDelivery();
-		
+		Sender sender = (Sender) delivery.getLink();
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
             TRACE_LOGGER.log(Level.FINE, 
             		"linkName[" + sender.getName() + 
             		"], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "], deliveryState[" + delivery.getRemoteState() + 
-            		"], delivery.isBuffered[" + delivery.isBuffered() +"]");
+            		"], delivery.isBuffered[" + delivery.isBuffered() +"], delivery.id[" + delivery.getTag() + "]");
         }
 		
-		if (delivery != null)
+		while (delivery != null)
 		{
 			msgSender.onSendComplete(delivery.getTag(), delivery.getRemoteState());
 			delivery.settle();
+			delivery = sender.current();
 		}
 	}
 

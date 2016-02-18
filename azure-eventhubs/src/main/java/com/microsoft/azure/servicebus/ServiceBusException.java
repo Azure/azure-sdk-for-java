@@ -1,7 +1,5 @@
 package com.microsoft.azure.servicebus;
 
-import java.util.*;
-
 public abstract class ServiceBusException extends Exception
 {
 	  private static final long serialVersionUID = -3654294093967132325L;
@@ -34,27 +32,38 @@ public abstract class ServiceBusException extends Exception
 	   */
 	  static ServiceBusException create(final boolean isTransient, final String message)
 	  {
-		  return new InternalServiceBusException(isTransient, message);
+		  return (ServiceBusException) new InternalServiceBusException(isTransient, message);
 	  }
 	  
-	  static ServiceBusException create(final boolean isTransient, Exception exception)
+	  static ServiceBusException create(final boolean isTransient, Throwable cause)
 	  {
-		  return new InternalServiceBusException(isTransient, exception);
+		  return (ServiceBusException) new InternalServiceBusException(isTransient, cause);
+	  }
+	  
+	  static ServiceBusException create(final boolean isTransient, final String message, final Throwable cause)
+	  {
+		  return (ServiceBusException) new InternalServiceBusException(isTransient, message, cause);
 	  }
 	  
 	  private static final class InternalServiceBusException extends ServiceBusException
 	  {
 		boolean isTransient;
 		  
-		public InternalServiceBusException(final boolean isTransient, final String message)
+		private InternalServiceBusException(final boolean isTransient, final String message)
 		{
 		  super(message);
 		  this.isTransient = isTransient;
 		}
 		  
-		public InternalServiceBusException(final boolean isTransient, Exception exception)
+		private InternalServiceBusException(final boolean isTransient, final Throwable exception)
 		{
 			super(exception);
+			this.isTransient = isTransient;
+		}
+		
+		private InternalServiceBusException(final boolean isTransient, final String message, final Throwable cause)
+		{
+			super(message, cause);
 			this.isTransient = isTransient;
 		}
 		  

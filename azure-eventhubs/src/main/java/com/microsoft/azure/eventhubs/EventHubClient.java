@@ -32,8 +32,7 @@ public class EventHubClient extends ClientEntity
 	{
 		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
-		
-		
+				
 		if (isReceiveOnly)
 		{
 			return MessagingFactory.createFromConnectionString(connectionString.toString())
@@ -168,12 +167,12 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
-		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas.iterator(), 0))
+		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0))
 		{
 			throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
 		}
 		
-		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas), null);
+		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
 	}
 	
 	/**
@@ -248,7 +247,7 @@ public class EventHubClient extends ClientEntity
 					String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: {0}", ClientConstants.MaxPartitionKeyLength));
 		}
 		
-		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey), partitionKey);
+		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId) 

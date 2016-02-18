@@ -181,7 +181,7 @@ public class MessagingFactory extends ClientEntity
 			else if(link instanceof Sender)
 			{
 				Handler handler = BaseHandler.getHandler((Sender) link);
-				if (handler != null && handler instanceof ReceiveLinkHandler)
+				if (handler != null && handler instanceof SendLinkHandler)
 				{
 					SendLinkHandler sendLinkHandler = (SendLinkHandler) handler;
 					sendLinkHandler.processOnClose(link, error);
