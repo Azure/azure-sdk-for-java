@@ -1,6 +1,5 @@
 package com.microsoft.azure.eventhubs;
 
-import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
@@ -40,7 +39,7 @@ public final class EventHubSender
 	
 	private CompletableFuture<Void> createInternalSender() throws ServiceBusException
 	{
-		return MessageSender.Create(this.factory, UUID.randomUUID().toString(), 
+		return MessageSender.Create(this.factory, StringUtil.getRandomString(), 
 				String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{

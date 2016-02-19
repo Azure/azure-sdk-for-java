@@ -2,22 +2,11 @@ package com.microsoft.azure.servicebus.amqp;
 
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
-import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
-import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.*;
-import org.apache.qpid.proton.engine.Event.Type;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.MessageReceiver;
 
 /** 
@@ -48,7 +37,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
             if(TRACE_LOGGER.isLoggable(Level.FINE))
             {
             	TRACE_LOGGER.log(Level.FINE,
-            			String.format("linkName[%s], initialCredit[%s]", receiver.getName(), receiver.getCredit()));
+            			String.format("linkName[%s], localSource[%s]", receiver.getName(), receiver.getSource()));
             }
         }
     }
@@ -81,11 +70,6 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
                 			String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", receiver.getName()));
                 }
         	}
-        	
-        	if (receiver.getCredit() < this.msgReceiver.getPrefetchCount())
-        	{
-        		receiver.flow(this.msgReceiver.getPrefetchCount() - receiver.getCredit());
-        	}
         }
 	}
 	
@@ -104,44 +88,28 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 	{
 		link.close();
 		
-    	if (condition != null)
-		{
-    		if (condition.getCondition() == null)
-    		{
-    			if(TRACE_LOGGER.isLoggable(Level.FINE))
-    	        {
-    				TRACE_LOGGER.log(Level.FINE, "linkName["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
-    	        }
-    			
-    			this.msgReceiver.onClose();
-    			return;
-    		}
-    		
-			if(TRACE_LOGGER.isLoggable(Level.WARNING))
-	        {
-				TRACE_LOGGER.log(Level.WARNING, "linkName["+link.getName()+"] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
-	        }
-        } 
+		if(TRACE_LOGGER.isLoggable(Level.FINE))
+        {
+			TRACE_LOGGER.log(Level.FINE, "linkName["+link.getName()+
+					condition != null ? "], ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]" : "], condition[null]");
+        }
 		
-    	this.msgReceiver.onError(condition);
+		this.msgReceiver.onClose(condition);        
 	}
 	
-	
+	public void processOnClose(Link link, Exception exception)
+	{
+		link.close();
+		this.msgReceiver.onError(exception);
+	}
+		
 	@Override
 	public void onLinkRemoteDetach(Event event)
 	{
 		Link link = event.getLink();
         if (link instanceof Receiver)
         {
-        	ErrorCondition condition = link.getRemoteCondition();
-        	if (condition != null)
-        	{
-        		if (TRACE_LOGGER.isLoggable(Level.WARNING))
-        		TRACE_LOGGER.log(Level.WARNING, "linkName[" + link.getName() + "] : ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]");
-            }
-
-            link.close();
-            this.msgReceiver.onError(condition);
+        	this.processOnClose(link, link.getRemoteCondition());
         }
 	}
 	
@@ -189,16 +157,17 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         
         if (messages != null && messages.size() > 0)
         {
+            if(TRACE_LOGGER.isLoggable(Level.FINE) && receiveLink != null)
+            {
+            	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], linkCredit[%s]", receiveLink.getName(), receiveLink.getCredit()));
+            }
+            
         	for(Delivery unsettledDelivery: deliveries)
         	{
         		unsettledDelivery.settle();
         	}
         	
         	this.msgReceiver.onDelivery(messages);
-            if(TRACE_LOGGER.isLoggable(Level.FINE) && receiveLink != null)
-            {
-            	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], linkCredit[%s]", receiveLink.getName(), receiveLink.getCredit()));
-            }
         }
     }
 }

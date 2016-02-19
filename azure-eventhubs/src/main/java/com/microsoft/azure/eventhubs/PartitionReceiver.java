@@ -77,7 +77,7 @@ public final class PartitionReceiver
 	
 	private CompletableFuture<Void> createInternalReceiver() throws ServiceBusException
 	{
-		return MessageReceiver.create(this.underlyingFactory, UUID.randomUUID().toString(), 
+		return MessageReceiver.create(this.underlyingFactory, StringUtil.getRandomString(), 
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
 				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver)
 				.thenAcceptAsync(new Consumer<MessageReceiver>()

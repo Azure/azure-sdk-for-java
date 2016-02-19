@@ -248,7 +248,7 @@ public class MessageSender extends ClientEntity
 		{
 			this.openLinkTracker = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
-			this.underlyingFactory.links.add(this.sendLink);
+			
 			this.lastKnownLinkError = null;
 			
 			if (!this.linkFirstOpen.isDone())
@@ -348,7 +348,9 @@ public class MessageSender extends ClientEntity
 					Sender sender = MessageSender.this.createSendLink();
 					if (sender != null)
 					{
-						MessageSender.this.underlyingFactory.links.remove(MessageSender.this.sendLink);
+						Sender oldSender = MessageSender.this.sendLink;
+						MessageSender.this.underlyingFactory.links.remove(oldSender);
+						oldSender.free();
 						MessageSender.this.sendLink = sender;
 					}
 					
@@ -433,8 +435,7 @@ public class MessageSender extends ClientEntity
 		Connection connection = null;
 		try
 		{
-			// TODO throw it on the appropriate operation
-			connection = this.underlyingFactory.getConnectionAsync().get();
+			connection = this.underlyingFactory.getConnectionAsync().get(this.operationTimeout.getSeconds(), TimeUnit.SECONDS);
 		} 
 		catch (InterruptedException|ExecutionException exception)
 		{
@@ -444,12 +445,17 @@ public class MessageSender extends ClientEntity
 				this.onError((Exception) throwable);
 				return null;
 			}
-		} 
+		}
+		catch (TimeoutException exception)
+        {
+        	this.onError(exception);
+        	return null;
+        }
 		
 		Session session = connection.session();
         session.open();
         
-        String sendLinkName = this.getClientId();
+        String sendLinkName = StringUtil.getRandomString();
         sendLinkName = sendLinkName.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer());
         Sender sender = session.sender(sendLinkName);
         
@@ -464,6 +470,8 @@ public class MessageSender extends ClientEntity
         
         SendLinkHandler handler = new SendLinkHandler(this);
         BaseHandler.setHandler(sender, handler);
+		
+        this.underlyingFactory.links.add(sender);
 		
         sender.open();
         return sender;

@@ -19,8 +19,7 @@ import com.microsoft.azure.servicebus.amqp.*;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
- * Manage reconnect
- * TODO: Bring all Create's here - so that it can manage recreate/close scenario's
+ * Manages reconnect
  */
 public class MessagingFactory extends ClientEntity
 {
@@ -49,9 +48,17 @@ public class MessagingFactory extends ClientEntity
 	 */
 	MessagingFactory(final ConnectionStringBuilder builder) throws IOException
 	{
-		super("MessagingFactory" + UUID.randomUUID().toString());
+		super("MessagingFactory".concat(StringUtil.getRandomString()));
 		
-		this.startReactor(new ReactorHandler());
+		this.startReactor(new ReactorHandler()
+		{
+			@Override
+			public void onReactorFinal(Event e)
+		    {
+				super.onReactorFinal(e);
+				MessagingFactory.this.onReactorError(ServiceBusException.create(true, "Reactor finalized."));
+		    }
+		});
 		
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
@@ -72,11 +79,10 @@ public class MessagingFactory extends ClientEntity
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
 		this.reactor = Proton.reactor(reactorHandler);
-		this.reactorThread = new Thread(new RunReactor(this, this.reactor));
+		this.reactorThread = new Thread(new RunReactor(this.reactor));
 		this.reactorThread.start();
 	}
 	
-	// Todo: async
 	Connection getConnection()
 	{
 		if (this.connection.getLocalState() == EndpointState.CLOSED)
@@ -89,7 +95,8 @@ public class MessagingFactory extends ClientEntity
 					this.connection.free();
 					try
 					{
-						this.startReactor(new ReactorHandler() {
+						this.startReactor(new ReactorHandler()
+						{
 							@Override
 							public void onReactorInit(Event e)
 							{
@@ -98,6 +105,13 @@ public class MessagingFactory extends ClientEntity
 								Reactor reactor = e.getReactor();
 								MessagingFactory.this.connection = reactor.connection(MessagingFactory.this.connectionHandler);
 							}
+							
+							@Override
+							public void onReactorFinal(Event e)
+						    {
+								super.onReactorFinal(e);
+								MessagingFactory.this.onReactorError(ServiceBusException.create(true, "Reactor finalized."));
+						    }
 						});
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -168,7 +182,7 @@ public class MessagingFactory extends ClientEntity
 	{
 		this.connection.close();
 		
-		// TODO: Abstract out processOnClose on all links-connections
+		// Abstract out processOnClose on all links-connections
 		// dispatch the TransportError to all dependent registered links
 		Iterator<Link> literator = this.links.iterator();
 		while (literator.hasNext())
@@ -194,7 +208,49 @@ public class MessagingFactory extends ClientEntity
 			}
 		}
 	}
-
+	
+	public void onReactorError(Exception cause)
+	{
+		if (!this.open.isDone())
+		{
+			System.out.println("isOpenDone");
+			this.onOpenComplete(cause);
+			return;
+		}
+		
+		if (this.connection != null)
+		{
+			this.connection.close();
+		}
+		
+		// Abstract out processOnClose on all links-connections
+		// dispatch the TransportError to all dependent registered links
+		Iterator<Link> literator = this.links.iterator();
+		while (literator.hasNext())
+		{
+			Link link = literator.next();
+			if (link instanceof Receiver)
+			{
+				System.out.println("invoke receiver handler" + link.getName());
+				Handler handler = BaseHandler.getHandler((Receiver) link);
+				if (handler != null && handler instanceof ReceiveLinkHandler)
+				{
+					ReceiveLinkHandler recvLinkHandler = (ReceiveLinkHandler) handler;
+					recvLinkHandler.processOnClose(link, cause);
+				}
+			}
+			else if(link instanceof Sender)
+			{
+				Handler handler = BaseHandler.getHandler((Sender) link);
+				if (handler != null && handler instanceof SendLinkHandler)
+				{
+					SendLinkHandler sendLinkHandler = (SendLinkHandler) handler;
+					sendLinkHandler.processOnClose(link, cause);
+				}
+			}
+		}
+	}
+	
 	public void close()
 	{
 		if (this.connection != null)
@@ -217,15 +273,13 @@ public class MessagingFactory extends ClientEntity
 		return CompletableFuture.completedFuture(null);
 	}
 
-	public static class RunReactor implements Runnable
+	public class RunReactor implements Runnable
 	{
 		private Reactor r;
-		private MessagingFactory messagingFactory;
 		
-		public RunReactor(MessagingFactory owner, Reactor r)
+		public RunReactor(Reactor r)
 		{
 			this.r = r;
-			this.messagingFactory = owner;
 		}
 		
 		public void run()
@@ -241,18 +295,20 @@ public class MessagingFactory extends ClientEntity
 			}
 			catch (HandlerException handlerException)
 			{
-				if (handlerException.getCause() != null && handlerException.getCause() instanceof UnresolvedAddressException)
-				{
-					UnresolvedAddressException unresolvedAddressException = (UnresolvedAddressException) handlerException.getCause();
-					this.messagingFactory.onOpenComplete(unresolvedAddressException);
-					return;
-				}
+				Exception cause = handlerException;
 				
 				if(TRACE_LOGGER.isLoggable(Level.WARNING))
 			    {
-					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor: " + handlerException.toString());
-					handlerException.printStackTrace();
+					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor:");
+					TRACE_LOGGER.log(Level.WARNING, handlerException.getMessage());
+					if (handlerException.getStackTrace() != null)
+						for (StackTraceElement ste: handlerException.getStackTrace())
+						{
+							TRACE_LOGGER.log(Level.WARNING, ste.toString());
+						}
 			    }
+				
+				MessagingFactory.this.onReactorError(cause);
 			}
 		}
 	}

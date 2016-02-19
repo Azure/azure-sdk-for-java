@@ -32,7 +32,5 @@ public final class ClientConstants
 	
 	public final static String ServiceBusClientTrace = "servicebus.trace";
 	
-	public final static int AmqpLinkDetachTimeoutInMin = 8;
-	
 	public final static boolean DefaultIsTransient = true;
 }

@@ -23,7 +23,7 @@ public class EventHubClient extends ClientEntity
 	
 	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
 	{
-		super(UUID.randomUUID().toString());
+		super(StringUtil.getRandomString());
 		this.eventHubName = connectionString.getEntityPath();
 	}
 	
@@ -86,7 +86,7 @@ public class EventHubClient extends ClientEntity
 	
 	CompletableFuture<Void> createInternalSender()
 	{
-		return MessageSender.Create(this.underlyingFactory, UUID.randomUUID().toString(), this.eventHubName)
+		return MessageSender.Create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{
 					public void accept(MessageSender a) { EventHubClient.this.sender = a;}

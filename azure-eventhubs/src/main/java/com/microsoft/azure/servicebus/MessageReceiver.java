@@ -1,7 +1,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.*;
-import java.time.temporal.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
@@ -25,7 +25,7 @@ import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 public class MessageReceiver extends ClientEntity
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
-	private static final int PingFlowThreshold = 50;
+	private static final double PING_FLOW_RESERVE_PERCENT = 10;
 	
 	private final int prefetchCount; 
 	private final ConcurrentLinkedQueue<WorkItem<Collection<Message>>> pendingReceives;
@@ -168,6 +168,11 @@ public class MessageReceiver extends ClientEntity
 	{
 		return this.prefetchCount;
 	}
+	
+	public final int getInitialPrefetchCount()
+	{
+		return (int) (this.prefetchCount * (100 - MessageReceiver.PING_FLOW_RESERVE_PERCENT) / 100);
+	}
 		
 	/*
 	 * *****Important*****: if ReceiveHandler is passed to the Constructor - this receive shouldn't be invoked
@@ -209,13 +214,14 @@ public class MessageReceiver extends ClientEntity
 		CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<Collection<Message>>();
 		this.pendingReceives.offer(new WorkItem<Collection<Message>>(onReceive, this.operationTimeout));
 		
-		WorkItem<Collection<Message>> topWorkItem = this.pendingReceives.peek();
-		if (topWorkItem != null)
-		{
-			this.sendPingFlow();
-		}
+		this.sendPingFlow();
 		
 		return onReceive;
+	}
+	
+	public int getPingFlowThreshold()
+	{
+		return (int)(this.prefetchCount * MessageReceiver.PING_FLOW_RESERVE_PERCENT / 100); 
 	}
 	
 	public void setReceiveHandler(final ReceiveHandler receiveHandler)
@@ -234,8 +240,18 @@ public class MessageReceiver extends ClientEntity
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 				this.linkOpen.getWork().complete(this);
 			
-			this.underlyingFactory.links.add(this.receiveLink);
 			this.lastKnownLinkError = null;
+			
+			// re-open link always starts from the last received offset
+			this.offsetInclusive = false;
+			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
+			
+			if (this.receiveLink.getCredit() == 0)
+			{
+				int pendingPrefetch = this.getInitialPrefetchCount() - this.prefetchedMessages.size();
+				this.pingFlowCount.set(0);
+				this.sendFlow(pendingPrefetch);
+			}
 		}
 		else
 		{
@@ -244,9 +260,6 @@ public class MessageReceiver extends ClientEntity
 			
 			this.lastKnownLinkError = exception;
 		}
-		
-		this.offsetInclusive = false; // re-open link always starts from the last received offset
-		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 		
 		synchronized (this.linkCreateLock)
 		{
@@ -422,7 +435,7 @@ public class MessageReceiver extends ClientEntity
         
         try
 		{
-			connection = this.underlyingFactory.getConnectionAsync().get();
+			connection = this.underlyingFactory.getConnectionAsync().get(this.operationTimeout.getSeconds(), TimeUnit.SECONDS);
 		}
 		catch (InterruptedException|ExecutionException exception)
 		{
@@ -434,10 +447,16 @@ public class MessageReceiver extends ClientEntity
 			
 			return null;
 		}
+        catch (TimeoutException exception)
+        {
+        	this.onError(exception);
+        	return null;
+        }
     
 		Session ssn = connection.session();
-		
-		String receiveLinkName = this.getClientId();
+		ssn.open();
+        
+		String receiveLinkName = StringUtil.getRandomString();
 		receiveLinkName = receiveLinkName.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer());
 		Receiver receiver = ssn.receiver(receiveLinkName);
 		receiver.setSource(source);
@@ -452,11 +471,11 @@ public class MessageReceiver extends ClientEntity
         	receiver.setProperties(Collections.singletonMap(AmqpConstants.Epoch, (Object) this.epoch));
         }
         
-        ssn.open();
-        receiver.open();
-        
         ReceiveLinkHandler handler = new ReceiveLinkHandler(this);
         BaseHandler.setHandler(receiver, handler);
+        this.underlyingFactory.links.add(receiver);
+        
+        receiver.open();
         
         return receiver;
 	}
@@ -487,7 +506,7 @@ public class MessageReceiver extends ClientEntity
 		        			String.format("MessageReceiver.sendFlow (linkname: %s), updated-link-credit: %s", this.receiveLink.getName(), this.receiveLink.getCredit()));
 		        }
 			}
-			else
+			else if (credits > 0)
 			{
 				this.receiveLink.flow(credits);
 			}
@@ -500,20 +519,28 @@ public class MessageReceiver extends ClientEntity
 	
 	private void sendPingFlow()
 	{
+		// TODO: Proton-j library needs to expose the sending flow with echo=true; a workaround until then
 		if (this.receiveLink.getLocalState() != EndpointState.CLOSED)
 		{
-			if (Instant.now().isAfter(this.lastCommunicatedAt.plus(ClientConstants.AmqpLinkDetachTimeoutInMin, ChronoUnit.DAYS))
-					&& this.pingFlowCount.get() < MessageReceiver.PingFlowThreshold)
+			int currentCredit = this.receiveLink.getCredit();
+			if (currentCredit < this.getInitialPrefetchCount())
 			{
-				this.receiveLink.flow(1);
+				this.receiveLink.flow(this.getInitialPrefetchCount() - currentCredit);
 				this.lastCommunicatedAt = Instant.now();
-				if(TRACE_LOGGER.isLoggable(Level.FINE))
-		        {
-		        	TRACE_LOGGER.log(Level.FINE,
-		        			String.format("MessageReceiver.sendPingFlow (linkname: %s), updated-link-credit: %s", this.receiveLink.getName(), this.receiveLink.getCredit()));
-		        }
-				
-				this.pingFlowCount.incrementAndGet();
+			}
+			else if (currentCredit < this.getPrefetchCount() && Instant.now().isAfter(this.lastCommunicatedAt.plus(this.operationTimeout)))
+			{
+				if (this.pingFlowCount.get() < this.getPingFlowThreshold())
+				{
+					this.pingFlowCount.incrementAndGet();
+					this.receiveLink.flow(1);
+					this.lastCommunicatedAt = Instant.now();
+					if(TRACE_LOGGER.isLoggable(Level.FINE))
+			        {
+			        	TRACE_LOGGER.log(Level.FINE,
+			        			String.format("linkname[%s], linkPath[%s], updated-link-credit[%s]", this.receiveLink.getName(), this.receivePath, this.receiveLink.getCredit()));
+			        }
+				}
 			}
 		}
 		else
@@ -548,7 +575,10 @@ public class MessageReceiver extends ClientEntity
 					Receiver receiver = MessageReceiver.this.createReceiveLink();
 					if (receiver != null)
 					{
-						MessageReceiver.this.underlyingFactory.links.remove(MessageReceiver.this.receiveLink);
+						Receiver oldReceiver = MessageReceiver.this.receiveLink;
+						MessageReceiver.this.underlyingFactory.links.remove(oldReceiver);
+						oldReceiver.free();
+						
 						MessageReceiver.this.receiveLink = receiver;
 					}
 					
@@ -623,19 +653,25 @@ public class MessageReceiver extends ClientEntity
 			, TimerType.OneTimeRun);
 	}
 
-	public void onClose()
+	public void onClose(ErrorCondition condition)
 	{
 		synchronized (this.linkClose)
 		{
 			if (this.closeCalled)
 			{
 				this.linkClose.complete(null);
-			}
-			else
-			{
-				this.onError(new ErrorCondition(null, null));
+				this.closeCalled = false;
+				return;
 			}
 		}
+		
+		if (condition == null)
+		{
+			this.onError(ServiceBusException.create(true, 
+					String.format(Locale.US,"Closing the link. LinkName(%s), EntityPath(%s)", this.receiveLink.getName(), this.receivePath)));
+		}
+		else
+			this.onError(condition);
 	}
 	
 	@Override

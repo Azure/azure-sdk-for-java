@@ -1,5 +1,7 @@
 package com.microsoft.azure.servicebus;
 
+import java.util.UUID;
+
 public final class StringUtil
 {
 	public final static String EMPTY = "";
@@ -23,5 +25,10 @@ public final class StringUtil
 		}
 		
 		return true;
+	}
+	
+	public static String getRandomString()
+	{
+		return UUID.randomUUID().toString().substring(0, 6);
 	}
 }

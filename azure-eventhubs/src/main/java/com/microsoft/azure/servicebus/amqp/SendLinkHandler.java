@@ -107,6 +107,12 @@ public class SendLinkHandler extends BaseLinkHandler
         }
 	}
 	
+	public void processOnClose(Link link, Exception exception)
+	{
+		link.close();
+		this.msgSender.onError(exception);
+	}
+	
 	@Override
 	public void onLinkRemoteDetach(Event event)
 	{
