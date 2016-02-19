@@ -1,3 +1,6 @@
+2016.2.18 Version 0.9.3
+* Fix enum bugs in azure-svc-mgmt-websites
+
 2016.1.26 Version 0.9.2
 * Fix HTTP Proxy for Apache HTTP Client in Service Clients
 * Key Vault: Fix KeyVaultKey to not attempt to load RSA Private Key
