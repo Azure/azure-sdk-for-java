@@ -45,4 +45,12 @@ public class EnumUtilityTest {
             fail();
         } catch (IllegalArgumentException ex) { }
     }
+
+    @Test
+    public void EnumUtilityShouldParseInterger() throws Exception {
+        String cat = "0";
+        String dog = "1";
+        Assert.assertEquals(Animal.Cat, EnumUtility.fromString(Animal.class, cat));
+        Assert.assertEquals(Animal.Dog, EnumUtility.fromString(Animal.class, dog));
+    }
 }

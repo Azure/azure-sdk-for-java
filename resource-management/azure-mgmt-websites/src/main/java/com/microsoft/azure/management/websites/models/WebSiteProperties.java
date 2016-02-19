@@ -25,7 +25,6 @@ package com.microsoft.azure.management.websites.models;
 
 import com.microsoft.windowsazure.core.LazyArrayList;
 import com.microsoft.windowsazure.core.LazyHashMap;
-
 import java.net.InetAddress;
 import java.net.URI;
 import java.util.ArrayList;
