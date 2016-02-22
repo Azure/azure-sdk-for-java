@@ -5627,62 +5627,62 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         WebSiteGetPublishProfileResponse.PublishProfile publishProfileInstance = new WebSiteGetPublishProfileResponse.PublishProfile();
                         result.getPublishProfiles().add(publishProfileInstance);
                         
-                        Attr profileNameAttribute = publishDataElement.getAttributeNodeNS("", "profileName");
+                        Attr profileNameAttribute = publishDataElement.getAttributeNodeNS(null, "profileName");
                         if (profileNameAttribute != null) {
                             publishProfileInstance.setProfileName(profileNameAttribute.getValue());
                         }
                         
-                        Attr publishMethodAttribute = publishDataElement.getAttributeNodeNS("", "publishMethod");
+                        Attr publishMethodAttribute = publishDataElement.getAttributeNodeNS(null, "publishMethod");
                         if (publishMethodAttribute != null) {
                             publishProfileInstance.setPublishMethod(publishMethodAttribute.getValue());
                         }
                         
-                        Attr publishUrlAttribute = publishDataElement.getAttributeNodeNS("", "publishUrl");
+                        Attr publishUrlAttribute = publishDataElement.getAttributeNodeNS(null, "publishUrl");
                         if (publishUrlAttribute != null) {
                             publishProfileInstance.setPublishUrl(publishUrlAttribute.getValue());
                         }
                         
-                        Attr msdeploySiteAttribute = publishDataElement.getAttributeNodeNS("", "msdeploySite");
+                        Attr msdeploySiteAttribute = publishDataElement.getAttributeNodeNS(null, "msdeploySite");
                         if (msdeploySiteAttribute != null) {
                             publishProfileInstance.setMSDeploySite(msdeploySiteAttribute.getValue());
                         }
                         
-                        Attr ftpPassiveModeAttribute = publishDataElement.getAttributeNodeNS("", "ftpPassiveMode");
+                        Attr ftpPassiveModeAttribute = publishDataElement.getAttributeNodeNS(null, "ftpPassiveMode");
                         if (ftpPassiveModeAttribute != null) {
                             publishProfileInstance.setFtpPassiveMode(DatatypeConverter.parseBoolean(ftpPassiveModeAttribute.getValue().toLowerCase()));
                         }
                         
-                        Attr userNameAttribute = publishDataElement.getAttributeNodeNS("", "userName");
+                        Attr userNameAttribute = publishDataElement.getAttributeNodeNS(null, "userName");
                         if (userNameAttribute != null) {
                             publishProfileInstance.setUserName(userNameAttribute.getValue());
                         }
                         
-                        Attr userPWDAttribute = publishDataElement.getAttributeNodeNS("", "userPWD");
+                        Attr userPWDAttribute = publishDataElement.getAttributeNodeNS(null, "userPWD");
                         if (userPWDAttribute != null) {
                             publishProfileInstance.setUserPassword(userPWDAttribute.getValue());
                         }
                         
-                        Attr destinationAppUrlAttribute = publishDataElement.getAttributeNodeNS("", "destinationAppUrl");
+                        Attr destinationAppUrlAttribute = publishDataElement.getAttributeNodeNS(null, "destinationAppUrl");
                         if (destinationAppUrlAttribute != null) {
                             publishProfileInstance.setDestinationAppUri(new URI(destinationAppUrlAttribute.getValue()));
                         }
                         
-                        Attr sQLServerDBConnectionStringAttribute = publishDataElement.getAttributeNodeNS("", "SQLServerDBConnectionString");
+                        Attr sQLServerDBConnectionStringAttribute = publishDataElement.getAttributeNodeNS(null, "SQLServerDBConnectionString");
                         if (sQLServerDBConnectionStringAttribute != null) {
                             publishProfileInstance.setSqlServerConnectionString(sQLServerDBConnectionStringAttribute.getValue());
                         }
                         
-                        Attr mySQLDBConnectionStringAttribute = publishDataElement.getAttributeNodeNS("", "mySQLDBConnectionString");
+                        Attr mySQLDBConnectionStringAttribute = publishDataElement.getAttributeNodeNS(null, "mySQLDBConnectionString");
                         if (mySQLDBConnectionStringAttribute != null) {
                             publishProfileInstance.setMySqlConnectionString(mySQLDBConnectionStringAttribute.getValue());
                         }
                         
-                        Attr hostingProviderForumLinkAttribute = publishDataElement.getAttributeNodeNS("", "hostingProviderForumLink");
+                        Attr hostingProviderForumLinkAttribute = publishDataElement.getAttributeNodeNS(null, "hostingProviderForumLink");
                         if (hostingProviderForumLinkAttribute != null) {
                             publishProfileInstance.setHostingProviderForumUri(new URI(hostingProviderForumLinkAttribute.getValue()));
                         }
                         
-                        Attr controlPanelLinkAttribute = publishDataElement.getAttributeNodeNS("", "controlPanelLink");
+                        Attr controlPanelLinkAttribute = publishDataElement.getAttributeNodeNS(null, "controlPanelLink");
                         if (controlPanelLinkAttribute != null) {
                             publishProfileInstance.setControlPanelUri(new URI(controlPanelLinkAttribute.getValue()));
                         }
@@ -5694,22 +5694,22 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 WebSiteGetPublishProfileResponse.Database addInstance = new WebSiteGetPublishProfileResponse.Database();
                                 publishProfileInstance.getDatabases().add(addInstance);
                                 
-                                Attr nameAttribute = databasesElement.getAttributeNodeNS("", "name");
+                                Attr nameAttribute = databasesElement.getAttributeNodeNS(null, "name");
                                 if (nameAttribute != null) {
                                     addInstance.setName(nameAttribute.getValue());
                                 }
                                 
-                                Attr connectionStringAttribute = databasesElement.getAttributeNodeNS("", "connectionString");
+                                Attr connectionStringAttribute = databasesElement.getAttributeNodeNS(null, "connectionString");
                                 if (connectionStringAttribute != null) {
                                     addInstance.setConnectionString(connectionStringAttribute.getValue());
                                 }
                                 
-                                Attr providerNameAttribute = databasesElement.getAttributeNodeNS("", "providerName");
+                                Attr providerNameAttribute = databasesElement.getAttributeNodeNS(null, "providerName");
                                 if (providerNameAttribute != null) {
                                     addInstance.setProviderName(providerNameAttribute.getValue());
                                 }
                                 
-                                Attr typeAttribute = databasesElement.getAttributeNodeNS("", "type");
+                                Attr typeAttribute = databasesElement.getAttributeNodeNS(null, "type");
                                 if (typeAttribute != null) {
                                     addInstance.setType(typeAttribute.getValue());
                                 }
