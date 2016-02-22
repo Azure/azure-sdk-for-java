@@ -1409,6 +1409,27 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 phpVersionInstance = phpVersionValue.getTextValue();
                                 siteConfigInstance.setPhpVersion(phpVersionInstance);
                             }
+
+                            JsonNode javaVersionValue = siteConfigValue.get("javaVersion");
+                            if (javaVersionValue != null && javaVersionValue instanceof NullNode == false) {
+                                String javaVersionInstance;
+                                javaVersionInstance = javaVersionValue.getTextValue();
+                                siteConfigInstance.setJavaVersion(javaVersionInstance);
+                            }
+
+                            JsonNode javaContainerValue = siteConfigValue.get("javaContainer");
+                            if (javaContainerValue != null && javaContainerValue instanceof NullNode == false) {
+                                String javaContainerInstance;
+                                javaContainerInstance = javaContainerValue.getTextValue();
+                                siteConfigInstance.setJavaContainer(javaContainerInstance);
+                            }
+
+                            JsonNode javaContainerVersionValue = siteConfigValue.get("javaContainerVersion");
+                            if (javaContainerVersionValue != null && javaContainerVersionValue instanceof NullNode == false) {
+                                String javaContainerVersionInstance;
+                                javaContainerVersionInstance = javaContainerVersionValue.getTextValue();
+                                siteConfigInstance.setJavaContainerVersion(javaContainerVersionInstance);
+                            }
                             
                             JsonNode pythonVersionValue = siteConfigValue.get("pythonVersion");
                             if (pythonVersionValue != null && pythonVersionValue instanceof NullNode == false) {
@@ -3184,6 +3205,27 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 phpVersionInstance = phpVersionValue.getTextValue();
                                 siteConfigInstance.setPhpVersion(phpVersionInstance);
                             }
+
+                            JsonNode javaVersionValue = siteConfigValue.get("javaVersion");
+                            if (javaVersionValue != null && javaVersionValue instanceof NullNode == false) {
+                                String javaVersionInstance;
+                                javaVersionInstance = javaVersionValue.getTextValue();
+                                siteConfigInstance.setJavaVersion(javaVersionInstance);
+                            }
+
+                            JsonNode javaContainerValue = siteConfigValue.get("javaContainer");
+                            if (javaContainerValue != null && javaContainerValue instanceof NullNode == false) {
+                                String javaContainerInstance;
+                                javaContainerInstance = javaContainerValue.getTextValue();
+                                siteConfigInstance.setJavaContainer(javaContainerInstance);
+                            }
+
+                            JsonNode javaContainerVersionValue = siteConfigValue.get("javaContainerVersion");
+                            if (javaContainerVersionValue != null && javaContainerVersionValue instanceof NullNode == false) {
+                                String javaContainerVersionInstance;
+                                javaContainerVersionInstance = javaContainerVersionValue.getTextValue();
+                                siteConfigInstance.setJavaContainerVersion(javaContainerVersionInstance);
+                            }
                             
                             JsonNode pythonVersionValue = siteConfigValue.get("pythonVersion");
                             if (pythonVersionValue != null && pythonVersionValue instanceof NullNode == false) {
@@ -4165,6 +4207,27 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             String phpVersionInstance;
                             phpVersionInstance = phpVersionValue.getTextValue();
                             propertiesInstance.setPhpVersion(phpVersionInstance);
+                        }
+
+                        JsonNode javaVersionValue = propertiesValue.get("javaVersion");
+                        if (javaVersionValue != null && javaVersionValue instanceof NullNode == false) {
+                            String javaVersionInstance;
+                            javaVersionInstance = javaVersionValue.getTextValue();
+                            propertiesInstance.setJavaVersion(javaVersionInstance);
+                        }
+
+                        JsonNode javaContainerValue = propertiesValue.get("javaContainer");
+                        if (javaContainerValue != null && javaContainerValue instanceof NullNode == false) {
+                            String javaContainerInstance;
+                            javaContainerInstance = javaContainerValue.getTextValue();
+                            propertiesInstance.setJavaContainer(javaContainerInstance);
+                        }
+
+                        JsonNode javaContainerVersionValue = propertiesValue.get("javaContainerVersion");
+                        if (javaContainerVersionValue != null && javaContainerVersionValue instanceof NullNode == false) {
+                            String javaContainerVersionInstance;
+                            javaContainerVersionInstance = javaContainerVersionValue.getTextValue();
+                            propertiesInstance.setJavaContainerVersion(javaContainerVersionInstance);
                         }
                         
                         JsonNode pythonVersionValue = propertiesValue.get("pythonVersion");
@@ -6726,6 +6789,27 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         phpVersionInstance = phpVersionValue.getTextValue();
                                         siteConfigInstance.setPhpVersion(phpVersionInstance);
                                     }
+
+                                    JsonNode javaVersionValue = siteConfigValue.get("javaVersion");
+                                    if (javaVersionValue != null && javaVersionValue instanceof NullNode == false) {
+                                        String javaVersionInstance;
+                                        javaVersionInstance = javaVersionValue.getTextValue();
+                                        siteConfigInstance.setJavaVersion(javaVersionInstance);
+                                    }
+
+                                    JsonNode javaContainerValue = siteConfigValue.get("javaContainer");
+                                    if (javaContainerValue != null && javaContainerValue instanceof NullNode == false) {
+                                        String javaContainerInstance;
+                                        javaContainerInstance = javaContainerValue.getTextValue();
+                                        siteConfigInstance.setJavaContainer(javaContainerInstance);
+                                    }
+
+                                    JsonNode javaContainerVersionValue = siteConfigValue.get("javaContainerVersion");
+                                    if (javaContainerVersionValue != null && javaContainerVersionValue instanceof NullNode == false) {
+                                        String javaContainerVersionInstance;
+                                        javaContainerVersionInstance = javaContainerVersionValue.getTextValue();
+                                        siteConfigInstance.setJavaContainerVersion(javaContainerVersionInstance);
+                                    }
                                     
                                     JsonNode pythonVersionValue = siteConfigValue.get("pythonVersion");
                                     if (pythonVersionValue != null && pythonVersionValue instanceof NullNode == false) {
@@ -8641,7 +8725,19 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (parameters.getProperties().getPhpVersion() != null) {
             ((ObjectNode) propertiesValue).put("phpVersion", parameters.getProperties().getPhpVersion());
         }
-        
+
+        if (parameters.getProperties().getJavaVersion() != null) {
+            ((ObjectNode) propertiesValue).put("javaVersion", parameters.getProperties().getJavaVersion());
+        }
+
+        if (parameters.getProperties().getJavaContainer() != null) {
+            ((ObjectNode) propertiesValue).put("javaContainer", parameters.getProperties().getJavaContainer());
+        }
+
+        if (parameters.getProperties().getJavaContainerVersion() != null) {
+            ((ObjectNode) propertiesValue).put("javaContainerVersion", parameters.getProperties().getJavaContainerVersion());
+        }
+
         if (parameters.getProperties().getPythonVersion() != null) {
             ((ObjectNode) propertiesValue).put("pythonVersion", parameters.getProperties().getPythonVersion());
         }
