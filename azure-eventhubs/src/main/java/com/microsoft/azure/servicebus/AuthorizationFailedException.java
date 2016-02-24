@@ -22,16 +22,23 @@ package com.microsoft.azure.servicebus;
 
 public class AuthorizationFailedException extends ServiceBusException
 {
-	
-	public AuthorizationFailedException(String description)
+	AuthorizationFailedException()
 	{
-		super(description);
+		super(false);
 	}
-	
-	@Override 
-	public boolean getIsTransient()
+
+	public AuthorizationFailedException(final String message)
 	{
-	  return false;
+		super(false, message);
 	}
-	
+
+	AuthorizationFailedException(final Throwable cause)
+	{
+		super(false, cause);
+	}
+
+	AuthorizationFailedException(final String message, final Throwable cause)
+	{
+		super(false, message, cause);
+	}
 }

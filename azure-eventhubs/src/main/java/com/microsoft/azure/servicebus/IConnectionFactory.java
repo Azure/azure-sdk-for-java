@@ -23,7 +23,7 @@ package com.microsoft.azure.servicebus;
 import java.util.concurrent.CompletableFuture;
 import org.apache.qpid.proton.engine.Connection;
 
-public interface IConnectionFactory
+interface IConnectionFactory
 {
-	CompletableFuture<Connection> getConnectionAsync();
+	CompletableFuture<Connection> getConnection();
 }

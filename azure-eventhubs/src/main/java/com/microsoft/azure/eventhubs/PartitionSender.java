@@ -25,7 +25,7 @@ import java.util.function.*;
 
 import com.microsoft.azure.servicebus.*;
 
-public final class PartitionSender
+public final class PartitionSender extends ClientEntity
 {
 	private final String partitionId;
 	private final String eventHubName;
@@ -35,6 +35,7 @@ public final class PartitionSender
 		
 	private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId)
 	{
+		super(null);
 		this.partitionId = partitionId;
 		this.eventHubName = eventHubName;
 		this.factory = factory;
@@ -58,7 +59,7 @@ public final class PartitionSender
 	
 	private CompletableFuture<Void> createInternalSender() throws ServiceBusException
 	{
-		return MessageSender.Create(this.factory, StringUtil.getRandomString(), 
+		return MessageSender.create(this.factory, StringUtil.getRandomString(), 
 				String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{
@@ -81,5 +82,18 @@ public final class PartitionSender
 		}
 		
 		return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
+	}
+
+	@Override
+	public CompletableFuture<Void> close()
+	{
+		if (this.internalSender == null)
+		{
+			return CompletableFuture.completedFuture(null);
+		}
+		else
+		{
+			return this.internalSender.close();
+		}
 	}
 }

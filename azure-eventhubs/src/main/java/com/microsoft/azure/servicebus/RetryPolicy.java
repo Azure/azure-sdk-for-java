@@ -26,9 +26,8 @@ import java.util.concurrent.*;
 // TODO: SIMPLIFY retryPolicy - ConcurrentHashMap is not needed
 public abstract class RetryPolicy
 {
+	private static final RetryPolicy NO_RETRY = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0);
 	private ConcurrentHashMap<String, Integer> retryCounts;
-	
-	public static final RetryPolicy NoRetry = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0);
 	
 	protected RetryPolicy()
 	{
@@ -71,6 +70,11 @@ public abstract class RetryPolicy
 			ClientConstants.DEFAULT_RERTRY_MIN_BACKOFF, 
 			ClientConstants.DEFAULT_RERTRY_MAX_BACKOFF, 
 			ClientConstants.DEFAULT_MAX_RETRY_COUNT);
+	}
+	
+	public static RetryPolicy getNoRetry()
+	{
+		return RetryPolicy.NO_RETRY;
 	}
 	
 	protected int getRetryCount(String clientId)

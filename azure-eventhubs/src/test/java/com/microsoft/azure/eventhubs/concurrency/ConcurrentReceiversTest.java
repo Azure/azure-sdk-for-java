@@ -55,7 +55,7 @@ public class ConcurrentReceiversTest
 				{
 					ehClients[i] = EventHubClient.createFromConnectionString(connStr.toString(), true).get();
 					receivers[i] = ehClients[i].createReceiver(consumerGroupName, Integer.toString(i), Instant.now()).get();
-					receivers[i].setReceiveHandler(new EventCounter());
+					// receivers[i].setReceiveHandler(new EventCounter());
 				}
 			}
 			finally

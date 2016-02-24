@@ -22,20 +22,23 @@ package com.microsoft.azure.servicebus;
 
 public class ServerBusyException extends ServiceBusException 
 {
-	private static final long serialVersionUID = -1106827749824999989L;
-	
-	public ServerBusyException(String message)
+	public ServerBusyException()
 	{
-		super(message);
-	}
-	
-	public ServerBusyException() {
-		super();
+		super(true);
 	}
 
-	@Override 
-	public boolean getIsTransient()
+	ServerBusyException(final String message)
 	{
-		return true;
+		super(true, message);
+	}
+
+	ServerBusyException(final Throwable cause)
+	{
+		super(true, cause);
+	}
+
+	ServerBusyException(final String message, final Throwable cause)
+	{
+		super(true, message, cause);
 	}
 }

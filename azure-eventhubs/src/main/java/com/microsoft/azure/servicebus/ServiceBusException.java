@@ -20,77 +20,66 @@
  */
 package com.microsoft.azure.servicebus;
 
-public abstract class ServiceBusException extends Exception
+import java.util.Locale;
+
+public class ServiceBusException extends Exception
 {
 	  private static final long serialVersionUID = -3654294093967132325L;
 	  
-	  public ServiceBusException()
+	  private boolean isTransient;
+	  private ErrorContext errorContext;
+	  
+	  ServiceBusException(final boolean isTransient)
 	  {
 	    super();
+	    this.isTransient = isTransient;
 	  }
 	
-	  public ServiceBusException(String message)
+	  ServiceBusException(final boolean isTransient, final String message)
 	  {
 	    super(message);
+	    this.isTransient = isTransient;
 	  }
 	
-	  public ServiceBusException(Throwable cause)
+	  ServiceBusException(final boolean isTransient, final Throwable cause)
 	  {
 	    super(cause);
+	    this.isTransient = isTransient;
 	  }
 	
-	  public ServiceBusException(String message, Throwable cause)
+	  ServiceBusException(final boolean isTransient, final String message, final Throwable cause)
 	  {
 	    super(message, cause);
+	    this.isTransient = isTransient;
 	  }
 	  
-	  public abstract boolean getIsTransient();
+	  @Override
+	  public String getMessage()
+	  {
+		  final String baseMessage = super.getMessage();
+		  return this.errorContext == null || StringUtil.isNullOrEmpty(this.errorContext.toString())
+				  	? baseMessage
+					: (!StringUtil.isNullOrEmpty(baseMessage) 
+						? String.format(Locale.US, "%s, %s[%s]", baseMessage, "errorContext", this.errorContext.toString())
+						: String.format(Locale.US, "%s[%s]", "errorContext", this.errorContext.toString()));
+	  }
 	  
 	  /**
-	   *  internal-only; Sub-classing is allowed for {@link ServiceBusException} 
-	   *  - but fx's other than ServiceBus sdk's cannot directly create instance & throw it
+	   * A boolean indicating if the exception is a transient error or not.
+	   * @return returns true when user can retry the operation that generated the exception without additional intervention.
 	   */
-	  static ServiceBusException create(final boolean isTransient, final String message)
+	  public boolean getIsTransient()
 	  {
-		  return (ServiceBusException) new InternalServiceBusException(isTransient, message);
+		  return this.isTransient;
 	  }
 	  
-	  static ServiceBusException create(final boolean isTransient, Throwable cause)
+	  public ErrorContext getContext()
 	  {
-		  return (ServiceBusException) new InternalServiceBusException(isTransient, cause);
+		  return this.errorContext;
 	  }
 	  
-	  static ServiceBusException create(final boolean isTransient, final String message, final Throwable cause)
+	  void setContext(ErrorContext errorContext)
 	  {
-		  return (ServiceBusException) new InternalServiceBusException(isTransient, message, cause);
-	  }
-	  
-	  private static final class InternalServiceBusException extends ServiceBusException
-	  {
-		boolean isTransient;
-		  
-		private InternalServiceBusException(final boolean isTransient, final String message)
-		{
-		  super(message);
-		  this.isTransient = isTransient;
-		}
-		  
-		private InternalServiceBusException(final boolean isTransient, final Throwable exception)
-		{
-			super(exception);
-			this.isTransient = isTransient;
-		}
-		
-		private InternalServiceBusException(final boolean isTransient, final String message, final Throwable cause)
-		{
-			super(message, cause);
-			this.isTransient = isTransient;
-		}
-		  
-		@Override
-		public boolean getIsTransient()
-		{
-			return this.isTransient;
-		}		  
+		  this.errorContext = errorContext;
 	  }
 }

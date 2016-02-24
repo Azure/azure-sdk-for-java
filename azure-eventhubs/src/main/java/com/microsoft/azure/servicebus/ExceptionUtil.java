@@ -26,7 +26,6 @@ import com.microsoft.azure.servicebus.amqp.*;
 
 final class ExceptionUtil
 {
-
 	static Exception toException(ErrorCondition errorCondition)
 	{
 		if (errorCondition == null)
@@ -36,7 +35,7 @@ final class ExceptionUtil
 		
 		if (errorCondition.getCondition() == ClientConstants.TIMEOUT_ERROR)
 		{
-			return new TimeoutException(errorCondition.getDescription());
+			return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, new TimeoutException(errorCondition.getDescription()));
 		}
 		else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR)
 		{
@@ -64,19 +63,18 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.InternalError)
 		{
-			return ServiceBusException.create(false, new AmqpException(errorCondition));
+			return new ServiceBusException(false, new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_ERROR)
 		{
-			return new IllegalArgumentException(errorCondition.getDescription());
+			return new ServiceBusException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_OUT_OF_RANGE_ERROR)
 		{
-			return new IllegalArgumentException(errorCondition.getDescription(), new AmqpException(errorCondition));
+			return new ServiceBusException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.NotImplemented)
 		{
-			// TODO: ideally this should have been ToBeImplementedException
 			return new UnsupportedOperationException(errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.NotAllowed)
@@ -85,21 +83,32 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == ClientConstants.PARTITION_NOT_OWNED_ERROR)
 		{
-			return ServiceBusException.create(false, errorCondition.getDescription());
+			return new ServiceBusException(false, errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == ClientConstants.STORE_LOCK_LOST_ERROR)
 		{
-			return ServiceBusException.create(false, errorCondition.getDescription());
+			return new ServiceBusException(false, errorCondition.getDescription());
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced)
 		{
-			return ServiceBusException.create(false, new AmqpException(errorCondition));
+			return new ServiceBusException(false, new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded)
 		{
-			return ServiceBusException.create(false, new AmqpException(errorCondition));
+			return new ServiceBusException(false, new AmqpException(errorCondition));
 		}
 		
-		return ServiceBusException.create(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
+		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
+	}
+	
+	static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider)
+	{
+		if (exception != null && exception instanceof ServiceBusException)
+		{
+			ErrorContext errorContext = contextProvider.getContext();
+			((ServiceBusException) exception).setContext(errorContext);
+		}
+		
+		future.completeExceptionally(exception);
 	}
 }

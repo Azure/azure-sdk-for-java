@@ -49,11 +49,11 @@ import com.microsoft.azure.servicebus.amqp.*;
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
  */
-public class MessageSender extends ClientEntity implements IAmqpSender
+public class MessageSender extends ClientEntity implements IAmqpSender, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
-	public static final int MaxMessageLength = 256 * 1024;
+	public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 	
 	private final MessagingFactory underlyingFactory;
 	private final String sendPath;
@@ -71,7 +71,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 	private Object linkCreateLock;
 	private Exception lastKnownLinkError;
 	
-	public static CompletableFuture<MessageSender> Create(
+	public static CompletableFuture<MessageSender> create(
 			final MessagingFactory factory,
 			final String sendLinkName,
 			final String senderPath)
@@ -128,13 +128,13 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 								pendingDeliveries.remove();
 								Exception cause = pendingSendWork.getLastKnownException() == null 
 										? MessageSender.this.lastKnownLinkError : pendingSendWork.getLastKnownException();
-								pendingSendWork.getWork().completeExceptionally(
-										ServiceBusException.create(
-												cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT, 
-												String.format(Locale.US, "Send operation on entity(%s), link(%s) timed out."
-													, MessageSender.this.getSendPath()
-													, MessageSender.this.sendLink.getName()),
-												cause));
+								ServiceBusException exception = new ServiceBusException(
+										cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT, 
+										String.format(Locale.US, "Send operation on entity(%s), link(%s) timed out."
+											, MessageSender.this.getSendPath()
+											, MessageSender.this.sendLink.getName()),
+										cause);
+								ExceptionUtil.completeExceptionally(pendingSendWork.getWork(), exception, MessageSender.this);
 							}
 						}
 					}
@@ -211,25 +211,25 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 		Message batchMessage = Proton.message();
 		batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
 				
-		byte[] bytes = new byte[MaxMessageLength];
-		int encodedSize = batchMessage.encode(bytes, 0, MaxMessageLength);
+		byte[] bytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
+		int encodedSize = batchMessage.encode(bytes, 0, MAX_MESSAGE_LENGTH_BYTES);
 		int byteArrayOffset = encodedSize;
 		
 		for(Message amqpMessage: messages)
 		{
 			Message messageWrappedByData = Proton.message();
 			
-			byte[] messageBytes = new byte[MaxMessageLength];
-			int messageSizeBytes = amqpMessage.encode(messageBytes, 0, MaxMessageLength);
+			byte[] messageBytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
+			int messageSizeBytes = amqpMessage.encode(messageBytes, 0, MAX_MESSAGE_LENGTH_BYTES);
 			messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
 			
 			try
 			{
-				encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, MaxMessageLength - byteArrayOffset - 1);
+				encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, MAX_MESSAGE_LENGTH_BYTES - byteArrayOffset - 1);
 			}
 			catch(BufferOverflowException exception)
 			{
-				throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s", MaxMessageLength), exception);
+				throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", MAX_MESSAGE_LENGTH_BYTES / 1024), exception);
 			}
 			
 			byteArrayOffset = byteArrayOffset + encodedSize;
@@ -240,21 +240,21 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 	
 	public CompletableFuture<Void> send(Message msg) throws ServiceBusException
 	{
-		byte[] bytes = new byte[MaxMessageLength];
+		byte[] bytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
 		int encodedSize = 0;
 		try
 		{
-			encodedSize = msg.encode(bytes, 0, MaxMessageLength);
+			encodedSize = msg.encode(bytes, 0, MAX_MESSAGE_LENGTH_BYTES);
 		}
 		catch(BufferOverflowException exception)
 		{
-			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s", MaxMessageLength), exception);
+			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s", MAX_MESSAGE_LENGTH_BYTES), exception);
 		}
 		
 		return this.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 	
-	public void close()
+	public void closeSync()
 	{
 		if (this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE)
 		{
@@ -304,7 +304,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 		}
 		else
 		{		
-			this.linkFirstOpen.completeExceptionally(completionException);
+			ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this);
 		}
 		
 		synchronized(this.linkCreateLock)
@@ -407,7 +407,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 				if (retryInterval == null)
 				{
 					this.pendingSendWaiters.remove(deliveryTag);
-					pendingSend.completeExceptionally(exception);
+					ExceptionUtil.completeExceptionally(pendingSend, exception, this);
 				}
 				else
 				{
@@ -425,7 +425,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 			else 
 			{
 				this.pendingSendWaiters.remove(deliveryTag);
-				pendingSend.completeExceptionally(ServiceBusException.create(false, outcome.toString()));
+				ExceptionUtil.completeExceptionally(pendingSend, new ServiceBusException(false, outcome.toString()), this);
 			}
 		}
 	}
@@ -456,7 +456,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 		Connection connection = null;
 		try
 		{
-			connection = this.underlyingFactory.getConnectionAsync().get(this.operationTimeout.getSeconds(), TimeUnit.SECONDS);
+			connection = this.underlyingFactory.getConnection().get(this.operationTimeout.getSeconds(), TimeUnit.SECONDS);
 		} 
 		catch (InterruptedException|ExecutionException exception)
 		{
@@ -512,7 +512,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 					{
 						if (!MessageSender.this.linkFirstOpen.isDone())
 						{
-							Exception operationTimedout = ServiceBusException.create(true,
+							Exception operationTimedout = new ServiceBusException(true,
 									String.format(Locale.US, "SendLink(%s).open() on Entity(%s) timed out",
 											MessageSender.this.sendLink.getName(), MessageSender.this.getSendPath()));
 
@@ -523,7 +523,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 										operationTimedout);
 							}
 							
-							MessageSender.this.linkFirstOpen.completeExceptionally(operationTimedout);
+							ExceptionUtil.completeExceptionally(MessageSender.this.linkFirstOpen, operationTimedout, MessageSender.this);
 						}
 					}
 				}
@@ -532,7 +532,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 	}
 
 	@Override
-	public CompletableFuture<Void> closeAsync()
+	public CompletableFuture<Void> close()
 	{
 		if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
 		{
@@ -540,5 +540,21 @@ public class MessageSender extends ClientEntity implements IAmqpSender
 		}
 		
 		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public ErrorContext getContext()
+	{
+		final boolean isLinkOpened = this.linkFirstOpen != null && this.linkFirstOpen.isDone();
+		final String referenceId = this.sendLink != null && this.sendLink.getRemoteProperties() != null && this.sendLink.getRemoteProperties().containsKey(ClientConstants.TRACKING_ID_PROPERTY)
+				? this.sendLink.getRemoteProperties().get(ClientConstants.TRACKING_ID_PROPERTY).toString()
+				: ((this.sendLink != null) ? this.sendLink.getName(): null);
+		
+		SenderContext errorContext = new SenderContext(
+				this.underlyingFactory!=null ? this.underlyingFactory.getHostName() : null,
+				this.sendPath,
+				referenceId,
+				isLinkOpened ? this.sendLink.getCredit() : null);
+		return errorContext;
 	}
 }

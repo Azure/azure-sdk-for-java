@@ -20,16 +20,25 @@
  */
 package com.microsoft.azure.servicebus;
 
-public class MessagingCommunicationException extends ServiceBusException{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8148692364386204335L;
-
-	@Override
-	public boolean getIsTransient()
+public class MessagingCommunicationException extends ServiceBusException
+{
+	MessagingCommunicationException()
 	{
-		return true;
+		super(true);
 	}
+	
+	MessagingCommunicationException(final String message)
+	  {
+	    super(true, message);
+	  }
+	
+	MessagingCommunicationException(final Throwable cause)
+	  {
+	    super(true, cause);
+	  }
+	
+	MessagingCommunicationException(final String message, final Throwable cause)
+	  {
+	    super(true, message, cause);
+	  }
 }

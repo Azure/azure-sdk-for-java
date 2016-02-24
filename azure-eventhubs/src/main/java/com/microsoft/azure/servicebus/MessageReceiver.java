@@ -39,15 +39,15 @@ import com.microsoft.azure.servicebus.amqp.*;
  * Common Receiver that abstracts all amqp related details
  * translates event-driven reactor model into async receive Api
  */
-public class MessageReceiver extends ClientEntity implements IAmqpReceiver
+public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	private static final double PING_FLOW_RESERVE_PERCENT = 1;
+	private static final int PING_FLOW_THRESHOLD = 2;
 	private static final Duration RECEIVE_BATCH_INTERVAL = Duration.ofMillis(5);
 	private static final double FLOW_THRESHOLD_PERCENT = (double) 1 / 3;
 	private static final int MAX_FLOW_DEFAULT = 32;
 	private static final Duration MINIMUM_RECEIVE_TIMER = Duration.ofSeconds(2);
-	private static final int LINK_RESET_THRESHOLD = 2;
+	private static final int LINK_RESET_THRESHOLD = 3;
 	
 	private final ConcurrentLinkedQueue<WorkItem<Collection<Message>>> pendingReceives;
 	private final MessagingFactory underlyingFactory;
@@ -205,7 +205,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 	
 	public final int getInitialPrefetchCount()
 	{
-		return (int) (this.prefetchCount * (1 - (MessageReceiver.PING_FLOW_RESERVE_PERCENT / 100)));
+		return (this.prefetchCount > MessageReceiver.PING_FLOW_THRESHOLD) 
+				? this.prefetchCount - MessageReceiver.PING_FLOW_THRESHOLD 
+				: this.prefetchCount;
 	}
 		
 	/*
@@ -260,7 +262,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 	
 	public int getPingFlowThreshold()
 	{
-		return (int)(this.prefetchCount * MessageReceiver.PING_FLOW_RESERVE_PERCENT / 100); 
+		return (this.prefetchCount > MessageReceiver.PING_FLOW_THRESHOLD) ? MessageReceiver.PING_FLOW_THRESHOLD : 0; 
 	}
 	
 	public void setReceiveHandler(final ReceiveHandler receiveHandler)
@@ -297,7 +299,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 		else
 		{
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
-				this.linkOpen.getWork().completeExceptionally(exception);
+			{
+				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this);
+			}
 			
 			this.lastKnownLinkError = exception;
 		}
@@ -430,7 +434,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 				}
 				else
 				{
-					future.completeExceptionally(exception);
+					ExceptionUtil.completeExceptionally(future, exception, this);
 				}
 			}
 		}
@@ -450,7 +454,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
         
         try
 		{
-			connection = this.underlyingFactory.getConnectionAsync().get(this.operationTimeout.getSeconds(), TimeUnit.SECONDS);
+			connection = this.underlyingFactory.getConnection().get(this.operationTimeout.getSeconds(), TimeUnit.SECONDS);
 		}
 		catch (InterruptedException|ExecutionException exception)
 		{
@@ -712,7 +716,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 						if (!linkOpen.getWork().isDone())
 						{
 							Exception cause = MessageReceiver.this.lastKnownLinkError;
-							Exception operationTimedout = ServiceBusException.create(
+							Exception operationTimedout = new ServiceBusException(
 									cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT,
 									String.format(Locale.US, "ReceiveLink(%s) %s() on path(%s) timed out", MessageReceiver.this.receiveLink.getName(), "Open", MessageReceiver.this.receivePath),
 									cause);
@@ -723,7 +727,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 										operationTimedout);
 							}
 							
-							linkOpen.getWork().completeExceptionally(operationTimedout);
+							ExceptionUtil.completeExceptionally(linkOpen.getWork(), operationTimedout, MessageReceiver.this);
 						}
 					}
 				}
@@ -751,7 +755,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 											operationTimedout);
 								}
 								
-								linkClose.completeExceptionally(operationTimedout);
+								ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageReceiver.this);
 							}
 						}
 					}
@@ -774,7 +778,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 		
 		if (condition == null)
 		{
-			this.onError(ServiceBusException.create(true, 
+			this.onError(new ServiceBusException(true, 
 					String.format(Locale.US,"Closing the link. LinkName(%s), EntityPath(%s)", this.receiveLink.getName(), this.receivePath)));
 		}
 		else
@@ -784,23 +788,23 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 	}
 	
 	@Override
-	public CompletableFuture<Void> closeAsync()
+	public CompletableFuture<Void> close()
 	{
 		this.closeInternal();
 		return this.linkClose;
 	}
 
-	public void close() throws ServiceBusException
+	public void closeSync() throws ServiceBusException
 	{
 		if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED && !this.closeCalled)
 		{
 			try
 			{
-				this.closeAsync().get();
+				this.close().get();
 			}
 			catch (InterruptedException | ExecutionException exception)
 			{
-				throw ServiceBusException.create(true, exception);
+				throw new ServiceBusException(true, String.format(Locale.US, "Close link failed. getCause() could present more details."), exception);
 			}
 		}
 	}
@@ -817,4 +821,24 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver
 			}
 		}
 	}
+	
+	@Override
+	public ErrorContext getContext()
+	{
+		final boolean isLinkOpened = this.linkOpen != null && this.linkOpen.getWork().isDone();
+		final String referenceId = this.receiveLink != null && this.receiveLink.getRemoteProperties() != null && this.receiveLink.getRemoteProperties().containsKey(ClientConstants.TRACKING_ID_PROPERTY)
+				? this.receiveLink.getRemoteProperties().get(ClientConstants.TRACKING_ID_PROPERTY).toString()
+				: ((this.receiveLink != null) ? this.receiveLink.getName(): null);
+
+		ReceiverContext errorContext = new ReceiverContext(this.underlyingFactory != null ? this.underlyingFactory.getHostName() : null,
+				this.receivePath,
+				referenceId,
+			 	isLinkOpened ? new Long(this.lastReceivedOffset) : null, 
+			 	isLinkOpened ? this.prefetchCount : null, 
+			 	isLinkOpened ? this.receiveLink.getCredit(): null, 
+			 	isLinkOpened && this.prefetchedMessages != null ? this.prefetchedMessages.size(): null, 
+			 	this.isEpochReceiver);
+		
+		return errorContext;
+	}	
 }

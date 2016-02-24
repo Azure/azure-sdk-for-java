@@ -35,7 +35,7 @@ public abstract class ClientEntity
 		this.clientId = clientId;
 	}
 	
-	public abstract CompletableFuture<Void> closeAsync();
+	public abstract CompletableFuture<Void> close();
 	
 	public String getClientId()
 	{

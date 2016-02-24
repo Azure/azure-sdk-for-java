@@ -106,7 +106,7 @@ public class EventHubClient extends ClientEntity
 	
 	CompletableFuture<Void> createInternalSender()
 	{
-		return MessageSender.Create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
+		return MessageSender.create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{
 					public void accept(MessageSender a) { EventHubClient.this.sender = a;}
@@ -123,16 +123,6 @@ public class EventHubClient extends ClientEntity
 		throws ServiceBusException
 	{
 		return PartitionSender.Create(this.underlyingFactory, this.eventHubName, partitionId);
-	}
-	
-	/** 
-	 * TODO: return partitionInfo
-	 * @throws ServiceBusException
-	 */
-	public final String getPartitionInfo()
-			throws ServiceBusException
-	{
-		throw new UnsupportedOperationException("TODO: Implement over http");
 	}
 	
 	/**
@@ -338,17 +328,15 @@ public class EventHubClient extends ClientEntity
 	{
 		return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true);
 	}
-
-	public void close()
-	{
-		// implement Async factory close
-		this.underlyingFactory.close();
-	}
 	
 	@Override
-	public CompletableFuture<Void> closeAsync() {
-		// implement Async factory close
-		this.underlyingFactory.close();
+	public CompletableFuture<Void> close()
+	{
+		if (this.underlyingFactory != null)
+		{
+			return this.underlyingFactory.close();
+		}
+		
 		return CompletableFuture.completedFuture(null);
 	}
 }

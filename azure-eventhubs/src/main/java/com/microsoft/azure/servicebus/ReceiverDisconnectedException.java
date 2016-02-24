@@ -22,16 +22,23 @@ package com.microsoft.azure.servicebus;
 
 public class ReceiverDisconnectedException extends ServiceBusException
 {
-
-	public ReceiverDisconnectedException(final String description)
+	ReceiverDisconnectedException()
 	{
-		super(description);
+		super(false);
 	}
 
-	@Override
-	public boolean getIsTransient()
+	ReceiverDisconnectedException(final String message)
 	{
-		return false;
+		super(false, message);
 	}
 
+	ReceiverDisconnectedException(final Throwable cause)
+	{
+		super(false, cause);
+	}
+
+	ReceiverDisconnectedException(final String message, final Throwable cause)
+	{
+		super(false, message, cause);
+	}
 }
