@@ -37,7 +37,11 @@ public class ReceiveByDateTime
 	public static void main(String[] args) 
 			throws ServiceBusException, ExecutionException, InterruptedException, IOException
 	{
-		ConnectionStringBuilder connStr = new ConnectionStringBuilder("----namespaceName-----", "----EventHubName-----", "-----sayKeyName-----", "---SasKey----");
+		final String namespaceName = "----ServiceBusNamespaceName-----";
+		final String eventHubName = "----EventHubName-----";
+		final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
+		final String sasKey = "---SharedAccessSignatureKey----";
+		ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
 		
 		EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
