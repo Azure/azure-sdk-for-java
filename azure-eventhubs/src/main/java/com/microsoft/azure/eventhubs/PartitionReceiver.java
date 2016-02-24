@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.eventhubs;
 
 import java.time.*;
@@ -10,23 +30,26 @@ import com.microsoft.azure.servicebus.*;
 
 public final class PartitionReceiver
 {
+	private static final int MINIMUM_PREFETCH_COUNT = 10;
+	private static final int MAXIMUM_PREFETCH_COUNT = 999;
+	
+	static final int DEFAULT_PREFETCH_COUNT = 300;
+	static final long NULL_EPOCH = 0;
+	
+	public static final String START_OF_STREAM = "-1";
+	
 	private final String partitionId;
+	private final MessagingFactory underlyingFactory;
+	private final String eventHubName;
+	private final String consumerGroupName;
 	
 	private String startingOffset;
 	private boolean offsetInclusive;
 	private Instant startingDateTime;
 	private MessageReceiver internalReceiver; 
-	private final MessagingFactory underlyingFactory;
-	private final String eventHubName;
-	private final String consumerGroupName;
 	private Long epoch;
 	private boolean isEpochReceiver;
 	
-	static final int DefaultPrefetchCount = 300;
-	static final long NullEpoch = 0;
-	
-	public static final String StartOfStream = "-1";
-		
 	private PartitionReceiver(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
@@ -79,7 +102,7 @@ public final class PartitionReceiver
 	{
 		return MessageReceiver.create(this.underlyingFactory, StringUtil.getRandomString(), 
 				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
-				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DefaultPrefetchCount, this.epoch, this.isEpochReceiver)
+				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DEFAULT_PREFETCH_COUNT, this.epoch, this.isEpochReceiver)
 				.thenAcceptAsync(new Consumer<MessageReceiver>()
 				{
 					public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
@@ -110,6 +133,22 @@ public final class PartitionReceiver
 	public final int getPrefetchCount()
 	{
 		return this.internalReceiver.getPrefetchCount();
+	}
+	
+	/**
+	 * Set the no. of events that can be pre-fetched and Cached at the {@link PartitionReceiver).
+	 * By default 
+	 * @param prefetchCount
+	 */
+	public final void setPrefetchCount(final int prefetchCount)
+	{
+		if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT && prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT)
+		{
+			throw new IllegalArgumentException(String.format(Locale.US, 
+					"PrefetchCount has to be between %s and %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT, PartitionReceiver.MAXIMUM_PREFETCH_COUNT));
+		}
+		
+		this.internalReceiver.setPrefetchCount(prefetchCount);
 	}
 	
 	public final long getEpoch()

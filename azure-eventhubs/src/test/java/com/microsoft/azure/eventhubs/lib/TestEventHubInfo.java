@@ -31,7 +31,7 @@ public class TestEventHubInfo {
 	public String getRandomConsumerGroup() {
 		if (this.consumerGroups == null || this.consumerGroups.size() == 0)
 		{
-			return EventHubClient.DefaultConsumerGroupName;
+			return EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 		}
 		
 		int randomIndex = new Random().nextInt(this.consumerGroups.size());

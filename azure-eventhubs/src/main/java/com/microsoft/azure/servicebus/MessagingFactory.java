@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
@@ -19,14 +39,14 @@ import com.microsoft.azure.servicebus.amqp.*;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
- * Manages reconnect
+ * Manages connection life-cycle
  */
-public class MessagingFactory extends ClientEntity
+public class MessagingFactory extends ClientEntity implements IAmqpConnection, IConnectionFactory
 {
 	
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
 	
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
 	private Reactor reactor;
 	private Thread reactorThread;
@@ -83,7 +103,8 @@ public class MessagingFactory extends ClientEntity
 		this.reactorThread.start();
 	}
 	
-	Connection getConnection()
+	@Override
+	public CompletableFuture<Connection> getConnectionAsync()
 	{
 		if (this.connection.getLocalState() == EndpointState.CLOSED)
 		{
@@ -113,9 +134,10 @@ public class MessagingFactory extends ClientEntity
 								MessagingFactory.this.onReactorError(ServiceBusException.create(true, "Reactor finalized."));
 						    }
 						});
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					}
+					catch (IOException e)
+					{
+						MessagingFactory.this.onReactorError(ServiceBusException.create(true, e));
 					}
 					
 					this.openConnection = new CompletableFuture<Connection>();
@@ -124,12 +146,6 @@ public class MessagingFactory extends ClientEntity
 			}
 		}
 		
-		return this.connection;
-	}
-	
-	CompletableFuture<Connection> getConnectionAsync()
-	{
-		this.getConnection();
 		return this.openConnection == null ? CompletableFuture.completedFuture(this.connection): this.openConnection;
 	}
 	
@@ -152,7 +168,7 @@ public class MessagingFactory extends ClientEntity
 		return messagingFactory.open;
 	}
 	
-	// Contract: ConnectionHandler - MessagingFactory
+	@Override
 	public void onOpenComplete(Exception exception)
 	{
 		synchronized (this.connectionLock)
@@ -178,42 +194,28 @@ public class MessagingFactory extends ClientEntity
 		}
 	}
 	
+	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
 		this.connection.close();
 		
-		// Abstract out processOnClose on all links-connections
-		// dispatch the TransportError to all dependent registered links
 		Iterator<Link> literator = this.links.iterator();
 		while (literator.hasNext())
 		{
 			Link link = literator.next();
-			if (link instanceof Receiver)
+			Handler handler = BaseHandler.getHandler(link);
+			if (handler != null && handler instanceof BaseLinkHandler)
 			{
-				Handler handler = BaseHandler.getHandler((Receiver) link);
-				if (handler != null && handler instanceof ReceiveLinkHandler)
-				{
-					ReceiveLinkHandler recvLinkHandler = (ReceiveLinkHandler) handler;
-					recvLinkHandler.processOnClose(link, error);
-				}
-			}
-			else if(link instanceof Sender)
-			{
-				Handler handler = BaseHandler.getHandler((Sender) link);
-				if (handler != null && handler instanceof SendLinkHandler)
-				{
-					SendLinkHandler sendLinkHandler = (SendLinkHandler) handler;
-					sendLinkHandler.processOnClose(link, error);
-				}
+				BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+				linkHandler.processOnClose(link, error);
 			}
 		}
 	}
 	
-	public void onReactorError(Exception cause)
+	private void onReactorError(Exception cause)
 	{
 		if (!this.open.isDone())
 		{
-			System.out.println("isOpenDone");
 			this.onOpenComplete(cause);
 			return;
 		}
@@ -223,32 +225,22 @@ public class MessagingFactory extends ClientEntity
 			this.connection.close();
 		}
 		
-		// Abstract out processOnClose on all links-connections
-		// dispatch the TransportError to all dependent registered links
 		Iterator<Link> literator = this.links.iterator();
 		while (literator.hasNext())
 		{
 			Link link = literator.next();
-			if (link instanceof Receiver)
+			Handler handler = BaseHandler.getHandler(link);
+			if (handler != null && handler instanceof BaseLinkHandler)
 			{
-				System.out.println("invoke receiver handler" + link.getName());
-				Handler handler = BaseHandler.getHandler((Receiver) link);
-				if (handler != null && handler instanceof ReceiveLinkHandler)
-				{
-					ReceiveLinkHandler recvLinkHandler = (ReceiveLinkHandler) handler;
-					recvLinkHandler.processOnClose(link, cause);
-				}
-			}
-			else if(link instanceof Sender)
-			{
-				Handler handler = BaseHandler.getHandler((Sender) link);
-				if (handler != null && handler instanceof SendLinkHandler)
-				{
-					SendLinkHandler sendLinkHandler = (SendLinkHandler) handler;
-					sendLinkHandler.processOnClose(link, cause);
-				}
+				BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+				linkHandler.processOnClose(link, cause);
 			}
 		}
+	}
+	
+	void resetConnection()
+	{
+		this.onReactorError(ServiceBusException.create(true, "reset connection"));
 	}
 	
 	public void close()
@@ -269,7 +261,7 @@ public class MessagingFactory extends ClientEntity
 	{
 		this.close();
 		
-		// TODO - hook up onRemoteClose & timeout 
+		// hook up onRemoteClose & timeout 
 		return CompletableFuture.completedFuture(null);
 	}
 
@@ -311,5 +303,17 @@ public class MessagingFactory extends ClientEntity
 				MessagingFactory.this.onReactorError(cause);
 			}
 		}
+	}
+
+	@Override
+	public void registerForConnectionError(Link link)
+	{
+		this.links.add(link);	
+	}
+
+	@Override
+	public void deregisterForConnectionError(Link link)
+	{
+		this.links.remove(link);	
 	}
 }

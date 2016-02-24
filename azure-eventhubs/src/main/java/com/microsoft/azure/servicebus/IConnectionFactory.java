@@ -20,18 +20,10 @@
  */
 package com.microsoft.azure.servicebus;
 
-public class ReceiverDisconnectedException extends ServiceBusException
+import java.util.concurrent.CompletableFuture;
+import org.apache.qpid.proton.engine.Connection;
+
+public interface IConnectionFactory
 {
-
-	public ReceiverDisconnectedException(final String description)
-	{
-		super(description);
-	}
-
-	@Override
-	public boolean getIsTransient()
-	{
-		return false;
-	}
-
+	CompletableFuture<Connection> getConnectionAsync();
 }

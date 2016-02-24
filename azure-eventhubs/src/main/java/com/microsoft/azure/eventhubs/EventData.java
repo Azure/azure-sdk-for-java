@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.eventhubs;
 
 import java.nio.*;
@@ -20,7 +40,6 @@ public class EventData
 	private String offset;
 	private long sequenceNumber;
 	private Instant enqueuedTime;
-	private boolean closed;
 	private Binary bodyData;
 	private boolean isReceivedEvent;
 	private Map<String, String> properties;
@@ -29,7 +48,6 @@ public class EventData
 	
 	EventData()
 	{
-		this.closed = false;
 	}
 	
 	/**
@@ -45,17 +63,19 @@ public class EventData
 		
 		Map<Symbol, Object> messageAnnotations = amqpMessage.getMessageAnnotations().getValue();
 		
-		Object partitionKeyObj = messageAnnotations.get(AmqpConstants.PartitionKey);
-		if (partitionKeyObj != null) 
+		Object partitionKeyObj = messageAnnotations.get(AmqpConstants.PARTITION_KEY);
+		if (partitionKeyObj != null)
+		{
 			this.partitionKey = partitionKeyObj.toString();
+		}
 		
-		Object sequenceNumberObj = messageAnnotations.get(AmqpConstants.SequenceNumber);
+		Object sequenceNumberObj = messageAnnotations.get(AmqpConstants.SEQUENCE_NUMBER);
 		this.sequenceNumber = (Long) sequenceNumberObj;
 		
-		Object enqueuedTimeUtcObj = messageAnnotations.get(AmqpConstants.EnqueuedTimeUtc);
+		Object enqueuedTimeUtcObj = messageAnnotations.get(AmqpConstants.ENQUEUED_TIME_UTC);
 		this.enqueuedTime = ((Date) enqueuedTimeUtcObj).toInstant();
 		
-		this.offset = messageAnnotations.get(AmqpConstants.Offset).toString();
+		this.offset = messageAnnotations.get(AmqpConstants.OFFSET).toString();
 		
 		this.properties = amqpMessage.getApplicationProperties() == null ? null 
 				: ((Map<String, String>)(amqpMessage.getApplicationProperties().getValue()));
@@ -199,19 +219,8 @@ public class EventData
 		return this.systemProperties;
 	}
 	
-	private void throwIfAutoClosed()
-	{
-		if (this.closed)
-		{
-			// TODO: TRACE
-			throw new IllegalStateException("EventData is already disposed");
-		}
-	}
-	
 	Message toAmqpMessage()
 	{
-		this.throwIfAutoClosed();
-		
 		Message amqpMessage = Proton.message();
 		
 		if (this.properties != null && !this.properties.isEmpty())
@@ -230,14 +239,12 @@ public class EventData
 	
 	Message toAmqpMessage(String partitionKey)
 	{
-		this.throwIfAutoClosed();
-		
 		Message amqpMessage = this.toAmqpMessage();
 		
 		MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
 				? new MessageAnnotations(new HashMap<Symbol, Object>()) 
 				: amqpMessage.getMessageAnnotations();		
-		messageAnnotations.getValue().put(AmqpConstants.PartitionKey, partitionKey);
+		messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
 		amqpMessage.setMessageAnnotations(messageAnnotations);
 		
 		return amqpMessage;

@@ -76,7 +76,7 @@ public class ReceiverRetryTest extends TestBase
 					Link link = event.getLink();
 					if (link.getLocalState()== EndpointState.ACTIVE)
 					{
-						link.setCondition(new ErrorCondition(ClientConstants.ServerBusyError, "SimulateInternalError"));
+						link.setCondition(new ErrorCondition(ClientConstants.SERVER_BUSY_ERROR, "SimulateInternalError"));
 						data.retryCount++;
 						link.detach();
 						link.close();

@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.servicebus;
 
 import java.util.concurrent.*;
@@ -14,11 +34,11 @@ final class ExceptionUtil
 			throw new IllegalArgumentException("'null' errorCondition cannot be translated to ServiceBusException");
 		}
 		
-		if (errorCondition.getCondition() == ClientConstants.TimeoutError)
+		if (errorCondition.getCondition() == ClientConstants.TIMEOUT_ERROR)
 		{
 			return new TimeoutException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == ClientConstants.ServerBusyError)
+		else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR)
 		{
 			return new ServerBusyException(errorCondition.getDescription());
 		}
@@ -26,7 +46,7 @@ final class ExceptionUtil
 		{
 			return new IllegalEntityException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == ClientConstants.EntityDisabledError)
+		else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR)
 		{
 			return new IllegalEntityException(errorCondition.getDescription());
 		}
@@ -46,14 +66,13 @@ final class ExceptionUtil
 		{
 			return ServiceBusException.create(false, new AmqpException(errorCondition));
 		}
-		else if (errorCondition.getCondition() == ClientConstants.ArgumentError)
+		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_ERROR)
 		{
 			return new IllegalArgumentException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == ClientConstants.ArgumentOutOfRangeError)
+		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_OUT_OF_RANGE_ERROR)
 		{
-			// TODO: Is there a need to translate this back to errorcode? if so, add errorCode to error msg ?
-			return new IllegalArgumentException(errorCondition.getDescription());
+			return new IllegalArgumentException(errorCondition.getDescription(), new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.NotImplemented)
 		{
@@ -64,11 +83,11 @@ final class ExceptionUtil
 		{
 			return new UnsupportedOperationException(errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == ClientConstants.PartitionNotOwnedError)
+		else if (errorCondition.getCondition() == ClientConstants.PARTITION_NOT_OWNED_ERROR)
 		{
 			return ServiceBusException.create(false, errorCondition.getDescription());
 		}
-		else if (errorCondition.getCondition() == ClientConstants.StoreLockLostError)
+		else if (errorCondition.getCondition() == ClientConstants.STORE_LOCK_LOST_ERROR)
 		{
 			return ServiceBusException.create(false, errorCondition.getDescription());
 		}
@@ -81,6 +100,6 @@ final class ExceptionUtil
 			return ServiceBusException.create(false, new AmqpException(errorCondition));
 		}
 		
-		return ServiceBusException.create(ClientConstants.DefaultIsTransient, errorCondition.getDescription());
+		return ServiceBusException.create(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
 	}
 }

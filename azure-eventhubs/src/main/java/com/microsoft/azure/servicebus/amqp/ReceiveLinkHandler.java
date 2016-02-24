@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.servicebus.amqp;
 
 import java.util.*;
@@ -15,13 +35,15 @@ import com.microsoft.azure.servicebus.MessageReceiver;
  */
 public final class ReceiveLinkHandler extends BaseLinkHandler
 {
-	private final MessageReceiver msgReceiver;
+	private final IAmqpReceiver amqpReceiver;
 	private final Object firstResponse;
 	private boolean isFirstResponse;
 	
-	public ReceiveLinkHandler(final MessageReceiver receiver)
+	public ReceiveLinkHandler(final IAmqpReceiver receiver)
 	{
-		this.msgReceiver = receiver;
+		super(receiver);
+		
+		this.amqpReceiver = receiver;
 		this.firstResponse = new Object();
 		this.isFirstResponse = true;
 	}
@@ -59,7 +81,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
         		synchronized (this.firstResponse)
         		{
 					this.isFirstResponse = false;
-	        		this.msgReceiver.onOpenComplete(null);
+	        		this.amqpReceiver.onOpenComplete(null);
         		}
         	}
         	else
@@ -77,37 +99,18 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
     public void onLinkRemoteClose(Event event)
 	{
 		Link link = event.getLink();
-        if (link instanceof Receiver)
+        if (link != null)
         {
         	ErrorCondition condition = link.getRemoteCondition();
         	this.processOnClose(link, condition);	
         }
-	}
-	
-	public void processOnClose(Link link, ErrorCondition condition)
-	{
-		link.close();
-		
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
-        {
-			TRACE_LOGGER.log(Level.FINE, "linkName["+link.getName()+
-					condition != null ? "], ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]" : "], condition[null]");
-        }
-		
-		this.msgReceiver.onClose(condition);        
-	}
-	
-	public void processOnClose(Link link, Exception exception)
-	{
-		link.close();
-		this.msgReceiver.onError(exception);
 	}
 		
 	@Override
 	public void onLinkRemoteDetach(Event event)
 	{
 		Link link = event.getLink();
-        if (link instanceof Receiver)
+        if (link != null)
         {
         	this.processOnClose(link, link.getRemoteCondition());
         }
@@ -122,52 +125,31 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 			{
 				if (this.isFirstResponse)
 				{
-					this.msgReceiver.onOpenComplete(null);
 					this.isFirstResponse = false;
+					this.amqpReceiver.onOpenComplete(null);
 				}
 			}
 		}
         
-		LinkedList<Delivery> deliveries = new LinkedList<Delivery>();
-        Delivery delivery = event.getDelivery();
+		Delivery delivery = event.getDelivery();
         Receiver receiveLink = (Receiver) delivery.getLink();
-        LinkedList<Message> messages = new LinkedList<Message>();
         
-        while (delivery != null && delivery.isReadable() && !delivery.isPartial())
+        if (delivery != null && delivery.isReadable() && !delivery.isPartial())
         {    
         	int size = delivery.pending();
             byte[] buffer = new byte[size];
-            int read = receiveLink.recv(buffer, 0, buffer.length);
+            int read = receiveLink.recv(buffer, 0, size);
             
             Message msg = Proton.message();
             msg.decode(buffer, 0, read);
             
-            messages.add(msg);
-            deliveries.add(delivery);
-            
-            if (!receiveLink.advance())
+            if(TRACE_LOGGER.isLoggable(Level.FINEST) && receiveLink != null)
             {
-            	break;
-            }
-            else
-            {
-            	delivery = receiveLink.current();
-            }
-        }
-        
-        if (messages != null && messages.size() > 0)
-        {
-            if(TRACE_LOGGER.isLoggable(Level.FINE) && receiveLink != null)
-            {
-            	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], linkCredit[%s]", receiveLink.getName(), receiveLink.getCredit()));
+            	TRACE_LOGGER.log(Level.FINEST, String.format(Locale.US, "linkName[%s], updatedLinkCredit[%s]", receiveLink.getName(), receiveLink.getCredit()));
             }
             
-        	for(Delivery unsettledDelivery: deliveries)
-        	{
-        		unsettledDelivery.settle();
-        	}
-        	
-        	this.msgReceiver.onDelivery(messages);
+        	this.amqpReceiver.onReceiveComplete(msg);
+        	delivery.settle();
         }
     }
 }

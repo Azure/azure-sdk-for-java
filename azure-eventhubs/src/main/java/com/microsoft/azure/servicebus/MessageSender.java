@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.servicebus;
 
 import java.nio.BufferOverflowException;
@@ -29,9 +49,9 @@ import com.microsoft.azure.servicebus.amqp.*;
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
  */
-public class MessageSender extends ClientEntity
+public class MessageSender extends ClientEntity implements IAmqpSender
 {
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.ServiceBusClientTrace);
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
 	public static final int MaxMessageLength = 256 * 1024;
 	
@@ -103,14 +123,14 @@ public class MessageSender extends ClientEntity
 							}
 							
 							ReplayableWorkItem<Void> pendingSendWork = pendingSend.getValue();
-							if (pendingSendWork.getTimeoutTracker().remaining().compareTo(ClientConstants.TimerTolerance) < 0)
+							if (pendingSendWork.getTimeoutTracker().remaining().compareTo(ClientConstants.TIMER_TOLERANCE) < 0)
 							{
 								pendingDeliveries.remove();
 								Exception cause = pendingSendWork.getLastKnownException() == null 
 										? MessageSender.this.lastKnownLinkError : pendingSendWork.getLastKnownException();
 								pendingSendWork.getWork().completeExceptionally(
 										ServiceBusException.create(
-												cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DefaultIsTransient, 
+												cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT, 
 												String.format(Locale.US, "Send operation on entity(%s), link(%s) timed out."
 													, MessageSender.this.getSendPath()
 													, MessageSender.this.sendLink.getName()),
@@ -215,7 +235,7 @@ public class MessageSender extends ClientEntity
 			byteArrayOffset = byteArrayOffset + encodedSize;
 		}
 		
-		return this.send(bytes, byteArrayOffset, AmqpConstants.AmqpBatchMessageFormat);
+		return this.send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
 	}
 	
 	public CompletableFuture<Void> send(Message msg) throws ServiceBusException
@@ -293,9 +313,10 @@ public class MessageSender extends ClientEntity
 		}
 	}
 	
-	public void onError(ErrorCondition error)
+	@Override
+	public void onClose(ErrorCondition condition)
 	{
-		Exception completionException = ExceptionUtil.toException(error);
+		Exception completionException = ExceptionUtil.toException(condition);
 		this.onError(completionException);
 	}
 	
@@ -349,7 +370,7 @@ public class MessageSender extends ClientEntity
 					if (sender != null)
 					{
 						Sender oldSender = MessageSender.this.sendLink;
-						MessageSender.this.underlyingFactory.links.remove(oldSender);
+						MessageSender.this.underlyingFactory.deregisterForConnectionError(oldSender);
 						oldSender.free();
 						MessageSender.this.sendLink = sender;
 					}
@@ -454,6 +475,7 @@ public class MessageSender extends ClientEntity
 		
 		Session session = connection.session();
         session.open();
+        BaseHandler.setHandler(session, new SessionHandler(this.sendPath));
         
         String sendLinkName = StringUtil.getRandomString();
         sendLinkName = sendLinkName.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer());
@@ -471,7 +493,7 @@ public class MessageSender extends ClientEntity
         SendLinkHandler handler = new SendLinkHandler(this);
         BaseHandler.setHandler(sender, handler);
 		
-        this.underlyingFactory.links.add(sender);
+        this.underlyingFactory.registerForConnectionError(sender);
 		
         sender.open();
         return sender;

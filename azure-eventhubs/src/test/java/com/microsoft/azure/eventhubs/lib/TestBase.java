@@ -54,10 +54,10 @@ public abstract class TestBase
 			throws ServiceBusException
 	{
 		return ehClient.createPartitionSender(partitionId)
-				.thenAcceptAsync(new Consumer<EventHubSender>()
+				.thenAcceptAsync(new Consumer<PartitionSender>()
 				{
 					@Override
-					public void accept(EventHubSender pSender)
+					public void accept(PartitionSender pSender)
 					{
 						for (int count = 0; count< noOfEvents; count++)
 						{

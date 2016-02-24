@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.eventhubs;
 
 import java.io.*;
@@ -14,7 +34,7 @@ import com.microsoft.azure.servicebus.*;
  */
 public class EventHubClient extends ClientEntity
 {
-	public static final String DefaultConsumerGroupName = "$Default";
+	public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 	
 	private MessagingFactory underlyingFactory;
 	private final String eventHubName;
@@ -94,15 +114,15 @@ public class EventHubClient extends ClientEntity
 	}
 	
 	/**
-	 * Create an {@link EventHubSender} which can publish {@link EventData}'s directly to a specific EventHub partition
+	 * Create an {@link PartitionSender} which can publish {@link EventData}'s directly to a specific EventHub partition
 	 * @param partitionId partitionId of EventHub to send the {@link EventData}'s to
 	 * @return
 	 * @throws ServiceBusException
 	 */
-	public final CompletableFuture<EventHubSender> createPartitionSender(final String partitionId)
+	public final CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
 		throws ServiceBusException
 	{
-		return EventHubSender.Create(this.underlyingFactory, this.eventHubName, partitionId);
+		return PartitionSender.Create(this.underlyingFactory, this.eventHubName, partitionId);
 	}
 	
 	/** 
@@ -135,7 +155,7 @@ public class EventHubClient extends ClientEntity
 	 * @throws ServiceBusException
 	 * @throws UnresolvedAddressException if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.) 
 	 * @see {@link #send(EventData, String)}
-	 * @see {@link EventHubSender#send(EventData)} 
+	 * @see {@link PartitionSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(EventData data) 
 			throws ServiceBusException
@@ -164,7 +184,7 @@ public class EventHubClient extends ClientEntity
 	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} collection exceeds 256k bytes
 	 * @throws ServiceBusException
 	 * @see {@link #send(EventData, String)}
-	 * @see {@link EventHubSender#send(EventData)} 
+	 * @see {@link PartitionSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
@@ -193,7 +213,7 @@ public class EventHubClient extends ClientEntity
 	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds 256 K.bytes
 	 * @throws ServiceBusException
 	 * @see {@link #send(EventData)}
-	 * @see {@link EventHubSender#send(EventData)} 
+	 * @see {@link PartitionSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(EventData eventData, String partitionKey) 
 			throws ServiceBusException
@@ -228,7 +248,7 @@ public class EventHubClient extends ClientEntity
 	 * @throws PayloadSizeExceededException if the total size of the {@link EventData}'s exceeds 256k bytes
 	 * @throws ServiceBusException
 	 * @see {@link #send(EventData)}
-	 * @see {@link EventHubSender#send(EventData)} 
+	 * @see {@link PartitionSender#send(EventData)} 
 	 */
 	public final CompletableFuture<Void> send(final Collection<EventData> eventDatas, final String partitionKey) 
 		throws ServiceBusException
@@ -243,10 +263,10 @@ public class EventHubClient extends ClientEntity
 			throw new IllegalArgumentException("partitionKey cannot be null");
 		}
 		
-		if (partitionKey.length() > ClientConstants.MaxPartitionKeyLength)
+		if (partitionKey.length() > ClientConstants.MAX_PARTITION_KEY_LENGTH)
 		{
 			throw new IllegalArgumentException(
-					String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: {0}", ClientConstants.MaxPartitionKeyLength));
+					String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: {0}", ClientConstants.MAX_PARTITION_KEY_LENGTH));
 		}
 		
 		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
@@ -255,7 +275,7 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId) 
 			throws ServiceBusException
 	{
-		return this.createReceiver(consumerGroupName, partitionId, PartitionReceiver.StartOfStream, false);
+		return this.createReceiver(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false);
 	}
 	
 	/**
@@ -263,7 +283,7 @@ public class EventHubClient extends ClientEntity
 	 * The receiver is created on a specific consumerGroup on a specific EventHub Partition.
 	 * @param consumerGroupName consumer group name
 	 * @param partitionId partition Id to start receiving events from.
-	 * @param startingOffset offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#StartOfStream}
+	 * @param startingOffset offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
 	 * @return
 	 * @throws ServiceBusException
 	 */
@@ -278,7 +298,7 @@ public class EventHubClient extends ClientEntity
 	 * The receiver is created on a specific consumerGroup on a specific EventHub Partition.
 	 * @param consumerGroupName
 	 * @param partitionId
-	 * @param startingOffset offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#StartOfStream}
+	 * @param startingOffset offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
 	 * @param offsetInclusive if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
 	 * @return
 	 * @throws ServiceBusException
@@ -286,19 +306,19 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NullEpoch, false);
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NULL_EPOCH, false);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime)
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NullEpoch, false);
+		return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NULL_EPOCH, false);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final long epoch) 
 			throws ServiceBusException
 	{
-		return this.createEpochReceiver(consumerGroupName, partitionId, PartitionReceiver.StartOfStream, epoch);
+		return this.createEpochReceiver(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, epoch);
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, final long epoch)
@@ -329,6 +349,6 @@ public class EventHubClient extends ClientEntity
 	public CompletableFuture<Void> closeAsync() {
 		// implement Async factory close
 		this.underlyingFactory.close();
-		return null;
+		return CompletableFuture.completedFuture(null);
 	}
 }

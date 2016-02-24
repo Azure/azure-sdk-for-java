@@ -29,7 +29,7 @@ public class ReceiverEpochTest extends TestBase
 				String cgName = eventHubInfo.getRandomConsumerGroup();
 				String partitionId = "0";
 				long epoch = 345632;
-				PartitionReceiver receiver = ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.StartOfStream, false, epoch).get();
+				PartitionReceiver receiver = ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch).get();
 				EventCounter counter = new EventCounter();
 				receiver.setReceiveHandler(counter);
 				

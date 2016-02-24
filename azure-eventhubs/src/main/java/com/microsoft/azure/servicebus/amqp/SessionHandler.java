@@ -25,26 +25,45 @@ import java.util.logging.Logger;
 
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
+
 import com.microsoft.azure.servicebus.ClientConstants;
 
-public class ReactorHandler extends BaseHandler
+public class SessionHandler extends BaseHandler
 {
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+	protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
-	@Override
-	public void onReactorInit(Event e)
-	{ 
+	private final String name;
+	
+	public SessionHandler(final String name)
+	{
+		this.name = name;
+	}
+	
+	@Override 
+	public void onSessionLocalClose(Event e)
+	{
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
-            TRACE_LOGGER.log(Level.FINE, "reactor.onReactorInit");
+        	TRACE_LOGGER.log(Level.FINE, this.name + ": " + e.toString());
         }
 	}
-    
-    @Override public void onReactorFinal(Event e)
-    {
+	
+    @Override
+    public void onSessionRemoteClose(Event e)
+    { 
     	if(TRACE_LOGGER.isLoggable(Level.FINE))
 	    {
-	        TRACE_LOGGER.log(Level.FINE, "reactor.onReactorFinal");
-	    }
+	    	TRACE_LOGGER.log(Level.FINE, this.name + ": " + e.toString());
+	    } 
     }
+    
+    @Override
+    public void onSessionFinal(Event e)
+    { 
+    	if(TRACE_LOGGER.isLoggable(Level.FINE))
+        {
+        	TRACE_LOGGER.log(Level.FINE, this.name + ": " + e.toString());
+        }
+    }
+
 }

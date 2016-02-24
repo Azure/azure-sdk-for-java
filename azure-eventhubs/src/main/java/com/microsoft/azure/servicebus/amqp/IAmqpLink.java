@@ -18,20 +18,18 @@
  * under the License.
  *
  */
-package com.microsoft.azure.servicebus;
+package com.microsoft.azure.servicebus.amqp;
 
-public class ReceiverDisconnectedException extends ServiceBusException
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+
+public interface IAmqpLink
 {
+	/**
+	 * @param completionException completionException=null if open is successful
+	 */
+	void onOpenComplete(Exception completionException);
 
-	public ReceiverDisconnectedException(final String description)
-	{
-		super(description);
-	}
-
-	@Override
-	public boolean getIsTransient()
-	{
-		return false;
-	}
-
+	void onError(Exception exception);
+	
+	void onClose(ErrorCondition condition);
 }

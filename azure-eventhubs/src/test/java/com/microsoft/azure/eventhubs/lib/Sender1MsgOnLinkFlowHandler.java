@@ -43,7 +43,7 @@ public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler
 						properties.put("testkey", "testvalue");
 						msg.setApplicationProperties(new ApplicationProperties(properties));
 						Map<Symbol, Object> annotations = new HashMap<Symbol, Object>();
-						annotations.put(AmqpConstants.Offset, "11111111");
+						annotations.put(AmqpConstants.OFFSET, "11111111");
 						MessageAnnotations msgAnnotation = new MessageAnnotations(annotations);
 						msg.setMessageAnnotations(msgAnnotation);
 						int length = msg.encode(bytes,  0,  4 * 1024);

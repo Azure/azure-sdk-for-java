@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.eventhubs;
 
 import java.util.concurrent.*;
@@ -5,8 +25,7 @@ import java.util.function.*;
 
 import com.microsoft.azure.servicebus.*;
 
-// TODO: Implement Timeout on Send operation
-public final class EventHubSender
+public final class PartitionSender
 {
 	private final String partitionId;
 	private final String eventHubName;
@@ -14,7 +33,7 @@ public final class EventHubSender
 	
 	private MessageSender internalSender;
 		
-	private EventHubSender(MessagingFactory factory, String eventHubName, String partitionId)
+	private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId)
 	{
 		this.partitionId = partitionId;
 		this.eventHubName = eventHubName;
@@ -24,13 +43,13 @@ public final class EventHubSender
 	/**
 	 * Internal-Only: factory pattern to Create EventHubSender
 	 */
-	static CompletableFuture<EventHubSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException
+	static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws ServiceBusException
 	{
-		final EventHubSender sender = new EventHubSender(factory, eventHubName, partitionId);
+		final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
 		return sender.createInternalSender()
-				.thenApplyAsync(new Function<Void, EventHubSender>()
+				.thenApplyAsync(new Function<Void, PartitionSender>()
 				{
-					public EventHubSender apply(Void a)
+					public PartitionSender apply(Void a)
 					{
 						return sender;
 					}
@@ -43,7 +62,7 @@ public final class EventHubSender
 				String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
 				.thenAcceptAsync(new Consumer<MessageSender>()
 				{
-					public void accept(MessageSender a) { EventHubSender.this.internalSender = a;}
+					public void accept(MessageSender a) { PartitionSender.this.internalSender = a;}
 				});
 	}
 

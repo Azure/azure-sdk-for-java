@@ -10,7 +10,7 @@ import org.junit.*;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.EventHubSender;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
@@ -27,7 +27,7 @@ public class SendLargeMessageTest
 	static String partitionId = "0";
 	
 	static EventHubClient ehClient;
-	static EventHubSender sender;
+	static PartitionSender sender;
 	
 	static EventHubClient receiverHub;
 	static PartitionReceiver receiver;

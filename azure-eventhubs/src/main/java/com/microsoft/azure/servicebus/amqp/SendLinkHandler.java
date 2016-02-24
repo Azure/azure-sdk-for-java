@@ -1,3 +1,23 @@
+/*
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package com.microsoft.azure.servicebus.amqp;
 
 import java.util.Locale;
@@ -6,17 +26,18 @@ import java.util.logging.*;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 
-import com.microsoft.azure.servicebus.ClientConstants;
-import com.microsoft.azure.servicebus.MessageSender;
+import com.microsoft.azure.servicebus.*;
 
 public class SendLinkHandler extends BaseLinkHandler
 {
-	private final MessageSender msgSender;
+	private final IAmqpSender msgSender;
 	private final Object firstFlow;
 	private boolean isFirstFlow;
 	
-	public SendLinkHandler(final MessageSender sender)
+	public SendLinkHandler(final IAmqpSender sender)
 	{
+		super(sender);
+		
 		this.msgSender = sender;
 		this.firstFlow = new Object();
 		this.isFirstFlow = true;
@@ -58,9 +79,9 @@ public class SendLinkHandler extends BaseLinkHandler
 	{		
 		Delivery delivery = event.getDelivery();
 		Sender sender = (Sender) delivery.getLink();
-		if(TRACE_LOGGER.isLoggable(Level.FINE))
+		if(TRACE_LOGGER.isLoggable(Level.FINEST))
         {
-            TRACE_LOGGER.log(Level.FINE, 
+            TRACE_LOGGER.log(Level.FINEST, 
             		"linkName[" + sender.getName() + 
             		"], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "], deliveryState[" + delivery.getRemoteState() + 
             		"], delivery.isBuffered[" + delivery.isBuffered() +"], delivery.id[" + delivery.getTag() + "]");
@@ -107,30 +128,9 @@ public class SendLinkHandler extends BaseLinkHandler
         }
 	}
 	
-	public void processOnClose(Link link, Exception exception)
-	{
-		link.close();
-		this.msgSender.onError(exception);
-	}
-	
 	@Override
 	public void onLinkRemoteDetach(Event event)
 	{
 		this.onLinkRemoteClose(event);
-	}
-	
-	// TODO: abstract this out to an interface - as a connection-child
-	public void processOnClose(Link link, ErrorCondition condition)
-	{
-		if (condition != null)
-		{
-			if(TRACE_LOGGER.isLoggable(Level.FINE))
-	        {
-				TRACE_LOGGER.log(Level.FINE, "linkName[" + link.getName() + "], ErrorCondition[" + condition.getDescription() + "]");
-	        }
-        }
-		
-		link.close();
-		this.msgSender.onError(condition);
 	}
 }
