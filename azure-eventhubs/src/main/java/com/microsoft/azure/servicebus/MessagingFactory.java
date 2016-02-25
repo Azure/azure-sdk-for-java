@@ -255,7 +255,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return CompletableFuture.completedFuture(null);
 	}
 
-	public class RunReactor implements Runnable
+	private class RunReactor implements Runnable
 	{
 		private Reactor r;
 		

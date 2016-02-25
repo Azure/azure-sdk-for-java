@@ -35,7 +35,7 @@ public class ReceiverEpochTest extends TestBase
 				
 				try
 				{
-					ehClient.createEpochReceiver(cgName, partitionId, epoch - 10).get();
+					ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10).get();
 				}
 				catch(ExecutionException exp)
 				{
