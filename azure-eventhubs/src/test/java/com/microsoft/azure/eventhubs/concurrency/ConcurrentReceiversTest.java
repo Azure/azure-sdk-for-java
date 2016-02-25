@@ -32,7 +32,7 @@ public class ConcurrentReceiversTest
 		connStr = new ConnectionStringBuilder(
 				eventHubInfo.getNamespaceName(), eventHubInfo.getName(), eventHubInfo.getSasRule().getKey(), eventHubInfo.getSasRule().getValue());
 	
-		sender = EventHubClient.createFromConnectionString(connStr.toString(), true).get();
+		sender = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		
 		for (int i=0; i < partitionCount; i++)
 		{
@@ -53,7 +53,7 @@ public class ConcurrentReceiversTest
 			{
 				for(int i=0; i < partitionCount; i++)
 				{
-					ehClients[i] = EventHubClient.createFromConnectionString(connStr.toString(), true).get();
+					ehClients[i] = EventHubClient.createFromConnectionString(connStr.toString()).get();
 					receivers[i] = ehClients[i].createReceiver(consumerGroupName, Integer.toString(i), Instant.now()).get();
 					// receivers[i].setReceiveHandler(new EventCounter());
 				}

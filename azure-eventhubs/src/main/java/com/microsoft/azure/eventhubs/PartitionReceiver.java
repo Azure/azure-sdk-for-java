@@ -148,8 +148,7 @@ public final class PartitionReceiver extends ClientEntity
 	 * @throws AuthorizationFailedException
 	 * @throws InternalServerException
 	 */
-	public CompletableFuture<Iterable<EventData>> receive() 
-			throws ServiceBusException
+	public CompletableFuture<Iterable<EventData>> receive()
 	{
 		return this.internalReceiver.receive().thenApply(new Function<Collection<Message>, Iterable<EventData>>()
 		{

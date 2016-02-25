@@ -14,11 +14,13 @@ import java.util.regex.*;
  * It can also be used to perform basic validation on an existing connection string.
  *  <p> Illustration:
  *  <pre>
- *  	ConnectionStringBuilder connStr = new ConnectionStringBuilder(
- *  		"namespaceName", 
+ *  	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
+ *  		"ServiceBusNamespaceName", 
  *  		"ServiceBusEntityName", // eventHubName or QueueName or TopicName 
- *  		"sayKeyName", 
- *  		"SasKey");
+ *  		"SharedAccessSignatureKeyName", 
+ *  		"SharedAccessSignatureKey");
+ *  
+ *  	String connectionString = connectionStringBuilder.toString();
  *  </pre>
  */
 public class ConnectionStringBuilder

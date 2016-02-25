@@ -41,10 +41,10 @@ public class SendLargeMessageTest
 		connStr = new ConnectionStringBuilder(
 				eventHubInfo.getNamespaceName(), eventHubInfo.getName(), eventHubInfo.getSasRule().getKey(), eventHubInfo.getSasRule().getValue());
 	
-		ehClient = EventHubClient.createFromConnectionString(connStr.toString(), true).get();
+		ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		sender = ehClient.createPartitionSender(partitionId).get();
 		
-		receiverHub = EventHubClient.createFromConnectionString(connStr.toString(), true).get();
+		receiverHub = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		receiver = receiverHub.createReceiver(eventHubInfo.getRandomConsumerGroup(), partitionId, Instant.now()).get();
 	}
 	

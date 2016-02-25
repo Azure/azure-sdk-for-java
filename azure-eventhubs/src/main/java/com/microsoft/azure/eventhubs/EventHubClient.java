@@ -20,64 +20,26 @@ public class EventHubClient extends ClientEntity
 {
 	public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 	
-	private MessagingFactory underlyingFactory;
 	private final String eventHubName;
+	private final Object senderCreateSync;
 	
+	private MessagingFactory underlyingFactory;
 	private MessageSender sender;
+	private boolean isSenderCreateStarted;
+	private CompletableFuture<Void> createSender;
 	
 	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
 	{
 		super(StringUtil.getRandomString());
 		this.eventHubName = connectionString.getEntityPath();
-	}
-	
-	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString,
-			final boolean isReceiveOnly)
-			throws ServiceBusException, IOException
-	{
-		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
-		final EventHubClient eventHubClient = new EventHubClient(connStr);
-				
-		if (isReceiveOnly)
-		{
-			return MessagingFactory.createFromConnectionString(connectionString.toString())
-					.thenApplyAsync(new Function<MessagingFactory, EventHubClient>()
-					{
-						@Override
-						public EventHubClient apply(MessagingFactory factory)
-						{
-							eventHubClient.underlyingFactory = factory;
-							return eventHubClient;
-						}
-					});
-		}
-		else 
-		{
-			return MessagingFactory.createFromConnectionString(connectionString.toString())
-					.thenComposeAsync(new Function<MessagingFactory, CompletableFuture<EventHubClient>>()
-					{
-						@Override
-						public CompletableFuture<EventHubClient> apply(MessagingFactory factory)
-						{
-							eventHubClient.underlyingFactory = factory;
-							return eventHubClient.createInternalSender()
-									.thenApplyAsync(new Function<Void, EventHubClient>()
-									{
-										@Override
-										public EventHubClient apply(Void a)
-										{
-											return eventHubClient;
-										}
-									});
-						}
-					});			
-		}
+		this.senderCreateSync = new Object();
 	}
 	
 	/**
 	 * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
 	 * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
-	 * The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
+	 * 
+	 * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
 	 * 
 	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
 	 * @throws ServiceBusException
@@ -85,15 +47,18 @@ public class EventHubClient extends ClientEntity
 	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
 			throws ServiceBusException, IOException
 	{
-		return EventHubClient.createFromConnectionString(connectionString, false);
-	}
-	
-	CompletableFuture<Void> createInternalSender()
-	{
-		return MessageSender.create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
-				.thenAcceptAsync(new Consumer<MessageSender>()
+		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
+		final EventHubClient eventHubClient = new EventHubClient(connStr);
+		
+		return MessagingFactory.createFromConnectionString(connectionString.toString())
+				.thenApplyAsync(new Function<MessagingFactory, EventHubClient>()
 				{
-					public void accept(MessageSender a) { EventHubClient.this.sender = a;}
+					@Override
+					public EventHubClient apply(MessagingFactory factory)
+					{
+						eventHubClient.underlyingFactory = factory;
+						return eventHubClient;
+					}
 				});
 	}
 	
@@ -131,7 +96,7 @@ public class EventHubClient extends ClientEntity
 	 * @see {@link #send(EventData, String)}
 	 * @see {@link PartitionSender#send(EventData)} 
 	 */
-	public final CompletableFuture<Void> send(EventData data) 
+	public final CompletableFuture<Void> send(final EventData data) 
 			throws ServiceBusException
 	{
 		if (data == null)
@@ -139,7 +104,14 @@ public class EventHubClient extends ClientEntity
 			throw new IllegalArgumentException("EventData cannot be empty.");
 		}
 		
-		return this.sender.send(data.toAmqpMessage());
+		return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>()
+		{
+			@Override
+			public CompletableFuture<Void> apply(Void voidArg)
+			{
+				return EventHubClient.this.sender.send(data.toAmqpMessage());
+			}
+		});
 	}
 	
 	/**
@@ -160,7 +132,7 @@ public class EventHubClient extends ClientEntity
 	 * @see {@link #send(EventData, String)}
 	 * @see {@link PartitionSender#send(EventData)} 
 	 */
-	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
+	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
 		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0))
@@ -168,7 +140,14 @@ public class EventHubClient extends ClientEntity
 			throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
 		}
 		
-		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
+		return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>()
+		{
+			@Override
+			public CompletableFuture<Void> apply(Void voidArg)
+			{
+				return EventHubClient.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
+			}
+		});
 	}
 	
 	/**
@@ -189,7 +168,7 @@ public class EventHubClient extends ClientEntity
 	 * @see {@link #send(EventData)}
 	 * @see {@link PartitionSender#send(EventData)} 
 	 */
-	public final CompletableFuture<Void> send(EventData eventData, String partitionKey) 
+	public final CompletableFuture<Void> send(final EventData eventData, final String partitionKey) 
 			throws ServiceBusException
 	{
 		if (eventData == null)
@@ -202,7 +181,14 @@ public class EventHubClient extends ClientEntity
 			throw new IllegalArgumentException("partitionKey cannot be null");
 		}
 				
-		return this.sender.send(eventData.toAmqpMessage(partitionKey));
+		return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>()
+		{
+			@Override
+			public CompletableFuture<Void> apply(Void voidArg)
+			{
+				return EventHubClient.this.sender.send(eventData.toAmqpMessage(partitionKey));
+			}
+		});
 	}
 	
 	/**
@@ -224,10 +210,9 @@ public class EventHubClient extends ClientEntity
 	 * @see {@link #send(EventData)}
 	 * @see {@link PartitionSender#send(EventData)} 
 	 */
-	public final CompletableFuture<Void> send(final Collection<EventData> eventDatas, final String partitionKey) 
-		throws ServiceBusException
+	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey)
 	{
-		if (eventDatas == null || eventDatas.size() == 0)
+		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0))
 		{
 			throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
 		}
@@ -243,7 +228,14 @@ public class EventHubClient extends ClientEntity
 					String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: {0}", ClientConstants.MAX_PARTITION_KEY_LENGTH));
 		}
 		
-		return this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
+		return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>()
+		{
+			@Override
+			public CompletableFuture<Void> apply(Void voidArg)
+			{
+				return EventHubClient.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
+			}
+		});
 	}
 	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId) 
@@ -322,5 +314,26 @@ public class EventHubClient extends ClientEntity
 		}
 		
 		return CompletableFuture.completedFuture(null);
+	}
+	
+	private CompletableFuture<Void> createInternalSender()
+	{
+		if (!this.isSenderCreateStarted)
+		{
+			synchronized (this.senderCreateSync)
+			{
+				if (!this.isSenderCreateStarted)
+				{
+					this.isSenderCreateStarted = true;
+					this.createSender = MessageSender.create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
+							.thenAcceptAsync(new Consumer<MessageSender>()
+							{
+								public void accept(MessageSender a) { EventHubClient.this.sender = a;}
+							});
+				}
+			}
+		}
+		
+		return this.createSender;
 	}
 }

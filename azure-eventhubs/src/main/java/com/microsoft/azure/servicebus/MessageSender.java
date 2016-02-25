@@ -177,7 +177,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	 * accepts even if PartitionKey is null - and hence, the code consuming this api is supposed to enforce
 	 */
 	public CompletableFuture<Void> send(final Iterable<Message> messages)
-		throws ServiceBusException
 	{
 		if (messages == null || IteratorUtil.sizeEquals(messages, 0))
 		{
@@ -213,7 +212,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			}
 			catch(BufferOverflowException exception)
 			{
-				throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", MAX_MESSAGE_LENGTH_BYTES / 1024), exception);
+				final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
+				sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
+				return sendTask;
 			}
 			
 			byteArrayOffset = byteArrayOffset + encodedSize;
@@ -222,7 +223,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return this.send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
 	}
 	
-	public CompletableFuture<Void> send(Message msg) throws ServiceBusException
+	public CompletableFuture<Void> send(Message msg)
 	{
 		byte[] bytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
 		int encodedSize = 0;
@@ -232,7 +233,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 		catch(BufferOverflowException exception)
 		{
-			throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s", MAX_MESSAGE_LENGTH_BYTES), exception);
+			final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
+			sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
+			return sendTask;
 		}
 		
 		return this.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
