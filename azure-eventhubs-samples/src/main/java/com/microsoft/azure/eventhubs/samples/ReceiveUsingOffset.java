@@ -78,7 +78,7 @@ public class ReceiveUsingOffset
 		finally
 		{
 			// this is paramount; max number of concurrent receiver per consumergroup per partition is 5
-			receiver.close();
+			receiver.close().get();
 		}
 	}
 
