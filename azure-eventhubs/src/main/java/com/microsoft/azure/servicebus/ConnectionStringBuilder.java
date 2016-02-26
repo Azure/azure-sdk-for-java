@@ -26,11 +26,10 @@ import java.util.regex.*;
  * A connection string is basically a string consisted of key-value pair separated by ";". 
  * Basic format is {<key>=<value>[;<key>=<value>]} where supported key name are as follow:
  * <ul>
- * <li> Endpoint
- * <li> EntityPath
- * <li> SharedAccessKeyName
- * <li> SharedAccessKey
- * <li> Endpoint
+ * <li> Endpoint - the URL that contains the servicebus namespace
+ * <li> EntityPath - the path to the service bus entity (queue/topic/eventhub/subscription/consumergroup/partition)
+ * <li> SharedAccessKeyName - the key name to the corresponding sas rule for the namespace, or entity.
+ * <li> SharedAccessKey - the key for the corresponding sas rule of the namespace or entity.
  * </ul>
  */
 public class ConnectionStringBuilder
