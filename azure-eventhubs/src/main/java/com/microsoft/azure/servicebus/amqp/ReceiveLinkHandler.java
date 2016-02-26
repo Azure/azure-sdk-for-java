@@ -6,12 +6,13 @@ package com.microsoft.azure.servicebus.amqp;
 
 import java.util.*;
 import java.util.logging.Level;
+
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.MessageReceiver;
+import com.microsoft.azure.servicebus.ClientConstants;
 
 /** 
  * ServiceBus <-> ProtonReactor interaction 
@@ -116,24 +117,34 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 		}
         
 		Delivery delivery = event.getDelivery();
-        Receiver receiveLink = (Receiver) delivery.getLink();
+		Receiver receiveLink = (Receiver) delivery.getLink();
         
-        if (delivery != null && delivery.isReadable() && !delivery.isPartial())
-        {    
-        	int size = delivery.pending();
-            byte[] buffer = new byte[size];
-            int read = receiveLink.recv(buffer, 0, size);
-            
-            Message msg = Proton.message();
-            msg.decode(buffer, 0, read);
-            
-            if(TRACE_LOGGER.isLoggable(Level.FINEST) && receiveLink != null)
-            {
-            	TRACE_LOGGER.log(Level.FINEST, String.format(Locale.US, "linkName[%s], updatedLinkCredit[%s]", receiveLink.getName(), receiveLink.getCredit()));
-            }
-            
-        	this.amqpReceiver.onReceiveComplete(msg);
-        	delivery.settle();
+		// If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k), 
+		// all until "last-1" deliveries will be partial
+		// reactor will raise onDelivery event for all of these - we only need the last one
+		if (!delivery.isPartial())
+		{
+			// delivery.pending() should return current deliveries pending bytes to be read.
+			// we ran into an issue with proton-j where delivery.pending() returned lessthan available bytes and hence the below Math.max(...)
+			byte[] buffer = new byte[Math.max(ClientConstants.MAX_FRAME_SIZE_BYTES, delivery.pending())];
+		    int read = receiveLink.recv(buffer, 0, buffer.length);
+	        
+	        if (read != -1)
+	        {
+	        	Message msg = Proton.message();
+		        msg.decode(buffer, 0, read);
+		        
+		    	this.amqpReceiver.onReceiveComplete(msg);
+	        }
+	        
+	    	delivery.settle();
+		}
+		
+    	if(TRACE_LOGGER.isLoggable(Level.FINEST) && receiveLink != null)
+	    {
+        	TRACE_LOGGER.log(Level.FINEST, 
+        			String.format(Locale.US, "linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], remoteCondition[%s], delivery.isPartial[%s]", 
+        					receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isPartial()));
         }
     }
 }

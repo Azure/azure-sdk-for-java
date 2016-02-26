@@ -26,6 +26,9 @@ public final class ClientConstants
 	public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
 	public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
 
+	public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+	public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
+
 	public final static Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
 	
 	public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);

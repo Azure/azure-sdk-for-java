@@ -37,7 +37,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
-	public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 	
 	private final MessagingFactory underlyingFactory;
 	private final String sendPath;
@@ -64,7 +63,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		msgSender.openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		msgSender.initializeLinkOpen(msgSender.openLinkTracker);
 		msgSender.linkCreateScheduled = true;
-		Timer.schedule(new Runnable() {
+		Timer.schedule(new Runnable()
+		{
 			@Override
 			public void run()
 			{
@@ -194,26 +194,26 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		Message batchMessage = Proton.message();
 		batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
 				
-		byte[] bytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
-		int encodedSize = batchMessage.encode(bytes, 0, MAX_MESSAGE_LENGTH_BYTES);
+		byte[] bytes = new byte[ClientConstants.MAX_MESSAGE_LENGTH_BYTES];
+		int encodedSize = batchMessage.encode(bytes, 0, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 		int byteArrayOffset = encodedSize;
 		
 		for(Message amqpMessage: messages)
 		{
 			Message messageWrappedByData = Proton.message();
 			
-			byte[] messageBytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
-			int messageSizeBytes = amqpMessage.encode(messageBytes, 0, MAX_MESSAGE_LENGTH_BYTES);
+			byte[] messageBytes = new byte[ClientConstants.MAX_MESSAGE_LENGTH_BYTES];
+			int messageSizeBytes = amqpMessage.encode(messageBytes, 0, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 			messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
 			
 			try
 			{
-				encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, MAX_MESSAGE_LENGTH_BYTES - byteArrayOffset - 1);
+				encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, ClientConstants.MAX_MESSAGE_LENGTH_BYTES - byteArrayOffset - 1);
 			}
 			catch(BufferOverflowException exception)
 			{
 				final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
-				sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
+				sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
 				return sendTask;
 			}
 			
@@ -225,16 +225,16 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	
 	public CompletableFuture<Void> send(Message msg)
 	{
-		byte[] bytes = new byte[MAX_MESSAGE_LENGTH_BYTES];
+		byte[] bytes = new byte[ClientConstants.MAX_MESSAGE_LENGTH_BYTES];
 		int encodedSize = 0;
 		try
 		{
-			encodedSize = msg.encode(bytes, 0, MAX_MESSAGE_LENGTH_BYTES);
+			encodedSize = msg.encode(bytes, 0, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 		}
 		catch(BufferOverflowException exception)
 		{
 			final CompletableFuture<Void> sendTask = new CompletableFuture<Void>();
-			sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
+			sendTask.completeExceptionally(new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", ClientConstants.MAX_MESSAGE_LENGTH_BYTES / 1024), exception));
 			return sendTask;
 		}
 		
@@ -358,7 +358,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 					{
 						Sender oldSender = MessageSender.this.sendLink;
 						MessageSender.this.underlyingFactory.deregisterForConnectionError(oldSender);
-						oldSender.free();
+						
 						MessageSender.this.sendLink = sender;
 					}
 					
@@ -448,11 +448,18 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		catch (InterruptedException|ExecutionException exception)
 		{
 			Throwable throwable = exception.getCause();
+			
 			if (throwable != null && throwable instanceof Exception)
 			{
 				this.onError((Exception) throwable);
-				return null;
 			}
+			
+			if (exception instanceof InterruptedException)
+			{
+				Thread.currentThread().interrupt();
+			}
+			
+			return null;
 		}
 		catch (TimeoutException exception)
         {
@@ -461,6 +468,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         }
 		
 		Session session = connection.session();
+		session.setOutgoingWindow(Integer.MAX_VALUE);
         session.open();
         BaseHandler.setHandler(session, new SessionHandler(this.sendPath));
         

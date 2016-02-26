@@ -448,6 +448,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				this.onError((Exception) exception.getCause());
 			}
 			
+			if (exception instanceof InterruptedException)
+			{
+				Thread.currentThread().interrupt();
+			}
+			
 			return null;
 		}
         catch (TimeoutException exception)
@@ -495,13 +500,14 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
         Map<Symbol, UnknownDescribedType> filterMap = Collections.singletonMap(AmqpConstants.STRING_FILTER, filter);
         source.setFilter(filterMap);
         
-		Session ssn = connection.session();
-		ssn.open();
-        BaseHandler.setHandler(ssn, new SessionHandler(this.receivePath));
+		Session session = connection.session();
+		session.setIncomingCapacity(Integer.MAX_VALUE);
+		session.open();
+        BaseHandler.setHandler(session, new SessionHandler(this.receivePath));
         
 		String receiveLinkName = StringUtil.getRandomString();
 		receiveLinkName = receiveLinkName.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer());
-		Receiver receiver = ssn.receiver(receiveLinkName);
+		Receiver receiver = session.receiver(receiveLinkName);
 		receiver.setSource(source);
 		receiver.setTarget(new Target());
 		
@@ -672,7 +678,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					{
 						Receiver oldReceiver = MessageReceiver.this.receiveLink;
 						MessageReceiver.this.underlyingFactory.deregisterForConnectionError(oldReceiver);
-						oldReceiver.free();
 						
 						MessageReceiver.this.receiveLink = receiver;
 					}

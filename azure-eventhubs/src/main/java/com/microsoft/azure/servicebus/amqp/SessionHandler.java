@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,12 +24,24 @@ public class SessionHandler extends BaseHandler
 		this.name = name;
 	}
 	
+	@Override
+	public void onSessionRemoteOpen(Event e) 
+	{
+		if(TRACE_LOGGER.isLoggable(Level.FINE))
+        {
+        	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
+        					this.name, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
+        }
+	}
+    
+	
 	@Override 
 	public void onSessionLocalClose(Event e)
 	{
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
-        	TRACE_LOGGER.log(Level.FINE, this.name + ": " + e.toString());
+        	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name, 
+        			e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
         }
 	}
 	
@@ -37,7 +50,8 @@ public class SessionHandler extends BaseHandler
     { 
     	if(TRACE_LOGGER.isLoggable(Level.FINE))
 	    {
-	    	TRACE_LOGGER.log(Level.FINE, this.name + ": " + e.toString());
+    		TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name,
+    				e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
 	    } 
     }
     
@@ -46,7 +60,7 @@ public class SessionHandler extends BaseHandler
     { 
     	if(TRACE_LOGGER.isLoggable(Level.FINE))
         {
-        	TRACE_LOGGER.log(Level.FINE, this.name + ": " + e.toString());
+    		TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.name));
         }
     }
 

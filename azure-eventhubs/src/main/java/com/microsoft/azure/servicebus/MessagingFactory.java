@@ -249,7 +249,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public CompletableFuture<Void> close()
 	{
-		this.close();
+		this.closeSync();
 		
 		// hook up onRemoteClose & timeout 
 		return CompletableFuture.completedFuture(null);
