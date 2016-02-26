@@ -12,24 +12,24 @@ import java.util.regex.*;
 /**
  * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
  * It can also be used to perform basic validation on an existing connection string.
- *  <p> Illustration:
- *  <pre>
- *  	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
- *  		"ServiceBusNamespaceName", 
- *  		"ServiceBusEntityName", // eventHubName or QueueName or TopicName 
- *  		"SharedAccessSignatureKeyName", 
- *  		"SharedAccessSignatureKey");
+ * <p> Sample Code:
+ * <pre>{@code
+ * ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
+ *     "ServiceBusNamespaceName", 
+ *     "ServiceBusEntityName", // eventHubName or QueueName or TopicName 
+ *     "SharedAccessSignatureKeyName", 
+ *     "SharedAccessSignatureKey");
  *  
- *  	String connectionString = connectionStringBuilder.toString();
- *  </pre>
+ * String connectionString = connectionStringBuilder.toString();
+ * }</pre>
  * <p>
  * A connection string is basically a string consisted of key-value pair separated by ";". 
- * Basic format is {<key>=<value>[;<key>=<value>]} where supported key name are as follow:
+ * Basic format is {'<'key'>'='<'value'>'[;'<'key'>'='<'value'>']} where supported key name are as follow:
  * <ul>
  * <li> Endpoint - the URL that contains the servicebus namespace
  * <li> EntityPath - the path to the service bus entity (queue/topic/eventhub/subscription/consumergroup/partition)
- * <li> SharedAccessKeyName - the key name to the corresponding sas rule for the namespace, or entity.
- * <li> SharedAccessKey - the key for the corresponding sas rule of the namespace or entity.
+ * <li> SharedAccessKeyName - the key name to the corresponding shared access policy rule for the namespace, or entity.
+ * <li> SharedAccessKey - the key for the corresponding shared access policy rule of the namespace or entity.
  * </ul>
  */
 public class ConnectionStringBuilder
@@ -108,7 +108,7 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Get the sas key value from the connection string
+	 * Get the shared access policy key value from the connection string
 	 */
 	String getSasKey()
 	{
@@ -116,7 +116,7 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Get the sas key owner name from the connection string
+	 * Get the shared access policy owner name from the connection string
 	 */
 	public String getSasKeyName()
 	{

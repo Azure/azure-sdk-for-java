@@ -71,26 +71,47 @@ public final class PartitionSender extends ClientEntity
 		{
             if (exception instanceof InterruptedException)
             {
-                // Re-assert the thread’s interrupted status
+                // Re-assert the thread's interrupted status
                 Thread.currentThread().interrupt();
             }
             
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
-                if (!(throwable instanceof RuntimeException) && 
-                    !(throwable instanceof ServiceBusException))
-                {
-                    throwable = new ServiceBusException(true, throwable);
-                }
-                
-				throw throwable;
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+				
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+				                
+				throw new ServiceBusException(true, throwable);
 			}
 		}
+        
+		return null;
     }
     
 	/**
-	 * Send {@link EventData} to a specific EventHub partition. The partition to send is pre-determined when this PartitionSender was created.
+	 * Send {@link EventData} to a specific EventHub partition. The target partition is pre-determined when this PartitionSender was created.
+	 * This send pattern emphasize data correlation over general availability and latency.
+	 * <p>
+	 * There are 3 ways to send to EventHubs, each exposed as a method (along with its sendBatch overload):
+	 * <pre>
+	 * i.   {@link EventHubClient#send(EventData)} or {@link EventHubClient#send(Iterable)}
+	 * ii.  {@link EventHubClient#send(EventData, String)} or {@link EventHubClient#send(Iterable, String)}
+	 * iii. {@link PartitionSender#send(EventData)} or {@link PartitionSender#send(Iterable)}
+	 * </pre>
+	 * 
+	 * Use this type of Send, if:
+	 * <pre>
+	 * i. The client wants to take direct control of distribution of data across partitions. In this case client is responsible for making sure there is at least one sender per event hub partition.
+	 * ii. User cannot use partition key as a mean to direct events to specific partition, yet there is a need for data correlation with partitioning scheme. 
+	 * </pre> 
+	 * 
 	 * @param data the {@link EventData} to be sent.
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
@@ -104,7 +125,7 @@ public final class PartitionSender extends ClientEntity
 	}
 	
     /**
-	 * Synchronous version of {@link #send(Iterable<EventData>)} Api. 
+	 * Synchronous version of {@link #send(Iterable)} . 
 	 */
     public final Void sendSync(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
@@ -117,51 +138,65 @@ public final class PartitionSender extends ClientEntity
 		{
             if (exception instanceof InterruptedException)
             {
-                // Re-assert the thread’s interrupted status
+                // Re-assert the thread's interrupted status
                 Thread.currentThread().interrupt();
             }
             
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
-                if (!(throwable instanceof RuntimeException) && 
-                    !(throwable instanceof ServiceBusException))
-                {
-                    throwable = new ServiceBusException(true, throwable);
-                }
-                
-				throw throwable;
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+				
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+				                
+				throw new ServiceBusException(true, throwable);
 			}
 		}
+        
+		return null;
     }
 	
 	/**
-	 * Send {@link EventData} to a specific EventHub partition. The partition to send is pre-determined when this PartitionSender was created.
+	 * Send {@link EventData} to a specific EventHub partition. The targeted partition is pre-determined when this PartitionSender was created.
+	 * <p>
+	 * There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData)}, which is the same type of Send and is used to send single {@link EventData}.
+	 * <p> 
+	 * Sending a batch of {@link EventData}'s is useful in the following cases:
+	 * <pre>
+	 * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
+	 * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
+	 * </pre>
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
-     * <code>
-     *         Gson gson = new GsonBuilder().create();
-     *         EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
-     *         PartitionSender senderToPartitionOne = client.createPartitionSenderSync("1");
+     * <pre>{@code
+     * Gson gson = new GsonBuilder().create();
+     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * PartitionSender senderToPartitionOne = client.createPartitionSenderSync("1");
      *         
-     *         while (true)
-     *         {
-     *             LinkedList<EventData> events = new LinkedList<EventData>();
-     *             for (int count = 1; count < 11; count++)
-     *             {
-     *                 PayloadEvent payload = new PayloadEvent(count);
-     *                 byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
-     *                 EventData sendEvent = new EventData(payloadBytes);
-     *                 Map<String, String> applicationProperties = new HashMap<String, String>();
-     *                 applicationProperties.put("from", "javaClient");
-     *                 sendEvent.setProperties(applicationProperties);
-     *                 events.add(sendEvent);
-     *             }
+     * while (true)
+     * {
+     *     LinkedList<EventData> events = new LinkedList<EventData>();
+     *     for (int count = 1; count < 11; count++)
+     *     {
+     *         PayloadEvent payload = new PayloadEvent(count);
+     *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
+     *         EventData sendEvent = new EventData(payloadBytes);
+     *         Map<String, String> applicationProperties = new HashMap<String, String>();
+     *         applicationProperties.put("from", "javaClient");
+     *         sendEvent.setProperties(applicationProperties);
+     *         events.add(sendEvent);
+     *     }
      *         
-     *             senderToPartitionOne.sendSync(events);
-     *             System.out.println(String.format("Sent Batch... Size: %s", events.size()));
-     *         }		
-     * </code>
+     *     senderToPartitionOne.sendSync(events);
+     *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
+     * }		
+     * }</code>
 	 * @param eventDatas batch of events to send to EventHub
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.

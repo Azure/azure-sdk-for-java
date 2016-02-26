@@ -13,7 +13,7 @@ import org.apache.qpid.proton.message.Message;
 import com.microsoft.azure.servicebus.*;
 
 /**
- * This is a logicial representation of receiving from a EventHub partition.
+ * This is a logical representation of receiving from a EventHub partition.
  * <p>
  * A PartitionReceiver is tied to a ConsumerGroup + Partition combination. If you are creating an epoch based 
  * PartitionReceiver (i.e. PartitionReceiver.getEpoch != 0) you cannot have more than one active receiver per 
@@ -144,7 +144,7 @@ public final class PartitionReceiver extends ClientEntity
 	}
 	
 	/**
-	 * Set the no. of events that can be pre-fetched and Cached at the {@link PartitionReceiver).
+	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver).
 	 * <p>
      * by default the value is 300
 	 * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
@@ -171,66 +171,72 @@ public final class PartitionReceiver extends ClientEntity
 	}
 	
     /**
-	 * Synchronous version of {@link #receive} Api. 
+	 * Synchronous version of {@link #receive}. 
 	 */
-    public final CompletableFuture<Iterable<EventData>> receiveSync() 
+    public final Iterable<EventData> receiveSync() 
 			throws ServiceBusException
 	{
         try
         {
-            return this.receive(eventDatas).get();
+            return this.receive().get();
         }
 		catch (InterruptedException|ExecutionException exception)
 		{
             if (exception instanceof InterruptedException)
             {
-                // Re-assert the thread’s interrupted status
+                // Re-assert the thread's interrupted status
                 Thread.currentThread().interrupt();
             }
             
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
-                if (!(throwable instanceof RuntimeException) && 
-                    !(throwable instanceof ServiceBusException))
-                {
-                    throwable = new ServiceBusException(true, throwable);
-                }
-                
-				throw throwable;
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+				
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+				                
+				throw new ServiceBusException(true, throwable);
 			}
 		}
+        
+		return null;
     }
 	
 	/** 
 	 * Receive a batch of {@link EventData}'s from an EventHub partition
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
-     * <code>
-     *      EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
-     *      PartitionReceiver recevier = client.createPartitionReceiverSync("ConsumerGroup1", "1");
-	 *      Iterable<EventData> receivedEvents = receiver.receiveSync();
+     * <pre>{@code 
+     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
+	 * Iterable<EventData> receivedEvents = receiver.receiveSync();
 	 *      
-	 *      while (true)
-	 *      {
-	 *          int batchSize = 0;
-	 *          if (receivedEvents != null)
-	 *          {
-	 *              for(EventData receivedEvent: receivedEvents)
-	 *              {
-	 *                  System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
-	 *                  System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
-	 *                          receivedEvent.getSystemProperties().getOffset(), 
-	 *                          receivedEvent.getSystemProperties().getSequenceNumber(), 
-	 *                          receivedEvent.getSystemProperties().getEnqueuedTime()));
-	 *                  batchSize++;
-	 *              }
-	 *          }
+	 * while (true)
+	 * {
+	 *     int batchSize = 0;
+	 *     if (receivedEvents != null)
+	 *     {
+	 *         for(EventData receivedEvent: receivedEvents)
+	 *         {
+	 *             System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
+	 *             System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
+	 *                 receivedEvent.getSystemProperties().getOffset(), 
+	 *                 receivedEvent.getSystemProperties().getSequenceNumber(), 
+	 *                 receivedEvent.getSystemProperties().getEnqueuedTime()));
+	 *             batchSize++;
+	 *         }
+	 *     }
 	 *          
-	 *          System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
-	 *          receivedEvents = receiver.receiveSync();
-	 *      }
-     * </code>
+	 *     System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
+	 *     receivedEvents = receiver.receiveSync();
+	 * }
+     * }</pre>
 	 * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
 	 * @throws ServerBusyException
 	 * @throws AuthorizationFailedException

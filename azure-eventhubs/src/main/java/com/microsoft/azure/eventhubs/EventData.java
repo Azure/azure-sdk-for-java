@@ -78,15 +78,15 @@ public class EventData
 	 * <pre>
 	 * i.	Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
-	 *  </pre> 
-	 *  <p> Illustration:
-	 *  <code>
-	 *  	EventData eventData = new EventData(telemetryEventBytes);
-	 *  	HashMap<String, String> applicationProperties = new HashMap<String, String>();
-	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
-	 *		eventData.setProperties(applicationProperties);
-	 *  	partitionSender.Send(eventData);
-	 *  </code>
+	 * </pre> 
+	 * <p> Sample Code:
+	 * <pre> {@code
+	 * EventData eventData = new EventData(telemetryEventBytes);
+	 * HashMap<String, String> applicationProperties = new HashMap<String, String>();
+	 * applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
+	 * eventData.setProperties(applicationProperties);
+	 * partitionSender.Send(eventData);
+	 * }</pre>
 	 * @param data the actual payload of data in bytes to be Sent to EventHubs.
 	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */

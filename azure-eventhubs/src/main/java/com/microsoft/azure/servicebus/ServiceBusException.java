@@ -25,7 +25,7 @@ public class ServiceBusException extends Exception
 	    this.isTransient = isTransient;
 	  }
 	
-	  ServiceBusException(final boolean isTransient, final Throwable cause)
+	  public ServiceBusException(final boolean isTransient, final Throwable cause)
 	  {
 	    super(cause);
 	    this.isTransient = isTransient;
