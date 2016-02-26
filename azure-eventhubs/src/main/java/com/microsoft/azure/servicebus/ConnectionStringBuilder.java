@@ -22,6 +22,16 @@ import java.util.regex.*;
  *  
  *  	String connectionString = connectionStringBuilder.toString();
  *  </pre>
+ * <p>
+ * A connection string is basically a string consisted of key-value pair separated by ";". 
+ * Basic format is {<key>=<value>[;<key>=<value>]} where supported key name are as follow:
+ * <ul>
+ * <li> Endpoint
+ * <li> EntityPath
+ * <li> SharedAccessKeyName
+ * <li> SharedAccessKey
+ * <li> Endpoint
+ * </ul>
  */
 public class ConnectionStringBuilder
 {
@@ -98,16 +108,25 @@ public class ConnectionStringBuilder
 		return this.endpoint;
 	}
 
+	/**
+	 * Get the sas key value from the connection string
+	 */
 	String getSasKey()
 	{
 		return this.sharedAccessKey;
 	}
 
+	/**
+	 * Get the sas key owner name from the connection string
+	 */
 	public String getSasKeyName()
 	{
 		return this.sharedAccessKeyName;
 	}
 	
+	/**
+	 * Get the entity path value from the connection string
+	 */
 	public String getEntityPath()
 	{
 		return this.entityPath;
@@ -121,11 +140,17 @@ public class ConnectionStringBuilder
 		return (this.operationTimeout == null ? MessagingFactory.DefaultOperationTimeout : this.operationTimeout);
 	}
 	
+	/**
+	 * Get the retry policy instance that was created as part of this builder's creation.
+	 */
 	public RetryPolicy getRetryPolicy()
 	{
 		return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
 	}
 
+	/**
+	 * Return a connection string from this builder.
+	 */
 	@Override
 	public String toString()
 	{

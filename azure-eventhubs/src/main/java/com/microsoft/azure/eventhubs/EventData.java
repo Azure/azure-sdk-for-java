@@ -80,13 +80,13 @@ public class EventData
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
 	 *  </pre> 
 	 *  <p> Illustration:
-	 *  <pre>
+	 *  <code>
 	 *  	EventData eventData = new EventData(telemetryEventBytes);
 	 *  	HashMap<String, String> applicationProperties = new HashMap<String, String>();
 	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 *		eventData.setProperties(applicationProperties);
 	 *  	partitionSender.Send(eventData);
-	 *  </pre>
+	 *  </code>
 	 * @param data the actual payload of data in bytes to be Sent to EventHubs.
 	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
@@ -110,13 +110,13 @@ public class EventData
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
 	 *  </pre> 
 	 *  <p> Illustration:
-	 *  <pre>
+	 *  <code>
 	 *  	EventData eventData = new EventData(telemetryEventBytes, offset, length);
 	 *  	HashMap<String, String> applicationProperties = new HashMap<String, String>();
 	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 *		eventData.setProperties(applicationProperties);
 	 *  	partitionSender.Send(eventData);
-	 *  </pre>
+	 *  </code>
 	 * @param data the byte[] where the payload of the Event to be sent to EventHubs is present
 	 * @param offset Offset in the byte[] to read from ; inclusive index
 	 * @param length length of the byte[] to be read, starting from offset
@@ -142,13 +142,13 @@ public class EventData
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
 	 *  </pre> 
 	 *  <p> Illustration:
-	 *  <pre>
+	 *  <code>
 	 *  	EventData eventData = new EventData(telemetryEventByteBuffer);
 	 *  	HashMap<String, String> applicationProperties = new HashMap<String, String>();
 	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 *		eventData.setProperties(applicationProperties);
 	 *  	partitionSender.Send(eventData);
-	 *  </pre>
+	 *  </code>
 	 * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
 	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
 	 */
