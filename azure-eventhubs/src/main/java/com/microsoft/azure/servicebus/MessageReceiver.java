@@ -47,9 +47,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private CompletableFuture<Void> linkClose;
 	private boolean closeCalled;
 	
-	private ReceiveHandler receiveHandler;
-	private Object receiveHandlerLock;
-	
 	private long epoch;
 	private boolean isEpochReceiver;
 	private Instant dateTime;
@@ -88,7 +85,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.prefetchedMessages = new ConcurrentLinkedQueue<Message>();
 		this.pingFlowCount = new AtomicInteger();
 		this.linkCreateLock = new Object();
-		this.receiveHandlerLock = new Object();
 		this.linkClose = new CompletableFuture<Void>();
 		this.lastKnownLinkError = null;
 		this.currentFlow = new AtomicInteger(0);
@@ -194,14 +190,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				: this.prefetchCount;
 	}
 		
-	/*
-	 * *****Important*****: if ReceiveHandler is passed to the Constructor - this receive shouldn't be invoked
-	 */
 	public CompletableFuture<Collection<Message>> receive()
 	{
 		if (this.receiveLink.getLocalState() == EndpointState.CLOSED)
 		{
-			this.scheduleRecreate(Duration.ofSeconds(0));
+			this.scheduleRecreate(Duration.ofMillis(1));
 		}
 		
 		List<Message> returnMessages = null;
@@ -248,14 +241,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	{
 		return (this.prefetchCount > MessageReceiver.PING_FLOW_THRESHOLD) ? MessageReceiver.PING_FLOW_THRESHOLD : 0; 
 	}
-	
-	public void setReceiveHandler(final ReceiveHandler receiveHandler)
-	{
-		synchronized (this.receiveHandlerLock)
-		{
-			this.receiveHandler = receiveHandler;
-		}
-	}	
 	
 	public void onOpenComplete(Exception exception)
 	{
@@ -388,38 +373,18 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 		
 		this.onOpenComplete(exception);
-		
-		if (exception != null && this.receiveHandler != null)
+		WorkItem<Collection<Message>> workItem = null;
+
+		while ((workItem = this.pendingReceives.poll()) != null)
 		{
-			synchronized (this.receiveHandlerLock)
+			CompletableFuture<Collection<Message>> future = workItem.getWork();
+			if (exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient())
 			{
-				if (this.receiveHandler != null)
-				{
-					if (TRACE_LOGGER.isLoggable(Level.WARNING))
-					{
-						TRACE_LOGGER.log(Level.WARNING, 
-								String.format(Locale.US, "%s: LinkName (%s), receiverpath (%s): encountered Exception (%s) while receiving from ServiceBus service.", 
-										Instant.now().toString(), this.receiveLink.getName(), this.receivePath, exception.getClass()));
-					}
-					
-					this.receiveHandler.onError(exception);
-				}
+				future.complete(null);
 			}
-		}
-		else
-		{
-			WorkItem<Collection<Message>> workItem = null;
-			while ((workItem = this.pendingReceives.poll()) != null)
+			else
 			{
-				CompletableFuture<Collection<Message>> future = workItem.getWork();
-				if (exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient())
-				{
-					future.complete(null);
-				}
-				else
-				{
-					ExceptionUtil.completeExceptionally(future, exception, this);
-				}
+				ExceptionUtil.completeExceptionally(future, exception, this);
 			}
 		}
 	}
@@ -569,7 +534,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 		else
 		{
-			this.scheduleRecreate(Duration.ofSeconds(0));
+			this.scheduleRecreate(Duration.ofMillis(1));
 		}		
 	}
 	
@@ -643,7 +608,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 		else
 		{
-			this.scheduleRecreate(Duration.ofSeconds(0));
+			this.scheduleRecreate(Duration.ofMillis(1));
 		}
 	}
 	

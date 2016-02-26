@@ -147,7 +147,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		
 		if (this.sendLink.getLocalState() == EndpointState.CLOSED)
 		{
-			this.scheduleRecreate(Duration.ofSeconds(0));
+			this.scheduleRecreate(Duration.ofMillis(1));
 		}		
 		else
         {

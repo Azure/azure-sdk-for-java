@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  */
 public final class Timer
 {
-	private static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(0);
+	private static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 	
 	private Timer() 
 	{
