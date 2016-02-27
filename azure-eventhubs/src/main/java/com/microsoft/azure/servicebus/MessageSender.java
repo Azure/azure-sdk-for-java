@@ -361,6 +361,13 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 						
 						MessageSender.this.sendLink = sender;
 					}
+					else
+					{
+						synchronized (MessageSender.this.linkCreateLock) 
+						{
+							MessageSender.this.linkCreateScheduled = false;
+						}
+					}
 					
 					MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
 				}
@@ -464,6 +471,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		catch (TimeoutException exception)
         {
         	this.onError(exception);
+        	return null;
+        }
+		
+		if (connection == null || connection.getLocalState() == EndpointState.CLOSED)
+        {
         	return null;
         }
 		

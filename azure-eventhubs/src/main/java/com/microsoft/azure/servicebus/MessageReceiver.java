@@ -426,6 +426,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
         	return null;
         }
         
+        if (connection == null || connection.getLocalState() == EndpointState.CLOSED)
+        {
+        	return null;
+        }
+        
         Source source = new Source();
         source.setAddress(receivePath);
         
@@ -646,10 +651,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 						
 						MessageReceiver.this.receiveLink = receiver;
 					}
-					
-					synchronized (MessageReceiver.this.linkCreateLock) 
+					else
 					{
-						MessageReceiver.this.linkCreateScheduled = false;
+						synchronized (MessageReceiver.this.linkCreateLock) 
+						{
+							MessageReceiver.this.linkCreateScheduled = false;
+						}
 					}
 					
 					MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
