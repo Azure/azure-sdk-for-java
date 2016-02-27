@@ -103,7 +103,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				if (this.connection.getLocalState() == EndpointState.CLOSED 
 						&& !this.waitingConnectionOpen)
 				{
-					this.connection.free();
 					try
 					{
 						this.startReactor(new ReactorHandler()
@@ -187,18 +186,40 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
-		this.connection.close();
-		
 		Iterator<Link> literator = this.registeredLinks.iterator();
 		while (literator.hasNext())
 		{
 			Link link = literator.next();
-			Handler handler = BaseHandler.getHandler(link);
-			if (handler != null && handler instanceof BaseLinkHandler)
+			if (link.getLocalState() != EndpointState.CLOSED)
 			{
-				BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
-				linkHandler.processOnClose(link, error);
+				link.close();
 			}
+		}
+		
+		Connection currentConnection = this.connection;
+		
+		try
+		{
+			if (currentConnection.getLocalState() != EndpointState.CLOSED)
+			{
+				currentConnection.close();
+			}
+			
+			literator = this.registeredLinks.iterator();
+			while (literator.hasNext())
+			{
+				Link link = literator.next();
+				Handler handler = BaseHandler.getHandler(link);
+				if (handler != null && handler instanceof BaseLinkHandler)
+				{
+					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+					linkHandler.processOnClose(link, error);
+				}
+			}
+		}
+		finally
+		{
+			currentConnection.free();
 		}
 	}
 	
@@ -210,27 +231,46 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			return;
 		}
 		
-		if (this.connection != null)
-		{
-			this.connection.close();
-		}
-		
 		Iterator<Link> literator = this.registeredLinks.iterator();
 		while (literator.hasNext())
 		{
 			Link link = literator.next();
-			Handler handler = BaseHandler.getHandler(link);
-			if (handler != null && handler instanceof BaseLinkHandler)
+			if (link.getLocalState() != EndpointState.CLOSED)
 			{
-				BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
-				linkHandler.processOnClose(link, cause);
+				link.close();
 			}
+		}
+		
+		Connection currentConnection = this.connection;
+		
+		try
+		{
+			if (currentConnection != null && currentConnection.getLocalState() != EndpointState.CLOSED)
+			{
+				currentConnection.close();
+			}
+			
+			literator = this.registeredLinks.iterator();
+			while (literator.hasNext())
+			{
+				Link link = literator.next();
+				Handler handler = BaseHandler.getHandler(link);
+				if (handler != null && handler instanceof BaseLinkHandler)
+				{
+					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+					linkHandler.processOnClose(link, cause);
+				}
+			}
+		}
+		finally
+		{
+			currentConnection.free();
 		}
 	}
 	
 	void resetConnection()
 	{
-		this.onReactorError(new ServiceBusException(false, "Client invoked connection reset."));
+		this.onReactorError(new ServiceBusException(true, "Client invoked connection reset."));
 	}
 	
 	public void closeSync()

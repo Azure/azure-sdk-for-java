@@ -9,7 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Session;
 
 import com.microsoft.azure.servicebus.ClientConstants;
 
@@ -32,6 +34,12 @@ public class SessionHandler extends BaseHandler
         	TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
         					this.name, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
         }
+		
+		Session session = e.getSession();
+    	if (session != null && session.getLocalState() == EndpointState.UNINITIALIZED)
+    	{
+    		session.open();
+    	}
 	}
     
 	
@@ -52,7 +60,13 @@ public class SessionHandler extends BaseHandler
 	    {
     		TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name,
     				e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
-	    } 
+	    }
+    	
+    	Session session = e.getSession();
+    	if (session != null && session.getLocalState() != EndpointState.CLOSED)
+    	{
+    		session.close();
+    	}
     }
     
     @Override

@@ -48,13 +48,21 @@ public class BaseLinkHandler extends BaseHandler
 	        }
         }
 		
-		link.close();
+		if (link.getLocalState() != EndpointState.CLOSED)
+		{
+			link.close();
+		}
+		
 		this.underlyingEntity.onClose(condition);
 	}
 	
 	public void processOnClose(Link link, Exception exception)
 	{
-		link.close();
+		if (link.getLocalState() != EndpointState.CLOSED)
+		{
+			link.close();
+		}
+		
 		this.underlyingEntity.onError(exception);
 	}
 }

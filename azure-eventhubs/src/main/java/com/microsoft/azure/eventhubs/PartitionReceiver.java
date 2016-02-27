@@ -12,6 +12,17 @@ import java.util.function.*;
 import org.apache.qpid.proton.message.Message;
 import com.microsoft.azure.servicebus.*;
 
+/**
+ * This is a logical representation of receiving from a EventHub partition.
+ * <p>
+ * A PartitionReceiver is tied to a ConsumerGroup + Partition combination. If you are creating an epoch based 
+ * PartitionReceiver (i.e. PartitionReceiver.getEpoch != 0) you cannot have more than one active receiver per 
+ * ConsumerGroup + Partition combo. You can have multiple receivers per ConsumerGroup + Partition combo with 
+ * non-epoch receivers.
+ *
+ * @see {@link EventHubClient#createReceiver}
+ * @see {@link EventHubClient#createEpochReceiver} 
+ */
 public final class PartitionReceiver extends ClientEntity
 {
 	private static final int MINIMUM_PREFETCH_COUNT = 10;
@@ -20,6 +31,9 @@ public final class PartitionReceiver extends ClientEntity
 	static final int DEFAULT_PREFETCH_COUNT = 300;
 	static final long NULL_EPOCH = 0;
 	
+    /**
+     * This is a constant defined to represent the start of a partition stream in EventHub.
+     */
 	public static final String START_OF_STREAM = "-1";
 	
 	private final String partitionId;
@@ -73,6 +87,11 @@ public final class PartitionReceiver extends ClientEntity
 			final boolean isEpochReceiver) 
 					throws ServiceBusException
 	{
+        if (epoch < NULL_EPOCH)
+        {
+            throw new IllegalArgumentException("epoch cannot be a negative value. Please specify a zero or positive long value.");
+        }
+        
 		if (StringUtil.isNullOrWhiteSpace(consumerGroupName))
 		{
 			throw new IllegalArgumentException("specify valid string for argument - 'consumerGroupName'");
@@ -113,22 +132,27 @@ public final class PartitionReceiver extends ClientEntity
 	}
 	
 	/**
-	 * @return The Partition from which this Receiver is fetching data
+	 * @return The identifier representing the partition from which this receiver is fetching data
 	 */
 	public final String getPartitionId()
 	{
 		return this.partitionId;
 	}
 	
+    /**
+     * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
+     * @see {@link #setPrefetchCount}
+     */
 	public final int getPrefetchCount()
 	{
 		return this.internalReceiver.getPrefetchCount();
 	}
 	
 	/**
-	 * Set the no. of events that can be pre-fetched and Cached at the {@link PartitionReceiver).
-	 * By default 
-	 * @param prefetchCount
+	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver).
+	 * <p>
+     * by default the value is 300
+	 * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
 	 */
 	public final void setPrefetchCount(final int prefetchCount)
 	{
@@ -141,14 +165,84 @@ public final class PartitionReceiver extends ClientEntity
 		this.internalReceiver.setPrefetchCount(prefetchCount);
 	}
 	
+    /**
+     * Get the epoch value that this receiver is currently using for partition ownership.
+     * <p>
+     * A value of 0 means this receiver is not an epoch-based receiver.
+     */
 	public final long getEpoch()
 	{
 		return this.epoch;
 	}
 	
+    /**
+	 * Synchronous version of {@link #receive}. 
+	 */
+    public final Iterable<EventData> receiveSync() 
+			throws ServiceBusException
+	{
+        try
+        {
+            return this.receive().get();
+        }
+		catch (InterruptedException|ExecutionException exception)
+		{
+            if (exception instanceof InterruptedException)
+            {
+                // Re-assert the thread's interrupted status
+                Thread.currentThread().interrupt();
+            }
+            
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+				
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+				                
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+        
+		return null;
+    }
+	
 	/** 
 	 * Receive a batch of {@link EventData}'s from an EventHub partition
-	 * @return Batch of {@link EventData}'s from the partition on which this receiver is created. returns 'null' if no {@link EventData} is present.
+     * <p>
+     * Sample code (sample uses sync version of the api but concept are identical):
+     * <pre>{@code 
+     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
+	 * Iterable<EventData> receivedEvents = receiver.receiveSync();
+	 *      
+	 * while (true)
+	 * {
+	 *     int batchSize = 0;
+	 *     if (receivedEvents != null)
+	 *     {
+	 *         for(EventData receivedEvent: receivedEvents)
+	 *         {
+	 *             System.out.println(String.format("Message Payload: %s", new String(receivedEvent.getBody(), Charset.defaultCharset())));
+	 *             System.out.println(String.format("Offset: %s, SeqNo: %s, EnqueueTime: %s", 
+	 *                 receivedEvent.getSystemProperties().getOffset(), 
+	 *                 receivedEvent.getSystemProperties().getSequenceNumber(), 
+	 *                 receivedEvent.getSystemProperties().getEnqueuedTime()));
+	 *             batchSize++;
+	 *         }
+	 *     }
+	 *          
+	 *     System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
+	 *     receivedEvents = receiver.receiveSync();
+	 * }
+     * }</pre>
+	 * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
 	 * @throws ServerBusyException
 	 * @throws AuthorizationFailedException
 	 * @throws InternalServerException

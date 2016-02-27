@@ -17,7 +17,6 @@ import org.apache.qpid.proton.reactor.*;
 
 import org.junit.*;
 
-import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;

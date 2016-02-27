@@ -9,6 +9,12 @@ import java.util.function.*;
 
 import com.microsoft.azure.servicebus.*;
 
+/**
+ * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class 
+ * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
+ * @see To create an instance of PartitionSender refer to {@link EventHubClient#createPartitionSender(String)}.
+ * @see To create an instance of EventHubClient refer to {@link EventHubClient#createFromConnectionString(String)}. 
+ */
 public final class PartitionSender extends ClientEntity
 {
 	private final String partitionId;
@@ -50,29 +56,67 @@ public final class PartitionSender extends ClientEntity
 					public void accept(MessageSender a) { PartitionSender.this.internalSender = a;}
 				});
 	}
-
+	
+    /**
+	 * Synchronous version of {@link #send(EventData)} Api. 
+	 */
+    public final Void sendSync(final EventData data) 
+			throws ServiceBusException
+	{
+        try
+        {
+            this.send(data).get();
+        }
+		catch (InterruptedException|ExecutionException exception)
+		{
+            if (exception instanceof InterruptedException)
+            {
+                // Re-assert the thread's interrupted status
+                Thread.currentThread().interrupt();
+            }
+            
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+				
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+				                
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+        
+		return null;
+    }
+    
 	/**
-	 * Send {@link EventData} to EventHub. The sent {@link EventData} will land on the Specific partition which this {@link PartitionSender} is created to. 
-	 * 
-	 * <p>There are 3 ways to send to EventHubs, each exposed as a method (along with its sendBatch overload):
+	 * Send {@link EventData} to a specific EventHub partition. The target partition is pre-determined when this PartitionSender was created.
+	 * This send pattern emphasize data correlation over general availability and latency.
+	 * <p>
+	 * There are 3 ways to send to EventHubs, each exposed as a method (along with its sendBatch overload):
 	 * <pre>
-	 * i.   {@link #send(EventData)} or {@link #send(Iterable)}
-	 * ii.  {@link #send(EventData, String)} or {@link #send(Iterable, String)}
+	 * i.   {@link EventHubClient#send(EventData)} or {@link EventHubClient#send(Iterable)}
+	 * ii.  {@link EventHubClient#send(EventData, String)} or {@link EventHubClient#send(Iterable, String)}
 	 * iii. {@link PartitionSender#send(EventData)} or {@link PartitionSender#send(Iterable)}
 	 * </pre>
-	 * <p>Use this method to Send, if:
+	 * 
+	 * Use this type of Send, if:
 	 * <pre>
-	 * a)  There is a need to correlate the events on the receiver-end at one Partition or 
-	 * b)  The client wants to take control of distribution of data across partitions.
-	 * </pre>
+	 * i. The client wants to take direct control of distribution of data across partitions. In this case client is responsible for making sure there is at least one sender per event hub partition.
+	 * ii. User cannot use partition key as a mean to direct events to specific partition, yet there is a need for data correlation with partitioning scheme. 
+	 * </pre> 
 	 * 
 	 * @param data the {@link EventData} to be sent.
-	 * @return
-	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds 256k bytes
-	 * @throws ServiceBusException
-	 * @see {@link #close()}
-	 * @see {@link EventHubClient#send(EventData, String)}
-	 * @see {@link EventHubClient#send(EventData)} 
+	 * @return     a CompletableFuture that can be completed when the send operations is done..
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
+	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 */
 	public final CompletableFuture<Void> send(EventData data) 
 			throws ServiceBusException
@@ -80,25 +124,84 @@ public final class PartitionSender extends ClientEntity
 		return this.internalSender.send(data.toAmqpMessage());
 	}
 	
+    /**
+	 * Synchronous version of {@link #send(Iterable)} . 
+	 */
+    public final Void sendSync(final Iterable<EventData> eventDatas) 
+			throws ServiceBusException
+	{
+        try
+        {
+            this.send(eventDatas).get();
+        }
+		catch (InterruptedException|ExecutionException exception)
+		{
+            if (exception instanceof InterruptedException)
+            {
+                // Re-assert the thread's interrupted status
+                Thread.currentThread().interrupt();
+            }
+            
+			Throwable throwable = exception.getCause();
+			if (throwable != null)
+			{
+				if (throwable instanceof RuntimeException)
+				{
+					throw (RuntimeException)throwable;
+				}
+				
+				if (throwable instanceof ServiceBusException)
+				{
+					throw (ServiceBusException)throwable;
+				}
+				                
+				throw new ServiceBusException(true, throwable);
+			}
+		}
+        
+		return null;
+    }
+	
 	/**
-	 * Send a batch of {@link EventData} to EventHub. The sent {@link EventData} will land on the Specific partition which this {@link PartitionSender} is created to.
-	 * 
-	 * <p>There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link PartitionSender#send(EventData)}, which is used to send single {@link EventData}.
-	 * Use this overload versus {@link #send(EventData)}, if you need to send a batch of {@link EventData}.
-	 * 
-	 * <p> Sending a batch of {@link EventData}'s is useful in the following cases:
+	 * Send {@link EventData} to a specific EventHub partition. The targeted partition is pre-determined when this PartitionSender was created.
+	 * <p>
+	 * There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData)}, which is the same type of Send and is used to send single {@link EventData}.
+	 * <p> 
+	 * Sending a batch of {@link EventData}'s is useful in the following cases:
 	 * <pre>
 	 * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
 	 * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
 	 * </pre>
-	 * 
+     * <p>
+     * Sample code (sample uses sync version of the api but concept are identical):
+     * <pre>{@code
+     * Gson gson = new GsonBuilder().create();
+     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * PartitionSender senderToPartitionOne = client.createPartitionSenderSync("1");
+     *         
+     * while (true)
+     * {
+     *     LinkedList<EventData> events = new LinkedList<EventData>();
+     *     for (int count = 1; count < 11; count++)
+     *     {
+     *         PayloadEvent payload = new PayloadEvent(count);
+     *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
+     *         EventData sendEvent = new EventData(payloadBytes);
+     *         Map<String, String> applicationProperties = new HashMap<String, String>();
+     *         applicationProperties.put("from", "javaClient");
+     *         sendEvent.setProperties(applicationProperties);
+     *         events.add(sendEvent);
+     *     }
+     *         
+     *     senderToPartitionOne.sendSync(events);
+     *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
+     * }		
+     * }</code>
 	 * @param eventDatas batch of events to send to EventHub
-	 * @return
-	 * @throws PayloadSizeExceededException if the total size of the {@link EventData} collection exceeds 256k bytes
-	 * @throws ServiceBusException
-	 * @see {@link #close()}
-	 * @see {@link EventHubClient#send(EventData, String)}
-	 * @see {@link PartitionSender#send(EventData)} 
+	 * @return     a CompletableFuture that can be completed when the send operations is done..
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
+	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 */
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException
@@ -107,7 +210,7 @@ public final class PartitionSender extends ClientEntity
 		{
 			throw new IllegalArgumentException("EventData batch cannot be empty.");
 		}
-		
+        
 		return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
 	}
 
