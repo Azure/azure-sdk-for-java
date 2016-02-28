@@ -604,9 +604,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					this.linkResetCount = 0;
 				}
 				
-				if(TRACE_LOGGER.isLoggable(Level.WARNING))
+				if(TRACE_LOGGER.isLoggable(Level.FINE))
 		        {
-		        	TRACE_LOGGER.log(Level.WARNING,
+		        	TRACE_LOGGER.log(Level.FINE,
 		        			String.format("linkname[%s], linkPath[%s], linkCredit[%s], action[%s]", this.receiveLink.getName(), this.receivePath, this.receiveLink.getCredit(), action));
 		        }
 			}

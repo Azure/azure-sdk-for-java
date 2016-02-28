@@ -114,7 +114,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 										? MessageSender.this.lastKnownLinkError : pendingSendWork.getLastKnownException();
 								ServiceBusException exception = new ServiceBusException(
 										cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT, 
-										String.format(Locale.US, "Send operation on entity(%s), link(%s) timed out."
+										String.format(Locale.US, "Send operation timed out."
 											, MessageSender.this.getSendPath()
 											, MessageSender.this.sendLink.getName()),
 										cause);

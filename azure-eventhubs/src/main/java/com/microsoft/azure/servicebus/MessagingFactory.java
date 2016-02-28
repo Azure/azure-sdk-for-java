@@ -319,18 +319,18 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			{
 				Exception cause = handlerException;
 				
-				if(TRACE_LOGGER.isLoggable(Level.WARNING))
+				if(TRACE_LOGGER.isLoggable(Level.FINE))
 			    {
 					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor:");
-					TRACE_LOGGER.log(Level.WARNING, handlerException.getMessage());
+					TRACE_LOGGER.log(Level.FINE, handlerException.getMessage());
 					if (handlerException.getStackTrace() != null)
 						for (StackTraceElement ste: handlerException.getStackTrace())
 						{
-							TRACE_LOGGER.log(Level.WARNING, ste.toString());
+							TRACE_LOGGER.log(Level.FINE, ste.toString());
 						}
 			    }
 				
-				MessagingFactory.this.onReactorError(cause);
+				MessagingFactory.this.onReactorError(new ServiceBusException(true, cause));
 			}
 		}
 	}
