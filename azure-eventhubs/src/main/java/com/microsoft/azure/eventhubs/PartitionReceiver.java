@@ -50,6 +50,7 @@ public final class PartitionReceiver extends ClientEntity
 	private boolean isEpochReceiver;
 	private PartitionReceiveHandler onReceiveHandler;
 	private boolean isOnReceivePumpRunning;
+	private Thread onReceivePumpThread;
 	
 	private PartitionReceiver(MessagingFactory factory, 
 			final String eventHubName, 
@@ -263,15 +264,29 @@ public final class PartitionReceiver extends ClientEntity
 	{
 		synchronized (this.receiveHandlerSync)
 		{
-			this.onReceiveHandler = receiveHandler;
+			if (receiveHandler == null)
+			{
+				if (this.onReceiveHandler != null)
+				{
+					this.isOnReceivePumpRunning = false;
+					this.onReceivePumpThread.interrupt();
+				}
+			}
+			else
+			{
+				this.onReceiveHandler = receiveHandler;
+				this.startOnReceivePump();
+			}
 		}
-		
-		this.startOnReceivePump();
 	}
 
 	public CompletableFuture<Void> close()
 	{
 		this.isOnReceivePumpRunning = false;
+		if (!this.onReceivePumpThread.isInterrupted())
+		{
+			this.onReceivePumpThread.interrupt();
+		}
 		
 		if (this.internalReceiver != null)
 		{
@@ -285,94 +300,96 @@ public final class PartitionReceiver extends ClientEntity
 	
 	private void startOnReceivePump()
 	{
-		if (!this.isOnReceivePumpRunning)
+		this.onReceivePumpThread = new Thread(new Runnable()
 		{
-			synchronized (this.receiveHandlerSync)
+			@Override
+			public void run()
 			{
-				if (!this.isOnReceivePumpRunning)
+				synchronized (PartitionReceiver.this.receiveHandlerSync)
 				{
-					this.isOnReceivePumpRunning = true;
-					
-					new Thread(new Runnable()
+					PartitionReceiver.this.isOnReceivePumpRunning = true;
+				}
+				
+				while(PartitionReceiver.this.isOnReceivePumpRunning)
+				{
+					Iterable<EventData> receivedEvents = null;
+
+					try
 					{
-						@Override
-						public void run()
+						receivedEvents = PartitionReceiver.this.receive().get(PartitionReceiver.this.underlyingFactory.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
+					}
+					catch (InterruptedException|ExecutionException|TimeoutException clientException)
+					{
+						if (clientException instanceof TimeoutException)
 						{
-							while(PartitionReceiver.this.isOnReceivePumpRunning)
+							continue;
+						}
+						
+						Throwable cause = clientException.getCause();
+						if (cause != null && 
+								((cause instanceof ServiceBusException && ((ServiceBusException) cause).getIsTransient()) ||
+										!(cause instanceof RuntimeException)))
+						{
+							try
 							{
-								Iterable<EventData> receivedEvents = null;
-		
-								try
+								PartitionReceiver.this.onReceiveHandler.onError(clientException.getCause());
+								continue;
+							}
+							catch (Throwable userCodeError)
+							{
+								synchronized (PartitionReceiver.this.receiveHandlerSync)
 								{
-									receivedEvents = PartitionReceiver.this.receive().get(PartitionReceiver.this.underlyingFactory.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
-								}
-								catch (InterruptedException|ExecutionException|TimeoutException clientException)
-								{
-									if (clientException instanceof TimeoutException)
-									{
-										continue;
-									}
-									
-									Throwable cause = clientException.getCause();
-									if (cause != null && 
-											((cause instanceof ServiceBusException && ((ServiceBusException) cause).getIsTransient()) ||
-													!(cause instanceof RuntimeException)))
-									{
-										try
-										{
-											PartitionReceiver.this.onReceiveHandler.onError(clientException.getCause());
-											continue;
-										}
-										catch (Throwable userCodeError)
-										{
-											synchronized (PartitionReceiver.this.receiveHandlerSync)
-											{
-												PartitionReceiver.this.isOnReceivePumpRunning = false;
-											}
-											
-											PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
-										}
-									}
-									else
-									{
-										synchronized (PartitionReceiver.this.receiveHandlerSync)
-										{
-											PartitionReceiver.this.isOnReceivePumpRunning = false;
-										}
-										
-										PartitionReceiver.this.onReceiveHandler.onClose(cause);
-									}
-									
-									if (clientException instanceof InterruptedException)
-									{
-										Thread.currentThread().interrupt();
-									}
-									
-									return;
+									PartitionReceiver.this.isOnReceivePumpRunning = false;
 								}
 								
-								if (receivedEvents != null && receivedEvents.iterator().hasNext())
-								{
-									try
-									{
-										PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);
-									}
-									catch (Throwable userCodeError)
-									{
-										synchronized (PartitionReceiver.this.receiveHandlerSync)
-										{
-											PartitionReceiver.this.isOnReceivePumpRunning = false;
-										}
-										
-										PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
-										return;
-									}
-								}
-							}						
+								PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
+							}
 						}
-					}).start();
-				}
+						else
+						{
+							synchronized (PartitionReceiver.this.receiveHandlerSync)
+							{
+								PartitionReceiver.this.isOnReceivePumpRunning = false;
+							}
+							
+							PartitionReceiver.this.onReceiveHandler.onClose(cause);
+						}
+						
+						if (clientException instanceof InterruptedException)
+						{
+							Thread.currentThread().interrupt();
+						}
+						
+						return;
+					}
+					
+					if (receivedEvents != null && receivedEvents.iterator().hasNext())
+					{
+						try
+						{
+							PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);
+						}
+						catch (Throwable userCodeError)
+						{
+							synchronized (PartitionReceiver.this.receiveHandlerSync)
+							{
+								PartitionReceiver.this.isOnReceivePumpRunning = false;
+							}
+							
+							PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
+							
+							if (userCodeError instanceof InterruptedException)
+							{
+								Thread.currentThread().interrupt();
+							}
+							
+							return;
+						}
+					}
+				}						
 			}
-		}
+		});
+			
+		this.onReceivePumpThread.start();
 	}
 }
