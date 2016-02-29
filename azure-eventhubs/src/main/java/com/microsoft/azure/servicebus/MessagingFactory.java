@@ -280,6 +280,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.onReactorError(new ServiceBusException(true, "Client invoked connection reset."));
 	}
 	
+	@Override
 	public void closeSync()
 	{
 		if (this.connection != null)

@@ -241,14 +241,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return this.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 	
-	public void closeSync()
-	{
-		if (this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE)
-		{
-			this.sendLink.close();
-		}
-	}
-	
 	public void onOpenComplete(Exception completionException)
 	{
 		if (completionException == null)

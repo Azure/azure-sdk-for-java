@@ -755,6 +755,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return this.linkClose;
 	}
 
+	@Override
 	public void closeSync() throws ServiceBusException
 	{
 		if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED && !this.closeCalled)
