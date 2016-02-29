@@ -12,7 +12,8 @@ import java.util.concurrent.*;
  */
 public final class Timer
 {
-	private static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+	private static final ScheduledThreadPoolExecutor executor =
+			new ScheduledThreadPoolExecutor(Math.min(Runtime.getRuntime().availableProcessors(), 2));
 	
 	private Timer() 
 	{
@@ -38,7 +39,7 @@ public final class Timer
 				break;
 				
 			default:
-				throw new UnsupportedOperationException("TODO: Other timer patterns");
+				throw new UnsupportedOperationException("Unsupported timer pattern.");
 		}
 	}
 }
