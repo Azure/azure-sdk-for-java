@@ -100,6 +100,23 @@ public final class ConnectionHandler extends BaseHandler
 		
 		this.messagingFactory.onOpenComplete(null);
 	}
+	
+	@Override
+	public void onConnectionRemoteClose(Event event)
+	{
+		Connection connection = event.getConnection();
+		ErrorCondition error = connection.getRemoteCondition();
+		
+		if (TRACE_LOGGER.isLoggable(Level.FINE))
+		{
+			TRACE_LOGGER.log(Level.FINE, "hostname[" + connection.getHostname() + 
+					(error != null
+							 ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
+									 : "]"));
+		}
+		
+		this.messagingFactory.onConnectionError(error);
+	}
 
 	private static SslDomain makeDomain(SslDomain.Mode mode)
 	{

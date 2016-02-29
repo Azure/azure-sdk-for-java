@@ -470,7 +470,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 		catch (TimeoutException exception)
         {
-        	this.onError(new ServiceBusException(true, "Connection creation timed out.", exception));
+        	this.onError(new ServiceBusException(false, "Connection creation timed out.", exception));
         	return null;
         }
 		

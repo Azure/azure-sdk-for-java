@@ -5,11 +5,9 @@
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
-import java.nio.channels.*;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.logging.*;
 
@@ -46,6 +44,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private CompletableFuture<MessagingFactory> open;
 	private CompletableFuture<Connection> openConnection;
 	private LinkedList<Link> registeredLinks;
+	private TimeoutTracker connectionCreateTracker;
 	
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
@@ -96,12 +95,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public CompletableFuture<Connection> getConnection()
 	{
-		if (this.connection.getLocalState() == EndpointState.CLOSED)
+		if (this.connection.getLocalState() == EndpointState.CLOSED
+				|| (this.connectionCreateTracker != null && this.connectionCreateTracker.remaining().minus(ClientConstants.TIMER_TOLERANCE).isNegative()))
 		{
 			synchronized (this.connectionLock)
 			{
-				if (this.connection.getLocalState() == EndpointState.CLOSED 
-						&& !this.waitingConnectionOpen)
+				if ((this.connection.getLocalState() == EndpointState.CLOSED && !this.waitingConnectionOpen)
+						|| (this.connectionCreateTracker != null && this.connectionCreateTracker.remaining().minus(ClientConstants.TIMER_TOLERANCE).isNegative()))
 				{
 					try
 					{
@@ -129,7 +129,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 						MessagingFactory.this.onReactorError(new ServiceBusException(true, e));
 					}
 					
+					if(this.openConnection != null && !this.openConnection.isDone())
+					{
+						this.openConnection.completeExceptionally(new ServiceBusException(false, "Connection creation timedout."));
+					}
+
 					this.openConnection = new CompletableFuture<Connection>();
+					
+					this.connectionCreateTracker = TimeoutTracker.create(this.operationTimeout);
 					this.waitingConnectionOpen = true;
 				}
 			}
@@ -186,6 +193,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
+		Connection currentConnection = this.connection;
+		
 		Iterator<Link> literator = this.registeredLinks.iterator();
 		while (literator.hasNext())
 		{
@@ -195,8 +204,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				link.close();
 			}
 		}
-		
-		Connection currentConnection = this.connection;
 		
 		try
 		{
@@ -230,6 +237,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			this.onOpenComplete(cause);
 			return;
 		}
+
+		Connection currentConnection = this.connection;
 		
 		Iterator<Link> literator = this.registeredLinks.iterator();
 		while (literator.hasNext())
@@ -240,8 +249,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				link.close();
 			}
 		}
-		
-		Connection currentConnection = this.connection;
 		
 		try
 		{
