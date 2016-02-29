@@ -283,7 +283,7 @@ public final class PartitionReceiver extends ClientEntity
 	public CompletableFuture<Void> close()
 	{
 		this.isOnReceivePumpRunning = false;
-		if (!this.onReceivePumpThread.isInterrupted())
+		if (this.onReceivePumpThread != null && !this.onReceivePumpThread.isInterrupted())
 		{
 			this.onReceivePumpThread.interrupt();
 		}

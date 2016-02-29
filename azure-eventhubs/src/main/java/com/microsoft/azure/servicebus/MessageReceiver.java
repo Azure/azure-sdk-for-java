@@ -754,22 +754,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.closeInternal();
 		return this.linkClose;
 	}
-
-	@Override
-	public void closeSync() throws ServiceBusException
-	{
-		if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED && !this.closeCalled)
-		{
-			try
-			{
-				this.close().get();
-			}
-			catch (InterruptedException | ExecutionException exception)
-			{
-				throw new ServiceBusException(true, String.format(Locale.US, "Close link failed. getCause() could present more details."), exception);
-			}
-		}
-	}
 	
 	private void closeInternal()
 	{
@@ -777,9 +761,16 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			if (!this.closeCalled)
 			{
-				this.receiveLink.close();
-				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
-				this.closeCalled = true;
+				if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
+				{
+					this.receiveLink.close();
+					this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
+					this.closeCalled = true;
+				}
+				else
+				{
+					this.linkClose.complete(null);
+				}
 			}
 		}
 	}
