@@ -1,36 +1,24 @@
 /*
- *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- *
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package com.microsoft.azure.eventhubs;
 
-import java.util.*;
-import org.apache.qpid.proton.message.Message;
-import com.microsoft.azure.servicebus.ReceiveHandler;
-
-public abstract class PartitionReceiveHandler extends ReceiveHandler
+/**
+ * A handler class for the receive operation. Use any implementation of this abstract class to specify 
+ * user action when using PartitionReceiver's setReceiveHandler().
+ * @see  {@link PartitionReceiver#setReceiveHandler}
+ */
+public abstract class PartitionReceiveHandler
 {
+    /**
+     * user should implement this method to specify the action to be performed on the received events.
+     * @param   events  the list of fetched events from the corresponding PartitionReceiver.
+     * @see  {@link PartitionReceiver#receive}
+     */
 	public abstract void onReceive(Iterable<EventData> events);
 	
-	@Override
-	public void onReceiveMessages(LinkedList<Message> messages)
-	{
-		this.onReceive(EventDataUtil.toEventDataCollection(messages));
-	}
+	public abstract void onError(Throwable error);
+	
+	public abstract void onClose(Throwable error);
 }

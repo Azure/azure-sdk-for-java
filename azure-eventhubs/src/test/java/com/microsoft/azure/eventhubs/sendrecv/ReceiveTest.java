@@ -37,7 +37,7 @@ public class ReceiveTest extends TestBase
 			
 			TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
 			
-			offsetReceiver = ehClient.createReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM).get();
+			offsetReceiver = ehClient.createReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false).get();
 			Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receive().get();
 			
 			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());

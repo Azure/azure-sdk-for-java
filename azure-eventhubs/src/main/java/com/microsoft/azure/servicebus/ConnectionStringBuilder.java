@@ -1,22 +1,6 @@
 /*
- *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- *
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
  */
 package com.microsoft.azure.servicebus;
 
@@ -28,14 +12,25 @@ import java.util.regex.*;
 /**
  * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
  * It can also be used to perform basic validation on an existing connection string.
- *  <p> Illustration:
- *  <pre>
- *  	ConnectionStringBuilder connStr = new ConnectionStringBuilder(
- *  		"namespaceName", 
- *  		"ServiceBusEntityName", // eventHubName or QueueName or TopicName 
- *  		"sayKeyName", 
- *  		"SasKey");
- *  </pre>
+ * <p> Sample Code:
+ * <pre>{@code
+ * ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
+ *     "ServiceBusNamespaceName", 
+ *     "ServiceBusEntityName", // eventHubName or QueueName or TopicName 
+ *     "SharedAccessSignatureKeyName", 
+ *     "SharedAccessSignatureKey");
+ *  
+ * String connectionString = connectionStringBuilder.toString();
+ * }</pre>
+ * <p>
+ * A connection string is basically a string consisted of key-value pair separated by ";". 
+ * Basic format is {'<'key'>'='<'value'>'[;'<'key'>'='<'value'>']} where supported key name are as follow:
+ * <ul>
+ * <li> Endpoint - the URL that contains the servicebus namespace
+ * <li> EntityPath - the path to the service bus entity (queue/topic/eventhub/subscription/consumergroup/partition)
+ * <li> SharedAccessKeyName - the key name to the corresponding shared access policy rule for the namespace, or entity.
+ * <li> SharedAccessKey - the key for the corresponding shared access policy rule of the namespace or entity.
+ * </ul>
  */
 public class ConnectionStringBuilder
 {
@@ -112,16 +107,25 @@ public class ConnectionStringBuilder
 		return this.endpoint;
 	}
 
+	/**
+	 * Get the shared access policy key value from the connection string
+	 */
 	String getSasKey()
 	{
 		return this.sharedAccessKey;
 	}
 
+	/**
+	 * Get the shared access policy owner name from the connection string
+	 */
 	public String getSasKeyName()
 	{
 		return this.sharedAccessKeyName;
 	}
 	
+	/**
+	 * Get the entity path value from the connection string
+	 */
 	public String getEntityPath()
 	{
 		return this.entityPath;
@@ -135,11 +139,17 @@ public class ConnectionStringBuilder
 		return (this.operationTimeout == null ? MessagingFactory.DefaultOperationTimeout : this.operationTimeout);
 	}
 	
+	/**
+	 * Get the retry policy instance that was created as part of this builder's creation.
+	 */
 	public RetryPolicy getRetryPolicy()
 	{
 		return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
 	}
 
+	/**
+	 * Return a connection string from this builder.
+	 */
 	@Override
 	public String toString()
 	{

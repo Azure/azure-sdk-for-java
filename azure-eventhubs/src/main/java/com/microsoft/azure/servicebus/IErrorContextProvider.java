@@ -4,10 +4,7 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.util.concurrent.CompletableFuture;
-import org.apache.qpid.proton.engine.Connection;
-
-interface IConnectionFactory
+interface IErrorContextProvider
 {
-	CompletableFuture<Connection> getConnection();
+	ErrorContext getContext();
 }

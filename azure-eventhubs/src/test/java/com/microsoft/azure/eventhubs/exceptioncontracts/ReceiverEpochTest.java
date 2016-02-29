@@ -35,7 +35,7 @@ public class ReceiverEpochTest extends TestBase
 				
 				try
 				{
-					ehClient.createEpochReceiver(cgName, partitionId, epoch - 10).get();
+					ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10).get();
 				}
 				catch(ExecutionException exp)
 				{
@@ -71,8 +71,13 @@ public class ReceiverEpochTest extends TestBase
 		}
 
 		@Override
-		public void onError(Exception exception)
-		{	
+		public void onError(Throwable error)
+		{
+		}
+
+		@Override
+		public void onClose(Throwable error)
+		{			
 		}
 		
 	}
