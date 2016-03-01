@@ -6,7 +6,7 @@
 	
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>0.6.0</version>
+	<version>${client-current-version}</version>
 	<packaging>pom</packaging>
 	
 	<url>https://github.com/Azure/azure-event-hubs</url>
@@ -14,6 +14,7 @@
 	<properties>
 		<proton-j-version>0.12.0</proton-j-version>
 	  	<junit-version>4.10</junit-version>
+		<client-current-version>0.6.0</client-current-version>
 	</properties>
 	
 	<build>
