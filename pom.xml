@@ -6,7 +6,7 @@
 	
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-eventhubs-clients</artifactId>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>0.6.0</version>
 	<packaging>pom</packaging>
 	
 	<url>https://github.com/Azure/azure-event-hubs</url>
@@ -34,21 +34,21 @@
 	</build>
 
 	 <dependencies>
-	   <dependency>
-	 		<groupId>org.apache.qpid</groupId>
-	 		<artifactId>proton-j</artifactId>
+	 	<dependency>
+	 	    <groupId>org.apache.qpid</groupId>
+	 	    <artifactId>proton-j</artifactId>
 	 	    <version>${proton-j-version}</version>
 	 	</dependency>
-	 	<dependency> 
-	  		<groupId>org.bouncycastle</groupId> 
-	  		<artifactId>bcpkix-jdk15on</artifactId> 
-	  		<version>1.47</version> 
+	 	<dependency>
+	 	    <groupId>org.bouncycastle</groupId> 
+	 	    <artifactId>bcpkix-jdk15on</artifactId> 
+	 	    <version>1.47</version> 
 	  	</dependency>   	
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit-version}</version>
-			<scope>test</scope>
+	 	    <groupId>junit</groupId>
+	 	    <artifactId>junit</artifactId>
+	 	    <version>${junit-version}</version>
+	 	    <scope>test</scope>
 		</dependency>
 	</dependencies>
 	
