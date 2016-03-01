@@ -1,10 +1,10 @@
-#Microsoft Azure Event Hubs Client for Java
+# Microsoft Azure Event Hubs Client for Java
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them into multiple applications. 
 This lets you process and analyze the massive amounts of data produced by your connected devices and applications. Once Event Hubs has collected the data, 
-transform and store it by using any real-time analytics provider or with batching/storage adapters. 
+you can retrieve, transform and store it by using any real-time analytics provider or with batching/storage adapters. 
 
-Refer to the [documentation](https://azure.microsoft.com/services/event-hubs/) to learn more about Event Hubs in general.
+Refer to the [online documentation](https://azure.microsoft.com/services/event-hubs/) to learn more about Event Hubs in general.
 
 ##Overview
 
@@ -28,7 +28,7 @@ the [Publishing Events](PublishingEvents.md) and [Consuming Events](ConsumingEve
 
 ###Publishing Events
 
-The vast majority of Event Hub applications using this and the other client libraries are and will be event publishers. 
+The vast majority of Event Hub applications using this and other client libraries are and will be event publishers. 
 And for most of these publishers, publishing events is extremely simple. 
 
 With your Java application referencing this client library,
@@ -40,7 +40,7 @@ which is quite simple in a Maven build [as we explain in the guide](PublishingEv
     import com.microsoft.azure.eventhubs.*;
 ```        
 
-Using an Event Hub connection string, which holds all required conenction information including an authorization key or token, 
+Using an Event Hub connection string, which holds all required connection information, including an authorization key or token, 
 you then create an *EventHubClient* instance, which manages a secure AMQP 1.0 connection to the Event Hub.   
    
 ```Java

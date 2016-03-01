@@ -82,28 +82,13 @@ information to set up a connection with an Event Hub. The format is a simple pro
 | EntityPath            | Relative path of the Event Hub in the namespace. Commonly this is just the Event Hub name                   |  
 | SharedAccessKeyName   | Name of a Shared Access Signature rule configured for the Event Hub or the Event Hub name. For publishers, the rule must include "Send" permissions. |
 | SharedAccessKey       | Base64-encoded value of the Shared Access Key for the rule |
-| SharedAccessSignature | A previously issued Shared Access Signature token          |
+| SharedAccessSignature | A previously issued Shared Access Signature token  (not yet supported; will be soon)        |
  
 A connection string will therefore have the following form:
 
 ```
   Endpoint=sb://clemensveu.servicebus.windows.net&EntityPath=myeventhub&SharedAccessSignature=....
 ```
-
-###Tokens
-The preferred model for event publishers is to generate a token from the SAS rule key and give that to the publisher instead
-of giving the direct access to the signing key. Tokens can be extremely short lived, for a few minutes, when a sender shall 
-only obtain temporary send access to the Event Hub. They can also be very long-lived, for several months, when a sender needs
-permanent send access to the Event Hub. When the key on which the token is based in invalidated, all tokens become invalid and
-must be reissued. 
-
-The generated token will be configured into the connection string with the *SharedAccessSignature* property.   
- 
-More information about Shared Access Signature in Service Bus and Event Hubs about about how to generate the required tokens 
-in a range of languages [can be found on the Azure site.](https://azure.microsoft.com/en-us/documentation/articles/service-bus-sas-overview/) 
-
-The easiest way to obtain a token for development purposes is to copy the connection string from the Azure portal. These tokens
-do include key name and key value outright. The portal does not issue tokens.
 
 ##Advanced Operations
 

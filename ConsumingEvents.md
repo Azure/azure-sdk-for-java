@@ -1,14 +1,14 @@
 #Consuming Events with the Java client for Azure Event Hubs 
 
 Consuming events from Event Hubs is different from typical messaging infrastuctures like queues or topic 
-subscriptions, where a consumer simply fetches the "next" message.
+subscriptions where a consumer simply fetches the "next" message.
 
 Event Hubs puts the consumer in control of the offset from which the log shall be read, 
 and the consumer can repeatedly pick a different or the same offset and read the event stream from chosen offsets while 
 the events are being retained.  Each partition is therefore loosely analogous to a tape drive that you can wind back to a 
 particular mark and then play back to the freshest data available. 
 
-Azure Event Hubs consumers also need to be aware of the partitioning model chosen for an Event Hub as receivers explicitly 
+Azure Event Hubs consumers need to be aware of the partitioning model chosen for an Event Hub as receivers explicitly 
 interact with partitions. Any Event Hub's event store is split up into at least 4 partitions, each maintaining a separate event log. You can think 
 of partitions like lanes on a highway. The more events the Event Hub needs to handle, the more lanes (partitions) you have 
 to add. Each partition can handle at most the equivalent of 1 "throughput unit", equivalent to at most 1000 events per 
@@ -16,6 +16,10 @@ second and at most 1 Megabyte per second.
 
 The common consumption model for Event Hubs is that multiple consumers (threads, processes, compute nodes) process events 
 from a single Event Hub in parallel, and coordinate which consumer is responsible for pulling events from which partition.  
+
+> An upcoming update for this client will also bring the popular and powerful "event processor host" from C# to Java. 
+> The event processor host dramatically simplifies writing high-scale, high-throughput event consumer applications 
+> that distribute the processing load over a dynamic cluster of machines. 
    
 ##Getting Started
 
