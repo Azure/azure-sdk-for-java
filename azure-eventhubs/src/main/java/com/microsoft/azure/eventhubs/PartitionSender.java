@@ -12,8 +12,8 @@ import com.microsoft.azure.servicebus.*;
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class 
  * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
- * @see To create an instance of PartitionSender refer to {@link EventHubClient#createPartitionSender(String)}.
- * @see To create an instance of EventHubClient refer to {@link EventHubClient#createFromConnectionString(String)}. 
+ * @see {@link EventHubClient#createPartitionSender(String)}.
+ * @see {@link EventHubClient#createFromConnectionString(String)}. 
  */
 public final class PartitionSender extends ClientEntity
 {

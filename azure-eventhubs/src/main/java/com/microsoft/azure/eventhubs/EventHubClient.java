@@ -37,6 +37,10 @@ public class EventHubClient extends ClientEntity
 	
 	/**
 	 * Synchronous version of {@link #createFromConnectionString(String)}. 
+	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+	 * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+	 * @throws ServiceBusException If Service Bus service encountered problems during connection creation. 
+     * @throws IOException  If the underlying Proton-J layer encounter network errors.
 	 */
 	public static EventHubClient createFromConnectionStringSync(final String connectionString)
 			throws ServiceBusException, IOException
@@ -80,6 +84,7 @@ public class EventHubClient extends ClientEntity
 	 * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
 	 * 
 	 * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+	 * @return EventHubClient which can be used to create Senders and Receivers to EventHub
 	 * @throws ServiceBusException If Service Bus service encountered problems during connection creation. 
      * @throws IOException  If the underlying Proton-J layer encounter network errors.
 	 */
@@ -103,8 +108,10 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #send(EventData)}. 
+	 * @param data the {@link EventData} to be sent.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
 	 */
-    public final Void sendSync(final EventData data) 
+    public final void sendSync(final EventData data) 
 			throws ServiceBusException
 	{
         try
@@ -135,8 +142,6 @@ public class EventHubClient extends ClientEntity
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
-		return null;
     }
     
 	/**
@@ -164,8 +169,8 @@ public class EventHubClient extends ClientEntity
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a predefined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.) 
-	 * @see {@link #send(EventData, String)}
-	 * @see {@link PartitionSender#send(EventData)} 
+	 * @see #send(EventData, String)
+	 * @see PartitionSender#send(EventData) 
 	 */
 	public final CompletableFuture<Void> send(final EventData data) 
 			throws ServiceBusException
@@ -187,8 +192,10 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #send(Iterable)}. 
+	 * @param eventDatas batch of events to send to EventHub
+	 * @throws ServiceBusException	if Service Bus service encountered problems during the operation.
 	 */
-    public final Void sendSync(final Iterable<EventData> eventDatas) 
+    public final void sendSync(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
         try
@@ -219,8 +226,6 @@ public class EventHubClient extends ClientEntity
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
-		return null;
     }
 	
 	/**
@@ -237,19 +242,19 @@ public class EventHubClient extends ClientEntity
 	 * </pre>
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
-     * <pre> {@code        
+     * <pre>       
      * Gson gson = new GsonBuilder().create();
      * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
      *         
      * while (true)
      * {
-     *     LinkedList<EventData> events = new LinkedList<EventData>();
-     *     for (int count = 1; count < 11; count++)
+     *     LinkedList{@literal<}EventData{@literal>} events = new LinkedList{@literal<}EventData{@literal>}();}
+     *     for (int count = 1; count {@literal<} 11; count++)
      *     {
      *         PayloadEvent payload = new PayloadEvent(count);
      *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
      *         EventData sendEvent = new EventData(payloadBytes);
-     *         Map<String, String> applicationProperties = new HashMap<String, String>();
+     *         Map{@literal<}String, String{@literal>} applicationProperties = new HashMap{@literal<}String, String{@literal>}();
      *         applicationProperties.put("from", "javaClient");
      *         sendEvent.setProperties(applicationProperties);
      *         events.add(sendEvent);
@@ -258,15 +263,15 @@ public class EventHubClient extends ClientEntity
      *     client.sendSync(events);
      *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
      * }
-     * }</pre>
+     * </pre>
 	 * 
 	 * @param eventDatas batch of events to send to EventHub
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
-	 * @see {@link #send(EventData, String)}
-	 * @see {@link PartitionSender#send(EventData)} 
+	 * @see #send(EventData, String)
+	 * @see PartitionSender#send(EventData) 
 	 */
 	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
@@ -288,8 +293,11 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #send(EventData, String)}. 
+	 * @param eventData the {@link EventData} to be sent.
+	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
+	 * @throws ServiceBusException	if Service Bus service encountered problems during the operation.
 	 */
-    public final Void sendSync(final EventData eventData, final String partitionKey) 
+    public final void sendSync(final EventData eventData, final String partitionKey) 
 			throws ServiceBusException
 	{
         try
@@ -320,8 +328,6 @@ public class EventHubClient extends ClientEntity
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
-		return null;
     }
 	
 	/**
@@ -350,8 +356,8 @@ public class EventHubClient extends ClientEntity
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
-	 * @see {@link #send(EventData)}
-	 * @see {@link PartitionSender#send(EventData)} 
+	 * @see #send(EventData)
+	 * @see PartitionSender#send(EventData)
 	 */
 	public final CompletableFuture<Void> send(final EventData eventData, final String partitionKey) 
 			throws ServiceBusException
@@ -378,8 +384,11 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #send(Iterable, String)}. 
+	 * @param eventDatas the batch of events to send to EventHub
+	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 */
-    public final Void sendSync(final Iterable<EventData> eventDatas, final String partitionKey) 
+    public final void sendSync(final Iterable<EventData> eventDatas, final String partitionKey) 
 			throws ServiceBusException
 	{
         try
@@ -410,8 +419,6 @@ public class EventHubClient extends ClientEntity
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
-		return null;
     }
 	
 	/**
@@ -432,8 +439,8 @@ public class EventHubClient extends ClientEntity
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
-	 * @see {@link #send(EventData)}
-	 * @see {@link PartitionSender#send(EventData)} 
+	 * @see #send(EventData)
+	 * @see PartitionSender#send(EventData) 
 	 */
 	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey)
 	{
@@ -465,7 +472,9 @@ public class EventHubClient extends ClientEntity
     
     /**
 	 * Synchronous version of {@link #createPartitionSender(String)}. 
-	 */
+	 * @param partitionId  partitionId of EventHub to send the {@link EventData}'s to
+	 * @throws ServiceBusException if Service Bus service encountered problems during connection creation. 
+     */
 	public final PartitionSender createPartitionSenderSync(final String partitionId)
 		throws ServiceBusException, IllegalArgumentException
 	{
@@ -514,7 +523,7 @@ public class EventHubClient extends ClientEntity
 	 * @param partitionId  partitionId of EventHub to send the {@link EventData}'s to
 	 * @return             a CompletableFuture that would result in a PartitionSender when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during connection creation. 
-     * @see {@link PartitionSender} 
+     * @see PartitionSender 
 	 */
 	public final CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
 		throws ServiceBusException
@@ -524,7 +533,12 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #createReceiver(String, String, String)}. 
-	 */
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+     * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     */
     public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset) 
 			throws ServiceBusException
 	{
@@ -572,7 +586,7 @@ public class EventHubClient extends ClientEntity
      * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver isntance when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
-     * @see {@link PartitionReceiver}
+     * @see PartitionReceiver
 	 */
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset) 
 			throws ServiceBusException
@@ -582,7 +596,13 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #createReceiver(String, String, String, boolean)}. 
-	 */
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+     * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     */
     public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
 			throws ServiceBusException
 	{
@@ -627,7 +647,7 @@ public class EventHubClient extends ClientEntity
 	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver instance when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
-     * @see {@link PartitionReceiver}
+     * @see PartitionReceiver
 	 */
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive) 
 			throws ServiceBusException
@@ -637,7 +657,12 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #createReceiver(String, String, Instant)}. 
-	 */
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     */
     public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final Instant dateTime) 
 			throws ServiceBusException
 	{
@@ -681,7 +706,7 @@ public class EventHubClient extends ClientEntity
 	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
-     * @see {@link PartitionReceiver}
+     * @see PartitionReceiver
 	 */	
 	public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime)
 			throws ServiceBusException
@@ -691,7 +716,13 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #createEpochReceiver(String, String, String, long)}. 
-	 */
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     */
     public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, final long epoch) 
 			throws ServiceBusException
 	{
@@ -743,8 +774,8 @@ public class EventHubClient extends ClientEntity
 	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
-     * @see {@link PartitionReceiver}
-     * @see {@link ReceiverDisconnectedException}
+     * @see PartitionReceiver
+     * @see ReceiverDisconnectedException
 	 */	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, final long epoch)
 			throws ServiceBusException
@@ -754,7 +785,14 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #createEpochReceiver(String, String, String, boolean, long)}. 
-	 */
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+     * @param startingOffset       the offset to start receiving the events from. To receive from start of the stream use: {@link PartitionReceiver#START_OF_STREAM}     
+	 * @param offsetInclusive      if set to true, the startingOffset is treated as an inclusive offset - meaning the first event returned is the one that has the starting offset. Normally first event returned is the event after the starting offset.
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     */
     public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch) 
 			throws ServiceBusException
 	{
@@ -807,8 +845,8 @@ public class EventHubClient extends ClientEntity
 	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
-     * @see {@link PartitionReceiver}
-     * @see {@link ReceiverDisconnectedException}
+     * @see PartitionReceiver
+     * @see ReceiverDisconnectedException
 	 */	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch)
 			throws ServiceBusException
@@ -818,7 +856,13 @@ public class EventHubClient extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #createEpochReceiver(String, String, Instant, long)}. 
-	 */
+	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
+	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+     */
     public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch) 
 			throws ServiceBusException
 	{
@@ -870,8 +914,8 @@ public class EventHubClient extends ClientEntity
 	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
-     * @see {@link PartitionReceiver}
-     * @see {@link ReceiverDisconnectedException}
+     * @see PartitionReceiver
+     * @see ReceiverDisconnectedException
 	 */	
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch)
 		throws ServiceBusException

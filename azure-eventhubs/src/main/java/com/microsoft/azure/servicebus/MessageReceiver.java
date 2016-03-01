@@ -127,10 +127,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		};
 	}
 	
-	/**
-	 * @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
-	 * Connection has to be associated with Reactor before Creating a receiver on it.
-	 */
+	
+	// @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
+	// Connection has to be associated with Reactor before Creating a receiver on it.
 	public static CompletableFuture<MessageReceiver> create(
 			final MessagingFactory factory, 
 			final String name, 

@@ -68,7 +68,12 @@ public abstract class RetryPolicy
 	}
 
 	/**
-	 * return returns 'null' Duration when not Allowed
+	 * Gets the Interval after which nextRetry should be done.
+	 * 
+	 * @param clientId clientId
+	 * @param lastException lastException
+	 * @param remainingTime remainingTime to retry
+	 * @return returns 'null' Duration when not Allowed
 	 */
 	public abstract Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime);
 }

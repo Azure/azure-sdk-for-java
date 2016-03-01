@@ -14,10 +14,9 @@ import org.apache.qpid.proton.reactor.*;
 
 import com.microsoft.azure.servicebus.*;
 
-/**
- * ServiceBus <-> ProtonReactor interaction handles all
- * amqp_connection/transport related events from reactor
- */
+
+// ServiceBus <-> ProtonReactor interaction handles all
+// amqp_connection/transport related events from reactor
 public final class ConnectionHandler extends BaseHandler
 {
 

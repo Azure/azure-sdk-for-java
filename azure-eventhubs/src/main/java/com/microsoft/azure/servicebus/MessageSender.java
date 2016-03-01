@@ -131,12 +131,12 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return this.sendPath;
 	}
 	
-	public CompletableFuture<Void> send(byte[] bytes, int arrayOffset, int messageFormat)
+	private CompletableFuture<Void> send(byte[] bytes, int arrayOffset, int messageFormat)
 	{
 		return this.send(bytes, arrayOffset, messageFormat, null, null);
 	}
 	
-	public CompletableFuture<Void> send(
+	private CompletableFuture<Void> send(
 			final byte[] bytes,
 			final int arrayOffset,
 			final int messageFormat,
@@ -173,9 +173,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         return onSendFuture;
 	}
 	
-	/**
-	 * accepts even if PartitionKey is null - and hence, the code consuming this api is supposed to enforce
-	 */
 	public CompletableFuture<Void> send(final Iterable<Message> messages)
 	{
 		if (messages == null || IteratorUtil.sizeEquals(messages, 0))

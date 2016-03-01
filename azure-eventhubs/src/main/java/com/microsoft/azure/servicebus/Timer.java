@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 /**
  * An abstraction for a Scheduler functionality - which can later be replaced by a light-weight Thread
  */
-public final class Timer
+final class Timer
 {
 	private static final ScheduledThreadPoolExecutor executor =
 			new ScheduledThreadPoolExecutor(Math.min(Runtime.getRuntime().availableProcessors(), 2));

@@ -80,15 +80,15 @@ public class EventData
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
 	 * </pre> 
 	 * <p> Sample Code:
-	 * <pre> {@code
+	 * <pre>
 	 * EventData eventData = new EventData(telemetryEventBytes);
-	 * HashMap<String, String> applicationProperties = new HashMap<String, String>();
+	 * HashMap{@literal <}String, String{@literal >} applicationProperties = new HashMap{@literal <}String, String{@literal >}();
 	 * applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 * eventData.setProperties(applicationProperties);
 	 * partitionSender.Send(eventData);
-	 * }</pre>
+	 * </pre>
 	 * @param data the actual payload of data in bytes to be Sent to EventHubs.
-	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
+	 * @see EventHubClient#createFromConnectionString(String)
 	 */
 	public EventData(byte[] data)
 	{
@@ -110,17 +110,17 @@ public class EventData
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
 	 *  </pre> 
 	 *  <p> Illustration:
-	 *  <code>
-	 *  	EventData eventData = new EventData(telemetryEventBytes, offset, length);
-	 *  	HashMap<String, String> applicationProperties = new HashMap<String, String>();
-	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
-	 *		eventData.setProperties(applicationProperties);
-	 *  	partitionSender.Send(eventData);
-	 *  </code>
+	 *  <pre> {@code
+	 *  EventData eventData = new EventData(telemetryEventBytes, offset, length);
+	 *  HashMap{@literal <}String, String{@literal >} applicationProperties = new HashMap{@literal <}String, String{@literal >}();
+	 *  applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
+	 *	eventData.setProperties(applicationProperties);
+	 *  partitionSender.Send(eventData);
+	 *  }</pre>
 	 * @param data the byte[] where the payload of the Event to be sent to EventHubs is present
 	 * @param offset Offset in the byte[] to read from ; inclusive index
 	 * @param length length of the byte[] to be read, starting from offset
-	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
+	 * @see EventHubClient#createFromConnectionString(String)
 	 */
 	public EventData(byte[] data, final int offset, final int length)
 	{
@@ -144,13 +144,13 @@ public class EventData
 	 *  <p> Illustration:
 	 *  <code>
 	 *  	EventData eventData = new EventData(telemetryEventByteBuffer);
-	 *  	HashMap<String, String> applicationProperties = new HashMap<String, String>();
+	 *  	HashMap{@literal <}String, String{@literal >} applicationProperties = new HashMap{@literal <}String, String{@literal >}();
 	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 *		eventData.setProperties(applicationProperties);
 	 *  	partitionSender.Send(eventData);
 	 *  </code>
 	 * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
-	 * @see To start sending to EventHubs refer to {@link EventHubClient#createFromConnectionString(String)}
+	 * @see EventHubClient#createFromConnectionString(String)
 	 */
 	public EventData(ByteBuffer buffer)
 	{
@@ -177,6 +177,7 @@ public class EventData
 	
 	/**
 	 * Application property bag
+	 * @return returns Application properties
 	 */
 	public Map<String, String> getProperties()
 	{
@@ -190,7 +191,7 @@ public class EventData
 	
 	/**
 	 * SystemProperties that are populated by EventHubService.
-	 * <pr>As these are populated by Service, they are only present on a Received EventData.
+	 * <p>As these are populated by Service, they are only present on a Received EventData.
 	 * @return an encapsulation of all SystemProperties appended by EventHubs service into EventData
 	 */
 	public SystemProperties getSystemProperties()

@@ -5,11 +5,10 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.*;
-import java.util.*;
 
 /**
  *  RetryPolicy implementation where the delay between retries will grow in a staggered exponential manner.
- *  RetryPolicy can be set on the client operations using {@link ServiceBusConnectionStringBuilder}.
+ *  RetryPolicy can be set on the client operations using {@link ConnectionStringBuilder}.
  *  RetryIntervals will be computed using a retryFactor which is a function of deltaBackOff (MaximumBackoff - MinimumBackoff) and MaximumRetryCount
  */
 public final class RetryExponential extends RetryPolicy

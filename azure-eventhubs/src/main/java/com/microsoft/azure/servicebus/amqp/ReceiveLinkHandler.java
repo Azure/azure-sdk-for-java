@@ -14,10 +14,9 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.ClientConstants;
 
-/** 
- * ServiceBus <-> ProtonReactor interaction 
- * handles all recvLink - reactor events
- */
+
+// ServiceBus <-> ProtonReactor interaction 
+// handles all recvLink - reactor events
 public final class ReceiveLinkHandler extends BaseLinkHandler
 {
 	private final IAmqpReceiver amqpReceiver;
