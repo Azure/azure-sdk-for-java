@@ -67,7 +67,7 @@ var autoRestVersion = '0.13.0-Nightly20151029'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
-var autorestExe;
+var autoRestExe;
 
 gulp.task('codegen', function(cb) {
     var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
@@ -107,8 +107,9 @@ var codegen = function(project, cb) {
     cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
             ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT';
     if (mappings[project].args !== undefined) {
-        cmd = cmd + ' ' + args;
+        cmd = cmd + ' ' + mappings[project].args;
     }
+    console.log('Command: ' + cmd);
     exec(cmd, function(err, stdout, stderr) {
         console.log(stdout);
         console.error(stderr);
