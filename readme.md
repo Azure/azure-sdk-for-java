@@ -44,7 +44,13 @@ Using an Event Hub connection string, which holds all required connection inform
 you then create an *EventHubClient* instance, which manages a secure AMQP 1.0 connection to the Event Hub.   
    
 ```Java
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(str).get();
+    final String namespaceName = "----ServiceBusNamespaceName-----";
+    final String eventHubName = "----EventHubName-----";
+    final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
+    final String sasKey = "---SharedAccessSignatureKey----";
+    ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
+		
+    EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 ```
 
 Once you have the client in hands, you can package any arbitrary payload as a plain array of bytes and send it. 
@@ -80,7 +86,13 @@ to a tape drive that you can wind back to a particular mark and then play back t
 Just like the sender, the receiver code imports the package and creates an *EventHubClient* from a given connecting string
       
 ```Java
-    EventHubClient ehClient = EventHubClient.createFromConnectionString(str).get();
+    final String namespaceName = "----ServiceBusNamespaceName-----";
+    final String eventHubName = "----EventHubName-----";
+    final String sasKeyName = "-----SharedAccessSignatureKeyName-----";
+    final String sasKey = "---SharedAccessSignatureKey----";
+    ConnectionStringBuilder connStr = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
+		
+    EventHubClient ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 ```           
 
 The receiver code then creates (at least) one *PartitionReceiver* that will receive the data. The receiver is seeded with 
@@ -119,7 +131,7 @@ following dependency declaration. The dependency declaration will in turn pull f
 the required version of Apache Qpid Proton-J, and the crytography library BCPKIX by the Legion of Bouncy Castle.   
 
 ```XML
-    <dependency> 
+   	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
    		<version>0.6.0</version> 
@@ -139,9 +151,6 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
 4. Open Eclipse and use "Import Existing Maven projects" to open the project.
 5. If you see any Build Errors - make sure the Execution Environment is set to java sdk version 1.7 or higher
   * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.7 or higher]
-
-##Contributing
-[Refer to the developer.md](developer.md) to find out how to contribute to Event Hubs Java client.
 
 ##How to provide feedback
 
