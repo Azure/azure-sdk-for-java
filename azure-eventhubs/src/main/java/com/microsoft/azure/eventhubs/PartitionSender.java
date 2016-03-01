@@ -12,8 +12,8 @@ import com.microsoft.azure.servicebus.*;
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class 
  * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
- * @see {@link EventHubClient#createPartitionSender(String)}.
- * @see {@link EventHubClient#createFromConnectionString(String)}. 
+ * @see EventHubClient#createPartitionSender(String)
+ * @see EventHubClient#createFromConnectionString(String)
  */
 public final class PartitionSender extends ClientEntity
 {
@@ -59,8 +59,10 @@ public final class PartitionSender extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #send(EventData)} Api. 
+	 * @param data the {@link EventData} to be sent.
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
 	 */
-    public final Void sendSync(final EventData data) 
+    public final void sendSync(final EventData data) 
 			throws ServiceBusException
 	{
         try
@@ -91,8 +93,6 @@ public final class PartitionSender extends ClientEntity
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
-		return null;
     }
     
 	/**
@@ -116,7 +116,6 @@ public final class PartitionSender extends ClientEntity
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
-	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 */
 	public final CompletableFuture<Void> send(EventData data) 
 			throws ServiceBusException
@@ -125,9 +124,11 @@ public final class PartitionSender extends ClientEntity
 	}
 	
     /**
-	 * Synchronous version of {@link #send(Iterable)} . 
+	 * Synchronous version of {@link #send(Iterable)} .
+	 * @param eventDatas batch of events to send to EventHub
+	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
 	 */
-    public final Void sendSync(final Iterable<EventData> eventDatas) 
+    public final void sendSync(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
         try
@@ -158,8 +159,6 @@ public final class PartitionSender extends ClientEntity
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
-		return null;
     }
 	
 	/**
@@ -174,20 +173,20 @@ public final class PartitionSender extends ClientEntity
 	 * </pre>
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
-     * <pre>{@code
+     * <pre>
      * Gson gson = new GsonBuilder().create();
      * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
      * PartitionSender senderToPartitionOne = client.createPartitionSenderSync("1");
      *         
      * while (true)
      * {
-     *     LinkedList<EventData> events = new LinkedList<EventData>();
-     *     for (int count = 1; count < 11; count++)
+     *     LinkedList{@literal<}EventData{@literal>} events = new LinkedList{@literal<}EventData{@literal>}();
+     *     for (int count = 1; count {@literal<} 11; count++)
      *     {
      *         PayloadEvent payload = new PayloadEvent(count);
      *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
      *         EventData sendEvent = new EventData(payloadBytes);
-     *         Map<String, String> applicationProperties = new HashMap<String, String>();
+     *         Map{@literal<}String, String{@literal>} applicationProperties = new HashMap{@literal<}String, String{@literal>}();
      *         applicationProperties.put("from", "javaClient");
      *         sendEvent.setProperties(applicationProperties);
      *         events.add(sendEvent);
@@ -196,12 +195,11 @@ public final class PartitionSender extends ClientEntity
      *     senderToPartitionOne.sendSync(events);
      *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
      * }		
-     * }</code>
+     * </pre>
 	 * @param eventDatas batch of events to send to EventHub
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
-	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 */
 	public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) 
 			throws ServiceBusException

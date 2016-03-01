@@ -8,6 +8,7 @@ import java.net.*;
 import java.time.*;
 import java.util.*;
 import java.util.regex.*;
+import com.microsoft.azure.eventhubs.*;
 
 /**
  * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
@@ -94,6 +95,7 @@ public class ConnectionStringBuilder
 	/**
 	 * ConnectionString format:
 	 * 		Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
+	 * @param connectionString ServiceBus ConnectionString
 	 * @throws IllegalConnectionStringFormatException when the format of the ConnectionString is not valid
 	 */
 	public ConnectionStringBuilder(String connectionString)

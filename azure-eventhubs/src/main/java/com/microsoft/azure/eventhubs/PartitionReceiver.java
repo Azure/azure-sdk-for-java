@@ -20,8 +20,8 @@ import com.microsoft.azure.servicebus.*;
  * ConsumerGroup + Partition combo. You can have multiple receivers per ConsumerGroup + Partition combo with 
  * non-epoch receivers.
  *
- * @see {@link EventHubClient#createReceiver}
- * @see {@link EventHubClient#createEpochReceiver} 
+ * @see EventHubClient#createReceiver
+ * @see EventHubClient#createEpochReceiver 
  */
 public final class PartitionReceiver extends ClientEntity
 {
@@ -133,6 +133,7 @@ public final class PartitionReceiver extends ClientEntity
 	}
 	
 	/**
+	 * Get EventHubs partition identifier.
 	 * @return The identifier representing the partition from which this receiver is fetching data
 	 */
 	public final String getPartitionId()
@@ -141,8 +142,9 @@ public final class PartitionReceiver extends ClientEntity
 	}
 	
     /**
+     * Get Prefetch Count configured on the Receiver.
      * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
-     * @see {@link #setPrefetchCount}
+     * @see #setPrefetchCount
      */
 	public final int getPrefetchCount()
 	{
@@ -150,9 +152,8 @@ public final class PartitionReceiver extends ClientEntity
 	}
 	
 	/**
-	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver).
-	 * <p>
-     * by default the value is 300
+	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
+	 * <p>By default the value is 300
 	 * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
 	 */
 	public final void setPrefetchCount(final int prefetchCount)
@@ -170,6 +171,7 @@ public final class PartitionReceiver extends ClientEntity
      * Get the epoch value that this receiver is currently using for partition ownership.
      * <p>
      * A value of 0 means this receiver is not an epoch-based receiver.
+     * @return the epoch value that this receiver is currently using for partition ownership.
      */
 	public final long getEpoch()
 	{
@@ -178,6 +180,8 @@ public final class PartitionReceiver extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #receive}. 
+	 * @return Batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
+	 * @throws ServiceBusException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive()}
 	 */
     public final Iterable<EventData> receiveSync() 
 			throws ServiceBusException
@@ -218,10 +222,10 @@ public final class PartitionReceiver extends ClientEntity
 	 * Receive a batch of {@link EventData}'s from an EventHub partition
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
-     * <pre>{@code 
+     * <pre>
      * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
      * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
-	 * Iterable<EventData> receivedEvents = receiver.receiveSync();
+	 * Iterable{@literal<}EventData{@literal>} receivedEvents = receiver.receiveSync();
 	 *      
 	 * while (true)
 	 * {
@@ -242,11 +246,8 @@ public final class PartitionReceiver extends ClientEntity
 	 *     System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
 	 *     receivedEvents = receiver.receiveSync();
 	 * }
-     * }</pre>
+     * </pre>
 	 * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
-	 * @throws ServerBusyException
-	 * @throws AuthorizationFailedException
-	 * @throws InternalServerException
 	 */
 	public CompletableFuture<Iterable<EventData>> receive()
 	{

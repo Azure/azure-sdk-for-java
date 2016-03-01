@@ -10,11 +10,13 @@ import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
+
+import com.microsoft.azure.eventhubs.EventData.SystemProperties;
 import com.microsoft.azure.servicebus.*;
 
 /**
  * Anchor class - all EventHub client operations STARTS here.
- * @see To create an instance of EventHubClient refer to {@link EventHubClient#createFromConnectionString(String)}. 
+ * @see EventHubClient#createFromConnectionString(String) 
  */
 public class EventHubClient extends ClientEntity
 {
@@ -109,7 +111,9 @@ public class EventHubClient extends ClientEntity
     /**
 	 * Synchronous version of {@link #send(EventData)}. 
 	 * @param data the {@link EventData} to be sent.
-	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a predefined limit set by the service. Default is 256k bytes.
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
+	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.) 
 	 */
     public final void sendSync(final EventData data) 
 			throws ServiceBusException
@@ -166,14 +170,10 @@ public class EventHubClient extends ClientEntity
 	 * </pre>
 	 * @param data the {@link EventData} to be sent.
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
-	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a predefined limit set by the service. Default is 256k bytes.
-	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
-	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.) 
 	 * @see #send(EventData, String)
 	 * @see PartitionSender#send(EventData) 
 	 */
-	public final CompletableFuture<Void> send(final EventData data) 
-			throws ServiceBusException
+	public final CompletableFuture<Void> send(final EventData data)
 	{
 		if (data == null)
 		{
@@ -193,7 +193,9 @@ public class EventHubClient extends ClientEntity
     /**
 	 * Synchronous version of {@link #send(Iterable)}. 
 	 * @param eventDatas batch of events to send to EventHub
-	 * @throws ServiceBusException	if Service Bus service encountered problems during the operation.
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
+	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 */
     public final void sendSync(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
@@ -265,16 +267,14 @@ public class EventHubClient extends ClientEntity
      * }
      * </pre>
 	 * 
+	 * <p> for Exceptions refer to {@link #sendSync(Iterable)}
+	 * 
 	 * @param eventDatas batch of events to send to EventHub
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
-	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
-	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 * @see #send(EventData, String)
 	 * @see PartitionSender#send(EventData) 
 	 */
-	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas) 
-			throws ServiceBusException
+	public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas)
 	{
 		if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0))
 		{
@@ -295,7 +295,8 @@ public class EventHubClient extends ClientEntity
 	 * Synchronous version of {@link #send(EventData, String)}. 
 	 * @param eventData the {@link EventData} to be sent.
 	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
-	 * @throws ServiceBusException	if Service Bus service encountered problems during the operation.
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 */
     public final void sendSync(final EventData eventData, final String partitionKey) 
 			throws ServiceBusException
@@ -353,14 +354,10 @@ public class EventHubClient extends ClientEntity
 	 * @param eventData the {@link EventData} to be sent.
 	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
-	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
-	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 * @see #send(EventData)
 	 * @see PartitionSender#send(EventData)
 	 */
-	public final CompletableFuture<Void> send(final EventData eventData, final String partitionKey) 
-			throws ServiceBusException
+	public final CompletableFuture<Void> send(final EventData eventData, final String partitionKey)
 	{
 		if (eventData == null)
 		{
@@ -386,7 +383,9 @@ public class EventHubClient extends ClientEntity
 	 * Synchronous version of {@link #send(Iterable, String)}. 
 	 * @param eventDatas the batch of events to send to EventHub
 	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
+	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 */
     public final void sendSync(final Iterable<EventData> eventDatas, final String partitionKey) 
 			throws ServiceBusException
@@ -436,9 +435,6 @@ public class EventHubClient extends ClientEntity
 	 * @param eventDatas the batch of events to send to EventHub
 	 * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
-	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
-	 * @throws UnresolvedAddressException      if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
 	 * @see #send(EventData)
 	 * @see PartitionSender#send(EventData) 
 	 */
@@ -473,6 +469,7 @@ public class EventHubClient extends ClientEntity
     /**
 	 * Synchronous version of {@link #createPartitionSender(String)}. 
 	 * @param partitionId  partitionId of EventHub to send the {@link EventData}'s to
+	 * @return PartitionSender which can be used to send events to a specific partition.
 	 * @throws ServiceBusException if Service Bus service encountered problems during connection creation. 
      */
 	public final PartitionSender createPartitionSenderSync(final String partitionId)
@@ -659,7 +656,7 @@ public class EventHubClient extends ClientEntity
 	 * Synchronous version of {@link #createReceiver(String, String, Instant)}. 
 	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
 	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
-	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
 	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
      */
@@ -703,7 +700,7 @@ public class EventHubClient extends ClientEntity
 	 * The receiver is created for a specific EventHub Partition from the specific consumer group.
 	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
 	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
-	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
      * @see PartitionReceiver
@@ -858,7 +855,7 @@ public class EventHubClient extends ClientEntity
 	 * Synchronous version of {@link #createEpochReceiver(String, String, Instant, long)}. 
 	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
 	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
-	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
 	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
 	 * @return                     PartitionReceiver instance which can be used for receiving {@link EventData}.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
@@ -910,8 +907,8 @@ public class EventHubClient extends ClientEntity
      * </ul>
 	 * @param consumerGroupName    the consumer group name that this receiver should be grouped under.
 	 * @param partitionId          the partition Id that the receiver belongs to. All data received will be from this partition only.
-	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData#SystemProperties#getEnqueuedTime()} later than this Instant.
-	 * @param epoch                an unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
+	 * @param dateTime             the date time instant that receive operations will start receive events from. Events received will have {@link EventData.SystemProperties#getEnqueuedTime()} later than this Instant.
+	 * @param epoch                a unique identifier (epoch value) that the service uses, to enforce partition/lease ownership. 
 	 * @return                     a CompletableFuture that would result in a PartitionReceiver when it is completed.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
      * @see PartitionReceiver
