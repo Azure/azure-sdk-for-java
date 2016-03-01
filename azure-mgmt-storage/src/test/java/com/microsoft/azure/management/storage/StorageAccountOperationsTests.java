@@ -4,7 +4,6 @@ import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.StorageAccountCheckNameAvailabilityParameters;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -66,10 +65,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         Assert.assertEquals(location, getResult.getLocation());
         // Delete
         storageManagementClient.getStorageAccountsOperations().delete(rgName, accountName);
-        StorageAccountCheckNameAvailabilityParameters availabilityParameters = new StorageAccountCheckNameAvailabilityParameters();
-        availabilityParameters.setName(accountName);
-        availabilityParameters.setType("Microsoft.Storage/storageAccounts");
-        CheckNameAvailabilityResult availabilityResult = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(availabilityParameters).getBody();
+        CheckNameAvailabilityResult availabilityResult = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(accountName, "Microsoft.Storage/storageAccounts").getBody();
         Assert.assertTrue(availabilityResult.getNameAvailable());
     }
 }
