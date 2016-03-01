@@ -14,19 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -34,39 +26,13 @@ import retrofit2.http.Url;
  */
 public interface ProvidersOperations {
     /**
-     * The interface defining all the services for ProvidersOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface ProvidersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
-        Call<ResponseBody> unregister(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register")
-        Call<ResponseBody> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}")
-        Call<ResponseBody> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Unregisters provider from a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Provider object wrapped in ServiceResponse if successful.
+     * @return the Provider object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Provider> unregister(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
@@ -75,9 +41,10 @@ public interface ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> unregisterAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback);
+    ServiceCall unregisterAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Registers provider to be used with a subscription.
@@ -86,7 +53,7 @@ public interface ProvidersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Provider object wrapped in ServiceResponse if successful.
+     * @return the Provider object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Provider> register(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
@@ -95,9 +62,10 @@ public interface ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> registerAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback);
+    ServiceCall registerAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
@@ -106,7 +74,7 @@ public interface ProvidersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Provider&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<Provider>> list(final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
@@ -115,9 +83,10 @@ public interface ProvidersOperations {
      *
      * @param top Query parameters. If null is passed returns all deployments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final Integer top, final ListOperationCallback<Provider> serviceCallback);
+    ServiceCall listAsync(final Integer top, final ListOperationCallback<Provider> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a resource provider.
@@ -126,7 +95,7 @@ public interface ProvidersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Provider object wrapped in ServiceResponse if successful.
+     * @return the Provider object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Provider> get(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
@@ -135,9 +104,10 @@ public interface ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback);
+    ServiceCall getAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
@@ -146,7 +116,7 @@ public interface ProvidersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Provider&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<Provider>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -154,9 +124,11 @@ public interface ProvidersOperations {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<Provider> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Provider> serviceCallback) throws IllegalArgumentException;
 
 }

@@ -19,6 +19,7 @@ import com.microsoft.azure.management.resources.models.GenericResourceFilter;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupFilter;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -29,6 +30,17 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.HEAD;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
+import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -54,6 +66,53 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
     }
 
     /**
+     * The interface defining all the services for ResourceGroupsOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface ResourceGroupsService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
+        Call<ResponseBody> listResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
+        Call<Void> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
+        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
+        Call<ResponseBody> patch(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourcegroups")
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listResourcesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
+    }
+
+    /**
      * Get all of the resources under a subscription.
      *
      * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
@@ -74,7 +133,8 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Validator.validate(filter);
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute());
         List<GenericResource> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
@@ -91,9 +151,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listResourcesAsync(final String resourceGroupName, final GenericResourceFilter filter, final Integer top, final ListOperationCallback<GenericResource> serviceCallback) {
+    public ServiceCall listResourcesAsync(final String resourceGroupName, final GenericResourceFilter filter, final Integer top, final ListOperationCallback<GenericResource> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -106,7 +170,9 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Validator.validate(filter, serviceCallback);
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResource>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -115,20 +181,20 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listResourcesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listResourcesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<GenericResource>> listResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResource>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<GenericResource>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -162,9 +228,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<Void> checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) {
+    public ServiceCall checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -178,6 +248,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             return null;
         }
         Call<Void> call = service.checkExistence(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -188,11 +259,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>()
+        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.getMapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -233,9 +304,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @param resourceGroupName The name of the resource group to be created or updated.
      * @param parameters Parameters supplied to the create or update resource group service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback) {
+    public ServiceCall createOrUpdateAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -254,6 +329,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceGroup>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -264,11 +340,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<ResourceGroup> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroup, CloudException>()
+        return new AzureServiceResponseBuilder<ResourceGroup, CloudException>(this.client.getMapperAdapter())
                 .register(201, new TypeToken<ResourceGroup>() { }.getType())
                 .register(200, new TypeToken<ResourceGroup>() { }.getType())
                 .registerError(CloudException.class)
@@ -286,6 +362,15 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @return the ServiceResponse object if successful.
      */
     public ServiceResponse<Void> delete(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
         Response<ResponseBody> result = service.delete(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -295,9 +380,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    public Call<ResponseBody> deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceCall deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
@@ -308,6 +397,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -315,10 +405,79 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCallback);
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCall, serviceCallback);
             }
         });
-        return call;
+        return serviceCall;
+    }
+
+    /**
+     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     *
+     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> beginDelete(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginDeleteDelegate(call.execute());
+    }
+
+    /**
+     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     *
+     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginDeleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginDeleteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .build(response);
     }
 
     /**
@@ -349,9 +508,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getAsync(String resourceGroupName, final ServiceCallback<ResourceGroup> serviceCallback) {
+    public ServiceCall getAsync(String resourceGroupName, final ServiceCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -365,6 +528,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             return null;
         }
         Call<ResponseBody> call = service.get(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceGroup>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -375,11 +539,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<ResourceGroup> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroup, CloudException>()
+        return new AzureServiceResponseBuilder<ResourceGroup, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<ResourceGroup>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -419,9 +583,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
      * @param parameters Parameters supplied to the update state resource group service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> patchAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback) {
+    public ServiceCall patchAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -440,6 +608,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.patch(resourceGroupName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceGroup>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -450,11 +619,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<ResourceGroup> patchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroup, CloudException>()
+        return new AzureServiceResponseBuilder<ResourceGroup, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<ResourceGroup>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -477,7 +646,8 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Validator.validate(filter);
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute());
         List<ResourceGroup> result = response.getBody().getItems();
         while (response.getBody().getNextPageLink() != null) {
@@ -493,9 +663,13 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAsync(final ResourceGroupFilter filter, final Integer top, final ListOperationCallback<ResourceGroup> serviceCallback) {
+    public ServiceCall listAsync(final ResourceGroupFilter filter, final Integer top, final ListOperationCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -504,7 +678,9 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Validator.validate(filter, serviceCallback);
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceGroup>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -513,20 +689,20 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<ResourceGroup>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceGroup>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -553,15 +729,21 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * Get all of the resources under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listResourcesNextAsync(final String nextPageLink, final ListOperationCallback<GenericResource> serviceCallback) {
+    public ServiceCall listResourcesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<GenericResource> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listResourcesNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResource>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -570,7 +752,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listResourcesNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listResourcesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -579,11 +761,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<GenericResource>> listResourcesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResource>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<GenericResource>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -610,15 +792,21 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * Gets a collection of resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<ResourceGroup> serviceCallback) {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceGroup>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -627,7 +815,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -636,11 +824,11 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<ResourceGroup>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<ResourceGroup>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceGroup>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

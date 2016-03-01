@@ -16,12 +16,19 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceProviderOperationDefinition;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -44,6 +51,21 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
     public ResourceProviderOperationDetailsOperationsImpl(Retrofit retrofit, ResourceManagementClient client) {
         this.service = retrofit.create(ResourceProviderOperationDetailsService.class);
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for ResourceProviderOperationDetailsOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface ResourceProviderOperationDetailsService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("providers/{resourceProviderNamespace}/operations")
+        Call<ResponseBody> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
     }
 
     /**
@@ -82,9 +104,13 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
      * @param resourceProviderNamespace Resource identity.
      * @param apiVersion the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAsync(final String resourceProviderNamespace, final String apiVersion, final ListOperationCallback<ResourceProviderOperationDefinition> serviceCallback) {
+    public ServiceCall listAsync(final String resourceProviderNamespace, final String apiVersion, final ListOperationCallback<ResourceProviderOperationDefinition> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -98,6 +124,7 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
             return null;
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceProviderOperationDefinition>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -106,20 +133,20 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<ResourceProviderOperationDefinition>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceProviderOperationDefinition>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<ResourceProviderOperationDefinition>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceProviderOperationDefinition>>() { }.getType())
                 .register(204, new TypeToken<PageImpl<ResourceProviderOperationDefinition>>() { }.getType())
                 .registerError(CloudException.class)
@@ -147,15 +174,21 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<ResourceProviderOperationDefinition> serviceCallback) {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ResourceProviderOperationDefinition> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceProviderOperationDefinition>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -164,7 +197,7 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -173,11 +206,11 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<ResourceProviderOperationDefinition>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceProviderOperationDefinition>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<ResourceProviderOperationDefinition>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceProviderOperationDefinition>>() { }.getType())
                 .register(204, new TypeToken<PageImpl<ResourceProviderOperationDefinition>>() { }.getType())
                 .registerError(CloudException.class)

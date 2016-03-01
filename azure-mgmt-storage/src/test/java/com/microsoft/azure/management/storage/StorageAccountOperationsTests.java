@@ -37,13 +37,13 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         String accountName = "javasto";
         StorageAccountCreateParameters parameters = new StorageAccountCreateParameters();
         parameters.setLocation(location);
-        parameters.setAccountType(AccountType.STANDARD_GRS);
+        parameters.setAccountType(AccountType.STANDARD_LRS);
         parameters.setTags(new HashMap<String, String>());
         parameters.getTags().put("department", "finance");
         parameters.getTags().put("tagname", "tagvalue");
         StorageAccount storageAccount = storageManagementClient.getStorageAccountsOperations().create(rgName, accountName, parameters).getBody();
         Assert.assertEquals(location, storageAccount.getLocation());
-        Assert.assertEquals(AccountType.STANDARD_GRS, storageAccount.getAccountType());
+        Assert.assertEquals(AccountType.STANDARD_LRS, storageAccount.getAccountType());
         Assert.assertEquals(2, storageAccount.getTags().size());
         // List
         List<StorageAccount> listResult = storageManagementClient.getStorageAccountsOperations().list().getBody();

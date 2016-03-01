@@ -13,6 +13,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CustomHeaderInterceptor;
+import com.microsoft.rest.AutoRestBaseUrl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import java.util.UUID;
 import okhttp3.OkHttpClient;
@@ -22,17 +23,18 @@ import retrofit2.Retrofit;
  * Initializes a new instance of the ResourceManagementClient class.
  */
 public final class ResourceManagementClientImpl extends AzureServiceClient implements ResourceManagementClient {
-    /** The URI used as the base for all cloud service requests. */
-    private final String baseUri;
+    /** The URL used as the base for all cloud service requests. */
+    private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
     /**
-     * Gets the URI used as the base for all cloud service requests.
-     * @return The BaseUri value.
+     * Gets the URL used as the base for all cloud service requests.
+     *
+     * @return The BaseUrl value.
      */
-    public String getBaseUri() {
-        return this.baseUri;
+    public AutoRestBaseUrl getBaseUrl() {
+        return this.baseUrl;
     }
 
     /**
@@ -225,22 +227,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Initializes an instance of ResourceManagementClient client.
-     */
-    public ResourceManagementClientImpl() {
-        this("https://management.azure.com");
-    }
-
-    /**
-     * Initializes an instance of ResourceManagementClient client.
-     *
-     * @param baseUri the base URI of the host
-     */
-    public ResourceManagementClientImpl(String baseUri) {
-        this(baseUri, null);
-    }
-
-    /**
-     * Initializes an instance of ResourceManagementClient client.
      *
      * @param credentials the management credentials for Azure
      */
@@ -251,12 +237,12 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
     /**
      * Initializes an instance of ResourceManagementClient client.
      *
-     * @param baseUri the base URI of the host
+     * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public ResourceManagementClientImpl(String baseUri, ServiceClientCredentials credentials) {
+    public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super();
-        this.baseUri = baseUri;
+        this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
         initialize();
     }
@@ -264,14 +250,14 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
     /**
      * Initializes an instance of ResourceManagementClient client.
      *
-     * @param baseUri the base URI of the host
+     * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public ResourceManagementClientImpl(String baseUri, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+    public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
         super(clientBuilder, retrofitBuilder);
-        this.baseUri = baseUri;
+        this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
         initialize();
     }
@@ -287,8 +273,8 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
             this.credentials.applyCredentialsFilter(clientBuilder);
         }
         super.initialize();
-        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder);
+        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder, mapperAdapter);
         this.azureClient.setCredentials(this.credentials);
-        this.retrofitBuilder.baseUrl(baseUri);
+        this.retrofitBuilder.baseUrl(baseUrl);
     }
 }

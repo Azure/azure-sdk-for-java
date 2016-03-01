@@ -15,18 +15,11 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.Location;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -34,39 +27,13 @@ import retrofit2.http.Url;
  */
 public interface SubscriptionsOperations {
     /**
-     * The interface defining all the services for SubscriptionsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface SubscriptionsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/locations")
-        Call<ResponseBody> listLocations(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}")
-        Call<ResponseBody> get(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listLocationsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Gets a list of the subscription locations.
      *
      * @param subscriptionId Id of the subscription
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Location&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Location&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<Location>> listLocations(final String subscriptionId) throws CloudException, IOException, IllegalArgumentException;
 
@@ -75,9 +42,10 @@ public interface SubscriptionsOperations {
      *
      * @param subscriptionId Id of the subscription
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listLocationsAsync(final String subscriptionId, final ListOperationCallback<Location> serviceCallback);
+    ServiceCall listLocationsAsync(final String subscriptionId, final ListOperationCallback<Location> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets details about particular subscription.
@@ -86,7 +54,7 @@ public interface SubscriptionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Subscription object wrapped in ServiceResponse if successful.
+     * @return the Subscription object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Subscription> get(String subscriptionId) throws CloudException, IOException, IllegalArgumentException;
 
@@ -95,9 +63,10 @@ public interface SubscriptionsOperations {
      *
      * @param subscriptionId Id of the subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String subscriptionId, final ServiceCallback<Subscription> serviceCallback);
+    ServiceCall getAsync(String subscriptionId, final ServiceCallback<Subscription> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.
@@ -105,7 +74,7 @@ public interface SubscriptionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Subscription&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Subscription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<Subscription>> list() throws CloudException, IOException, IllegalArgumentException;
 
@@ -113,9 +82,10 @@ public interface SubscriptionsOperations {
      * Gets a list of the subscriptionIds.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final ListOperationCallback<Subscription> serviceCallback);
+    ServiceCall listAsync(final ListOperationCallback<Subscription> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of the subscription locations.
@@ -124,7 +94,7 @@ public interface SubscriptionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Location&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Location&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<Location>> listLocationsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -132,10 +102,12 @@ public interface SubscriptionsOperations {
      * Gets a list of the subscription locations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listLocationsNextAsync(final String nextPageLink, final ListOperationCallback<Location> serviceCallback);
+    ServiceCall listLocationsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Location> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.
@@ -144,7 +116,7 @@ public interface SubscriptionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Subscription&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Subscription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<Subscription>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -152,9 +124,11 @@ public interface SubscriptionsOperations {
      * Gets a list of the subscriptionIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<Subscription> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Subscription> serviceCallback) throws IllegalArgumentException;
 
 }

@@ -64,6 +64,24 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>sonatype-rest</id>
+      <name>sonatype-rest</name>
+      <url>https://oss.sonatype.org/service/local/repositories/commicrosoftrest-1002/content</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>sonatype-azure</id>
+      <name>sonatype-azure</name>
+      <url>https://oss.sonatype.org/service/local/repositories/commicrosoftazure-1239/content</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <distributionManagement>
@@ -81,7 +99,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-beta1</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
@@ -103,7 +121,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-beta1</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

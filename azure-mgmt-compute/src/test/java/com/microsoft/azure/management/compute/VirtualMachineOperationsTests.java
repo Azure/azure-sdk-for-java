@@ -45,7 +45,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
         StorageAccountCreateParameters parameters = new StorageAccountCreateParameters();
         parameters.setLocation(location);
-        parameters.setAccountType(AccountType.STANDARD_GRS);
+        parameters.setAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.getStorageAccountsOperations().create(rgName, accountName, parameters).getBody();
 
     }
@@ -106,7 +106,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     }
 
     private ImageReference getVMImage(String publisher, String offer, String sku) throws CloudException, IOException {
-        VirtualMachineImageResource virtualMachineImageResource = new VirtualMachineImageResource();
         String name = computeManagementClient.getVirtualMachineImagesOperations().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
         ImageReference imageReference = new ImageReference();
         imageReference.setOffer(offer);

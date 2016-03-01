@@ -7,12 +7,14 @@ var mappings = {
     'compute': {
         'dir': 'azure-mgmt-compute',
         'source': 'arm-compute/2015-06-15/swagger/compute.json',
-        'package': 'com.microsoft.azure.management.compute'
+        'package': 'com.microsoft.azure.management.compute',
+        'args': '-FT 1'
     },
     'storage': {
         'dir': 'azure-mgmt-storage',
         'source': 'arm-storage/2015-06-15/swagger/storage.json',
-        'package': 'com.microsoft.azure.management.storage'
+        'package': 'com.microsoft.azure.management.storage',
+        'args': '-FT 2'
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
@@ -37,12 +39,14 @@ var mappings = {
     'network': {
         'dir': 'azure-mgmt-network',
         'source': 'arm-network/2015-06-15/swagger/network.json',
-        'package': 'com.microsoft.azure.management.network'
+        'package': 'com.microsoft.azure.management.network',
+        'args': '-FT 1'
     },
     'website': {
         'dir': 'azure-mgmt-website',
         'source': 'arm-web/2015-08-01/swagger/service.json',
-        'package': 'com.microsoft.azure.management.website'
+        'package': 'com.microsoft.azure.management.website',
+        'args': '-FT 1'
     }
 };
 

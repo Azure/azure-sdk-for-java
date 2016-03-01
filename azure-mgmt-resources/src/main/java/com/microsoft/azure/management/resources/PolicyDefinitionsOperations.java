@@ -12,43 +12,16 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.PolicyDefinition;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in PolicyDefinitionsOperations.
  */
 public interface PolicyDefinitionsOperations {
-    /**
-     * The interface defining all the services for PolicyDefinitionsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface PolicyDefinitionsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
-        Call<ResponseBody> createOrUpdate(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Body PolicyDefinition parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
-        Call<ResponseBody> get(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * Create or update policy definition.
      *
@@ -57,7 +30,7 @@ public interface PolicyDefinitionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyDefinition object wrapped in ServiceResponse if successful.
+     * @return the PolicyDefinition object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyDefinition> createOrUpdate(String policyDefinitionName, PolicyDefinition parameters) throws CloudException, IOException, IllegalArgumentException;
 
@@ -67,9 +40,10 @@ public interface PolicyDefinitionsOperations {
      * @param policyDefinitionName The policy definition name.
      * @param parameters The policy definition properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateAsync(String policyDefinitionName, PolicyDefinition parameters, final ServiceCallback<PolicyDefinition> serviceCallback);
+    ServiceCall createOrUpdateAsync(String policyDefinitionName, PolicyDefinition parameters, final ServiceCallback<PolicyDefinition> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy definition.
@@ -78,7 +52,7 @@ public interface PolicyDefinitionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyDefinition object wrapped in ServiceResponse if successful.
+     * @return the PolicyDefinition object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyDefinition> get(String policyDefinitionName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -87,9 +61,10 @@ public interface PolicyDefinitionsOperations {
      *
      * @param policyDefinitionName The policy definition name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinition> serviceCallback);
+    ServiceCall getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinition> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes policy definition.
@@ -98,7 +73,7 @@ public interface PolicyDefinitionsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServiceResponse object if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     ServiceResponse<Void> delete(String policyDefinitionName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -107,8 +82,9 @@ public interface PolicyDefinitionsOperations {
      *
      * @param policyDefinitionName The policy definition name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
 }

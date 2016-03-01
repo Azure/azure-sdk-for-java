@@ -14,89 +14,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.PolicyAssignment;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in PolicyAssignmentsOperations.
  */
 public interface PolicyAssignmentsOperations {
-    /**
-     * The interface defining all the services for PolicyAssignmentsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface PolicyAssignmentsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}providers/Microsoft.Authorization/policyAssignments")
-        Call<ResponseBody> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments")
-        Call<ResponseBody> listForResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("scope") String scope, @Path("policyAssignmentName") String policyAssignmentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}")
-        Call<ResponseBody> create(@Path("scope") String scope, @Path("policyAssignmentName") String policyAssignmentName, @Path("subscriptionId") String subscriptionId, @Body PolicyAssignment parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}")
-        Call<ResponseBody> get(@Path("scope") String scope, @Path("policyAssignmentName") String policyAssignmentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "{policyAssignmentId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteById(@Path("policyAssignmentId") String policyAssignmentId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("{policyAssignmentId}")
-        Call<ResponseBody> createById(@Path("policyAssignmentId") String policyAssignmentId, @Path("subscriptionId") String subscriptionId, @Body PolicyAssignment parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{policyAssignmentId}")
-        Call<ResponseBody> getById(@Path("policyAssignmentId") String policyAssignmentId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{scope}/providers/Microsoft.Authorization/policyAssignments")
-        Call<ResponseBody> listForScope(@Path("scope") String scope, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listForResourceNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listForResourceGroupNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listForScopeNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * Gets policy assignments of the resource.
      *
@@ -109,7 +37,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) throws CloudException, IOException, IllegalArgumentException;
 
@@ -123,9 +51,10 @@ public interface PolicyAssignmentsOperations {
      * @param resourceName The resource name.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource group.
@@ -135,7 +64,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<PolicyAssignment>> listForResourceGroup(final String resourceGroupName, final String filter) throws CloudException, IOException, IllegalArgumentException;
 
@@ -145,9 +74,10 @@ public interface PolicyAssignmentsOperations {
      * @param resourceGroupName Resource group name.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listForResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listForResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Delete policy assignment.
@@ -157,7 +87,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
+     * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyAssignment> delete(String scope, String policyAssignmentName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -167,9 +97,10 @@ public interface PolicyAssignmentsOperations {
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignment> serviceCallback);
+    ServiceCall deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Create policy assignment.
@@ -180,7 +111,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
+     * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyAssignment> create(String scope, String policyAssignmentName, PolicyAssignment parameters) throws CloudException, IOException, IllegalArgumentException;
 
@@ -191,9 +122,10 @@ public interface PolicyAssignmentsOperations {
      * @param policyAssignmentName Policy assignment name.
      * @param parameters Policy assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createAsync(String scope, String policyAssignmentName, PolicyAssignment parameters, final ServiceCallback<PolicyAssignment> serviceCallback);
+    ServiceCall createAsync(String scope, String policyAssignmentName, PolicyAssignment parameters, final ServiceCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get single policy assignment.
@@ -203,7 +135,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
+     * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyAssignment> get(String scope, String policyAssignmentName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -213,9 +145,10 @@ public interface PolicyAssignmentsOperations {
      * @param scope Scope.
      * @param policyAssignmentName Policy assignment name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignment> serviceCallback);
+    ServiceCall getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Delete policy assignment.
@@ -224,7 +157,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
+     * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyAssignment> deleteById(String policyAssignmentId) throws CloudException, IOException, IllegalArgumentException;
 
@@ -233,9 +166,10 @@ public interface PolicyAssignmentsOperations {
      *
      * @param policyAssignmentId Policy assignment Id
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignment> serviceCallback);
+    ServiceCall deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Create policy assignment by Id.
@@ -245,7 +179,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
+     * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyAssignment> createById(String policyAssignmentId, PolicyAssignment parameters) throws CloudException, IOException, IllegalArgumentException;
 
@@ -255,9 +189,10 @@ public interface PolicyAssignmentsOperations {
      * @param policyAssignmentId Policy assignment Id
      * @param parameters Policy assignment.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createByIdAsync(String policyAssignmentId, PolicyAssignment parameters, final ServiceCallback<PolicyAssignment> serviceCallback);
+    ServiceCall createByIdAsync(String policyAssignmentId, PolicyAssignment parameters, final ServiceCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get single policy assignment.
@@ -266,7 +201,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PolicyAssignment object wrapped in ServiceResponse if successful.
+     * @return the PolicyAssignment object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PolicyAssignment> getById(String policyAssignmentId) throws CloudException, IOException, IllegalArgumentException;
 
@@ -275,9 +210,10 @@ public interface PolicyAssignmentsOperations {
      *
      * @param policyAssignmentId Policy assignment Id
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignment> serviceCallback);
+    ServiceCall getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the subscription.
@@ -286,7 +222,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<PolicyAssignment>> list(final String filter) throws CloudException, IOException, IllegalArgumentException;
 
@@ -295,9 +231,10 @@ public interface PolicyAssignmentsOperations {
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listAsync(final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the scope.
@@ -307,7 +244,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<PolicyAssignment>> listForScope(final String scope, final String filter) throws CloudException, IOException, IllegalArgumentException;
 
@@ -317,9 +254,10 @@ public interface PolicyAssignmentsOperations {
      * @param scope Scope.
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listForScopeAsync(final String scope, final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listForScopeAsync(final String scope, final String filter, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource.
@@ -328,7 +266,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<PolicyAssignment>> listForResourceNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -336,10 +274,12 @@ public interface PolicyAssignmentsOperations {
      * Gets policy assignments of the resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listForResourceNextAsync(final String nextPageLink, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listForResourceNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource group.
@@ -348,7 +288,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<PolicyAssignment>> listForResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -356,10 +296,12 @@ public interface PolicyAssignmentsOperations {
      * Gets policy assignments of the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listForResourceGroupNextAsync(final String nextPageLink, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listForResourceGroupNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the subscription.
@@ -368,7 +310,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<PolicyAssignment>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -376,10 +318,12 @@ public interface PolicyAssignmentsOperations {
      * Gets policy assignments of the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets policy assignments of the scope.
@@ -388,7 +332,7 @@ public interface PolicyAssignmentsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PolicyAssignment&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<PolicyAssignment>> listForScopeNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -396,9 +340,11 @@ public interface PolicyAssignmentsOperations {
      * Gets policy assignments of the scope.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listForScopeNextAsync(final String nextPageLink, final ListOperationCallback<PolicyAssignment> serviceCallback);
+    ServiceCall listForScopeNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException;
 
 }
