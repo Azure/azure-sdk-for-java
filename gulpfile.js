@@ -51,39 +51,56 @@ var mappings = {
 };
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--project <project name>]\n");
+    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>]\n");
     console.log("--spec-root");
     console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master\"");
-    console.log("--project\n\tProject to regenerate, default is all. List of available project names:");
+    console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
     Object.keys(mappings).forEach(function(i) {
         console.log('\t' + i.magenta);
     });
+    console.log("--autorest\n\tThe version of AutoRest. E.g. 0.15.0, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
 });
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
-var project = args['project'];
-var autoRestVersion = '0.13.0-Nightly20151029';
-var autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
+var projects = args['projects'];
+var autoRestVersion = '0.13.0-Nightly20151029'; // default
+if (args['autorest'] !== undefined) {
+    autoRestVersion = args['autorest'];
+}
+var autorestExe;
 
 gulp.task('codegen', function(cb) {
-    exec('tools\\nuget.exe install autorest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
-        console.log(stdout);
-        console.error(stderr);
-        if (project === undefined) {
-            Object.keys(mappings).forEach(function(proj) {
-                codegen(proj, cb);
-            });
-        } else {
-            if (mappings[project] === undefined) {
-                console.error('Invalid project name "' + project + '"!');
-                process.exit(1);
-            }
-            codegen(project, cb);
-        }
-    });
+    var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
+    if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
+        autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
+        exec('tools\\nuget.exe install autorest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
+            console.log(stdout);
+            console.error(stderr);
+            handleInput(projects, cb);
+        });
+    } else {
+        autoRestExe = autoRestVersion + "/binaries/net45/AutoRest.exe";
+        handleInput(projects, cb);
+    }
+
 });
 
+var handleInput = function(projects, cb) {
+    if (projects === undefined) {
+        Object.keys(mappings).forEach(function(proj) {
+            codegen(proj, cb);
+        });
+    } else {
+        projects.split(",").forEach(function(proj) {
+            proj = proj.replace(/\ /g, '');
+            if (mappings[proj] === undefined) {
+                console.error('Invalid project name "' + proj + '"!');
+                process.exit(1);
+            }
+            codegen(proj, cb);
+        });
+    }
+}
 
 var codegen = function(project, cb) {
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
