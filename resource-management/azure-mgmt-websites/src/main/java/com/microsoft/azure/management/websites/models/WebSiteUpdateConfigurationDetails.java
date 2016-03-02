@@ -351,6 +351,62 @@ public class WebSiteUpdateConfigurationDetails {
     public void setPhpVersion(final String phpVersionValue) {
         this.phpVersion = phpVersionValue;
     }
+
+    private String javaVersion;
+
+    /**
+     * Optional. Supported values are an empty string (an empty string disables
+     * Java), 1.7, 1.7.0_51, 1.7.0_71, 1.8, 1.8.0_25 and 1.8.0_60.
+     * @return The JavaVersion value.
+     */
+    public String getJavaVersion() {
+        return this.javaVersion;
+    }
+
+    /**
+     * Optional. Supported values are an empty string (an empty string disables
+     * Java), 1.7, 1.7.0_51, 1.7.0_71, 1.8, 1.8.0_25 and 1.8.0_60.
+     * @param javaVersionValue value.
+     */
+    public void setJavaVersion(final String javaVersionValue) {
+        this.javaVersion = javaVersionValue;
+    }
+
+    private String javaContainer;
+
+    /**
+     * Optional. Supported values are an empty string, TOMCAT and JETTY.
+     * @return The JavaContainer value.
+     */
+    public String getJavaContainer() {
+        return  this.javaContainer;
+    }
+
+    /**
+     * Optional. Supported values are an empty string, TOMCAT and JETTY.
+     * @param javaContainerValue value.
+     */
+    public void setJavaContainer(final String javaContainerValue) {
+        this.javaContainer = javaContainerValue;
+    }
+
+    private String javaContainerVersion;
+
+    /**
+     * Optional. Supported values are an empty string, 7.0.52, 7.0.62, 7.0, 8.0.23, 8.0, 9.1.0.20131115 and 9.1.
+     * @return The JavaContainerVersion value.
+     */
+    public String getJavaContainerVersion() {
+        return this.javaContainerVersion;
+    }
+
+    /**
+     * Optional. Supported values are an empty string, 7.0.52, 7.0.62, 7.0, 8.0.23, 8.0, 9.1.0.20131115 and 9.1.
+     * @param javaContainerVersionValue value.
+     */
+    public void setJavaContainerVersion(final String javaContainerVersionValue) {
+        this.javaContainerVersion =  javaContainerVersionValue;
+    }
     
     private String pythonVersion;
     
