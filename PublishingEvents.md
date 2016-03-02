@@ -17,7 +17,7 @@ following dependency declaration inside of your Maven project file:
  ```
  
  For different types of build environments, the latest released JAR files can also be [explicitly obtained from the 
- Maven Central Repository]() or from [the Release distribution point on GitHub]().  
+ Maven Central Repository](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-eventhubs%22) or from [the Release distribution point on GitHub](https://github.com/Azure/azure-event-hubs/releases).  
 
 
 For a simple event publisher, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes
