@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Class repesenting metadata for the metrics.
  */
+@JsonFlatten
 public class MetricDefinition extends Resource {
     /**
      * Name of the metric.

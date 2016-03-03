@@ -13,10 +13,12 @@ package com.microsoft.azure.management.website.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import org.joda.time.DateTime;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Configuration of Azure web site.
  */
+@JsonFlatten
 public class SiteConfig extends Resource {
     /**
      * Number of workers.
@@ -247,6 +249,12 @@ public class SiteConfig extends Resource {
      */
     @JsonProperty(value = "properties.autoSwapSlotName")
     private String autoSwapSlotName;
+
+    /**
+     * Local mysql enabled.
+     */
+    @JsonProperty(value = "properties.localMySqlEnabled")
+    private Boolean localMySqlEnabled;
 
     /**
      * Get the numberOfWorkers value.
@@ -930,6 +938,24 @@ public class SiteConfig extends Resource {
      */
     public void setAutoSwapSlotName(String autoSwapSlotName) {
         this.autoSwapSlotName = autoSwapSlotName;
+    }
+
+    /**
+     * Get the localMySqlEnabled value.
+     *
+     * @return the localMySqlEnabled value
+     */
+    public Boolean getLocalMySqlEnabled() {
+        return this.localMySqlEnabled;
+    }
+
+    /**
+     * Set the localMySqlEnabled value.
+     *
+     * @param localMySqlEnabled the localMySqlEnabled value to set
+     */
+    public void setLocalMySqlEnabled(Boolean localMySqlEnabled) {
+        this.localMySqlEnabled = localMySqlEnabled;
     }
 
 }

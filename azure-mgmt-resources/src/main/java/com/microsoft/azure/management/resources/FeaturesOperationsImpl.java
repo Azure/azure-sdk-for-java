@@ -16,6 +16,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.FeatureResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -23,6 +24,13 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -45,6 +53,37 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
     public FeaturesOperationsImpl(Retrofit retrofit, FeatureClient client) {
         this.service = retrofit.create(FeaturesService.class);
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for FeaturesOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface FeaturesService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
+        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features")
+        Call<ResponseBody> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}")
+        Call<ResponseBody> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
+        Call<ResponseBody> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
     }
 
     /**
@@ -76,9 +115,13 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAllAsync(final ListOperationCallback<FeatureResult> serviceCallback) {
+    public ServiceCall listAllAsync(final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -88,6 +131,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             return null;
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -96,20 +140,20 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -149,9 +193,13 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResult> serviceCallback) {
+    public ServiceCall listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -165,6 +213,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             return null;
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -173,20 +222,20 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -225,9 +274,13 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback) {
+    public ServiceCall getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -245,6 +298,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             return null;
         }
         Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FeatureResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -255,11 +309,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<FeatureResult> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResult, CloudException>()
+        return new AzureServiceResponseBuilder<FeatureResult, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<FeatureResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -298,9 +352,13 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback) {
+    public ServiceCall registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -318,6 +376,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
             return null;
         }
         Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FeatureResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -328,11 +387,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<FeatureResult> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResult, CloudException>()
+        return new AzureServiceResponseBuilder<FeatureResult, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<FeatureResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -359,15 +418,21 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAllNextAsync(final String nextPageLink, final ListOperationCallback<FeatureResult> serviceCallback) {
+    public ServiceCall listAllNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -376,7 +441,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -385,11 +450,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -416,15 +481,21 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * Gets a list of previewed features of a resource provider.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<FeatureResult> serviceCallback) {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResult>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -433,7 +504,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -442,11 +513,11 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<FeatureResult>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResult>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResult>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

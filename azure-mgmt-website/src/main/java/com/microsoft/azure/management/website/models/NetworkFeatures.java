@@ -12,12 +12,14 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * This is an object used to store a full view of network features (presently
  * VNET integration and Hybrid Connections)
  * for a web app.
  */
+@JsonFlatten
 public class NetworkFeatures extends Resource {
     /**
      * The Vnet Name.

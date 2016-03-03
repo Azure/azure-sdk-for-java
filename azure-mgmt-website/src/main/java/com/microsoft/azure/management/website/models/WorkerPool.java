@@ -12,16 +12,13 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Worker pool of a hostingEnvironment (App Service Environment).
  */
+@JsonFlatten
 public class WorkerPool extends Resource {
-    /**
-     * The sku property.
-     */
-    private SkuDescription sku;
-
     /**
      * Worker size id for referencing this worker pool.
      */
@@ -54,22 +51,9 @@ public class WorkerPool extends Resource {
     private List<String> instanceNames;
 
     /**
-     * Get the sku value.
-     *
-     * @return the sku value
+     * The sku property.
      */
-    public SkuDescription getSku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku value.
-     *
-     * @param sku the sku value to set
-     */
-    public void setSku(SkuDescription sku) {
-        this.sku = sku;
-    }
+    private SkuDescription sku;
 
     /**
      * Get the workerSizeId value.
@@ -159,6 +143,24 @@ public class WorkerPool extends Resource {
      */
     public void setInstanceNames(List<String> instanceNames) {
         this.instanceNames = instanceNames;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public SkuDescription getSku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     */
+    public void setSku(SkuDescription sku) {
+        this.sku = sku;
     }
 
 }

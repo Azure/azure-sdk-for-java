@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes the source control configuration for web app.
  */
+@JsonFlatten
 public class SiteSourceControl extends Resource {
     /**
      * Repository or source control url.

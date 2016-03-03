@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * VnetRoute contract used to pass routing information for a vnet.
  */
+@JsonFlatten
 public class VnetRoute extends Resource {
     /**
      * The name of this route. This is only returned by the server and does

@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Response for a restore site request.
  */
+@JsonFlatten
 public class RestoreResponse extends Resource {
     /**
      * When server starts the restore process, it will return an OperationId

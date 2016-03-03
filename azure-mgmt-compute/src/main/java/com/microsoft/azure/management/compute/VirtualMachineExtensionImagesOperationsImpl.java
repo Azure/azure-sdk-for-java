@@ -15,13 +15,20 @@ import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -44,6 +51,25 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
     public VirtualMachineExtensionImagesOperationsImpl(Retrofit retrofit, ComputeManagementClient client) {
         this.service = retrofit.create(VirtualMachineExtensionImagesService.class);
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for VirtualMachineExtensionImagesOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface VirtualMachineExtensionImagesService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
+        Call<ResponseBody> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types")
+        Call<ResponseBody> listTypes(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
+        Call<ResponseBody> listVersions(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
     }
 
     /**
@@ -89,9 +115,13 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
      * @param type the String value
      * @param version the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getAsync(String location, String publisherName, String type, String version, final ServiceCallback<VirtualMachineExtensionImage> serviceCallback) {
+    public ServiceCall getAsync(String location, String publisherName, String type, String version, final ServiceCallback<VirtualMachineExtensionImage> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (location == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
@@ -117,6 +147,7 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
             return null;
         }
         Call<ResponseBody> call = service.get(location, publisherName, type, version, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineExtensionImage>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -127,11 +158,11 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<VirtualMachineExtensionImage> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineExtensionImage, CloudException>()
+        return new AzureServiceResponseBuilder<VirtualMachineExtensionImage, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<VirtualMachineExtensionImage>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -170,9 +201,13 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
      * @param location the String value
      * @param publisherName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) {
+    public ServiceCall listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (location == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
@@ -190,6 +225,7 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
             return null;
         }
         Call<ResponseBody> call = service.listTypes(location, publisherName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -200,11 +236,11 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<List<VirtualMachineImageResource>> listTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -218,13 +254,13 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
      * @param type the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
-     * @param orderBy the String value
+     * @param orderby the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -240,7 +276,8 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, orderBy, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Validator.validate(filter);
+        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listVersionsDelegate(call.execute());
     }
 
@@ -252,11 +289,15 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
      * @param type the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
-     * @param orderBy the String value
+     * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listVersionsAsync(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) {
+    public ServiceCall listVersionsAsync(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (location == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
@@ -277,7 +318,9 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), client.getMapperAdapter().serializeRaw(filter), top, orderBy, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Validator.validate(filter, serviceCallback);
+        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -288,11 +331,11 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<List<VirtualMachineImageResource>> listVersionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>()
+        return new AzureServiceResponseBuilder<List<VirtualMachineImageResource>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<List<VirtualMachineImageResource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

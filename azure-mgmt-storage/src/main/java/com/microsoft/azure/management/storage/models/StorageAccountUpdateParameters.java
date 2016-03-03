@@ -12,11 +12,13 @@ package com.microsoft.azure.management.storage.models;
 
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.BaseResource;
 
 /**
  * The parameters to update on the account.
  */
+@JsonFlatten
 public class StorageAccountUpdateParameters extends BaseResource {
     /**
      * Resource tags.

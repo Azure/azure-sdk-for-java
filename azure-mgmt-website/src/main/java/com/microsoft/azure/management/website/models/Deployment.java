@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Represents user crendentials used for publishing activity.
  */
+@JsonFlatten
 public class Deployment extends Resource {
     /**
      * Id.

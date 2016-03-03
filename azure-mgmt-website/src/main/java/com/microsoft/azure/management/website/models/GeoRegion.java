@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Geographical region.
  */
+@JsonFlatten
 public class GeoRegion extends Resource {
     /**
      * Region name.

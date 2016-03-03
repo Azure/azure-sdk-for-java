@@ -13,10 +13,12 @@ package com.microsoft.azure.management.website.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import org.joda.time.DateTime;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Represents a domain.
  */
+@JsonFlatten
 public class Domain extends Resource {
     /**
      * Admin contact information.
@@ -54,7 +56,7 @@ public class Domain extends Resource {
 
     /**
      * Domain provisioning state. Possible values include: 'Succeeded',
-     * 'Failed', 'Canceled', 'InProgress'.
+     * 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private ProvisioningState provisioningState;

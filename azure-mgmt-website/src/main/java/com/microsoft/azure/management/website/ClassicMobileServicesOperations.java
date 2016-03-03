@@ -13,17 +13,10 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.ClassicMobileService;
 import com.microsoft.azure.management.website.models.ClassicMobileServiceCollection;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -31,31 +24,13 @@ import retrofit2.http.Query;
  */
 public interface ClassicMobileServicesOperations {
     /**
-     * The interface defining all the services for ClassicMobileServicesOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface ClassicMobileServicesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/classicMobileServices")
-        Call<ResponseBody> getClassicMobileServices(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/classicMobileServices/{name}")
-        Call<ResponseBody> getClassicMobileService(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/classicMobileServices/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteClassicMobileService(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Get all mobile services in a resource group.
      *
      * @param resourceGroupName Name of resource group
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ClassicMobileServiceCollection object wrapped in ServiceResponse if successful.
+     * @return the ClassicMobileServiceCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ClassicMobileServiceCollection> getClassicMobileServices(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -64,9 +39,10 @@ public interface ClassicMobileServicesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getClassicMobileServicesAsync(String resourceGroupName, final ServiceCallback<ClassicMobileServiceCollection> serviceCallback);
+    ServiceCall getClassicMobileServicesAsync(String resourceGroupName, final ServiceCallback<ClassicMobileServiceCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get a mobile service.
@@ -76,7 +52,7 @@ public interface ClassicMobileServicesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ClassicMobileService object wrapped in ServiceResponse if successful.
+     * @return the ClassicMobileService object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ClassicMobileService> getClassicMobileService(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -86,9 +62,10 @@ public interface ClassicMobileServicesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of mobile service
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getClassicMobileServiceAsync(String resourceGroupName, String name, final ServiceCallback<ClassicMobileService> serviceCallback);
+    ServiceCall getClassicMobileServiceAsync(String resourceGroupName, String name, final ServiceCallback<ClassicMobileService> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Delete a mobile service.
@@ -98,7 +75,7 @@ public interface ClassicMobileServicesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> deleteClassicMobileService(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -108,8 +85,9 @@ public interface ClassicMobileServicesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of mobile service
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteClassicMobileServiceAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback);
+    ServiceCall deleteClassicMobileServiceAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
 }

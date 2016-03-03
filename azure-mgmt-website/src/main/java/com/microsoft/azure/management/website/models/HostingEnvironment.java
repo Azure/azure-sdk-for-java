@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Description of an hostingEnvironment (App Service Environment).
  */
+@JsonFlatten
 public class HostingEnvironment extends Resource {
     /**
      * Name of the hostingEnvironment (App Service Environment).

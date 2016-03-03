@@ -14,53 +14,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.LocalNetworkGateway;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in LocalNetworkGatewaysOperations.
  */
 public interface LocalNetworkGatewaysOperations {
-    /**
-     * The interface defining all the services for LocalNetworkGatewaysOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface LocalNetworkGatewaysService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Body LocalNetworkGateway parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("localNetworkGatewayName") String localNetworkGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
      *
@@ -71,7 +35,7 @@ public interface LocalNetworkGatewaysOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the LocalNetworkGateway object wrapped in ServiceResponse if successful.
+     * @return the LocalNetworkGateway object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<LocalNetworkGateway> createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGateway parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -82,9 +46,35 @@ public interface LocalNetworkGatewaysOperations {
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGateway parameters, final ServiceCallback<LocalNetworkGateway> serviceCallback);
+    ServiceCall createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGateway parameters, final ServiceCallback<LocalNetworkGateway> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the LocalNetworkGateway object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<LocalNetworkGateway> beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGateway parameters) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGateway parameters, final ServiceCallback<LocalNetworkGateway> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
@@ -94,7 +84,7 @@ public interface LocalNetworkGatewaysOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LocalNetworkGateway object wrapped in ServiceResponse if successful.
+     * @return the LocalNetworkGateway object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<LocalNetworkGateway> get(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -104,9 +94,10 @@ public interface LocalNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<LocalNetworkGateway> serviceCallback);
+    ServiceCall getAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<LocalNetworkGateway> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Delete LocalNetworkGateway operation deletes the specifed local network Gateway through Network resource provider.
@@ -117,7 +108,7 @@ public interface LocalNetworkGatewaysOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     ServiceResponse<Void> delete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -127,9 +118,33 @@ public interface LocalNetworkGatewaysOperations {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall deleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Delete LocalNetworkGateway operation deletes the specifed local network Gateway through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> beginDelete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Delete LocalNetworkGateway operation deletes the specifed local network Gateway through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The List LocalNetworkGateways opertion retrieves all the local network gateways stored.
@@ -138,7 +153,7 @@ public interface LocalNetworkGatewaysOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LocalNetworkGateway&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;LocalNetworkGateway&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<LocalNetworkGateway>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -147,9 +162,10 @@ public interface LocalNetworkGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGateway> serviceCallback);
+    ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGateway> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The List LocalNetworkGateways opertion retrieves all the local network gateways stored.
@@ -158,7 +174,7 @@ public interface LocalNetworkGatewaysOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LocalNetworkGateway&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;LocalNetworkGateway&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<LocalNetworkGateway>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -166,9 +182,11 @@ public interface LocalNetworkGatewaysOperations {
      * The List LocalNetworkGateways opertion retrieves all the local network gateways stored.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<LocalNetworkGateway> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<LocalNetworkGateway> serviceCallback) throws IllegalArgumentException;
 
 }

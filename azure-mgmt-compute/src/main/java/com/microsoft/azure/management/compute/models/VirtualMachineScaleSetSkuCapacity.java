@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.compute.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes scaling information of a sku.
@@ -18,22 +19,26 @@ public class VirtualMachineScaleSetSkuCapacity {
     /**
      * Gets the minimum capacity.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long minimum;
 
     /**
      * Gets the maximum capacity that can be set.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long maximum;
 
     /**
      * Gets the default capacity.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long defaultCapacity;
 
     /**
      * Gets the scale type applicable to the sku. Possible values include:
      * 'Automatic', 'None'.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String scaleType;
 
     /**

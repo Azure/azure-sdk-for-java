@@ -14,19 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.FeatureResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -34,42 +26,12 @@ import retrofit2.http.Url;
  */
 public interface FeaturesOperations {
     /**
-     * The interface defining all the services for FeaturesOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface FeaturesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features")
-        Call<ResponseBody> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}")
-        Call<ResponseBody> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
-        Call<ResponseBody> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<FeatureResult>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
@@ -77,9 +39,10 @@ public interface FeaturesOperations {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllAsync(final ListOperationCallback<FeatureResult> serviceCallback);
+    ServiceCall listAllAsync(final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of previewed features of a resource provider.
@@ -88,7 +51,7 @@ public interface FeaturesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<FeatureResult>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
@@ -97,9 +60,10 @@ public interface FeaturesOperations {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResult> serviceCallback);
+    ServiceCall listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get all features under the subscription.
@@ -109,7 +73,7 @@ public interface FeaturesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the FeatureResult object wrapped in ServiceResponse if successful.
+     * @return the FeatureResult object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<FeatureResult> get(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -119,9 +83,10 @@ public interface FeaturesOperations {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback);
+    ServiceCall getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Registers for a previewed feature of a resource provider.
@@ -131,7 +96,7 @@ public interface FeaturesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the FeatureResult object wrapped in ServiceResponse if successful.
+     * @return the FeatureResult object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<FeatureResult> register(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -141,9 +106,10 @@ public interface FeaturesOperations {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback);
+    ServiceCall registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
@@ -152,7 +118,7 @@ public interface FeaturesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<FeatureResult>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -160,10 +126,12 @@ public interface FeaturesOperations {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllNextAsync(final String nextPageLink, final ListOperationCallback<FeatureResult> serviceCallback);
+    ServiceCall listAllNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of previewed features of a resource provider.
@@ -172,7 +140,7 @@ public interface FeaturesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResult&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<FeatureResult>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -180,9 +148,11 @@ public interface FeaturesOperations {
      * Gets a list of previewed features of a resource provider.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<FeatureResult> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<FeatureResult> serviceCallback) throws IllegalArgumentException;
 
 }

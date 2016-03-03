@@ -11,11 +11,13 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * An object describing the difference in setting values between two web app
  * slots.
  */
+@JsonFlatten
 public class SlotDifference extends Resource {
     /**
      * Indicates the type of the difference: Information, Warning or Error.

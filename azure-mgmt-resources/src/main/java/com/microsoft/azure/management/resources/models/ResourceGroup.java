@@ -20,6 +20,7 @@ public class ResourceGroup {
     /**
      * Gets the ID of the resource group.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**

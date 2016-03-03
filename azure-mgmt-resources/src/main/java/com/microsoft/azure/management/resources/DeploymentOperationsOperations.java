@@ -14,42 +14,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.DeploymentOperation;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in DeploymentOperationsOperations.
  */
 public interface DeploymentOperationsOperations {
-    /**
-     * The interface defining all the services for DeploymentOperationsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface DeploymentOperationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * Get a list of deployments operations.
      *
@@ -59,7 +34,7 @@ public interface DeploymentOperationsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentOperation object wrapped in ServiceResponse if successful.
+     * @return the DeploymentOperation object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<DeploymentOperation> get(String resourceGroupName, String deploymentName, String operationId) throws CloudException, IOException, IllegalArgumentException;
 
@@ -70,9 +45,10 @@ public interface DeploymentOperationsOperations {
      * @param deploymentName The name of the deployment.
      * @param operationId Operation Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceGroupName, String deploymentName, String operationId, final ServiceCallback<DeploymentOperation> serviceCallback);
+    ServiceCall getAsync(String resourceGroupName, String deploymentName, String operationId, final ServiceCallback<DeploymentOperation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of deployments operations.
@@ -83,7 +59,7 @@ public interface DeploymentOperationsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentOperation&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;DeploymentOperation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<DeploymentOperation>> list(final String resourceGroupName, final String deploymentName, final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
@@ -94,9 +70,10 @@ public interface DeploymentOperationsOperations {
      * @param deploymentName The name of the deployment.
      * @param top Query parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String resourceGroupName, final String deploymentName, final Integer top, final ListOperationCallback<DeploymentOperation> serviceCallback);
+    ServiceCall listAsync(final String resourceGroupName, final String deploymentName, final Integer top, final ListOperationCallback<DeploymentOperation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of deployments operations.
@@ -105,7 +82,7 @@ public interface DeploymentOperationsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentOperation&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;DeploymentOperation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<DeploymentOperation>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -113,9 +90,11 @@ public interface DeploymentOperationsOperations {
      * Gets a list of deployments operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<DeploymentOperation> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<DeploymentOperation> serviceCallback) throws IllegalArgumentException;
 
 }

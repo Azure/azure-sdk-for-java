@@ -11,32 +11,16 @@
 package com.microsoft.azure.management.website;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in UsageOperations.
  */
 public interface UsageOperations {
-    /**
-     * The interface defining all the services for UsageOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface UsageService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web.Admin/environments/{environmentName}/usage")
-        Call<ResponseBody> getUsage(@Path("resourceGroupName") String resourceGroupName, @Path("environmentName") String environmentName, @Path("subscriptionId") String subscriptionId, @Query("lastId") String lastId, @Query("batchSize") int batchSize, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * Returns usage records for specified subscription and resource groups.
      *
@@ -47,7 +31,7 @@ public interface UsageOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> getUsage(String resourceGroupName, String environmentName, String lastId, int batchSize) throws CloudException, IOException, IllegalArgumentException;
 
@@ -59,8 +43,9 @@ public interface UsageOperations {
      * @param lastId Last marker that was returned from the batch
      * @param batchSize size of the batch to be returned.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getUsageAsync(String resourceGroupName, String environmentName, String lastId, int batchSize, final ServiceCallback<Object> serviceCallback);
+    ServiceCall getUsageAsync(String resourceGroupName, String environmentName, String lastId, int batchSize, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
 }

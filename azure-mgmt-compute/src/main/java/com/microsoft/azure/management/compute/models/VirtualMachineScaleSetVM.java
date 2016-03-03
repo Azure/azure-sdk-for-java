@@ -12,43 +12,36 @@ package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a virtual machine scale set virtual machine.
  */
+@JsonFlatten
 public class VirtualMachineScaleSetVM extends Resource {
     /**
      * Gets the virtual machine instance id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String instanceId;
 
     /**
      * Gets the virtual machine sku.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
-
-    /**
-     * Gets or sets the purchase plan when deploying virtual machine from VM
-     * Marketplace images.
-     */
-    private Plan plan;
-
-    /**
-     * Gets the virtual machine child extension resources.
-     */
-    private List<VirtualMachineExtension> resources;
 
     /**
      * Specifies whether the latest model has been applied to the virtual
      * machine.
      */
-    @JsonProperty(value = "properties.latestModelApplied")
+    @JsonProperty(value = "properties.latestModelApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean latestModelApplied;
 
     /**
      * Gets the virtual machine instance view.
      */
-    @JsonProperty(value = "properties.instanceView")
+    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineInstanceView instanceView;
 
     /**
@@ -82,7 +75,7 @@ public class VirtualMachineScaleSetVM extends Resource {
     private DiagnosticsProfile diagnosticsProfile;
 
     /**
-     * Gets or sets the reference Id of the availailbity set to which this
+     * Gets or sets the reference Id of the availability set to which this
      * virtual machine belongs.
      */
     @JsonProperty(value = "properties.availabilitySet")
@@ -102,6 +95,18 @@ public class VirtualMachineScaleSetVM extends Resource {
     private String licenseType;
 
     /**
+     * Gets or sets the purchase plan when deploying virtual machine from VM
+     * Marketplace images.
+     */
+    private Plan plan;
+
+    /**
+     * Gets the virtual machine child extension resources.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<VirtualMachineExtension> resources;
+
+    /**
      * Get the instanceId value.
      *
      * @return the instanceId value
@@ -117,33 +122,6 @@ public class VirtualMachineScaleSetVM extends Resource {
      */
     public Sku getSku() {
         return this.sku;
-    }
-
-    /**
-     * Get the plan value.
-     *
-     * @return the plan value
-     */
-    public Plan getPlan() {
-        return this.plan;
-    }
-
-    /**
-     * Set the plan value.
-     *
-     * @param plan the plan value to set
-     */
-    public void setPlan(Plan plan) {
-        this.plan = plan;
-    }
-
-    /**
-     * Get the resources value.
-     *
-     * @return the resources value
-     */
-    public List<VirtualMachineExtension> getResources() {
-        return this.resources;
     }
 
     /**
@@ -306,6 +284,33 @@ public class VirtualMachineScaleSetVM extends Resource {
      */
     public void setLicenseType(String licenseType) {
         this.licenseType = licenseType;
+    }
+
+    /**
+     * Get the plan value.
+     *
+     * @return the plan value
+     */
+    public Plan getPlan() {
+        return this.plan;
+    }
+
+    /**
+     * Set the plan value.
+     *
+     * @param plan the plan value to set
+     */
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    /**
+     * Get the resources value.
+     *
+     * @return the resources value
+     */
+    public List<VirtualMachineExtension> getResources() {
+        return this.resources;
     }
 
 }

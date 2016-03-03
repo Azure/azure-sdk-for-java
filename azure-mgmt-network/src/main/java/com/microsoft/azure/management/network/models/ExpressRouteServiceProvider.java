@@ -12,10 +12,12 @@ package com.microsoft.azure.management.network.models;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * ExpressRouteResourceProvider object.
  */
+@JsonFlatten
 public class ExpressRouteServiceProvider extends Resource {
     /**
      * Gets or list of peering locations.

@@ -12,10 +12,12 @@ package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Create or update Availability Set parameters.
  */
+@JsonFlatten
 public class AvailabilitySet extends Resource {
     /**
      * Gets or sets Update Domain count.

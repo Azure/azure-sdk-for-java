@@ -16,20 +16,11 @@ import com.microsoft.azure.management.website.models.DomainCollection;
 import com.microsoft.azure.management.website.models.DomainControlCenterSsoRequest;
 import com.microsoft.azure.management.website.models.DomainRecommendationSearchParameters;
 import com.microsoft.azure.management.website.models.DomainRegistrationInput;
-import com.microsoft.azure.management.website.models.NameIdentifier;
 import com.microsoft.azure.management.website.models.NameIdentifierCollection;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -37,38 +28,12 @@ import retrofit2.http.Query;
  */
 public interface GlobalDomainRegistrationOperations {
     /**
-     * The interface defining all the services for GlobalDomainRegistrationOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface GlobalDomainRegistrationService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
-        Call<ResponseBody> getAllDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
-        Call<ResponseBody> getDomainControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/validateDomainRegistrationInformation")
-        Call<ResponseBody> validateDomainPurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body DomainRegistrationInput domainRegistrationInput, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
-        Call<ResponseBody> checkDomainAvailability(@Path("subscriptionId") String subscriptionId, @Body NameIdentifier identifier, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
-        Call<ResponseBody> listDomainRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Lists all domains in a subscription.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainCollection object wrapped in ServiceResponse if successful.
+     * @return the DomainCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<DomainCollection> getAllDomains() throws CloudException, IOException, IllegalArgumentException;
 
@@ -76,9 +41,10 @@ public interface GlobalDomainRegistrationOperations {
      * Lists all domains in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllDomainsAsync(final ServiceCallback<DomainCollection> serviceCallback);
+    ServiceCall getAllDomainsAsync(final ServiceCallback<DomainCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Generates a single sign on request for domain management portal.
@@ -86,7 +52,7 @@ public interface GlobalDomainRegistrationOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainControlCenterSsoRequest object wrapped in ServiceResponse if successful.
+     * @return the DomainControlCenterSsoRequest object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<DomainControlCenterSsoRequest> getDomainControlCenterSsoRequest() throws CloudException, IOException, IllegalArgumentException;
 
@@ -94,9 +60,10 @@ public interface GlobalDomainRegistrationOperations {
      * Generates a single sign on request for domain management portal.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getDomainControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequest> serviceCallback);
+    ServiceCall getDomainControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequest> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Validates domain registration information.
@@ -105,7 +72,7 @@ public interface GlobalDomainRegistrationOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> validateDomainPurchaseInformation(DomainRegistrationInput domainRegistrationInput) throws CloudException, IOException, IllegalArgumentException;
 
@@ -114,29 +81,31 @@ public interface GlobalDomainRegistrationOperations {
      *
      * @param domainRegistrationInput Domain registration information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> validateDomainPurchaseInformationAsync(DomainRegistrationInput domainRegistrationInput, final ServiceCallback<Object> serviceCallback);
+    ServiceCall validateDomainPurchaseInformationAsync(DomainRegistrationInput domainRegistrationInput, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Checks if a domain is available for registration.
      *
-     * @param identifier Name of the domain
+     * @param name Name of the object
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainAvailablilityCheckResult object wrapped in ServiceResponse if successful.
+     * @return the DomainAvailablilityCheckResult object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailability(NameIdentifier identifier) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailability(String name) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Checks if a domain is available for registration.
      *
-     * @param identifier Name of the domain
+     * @param name Name of the object
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> checkDomainAvailabilityAsync(NameIdentifier identifier, final ServiceCallback<DomainAvailablilityCheckResult> serviceCallback);
+    ServiceCall checkDomainAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists domain recommendations based on keywords.
@@ -145,7 +114,7 @@ public interface GlobalDomainRegistrationOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NameIdentifierCollection object wrapped in ServiceResponse if successful.
+     * @return the NameIdentifierCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<NameIdentifierCollection> listDomainRecommendations(DomainRecommendationSearchParameters parameters) throws CloudException, IOException, IllegalArgumentException;
 
@@ -154,8 +123,9 @@ public interface GlobalDomainRegistrationOperations {
      *
      * @param parameters Domain recommendation search parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listDomainRecommendationsAsync(DomainRecommendationSearchParameters parameters, final ServiceCallback<NameIdentifierCollection> serviceCallback);
+    ServiceCall listDomainRecommendationsAsync(DomainRecommendationSearchParameters parameters, final ServiceCallback<NameIdentifierCollection> serviceCallback) throws IllegalArgumentException;
 
 }

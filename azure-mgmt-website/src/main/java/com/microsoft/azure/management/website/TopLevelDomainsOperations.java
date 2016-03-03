@@ -13,20 +13,11 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.TldLegalAgreementCollection;
 import com.microsoft.azure.management.website.models.TopLevelDomain;
-import com.microsoft.azure.management.website.models.TopLevelDomainAgreementOption;
 import com.microsoft.azure.management.website.models.TopLevelDomainCollection;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -34,30 +25,12 @@ import retrofit2.http.Query;
  */
 public interface TopLevelDomainsOperations {
     /**
-     * The interface defining all the services for TopLevelDomainsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface TopLevelDomainsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
-        Call<ResponseBody> getGetTopLevelDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
-        Call<ResponseBody> getTopLevelDomain(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
-        Call<ResponseBody> listTopLevelDomainAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body TopLevelDomainAgreementOption agreementOption, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Lists all top level domains supported for registration.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TopLevelDomainCollection object wrapped in ServiceResponse if successful.
+     * @return the TopLevelDomainCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<TopLevelDomainCollection> getGetTopLevelDomains() throws CloudException, IOException, IllegalArgumentException;
 
@@ -65,9 +38,10 @@ public interface TopLevelDomainsOperations {
      * Lists all top level domains supported for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getGetTopLevelDomainsAsync(final ServiceCallback<TopLevelDomainCollection> serviceCallback);
+    ServiceCall getGetTopLevelDomainsAsync(final ServiceCallback<TopLevelDomainCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets details of a top level domain.
@@ -76,7 +50,7 @@ public interface TopLevelDomainsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TopLevelDomain object wrapped in ServiceResponse if successful.
+     * @return the TopLevelDomain object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<TopLevelDomain> getTopLevelDomain(String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -85,30 +59,32 @@ public interface TopLevelDomainsOperations {
      *
      * @param name Name of the top level domain
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getTopLevelDomainAsync(String name, final ServiceCallback<TopLevelDomain> serviceCallback);
+    ServiceCall getTopLevelDomainAsync(String name, final ServiceCallback<TopLevelDomain> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
-     * @param agreementOption Domain agreement options
+     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TldLegalAgreementCollection object wrapped in ServiceResponse if successful.
+     * @return the TldLegalAgreementCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreements(String name, TopLevelDomainAgreementOption agreementOption) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreements(String name, Boolean includePrivacy) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
-     * @param agreementOption Domain agreement options
+     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listTopLevelDomainAgreementsAsync(String name, TopLevelDomainAgreementOption agreementOption, final ServiceCallback<TldLegalAgreementCollection> serviceCallback);
+    ServiceCall listTopLevelDomainAgreementsAsync(String name, Boolean includePrivacy, final ServiceCallback<TldLegalAgreementCollection> serviceCallback) throws IllegalArgumentException;
 
 }

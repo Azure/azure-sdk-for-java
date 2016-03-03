@@ -37,7 +37,7 @@ public class VirtualMachineInstanceView {
     private VirtualMachineAgentInstanceView vmAgent;
 
     /**
-     * Gets or sets the the disks information.
+     * Gets or sets the disks information.
      */
     private List<DiskInstanceView> disks;
 

@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Policy assignment.
@@ -23,6 +24,7 @@ public class PolicyAssignment {
     /**
      * Gets or sets the policy assignment name.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**

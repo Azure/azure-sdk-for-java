@@ -13,41 +13,17 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineExtensionImagesOperations.
  */
 public interface VirtualMachineExtensionImagesOperations {
-    /**
-     * The interface defining all the services for VirtualMachineExtensionImagesOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface VirtualMachineExtensionImagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
-        Call<ResponseBody> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types")
-        Call<ResponseBody> listTypes(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
-        Call<ResponseBody> listVersions(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderBy") String orderBy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * Gets a virtual machine extension image.
      *
@@ -58,7 +34,7 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineExtensionImage object wrapped in ServiceResponse if successful.
+     * @return the VirtualMachineExtensionImage object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<VirtualMachineExtensionImage> get(String location, String publisherName, String type, String version) throws CloudException, IOException, IllegalArgumentException;
 
@@ -70,9 +46,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param type the String value
      * @param version the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String location, String publisherName, String type, String version, final ServiceCallback<VirtualMachineExtensionImage> serviceCallback);
+    ServiceCall getAsync(String location, String publisherName, String type, String version, final ServiceCallback<VirtualMachineExtensionImage> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image types.
@@ -82,7 +59,7 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -92,9 +69,10 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param location the String value
      * @param publisherName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback);
+    ServiceCall listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image versions.
@@ -104,13 +82,13 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param type the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
-     * @param orderBy the String value
+     * @param orderby the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image versions.
@@ -120,10 +98,11 @@ public interface VirtualMachineExtensionImagesOperations {
      * @param type the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
-     * @param orderBy the String value
+     * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listVersionsAsync(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderBy, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback);
+    ServiceCall listVersionsAsync(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException;
 
 }

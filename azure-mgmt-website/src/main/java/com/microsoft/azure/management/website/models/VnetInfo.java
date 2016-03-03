@@ -12,11 +12,13 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * VNETInfo contract. This contract is public and is a stripped down version
  * of VNETInfoInternal.
  */
+@JsonFlatten
 public class VnetInfo extends Resource {
     /**
      * The vnet resource id.

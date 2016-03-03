@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.compute.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The status code and count of the virtual machine scale set instance view
@@ -19,11 +20,13 @@ public class VirtualMachineStatusCodeCount {
     /**
      * Gets the instance view status code.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
      * Gets the number of instances having a particular status code.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
     /**

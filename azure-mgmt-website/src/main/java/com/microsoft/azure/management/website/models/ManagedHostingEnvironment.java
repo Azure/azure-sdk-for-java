@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Description of a managed hosting environment.
  */
+@JsonFlatten
 public class ManagedHostingEnvironment extends Resource {
     /**
      * Name of the managed hosting environment.

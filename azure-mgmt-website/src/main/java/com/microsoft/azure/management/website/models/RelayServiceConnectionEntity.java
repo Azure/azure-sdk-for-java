@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Class that represents a Biztalk Hybrid Connection.
  */
+@JsonFlatten
 public class RelayServiceConnectionEntity extends Resource {
     /**
      * The entityName property.

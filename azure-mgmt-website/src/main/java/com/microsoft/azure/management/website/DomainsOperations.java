@@ -13,20 +13,10 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.Domain;
 import com.microsoft.azure.management.website.models.DomainCollection;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -34,43 +24,13 @@ import retrofit2.http.Query;
  */
 public interface DomainsOperations {
     /**
-     * The interface defining all the services for DomainsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface DomainsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains")
-        Call<ResponseBody> getDomains(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
-        Call<ResponseBody> getDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
-        Call<ResponseBody> createOrUpdateDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body Domain domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Query("forceHardDeleteDomain") Boolean forceHardDeleteDomain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}")
-        Call<ResponseBody> updateDomain(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("subscriptionId") String subscriptionId, @Body Domain domain, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/operationresults/{operationId}")
-        Call<ResponseBody> getDomainOperation(@Path("resourceGroupName") String resourceGroupName, @Path("domainName") String domainName, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Lists domains under a resource group.
      *
      * @param resourceGroupName Name of the resource group
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainCollection object wrapped in ServiceResponse if successful.
+     * @return the DomainCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<DomainCollection> getDomains(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -79,9 +39,10 @@ public interface DomainsOperations {
      *
      * @param resourceGroupName Name of the resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getDomainsAsync(String resourceGroupName, final ServiceCallback<DomainCollection> serviceCallback);
+    ServiceCall getDomainsAsync(String resourceGroupName, final ServiceCallback<DomainCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets details of a domain.
@@ -91,7 +52,7 @@ public interface DomainsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Domain object wrapped in ServiceResponse if successful.
+     * @return the Domain object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Domain> getDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -101,9 +62,10 @@ public interface DomainsOperations {
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getDomainAsync(String resourceGroupName, String domainName, final ServiceCallback<Domain> serviceCallback);
+    ServiceCall getDomainAsync(String resourceGroupName, String domainName, final ServiceCallback<Domain> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates a domain.
@@ -114,7 +76,7 @@ public interface DomainsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Domain object wrapped in ServiceResponse if successful.
+     * @return the Domain object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Domain> createOrUpdateDomain(String resourceGroupName, String domainName, Domain domain) throws CloudException, IOException, IllegalArgumentException;
 
@@ -125,9 +87,10 @@ public interface DomainsOperations {
      * @param domainName Name of the domain
      * @param domain Domain registration information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateDomainAsync(String resourceGroupName, String domainName, Domain domain, final ServiceCallback<Domain> serviceCallback);
+    ServiceCall createOrUpdateDomainAsync(String resourceGroupName, String domainName, Domain domain, final ServiceCallback<Domain> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes a domain.
@@ -138,7 +101,7 @@ public interface DomainsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> deleteDomain(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) throws CloudException, IOException, IllegalArgumentException;
 
@@ -149,9 +112,10 @@ public interface DomainsOperations {
      * @param domainName Name of the domain
      * @param forceHardDeleteDomain If true then the domain will be deleted immediately instead of after 24 hours
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteDomainAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Object> serviceCallback);
+    ServiceCall deleteDomainAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates a domain.
@@ -162,7 +126,7 @@ public interface DomainsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Domain object wrapped in ServiceResponse if successful.
+     * @return the Domain object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Domain> updateDomain(String resourceGroupName, String domainName, Domain domain) throws CloudException, IOException, IllegalArgumentException;
 
@@ -173,9 +137,10 @@ public interface DomainsOperations {
      * @param domainName Name of the domain
      * @param domain Domain registration information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> updateDomainAsync(String resourceGroupName, String domainName, Domain domain, final ServiceCallback<Domain> serviceCallback);
+    ServiceCall updateDomainAsync(String resourceGroupName, String domainName, Domain domain, final ServiceCallback<Domain> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the latest status of a domain purchase operation.
@@ -186,7 +151,7 @@ public interface DomainsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Domain object wrapped in ServiceResponse if successful.
+     * @return the Domain object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Domain> getDomainOperation(String resourceGroupName, String domainName, String operationId) throws CloudException, IOException, IllegalArgumentException;
 
@@ -197,8 +162,9 @@ public interface DomainsOperations {
      * @param domainName Name of the domain
      * @param operationId Domain purchase operation Id
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getDomainOperationAsync(String resourceGroupName, String domainName, String operationId, final ServiceCallback<Domain> serviceCallback);
+    ServiceCall getDomainOperationAsync(String resourceGroupName, String domainName, String operationId, final ServiceCallback<Domain> serviceCallback) throws IllegalArgumentException;
 
 }

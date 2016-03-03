@@ -11,17 +11,13 @@
 package com.microsoft.azure.management.network.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * A common class for general resource information.
  */
+@JsonFlatten
 public class LocalNetworkGateway extends Resource {
-    /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
-     */
-    private String etag;
-
     /**
      * Local network site Address space.
      */
@@ -48,22 +44,10 @@ public class LocalNetworkGateway extends Resource {
     private String provisioningState;
 
     /**
-     * Get the etag value.
-     *
-     * @return the etag value
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     */
-    public void setEtag(String etag) {
-        this.etag = etag;
-    }
+    private String etag;
 
     /**
      * Get the localNetworkAddressSpace value.
@@ -135,6 +119,24 @@ public class LocalNetworkGateway extends Resource {
      */
     public void setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+    }
+
+    /**
+     * Get the etag value.
+     *
+     * @return the etag value
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag value.
+     *
+     * @param etag the etag value to set
+     */
+    public void setEtag(String etag) {
+        this.etag = etag;
     }
 
 }

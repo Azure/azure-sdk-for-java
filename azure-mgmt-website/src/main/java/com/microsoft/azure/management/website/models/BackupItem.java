@@ -13,11 +13,19 @@ package com.microsoft.azure.management.website.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Backup description.
  */
+@JsonFlatten
 public class BackupItem extends Resource {
+    /**
+     * Id of the backup.
+     */
+    @JsonProperty(value = "properties.id")
+    private Integer backupItemId;
+
     /**
      * SAS URL for the storage account container which contains this backup.
      */
@@ -98,6 +106,24 @@ public class BackupItem extends Resource {
      */
     @JsonProperty(value = "properties.websiteSizeInBytes")
     private Long websiteSizeInBytes;
+
+    /**
+     * Get the backupItemId value.
+     *
+     * @return the backupItemId value
+     */
+    public Integer getBackupItemId() {
+        return this.backupItemId;
+    }
+
+    /**
+     * Set the backupItemId value.
+     *
+     * @param backupItemId the backupItemId value to set
+     */
+    public void setBackupItemId(Integer backupItemId) {
+        this.backupItemId = backupItemId;
+    }
 
     /**
      * Get the storageAccountUrl value.

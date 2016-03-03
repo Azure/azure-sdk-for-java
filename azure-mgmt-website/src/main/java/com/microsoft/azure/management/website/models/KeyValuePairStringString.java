@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.website.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The KeyValuePairStringString model.
@@ -18,11 +19,13 @@ public class KeyValuePairStringString {
     /**
      * The key property.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /**
      * The value property.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**

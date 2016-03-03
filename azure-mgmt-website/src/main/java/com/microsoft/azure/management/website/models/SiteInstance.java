@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Instance of a web app.
  */
+@JsonFlatten
 public class SiteInstance extends Resource {
     /**
      * Name of instance.

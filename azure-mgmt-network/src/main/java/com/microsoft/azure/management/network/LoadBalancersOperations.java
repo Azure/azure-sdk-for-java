@@ -14,61 +14,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.LoadBalancer;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in LoadBalancersOperations.
  */
 public interface LoadBalancersOperations {
-    /**
-     * The interface defining all the services for LoadBalancersOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface LoadBalancersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("loadBalancerName") String loadBalancerName, @Path("subscriptionId") String subscriptionId, @Body LoadBalancer parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/loadBalancers")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * The delete loadbalancer operation deletes the specified loadbalancer.
      *
@@ -78,7 +34,7 @@ public interface LoadBalancersOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     ServiceResponse<Void> delete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -88,9 +44,33 @@ public interface LoadBalancersOperations {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The delete loadbalancer operation deletes the specified loadbalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> beginDelete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The delete loadbalancer operation deletes the specified loadbalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginDeleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Get ntework interface operation retreives information about the specified network interface.
@@ -101,7 +81,7 @@ public interface LoadBalancersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LoadBalancer object wrapped in ServiceResponse if successful.
+     * @return the LoadBalancer object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
@@ -112,9 +92,10 @@ public interface LoadBalancersOperations {
      * @param loadBalancerName The name of the loadBalancer.
      * @param expand expand references resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceGroupName, String loadBalancerName, String expand, final ServiceCallback<LoadBalancer> serviceCallback);
+    ServiceCall getAsync(String resourceGroupName, String loadBalancerName, String expand, final ServiceCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Put LoadBalancer operation creates/updates a LoadBalancer.
@@ -126,7 +107,7 @@ public interface LoadBalancersOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the LoadBalancer object wrapped in ServiceResponse if successful.
+     * @return the LoadBalancer object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<LoadBalancer> createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancer parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -137,9 +118,35 @@ public interface LoadBalancersOperations {
      * @param loadBalancerName The name of the loadBalancer.
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancer parameters, final ServiceCallback<LoadBalancer> serviceCallback);
+    ServiceCall createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancer parameters, final ServiceCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the LoadBalancer object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<LoadBalancer> beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancer parameters) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancer parameters, final ServiceCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -147,7 +154,7 @@ public interface LoadBalancersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;LoadBalancer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<LoadBalancer>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
@@ -155,9 +162,10 @@ public interface LoadBalancersOperations {
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllAsync(final ListOperationCallback<LoadBalancer> serviceCallback);
+    ServiceCall listAllAsync(final ListOperationCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
@@ -166,7 +174,7 @@ public interface LoadBalancersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;LoadBalancer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<LoadBalancer>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -175,9 +183,10 @@ public interface LoadBalancersOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancer> serviceCallback);
+    ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -186,7 +195,7 @@ public interface LoadBalancersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;LoadBalancer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<LoadBalancer>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -194,10 +203,12 @@ public interface LoadBalancersOperations {
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllNextAsync(final String nextPageLink, final ListOperationCallback<LoadBalancer> serviceCallback);
+    ServiceCall listAllNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
@@ -206,7 +217,7 @@ public interface LoadBalancersOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancer&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;LoadBalancer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<LoadBalancer>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -214,9 +225,11 @@ public interface LoadBalancersOperations {
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<LoadBalancer> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
 
 }

@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Certificate signing request object.
  */
+@JsonFlatten
 public class Csr extends Resource {
     /**
      * Name used to locate CSR object.

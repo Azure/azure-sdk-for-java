@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Slot Config names azure resource.
  */
+@JsonFlatten
 public class SlotConfigNamesResource extends Resource {
     /**
      * List of connection string names.

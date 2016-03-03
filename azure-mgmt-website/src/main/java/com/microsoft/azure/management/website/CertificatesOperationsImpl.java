@@ -16,6 +16,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.Certificate;
 import com.microsoft.azure.management.website.models.CertificateCollection;
 import com.microsoft.azure.management.website.models.Csr;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -24,6 +25,15 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
+import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -46,6 +56,53 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
     public CertificatesOperationsImpl(Retrofit retrofit, WebSiteManagementClient client) {
         this.service = retrofit.create(CertificatesService.class);
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for CertificatesOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface CertificatesService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates")
+        Call<ResponseBody> getCertificates(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        Call<ResponseBody> getCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        Call<ResponseBody> createOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Certificate certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        Call<ResponseBody> updateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Certificate certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs")
+        Call<ResponseBody> getCsrs(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
+        Call<ResponseBody> getCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
+        Call<ResponseBody> createOrUpdateCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Csr csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
+        Call<ResponseBody> updateCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Csr csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
     }
 
     /**
@@ -76,9 +133,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      *
      * @param resourceGroupName Name of the resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getCertificatesAsync(String resourceGroupName, final ServiceCallback<CertificateCollection> serviceCallback) {
+    public ServiceCall getCertificatesAsync(String resourceGroupName, final ServiceCallback<CertificateCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -92,6 +153,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             return null;
         }
         Call<ResponseBody> call = service.getCertificates(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateCollection>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -102,11 +164,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<CertificateCollection> getCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateCollection, CloudException>()
+        return new AzureServiceResponseBuilder<CertificateCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<CertificateCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -145,9 +207,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Certificate> serviceCallback) {
+    public ServiceCall getCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -165,6 +231,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             return null;
         }
         Call<ResponseBody> call = service.getCertificate(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -175,11 +242,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Certificate> getCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, CloudException>()
+        return new AzureServiceResponseBuilder<Certificate, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -224,9 +291,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> createOrUpdateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback) {
+    public ServiceCall createOrUpdateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -249,6 +320,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(certificateEnvelope, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdateCertificate(resourceGroupName, name, this.client.getSubscriptionId(), certificateEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -259,11 +331,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Certificate> createOrUpdateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, CloudException>()
+        return new AzureServiceResponseBuilder<Certificate, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -302,9 +374,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> deleteCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall deleteCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -322,6 +398,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             return null;
         }
         Call<ResponseBody> call = service.deleteCertificate(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -332,11 +409,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Object> deleteCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>()
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -381,9 +458,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> updateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback) {
+    public ServiceCall updateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -406,6 +487,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(certificateEnvelope, serviceCallback);
         Call<ResponseBody> call = service.updateCertificate(resourceGroupName, name, this.client.getSubscriptionId(), certificateEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -416,11 +498,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Certificate> updateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, CloudException>()
+        return new AzureServiceResponseBuilder<Certificate, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -454,9 +536,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      *
      * @param resourceGroupName Name of the resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getCsrsAsync(String resourceGroupName, final ServiceCallback<List<Csr>> serviceCallback) {
+    public ServiceCall getCsrsAsync(String resourceGroupName, final ServiceCallback<List<Csr>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -470,6 +556,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             return null;
         }
         Call<ResponseBody> call = service.getCsrs(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<Csr>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -480,11 +567,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<List<Csr>> getCsrsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<Csr>, CloudException>()
+        return new AzureServiceResponseBuilder<List<Csr>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<List<Csr>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -523,9 +610,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getCsrAsync(String resourceGroupName, String name, final ServiceCallback<Csr> serviceCallback) {
+    public ServiceCall getCsrAsync(String resourceGroupName, String name, final ServiceCallback<Csr> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -543,6 +634,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             return null;
         }
         Call<ResponseBody> call = service.getCsr(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Csr>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -553,11 +645,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Csr> getCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Csr, CloudException>()
+        return new AzureServiceResponseBuilder<Csr, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -602,9 +694,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param name Name of the certificate.
      * @param csrEnvelope Details of certificate signing request if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> createOrUpdateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback) {
+    public ServiceCall createOrUpdateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -627,6 +723,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(csrEnvelope, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdateCsr(resourceGroupName, name, this.client.getSubscriptionId(), csrEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Csr>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -637,11 +734,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Csr> createOrUpdateCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Csr, CloudException>()
+        return new AzureServiceResponseBuilder<Csr, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -680,9 +777,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate signing request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> deleteCsrAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall deleteCsrAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -700,6 +801,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
             return null;
         }
         Call<ResponseBody> call = service.deleteCsr(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -710,11 +812,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Object> deleteCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>()
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -759,9 +861,13 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
      * @param name Name of the certificate.
      * @param csrEnvelope Details of certificate signing request if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> updateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback) {
+    public ServiceCall updateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceGroupName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
@@ -784,6 +890,7 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
         }
         Validator.validate(csrEnvelope, serviceCallback);
         Call<ResponseBody> call = service.updateCsr(resourceGroupName, name, this.client.getSubscriptionId(), csrEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Csr>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -794,11 +901,11 @@ public final class CertificatesOperationsImpl implements CertificatesOperations 
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Csr> updateCsrDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Csr, CloudException>()
+        return new AzureServiceResponseBuilder<Csr, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Csr>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

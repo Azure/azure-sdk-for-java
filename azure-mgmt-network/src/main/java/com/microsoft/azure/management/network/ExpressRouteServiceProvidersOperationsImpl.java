@@ -16,12 +16,19 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.ExpressRouteServiceProvider;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -44,6 +51,21 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
     public ExpressRouteServiceProvidersOperationsImpl(Retrofit retrofit, NetworkManagementClient client) {
         this.service = retrofit.create(ExpressRouteServiceProvidersService.class);
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for ExpressRouteServiceProvidersOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface ExpressRouteServiceProvidersService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders")
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
     }
 
     /**
@@ -75,9 +97,13 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAsync(final ListOperationCallback<ExpressRouteServiceProvider> serviceCallback) {
+    public ServiceCall listAsync(final ListOperationCallback<ExpressRouteServiceProvider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -87,6 +113,7 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
             return null;
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteServiceProvider>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -95,20 +122,20 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteServiceProvider>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteServiceProvider>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteServiceProvider>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -135,15 +162,21 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
      * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<ExpressRouteServiceProvider> serviceCallback) {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ExpressRouteServiceProvider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteServiceProvider>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -152,7 +185,7 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -161,11 +194,11 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<ExpressRouteServiceProvider>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteServiceProvider>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteServiceProvider>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteServiceProvider>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

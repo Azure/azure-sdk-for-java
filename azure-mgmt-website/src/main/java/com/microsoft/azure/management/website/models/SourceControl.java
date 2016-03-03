@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes the Source Control OAuth Token.
  */
+@JsonFlatten
 public class SourceControl extends Resource {
     /**
      * Name or Source Control Type.

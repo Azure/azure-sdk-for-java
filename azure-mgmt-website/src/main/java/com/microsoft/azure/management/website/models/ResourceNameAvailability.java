@@ -23,7 +23,7 @@ public class ResourceNameAvailability {
 
     /**
      * Required if nameAvailable is false. 'Invalid' indicates the name
-     * provided does not match Azure WebApp service's naming requirements.
+     * provided does not match Azure WebApp serviceâ€™s naming requirements.
      * 'AlreadyExists' indicates that the name is already in use and is
      * therefore unavailable.
      */

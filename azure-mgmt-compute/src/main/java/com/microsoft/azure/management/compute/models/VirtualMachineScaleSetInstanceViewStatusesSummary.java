@@ -11,6 +11,7 @@
 package com.microsoft.azure.management.compute.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Instance view statuses summary for virtual machines of a virtual machine
@@ -20,6 +21,7 @@ public class VirtualMachineScaleSetInstanceViewStatusesSummary {
     /**
      * Gets the extensions information.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
     /**

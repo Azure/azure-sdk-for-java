@@ -14,61 +14,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in NetworkSecurityGroupsOperations.
  */
 public interface NetworkSecurityGroupsOperations {
-    /**
-     * The interface defining all the services for NetworkSecurityGroupsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface NetworkSecurityGroupsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Body NetworkSecurityGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/networkSecurityGroups")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * The Delete NetworkSecurityGroup operation deletes the specifed network security group.
      *
@@ -78,7 +34,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -88,9 +44,33 @@ public interface NetworkSecurityGroupsOperations {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall deleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Delete NetworkSecurityGroup operation deletes the specifed network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> beginDelete(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Delete NetworkSecurityGroup operation deletes the specifed network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
@@ -101,7 +81,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
+     * @return the NetworkSecurityGroup object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
@@ -112,9 +92,10 @@ public interface NetworkSecurityGroupsOperations {
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand expand references resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceGroupName, String networkSecurityGroupName, String expand, final ServiceCallback<NetworkSecurityGroup> serviceCallback);
+    ServiceCall getAsync(String resourceGroupName, String networkSecurityGroupName, String expand, final ServiceCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Put NetworkSecurityGroup operation creates/updates a network security groupin the specified resource group.
@@ -126,7 +107,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the NetworkSecurityGroup object wrapped in ServiceResponse if successful.
+     * @return the NetworkSecurityGroup object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<NetworkSecurityGroup> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -137,9 +118,35 @@ public interface NetworkSecurityGroupsOperations {
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create/update Network Security Group operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters, final ServiceCallback<NetworkSecurityGroup> serviceCallback);
+    ServiceCall createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters, final ServiceCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Put NetworkSecurityGroup operation creates/updates a network security groupin the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the NetworkSecurityGroup object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<NetworkSecurityGroup> beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Put NetworkSecurityGroup operation creates/updates a network security groupin the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroup parameters, final ServiceCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
@@ -147,7 +154,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<NetworkSecurityGroup>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
@@ -155,9 +162,10 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllAsync(final ListOperationCallback<NetworkSecurityGroup> serviceCallback);
+    ServiceCall listAllAsync(final ListOperationCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
@@ -166,7 +174,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<NetworkSecurityGroup>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -175,9 +183,10 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroup> serviceCallback);
+    ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
@@ -186,7 +195,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<NetworkSecurityGroup>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -194,10 +203,12 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllNextAsync(final String nextPageLink, final ListOperationCallback<NetworkSecurityGroup> serviceCallback);
+    ServiceCall listAllNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
@@ -206,7 +217,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<NetworkSecurityGroup>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -214,9 +225,11 @@ public interface NetworkSecurityGroupsOperations {
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<NetworkSecurityGroup> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
 
 }

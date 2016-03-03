@@ -12,21 +12,18 @@ package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a Virtual Machine.
  */
+@JsonFlatten
 public class VirtualMachine extends Resource {
     /**
      * Gets or sets the purchase plan when deploying virtual machine from VM
      * Marketplace images.
      */
     private Plan plan;
-
-    /**
-     * Gets the virtual machine child extension resources.
-     */
-    private List<VirtualMachineExtension> resources;
 
     /**
      * Gets or sets the hardware profile.
@@ -59,7 +56,7 @@ public class VirtualMachine extends Resource {
     private DiagnosticsProfile diagnosticsProfile;
 
     /**
-     * Gets or sets the reference Id of the availailbity set to which this
+     * Gets or sets the reference Id of the availability set to which this
      * virtual machine belongs.
      */
     @JsonProperty(value = "properties.availabilitySet")
@@ -74,7 +71,7 @@ public class VirtualMachine extends Resource {
     /**
      * Gets the virtual machine instance view.
      */
-    @JsonProperty(value = "properties.instanceView")
+    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineInstanceView instanceView;
 
     /**
@@ -83,6 +80,12 @@ public class VirtualMachine extends Resource {
      */
     @JsonProperty(value = "properties.licenseType")
     private String licenseType;
+
+    /**
+     * Gets the virtual machine child extension resources.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<VirtualMachineExtension> resources;
 
     /**
      * Get the plan value.
@@ -100,15 +103,6 @@ public class VirtualMachine extends Resource {
      */
     public void setPlan(Plan plan) {
         this.plan = plan;
-    }
-
-    /**
-     * Get the resources value.
-     *
-     * @return the resources value
-     */
-    public List<VirtualMachineExtension> getResources() {
-        return this.resources;
     }
 
     /**
@@ -262,6 +256,15 @@ public class VirtualMachine extends Resource {
      */
     public void setLicenseType(String licenseType) {
         this.licenseType = licenseType;
+    }
+
+    /**
+     * Get the resources value.
+     *
+     * @return the resources value
+     */
+    public List<VirtualMachineExtension> getResources() {
+        return this.resources;
     }
 
 }

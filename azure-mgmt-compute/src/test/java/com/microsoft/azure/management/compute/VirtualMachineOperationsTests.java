@@ -10,7 +10,6 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachine;
-import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
 import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.NetworkInterface;
@@ -22,7 +21,6 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -45,7 +43,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
         StorageAccountCreateParameters parameters = new StorageAccountCreateParameters();
         parameters.setLocation(location);
-        parameters.setAccountType(AccountType.STANDARD_GRS);
+        parameters.setAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.getStorageAccountsOperations().create(rgName, accountName, parameters).getBody();
 
     }
@@ -106,7 +104,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     }
 
     private ImageReference getVMImage(String publisher, String offer, String sku) throws CloudException, IOException {
-        VirtualMachineImageResource virtualMachineImageResource = new VirtualMachineImageResource();
         String name = computeManagementClient.getVirtualMachineImagesOperations().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
         ImageReference imageReference = new ImageReference();
         imageReference.setOffer(offer);

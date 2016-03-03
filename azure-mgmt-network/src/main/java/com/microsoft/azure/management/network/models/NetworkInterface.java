@@ -12,17 +12,13 @@ package com.microsoft.azure.management.network.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * A NetworkInterface in a resource group.
  */
+@JsonFlatten
 public class NetworkInterface extends Resource {
-    /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
-     */
-    private String etag;
-
     /**
      * Gets or sets the reference of a VirtualMachine.
      */
@@ -79,21 +75,16 @@ public class NetworkInterface extends Resource {
     private String provisioningState;
 
     /**
-     * Get the etag value.
-     *
-     * @return the etag value
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
-    public String getEtag() {
-        return this.etag;
-    }
+    private String etag;
 
     /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
+     * Creates an instance of NetworkInterface class.
      */
-    public void setEtag(String etag) {
-        this.etag = etag;
+    public NetworkInterface() {
+        networkSecurityGroup = new NetworkSecurityGroup();
     }
 
     /**
@@ -256,6 +247,24 @@ public class NetworkInterface extends Resource {
      */
     public void setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+    }
+
+    /**
+     * Get the etag value.
+     *
+     * @return the etag value
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag value.
+     *
+     * @param etag the etag value to set
+     */
+    public void setEtag(String etag) {
+        this.etag = etag;
     }
 
 }

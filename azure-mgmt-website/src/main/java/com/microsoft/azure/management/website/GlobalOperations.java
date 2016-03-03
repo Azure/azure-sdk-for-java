@@ -21,19 +21,10 @@ import com.microsoft.azure.management.website.models.ResourceNameAvailabilityReq
 import com.microsoft.azure.management.website.models.ServerFarmCollection;
 import com.microsoft.azure.management.website.models.SiteCollection;
 import com.microsoft.azure.management.website.models.User;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -41,70 +32,12 @@ import retrofit2.http.Query;
  */
 public interface GlobalOperations {
     /**
-     * The interface defining all the services for GlobalOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface GlobalService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
-        Call<ResponseBody> getSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
-        Call<ResponseBody> updateSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body User requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
-        Call<ResponseBody> getSubscriptionGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
-        Call<ResponseBody> getAllCertificates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
-        Call<ResponseBody> getAllServerFarms(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/sites")
-        Call<ResponseBody> getAllSites(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
-        Call<ResponseBody> getAllHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/managedHostingEnvironments")
-        Call<ResponseBody> getAllManagedHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/classicMobileServices")
-        Call<ResponseBody> getAllClassicMobileServices(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
-        Call<ResponseBody> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable/{name}")
-        Call<ResponseBody> isHostingEnvironmentWithLegacyNameAvailable(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable")
-        Call<ResponseBody> isHostingEnvironmentNameAvailable(@Path("subscriptionId") String subscriptionId, @Query("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
-        Call<ResponseBody> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Body ResourceNameAvailabilityRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Gets publishing credentials for the subscription owner.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the User object wrapped in ServiceResponse if successful.
+     * @return the User object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<User> getSubscriptionPublishingCredentials() throws CloudException, IOException, IllegalArgumentException;
 
@@ -112,9 +45,10 @@ public interface GlobalOperations {
      * Gets publishing credentials for the subscription owner.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getSubscriptionPublishingCredentialsAsync(final ServiceCallback<User> serviceCallback);
+    ServiceCall getSubscriptionPublishingCredentialsAsync(final ServiceCallback<User> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Updates publishing credentials for the subscription owner.
@@ -123,7 +57,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the User object wrapped in ServiceResponse if successful.
+     * @return the User object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<User> updateSubscriptionPublishingCredentials(User requestMessage) throws CloudException, IOException, IllegalArgumentException;
 
@@ -132,9 +66,10 @@ public interface GlobalOperations {
      *
      * @param requestMessage requestMessage with new publishing credentials
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> updateSubscriptionPublishingCredentialsAsync(User requestMessage, final ServiceCallback<User> serviceCallback);
+    ServiceCall updateSubscriptionPublishingCredentialsAsync(User requestMessage, final ServiceCallback<User> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets list of available geo regions.
@@ -142,7 +77,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the GeoRegionCollection object wrapped in ServiceResponse if successful.
+     * @return the GeoRegionCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<GeoRegionCollection> getSubscriptionGeoRegions() throws CloudException, IOException, IllegalArgumentException;
 
@@ -150,9 +85,10 @@ public interface GlobalOperations {
      * Gets list of available geo regions.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getSubscriptionGeoRegionsAsync(final ServiceCallback<GeoRegionCollection> serviceCallback);
+    ServiceCall getSubscriptionGeoRegionsAsync(final ServiceCallback<GeoRegionCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get all certificates for a subscription.
@@ -160,7 +96,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateCollection object wrapped in ServiceResponse if successful.
+     * @return the CertificateCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<CertificateCollection> getAllCertificates() throws CloudException, IOException, IllegalArgumentException;
 
@@ -168,19 +104,20 @@ public interface GlobalOperations {
      * Get all certificates for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllCertificatesAsync(final ServiceCallback<CertificateCollection> serviceCallback);
+    ServiceCall getAllCertificatesAsync(final ServiceCallback<CertificateCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets all App Service Plans for a subcription.
      *
      * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-             Retrieval of all properties may increase the API latency.
+                 Retrieval of all properties may increase the API latency.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollection object wrapped in ServiceResponse if successful.
+     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ServerFarmCollection> getAllServerFarms(Boolean detailed) throws CloudException, IOException, IllegalArgumentException;
 
@@ -188,11 +125,12 @@ public interface GlobalOperations {
      * Gets all App Service Plans for a subcription.
      *
      * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-             Retrieval of all properties may increase the API latency.
+                 Retrieval of all properties may increase the API latency.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllServerFarmsAsync(Boolean detailed, final ServiceCallback<ServerFarmCollection> serviceCallback);
+    ServiceCall getAllServerFarmsAsync(Boolean detailed, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets all Web Apps for a subscription.
@@ -200,7 +138,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCollection object wrapped in ServiceResponse if successful.
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<SiteCollection> getAllSites() throws CloudException, IOException, IllegalArgumentException;
 
@@ -208,9 +146,10 @@ public interface GlobalOperations {
      * Gets all Web Apps for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllSitesAsync(final ServiceCallback<SiteCollection> serviceCallback);
+    ServiceCall getAllSitesAsync(final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
@@ -218,7 +157,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentCollection object wrapped in ServiceResponse if successful.
+     * @return the HostingEnvironmentCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<HostingEnvironmentCollection> getAllHostingEnvironments() throws CloudException, IOException, IllegalArgumentException;
 
@@ -226,9 +165,10 @@ public interface GlobalOperations {
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllHostingEnvironmentsAsync(final ServiceCallback<HostingEnvironmentCollection> serviceCallback);
+    ServiceCall getAllHostingEnvironmentsAsync(final ServiceCallback<HostingEnvironmentCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets all managed hosting environments for a subscription.
@@ -236,7 +176,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ManagedHostingEnvironmentCollection object wrapped in ServiceResponse if successful.
+     * @return the ManagedHostingEnvironmentCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ManagedHostingEnvironmentCollection> getAllManagedHostingEnvironments() throws CloudException, IOException, IllegalArgumentException;
 
@@ -244,9 +184,10 @@ public interface GlobalOperations {
      * Gets all managed hosting environments for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllManagedHostingEnvironmentsAsync(final ServiceCallback<ManagedHostingEnvironmentCollection> serviceCallback);
+    ServiceCall getAllManagedHostingEnvironmentsAsync(final ServiceCallback<ManagedHostingEnvironmentCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets all mobile services for a subscription.
@@ -254,7 +195,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ClassicMobileServiceCollection object wrapped in ServiceResponse if successful.
+     * @return the ClassicMobileServiceCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ClassicMobileServiceCollection> getAllClassicMobileServices() throws CloudException, IOException, IllegalArgumentException;
 
@@ -262,9 +203,10 @@ public interface GlobalOperations {
      * Gets all mobile services for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAllClassicMobileServicesAsync(final ServiceCallback<ClassicMobileServiceCollection> serviceCallback);
+    ServiceCall getAllClassicMobileServicesAsync(final ServiceCallback<ClassicMobileServiceCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * List premier add on offers.
@@ -272,7 +214,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> listPremierAddOnOffers() throws CloudException, IOException, IllegalArgumentException;
 
@@ -280,9 +222,10 @@ public interface GlobalOperations {
      * List premier add on offers.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listPremierAddOnOffersAsync(final ServiceCallback<Object> serviceCallback);
+    ServiceCall listPremierAddOnOffersAsync(final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Whether hosting environment name is available.
@@ -291,7 +234,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -300,9 +243,10 @@ public interface GlobalOperations {
      *
      * @param name Hosting environment name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> isHostingEnvironmentWithLegacyNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback);
+    ServiceCall isHostingEnvironmentWithLegacyNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Whether hosting environment name is available.
@@ -311,7 +255,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> isHostingEnvironmentNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -320,9 +264,10 @@ public interface GlobalOperations {
      *
      * @param name Hosting environment name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> isHostingEnvironmentNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback);
+    ServiceCall isHostingEnvironmentNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Check if resource name is available.
@@ -331,7 +276,7 @@ public interface GlobalOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceNameAvailability object wrapped in ServiceResponse if successful.
+     * @return the ResourceNameAvailability object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ResourceNameAvailability> checkNameAvailability(ResourceNameAvailabilityRequest request) throws CloudException, IOException, IllegalArgumentException;
 
@@ -340,8 +285,9 @@ public interface GlobalOperations {
      *
      * @param request Name availability request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> checkNameAvailabilityAsync(ResourceNameAvailabilityRequest request, final ServiceCallback<ResourceNameAvailability> serviceCallback);
+    ServiceCall checkNameAvailabilityAsync(ResourceNameAvailabilityRequest request, final ServiceCallback<ResourceNameAvailability> serviceCallback) throws IllegalArgumentException;
 
 }

@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.resources.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The resource group properties.
@@ -18,6 +19,7 @@ public class ResourceGroupProperties {
     /**
      * Gets resource group provisioning state.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**

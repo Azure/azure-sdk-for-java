@@ -42,8 +42,8 @@ public class StampCapacity {
     private ComputeModeOptions computeMode;
 
     /**
-     * Size of the machines. Possible values include: 'Small', 'Medium',
-     * 'Large'.
+     * Size of the machines. Possible values include: 'Default', 'Small',
+     * 'Medium', 'Large'.
      */
     private WorkerSizeOptions workerSize;
 

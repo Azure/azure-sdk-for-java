@@ -14,61 +14,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.RouteTable;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in RouteTablesOperations.
  */
 public interface RouteTablesOperations {
-    /**
-     * The interface defining all the services for RouteTablesOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface RouteTablesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("routeTableName") String routeTableName, @Path("subscriptionId") String subscriptionId, @Body RouteTable parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/routeTables")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * The Delete RouteTable operation deletes the specifed Route Table.
      *
@@ -78,7 +34,7 @@ public interface RouteTablesOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -88,9 +44,33 @@ public interface RouteTablesOperations {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall deleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Delete RouteTable operation deletes the specifed Route Table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> beginDelete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Delete RouteTable operation deletes the specifed Route Table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginDeleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Get RouteTables operation retrieves information about the specified route table.
@@ -101,7 +81,7 @@ public interface RouteTablesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RouteTable object wrapped in ServiceResponse if successful.
+     * @return the RouteTable object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName, String expand) throws CloudException, IOException, IllegalArgumentException;
 
@@ -112,9 +92,10 @@ public interface RouteTablesOperations {
      * @param routeTableName The name of the route table.
      * @param expand expand references resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceGroupName, String routeTableName, String expand, final ServiceCallback<RouteTable> serviceCallback);
+    ServiceCall getAsync(String resourceGroupName, String routeTableName, String expand, final ServiceCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The Put RouteTable operation creates/updates a route tablein the specified resource group.
@@ -126,7 +107,7 @@ public interface RouteTablesOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the RouteTable object wrapped in ServiceResponse if successful.
+     * @return the RouteTable object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<RouteTable> createOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -137,9 +118,35 @@ public interface RouteTablesOperations {
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create/update Route Table operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTable parameters, final ServiceCallback<RouteTable> serviceCallback);
+    ServiceCall createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTable parameters, final ServiceCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * The Put RouteTable operation creates/updates a route tablein the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the RouteTable object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<RouteTable> beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTable parameters) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Put RouteTable operation creates/updates a route tablein the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTable parameters, final ServiceCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group.
@@ -148,7 +155,7 @@ public interface RouteTablesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<RouteTable>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -157,9 +164,10 @@ public interface RouteTablesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String resourceGroupName, final ListOperationCallback<RouteTable> serviceCallback);
+    ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription.
@@ -167,7 +175,7 @@ public interface RouteTablesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<RouteTable>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
@@ -175,9 +183,10 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllAsync(final ListOperationCallback<RouteTable> serviceCallback);
+    ServiceCall listAllAsync(final ListOperationCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group.
@@ -186,7 +195,7 @@ public interface RouteTablesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<RouteTable>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -194,10 +203,12 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<RouteTable> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription.
@@ -206,7 +217,7 @@ public interface RouteTablesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTable&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<RouteTable>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -214,9 +225,11 @@ public interface RouteTablesOperations {
      * The list RouteTables returns all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAllNextAsync(final String nextPageLink, final ListOperationCallback<RouteTable> serviceCallback);
+    ServiceCall listAllNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
 
 }

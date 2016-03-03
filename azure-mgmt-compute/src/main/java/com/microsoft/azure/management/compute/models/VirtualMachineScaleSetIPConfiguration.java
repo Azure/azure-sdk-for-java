@@ -11,7 +11,6 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /**
  * Describes a virtual machine scale set network profile's IP configuration.
@@ -24,16 +23,9 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     private String name;
 
     /**
-     * Gets or sets the subnet.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.subnet", required = true)
-    private ApiEntityReference subnet;
-
-    /**
-     * Gets or sets the load balancer backend address pools.
-     */
-    @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
-    private List<SubResource> loadBalancerBackendAddressPools;
+    private VirtualMachineScaleSetIPConfigurationProperties properties;
 
     /**
      * Get the name value.
@@ -54,39 +46,21 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the subnet value.
+     * Get the properties value.
      *
-     * @return the subnet value
+     * @return the properties value
      */
-    public ApiEntityReference getSubnet() {
-        return this.subnet;
+    public VirtualMachineScaleSetIPConfigurationProperties getProperties() {
+        return this.properties;
     }
 
     /**
-     * Set the subnet value.
+     * Set the properties value.
      *
-     * @param subnet the subnet value to set
+     * @param properties the properties value to set
      */
-    public void setSubnet(ApiEntityReference subnet) {
-        this.subnet = subnet;
-    }
-
-    /**
-     * Get the loadBalancerBackendAddressPools value.
-     *
-     * @return the loadBalancerBackendAddressPools value
-     */
-    public List<SubResource> getLoadBalancerBackendAddressPools() {
-        return this.loadBalancerBackendAddressPools;
-    }
-
-    /**
-     * Set the loadBalancerBackendAddressPools value.
-     *
-     * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set
-     */
-    public void setLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
-        this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
+    public void setProperties(VirtualMachineScaleSetIPConfigurationProperties properties) {
+        this.properties = properties;
     }
 
 }

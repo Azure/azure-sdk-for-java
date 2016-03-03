@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a network interface reference.
  */
+@JsonFlatten
 public class NetworkInterfaceReference extends SubResource {
     /**
      * Gets or sets whether this is a primary NIC on a virtual machine.

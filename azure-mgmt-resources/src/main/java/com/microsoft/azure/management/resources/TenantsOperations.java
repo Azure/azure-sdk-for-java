@@ -14,16 +14,10 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TenantIdDescription;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -31,26 +25,12 @@ import retrofit2.http.Url;
  */
 public interface TenantsOperations {
     /**
-     * The interface defining all the services for TenantsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface TenantsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("tenants")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Gets a list of the tenantIds.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TenantIdDescription&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;TenantIdDescription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<TenantIdDescription>> list() throws CloudException, IOException, IllegalArgumentException;
 
@@ -58,9 +38,10 @@ public interface TenantsOperations {
      * Gets a list of the tenantIds.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final ListOperationCallback<TenantIdDescription> serviceCallback);
+    ServiceCall listAsync(final ListOperationCallback<TenantIdDescription> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of the tenantIds.
@@ -69,7 +50,7 @@ public interface TenantsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TenantIdDescription&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;TenantIdDescription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<TenantIdDescription>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -77,9 +58,11 @@ public interface TenantsOperations {
      * Gets a list of the tenantIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<TenantIdDescription> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<TenantIdDescription> serviceCallback) throws IllegalArgumentException;
 
 }

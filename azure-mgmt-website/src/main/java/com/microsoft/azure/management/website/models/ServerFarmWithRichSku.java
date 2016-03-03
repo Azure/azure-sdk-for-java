@@ -11,16 +11,13 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * App Service Plan Model.
  */
+@JsonFlatten
 public class ServerFarmWithRichSku extends Resource {
-    /**
-     * The sku property.
-     */
-    private SkuDescription sku;
-
     /**
      * Name for the App Service Plan.
      */
@@ -28,15 +25,21 @@ public class ServerFarmWithRichSku extends Resource {
     private String serverFarmWithRichSkuName;
 
     /**
+     * Target worker tier assigned to the App Service Plan.
+     */
+    @JsonProperty(value = "properties.workerTierName")
+    private String workerTierName;
+
+    /**
      * App Service Plan Status. Possible values include: 'Ready', 'Pending'.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private StatusOptions status;
 
     /**
      * App Service Plan Subscription.
      */
-    @JsonProperty(value = "properties.subscription")
+    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
     private String subscription;
 
     /**
@@ -62,7 +65,7 @@ public class ServerFarmWithRichSku extends Resource {
     /**
      * Geographical location for the App Service Plan.
      */
-    @JsonProperty(value = "properties.geoRegion")
+    @JsonProperty(value = "properties.geoRegion", access = JsonProperty.Access.WRITE_ONLY)
     private String geoRegion;
 
     /**
@@ -77,32 +80,19 @@ public class ServerFarmWithRichSku extends Resource {
     /**
      * Number of web apps assigned to this App Service Plan.
      */
-    @JsonProperty(value = "properties.numberOfSites")
+    @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfSites;
 
     /**
      * Resource group of the serverfarm.
      */
-    @JsonProperty(value = "properties.resourceGroup")
+    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /**
-     * Get the sku value.
-     *
-     * @return the sku value
+     * The sku property.
      */
-    public SkuDescription getSku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku value.
-     *
-     * @param sku the sku value to set
-     */
-    public void setSku(SkuDescription sku) {
-        this.sku = sku;
-    }
+    private SkuDescription sku;
 
     /**
      * Get the serverFarmWithRichSkuName value.
@@ -120,6 +110,24 @@ public class ServerFarmWithRichSku extends Resource {
      */
     public void setServerFarmWithRichSkuName(String serverFarmWithRichSkuName) {
         this.serverFarmWithRichSkuName = serverFarmWithRichSkuName;
+    }
+
+    /**
+     * Get the workerTierName value.
+     *
+     * @return the workerTierName value
+     */
+    public String getWorkerTierName() {
+        return this.workerTierName;
+    }
+
+    /**
+     * Set the workerTierName value.
+     *
+     * @param workerTierName the workerTierName value to set
+     */
+    public void setWorkerTierName(String workerTierName) {
+        this.workerTierName = workerTierName;
     }
 
     /**
@@ -237,6 +245,24 @@ public class ServerFarmWithRichSku extends Resource {
      */
     public String getResourceGroup() {
         return this.resourceGroup;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public SkuDescription getSku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     */
+    public void setSku(SkuDescription sku) {
+        this.sku = sku;
     }
 
 }

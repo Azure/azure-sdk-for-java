@@ -13,10 +13,12 @@ package com.microsoft.azure.management.website.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import org.joda.time.DateTime;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * App certificate.
  */
+@JsonFlatten
 public class Certificate extends Resource {
     /**
      * Friendly name of the certificate.

@@ -41,6 +41,13 @@ public class Usage {
     private UsageName name;
 
     /**
+     * Creates an instance of Usage class.
+     */
+    public Usage() {
+        unit = "Count";
+    }
+
+    /**
      * Get the unit value.
      *
      * @return the unit value

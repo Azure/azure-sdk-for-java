@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.storage.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import com.microsoft.azure.BaseResource;
 
@@ -20,16 +21,19 @@ public class Resource extends BaseResource {
     /**
      * Resource Id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
      * Resource name.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Resource type.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**

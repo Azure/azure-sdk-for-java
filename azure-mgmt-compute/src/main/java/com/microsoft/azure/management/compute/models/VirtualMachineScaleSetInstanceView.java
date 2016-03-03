@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.compute.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -19,11 +20,13 @@ public class VirtualMachineScaleSetInstanceView {
     /**
      * Gets the instance view status summary for the virtual machine scale set.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine;
 
     /**
      * Gets the extensions information.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineScaleSetVMExtensionsSummary> extensions;
 
     /**

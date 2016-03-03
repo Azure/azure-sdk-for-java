@@ -27,7 +27,10 @@ public enum ProvisioningState {
     CANCELED("Canceled"),
 
     /** Enum value InProgress. */
-    INPROGRESS("InProgress");
+    INPROGRESS("InProgress"),
+
+    /** Enum value Deleting. */
+    DELETING("Deleting");
 
     /** The actual serialized value for a ProvisioningState instance. */
     private String value;

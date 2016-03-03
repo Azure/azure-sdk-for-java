@@ -16,6 +16,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -23,6 +24,13 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -45,6 +53,33 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
     public ProvidersOperationsImpl(Retrofit retrofit, ResourceManagementClient client) {
         this.service = retrofit.create(ProvidersService.class);
         this.client = client;
+    }
+
+    /**
+     * The interface defining all the services for ProvidersOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface ProvidersService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
+        Call<ResponseBody> unregister(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register")
+        Call<ResponseBody> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers")
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}")
+        Call<ResponseBody> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+
     }
 
     /**
@@ -75,9 +110,13 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> unregisterAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) {
+    public ServiceCall unregisterAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -91,6 +130,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
             return null;
         }
         Call<ResponseBody> call = service.unregister(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Provider>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -101,11 +141,11 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Provider> unregisterDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Provider, CloudException>()
+        return new AzureServiceResponseBuilder<Provider, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Provider>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -139,9 +179,13 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> registerAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) {
+    public ServiceCall registerAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -155,6 +199,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
             return null;
         }
         Call<ResponseBody> call = service.register(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Provider>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -165,11 +210,11 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Provider> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Provider, CloudException>()
+        return new AzureServiceResponseBuilder<Provider, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Provider>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -206,9 +251,13 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      *
      * @param top Query parameters. If null is passed returns all deployments.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listAsync(final Integer top, final ListOperationCallback<Provider> serviceCallback) {
+    public ServiceCall listAsync(final Integer top, final ListOperationCallback<Provider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -218,6 +267,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
             return null;
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<Provider>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -226,20 +276,20 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+                    }
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<Provider>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<Provider>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -273,9 +323,13 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) {
+    public ServiceCall getAsync(String resourceProviderNamespace, final ServiceCallback<Provider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (resourceProviderNamespace == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
@@ -289,6 +343,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
             return null;
         }
         Call<ResponseBody> call = service.get(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Provider>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -299,11 +354,11 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<Provider> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Provider, CloudException>()
+        return new AzureServiceResponseBuilder<Provider, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Provider>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -330,15 +385,21 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<Provider> serviceCallback) {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Provider> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (nextPageLink == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<Provider>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -347,7 +408,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -356,11 +417,11 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<PageImpl<Provider>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>()
+        return new AzureServiceResponseBuilder<PageImpl<Provider>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<Provider>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

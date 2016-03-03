@@ -14,17 +14,10 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.Usage;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -32,27 +25,13 @@ import retrofit2.http.Url;
  */
 public interface UsagesOperations {
     /**
-     * The interface defining all the services for UsagesOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface UsagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages")
-        Call<ResponseBody> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Lists compute usages for a subscription.
      *
      * @param location The location upon which resource usage is queried.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Usage&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Usage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<Usage>> list(final String location) throws CloudException, IOException, IllegalArgumentException;
 
@@ -61,9 +40,10 @@ public interface UsagesOperations {
      *
      * @param location The location upon which resource usage is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final String location, final ListOperationCallback<Usage> serviceCallback);
+    ServiceCall listAsync(final String location, final ListOperationCallback<Usage> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists compute usages for a subscription.
@@ -72,7 +52,7 @@ public interface UsagesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Usage&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Usage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<Usage>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -80,9 +60,11 @@ public interface UsagesOperations {
      * Lists compute usages for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<Usage> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Usage> serviceCallback) throws IllegalArgumentException;
 
 }

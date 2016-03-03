@@ -21,15 +21,15 @@ public class DataDiskImage {
      * disk image inside the VMImage therefore it must be unique for each
      * data disk.The allowed character for the value is digit.
      */
-    @JsonProperty(required = true)
-    private int lun;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Integer lun;
 
     /**
      * Get the lun value.
      *
      * @return the lun value
      */
-    public int getLun() {
+    public Integer getLun() {
         return this.lun;
     }
 

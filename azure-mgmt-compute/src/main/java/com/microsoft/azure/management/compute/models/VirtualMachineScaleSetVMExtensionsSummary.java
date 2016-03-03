@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.management.compute.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -19,11 +20,13 @@ public class VirtualMachineScaleSetVMExtensionsSummary {
     /**
      * Gets the extension name.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Gets the extensions information.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineStatusCodeCount> statusesSummary;
 
     /**

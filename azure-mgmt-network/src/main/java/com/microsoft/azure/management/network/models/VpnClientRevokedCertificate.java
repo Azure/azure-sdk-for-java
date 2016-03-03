@@ -11,22 +11,13 @@
 package com.microsoft.azure.management.network.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * VPN client revoked certificate of virtual network gateway.
  */
+@JsonFlatten
 public class VpnClientRevokedCertificate extends SubResource {
-    /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
-     */
-    private String name;
-
-    /**
-     * A unique read-only string that changes whenever the resource is updated.
-     */
-    private String etag;
-
     /**
      * Gets or sets the revoked Vpn client certificate thumbprint.
      */
@@ -41,40 +32,15 @@ public class VpnClientRevokedCertificate extends SubResource {
     private String provisioningState;
 
     /**
-     * Get the name value.
-     *
-     * @return the name value
+     * Gets name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
-    public String getName() {
-        return this.name;
-    }
+    private String name;
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Get the etag value.
-     *
-     * @return the etag value
-     */
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     */
-    public void setEtag(String etag) {
-        this.etag = etag;
-    }
+    private String etag;
 
     /**
      * Get the thumbprint value.
@@ -110,6 +76,42 @@ public class VpnClientRevokedCertificate extends SubResource {
      */
     public void setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+    }
+
+    /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name value.
+     *
+     * @param name the name value to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Get the etag value.
+     *
+     * @return the etag value
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag value.
+     *
+     * @param etag the etag value to set
+     */
+    public void setEtag(String etag) {
+        this.etag = etag;
     }
 
 }

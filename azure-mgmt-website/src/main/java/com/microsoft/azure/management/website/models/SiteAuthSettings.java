@@ -115,6 +115,14 @@ public class SiteAuthSettings {
     private List<String> allowedAudiences;
 
     /**
+     * Gets or sets a list of login parameters to send to the OpenID Connect
+     * authorization endpoint when
+     * a user logs in. Each parameter must be in the form
+     * "key=value".
+     */
+    private List<String> additionalLoginParams;
+
+    /**
      * The aadClientId property.
      */
     private String aadClientId;
@@ -404,6 +412,24 @@ public class SiteAuthSettings {
      */
     public void setAllowedAudiences(List<String> allowedAudiences) {
         this.allowedAudiences = allowedAudiences;
+    }
+
+    /**
+     * Get the additionalLoginParams value.
+     *
+     * @return the additionalLoginParams value
+     */
+    public List<String> getAdditionalLoginParams() {
+        return this.additionalLoginParams;
+    }
+
+    /**
+     * Set the additionalLoginParams value.
+     *
+     * @param additionalLoginParams the additionalLoginParams value to set
+     */
+    public void setAdditionalLoginParams(List<String> additionalLoginParams) {
+        this.additionalLoginParams = additionalLoginParams;
     }
 
     /**

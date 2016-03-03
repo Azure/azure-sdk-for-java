@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Description of a restore request.
  */
+@JsonFlatten
 public class RestoreRequest extends Resource {
     /**
      * SAS URL to the container.

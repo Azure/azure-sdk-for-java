@@ -17,71 +17,17 @@ import com.microsoft.azure.management.resources.models.GenericResourceFilter;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupFilter;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.HEAD;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in ResourceGroupsOperations.
  */
 public interface ResourceGroupsOperations {
-    /**
-     * The interface defining all the services for ResourceGroupsOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface ResourceGroupsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
-        Call<ResponseBody> listResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
-        Call<Void> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
-        Call<ResponseBody> patch(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroup parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourcegroups")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listResourcesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-    }
     /**
      * Get all of the resources under a subscription.
      *
@@ -91,7 +37,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<GenericResource>> listResources(final String resourceGroupName, final GenericResourceFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
@@ -102,9 +48,10 @@ public interface ResourceGroupsOperations {
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listResourcesAsync(final String resourceGroupName, final GenericResourceFilter filter, final Integer top, final ListOperationCallback<GenericResource> serviceCallback);
+    ServiceCall listResourcesAsync(final String resourceGroupName, final GenericResourceFilter filter, final Integer top, final ListOperationCallback<GenericResource> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Checks whether resource group exists.
@@ -113,7 +60,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Boolean object wrapped in ServiceResponse if successful.
+     * @return the Boolean object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Boolean> checkExistence(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -122,9 +69,10 @@ public interface ResourceGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<Void> checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback);
+    ServiceCall checkExistenceAsync(String resourceGroupName, final ServiceCallback<Boolean> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Create a resource group.
@@ -134,7 +82,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceGroup object wrapped in ServiceResponse if successful.
+     * @return the ResourceGroup object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ResourceGroup> createOrUpdate(String resourceGroupName, ResourceGroup parameters) throws CloudException, IOException, IllegalArgumentException;
 
@@ -144,9 +92,10 @@ public interface ResourceGroupsOperations {
      * @param resourceGroupName The name of the resource group to be created or updated.
      * @param parameters Parameters supplied to the create or update resource group service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback);
+    ServiceCall createOrUpdateAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
@@ -156,7 +105,7 @@ public interface ResourceGroupsOperations {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
+     * @return the {@link ServiceResponse} object if successful.
      */
     ServiceResponse<Void> delete(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
 
@@ -165,9 +114,31 @@ public interface ResourceGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback);
+    ServiceCall deleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     *
+     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> beginDelete(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     *
+     * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginDeleteAsync(String resourceGroupName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get a resource group.
@@ -176,7 +147,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceGroup object wrapped in ServiceResponse if successful.
+     * @return the ResourceGroup object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ResourceGroup> get(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -185,9 +156,10 @@ public interface ResourceGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getAsync(String resourceGroupName, final ServiceCallback<ResourceGroup> serviceCallback);
+    ServiceCall getAsync(String resourceGroupName, final ServiceCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource groups, though if a field is unspecified current value will be carried over.
@@ -197,7 +169,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceGroup object wrapped in ServiceResponse if successful.
+     * @return the ResourceGroup object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<ResourceGroup> patch(String resourceGroupName, ResourceGroup parameters) throws CloudException, IOException, IllegalArgumentException;
 
@@ -207,9 +179,10 @@ public interface ResourceGroupsOperations {
      * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
      * @param parameters Parameters supplied to the update state resource group service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> patchAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback);
+    ServiceCall patchAsync(String resourceGroupName, ResourceGroup parameters, final ServiceCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a collection of resource groups.
@@ -219,7 +192,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceGroup&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;ResourceGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<ResourceGroup>> list(final ResourceGroupFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
@@ -229,9 +202,10 @@ public interface ResourceGroupsOperations {
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listAsync(final ResourceGroupFilter filter, final Integer top, final ListOperationCallback<ResourceGroup> serviceCallback);
+    ServiceCall listAsync(final ResourceGroupFilter filter, final Integer top, final ListOperationCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get all of the resources under a subscription.
@@ -240,7 +214,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;GenericResource&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<GenericResource>> listResourcesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -248,10 +222,12 @@ public interface ResourceGroupsOperations {
      * Get all of the resources under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listResourcesNextAsync(final String nextPageLink, final ListOperationCallback<GenericResource> serviceCallback);
+    ServiceCall listResourcesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<GenericResource> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a collection of resource groups.
@@ -260,7 +236,7 @@ public interface ResourceGroupsOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceGroup&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;ResourceGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<PageImpl<ResourceGroup>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
@@ -268,9 +244,11 @@ public interface ResourceGroupsOperations {
      * Gets a collection of resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> listNextAsync(final String nextPageLink, final ListOperationCallback<ResourceGroup> serviceCallback);
+    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ResourceGroup> serviceCallback) throws IllegalArgumentException;
 
 }

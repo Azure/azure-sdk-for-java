@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Represents user crendentials used for publishing activity.
  */
+@JsonFlatten
 public class User extends Resource {
     /**
      * Username (internal).

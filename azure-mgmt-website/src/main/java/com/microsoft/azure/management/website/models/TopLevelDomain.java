@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * A top level domain object.
  */
+@JsonFlatten
 public class TopLevelDomain extends Resource {
     /**
      * Name of the top level domain.

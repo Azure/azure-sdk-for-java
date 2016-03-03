@@ -14,21 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.website.models.Certificate;
 import com.microsoft.azure.management.website.models.CertificateCollection;
 import com.microsoft.azure.management.website.models.Csr;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -36,59 +26,13 @@ import retrofit2.http.Query;
  */
 public interface CertificatesOperations {
     /**
-     * The interface defining all the services for CertificatesOperations to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface CertificatesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates")
-        Call<ResponseBody> getCertificates(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        Call<ResponseBody> getCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        Call<ResponseBody> createOrUpdateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Certificate certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        Call<ResponseBody> updateCertificate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Certificate certificateEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs")
-        Call<ResponseBody> getCsrs(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
-        Call<ResponseBody> getCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
-        Call<ResponseBody> createOrUpdateCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Csr csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/csrs/{name}")
-        Call<ResponseBody> updateCsr(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body Csr csrEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-    }
-    /**
      * Get certificates for a subscription in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateCollection object wrapped in ServiceResponse if successful.
+     * @return the CertificateCollection object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<CertificateCollection> getCertificates(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -97,9 +41,10 @@ public interface CertificatesOperations {
      *
      * @param resourceGroupName Name of the resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getCertificatesAsync(String resourceGroupName, final ServiceCallback<CertificateCollection> serviceCallback);
+    ServiceCall getCertificatesAsync(String resourceGroupName, final ServiceCallback<CertificateCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get a certificate by certificate name for a subscription in the specified resource group.
@@ -109,7 +54,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Certificate object wrapped in ServiceResponse if successful.
+     * @return the Certificate object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Certificate> getCertificate(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -119,9 +64,10 @@ public interface CertificatesOperations {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Certificate> serviceCallback);
+    ServiceCall getCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates or modifies an existing certificate.
@@ -132,7 +78,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Certificate object wrapped in ServiceResponse if successful.
+     * @return the Certificate object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Certificate> createOrUpdateCertificate(String resourceGroupName, String name, Certificate certificateEnvelope) throws CloudException, IOException, IllegalArgumentException;
 
@@ -143,9 +89,10 @@ public interface CertificatesOperations {
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback);
+    ServiceCall createOrUpdateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Delete a certificate by name in a specificed subscription and resourcegroup.
@@ -155,7 +102,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> deleteCertificate(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -165,9 +112,10 @@ public interface CertificatesOperations {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback);
+    ServiceCall deleteCertificateAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates or modifies an existing certificate.
@@ -178,7 +126,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Certificate object wrapped in ServiceResponse if successful.
+     * @return the Certificate object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Certificate> updateCertificate(String resourceGroupName, String name, Certificate certificateEnvelope) throws CloudException, IOException, IllegalArgumentException;
 
@@ -189,9 +137,10 @@ public interface CertificatesOperations {
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> updateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback);
+    ServiceCall updateCertificateAsync(String resourceGroupName, String name, Certificate certificateEnvelope, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the certificate signing requests for a subscription in the specified resource group.
@@ -200,7 +149,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Csr&gt; object wrapped in ServiceResponse if successful.
+     * @return the List&lt;Csr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<List<Csr>> getCsrs(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
@@ -209,9 +158,10 @@ public interface CertificatesOperations {
      *
      * @param resourceGroupName Name of the resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getCsrsAsync(String resourceGroupName, final ServiceCallback<List<Csr>> serviceCallback);
+    ServiceCall getCsrsAsync(String resourceGroupName, final ServiceCallback<List<Csr>> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a certificate signing request by certificate name for a subscription in the specified resource group.
@@ -221,7 +171,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Csr object wrapped in ServiceResponse if successful.
+     * @return the Csr object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Csr> getCsr(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -231,9 +181,10 @@ public interface CertificatesOperations {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> getCsrAsync(String resourceGroupName, String name, final ServiceCallback<Csr> serviceCallback);
+    ServiceCall getCsrAsync(String resourceGroupName, String name, final ServiceCallback<Csr> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates or modifies an existing certificate signing request.
@@ -244,7 +195,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Csr object wrapped in ServiceResponse if successful.
+     * @return the Csr object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Csr> createOrUpdateCsr(String resourceGroupName, String name, Csr csrEnvelope) throws CloudException, IOException, IllegalArgumentException;
 
@@ -255,9 +206,10 @@ public interface CertificatesOperations {
      * @param name Name of the certificate.
      * @param csrEnvelope Details of certificate signing request if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> createOrUpdateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback);
+    ServiceCall createOrUpdateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Delete the certificate signing request.
@@ -267,7 +219,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Object> deleteCsr(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
@@ -277,9 +229,10 @@ public interface CertificatesOperations {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the certificate signing request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> deleteCsrAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback);
+    ServiceCall deleteCsrAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates or modifies an existing certificate signing request.
@@ -290,7 +243,7 @@ public interface CertificatesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Csr object wrapped in ServiceResponse if successful.
+     * @return the Csr object wrapped in {@link ServiceResponse} if successful.
      */
     ServiceResponse<Csr> updateCsr(String resourceGroupName, String name, Csr csrEnvelope) throws CloudException, IOException, IllegalArgumentException;
 
@@ -301,8 +254,9 @@ public interface CertificatesOperations {
      * @param name Name of the certificate.
      * @param csrEnvelope Details of certificate signing request if it exists already.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
      */
-    Call<ResponseBody> updateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback);
+    ServiceCall updateCsrAsync(String resourceGroupName, String name, Csr csrEnvelope, final ServiceCallback<Csr> serviceCallback) throws IllegalArgumentException;
 
 }

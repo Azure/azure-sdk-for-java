@@ -17,6 +17,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for WorkerSizeOptions.
  */
 public enum WorkerSizeOptions {
+    /** Enum value Default. */
+    DEFAULT("Default"),
+
     /** Enum value Small. */
     SMALL("Small"),
 

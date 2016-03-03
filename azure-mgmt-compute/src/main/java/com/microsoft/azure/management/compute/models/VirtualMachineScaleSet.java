@@ -11,10 +11,12 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a Virtual Machine Scale Set.
  */
+@JsonFlatten
 public class VirtualMachineScaleSet extends Resource {
     /**
      * Gets or sets the virtual machine scale set sku.

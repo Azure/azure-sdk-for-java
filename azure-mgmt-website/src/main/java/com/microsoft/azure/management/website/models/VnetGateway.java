@@ -11,11 +11,13 @@
 package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * The VnetGateway contract. This is used to give the vnet gateway access to
  * the VPN package.
  */
+@JsonFlatten
 public class VnetGateway extends Resource {
     /**
      * The VNET name.

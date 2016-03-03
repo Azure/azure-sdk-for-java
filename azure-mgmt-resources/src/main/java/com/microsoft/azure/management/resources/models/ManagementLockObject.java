@@ -11,12 +11,27 @@
 package com.microsoft.azure.management.resources.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.BaseResource;
 
 /**
  * Management lock information.
  */
+@JsonFlatten
 public class ManagementLockObject extends BaseResource {
+    /**
+     * Gets or sets the lock level of the management lock. Possible values
+     * include: 'NotSpecified', 'CanNotDelete', 'ReadOnly'.
+     */
+    @JsonProperty(value = "properties.level")
+    private String level;
+
+    /**
+     * Gets or sets the notes of the management lock.
+     */
+    @JsonProperty(value = "properties.notes")
+    private String notes;
+
     /**
      * Gets or sets the Id of the lock.
      */
@@ -33,17 +48,40 @@ public class ManagementLockObject extends BaseResource {
     private String name;
 
     /**
-     * Gets or sets the lock level of the management lock. Possible values
-     * include: 'NotSpecified', 'CanNotDelete', 'ReadOnly'.
+     * Get the level value.
+     *
+     * @return the level value
      */
-    @JsonProperty(value = "properties.level")
-    private String level;
+    public String getLevel() {
+        return this.level;
+    }
 
     /**
-     * Gets or sets the notes of the management lock.
+     * Set the level value.
+     *
+     * @param level the level value to set
      */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    /**
+     * Get the notes value.
+     *
+     * @return the notes value
+     */
+    public String getNotes() {
+        return this.notes;
+    }
+
+    /**
+     * Set the notes value.
+     *
+     * @param notes the notes value to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     /**
      * Get the id value.
@@ -97,42 +135,6 @@ public class ManagementLockObject extends BaseResource {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Get the level value.
-     *
-     * @return the level value
-     */
-    public String getLevel() {
-        return this.level;
-    }
-
-    /**
-     * Set the level value.
-     *
-     * @param level the level value to set
-     */
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    /**
-     * Get the notes value.
-     *
-     * @return the notes value
-     */
-    public String getNotes() {
-        return this.notes;
-    }
-
-    /**
-     * Set the notes value.
-     *
-     * @param notes the notes value to set
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
     }
 
 }

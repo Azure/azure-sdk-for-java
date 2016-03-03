@@ -12,10 +12,12 @@ package com.microsoft.azure.management.website.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Class that represents usage of the quota resource.
  */
+@JsonFlatten
 public class Usage extends Resource {
     /**
      * Friendly name shown in the UI.

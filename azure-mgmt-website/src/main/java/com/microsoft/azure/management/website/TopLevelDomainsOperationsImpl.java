@@ -17,13 +17,20 @@ import com.microsoft.azure.management.website.models.TldLegalAgreementCollection
 import com.microsoft.azure.management.website.models.TopLevelDomain;
 import com.microsoft.azure.management.website.models.TopLevelDomainAgreementOption;
 import com.microsoft.azure.management.website.models.TopLevelDomainCollection;
+import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
-import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -49,6 +56,25 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
     }
 
     /**
+     * The interface defining all the services for TopLevelDomainsOperations to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface TopLevelDomainsService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
+        Call<ResponseBody> getGetTopLevelDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
+        Call<ResponseBody> getTopLevelDomain(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
+        Call<ResponseBody> listTopLevelDomainAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption);
+
+    }
+
+    /**
      * Lists all top level domains supported for registration.
      *
      * @throws CloudException exception thrown from REST call
@@ -71,9 +97,13 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
      * Lists all top level domains supported for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getGetTopLevelDomainsAsync(final ServiceCallback<TopLevelDomainCollection> serviceCallback) {
+    public ServiceCall getGetTopLevelDomainsAsync(final ServiceCallback<TopLevelDomainCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -83,6 +113,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
             return null;
         }
         Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TopLevelDomainCollection>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -93,11 +124,11 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<TopLevelDomainCollection> getGetTopLevelDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TopLevelDomainCollection, CloudException>()
+        return new AzureServiceResponseBuilder<TopLevelDomainCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<TopLevelDomainCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -131,9 +162,13 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
      *
      * @param name Name of the top level domain
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> getTopLevelDomainAsync(String name, final ServiceCallback<TopLevelDomain> serviceCallback) {
+    public ServiceCall getTopLevelDomainAsync(String name, final ServiceCallback<TopLevelDomain> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (name == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
             return null;
@@ -147,6 +182,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
             return null;
         }
         Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TopLevelDomain>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -157,11 +193,11 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<TopLevelDomain> getTopLevelDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TopLevelDomain, CloudException>()
+        return new AzureServiceResponseBuilder<TopLevelDomain, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<TopLevelDomain>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -171,27 +207,25 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
-     * @param agreementOption Domain agreement options
+     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TldLegalAgreementCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreements(String name, TopLevelDomainAgreementOption agreementOption) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreements(String name, Boolean includePrivacy) throws CloudException, IOException, IllegalArgumentException {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
-        if (agreementOption == null) {
-            throw new IllegalArgumentException("Parameter agreementOption is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Validator.validate(agreementOption);
-        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), agreementOption, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
+        agreementOption.setIncludePrivacy(includePrivacy);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);
         return listTopLevelDomainAgreementsDelegate(call.execute());
     }
 
@@ -199,11 +233,15 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
-     * @param agreementOption Domain agreement options
+     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public Call<ResponseBody> listTopLevelDomainAgreementsAsync(String name, TopLevelDomainAgreementOption agreementOption, final ServiceCallback<TldLegalAgreementCollection> serviceCallback) {
+    public ServiceCall listTopLevelDomainAgreementsAsync(String name, Boolean includePrivacy, final ServiceCallback<TldLegalAgreementCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
         if (name == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
             return null;
@@ -212,16 +250,14 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
-        if (agreementOption == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter agreementOption is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Validator.validate(agreementOption, serviceCallback);
-        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), agreementOption, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
+        agreementOption.setIncludePrivacy(includePrivacy);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);
+        final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollection>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -232,11 +268,11 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
                 }
             }
         });
-        return call;
+        return serviceCall;
     }
 
     private ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreementsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TldLegalAgreementCollection, CloudException>()
+        return new AzureServiceResponseBuilder<TldLegalAgreementCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<TldLegalAgreementCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
