@@ -11,11 +11,14 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a virtual machine scale set network profile's network
  * configurations.
  */
+@JsonFlatten
 public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
     /**
      * Gets or sets the network configuration name.
@@ -24,9 +27,16 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
     private String name;
 
     /**
-     * The properties property.
+     * Gets or sets whether this is a primary NIC on a virtual machine.
      */
-    private VirtualMachineScaleSetNetworkConfigurationProperties properties;
+    @JsonProperty(value = "properties.primary")
+    private Boolean primary;
+
+    /**
+     * Gets or sets the virtual machine scale set IP Configuration.
+     */
+    @JsonProperty(value = "properties.ipConfigurations", required = true)
+    private List<VirtualMachineScaleSetIPConfiguration> ipConfigurations;
 
     /**
      * Get the name value.
@@ -47,21 +57,39 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
     }
 
     /**
-     * Get the properties value.
+     * Get the primary value.
      *
-     * @return the properties value
+     * @return the primary value
      */
-    public VirtualMachineScaleSetNetworkConfigurationProperties getProperties() {
-        return this.properties;
+    public Boolean getPrimary() {
+        return this.primary;
     }
 
     /**
-     * Set the properties value.
+     * Set the primary value.
      *
-     * @param properties the properties value to set
+     * @param primary the primary value to set
      */
-    public void setProperties(VirtualMachineScaleSetNetworkConfigurationProperties properties) {
-        this.properties = properties;
+    public void setPrimary(Boolean primary) {
+        this.primary = primary;
+    }
+
+    /**
+     * Get the ipConfigurations value.
+     *
+     * @return the ipConfigurations value
+     */
+    public List<VirtualMachineScaleSetIPConfiguration> getIpConfigurations() {
+        return this.ipConfigurations;
+    }
+
+    /**
+     * Set the ipConfigurations value.
+     *
+     * @param ipConfigurations the ipConfigurations value to set
+     */
+    public void setIpConfigurations(List<VirtualMachineScaleSetIPConfiguration> ipConfigurations) {
+        this.ipConfigurations = ipConfigurations;
     }
 
 }

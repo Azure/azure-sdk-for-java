@@ -28,7 +28,7 @@ public class LoadBalancingRule extends SubResource {
      * Gets or sets  a reference to a pool of DIPs. Inbound traffic is
      * randomly load balanced across IPs in the backend IPs.
      */
-    @JsonProperty(value = "properties.backendAddressPool", required = true)
+    @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
@@ -88,8 +88,8 @@ public class LoadBalancingRule extends SubResource {
      * is required when using the SQL Always ON availability Groups in SQL
      * server. This setting can't be changed after you create the endpoint.
      */
-    @JsonProperty(value = "properties.enableFloatingIP", required = true)
-    private boolean enableFloatingIP;
+    @JsonProperty(value = "properties.enableFloatingIP")
+    private Boolean enableFloatingIP;
 
     /**
      * Gets or sets Provisioning state of the PublicIP resource
@@ -258,7 +258,7 @@ public class LoadBalancingRule extends SubResource {
      *
      * @return the enableFloatingIP value
      */
-    public boolean getEnableFloatingIP() {
+    public Boolean getEnableFloatingIP() {
         return this.enableFloatingIP;
     }
 
@@ -267,7 +267,7 @@ public class LoadBalancingRule extends SubResource {
      *
      * @param enableFloatingIP the enableFloatingIP value to set
      */
-    public void setEnableFloatingIP(boolean enableFloatingIP) {
+    public void setEnableFloatingIP(Boolean enableFloatingIP) {
         this.enableFloatingIP = enableFloatingIP;
     }
 
