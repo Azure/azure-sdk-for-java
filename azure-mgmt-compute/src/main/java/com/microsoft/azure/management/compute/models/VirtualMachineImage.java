@@ -11,16 +11,32 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a Virtual Machine Image.
  */
+@JsonFlatten
 public class VirtualMachineImage extends SubResource {
     /**
-     * The properties property.
+     * The plan property.
      */
-    private VirtualMachineImageProperties properties;
+    @JsonProperty(value = "properties.plan")
+    private PurchasePlan plan;
+
+    /**
+     * The osDiskImage property.
+     */
+    @JsonProperty(value = "properties.osDiskImage")
+    private OSDiskImage osDiskImage;
+
+    /**
+     * The dataDiskImages property.
+     */
+    @JsonProperty(value = "properties.dataDiskImages")
+    private List<DataDiskImage> dataDiskImages;
 
     /**
      * Gets or sets the name of the resource.
@@ -40,21 +56,57 @@ public class VirtualMachineImage extends SubResource {
     private Map<String, String> tags;
 
     /**
-     * Get the properties value.
+     * Get the plan value.
      *
-     * @return the properties value
+     * @return the plan value
      */
-    public VirtualMachineImageProperties getProperties() {
-        return this.properties;
+    public PurchasePlan getPlan() {
+        return this.plan;
     }
 
     /**
-     * Set the properties value.
+     * Set the plan value.
      *
-     * @param properties the properties value to set
+     * @param plan the plan value to set
      */
-    public void setProperties(VirtualMachineImageProperties properties) {
-        this.properties = properties;
+    public void setPlan(PurchasePlan plan) {
+        this.plan = plan;
+    }
+
+    /**
+     * Get the osDiskImage value.
+     *
+     * @return the osDiskImage value
+     */
+    public OSDiskImage getOsDiskImage() {
+        return this.osDiskImage;
+    }
+
+    /**
+     * Set the osDiskImage value.
+     *
+     * @param osDiskImage the osDiskImage value to set
+     */
+    public void setOsDiskImage(OSDiskImage osDiskImage) {
+        this.osDiskImage = osDiskImage;
+    }
+
+    /**
+     * Get the dataDiskImages value.
+     *
+     * @return the dataDiskImages value
+     */
+    public List<DataDiskImage> getDataDiskImages() {
+        return this.dataDiskImages;
+    }
+
+    /**
+     * Set the dataDiskImages value.
+     *
+     * @param dataDiskImages the dataDiskImages value to set
+     */
+    public void setDataDiskImages(List<DataDiskImage> dataDiskImages) {
+        this.dataDiskImages = dataDiskImages;
     }
 
     /**

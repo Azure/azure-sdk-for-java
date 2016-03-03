@@ -10,32 +10,36 @@
 
 package com.microsoft.azure.management.compute.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Resource Id.
  */
+@JsonFlatten
 public class VirtualMachineCaptureResult extends SubResource {
     /**
-     * The properties property.
+     * Operation output data (raw JSON).
      */
-    private VirtualMachineCaptureResultProperties properties;
+    @JsonProperty(value = "properties.output")
+    private Object output;
 
     /**
-     * Get the properties value.
+     * Get the output value.
      *
-     * @return the properties value
+     * @return the output value
      */
-    public VirtualMachineCaptureResultProperties getProperties() {
-        return this.properties;
+    public Object getOutput() {
+        return this.output;
     }
 
     /**
-     * Set the properties value.
+     * Set the output value.
      *
-     * @param properties the properties value to set
+     * @param output the output value to set
      */
-    public void setProperties(VirtualMachineCaptureResultProperties properties) {
-        this.properties = properties;
+    public void setOutput(Object output) {
+        this.output = output;
     }
 
 }

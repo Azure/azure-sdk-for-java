@@ -11,10 +11,13 @@
 package com.microsoft.azure.management.compute.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Describes a virtual machine scale set network profile's IP configuration.
  */
+@JsonFlatten
 public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     /**
      * Gets or sets the IP configuration name.
@@ -23,9 +26,22 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     private String name;
 
     /**
-     * The properties property.
+     * Gets or sets the subnet.
      */
-    private VirtualMachineScaleSetIPConfigurationProperties properties;
+    @JsonProperty(value = "properties.subnet", required = true)
+    private ApiEntityReference subnet;
+
+    /**
+     * Gets or sets the load balancer backend address pools.
+     */
+    @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
+    private List<SubResource> loadBalancerBackendAddressPools;
+
+    /**
+     * Gets or sets the load balancer inbound nat pools.
+     */
+    @JsonProperty(value = "properties.loadBalancerInboundNatPools")
+    private List<SubResource> loadBalancerInboundNatPools;
 
     /**
      * Get the name value.
@@ -46,21 +62,57 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the properties value.
+     * Get the subnet value.
      *
-     * @return the properties value
+     * @return the subnet value
      */
-    public VirtualMachineScaleSetIPConfigurationProperties getProperties() {
-        return this.properties;
+    public ApiEntityReference getSubnet() {
+        return this.subnet;
     }
 
     /**
-     * Set the properties value.
+     * Set the subnet value.
      *
-     * @param properties the properties value to set
+     * @param subnet the subnet value to set
      */
-    public void setProperties(VirtualMachineScaleSetIPConfigurationProperties properties) {
-        this.properties = properties;
+    public void setSubnet(ApiEntityReference subnet) {
+        this.subnet = subnet;
+    }
+
+    /**
+     * Get the loadBalancerBackendAddressPools value.
+     *
+     * @return the loadBalancerBackendAddressPools value
+     */
+    public List<SubResource> getLoadBalancerBackendAddressPools() {
+        return this.loadBalancerBackendAddressPools;
+    }
+
+    /**
+     * Set the loadBalancerBackendAddressPools value.
+     *
+     * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set
+     */
+    public void setLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
+        this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
+    }
+
+    /**
+     * Get the loadBalancerInboundNatPools value.
+     *
+     * @return the loadBalancerInboundNatPools value
+     */
+    public List<SubResource> getLoadBalancerInboundNatPools() {
+        return this.loadBalancerInboundNatPools;
+    }
+
+    /**
+     * Set the loadBalancerInboundNatPools value.
+     *
+     * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set
+     */
+    public void setLoadBalancerInboundNatPools(List<SubResource> loadBalancerInboundNatPools) {
+        this.loadBalancerInboundNatPools = loadBalancerInboundNatPools;
     }
 
 }
