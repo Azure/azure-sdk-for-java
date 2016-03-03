@@ -55,24 +55,6 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-    <repository>
-      <id>sonatype-rest</id>
-      <name>sonatype-rest</name>
-      <url>https://oss.sonatype.org/service/local/repositories/commicrosoftrest-1002/content</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>sonatype-azure</id>
-      <name>sonatype-azure</name>
-      <url>https://oss.sonatype.org/service/local/repositories/commicrosoftazure-1239/content</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
   </repositories>
 
   <distributionManagement>
