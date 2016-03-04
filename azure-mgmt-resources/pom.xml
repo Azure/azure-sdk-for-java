@@ -45,18 +45,6 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <id>adx-snapshots</id>
-      <name>Azure ADX Snapshots</name>
-      <url>http://adxsnapshots.azurewebsites.net/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

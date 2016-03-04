@@ -49,10 +49,11 @@
     <repository>
       <id>adx-snapshots</id>
       <name>Azure ADX Snapshots</name>
-      <url>http://adxsnapshots.azurewebsites.net/</url>
+      <url>http://adxsnapshots.azurewebsites.net</url>
       <layout>default</layout>
       <snapshots>
         <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
       </snapshots>
     </repository>
   </repositories>
@@ -61,7 +62,7 @@
     <snapshotRepository>
       <id>adx-snapshots</id>
       <name>Azure ADX Snapshots</name>
-      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot/</url>
+      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot</url>
       <uniqueVersion>true</uniqueVersion>
       <layout>default</layout>
     </snapshotRepository>
