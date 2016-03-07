@@ -47,6 +47,31 @@ var mappings = {
         'source': 'arm-web/2015-08-01/swagger/service.json',
         'package': 'com.microsoft.azure.management.website',
         'args': '-FT 1'
+    },
+    'datalake.store.filesystem': {
+        'dir': 'azure-mgmt-datalake-store',
+        'source': 'arm-datalake-store/filesystem/2015-10-01-preview/swagger/filesystem.json',
+        'package': 'com.microsoft.azure.management.datalake.store'
+    },
+    'datalake.store.account': {
+        'dir': 'azure-mgmt-datalake-store',
+        'source': 'arm-datalake-store/account/2015-10-01-preview/swagger/account.json',
+        'package': 'com.microsoft.azure.management.datalake.store'
+    },
+    'datalake.analytics.account': {
+        'dir': 'azure-mgmt-datalake-analytics',
+        'source': 'arm-datalake-analytics/account/2015-10-01-preview/swagger/account.json',
+        'package': 'com.microsoft.azure.management.datalake.analytics'
+    },
+    'datalake.analytics.job': {
+        'dir': 'azure-mgmt-datalake-analytics',
+        'source': 'arm-datalake-analytics/job/2015-11-01-preview/swagger/job.json',
+        'package': 'com.microsoft.azure.management.datalake.analytics'
+    },
+    'datalake.analytics.catalog': {
+        'dir': 'azure-mgmt-datalake-analytics',
+        'source': 'arm-datalake-analytics/catalog/2015-10-01-preview/swagger/catalog.json',
+        'package': 'com.microsoft.azure.management.datalake.analytics'
     }
 };
 
