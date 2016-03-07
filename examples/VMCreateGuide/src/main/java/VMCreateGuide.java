@@ -8,7 +8,7 @@
  * regenerated.
  */
 
-import com.microsoft.azure.Page;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.management.compute.ComputeManagementClient;
@@ -29,6 +29,7 @@ import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIPConfiguration;
+import com.microsoft.azure.management.network.models.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.models.PublicIPAddress;
 import com.microsoft.azure.management.network.models.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.models.Subnet;
@@ -44,10 +45,17 @@ import com.microsoft.azure.management.storage.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.rest.ServiceResponse;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class VMCreateGuide {
     private static Scanner in = new Scanner(System.in);
@@ -68,6 +76,7 @@ public class VMCreateGuide {
         String publicIPName         = "sample_pip";
         String networkInterfaceName = "sample_nic";
         String ipConfigName         = "sample_crpip";
+        String securityGroupName    = "sample_sgn";
         String domainNameLabel      = "nouppercase";
         String osDiskName           = "sample_osdisk";
 
@@ -88,7 +97,7 @@ public class VMCreateGuide {
         ResourceManagementClient resourceManagementClient;
         StorageManagementClient storageManagementClient;
         NetworkManagementClient networkManagementClient;
-        ComputeManagementClient computeManagementClient;
+        final ComputeManagementClient computeManagementClient;
 
         // Credential
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -97,7 +106,7 @@ public class VMCreateGuide {
 
         // Subscriptions
         SubscriptionClient client = new SubscriptionClientImpl(credentials);
-        Page<Subscription> subscriptions = client.getSubscriptions().list().getBody();
+        List<Subscription> subscriptions = client.getSubscriptionsOperations().list().getBody();
         String subscription = selectSubscription(subscriptions);
 
         // Client creation
@@ -109,19 +118,18 @@ public class VMCreateGuide {
         networkManagementClient.setSubscriptionId(subscription);
         computeManagementClient = new ComputeManagementClientImpl(credentials);
         computeManagementClient.setSubscriptionId(subscription);
-
         // Create resource group
         ResourceGroup resourceGroupParameters = new ResourceGroup();
         resourceGroupParameters.setLocation(location);
         System.out.println("Creating resource group...");
-        resourceManagementClient.getResourceGroups().createOrUpdate(resourceGroupName, resourceGroupParameters);
-        while (!resourceManagementClient.getResourceGroups().checkExistence(resourceGroupName).getBody()) {
+        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(resourceGroupName, resourceGroupParameters);
+        while (!resourceManagementClient.getResourceGroupsOperations().checkExistence(resourceGroupName).getBody()) {
             Thread.sleep(5000);
         }
 
         // Create Storage account
         boolean found = false;
-        List<StorageAccount> accounts = storageManagementClient.getStorageAccounts().listByResourceGroup(resourceGroupName).getBody().getValue();
+        List<StorageAccount> accounts = storageManagementClient.getStorageAccountsOperations().listByResourceGroup(resourceGroupName).getBody();
         for (StorageAccount account : accounts) {
             if (account.getName().equals(storageAccountName)) {
                 found = true;
@@ -133,7 +141,7 @@ public class VMCreateGuide {
             storageParameters.setLocation(location);
             storageParameters.setAccountType(AccountType.STANDARD_GRS);
             System.out.println("Creating storage account...");
-            storageManagementClient.getStorageAccounts().create(resourceGroupName, storageAccountName, storageParameters);
+            storageManagementClient.getStorageAccountsOperations().create(resourceGroupName, storageAccountName, storageParameters);
         }
 
         // Create VNET
@@ -152,8 +160,8 @@ public class VMCreateGuide {
         subnet.setAddressPrefix("10.0.0.0/24");
         vnet.getSubnets().add(subnet);
         System.out.println("Creating vnet...");
-        networkManagementClient.getVirtualNetworks().createOrUpdate(resourceGroupName, vnetName, vnet);
-        subnet = networkManagementClient.getSubnets().get(resourceGroupName, vnetName, subnetName, null).getBody();
+        networkManagementClient.getVirtualNetworksOperations().createOrUpdate(resourceGroupName, vnetName, vnet);
+        subnet = networkManagementClient.getSubnetsOperations().get(resourceGroupName, vnetName, subnetName, null).getBody();
 
         // Create public IP
         PublicIPAddress publicIPAddress = new PublicIPAddress();
@@ -163,8 +171,8 @@ public class VMCreateGuide {
         publicIPAddress.getDnsSettings().setDomainNameLabel(domainNameLabel);
 
         System.out.println("Creating public IP...");
-        networkManagementClient.getPublicIPAddresses().createOrUpdate(resourceGroupName, publicIPName, publicIPAddress);
-        publicIPAddress = networkManagementClient.getPublicIPAddresses().get(resourceGroupName, publicIPName, null).getBody();
+        networkManagementClient.getPublicIPAddressesOperations().createOrUpdate(resourceGroupName, publicIPName, publicIPAddress);
+        publicIPAddress = networkManagementClient.getPublicIPAddressesOperations().get(resourceGroupName, publicIPName, null).getBody();
 
         // Create Network interface
         NetworkInterface nic = new NetworkInterface();
@@ -176,13 +184,18 @@ public class VMCreateGuide {
         configuration.setSubnet(subnet);
         configuration.setPublicIPAddress(publicIPAddress);
         nic.getIpConfigurations().add(configuration);
+        NetworkSecurityGroup networkSecurityGroup = new NetworkSecurityGroup();
+        networkSecurityGroup.setLocation(location);
+        networkSecurityGroup.setSubnets(networkManagementClient.getSubnetsOperations().list(resourceGroupName, vnetName).getBody());
+        System.out.println("Creating network security group...");
+        networkSecurityGroup = networkManagementClient.getNetworkSecurityGroupsOperations().createOrUpdate(resourceGroupName, securityGroupName, networkSecurityGroup).getBody();
+        nic.setNetworkSecurityGroup(networkSecurityGroup);
         System.out.println("Creating network interface...");
-        networkManagementClient.getNetworkInterfaces().createOrUpdate(resourceGroupName, networkInterfaceName, nic);
-        nic = networkManagementClient.getNetworkInterfaces().get(resourceGroupName, networkInterfaceName, null).getBody();
+        networkManagementClient.getNetworkInterfacesOperations().createOrUpdate(resourceGroupName, networkInterfaceName, nic);
+        nic = networkManagementClient.getNetworkInterfacesOperations().get(resourceGroupName, networkInterfaceName, null).getBody();
 
         // Get VM Image
-        VirtualMachineImageResource virtualMachineImageResource = new VirtualMachineImageResource();
-        String name = computeManagementClient.getVirtualMachineImages().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
+        String name = computeManagementClient.getVirtualMachineImagesOperations().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
         ImageReference imageReference = new ImageReference();
         imageReference.setOffer(offer);
         imageReference.setPublisher(publisher);
@@ -214,8 +227,8 @@ public class VMCreateGuide {
         nir.setId(nic.getId());
         request.getNetworkProfile().getNetworkInterfaces().add(nir);
         System.out.println("Creating VM...");
-        VirtualMachine vm = computeManagementClient.getVirtualMachines().createOrUpdate(resourceGroupName, vmName, request).getBody();
-        nic = networkManagementClient.getNetworkInterfaces().get(resourceGroupName, networkInterfaceName, null).getBody();
+        VirtualMachine vm = computeManagementClient.getVirtualMachinesOperations().createOrUpdate(resourceGroupName, vmName, request).getBody();
+        nic = networkManagementClient.getNetworkInterfacesOperations().get(resourceGroupName, networkInterfaceName, null).getBody();
 
         // Print results
         System.out.println("__   ____  __    ___              _          _");
@@ -227,15 +240,15 @@ public class VMCreateGuide {
         System.out.println(String.format("System:        %s - %s - %s", publisher, offer, sku));
     }
 
-    private static String selectSubscription(Page<Subscription> subscriptions) {
+    private static String selectSubscription(List<Subscription> subscriptions) {
         System.out.println("Here are your subscriptions:");
         int i = 0;
-        for (; i != subscriptions.getItems().size(); i ++) {
-            Subscription subscription = subscriptions.getItems().get(i);
+        for (; i != subscriptions.size(); i ++) {
+            Subscription subscription = subscriptions.get(i);
             System.out.println(String.format("%d) %s (%s)", i + 1, subscription.getDisplayName(), subscription.getSubscriptionId()));
         }
         System.out.print("Select the number before the subscription name: ");
-        return subscriptions.getItems().get(in.nextInt() - 1).getSubscriptionId();
+        return subscriptions.get(in.nextInt() - 1).getSubscriptionId();
     }
 
     private static String getVMNameFromPrompt() {

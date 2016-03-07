@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.compute.ComputeManagementClient;
@@ -24,8 +23,7 @@ import com.microsoft.azure.management.storage.StorageManagementClientImpl;
 
 public class ResourceOperator extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ResourceFragment.OnFragmentInteractionListener,
-        StorageFragment.OnFragmentInteractionListener {
+        ResourceFragment.OnFragmentInteractionListener {
     SubscriptionInfo subscription;
     ResourceManagementClient rClient;
     StorageManagementClient sClient;
@@ -121,20 +119,20 @@ public class ResourceOperator extends AppCompatActivity
             setTitle(this.getTitle() + " - Resources");
             drawer.closeDrawer(navigationView);
         } else if (id == R.id.nav_storage) {
-            StorageFragment fragment = new StorageFragment();
-            fragment.setRetainInstance(true);
-            fragment.setStorageManagementClient(sClient);
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.resource_operator_main_content, fragment)
-                    .commit();
-
-            // Highlight the selected item, update the title, and close the drawer
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setCheckedItem(0);
-            setTitle(this.getTitle() + " - Storage");
-            drawer.closeDrawer(navigationView);
+//            StorageFragment fragment = new StorageFragment();
+//            fragment.setRetainInstance(true);
+//            fragment.setStorageManagementClient(sClient);
+//            FragmentManager fragmentManager = getFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.resource_operator_main_content, fragment)
+//                    .commit();
+//
+//            // Highlight the selected item, update the title, and close the drawer
+//            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//            navigationView.setCheckedItem(0);
+//            setTitle(this.getTitle() + " - Storage");
+//            drawer.closeDrawer(navigationView);
         } else if (id == R.id.nav_compute) {
 
         } else if (id == R.id.nav_share) {
