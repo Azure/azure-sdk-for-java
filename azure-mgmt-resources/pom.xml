@@ -62,22 +62,6 @@
     </dependency>
   </dependencies>
   <build>
-    <resources>
-      <resource>
-        <directory>target</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/version.txt</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>false</filtering>
-        <excludes>
-          <exclude>**/version.txt</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -104,6 +88,11 @@
           <source>1.7</source>
           <target>1.7</target>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
       </plugin>
 
       <plugin>
