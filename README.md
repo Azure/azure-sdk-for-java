@@ -4,8 +4,27 @@
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [JavaDocs](http://azure.github.io/azure-sdk-for-java). For a list of libraries and how they are organized, please see the [Azure SDK for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
 
 #Download
-
-Download via Maven snapshot repo:
+Download via Maven:
+```xml
+<dependency>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure</artifactId>
+  <version>1.0.0-beta1</version>
+</dependency>
+```
+or Gradle:
+```groovy
+repositories {
+    mavenCentral()
+    ....
+}
+...
+dependencies {
+    compile 'com.microsoft.azure:azure:1.0.0-beta1'
+    ....
+}
+```
+To use the latest snapshot build,
 ```xml
 <repositories>
   <repository>
@@ -37,6 +56,7 @@ dependencies {
     ....
 }
 ```
+You can browse the [snapshot repo](http://adxsnapshots.azurewebsites.net/) and view diffs between builds or master branch. Request a deploy in "Issues" if you find features/bug fixes in master but not in the latest snapshot build.
 
 #Getting Started
 You will need Java v1.7+. If you would like to develop on the SDK, you will also need maven.
