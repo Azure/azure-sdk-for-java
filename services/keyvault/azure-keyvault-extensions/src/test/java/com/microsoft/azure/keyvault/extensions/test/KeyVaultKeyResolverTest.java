@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.extensions.KeyVaultKeyResolver;
-import com.microsoft.azure.keyvault.extensions.SymmetricKey;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.Secret;
 

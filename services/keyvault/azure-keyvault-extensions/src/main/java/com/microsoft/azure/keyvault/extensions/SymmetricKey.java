@@ -50,8 +50,6 @@ public class SymmetricKey implements IKey {
     public static final int KeySize384 = 384 >> 3;
     public static final int KeySize512 = 512 >> 3;
 
-    private static final int DefaultKeySize = KeySize256;
-
     private final String   _kid;
     private final byte[]   _key;
     private final Provider _provider;
