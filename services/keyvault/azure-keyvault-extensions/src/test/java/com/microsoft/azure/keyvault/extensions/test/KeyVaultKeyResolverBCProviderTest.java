@@ -4,11 +4,16 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.binary.Base64;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.core.IKey;
@@ -33,7 +38,34 @@ import com.microsoft.azure.keyvault.models.Secret;
 //See the Apache License, Version 2.0 for the specific language
 //governing permissions and limitations under the License.
 
-public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBase {
+public class KeyVaultKeyResolverBCProviderTest extends KeyVaultExtensionsIntegrationTestBase {
+
+    private Provider _provider = null;
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        try {
+            _provider = (Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance();
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex.getMessage());
+        } catch (IllegalAccessException ex) {
+            throw new RuntimeException(ex.getMessage());
+        } catch (InstantiationException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
 
 	private static final String KEY_NAME    = "JavaExtensionKey";
 	private static final String SECRET_NAME = "JavaExtensionSecret";
@@ -52,7 +84,7 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
 			try
 			{
 				// ctor with client
-				KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
+				KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient, _provider );
 
 				Future<IKey> baseKeyFuture    = resolver.resolveKeyAsync( bundle.getKeyIdentifier().getBaseIdentifier() );
 				Future<IKey> versionKeyFuture = resolver.resolveKeyAsync( bundle.getKeyIdentifier().getIdentifier() );
@@ -156,7 +188,7 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
              try
              {
                  // ctor with client
-                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
+                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient, _provider );
 
                  IKey baseKey    = resolver.resolveKeyAsync( secret.getSecretIdentifier().getBaseIdentifier() ).get();
                  IKey versionKey = resolver.resolveKeyAsync( secret.getSecretIdentifier().getIdentifier() ).get();
@@ -220,7 +252,7 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
              try
              {
                  // ctor with client
-                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient );
+                 KeyVaultKeyResolver resolver = new KeyVaultKeyResolver( keyVaultClient, _provider );
 
                  IKey baseKey    = resolver.resolveKeyAsync( secret.getSecretIdentifier().getBaseIdentifier() ).get();
                  IKey versionKey = resolver.resolveKeyAsync( secret.getSecretIdentifier().getIdentifier() ).get();
