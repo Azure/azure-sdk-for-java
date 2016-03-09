@@ -22,7 +22,6 @@ public abstract class SignatureAlgorithm extends Algorithm {
 
     protected SignatureAlgorithm(String name) {
         super(name);
-        // TODO Auto-generated constructor stub
     }
 
 }

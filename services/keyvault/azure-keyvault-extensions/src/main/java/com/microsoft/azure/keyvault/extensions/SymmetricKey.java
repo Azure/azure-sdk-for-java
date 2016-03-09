@@ -166,7 +166,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateDecryptor(_key, iv, authenticationData);
+            transform = algo.CreateDecryptor(_key, iv, authenticationData, _provider );
         } catch (Exception e) {
             return new FutureExecutionException<byte[]>(e);
         }
@@ -219,7 +219,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateEncryptor(_key, iv, authenticationData);
+            transform = algo.CreateEncryptor(_key, iv, authenticationData, _provider);
         } catch (Exception e) {
             return new FutureExecutionException<Triple<byte[], byte[], String>>(e);
         }
@@ -320,13 +320,11 @@ public class SymmetricKey implements IKey {
 
     @Override
     public Future<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Future<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) {
-        // TODO Auto-generated method stub
         return null;
     }
 

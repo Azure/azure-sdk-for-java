@@ -18,6 +18,7 @@
 
 package com.microsoft.azure.keyvault.extensions;
 
+import java.security.Provider;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.binary.Base64;
@@ -32,6 +33,8 @@ import com.microsoft.azure.keyvault.models.SecretIdentifier;
 
 public class KeyVaultKeyResolver implements IKeyResolver {
 
+    static final Base64 _base64 = new Base64(-1, null, true);
+    
     class FutureKeyFromKey extends FutureAdapter<KeyBundle, IKey> {
 
         protected FutureKeyFromKey(Future<KeyBundle> inner) {
@@ -49,9 +52,8 @@ public class KeyVaultKeyResolver implements IKeyResolver {
         }
     }
 
-    static class FutureKeyFromSecret extends FutureAdapter<Secret, IKey> {
+    class FutureKeyFromSecret extends FutureAdapter<Secret, IKey> {
 
-        static final Base64 _base64 = new Base64(-1, null, true);
 
         protected FutureKeyFromSecret(Future<Secret> inner) {
             super(inner);
@@ -64,7 +66,7 @@ public class KeyVaultKeyResolver implements IKeyResolver {
                 byte[] keyBytes = _base64.decode(secretBundle.getValue());
 
                 if (keyBytes != null) {
-                    return new SymmetricKey(secretBundle.getId(), keyBytes);
+                    return new SymmetricKey(secretBundle.getId(), keyBytes, _provider );
                 }
             }
 
@@ -73,9 +75,16 @@ public class KeyVaultKeyResolver implements IKeyResolver {
     }
 
     private final KeyVaultClient _client;
+    private final Provider       _provider;
 
     public KeyVaultKeyResolver(KeyVaultClient client) {
-        _client = client;
+        _client   = client;
+        _provider = null;
+    }
+    
+    public KeyVaultKeyResolver(KeyVaultClient client, Provider provider) {
+    	_client   = client;
+    	_provider = provider;
     }
 
     private Future<IKey> resolveKeyFromSecretAsync(String kid) {

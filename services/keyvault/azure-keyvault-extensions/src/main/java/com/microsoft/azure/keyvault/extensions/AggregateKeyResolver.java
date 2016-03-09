@@ -19,6 +19,8 @@
 package com.microsoft.azure.keyvault.extensions;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -70,15 +72,16 @@ public class AggregateKeyResolver implements IKeyResolver {
                 throw new InterruptedException();
             }
 
-            // TODO: Concurrency
-            for (IKeyResolver resolver : _resolvers) {
-                Future<IKey> futureKey = resolver.resolveKeyAsync(_kid);
-
-                _result = futureKey.get();
-
-                if (_result != null) {
-                    break;
-                }
+            synchronized( _resolvers ) {
+	            for (IKeyResolver resolver : _resolvers) {
+	                Future<IKey> futureKey = resolver.resolveKeyAsync(_kid);
+	
+	                _result = futureKey.get();
+	
+	                if (_result != null) {
+	                    break;
+	                }
+	            }
             }
 
             // Mark done
@@ -95,15 +98,16 @@ public class AggregateKeyResolver implements IKeyResolver {
                 throw new InterruptedException();
             }
 
-            // TODO: Concurrency
-            for (IKeyResolver resolver : _resolvers) {
-                Future<IKey> futureKey = resolver.resolveKeyAsync(_kid);
-
-                _result = futureKey.get(timeout, unit);
-
-                if (_result != null) {
-                    break;
-                }
+            synchronized( _resolvers ) {
+	            for (IKeyResolver resolver : _resolvers) {
+	                Future<IKey> futureKey = resolver.resolveKeyAsync(_kid);
+	
+	                _result = futureKey.get(timeout, unit);
+	
+	                if (_result != null) {
+	                    break;
+	                }
+	            }
             }
 
             // Mark done
@@ -113,16 +117,18 @@ public class AggregateKeyResolver implements IKeyResolver {
         }
     }
 
-    private final ArrayList<IKeyResolver> _resolvers;
+    private final List<IKeyResolver> _resolvers;
 
     public AggregateKeyResolver() {
-        // TODO: Concurrency
-        _resolvers = new ArrayList<IKeyResolver>();
+
+        _resolvers = Collections.synchronizedList(new ArrayList<IKeyResolver>());
     }
 
     public void Add(IKeyResolver resolver) {
-        // TODO: Concurrency
-        _resolvers.add(resolver);
+
+    	synchronized( _resolvers ) {
+	        _resolvers.add(resolver);
+    	}
     }
 
     @Override
