@@ -55,6 +55,7 @@
 	
 	 <modules> 
 	    <module>azure-eventhubs</module>
+	    <module>azure-eventhubs-log4j-appender</module>
 	    <module>azure-eventhubs-samples</module>
 	 </modules>
 
