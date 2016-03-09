@@ -3,12 +3,19 @@ package com.microsoft.azure.keyvault.extensions.test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.crypto.Cipher;
+
 import org.apache.commons.codec.binary.Base64;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.core.IKey;
@@ -34,7 +41,34 @@ import com.microsoft.azure.keyvault.models.Secret;
 //See the Apache License, Version 2.0 for the specific language
 //governing permissions and limitations under the License.
 
-public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBase {
+public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultExtensionsIntegrationTestBase {
+    
+    private static boolean hasUnlimitedCrypto() {
+        try {
+            return Cipher.getMaxAllowedKeyLength("RC5") >= 256;
+        } catch (NoSuchAlgorithmException e) {
+            return false;
+        }
+    }
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+    }
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+    
+	private static final boolean _unlimited = hasUnlimitedCrypto();
+	 
 
 	private static final String KEY_NAME    = "JavaExtensionKey";
 	private static final String SECRET_NAME = "JavaExtensionSecret";
@@ -170,29 +204,40 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
 
                  try {
                      encrypted = baseKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
+                     
+                     if (!_unlimited) fail("Expected ExecutionException");
                  } catch (InterruptedException e) {
                      fail("InterrupedException");
                  } catch (ExecutionException e) {
-                     fail("ExecutionException");
+                     // In the limited case, the failure should be InvalidKeyException
+                     // In the unlimited case, this should not fail
+                     if (!_unlimited) {
+                     	Throwable cause = e.getCause();
+                     	if (cause == null || !(cause instanceof InvalidKeyException)) fail("ExecutionException");
+                     } else {
+                         fail("ExecutionException");
+                     }
                  } catch (NoSuchAlgorithmException e) {
                      fail("NoSuchAlgorithmException");
                  }
 
-                 // Assert
-                 assertArrayEquals(EK, encrypted);
+                 if ( _unlimited ) {
+	                 // Assert
+	                 assertArrayEquals(EK, encrypted);
 
-                 try {
-                     encrypted = versionKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
-                 } catch (InterruptedException e) {
-                     fail("InterrupedException");
-                 } catch (ExecutionException e) {
-                     fail("ExecutionException");
-                 } catch (NoSuchAlgorithmException e) {
-                     fail("NoSuchAlgorithmException");
+	                 try {
+	                     encrypted = versionKey.wrapKeyAsync(CEK, "A192KW").get().getLeft();
+	                 } catch (InterruptedException e) {
+	                     fail("InterrupedException");
+	                 } catch (ExecutionException e) {
+	                     fail("ExecutionException");
+	                 } catch (NoSuchAlgorithmException e) {
+	                     fail("NoSuchAlgorithmException");
+	                 }
+	
+	                 // Assert
+	                 assertArrayEquals(EK, encrypted);
                  }
-
-                 // Assert
-                 assertArrayEquals(EK, encrypted);
              }
              finally
              {
@@ -234,29 +279,40 @@ public class KeyVaultKeyResolverTest extends KeyVaultExtensionsIntegrationTestBa
 
                  try {
                      encrypted = baseKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
+                     
+                     if (!_unlimited) fail("Expected ExecutionException");
                  } catch (InterruptedException e) {
                      fail("InterrupedException");
                  } catch (ExecutionException e) {
-                     fail("ExecutionException");
+                     // In the limited case, the failure should be InvalidKeyException
+                     // In the unlimited case, this should not fail
+                     if (!_unlimited) {
+                     	Throwable cause = e.getCause();
+                     	if (cause == null || !(cause instanceof InvalidKeyException)) fail("ExecutionException");
+                     } else {
+                         fail("ExecutionException");
+                     }
                  } catch (NoSuchAlgorithmException e) {
                      fail("NoSuchAlgorithmException");
                  }
 
-                 // Assert
-                 assertArrayEquals(EK, encrypted);
-
-                 try {
-                     encrypted = versionKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
-                 } catch (InterruptedException e) {
-                     fail("InterrupedException");
-                 } catch (ExecutionException e) {
-                     fail("ExecutionException");
-                 } catch (NoSuchAlgorithmException e) {
-                     fail("NoSuchAlgorithmException");
+                 if ( _unlimited ) {
+	                 // Assert
+	                 assertArrayEquals(EK, encrypted);
+	
+	                 try {
+	                     encrypted = versionKey.wrapKeyAsync(CEK, "A256KW").get().getLeft();
+	                 } catch (InterruptedException e) {
+	                     fail("InterrupedException");
+	                 } catch (ExecutionException e) {
+	                     fail("ExecutionException");
+	                 } catch (NoSuchAlgorithmException e) {
+	                     fail("NoSuchAlgorithmException");
+	                 }
+	
+	                 // Assert
+	                 assertArrayEquals(EK, encrypted);
                  }
-
-                 // Assert
-                 assertArrayEquals(EK, encrypted);
              }
              finally
              {
