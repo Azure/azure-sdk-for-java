@@ -117,8 +117,8 @@ public final class EventHubsAppender extends AbstractAppender
 			
 			LOGGER.error(String.format(Locale.US, "[%s] Appender failed to logEvent to EventHub.", this.getName()));
 			
-			// to avoid replay
-			if (this.logEvents.remove(logEvent) && serializedLogEvent != null)
+			// remove the current LogEvent from the inMem Q - to avoid replay
+			if (serializedLogEvent != null && this.logEvents.remove(serializedLogEvent))
 			{
 				this.currentBufferedSizeBytes.addAndGet(-1 * serializedLogEvent.length);
 			}
