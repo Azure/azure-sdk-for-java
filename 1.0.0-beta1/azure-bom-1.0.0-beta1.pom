@@ -1,0 +1,73 @@
+<!--
+ Copyright (c) Microsoft Corporation. All rights reserved.
+ Licensed under the MIT License. See License.txt in the project root for
+ license information.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-bom</artifactId>
+  <version>1.0.0-beta1</version>
+  <packaging>pom</packaging>
+
+  <name>Microsoft Azure SDK</name>
+  <description>This package contains Microsoft Azure SDK for Java.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>v1.0.0-beta1</tag>
+  </scm>
+
+  <properties>
+    <projectVersion>1.0.0-SNAPSHOT</projectVersion>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>adx-snapshots</id>
+      <name>Azure ADX Snapshots</name>
+      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <modules>
+    <module>azure</module>
+  </modules>
+  <build>
+  	<pluginManagement>
+  		<plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.3</version>
+        </plugin>
+  		</plugins>
+  	</pluginManagement>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ftp</artifactId>
+        <version>2.10</version>
+      </extension>
+    </extensions>
+  </build>
+</project>
