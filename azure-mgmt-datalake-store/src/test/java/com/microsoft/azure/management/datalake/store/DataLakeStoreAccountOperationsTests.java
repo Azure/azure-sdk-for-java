@@ -1,4 +1,4 @@
-package com.microsoft.azure.management.resources;
+package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 
@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.List;
 
-public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
+public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagementTestBase {
     @Test
     public void canCreateResourceGroup() throws Exception {
         String rgName = "javacsmrg";

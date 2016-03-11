@@ -289,5 +289,7 @@
     <module>../azure-mgmt-storage</module>
     <module>../azure-mgmt-network</module>
     <module>../azure-mgmt-website</module>
+    <module>../azure-mgmt-datalake-analytics</module>
+    <module>../azure-mgmt-datalake-store</module>
   </modules>
 </project>

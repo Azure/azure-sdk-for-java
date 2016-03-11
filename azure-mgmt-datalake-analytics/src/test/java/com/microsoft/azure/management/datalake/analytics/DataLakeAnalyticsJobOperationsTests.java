@@ -1,45 +1,150 @@
-package com.microsoft.azure.management.resources;
+package com.microsoft.azure.management.datalake.analytics;
 
+import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
+import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccountProperties;
+import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
+import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
+import com.microsoft.azure.management.datalake.analytics.models.JobResult;
+import com.microsoft.azure.management.datalake.analytics.models.JobState;
+import com.microsoft.azure.management.datalake.analytics.models.JobType;
+import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
-    @Test
-    public void canCreateResourceGroup() throws Exception {
-        String rgName = "javacsmrg";
-        String location = "southcentralus";
-        // Create
+public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManagementTestBase {
+    private static String rgName = generateName("javaadlarg");
+    private static String location = "eastus2";
+    private static String adlsAcct = generateName("javaadlsacct");
+    private static String adlaAcct = generateName("javaadlaacct");
+    private static String jobScript = "DROP DATABASE IF EXISTS testdb; CREATE DATABASE testdb;";
+
+    @BeforeClass
+    public static void setup() throws Exception {
+        createClients();
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
-        group.setTags(new HashMap<String, String>());
-        group.getTags().put("department", "finance");
-        group.getTags().put("tagname", "tagvalue");
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
-        // List
-        List<ResourceGroup> listResult = resourceManagementClient.getResourceGroupsOperations().list(null, null).getBody();
-        ResourceGroup groupResult = null;
-        for (ResourceGroup rg : listResult) {
-            if (rg.getName().equals(rgName)) {
-                groupResult = rg;
+        // create storage and ADLS accounts, setting the accessKey
+        DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
+        adlsAccount.setLocation(location);
+        adlsAccount.setName(adlsAcct);
+        dataLakeStoreAccountManagementClient.getAccountOperations().create(rgName, adlsAcct, adlsAccount);
+
+        // Create the ADLA acct to use.
+        DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
+        List<DataLakeStoreAccountInfo> adlsAccts = new ArrayList<DataLakeStoreAccountInfo>();
+        DataLakeStoreAccountInfo adlsInfo = new DataLakeStoreAccountInfo();
+        adlsInfo.setName(adlsAcct);
+        adlsAccts.add(adlsInfo);
+
+        createProperties.setDataLakeStoreAccounts(adlsAccts);
+        createProperties.setDefaultDataLakeStoreAccount(adlsAcct);
+
+        DataLakeAnalyticsAccount createParams = new DataLakeAnalyticsAccount();
+        createParams.setLocation(location);
+        createParams.setName(adlaAcct);
+        createParams.setProperties(createProperties);
+        dataLakeAnalyticsAccountManagementClient.getAccountOperations().create(rgName, adlaAcct, createParams);
+        // Sleep for two minutes to ensure the account is totally provisioned.
+        Thread.sleep(120000);
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        // delete the ADLA account first
+        dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
+        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+    }
+    @Test
+    public void canSubmitGetListAndCancelJobs() throws Exception {
+        // submit a job
+        JobInformation jobToSubmit = new JobInformation();
+        USqlJobProperties jobProperties = new USqlJobProperties();
+        jobProperties.setScript(jobScript);
+        jobToSubmit.setName("java azure sdk data lake analytics job");
+        jobToSubmit.setDegreeOfParallelism(2);
+        jobToSubmit.setType(JobType.USQL);
+        jobToSubmit.setProperties(jobProperties);
+        String jobId = UUID.randomUUID().toString();
+        String secondJobId = UUID.randomUUID().toString();
+
+        JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(jobId, adlaAcct, jobToSubmit).getBody();
+        Assert.assertNotNull(jobCreateResponse);
+
+        // cancel the job
+        dataLakeAnalyticsJobManagementClient.getJobOperations().cancel(jobId, adlaAcct);
+
+        // Get the job and ensure it was cancelled
+        JobInformation cancelledJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(jobId, adlaAcct).getBody();
+        Assert.assertEquals(JobResult.CANCELLED, cancelledJobResponse.getResult());
+        Assert.assertNotNull(cancelledJobResponse.getErrorMessage());
+        Assert.assertTrue(cancelledJobResponse.getErrorMessage().size() >= 1);
+
+        // Resubmit and wait for job to finish
+        jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(secondJobId, adlaAcct, jobToSubmit).getBody();
+        Assert.assertNotNull(jobCreateResponse);
+
+        JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+        Assert.assertNotNull(getJobResponse);
+
+        int maxWaitInSeconds = 180; // 3 minutes should be long enough
+        int curWaitInSeconds = 0;
+
+        while (getJobResponse.getState() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds)
+        {
+            // wait 5 seconds before polling again
+            Thread.sleep(5000);
+            curWaitInSeconds += 5;
+            getJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+            Assert.assertNotNull(getJobResponse);
+        }
+
+        Assert.assertTrue(curWaitInSeconds <= maxWaitInSeconds);
+
+        // Verify the job completes successfully
+        Assert.assertTrue(
+                String.format("Job: {0} did not return success. Current job state: {1}. Actual result: {2}. Error (if any): {3}",
+                getJobResponse.getJobId(), getJobResponse.getState(), getJobResponse.getResult(), getJobResponse.getErrorMessage()),
+                getJobResponse.getState() == JobState.ENDED && getJobResponse.getResult() == JobResult.SUCCEEDED);
+
+        List<JobInformation> listJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().list(adlaAcct, null, null, null, null, null, null, null, null, null).getBody();
+        Assert.assertNotNull(listJobResponse);
+        boolean foundJob = false;
+        for(JobInformation eachJob : listJobResponse) {
+            if (eachJob.getJobId().equals(secondJobId)) {
+                foundJob = true;
                 break;
             }
         }
-        Assert.assertNotNull(groupResult);
-        Assert.assertEquals("finance", groupResult.getTags().get("department"));
-        Assert.assertEquals("tagvalue", groupResult.getTags().get("tagname"));
-        Assert.assertEquals(location, groupResult.getLocation());
-        // Get
-        ResourceGroup getGroup = resourceManagementClient.getResourceGroupsOperations().get(rgName).getBody();
-        Assert.assertNotNull(getGroup);
-        Assert.assertEquals(rgName, getGroup.getName());
-        Assert.assertEquals(location, getGroup.getLocation());
-        // Delete
-        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
-        Assert.assertFalse(resourceManagementClient.getResourceGroupsOperations().checkExistence(rgName).getBody());
+
+        Assert.assertTrue(foundJob);
+
+        // Just compile the job, which requires a jobId in the job object.
+        jobToSubmit.setJobId(getJobResponse.getJobId());
+        JobInformation compileResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().build(adlaAcct, jobToSubmit).getBody();
+        Assert.assertNotNull(compileResponse);
+
+        // list the jobs both with a hand crafted query string and using the parameters
+        listJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().list(adlaAcct, null, null, null, null, "jobId", null, null, null, null).getBody();
+        Assert.assertNotNull(listJobResponse);
+
+        foundJob = false;
+        for(JobInformation eachJob : listJobResponse) {
+            if (eachJob.getJobId().equals(secondJobId)) {
+                foundJob = true;
+                break;
+            }
+        }
+
+        Assert.assertTrue(foundJob);
     }
 }
