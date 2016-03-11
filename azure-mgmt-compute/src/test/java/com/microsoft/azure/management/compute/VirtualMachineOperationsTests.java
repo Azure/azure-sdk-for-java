@@ -122,8 +122,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         configuration.setPrivateIPAllocationMethod("Dynamic");
         configuration.setSubnet(subnet);
         if (publicIP != null) {
-            configuration.setPublicIPAddress(new PublicIPAddress());
-            configuration.getPublicIPAddress().setId(publicIP);
+            configuration.setPublicIPAddress(networkManagementClient.getPublicIPAddressesOperations().get(rgName, publicIP, null).getBody());
         }
         nic.getIpConfigurations().add(configuration);
         networkManagementClient.getNetworkInterfacesOperations().createOrUpdate(rgName, "javanic", nic);
