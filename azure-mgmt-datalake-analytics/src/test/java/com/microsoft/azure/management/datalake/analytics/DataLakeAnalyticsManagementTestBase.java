@@ -41,7 +41,6 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(credentials);
         dataLakeAnalyticsAccountManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         dataLakeAnalyticsAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-
         dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(credentials);
         dataLakeAnalyticsJobManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
         dataLakeAnalyticsJobManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);

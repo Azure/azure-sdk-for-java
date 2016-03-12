@@ -137,6 +137,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "  T(a, b);\n" +
             "END;", dbName, tableName, tvfName, viewName, procName);
 
+    @BeforeClass
     public static void setup() throws Exception {
         createClients();
         ResourceGroup group = new ResourceGroup();
@@ -173,8 +174,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     @AfterClass
     public static void cleanup() throws Exception {
         // delete the ADLA account first
-        dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
-        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        try {
+            dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
+            resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        }
+        catch (Exception e) {
+            // ignore failures during cleanup, as it is best effort
+        }
     }
     @Test
     public void canGetCatalogItems() throws Exception {

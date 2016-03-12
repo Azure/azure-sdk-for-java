@@ -54,9 +54,13 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
 
     @AfterClass
     public static void cleanup() throws Exception {
-        // delete the ADLA account first
-        dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
-        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        try {
+            dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
+            resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        }
+        catch (Exception e) {
+            // ignore failures during cleanup, as it is best effort
+        }
     }
     @Test
     public void canCreateGetUpdateDeleteAdlaAccount() throws Exception {
@@ -124,8 +128,9 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         Assert.assertNotNull(discoveredAcct.getId());
         Assert.assertTrue(discoveredAcct.getId().contains(adlaAcct));
         Assert.assertEquals(2, discoveredAcct.getTags().size());
-        Assert.assertEquals(1, discoveredAcct.getProperties().getDataLakeStoreAccounts().size());
-        Assert.assertEquals(adlsAcct, discoveredAcct.getProperties().getDataLakeStoreAccounts().get(0).getName());
+
+        // the properties should be empty when we do list calls
+        Assert.assertNull(discoveredAcct.getProperties().getDataLakeStoreAccounts());
 
         // list within a resource group
         listResult = dataLakeAnalyticsAccountManagementClient.getAccountOperations().listByResourceGroup(rgName, null, null, null, null, null, null, null, null, null).getBody();
@@ -143,8 +148,9 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         Assert.assertNotNull(discoveredAcct.getId());
         Assert.assertTrue(discoveredAcct.getId().contains(adlaAcct));
         Assert.assertEquals(2, discoveredAcct.getTags().size());
-        Assert.assertEquals(1, discoveredAcct.getProperties().getDataLakeStoreAccounts().size());
-        Assert.assertEquals(adlsAcct, discoveredAcct.getProperties().getDataLakeStoreAccounts().get(0).getName());
+
+        // the properties should be empty when we do list calls
+        Assert.assertNull(discoveredAcct.getProperties().getDataLakeStoreAccounts());
 
         // Add, list, get and remove a data lake store account
         AddDataLakeStoreParameters addAdlsParams = new AddDataLakeStoreParameters();
