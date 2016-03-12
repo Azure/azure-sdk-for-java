@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Usage {
     /**
-     * Gets or sets an enum describing the unit of measurement. Possible
-     * values include: 'Count'.
+     * Gets or sets an enum describing the unit of measurement.
      */
     @JsonProperty(required = true)
     private String unit;
@@ -40,6 +39,13 @@ public class Usage {
      */
     @JsonProperty(required = true)
     private UsageName name;
+
+    /**
+     * Creates an instance of Usage class.
+     */
+    public Usage() {
+        unit = "Count";
+    }
 
     /**
      * Get the unit value.
