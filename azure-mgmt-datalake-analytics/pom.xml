@@ -58,6 +58,12 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>azure-mgmt-datalake-store</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-storage</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
