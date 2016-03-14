@@ -329,6 +329,79 @@ public final class DomainsOperationsImpl implements DomainsOperations {
      *
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (domainName == null) {
+            throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean forceHardDeleteDomain = null;
+        Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), forceHardDeleteDomain, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDomainDelegate(call.execute());
+    }
+
+    /**
+     * Deletes a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteDomainAsync(String resourceGroupName, String domainName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (domainName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean forceHardDeleteDomain = null;
+        Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), forceHardDeleteDomain, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteDomainDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Deletes a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
      * @param forceHardDeleteDomain If true then the domain will be deleted immediately instead of after 24 hours
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

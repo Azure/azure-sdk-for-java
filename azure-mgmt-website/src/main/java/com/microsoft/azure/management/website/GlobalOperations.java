@@ -112,6 +112,24 @@ public interface GlobalOperations {
     /**
      * Gets all App Service Plans for a subcription.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ServerFarmCollection> getAllServerFarms() throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAllServerFarmsAsync(final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
      * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
                  Retrieval of all properties may increase the API latency.
      * @throws CloudException exception thrown from REST call

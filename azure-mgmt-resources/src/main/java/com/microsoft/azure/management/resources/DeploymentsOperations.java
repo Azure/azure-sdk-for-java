@@ -224,6 +224,26 @@ public interface DeploymentsOperations {
      * Get a list of deployments.
      *
      * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;DeploymentExtended&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<DeploymentExtended>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get a list of deployments.
+     *
+     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtended> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get a list of deployments.
+     *
+     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all deployments.
      * @throws CloudException exception thrown from REST call

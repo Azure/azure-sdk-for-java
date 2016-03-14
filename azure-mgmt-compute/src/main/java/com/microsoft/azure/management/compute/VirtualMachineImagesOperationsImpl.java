@@ -192,6 +192,101 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
      * @param publisherName the String value
      * @param offer the String value
      * @param skus the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus) throws CloudException, IOException, IllegalArgumentException {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (publisherName == null) {
+            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
+        }
+        if (offer == null) {
+            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
+        }
+        if (skus == null) {
+            throw new IllegalArgumentException("Parameter skus is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        VirtualMachineImageResource filter = null;
+        Integer top = null;
+        String orderby = null;
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listDelegate(call.execute());
+    }
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (location == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            return null;
+        }
+        if (publisherName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+            return null;
+        }
+        if (offer == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter offer is required and cannot be null."));
+            return null;
+        }
+        if (skus == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter skus is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final VirtualMachineImageResource filter = null;
+        final Integer top = null;
+        final String orderby = null;
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value

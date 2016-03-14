@@ -35,6 +35,34 @@ public interface RoleAssignmentsOperations {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets role assignments of the resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<RoleAssignment> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets role assignments of the resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
      * @param filter The filter to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -58,6 +86,26 @@ public interface RoleAssignmentsOperations {
      */
     ServiceCall listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final RoleAssignmentFilter filter, final ListOperationCallback<RoleAssignment> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets role assignments of the resource group.
+     *
+     * @param resourceGroupName Resource group name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<RoleAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets role assignments of the resource group.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listForResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<RoleAssignment> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets role assignments of the resource group.
      *
@@ -220,6 +268,24 @@ public interface RoleAssignmentsOperations {
     /**
      * Gets role assignments of the subscription.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<RoleAssignment>> list() throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets role assignments of the subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final ListOperationCallback<RoleAssignment> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets role assignments of the subscription.
+     *
      * @param filter The filter to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -238,6 +304,26 @@ public interface RoleAssignmentsOperations {
      */
     ServiceCall listAsync(final RoleAssignmentFilter filter, final ListOperationCallback<RoleAssignment> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets role assignments of the scope.
+     *
+     * @param scope Scope.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<RoleAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets role assignments of the scope.
+     *
+     * @param scope Scope.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listForScopeAsync(final String scope, final ListOperationCallback<RoleAssignment> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets role assignments of the scope.
      *

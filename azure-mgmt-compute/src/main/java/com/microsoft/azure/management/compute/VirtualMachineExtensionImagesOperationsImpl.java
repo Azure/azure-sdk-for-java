@@ -252,6 +252,92 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
      * @param location the String value
      * @param publisherName the String value
      * @param type the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type) throws CloudException, IOException, IllegalArgumentException {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (publisherName == null) {
+            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Parameter type is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        VirtualMachineImageResource filter = null;
+        Integer top = null;
+        String orderby = null;
+        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listVersionsDelegate(call.execute());
+    }
+
+    /**
+     * Gets a list of virtual machine extension image versions.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param type the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listVersionsAsync(String location, String publisherName, String type, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (location == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            return null;
+        }
+        if (publisherName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
+            return null;
+        }
+        if (type == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter type is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final VirtualMachineImageResource filter = null;
+        final Integer top = null;
+        final String orderby = null;
+        Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listVersionsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets a list of virtual machine extension image versions.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param type the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value

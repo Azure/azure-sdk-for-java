@@ -89,6 +89,24 @@ public interface GlobalDomainRegistrationOperations {
     /**
      * Checks if a domain is available for registration.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DomainAvailablilityCheckResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailability() throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Checks if a domain is available for registration.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall checkDomainAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResult> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Checks if a domain is available for registration.
+     *
      * @param name Name of the object
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

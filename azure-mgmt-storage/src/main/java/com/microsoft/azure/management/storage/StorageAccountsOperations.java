@@ -31,6 +31,26 @@ public interface StorageAccountsOperations {
      * Checks that account name is valid and is not in use.
      *
      * @param name the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CheckNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Checks that account name is valid and is not in use.
+     *
+     * @param name the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityResult> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Checks that account name is valid and is not in use.
+     *
+     * @param name the String value
      * @param type the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

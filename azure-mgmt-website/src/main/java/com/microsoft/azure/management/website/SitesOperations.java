@@ -633,6 +633,28 @@ public interface SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<SiteCollection> getSiteSlots(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteSlotsAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param propertiesToInclude List of app properties to include in the response
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -653,6 +675,26 @@ public interface SitesOperations {
      */
     ServiceCall getSiteSlotsAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<SiteCollection> getSites(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSitesAsync(String resourceGroupName, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets the web apps for a subscription in the specified resource group.
      *
@@ -685,6 +727,28 @@ public interface SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Site> getSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteAsync(String resourceGroupName, String name, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param propertiesToInclude Additional web app properties included in the response
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -705,6 +769,31 @@ public interface SitesOperations {
      */
     ServiceCall getSiteAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Site> createOrUpdateSite(String resourceGroupName, String name, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall createOrUpdateSiteAsync(String resourceGroupName, String name, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
     /**
      * Creates a new web app or modifies an existing web app.
      *
@@ -747,6 +836,30 @@ public interface SitesOperations {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
      * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Site> beginCreateOrUpdateSite(String resourceGroupName, String name, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
      * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
                  only used for app creation
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
@@ -776,6 +889,28 @@ public interface SitesOperations {
      */
     ServiceCall beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, Site siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> deleteSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall deleteSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes a web app.
      *
@@ -813,6 +948,30 @@ public interface SitesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Site> getSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param propertiesToInclude Additional web app properties included in the response
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -834,6 +993,33 @@ public interface SitesOperations {
      */
     ServiceCall getSiteSlotAsync(String resourceGroupName, String name, String slot, String propertiesToInclude, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Site> createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
     /**
      * Creates a new web app or modifies an existing web app.
      *
@@ -879,6 +1065,32 @@ public interface SitesOperations {
      * @param name Name of the web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Site> beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
      * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
                  only used for app creation
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
@@ -909,6 +1121,30 @@ public interface SitesOperations {
      */
     ServiceCall beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, Site siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> deleteSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall deleteSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes a web app.
      *
@@ -1154,6 +1390,26 @@ public interface SitesOperations {
      */
     ServiceCall getSiteSnapshotsSlotAsync(String name, String resourceGroupName, String slot, String subscriptionName, String webspaceName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DeletedSiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<DeletedSiteCollection> getDeletedSites(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getDeletedSitesAsync(String resourceGroupName, final ServiceCallback<DeletedSiteCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets deleted web apps in subscription.
      *
@@ -3483,6 +3739,30 @@ public interface SitesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -3504,6 +3784,28 @@ public interface SitesOperations {
      */
     ServiceCall getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, String filter, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<CsmUsageQuotaCollection> getSiteUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets the quota usage numbers for web app.
      *
@@ -3535,6 +3837,30 @@ public interface SitesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ResourceMetricCollection> getSiteMetricsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
@@ -3558,6 +3884,28 @@ public interface SitesOperations {
      */
     ServiceCall getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, Boolean details, String filter, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ResourceMetricCollection> getSiteMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets metrics for web app.
      *
@@ -3638,6 +3986,28 @@ public interface SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<InputStream> listSitePublishingProfileXml(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listSitePublishingProfileXmlAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param format Name of the format. Valid values are: 
                  FileZilla3
                  WebDeploy -- default
@@ -3664,6 +4034,30 @@ public interface SitesOperations {
      */
     ServiceCall listSitePublishingProfileXmlAsync(String resourceGroupName, String name, String format, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<InputStream> listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets the publishing profile for web app.
      *
@@ -3702,6 +4096,28 @@ public interface SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> restartSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall restartSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
      * @param synchronous If true then the API will block until the app has been restarted
      * @throws CloudException exception thrown from REST call
@@ -3724,6 +4140,30 @@ public interface SitesOperations {
      */
     ServiceCall restartSiteAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> restartSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall restartSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
     /**
      * Restarts web app.
      *

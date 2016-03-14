@@ -78,6 +78,65 @@ public final class ProviderOperationsMetadataOperationsImpl implements ProviderO
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param apiVersion the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ProviderOperationsMetadata object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ProviderOperationsMetadata> get(String resourceProviderNamespace, String apiVersion) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        String expand = null;
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, apiVersion, expand, this.client.getAcceptLanguage());
+        return getDelegate(call.execute());
+    }
+
+    /**
+     * Gets provider operations metadata.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param apiVersion the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getAsync(String resourceProviderNamespace, String apiVersion, final ServiceCallback<ProviderOperationsMetadata> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceProviderNamespace == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            return null;
+        }
+        if (apiVersion == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+            return null;
+        }
+        final String expand = null;
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, apiVersion, expand, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ProviderOperationsMetadata>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets provider operations metadata.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param apiVersion the String value
      * @param expand the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -137,6 +196,69 @@ public final class ProviderOperationsMetadataOperationsImpl implements ProviderO
                 .register(200, new TypeToken<ProviderOperationsMetadata>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets provider operations metadata list.
+     *
+     * @param apiVersion the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ProviderOperationsMetadata&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<ProviderOperationsMetadata>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        String expand = null;
+        Call<ResponseBody> call = service.list(apiVersion, expand, this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<ProviderOperationsMetadata>> response = listDelegate(call.execute());
+        List<ProviderOperationsMetadata> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets provider operations metadata list.
+     *
+     * @param apiVersion the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final String apiVersion, final ListOperationCallback<ProviderOperationsMetadata> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (apiVersion == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+            return null;
+        }
+        final String expand = null;
+        Call<ResponseBody> call = service.list(apiVersion, expand, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<ProviderOperationsMetadata>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<ProviderOperationsMetadata>> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
