@@ -1,17 +1,11 @@
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccountProperties;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
-import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
-import com.microsoft.azure.management.datalake.analytics.models.JobResult;
-import com.microsoft.azure.management.datalake.analytics.models.JobState;
-import com.microsoft.azure.management.datalake.analytics.models.JobType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlCredential;
 import com.microsoft.azure.management.datalake.analytics.models.USqlDatabase;
-import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
 import com.microsoft.azure.management.datalake.analytics.models.USqlProcedure;
 import com.microsoft.azure.management.datalake.analytics.models.USqlSecret;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTable;
@@ -168,7 +162,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Thread.sleep(120000);
 
         // create the catalog
-        runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID().toString(), catalogCreationScript);
+        runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID(), catalogCreationScript);
     }
 
     @AfterClass
@@ -184,13 +178,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     }
     @Test
     public void canGetCatalogItems() throws Exception {
-        List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listDatabases(adlaAcct, null, null, null, null, null, null, null).getBody();
+        List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listDatabases(adlaAcct).getBody();
         Assert.assertTrue(dbListResponse.size() >= 1);
 
         // look for the DB we created
         boolean foundCatalogElement = false;
         for (USqlDatabase db: dbListResponse) {
-            if (db.getDatabaseName().equals(dbName)) {
+            if (db.getName().equals(dbName)) {
                 foundCatalogElement = true;
                 break;
             }
@@ -200,17 +194,17 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         // Get the specific Database as well
         USqlDatabase dbGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getDatabase(dbName, adlaAcct).getBody();
 
-        Assert.assertEquals(dbName, dbGetResponse.getDatabaseName());
+        Assert.assertEquals(dbName, dbGetResponse.getName());
 
         // Get the table list
-        List<USqlTable> tableListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTables(dbName, "dbo", adlaAcct, null, null, null, null, null, null, null).getBody();
+        List<USqlTable> tableListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTables(dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(tableListResponse.size() >= 1);
 
         // look for the table we created
         foundCatalogElement = false;
         for (USqlTable table: tableListResponse) {
-            if (table.getTableName().equals(tableName)) {
+            if (table.getName().equals(tableName)) {
                 foundCatalogElement = true;
                 break;
             }
@@ -221,17 +215,17 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         USqlTable tableGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getTable(
                 dbName, "dbo", tableName, adlaAcct).getBody();
 
-        Assert.assertEquals(tableName, tableGetResponse.getTableName());
+        Assert.assertEquals(tableName, tableGetResponse.getName());
 
         // Get the TVF list
-        List<USqlTableValuedFunction> tvfListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTableValuedFunctions(dbName, "dbo", adlaAcct, null, null, null, null, null, null, null).getBody();
+        List<USqlTableValuedFunction> tvfListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTableValuedFunctions(dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(tvfListResponse.size() >= 1);
 
         // look for the tvf we created
         foundCatalogElement = false;
         for (USqlTableValuedFunction tvf: tvfListResponse) {
-            if (tvf.getTvfName().equals(tvfName)) {
+            if (tvf.getName().equals(tvfName)) {
                 foundCatalogElement = true;
                 break;
             }
@@ -242,17 +236,17 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         USqlTableValuedFunction tvfGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getTableValuedFunction(
                 dbName, "dbo", tvfName, adlaAcct).getBody();
 
-        Assert.assertEquals(tvfName, tvfGetResponse.getTvfName());
+        Assert.assertEquals(tvfName, tvfGetResponse.getName());
 
         // Get the View list
-        List<USqlView> viewListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listViews(dbName, "dbo", adlaAcct, null, null, null, null, null, null, null).getBody();
+        List<USqlView> viewListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listViews(dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(viewListResponse.size() >= 1);
 
         // look for the view we created
         foundCatalogElement = false;
         for (USqlView view: viewListResponse) {
-            if (view.getViewName().equals(viewName)) {
+            if (view.getName().equals(viewName)) {
                 foundCatalogElement = true;
                 break;
             }
@@ -263,18 +257,18 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         USqlView viewGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getView(
                 dbName, "dbo", viewName, adlaAcct).getBody();
 
-        Assert.assertEquals(viewName, viewGetResponse.getViewName());
+        Assert.assertEquals(viewName, viewGetResponse.getName());
 
         // Get the Procedure list
         List<USqlProcedure> procListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listProcedures(
-                dbName, "dbo", adlaAcct, null, null, null, null, null, null, null).getBody();
+                dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(procListResponse.size() >= 1);
 
         // look for the procedure we created
         foundCatalogElement = false;
         for (USqlProcedure proc: procListResponse) {
-            if (proc.getProcName().equals(procName)) {
+            if (proc.getName().equals(procName)) {
                 foundCatalogElement = true;
                 break;
             }
@@ -285,11 +279,11 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         USqlProcedure procGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getProcedure(
                 dbName, "dbo", procName, adlaAcct).getBody();
 
-        Assert.assertEquals(procName, procGetResponse.getProcName());
+        Assert.assertEquals(procName, procGetResponse.getName());
 
         // Get all the types
         List<USqlType> typeGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTypes(
-                dbName, "dbo", adlaAcct, null, null, null, null, null, null, null).getBody();
+                dbName, "dbo", adlaAcct).getBody();
 
 
         Assert.assertNotNull(typeGetResponse);
@@ -358,17 +352,17 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 String.format("USE {0}; CREATE CREDENTIAL {1} WITH USER_NAME = \"scope@rkm4grspxa\", IDENTITY = \"{2}\";",
                         dbName, credentialName, secretName);
 
-        runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID().toString(), credentialCreationScript);
+        runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID(), credentialCreationScript);
 
         // Get the Credential list
         List<USqlCredential> credListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listCredentials(
-                dbName, adlaAcct, null, null, null, null, null, null, null).getBody();
+                dbName, adlaAcct).getBody();
         Assert.assertTrue(credListResponse.size() >= 1);
 
         // look for the credential we created
         boolean foundCatalogElement = false;
         for (USqlCredential cred: credListResponse) {
-            if (cred.getCredentialName().equals(credentialName)) {
+            if (cred.getName().equals(credentialName)) {
                 foundCatalogElement = true;
                 break;
             }
@@ -378,13 +372,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         // Get the specific credential as well
         USqlCredential credGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getCredential(
                 dbName, credentialName, adlaAcct).getBody();
-        Assert.assertEquals(credentialName, credGetResponse.getCredentialName());
+        Assert.assertEquals(credentialName, credGetResponse.getName());
 
         // Drop the credential (to enable secret deletion)
         String credentialDropScript =
                 String.format("USE {0}; DROP CREDENTIAL {1};", dbName, credentialName);
         runJobToCompletion(dataLakeAnalyticsJobManagementClient,
-                adlaAcct, UUID.randomUUID().toString(),
+                adlaAcct, UUID.randomUUID(),
                 credentialDropScript);
 
         // Delete the secret

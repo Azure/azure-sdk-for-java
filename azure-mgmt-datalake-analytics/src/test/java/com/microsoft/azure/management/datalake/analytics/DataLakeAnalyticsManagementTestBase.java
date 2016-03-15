@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
@@ -8,10 +7,10 @@ import com.microsoft.azure.management.datalake.analytics.models.JobResult;
 import com.microsoft.azure.management.datalake.analytics.models.JobState;
 import com.microsoft.azure.management.datalake.analytics.models.JobType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
+import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
+import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementClientImpl;
 
@@ -62,7 +61,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
     }
 
-    public static void runJobToCompletion(DataLakeAnalyticsJobManagementClient jobClient, String adlaAcct, String jobId, String scriptToRun) throws Exception {
+    public static void runJobToCompletion(DataLakeAnalyticsJobManagementClient jobClient, String adlaAcct, UUID jobId, String scriptToRun) throws Exception {
         // submit a job
         JobInformation jobToSubmit = new JobInformation();
         USqlJobProperties jobProperties = new USqlJobProperties();

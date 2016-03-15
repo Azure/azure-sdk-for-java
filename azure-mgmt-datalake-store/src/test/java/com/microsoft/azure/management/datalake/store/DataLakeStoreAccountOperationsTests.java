@@ -73,7 +73,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertEquals(2, getResponse.getTags().size());
 
         // list all accounts and make sure there is one.
-        List<DataLakeStoreAccount> listResult = dataLakeStoreAccountManagementClient.getAccountOperations().list(null, null, null, null, null, null, null, null, null).getBody();
+        List<DataLakeStoreAccount> listResult = dataLakeStoreAccountManagementClient.getAccountOperations().list().getBody();
         DataLakeStoreAccount discoveredAcct = null;
         for (DataLakeStoreAccount acct : listResult) {
             if (acct.getName().equals(adlsAcct)) {
@@ -93,7 +93,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertNull(discoveredAcct.getProperties().getDefaultGroup());
 
         // list within a resource group
-        listResult = dataLakeStoreAccountManagementClient.getAccountOperations().listByResourceGroup(rgName, null, null, null, null, null, null, null, null, null).getBody();
+        listResult = dataLakeStoreAccountManagementClient.getAccountOperations().listByResourceGroup(rgName).getBody();
         discoveredAcct = null;
         for (DataLakeStoreAccount acct : listResult) {
             if (acct.getName().equals(adlsAcct)) {

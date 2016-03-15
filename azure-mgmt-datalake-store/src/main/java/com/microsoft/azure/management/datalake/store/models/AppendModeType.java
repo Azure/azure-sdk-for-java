@@ -8,33 +8,27 @@
  * regenerated.
  */
 
-package com.microsoft.azure.management.datalake.analytics.models;
+package com.microsoft.azure.management.datalake.store.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for OperationStatus.
+ * Defines values for AppendModeType.
  */
-public enum OperationStatus {
-    /** Enum value InProgress. */
-    INPROGRESS("InProgress"),
+public enum AppendModeType {
+    /** Enum value autocreate. */
+    AUTOCREATE("autocreate");
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded"),
-
-    /** Enum value Failed. */
-    FAILED("Failed");
-
-    /** The actual serialized value for a OperationStatus instance. */
+    /** The actual serialized value for a AppendModeType instance. */
     private String value;
 
-    OperationStatus(String value) {
+    AppendModeType(String value) {
         this.value = value;
     }
 
     /**
-     * Gets the serialized value for a OperationStatus instance.
+     * Gets the serialized value for a AppendModeType instance.
      *
      * @return the serialized value.
      */
@@ -44,15 +38,15 @@ public enum OperationStatus {
     }
 
     /**
-     * Parses a serialized value to a OperationStatus instance.
+     * Parses a serialized value to a AppendModeType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed OperationStatus object, or null if unable to parse.
+     * @return the parsed AppendModeType object, or null if unable to parse.
      */
     @JsonCreator
-    public static OperationStatus fromValue(String value) {
-        OperationStatus[] items = OperationStatus.values();
-        for (OperationStatus item : items) {
+    public static AppendModeType fromValue(String value) {
+        AppendModeType[] items = AppendModeType.values();
+        for (AppendModeType item : items) {
             if (item.toValue().equals(value)) {
                 return item;
             }

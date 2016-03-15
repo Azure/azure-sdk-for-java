@@ -78,8 +78,8 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         jobToSubmit.setDegreeOfParallelism(2);
         jobToSubmit.setType(JobType.USQL);
         jobToSubmit.setProperties(jobProperties);
-        String jobId = UUID.randomUUID().toString();
-        String secondJobId = UUID.randomUUID().toString();
+        UUID jobId = UUID.randomUUID();
+        UUID secondJobId = UUID.randomUUID();
 
         JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(jobId, adlaAcct, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);

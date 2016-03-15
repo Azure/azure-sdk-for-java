@@ -1,15 +1,9 @@
 package com.microsoft.azure.management.datalake.store;
 
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
-
-
-import org.junit.Assert;
-
-import java.util.UUID;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 
