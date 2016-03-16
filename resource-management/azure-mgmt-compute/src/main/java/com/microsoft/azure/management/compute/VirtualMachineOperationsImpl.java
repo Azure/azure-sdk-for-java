@@ -1309,6 +1309,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     JsonNode propertiesValue4 = responseDoc.get("properties");
                     if (propertiesValue4 != null && propertiesValue4 instanceof NullNode == false) {
+
+                        setVmId(virtualMachineInstance, propertiesValue);
+
                         JsonNode hardwareProfileValue2 = propertiesValue4.get("hardwareProfile");
                         if (hardwareProfileValue2 != null && hardwareProfileValue2 instanceof NullNode == false) {
                             HardwareProfile hardwareProfileInstance = new HardwareProfile();
@@ -3702,6 +3705,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+
+                        setVmId(virtualMachineInstance, propertiesValue);
+
                         JsonNode hardwareProfileValue = propertiesValue.get("hardwareProfile");
                         if (hardwareProfileValue != null && hardwareProfileValue instanceof NullNode == false) {
                             HardwareProfile hardwareProfileInstance = new HardwareProfile();
@@ -4829,7 +4835,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
         }
     }
-    
+
+    private void setVmId(VirtualMachine virtualMachineInstance, JsonNode propertiesValue) {
+        JsonNode vmIdValue = propertiesValue.get("vmId");
+        if (vmIdValue != null && !(vmIdValue instanceof NullNode)) {
+            virtualMachineInstance.setVmId(vmIdValue.getTextValue());
+        }
+    }
+
     /**
     * The operation to get a virtual machine along with its instance view.
     *
@@ -4989,6 +5002,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     JsonNode propertiesValue = responseDoc.get("properties");
                     if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+
+                        setVmId(virtualMachineInstance, propertiesValue);
+
                         JsonNode hardwareProfileValue = propertiesValue.get("hardwareProfile");
                         if (hardwareProfileValue != null && hardwareProfileValue instanceof NullNode == false) {
                             HardwareProfile hardwareProfileInstance = new HardwareProfile();
@@ -6271,6 +6287,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+
+                                setVmId(virtualMachineJsonInstance, propertiesValue);
+
                                 JsonNode hardwareProfileValue = propertiesValue.get("hardwareProfile");
                                 if (hardwareProfileValue != null && hardwareProfileValue instanceof NullNode == false) {
                                     HardwareProfile hardwareProfileInstance = new HardwareProfile();
@@ -7561,6 +7580,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+
+                                setVmId(virtualMachineJsonInstance, propertiesValue);
+
                                 JsonNode hardwareProfileValue = propertiesValue.get("hardwareProfile");
                                 if (hardwareProfileValue != null && hardwareProfileValue instanceof NullNode == false) {
                                     HardwareProfile hardwareProfileInstance = new HardwareProfile();
@@ -9022,6 +9044,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             JsonNode propertiesValue = valueValue.get("properties");
                             if (propertiesValue != null && propertiesValue instanceof NullNode == false) {
+
+                                setVmId(virtualMachineJsonInstance, propertiesValue);
+
                                 JsonNode hardwareProfileValue = propertiesValue.get("hardwareProfile");
                                 if (hardwareProfileValue != null && hardwareProfileValue instanceof NullNode == false) {
                                     HardwareProfile hardwareProfileInstance = new HardwareProfile();
