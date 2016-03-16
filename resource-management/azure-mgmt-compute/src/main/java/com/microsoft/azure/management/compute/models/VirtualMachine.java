@@ -238,4 +238,14 @@ public class VirtualMachine extends ResourceBaseExtended {
         }
         this.setLocation(location);
     }
+
+    private String vmId;
+
+    public String getVmId() {
+        return this.vmId;
+    }
+
+    public void setVmId(String vmId) {
+        this.vmId = vmId;
+    }
 }
