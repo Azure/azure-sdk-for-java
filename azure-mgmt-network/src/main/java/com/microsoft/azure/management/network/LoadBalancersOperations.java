@@ -77,6 +77,28 @@ public interface LoadBalancersOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the LoadBalancer object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

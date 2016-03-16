@@ -55,6 +55,28 @@ public interface DeploymentOperationsOperations {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;DeploymentOperation&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<DeploymentOperation>> list(final String resourceGroupName, final String deploymentName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets a list of deployments operations.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final String resourceGroupName, final String deploymentName, final ListOperationCallback<DeploymentOperation> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets a list of deployments operations.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
      * @param top Query parameters.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

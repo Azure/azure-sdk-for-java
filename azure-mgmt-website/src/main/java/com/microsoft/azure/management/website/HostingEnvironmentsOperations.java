@@ -116,6 +116,29 @@ public interface HostingEnvironmentsOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> deleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall deleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
      * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -137,6 +160,28 @@ public interface HostingEnvironmentsOperations {
      */
     ServiceCall deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> beginDeleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
     /**
      * Delete a hostingEnvironment (App Service Environment).
      *
@@ -353,6 +398,28 @@ public interface HostingEnvironmentsOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getHostingEnvironmentMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
@@ -403,6 +470,28 @@ public interface HostingEnvironmentsOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<CsmUsageQuotaCollection> getHostingEnvironmentUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getHostingEnvironmentUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -423,6 +512,28 @@ public interface HostingEnvironmentsOperations {
      */
     ServiceCall getHostingEnvironmentUsagesAsync(String resourceGroupName, String name, String filter, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMultiRoleMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getHostingEnvironmentMultiRoleMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
@@ -456,6 +567,30 @@ public interface HostingEnvironmentsOperations {
      */
     ServiceCall getHostingEnvironmentMultiRoleMetricsAsync(String resourceGroupName, String name, String startTime, String endTime, String timeGrain, Boolean details, String filter, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ResourceMetricCollection> getHostingEnvironmentWebWorkerMetrics(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getHostingEnvironmentWebWorkerMetricsAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
      *
@@ -581,6 +716,28 @@ public interface HostingEnvironmentsOperations {
      */
     ServiceCall getHostingEnvironmentWebWorkerUsagesAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<UsageCollection> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<SiteCollection> getHostingEnvironmentSites(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getHostingEnvironmentSitesAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException;
     /**
      * Get all sites on the hostingEnvironment (App Service Environment).
      *
@@ -907,6 +1064,32 @@ public interface HostingEnvironmentsOperations {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
      * @param instance Name of instance in the worker pool
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
@@ -958,6 +1141,30 @@ public interface HostingEnvironmentsOperations {
      */
     ServiceCall getWorkerPoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
     /**
      * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
      *

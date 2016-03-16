@@ -223,6 +223,28 @@ public interface VirtualNetworkGatewaysOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the String object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Generatevpnclientpackage operation generates Vpn client package for P2S client of the virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<String> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Generatevpnclientpackage operation generates Vpn client package for P2S client of the virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param processorArchitecture VPN client Processor Architecture -Amd64/X86. Possible values include: 'Amd64', 'X86'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

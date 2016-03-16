@@ -165,6 +165,92 @@ public final class DeploymentOperationsOperationsImpl implements DeploymentOpera
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;DeploymentOperation&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<DeploymentOperation>> list(final String resourceGroupName, final String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (deploymentName == null) {
+            throw new IllegalArgumentException("Parameter deploymentName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Integer top = null;
+        Call<ResponseBody> call = service.list(resourceGroupName, deploymentName, this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<DeploymentOperation>> response = listDelegate(call.execute());
+        List<DeploymentOperation> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets a list of deployments operations.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final String resourceGroupName, final String deploymentName, final ListOperationCallback<DeploymentOperation> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (deploymentName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Integer top = null;
+        Call<ResponseBody> call = service.list(resourceGroupName, deploymentName, this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<DeploymentOperation>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<DeploymentOperation>> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets a list of deployments operations.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
      * @param top Query parameters.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

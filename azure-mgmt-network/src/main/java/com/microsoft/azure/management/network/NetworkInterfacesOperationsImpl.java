@@ -274,6 +274,79 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the NetworkInterface object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<NetworkInterface> get(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String expand = null;
+        Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getDelegate(call.execute());
+    }
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<NetworkInterface> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (networkInterfaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String expand = null;
+        Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<NetworkInterface>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -706,6 +779,97 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
                 .register(200, new TypeToken<PageImpl<NetworkInterface>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the NetworkInterface object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<NetworkInterface> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
+        }
+        if (virtualmachineIndex == null) {
+            throw new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String expand = null;
+        Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getVirtualMachineScaleSetNetworkInterfaceDelegate(call.execute());
+    }
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, final ServiceCallback<NetworkInterface> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (virtualMachineScaleSetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+            return null;
+        }
+        if (virtualmachineIndex == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
+            return null;
+        }
+        if (networkInterfaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String expand = null;
+        Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<NetworkInterface>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getVirtualMachineScaleSetNetworkInterfaceDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

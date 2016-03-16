@@ -77,6 +77,28 @@ public interface VirtualNetworksOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the VirtualNetwork object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<VirtualNetwork> get(String resourceGroupName, String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<VirtualNetwork> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

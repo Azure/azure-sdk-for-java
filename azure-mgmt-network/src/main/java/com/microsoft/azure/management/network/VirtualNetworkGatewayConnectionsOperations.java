@@ -198,6 +198,29 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ConnectionResetSharedKey object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ConnectionResetSharedKey> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
+
+    /**
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param keyLength The virtual network connection reset shared key length
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -219,6 +242,28 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      */
     ServiceCall resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ConnectionResetSharedKey object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ConnectionResetSharedKey> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginResetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException;
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
      *
@@ -249,6 +294,29 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ConnectionSharedKey object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ConnectionSharedKey> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException;
+
+    /**
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param value The virtual network connection shared key value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -270,6 +338,28 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      */
     ServiceCall setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ConnectionSharedKey object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ConnectionSharedKey> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall beginSetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException;
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
      *

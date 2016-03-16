@@ -122,6 +122,26 @@ public interface RoleDefinitionsOperations {
      * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
      *
      * @param scope Scope
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;RoleDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<RoleDefinition>> list(final String scope) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
+     *
+     * @param scope Scope
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final String scope, final ListOperationCallback<RoleDefinition> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
+     *
+     * @param scope Scope
      * @param filter The filter to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

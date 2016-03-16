@@ -244,6 +244,26 @@ public interface NetworkManagementClient {
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
      * @param location The location of the domain name
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DnsNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Checks whether a domain name in the cloudapp.net zone is available for use.
+     *
+     * @param location The location of the domain name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResult> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Checks whether a domain name in the cloudapp.net zone is available for use.
+     *
+     * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

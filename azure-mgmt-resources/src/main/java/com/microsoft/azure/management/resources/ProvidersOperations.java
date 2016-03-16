@@ -70,6 +70,24 @@ public interface ProvidersOperations {
     /**
      * Gets a list of resource providers.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<Provider>> list() throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets a list of resource providers.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final ListOperationCallback<Provider> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets a list of resource providers.
+     *
      * @param top Query parameters. If null is passed returns all deployments.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

@@ -403,6 +403,70 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
      * @param location The location of the domain name
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DnsNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<DnsNameAvailabilityResult> checkDnsNameAvailability(String location) throws CloudException, IOException, IllegalArgumentException {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null.");
+        }
+        String domainNameLabel = null;
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
+        return checkDnsNameAvailabilityDelegate(call.execute());
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.net zone is available for use.
+     *
+     * @param location The location of the domain name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (location == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            return null;
+        }
+        if (this.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String domainNameLabel = null;
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(checkDnsNameAvailabilityDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.net zone is available for use.
+     *
+     * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

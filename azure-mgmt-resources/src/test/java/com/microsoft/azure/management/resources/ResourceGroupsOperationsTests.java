@@ -21,7 +21,7 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
         group.getTags().put("tagname", "tagvalue");
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
         // List
-        List<ResourceGroup> listResult = resourceManagementClient.getResourceGroupsOperations().list(null, null).getBody();
+        List<ResourceGroup> listResult = resourceManagementClient.getResourceGroupsOperations().list().getBody();
         ResourceGroup groupResult = null;
         for (ResourceGroup rg : listResult) {
             if (rg.getName().equals(rgName)) {

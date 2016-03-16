@@ -756,6 +756,83 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the String object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualNetworkGatewayName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String processorArchitecture = null;
+        VpnClientParameters parameters = new VpnClientParameters();
+        parameters.setProcessorArchitecture(processorArchitecture);
+        Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        return generatevpnclientpackageDelegate(call.execute());
+    }
+
+    /**
+     * The Generatevpnclientpackage operation generates Vpn client package for P2S client of the virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, final ServiceCallback<String> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (virtualNetworkGatewayName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String processorArchitecture = null;
+        VpnClientParameters parameters = new VpnClientParameters();
+        parameters.setProcessorArchitecture(processorArchitecture);
+        Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<String>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(generatevpnclientpackageDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The Generatevpnclientpackage operation generates Vpn client package for P2S client of the virtual network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param processorArchitecture VPN client Processor Architecture -Amd64/X86. Possible values include: 'Amd64', 'X86'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

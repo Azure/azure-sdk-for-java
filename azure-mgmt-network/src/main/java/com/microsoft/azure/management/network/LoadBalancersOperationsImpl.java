@@ -254,6 +254,79 @@ public final class LoadBalancersOperationsImpl implements LoadBalancersOperation
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the LoadBalancer object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<LoadBalancer> get(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (loadBalancerName == null) {
+            throw new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String expand = null;
+        Call<ResponseBody> call = service.get(resourceGroupName, loadBalancerName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getDelegate(call.execute());
+    }
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<LoadBalancer> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (loadBalancerName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String expand = null;
+        Call<ResponseBody> call = service.get(resourceGroupName, loadBalancerName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<LoadBalancer>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The Get ntework interface operation retreives information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

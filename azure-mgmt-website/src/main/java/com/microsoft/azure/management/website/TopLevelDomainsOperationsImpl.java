@@ -207,6 +207,74 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TldLegalAgreementCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<TldLegalAgreementCollection> listTopLevelDomainAgreements(String name) throws CloudException, IOException, IllegalArgumentException {
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean includePrivacy = null;
+        TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
+        agreementOption.setIncludePrivacy(includePrivacy);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);
+        return listTopLevelDomainAgreementsDelegate(call.execute());
+    }
+
+    /**
+     * Lists legal agreements that user needs to accept before purchasing domain.
+     *
+     * @param name Name of the top level domain
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTopLevelDomainAgreementsAsync(String name, final ServiceCallback<TldLegalAgreementCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean includePrivacy = null;
+        TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
+        agreementOption.setIncludePrivacy(includePrivacy);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listTopLevelDomainAgreementsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Lists legal agreements that user needs to accept before purchasing domain.
+     *
+     * @param name Name of the top level domain
      * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

@@ -2811,6 +2811,79 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<SiteCollection> getSiteSlots(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteSlotsDelegate(call.execute());
+    }
+
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteSlotsAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteSlotsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param propertiesToInclude List of app properties to include in the response
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -2890,6 +2963,74 @@ public final class SitesOperationsImpl implements SitesOperations {
      * Gets the web apps for a subscription in the specified resource group.
      *
      * @param resourceGroupName Name of resource group
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<SiteCollection> getSites(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String propertiesToInclude = null;
+        String includeSiteTypes = null;
+        Boolean includeSlots = null;
+        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSitesDelegate(call.execute());
+    }
+
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSitesAsync(String resourceGroupName, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String propertiesToInclude = null;
+        final String includeSiteTypes = null;
+        final Boolean includeSlots = null;
+        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSitesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param resourceGroupName Name of resource group
      * @param propertiesToInclude Additional web app properties included in the response
      * @param includeSiteTypes Types of apps included in the response
      * @param includeSlots Whether or not to include deployments slots in results
@@ -2959,6 +3100,79 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<SiteCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Site> getSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteDelegate(call.execute());
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteAsync(String resourceGroupName, String name, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Site>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -3047,6 +3261,91 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
      * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Site object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<Site> createOrUpdateSite(String resourceGroupName, String name, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (siteEnvelope == null) {
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(siteEnvelope);
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
+        Response<ResponseBody> result = service.createOrUpdateSite(resourceGroupName, name, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<Site>() { }.getType());
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall createOrUpdateSiteAsync(String resourceGroupName, String name, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (siteEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        }
+        Validator.validate(siteEnvelope, serviceCallback);
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
+        Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<Site>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
      * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
                  only used for app creation
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
@@ -3124,6 +3423,96 @@ public final class SitesOperationsImpl implements SitesOperations {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<Site>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Site> beginCreateOrUpdateSite(String resourceGroupName, String name, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (siteEnvelope == null) {
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(siteEnvelope);
+        String skipDnsRegistration = null;
+        String skipCustomDomainVerification = null;
+        String forceDnsRegistration = null;
+        String ttlInSeconds = null;
+        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginCreateOrUpdateSiteDelegate(call.execute());
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (siteEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(siteEnvelope, serviceCallback);
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
+        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Site>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginCreateOrUpdateSiteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
         return serviceCall;
@@ -3234,6 +3623,85 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String deleteMetrics = null;
+        String deleteEmptyServerFarm = null;
+        String skipDnsRegistration = null;
+        String deleteAllSlots = null;
+        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteSiteDelegate(call.execute());
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String deleteMetrics = null;
+        final String deleteEmptyServerFarm = null;
+        final String skipDnsRegistration = null;
+        final String deleteAllSlots = null;
+        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteSiteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param deleteMetrics If true, web app metrics are also deleted
      * @param deleteEmptyServerFarm If true and App Service Plan is empty after web app deletion, App Service Plan is also deleted
      * @param skipDnsRegistration If true, DNS registration is skipped
@@ -3313,6 +3781,88 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Site> getSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteSlotDelegate(call.execute());
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Site>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -3411,6 +3961,99 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @param name Name of the web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Site object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<Site> createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (siteEnvelope == null) {
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(siteEnvelope);
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
+        Response<ResponseBody> result = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<Site>() { }.getType());
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (siteEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        }
+        Validator.validate(siteEnvelope, serviceCallback);
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
+        Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<Site>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
      * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
                  only used for app creation
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
@@ -3495,6 +4138,105 @@ public final class SitesOperationsImpl implements SitesOperations {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<Site>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Site object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Site> beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, Site siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (siteEnvelope == null) {
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(siteEnvelope);
+        String skipDnsRegistration = null;
+        String skipCustomDomainVerification = null;
+        String forceDnsRegistration = null;
+        String ttlInSeconds = null;
+        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginCreateOrUpdateSiteSlotDelegate(call.execute());
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, Site siteEnvelope, final ServiceCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (siteEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(siteEnvelope, serviceCallback);
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
+        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Site>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginCreateOrUpdateSiteSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
         return serviceCall;
@@ -3607,6 +4349,94 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(202, new TypeToken<Site>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String deleteMetrics = null;
+        String deleteEmptyServerFarm = null;
+        String skipDnsRegistration = null;
+        String deleteAllSlots = null;
+        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteSiteSlotDelegate(call.execute());
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String deleteMetrics = null;
+        final String deleteEmptyServerFarm = null;
+        final String skipDnsRegistration = null;
+        final String deleteAllSlots = null;
+        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteSiteSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -4456,6 +5286,72 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DeletedSiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<DeletedSiteCollection> getDeletedSites(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String propertiesToInclude = null;
+        String includeSiteTypes = null;
+        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDeletedSitesDelegate(call.execute());
+    }
+
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getDeletedSitesAsync(String resourceGroupName, final ServiceCallback<DeletedSiteCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String propertiesToInclude = null;
+        final String includeSiteTypes = null;
+        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<DeletedSiteCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDeletedSitesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -12681,6 +13577,88 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteUsagesSlotDelegate(call.execute());
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteUsagesSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -12769,6 +13747,79 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<CsmUsageQuotaCollection> getSiteUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteUsagesDelegate(call.execute());
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteUsagesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -12842,6 +13893,90 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceMetricCollection> getSiteMetricsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteMetricsSlotDelegate(call.execute());
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteMetricsSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -12933,6 +14068,81 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceMetricCollection> getSiteMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -13187,6 +14397,83 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<InputStream> listSitePublishingProfileXml(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String format = null;
+        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
+        options.setFormat(format);
+        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
+        return listSitePublishingProfileXmlDelegate(call.execute());
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listSitePublishingProfileXmlAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String format = null;
+        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
+        options.setFormat(format);
+        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listSitePublishingProfileXmlDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param format Name of the format. Valid values are: 
                  FileZilla3
                  WebDeploy -- default
@@ -13270,6 +14557,92 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<InputStream> listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String format = null;
+        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
+        options.setFormat(format);
+        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
+        return listSitePublishingProfileXmlSlotDelegate(call.execute());
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String format = null;
+        CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
+        options.setFormat(format);
+        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listSitePublishingProfileXmlSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -13376,6 +14749,81 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> restartSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean softRestart = null;
+        Boolean synchronous = null;
+        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return restartSiteDelegate(call.execute());
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall restartSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean softRestart = null;
+        final Boolean synchronous = null;
+        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(restartSiteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
      * @param synchronous If true then the API will block until the app has been restarted
      * @throws CloudException exception thrown from REST call
@@ -13451,6 +14899,90 @@ public final class SitesOperationsImpl implements SitesOperations {
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> restartSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean softRestart = null;
+        Boolean synchronous = null;
+        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return restartSiteSlotDelegate(call.execute());
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall restartSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean softRestart = null;
+        final Boolean synchronous = null;
+        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(restartSiteSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

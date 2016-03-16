@@ -280,6 +280,65 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
     /**
      * Checks if a domain is available for registration.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DomainAvailablilityCheckResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<DomainAvailablilityCheckResult> checkDomainAvailability() throws CloudException, IOException, IllegalArgumentException {
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String name = null;
+        NameIdentifier identifier = new NameIdentifier();
+        identifier.setName(name);
+        Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), identifier);
+        return checkDomainAvailabilityDelegate(call.execute());
+    }
+
+    /**
+     * Checks if a domain is available for registration.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall checkDomainAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String name = null;
+        NameIdentifier identifier = new NameIdentifier();
+        identifier.setName(name);
+        Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), identifier);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(checkDomainAvailabilityDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Checks if a domain is available for registration.
+     *
      * @param name Name of the object
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

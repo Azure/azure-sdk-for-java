@@ -78,6 +78,63 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
     /**
      * Gets a list of recommendations associated with the specified subscription.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Recommendation&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<Recommendation>> getRecommendationBySubscription() throws CloudException, IOException, IllegalArgumentException {
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean featured = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.getSubscriptionId(), featured, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getRecommendationBySubscriptionDelegate(call.execute());
+    }
+
+    /**
+     * Gets a list of recommendations associated with the specified subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRecommendationBySubscriptionAsync(final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean featured = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.getSubscriptionId(), featured, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Recommendation>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRecommendationBySubscriptionDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets a list of recommendations associated with the specified subscription.
+     *
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @throws CloudException exception thrown from REST call
@@ -231,6 +288,79 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
      *
      * @param resourceGroupName Resource group name
      * @param siteName Site name
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Recommendation&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<Recommendation>> getRecommendedRulesForSite(String resourceGroupName, String siteName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (siteName == null) {
+            throw new IllegalArgumentException("Parameter siteName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean featured = null;
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getRecommendedRulesForSiteDelegate(call.execute());
+    }
+
+    /**
+     * Gets a list of recommendations associated with the specified web site.
+     *
+     * @param resourceGroupName Resource group name
+     * @param siteName Site name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRecommendedRulesForSiteAsync(String resourceGroupName, String siteName, final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (siteName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean featured = null;
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Recommendation>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRecommendedRulesForSiteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets a list of recommendations associated with the specified web site.
+     *
+     * @param resourceGroupName Resource group name
+     * @param siteName Site name
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -304,6 +434,81 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
                 .register(200, new TypeToken<List<Recommendation>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets the list of past recommendations optionally specified by the time range.
+     *
+     * @param resourceGroupName Resource group name
+     * @param siteName Site name
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Recommendation&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<Recommendation>> getRecommendationHistoryForSite(String resourceGroupName, String siteName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (siteName == null) {
+            throw new IllegalArgumentException("Parameter siteName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String startTime = null;
+        String endTime = null;
+        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), startTime, endTime, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getRecommendationHistoryForSiteDelegate(call.execute());
+    }
+
+    /**
+     * Gets the list of past recommendations optionally specified by the time range.
+     *
+     * @param resourceGroupName Resource group name
+     * @param siteName Site name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRecommendationHistoryForSiteAsync(String resourceGroupName, String siteName, final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (siteName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String startTime = null;
+        final String endTime = null;
+        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), startTime, endTime, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Recommendation>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRecommendationHistoryForSiteDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

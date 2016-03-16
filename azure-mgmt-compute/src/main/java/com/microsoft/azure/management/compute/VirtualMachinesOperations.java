@@ -182,6 +182,28 @@ public interface VirtualMachinesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the VirtualMachine object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The operation to get a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceGroupName, String vmName, final ServiceCallback<VirtualMachine> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The operation to get a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

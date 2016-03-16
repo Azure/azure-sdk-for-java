@@ -312,6 +312,85 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ServerFarmWithRichSku object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<ServerFarmWithRichSku> createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSku serverFarmEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (serverFarmEnvelope == null) {
+            throw new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(serverFarmEnvelope);
+        final Boolean allowPendingState = null;
+        Response<ResponseBody> result = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), serverFarmEnvelope, allowPendingState, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ServerFarmWithRichSku>() { }.getType());
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSku serverFarmEnvelope, final ServiceCallback<ServerFarmWithRichSku> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (serverFarmEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null."));
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        }
+        Validator.validate(serverFarmEnvelope, serviceCallback);
+        final Boolean allowPendingState = null;
+        Call<ResponseBody> call = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), serverFarmEnvelope, allowPendingState, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ServerFarmWithRichSku>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
      * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -381,6 +460,90 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ServerFarmWithRichSku>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ServerFarmWithRichSku object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ServerFarmWithRichSku> beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSku serverFarmEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (serverFarmEnvelope == null) {
+            throw new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(serverFarmEnvelope);
+        Boolean allowPendingState = null;
+        Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), serverFarmEnvelope, allowPendingState, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginCreateOrUpdateServerFarmDelegate(call.execute());
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSku serverFarmEnvelope, final ServiceCallback<ServerFarmWithRichSku> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (serverFarmEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(serverFarmEnvelope, serviceCallback);
+        final Boolean allowPendingState = null;
+        Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), serverFarmEnvelope, allowPendingState, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSku>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginCreateOrUpdateServerFarmDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
         return serviceCall;
@@ -554,6 +717,81 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceMetricCollection> getServerFarmMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getServerFarmMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getServerFarmMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getServerFarmMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -1589,6 +1827,96 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Site&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<Site>> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String skipToken = null;
+        String filter = null;
+        String top = null;
+        Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.getSubscriptionId(), skipToken, filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<Site>> response = getServerFarmSitesDelegate(call.execute());
+        List<Site> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = getServerFarmSitesNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getServerFarmSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<Site> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String skipToken = null;
+        final String filter = null;
+        final String top = null;
+        Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.getSubscriptionId(), skipToken, filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Site>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<Site>> result = getServerFarmSitesDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        getServerFarmSitesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
      * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
@@ -1766,6 +2094,79 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> restartSitesForServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean softRestart = null;
+        Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return restartSitesForServerFarmDelegate(call.execute());
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall restartSitesForServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean softRestart = null;
+        Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(restartSitesForServerFarmDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

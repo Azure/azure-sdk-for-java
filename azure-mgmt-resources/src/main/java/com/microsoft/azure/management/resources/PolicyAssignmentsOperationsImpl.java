@@ -129,6 +129,119 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @param parentResourcePath The parent resource path.
      * @param resourceType The resource type.
      * @param resourceName The resource name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (parentResourcePath == null) {
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
+        }
+        if (resourceType == null) {
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<PolicyAssignment>> response = listForResourceDelegate(call.execute());
+        List<PolicyAssignment> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listForResourceNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets policy assignments of the resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The name of the resource provider.
+     * @param parentResourcePath The parent resource path.
+     * @param resourceType The resource type.
+     * @param resourceName The resource name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (resourceProviderNamespace == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
+            return null;
+        }
+        if (parentResourcePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+            return null;
+        }
+        if (resourceType == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            return null;
+        }
+        if (resourceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<PolicyAssignment>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<PolicyAssignment>> result = listForResourceDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listForResourceNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets policy assignments of the resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The name of the resource provider.
+     * @param parentResourcePath The parent resource path.
+     * @param resourceType The resource type.
+     * @param resourceName The resource name.
      * @param filter The filter to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -239,6 +352,83 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets policy assignments of the resource group.
+     *
+     * @param resourceGroupName Resource group name.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<PolicyAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<PolicyAssignment>> response = listForResourceGroupDelegate(call.execute());
+        List<PolicyAssignment> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listForResourceGroupNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets policy assignments of the resource group.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listForResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<PolicyAssignment>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<PolicyAssignment>> result = listForResourceGroupDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listForResourceGroupNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -791,6 +981,74 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
     /**
      * Gets policy assignments of the subscription.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<PolicyAssignment>> list() throws CloudException, IOException, IllegalArgumentException {
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<PolicyAssignment>> response = listDelegate(call.execute());
+        List<PolicyAssignment> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets policy assignments of the subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<PolicyAssignment>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<PolicyAssignment>> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets policy assignments of the subscription.
+     *
      * @param filter The filter to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -861,6 +1119,83 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
                 .register(200, new TypeToken<PageImpl<PolicyAssignment>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Gets policy assignments of the scope.
+     *
+     * @param scope Scope.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<PolicyAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException {
+        if (scope == null) {
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<PolicyAssignment>> response = listForScopeDelegate(call.execute());
+        List<PolicyAssignment> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listForScopeNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Gets policy assignments of the scope.
+     *
+     * @param scope Scope.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listForScopeAsync(final String scope, final ListOperationCallback<PolicyAssignment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (scope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<PolicyAssignment>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<PolicyAssignment>> result = listForScopeDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listForScopeNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

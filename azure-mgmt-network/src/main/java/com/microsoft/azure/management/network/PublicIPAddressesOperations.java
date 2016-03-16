@@ -77,6 +77,28 @@ public interface PublicIPAddressesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the PublicIPAddress object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<PublicIPAddress> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

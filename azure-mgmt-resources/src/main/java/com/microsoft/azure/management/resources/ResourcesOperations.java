@@ -77,6 +77,24 @@ public interface ResourcesOperations {
     /**
      * Get all of the resources under a subscription.
      *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<GenericResource>> list() throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get all of the resources under a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final ListOperationCallback<GenericResource> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get all of the resources under a subscription.
+     *
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
      * @throws CloudException exception thrown from REST call

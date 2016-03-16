@@ -77,6 +77,28 @@ public interface RouteTablesOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the RouteTable object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<RouteTable> get(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Get RouteTables operation retrieves information about the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceGroupName, String routeTableName, final ServiceCallback<RouteTable> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Get RouteTables operation retrieves information about the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

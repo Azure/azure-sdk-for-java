@@ -254,6 +254,79 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the PublicIPAddress object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PublicIPAddress> get(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (publicIpAddressName == null) {
+            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String expand = null;
+        Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        return getDelegate(call.execute());
+    }
+
+    /**
+     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<PublicIPAddress> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (publicIpAddressName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String expand = null;
+        Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<PublicIPAddress>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

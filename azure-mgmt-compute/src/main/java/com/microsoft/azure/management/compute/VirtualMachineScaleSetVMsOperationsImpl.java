@@ -797,6 +797,96 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;VirtualMachineScaleSetVM&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        VirtualMachineScaleSetVM filter = null;
+        String select = null;
+        String expand = null;
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<VirtualMachineScaleSetVM>> response = listDelegate(call.execute());
+        List<VirtualMachineScaleSetVM> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * The operation to list virtual machine scale sets VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final ListOperationCallback<VirtualMachineScaleSetVM> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (virtualMachineScaleSetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final VirtualMachineScaleSetVM filter = null;
+        final String select = null;
+        final String expand = null;
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSetVM>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<VirtualMachineScaleSetVM>> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The operation to list virtual machine scale sets VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param filter The filter to apply on the operation.
      * @param select The list parameters.
      * @param expand The expand expression to apply on the operation.

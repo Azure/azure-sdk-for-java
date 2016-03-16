@@ -380,6 +380,76 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
      * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
      *
      * @param scope Scope
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;RoleDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<RoleDefinition>> list(final String scope) throws CloudException, IOException, IllegalArgumentException {
+        if (scope == null) {
+            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        RoleDefinitionFilter filter = null;
+        Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<RoleDefinition>> response = listDelegate(call.execute());
+        List<RoleDefinition> result = response.getBody().getItems();
+        while (response.getBody().getNextPageLink() != null) {
+            response = listNext(response.getBody().getNextPageLink());
+            result.addAll(response.getBody().getItems());
+        }
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
+     *
+     * @param scope Scope
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final String scope, final ListOperationCallback<RoleDefinition> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (scope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final RoleDefinitionFilter filter = null;
+        Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<RoleDefinition>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<RoleDefinition>> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
+     *
+     * @param scope Scope
      * @param filter The filter to apply on the operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

@@ -77,6 +77,28 @@ public interface NetworkSecurityGroupsOperations {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the NetworkSecurityGroup object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<NetworkSecurityGroup> get(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceGroupName, String networkSecurityGroupName, final ServiceCallback<NetworkSecurityGroup> serviceCallback) throws IllegalArgumentException;
+    /**
+     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
      * @param expand expand references resources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

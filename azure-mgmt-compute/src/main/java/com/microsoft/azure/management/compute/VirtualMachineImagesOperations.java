@@ -60,6 +60,32 @@ public interface VirtualMachineImagesOperations {
      * @param publisherName the String value
      * @param offer the String value
      * @param skus the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<VirtualMachineImageResource>> list(String location, String publisherName, String offer, String skus) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value

@@ -504,6 +504,75 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Object object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<Object> deleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        final Boolean forceDelete = null;
+        Response<ResponseBody> result = service.deleteHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall deleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        }
+        final Boolean forceDelete = null;
+        Call<ResponseBody> call = service.deleteHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
      * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -564,6 +633,79 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> beginDeleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean forceDelete = null;
+        Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginDeleteHostingEnvironmentDelegate(call.execute());
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean forceDelete = null;
+        Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginDeleteHostingEnvironmentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
         return serviceCall;
@@ -1297,6 +1439,81 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getHostingEnvironmentMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getHostingEnvironmentMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getHostingEnvironmentMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
@@ -1457,6 +1674,79 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<CsmUsageQuotaCollection> getHostingEnvironmentUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getHostingEnvironmentUsagesDelegate(call.execute());
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getHostingEnvironmentUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getHostingEnvironmentUsagesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1530,6 +1820,87 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
                 .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceMetricCollection> getHostingEnvironmentMultiRoleMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String startTime = null;
+        String endTime = null;
+        String timeGrain = null;
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.getSubscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getHostingEnvironmentMultiRoleMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getHostingEnvironmentMultiRoleMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String startTime = null;
+        final String endTime = null;
+        final String timeGrain = null;
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.getSubscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getHostingEnvironmentMultiRoleMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -1618,6 +1989,90 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
                 .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceMetricCollection> getHostingEnvironmentWebWorkerMetrics(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (workerPoolName == null) {
+            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getHostingEnvironmentWebWorkerMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getHostingEnvironmentWebWorkerMetricsAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (workerPoolName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getHostingEnvironmentWebWorkerMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -2039,6 +2494,79 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
                 .register(200, new TypeToken<UsageCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<SiteCollection> getHostingEnvironmentSites(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getHostingEnvironmentSitesDelegate(call.execute());
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getHostingEnvironmentSitesAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String propertiesToInclude = null;
+        Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getHostingEnvironmentSitesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -3129,6 +3657,99 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
      * @param instance Name of instance in the worker pool
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (workerPoolName == null) {
+            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
+        }
+        if (instance == null) {
+            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        String filter = null;
+        Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getWorkerPoolInstanceMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (workerPoolName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
+            return null;
+        }
+        if (instance == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter instance is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        final String filter = null;
+        Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getWorkerPoolInstanceMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
@@ -3316,6 +3937,88 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (instance == null) {
+            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Boolean details = null;
+        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.getSubscriptionId(), details, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getMultiRolePoolInstanceMetricsDelegate(call.execute());
+    }
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (instance == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter instance is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean details = null;
+        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.getSubscriptionId(), details, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getMultiRolePoolInstanceMetricsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

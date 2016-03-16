@@ -97,6 +97,28 @@ public interface DomainsOperations {
      *
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<Object> deleteDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Deletes a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall deleteDomainAsync(String resourceGroupName, String domainName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Deletes a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
      * @param forceHardDeleteDomain If true then the domain will be deleted immediately instead of after 24 hours
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

@@ -30,6 +30,28 @@ public interface ProviderOperationsMetadataOperations {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param apiVersion the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ProviderOperationsMetadata object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ProviderOperationsMetadata> get(String resourceProviderNamespace, String apiVersion) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets provider operations metadata.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param apiVersion the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getAsync(String resourceProviderNamespace, String apiVersion, final ServiceCallback<ProviderOperationsMetadata> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets provider operations metadata.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param apiVersion the String value
      * @param expand the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -50,6 +72,26 @@ public interface ProviderOperationsMetadataOperations {
      */
     ServiceCall getAsync(String resourceProviderNamespace, String apiVersion, String expand, final ServiceCallback<ProviderOperationsMetadata> serviceCallback) throws IllegalArgumentException;
 
+    /**
+     * Gets provider operations metadata list.
+     *
+     * @param apiVersion the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ProviderOperationsMetadata&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<List<ProviderOperationsMetadata>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets provider operations metadata list.
+     *
+     * @param apiVersion the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listAsync(final String apiVersion, final ListOperationCallback<ProviderOperationsMetadata> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets provider operations metadata list.
      *
