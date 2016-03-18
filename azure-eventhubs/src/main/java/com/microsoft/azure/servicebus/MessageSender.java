@@ -421,19 +421,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		ReplayableWorkItem<Void> pendingSend = this.pendingSendWaiters.remove(deliveryTag);
 		if (pendingSend != null)
 		{
-			byte[] tag = String.valueOf(nextTag.incrementAndGet()).getBytes();
-	        Delivery dlv = this.sendLink.delivery(tag);
-	        dlv.setMessageFormat(pendingSend.getMessageFormat());
-	        
-	        int sentMsgSize = this.sendLink.send(pendingSend.getMessage(), 0, pendingSend.getEncodedMessageSize());
-	        assert sentMsgSize != pendingSend.getEncodedMessageSize() : "Contract of the ProtonJ library for Sender.Send API changed";
-	        
-	        CompletableFuture<Void> onSend = new CompletableFuture<Void>();
-	        this.pendingSendWaiters.put(tag, 
-	        		new ReplayableWorkItem<Void>(pendingSend.getMessage(), 
-	        				pendingSend.getEncodedMessageSize(), pendingSend.getMessageFormat(), onSend, this.operationTimeout));
-	        
-	        this.sendLink.advance();
+			this.send(pendingSend.getMessage(), 
+					pendingSend.getEncodedMessageSize(), 
+					pendingSend.getMessageFormat(),
+					pendingSend.getWork(),
+					pendingSend.getTimeoutTracker());
 		}
 	}
 	

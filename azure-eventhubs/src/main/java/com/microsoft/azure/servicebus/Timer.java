@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 final class Timer
 {
 	private static final ScheduledThreadPoolExecutor executor =
-			new ScheduledThreadPoolExecutor(Math.min(Runtime.getRuntime().availableProcessors(), 2));
+			new ScheduledThreadPoolExecutor(Math.max(Runtime.getRuntime().availableProcessors(), 4));
 	
 	private Timer() 
 	{
