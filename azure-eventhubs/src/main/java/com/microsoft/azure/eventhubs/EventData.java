@@ -30,7 +30,7 @@ public class EventData
 	
 	private SystemProperties systemProperties;
 	
-	EventData()
+	private EventData()
 	{
 	}
 	
