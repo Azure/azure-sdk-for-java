@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
@@ -25,7 +24,6 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.*;
 import com.microsoft.azure.servicebus.Timer;
 import com.microsoft.azure.servicebus.amqp.*;
 
@@ -196,6 +194,31 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return payloadBytes.getLength();
 	}
 	
+	private int getDataSerializedSize(Message amqpMessage)
+	{
+		if (amqpMessage == null)
+		{
+			return 0;
+		}
+		
+		int payloadSize = this.getPayloadSize(amqpMessage);
+		
+		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
+		MessageAnnotations msgAnnotations = amqpMessage.getMessageAnnotations();
+		if (msgAnnotations == null)
+		{
+			return payloadSize;
+		}
+		
+		int annotationsSize = 0;
+		for(Object value: msgAnnotations.getValue().values())
+		{
+			annotationsSize += value.toString().length();
+		}
+		
+		return annotationsSize + payloadSize;
+	}
+	
 	public CompletableFuture<Void> send(final Iterable<Message> messages)
 	{
 		if (messages == null || IteratorUtil.sizeEquals(messages, 0))
@@ -222,7 +245,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			Message messageWrappedByData = Proton.message();
 			
-			int payloadSize = this.getPayloadSize(amqpMessage);
+			int payloadSize = this.getDataSerializedSize(amqpMessage);
 			int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 			
 			byte[] messageBytes = new byte[allocationSize];
@@ -248,7 +271,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	
 	public CompletableFuture<Void> send(Message msg)
 	{
-		int payloadSize = this.getPayloadSize(msg);
+		int payloadSize = this.getDataSerializedSize(msg);
 		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 		
 		byte[] bytes = new byte[allocationSize];
