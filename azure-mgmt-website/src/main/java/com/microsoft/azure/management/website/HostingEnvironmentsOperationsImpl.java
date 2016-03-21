@@ -661,7 +661,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean forceDelete = null;
+        final Boolean forceDelete = null;
         Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return beginDeleteHostingEnvironmentDelegate(call.execute());
     }
@@ -1457,8 +1457,8 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
-        String filter = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getHostingEnvironmentMetricsDelegate(call.execute());
     }
@@ -1692,7 +1692,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getHostingEnvironmentUsagesDelegate(call.execute());
     }
@@ -1845,11 +1845,11 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String startTime = null;
-        String endTime = null;
-        String timeGrain = null;
-        Boolean details = null;
-        String filter = null;
+        final String startTime = null;
+        final String endTime = null;
+        final String timeGrain = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.getSubscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getHostingEnvironmentMultiRoleMetricsDelegate(call.execute());
     }
@@ -2018,8 +2018,8 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
-        String filter = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getHostingEnvironmentWebWorkerMetricsDelegate(call.execute());
     }
@@ -2519,7 +2519,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
+        final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getHostingEnvironmentSitesDelegate(call.execute());
     }
@@ -3681,8 +3681,8 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
-        String filter = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getWorkerPoolInstanceMetricsDelegate(call.execute());
     }
@@ -3966,7 +3966,7 @@ public final class HostingEnvironmentsOperationsImpl implements HostingEnvironme
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
+        final Boolean details = null;
         Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.getSubscriptionId(), details, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getMultiRolePoolInstanceMetricsDelegate(call.execute());
     }

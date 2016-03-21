@@ -222,7 +222,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean includePrivacy = null;
+        final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption.setIncludePrivacy(includePrivacy);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);

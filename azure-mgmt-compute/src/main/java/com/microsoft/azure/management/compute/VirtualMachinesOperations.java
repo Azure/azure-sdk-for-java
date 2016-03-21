@@ -17,11 +17,11 @@ import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureResult;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -303,7 +303,7 @@ public interface VirtualMachinesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachine&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachine>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachine>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machines under a resource group.
@@ -323,7 +323,7 @@ public interface VirtualMachinesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachine&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachine>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachine>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
@@ -344,7 +344,7 @@ public interface VirtualMachinesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String vmName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String vmName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists virtual-machine-sizes available to be used for a virtual machine.

@@ -273,9 +273,9 @@ public final class VirtualMachineExtensionImagesOperationsImpl implements Virtua
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        VirtualMachineImageResource filter = null;
-        Integer top = null;
-        String orderby = null;
+        final VirtualMachineImageResource filter = null;
+        final Integer top = null;
+        final String orderby = null;
         Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listVersionsDelegate(call.execute());
     }

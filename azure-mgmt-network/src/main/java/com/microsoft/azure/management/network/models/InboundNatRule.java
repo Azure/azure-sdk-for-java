@@ -98,13 +98,6 @@ public class InboundNatRule extends SubResource {
     private String etag;
 
     /**
-     * Creates an instance of InboundNatRule class.
-     */
-    public InboundNatRule() {
-        backendIPConfiguration = new NetworkInterfaceIPConfiguration();
-    }
-
-    /**
      * Get the frontendIPConfiguration value.
      *
      * @return the frontendIPConfiguration value

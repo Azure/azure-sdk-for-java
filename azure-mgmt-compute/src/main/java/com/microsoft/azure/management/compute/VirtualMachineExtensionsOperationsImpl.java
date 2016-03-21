@@ -458,7 +458,7 @@ public final class VirtualMachineExtensionsOperationsImpl implements VirtualMach
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, vmExtensionName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }

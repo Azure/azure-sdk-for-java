@@ -15,11 +15,11 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.Location;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -35,7 +35,7 @@ public interface SubscriptionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Location&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Location>> listLocations(final String subscriptionId) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Location>> listLocations(final String subscriptionId) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscription locations.
@@ -76,7 +76,7 @@ public interface SubscriptionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Subscription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Subscription>> list() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Subscription>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of the subscriptionIds.

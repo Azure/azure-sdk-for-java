@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceProviderOperationDefinition;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -78,7 +80,7 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ResourceProviderOperationDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ResourceProviderOperationDefinition>> list(final String resourceProviderNamespace, final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ResourceProviderOperationDefinition>> list(final String resourceProviderNamespace, final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -90,11 +92,12 @@ public final class ResourceProviderOperationDetailsOperationsImpl implements Res
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ResourceProviderOperationDefinition>> response = listDelegate(call.execute());
-        List<ResourceProviderOperationDefinition> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ResourceProviderOperationDefinition> result = new PagedList<ResourceProviderOperationDefinition>(response.getBody()) {
+            @Override
+            public Page<ResourceProviderOperationDefinition> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

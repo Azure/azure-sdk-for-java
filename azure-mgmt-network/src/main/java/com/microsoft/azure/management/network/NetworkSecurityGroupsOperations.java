@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -178,7 +178,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<NetworkSecurityGroup>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<NetworkSecurityGroup>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
@@ -198,7 +198,7 @@ public interface NetworkSecurityGroupsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkSecurityGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<NetworkSecurityGroup>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<NetworkSecurityGroup>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.

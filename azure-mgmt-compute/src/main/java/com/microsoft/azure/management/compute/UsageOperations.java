@@ -14,10 +14,10 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.Usage;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -33,7 +33,7 @@ public interface UsageOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Usage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Usage>> list(final String location) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Usage>> list(final String location) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists compute usages for a subscription.

@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.SecurityRule;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -540,7 +542,7 @@ public final class SecurityRulesOperationsImpl implements SecurityRulesOperation
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SecurityRule&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<SecurityRule>> list(final String resourceGroupName, final String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<SecurityRule>> list(final String resourceGroupName, final String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -555,11 +557,12 @@ public final class SecurityRulesOperationsImpl implements SecurityRulesOperation
         }
         Call<ResponseBody> call = service.list(resourceGroupName, networkSecurityGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<SecurityRule>> response = listDelegate(call.execute());
-        List<SecurityRule> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<SecurityRule> result = new PagedList<SecurityRule>(response.getBody()) {
+            @Override
+            public Page<SecurityRule> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

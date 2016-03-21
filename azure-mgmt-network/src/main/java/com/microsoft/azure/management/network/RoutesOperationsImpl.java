@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.Route;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -540,7 +542,7 @@ public final class RoutesOperationsImpl implements RoutesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Route&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Route>> list(final String resourceGroupName, final String routeTableName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Route>> list(final String resourceGroupName, final String routeTableName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -555,11 +557,12 @@ public final class RoutesOperationsImpl implements RoutesOperations {
         }
         Call<ResponseBody> call = service.list(resourceGroupName, routeTableName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Route>> response = listDelegate(call.execute());
-        List<Route> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Route> result = new PagedList<Route>(response.getBody()) {
+            @Override
+            public Page<Route> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

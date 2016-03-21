@@ -17,11 +17,11 @@ import com.microsoft.azure.management.resources.models.GenericResourceFilter;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupFilter;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -37,7 +37,7 @@ public interface ResourceGroupsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<GenericResource>> listResources(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<GenericResource>> listResources(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get all of the resources under a subscription.
@@ -59,7 +59,7 @@ public interface ResourceGroupsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<GenericResource>> listResources(final String resourceGroupName, final GenericResourceFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<GenericResource>> listResources(final String resourceGroupName, final GenericResourceFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get all of the resources under a subscription.
@@ -212,7 +212,7 @@ public interface ResourceGroupsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ResourceGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ResourceGroup>> list() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ResourceGroup>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a collection of resource groups.
@@ -232,7 +232,7 @@ public interface ResourceGroupsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ResourceGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ResourceGroup>> list(final ResourceGroupFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ResourceGroup>> list(final ResourceGroupFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a collection of resource groups.

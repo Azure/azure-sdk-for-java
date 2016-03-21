@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.ExpressRouteServiceProvider;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -76,7 +78,7 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteServiceProvider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ExpressRouteServiceProvider>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ExpressRouteServiceProvider>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -85,11 +87,12 @@ public final class ExpressRouteServiceProvidersOperationsImpl implements Express
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteServiceProvider>> response = listDelegate(call.execute());
-        List<ExpressRouteServiceProvider> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ExpressRouteServiceProvider> result = new PagedList<ExpressRouteServiceProvider>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteServiceProvider> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

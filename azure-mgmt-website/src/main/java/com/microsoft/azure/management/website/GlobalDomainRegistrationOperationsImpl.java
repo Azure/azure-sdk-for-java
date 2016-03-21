@@ -292,7 +292,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String name = null;
+        final String name = null;
         NameIdentifier identifier = new NameIdentifier();
         identifier.setName(name);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), identifier);

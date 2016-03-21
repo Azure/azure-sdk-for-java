@@ -14,10 +14,10 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Permission;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -33,7 +33,7 @@ public interface PermissionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Permission&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Permission>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Permission>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a resource group permissions.
@@ -58,7 +58,7 @@ public interface PermissionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Permission&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Permission>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Permission>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a resource permissions.

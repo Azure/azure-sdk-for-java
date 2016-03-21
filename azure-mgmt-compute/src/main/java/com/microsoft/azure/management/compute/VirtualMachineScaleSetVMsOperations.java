@@ -15,11 +15,11 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceView;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -239,7 +239,7 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetVM&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machine scale sets VMs.
@@ -264,7 +264,7 @@ public interface VirtualMachineScaleSetVMsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetVM&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName, final VirtualMachineScaleSetVM filter, final String select, final String expand) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName, final VirtualMachineScaleSetVM filter, final String select, final String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machine scale sets VMs.

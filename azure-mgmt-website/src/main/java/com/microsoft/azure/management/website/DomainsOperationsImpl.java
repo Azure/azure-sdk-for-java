@@ -347,7 +347,7 @@ public final class DomainsOperationsImpl implements DomainsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean forceHardDeleteDomain = null;
+        final Boolean forceHardDeleteDomain = null;
         Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.getSubscriptionId(), forceHardDeleteDomain, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteDomainDelegate(call.execute());
     }

@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -166,7 +166,7 @@ public interface ExpressRouteCircuitPeeringsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitPeering&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ExpressRouteCircuitPeering>> list(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ExpressRouteCircuitPeering>> list(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.

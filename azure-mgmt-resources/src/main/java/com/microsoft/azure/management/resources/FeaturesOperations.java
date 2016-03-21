@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.FeatureResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -33,7 +33,7 @@ public interface FeaturesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<FeatureResult>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<FeatureResult>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
@@ -53,7 +53,7 @@ public interface FeaturesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<FeatureResult>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<FeatureResult>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of previewed features of a resource provider.

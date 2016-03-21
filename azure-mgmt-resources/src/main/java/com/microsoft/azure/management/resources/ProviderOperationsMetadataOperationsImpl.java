@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ProviderOperationsMetadata;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -90,7 +92,7 @@ public final class ProviderOperationsMetadataOperationsImpl implements ProviderO
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.get(resourceProviderNamespace, apiVersion, expand, this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
@@ -207,18 +209,19 @@ public final class ProviderOperationsMetadataOperationsImpl implements ProviderO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ProviderOperationsMetadata&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ProviderOperationsMetadata>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ProviderOperationsMetadata>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.list(apiVersion, expand, this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ProviderOperationsMetadata>> response = listDelegate(call.execute());
-        List<ProviderOperationsMetadata> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ProviderOperationsMetadata> result = new PagedList<ProviderOperationsMetadata>(response.getBody()) {
+            @Override
+            public Page<ProviderOperationsMetadata> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -271,17 +274,18 @@ public final class ProviderOperationsMetadataOperationsImpl implements ProviderO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ProviderOperationsMetadata&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ProviderOperationsMetadata>> list(final String apiVersion, final String expand) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ProviderOperationsMetadata>> list(final String apiVersion, final String expand) throws CloudException, IOException, IllegalArgumentException {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(apiVersion, expand, this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ProviderOperationsMetadata>> response = listDelegate(call.execute());
-        List<ProviderOperationsMetadata> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ProviderOperationsMetadata> result = new PagedList<ProviderOperationsMetadata>(response.getBody()) {
+            @Override
+            public Page<ProviderOperationsMetadata> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

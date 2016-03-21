@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.LocalNetworkGateway;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -155,7 +155,7 @@ public interface LocalNetworkGatewaysOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;LocalNetworkGateway&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<LocalNetworkGateway>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<LocalNetworkGateway>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List LocalNetworkGateways opertion retrieves all the local network gateways stored.

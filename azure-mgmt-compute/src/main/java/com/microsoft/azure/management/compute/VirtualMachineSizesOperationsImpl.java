@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -77,7 +79,7 @@ public final class VirtualMachineSizesOperationsImpl implements VirtualMachineSi
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineSize>> list(final String location) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineSize>> list(final String location) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -89,11 +91,12 @@ public final class VirtualMachineSizesOperationsImpl implements VirtualMachineSi
         }
         Call<ResponseBody> call = service.list(location, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineSize>> response = listDelegate(call.execute());
-        List<VirtualMachineSize> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineSize> result = new PagedList<VirtualMachineSize>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineSize> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

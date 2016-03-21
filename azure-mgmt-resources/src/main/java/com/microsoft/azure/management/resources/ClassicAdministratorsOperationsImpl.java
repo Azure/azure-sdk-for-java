@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.ClassicAdministrator;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -77,7 +79,7 @@ public final class ClassicAdministratorsOperationsImpl implements ClassicAdminis
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ClassicAdministrator&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ClassicAdministrator>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ClassicAdministrator>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -86,11 +88,12 @@ public final class ClassicAdministratorsOperationsImpl implements ClassicAdminis
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ClassicAdministrator>> response = listDelegate(call.execute());
-        List<ClassicAdministrator> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ClassicAdministrator> result = new PagedList<ClassicAdministrator>(response.getBody()) {
+            @Override
+            public Page<ClassicAdministrator> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

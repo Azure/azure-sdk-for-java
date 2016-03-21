@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.Subnet;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -285,7 +287,7 @@ public final class SubnetsOperationsImpl implements SubnetsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
@@ -624,7 +626,7 @@ public final class SubnetsOperationsImpl implements SubnetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Subnet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Subnet>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Subnet>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -639,11 +641,12 @@ public final class SubnetsOperationsImpl implements SubnetsOperations {
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Subnet>> response = listDelegate(call.execute());
-        List<Subnet> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Subnet> result = new PagedList<Subnet>(response.getBody()) {
+            @Override
+            public Page<Subnet> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

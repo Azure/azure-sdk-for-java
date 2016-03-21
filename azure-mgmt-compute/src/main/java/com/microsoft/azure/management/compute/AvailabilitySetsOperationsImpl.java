@@ -17,6 +17,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.AvailabilitySet;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -348,7 +350,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;AvailabilitySet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<AvailabilitySet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<AvailabilitySet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -360,11 +362,12 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<AvailabilitySet>> response = listDelegate(call.execute());
-        List<AvailabilitySet> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<AvailabilitySet> result = new PagedList<AvailabilitySet>(response.getBody()) {
+            @Override
+            public Page<AvailabilitySet> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -431,7 +434,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -446,11 +449,12 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineSize>> response = listAvailableSizesDelegate(call.execute());
-        List<VirtualMachineSize> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listAvailableSizesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineSize> result = new PagedList<VirtualMachineSize>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineSize> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listAvailableSizesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

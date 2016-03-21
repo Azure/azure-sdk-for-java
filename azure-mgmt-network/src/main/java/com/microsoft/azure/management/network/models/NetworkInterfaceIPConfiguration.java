@@ -75,13 +75,6 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
     private String etag;
 
     /**
-     * Creates an instance of NetworkInterfaceIPConfiguration class.
-     */
-    public NetworkInterfaceIPConfiguration() {
-        subnet = new Subnet();
-    }
-
-    /**
      * Get the loadBalancerBackendAddressPools value.
      *
      * @return the loadBalancerBackendAddressPools value

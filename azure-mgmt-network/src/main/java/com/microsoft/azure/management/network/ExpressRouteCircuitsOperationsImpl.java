@@ -19,6 +19,8 @@ import com.microsoft.azure.management.network.models.ExpressRouteCircuitArpTable
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitRoutesTable;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitStats;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -532,7 +534,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitArpTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ExpressRouteCircuitArpTable>> listArpTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ExpressRouteCircuitArpTable>> listArpTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -547,11 +549,12 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         }
         Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteCircuitArpTable>> response = listArpTableDelegate(call.execute());
-        List<ExpressRouteCircuitArpTable> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listArpTableNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ExpressRouteCircuitArpTable> result = new PagedList<ExpressRouteCircuitArpTable>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteCircuitArpTable> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listArpTableNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -623,7 +626,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitRoutesTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ExpressRouteCircuitRoutesTable>> listRoutesTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ExpressRouteCircuitRoutesTable>> listRoutesTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -638,11 +641,12 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         }
         Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTable>> response = listRoutesTableDelegate(call.execute());
-        List<ExpressRouteCircuitRoutesTable> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listRoutesTableNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ExpressRouteCircuitRoutesTable> result = new PagedList<ExpressRouteCircuitRoutesTable>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteCircuitRoutesTable> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listRoutesTableNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -714,7 +718,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitStats&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ExpressRouteCircuitStats>> listStats(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ExpressRouteCircuitStats>> listStats(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -729,11 +733,12 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         }
         Call<ResponseBody> call = service.listStats(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteCircuitStats>> response = listStatsDelegate(call.execute());
-        List<ExpressRouteCircuitStats> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listStatsNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ExpressRouteCircuitStats> result = new PagedList<ExpressRouteCircuitStats>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteCircuitStats> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listStatsNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -804,7 +809,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuit&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ExpressRouteCircuit>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ExpressRouteCircuit>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -816,11 +821,12 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteCircuit>> response = listDelegate(call.execute());
-        List<ExpressRouteCircuit> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ExpressRouteCircuit> result = new PagedList<ExpressRouteCircuit>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteCircuit> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -885,7 +891,7 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuit&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ExpressRouteCircuit>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ExpressRouteCircuit>> listAll() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -894,11 +900,12 @@ public final class ExpressRouteCircuitsOperationsImpl implements ExpressRouteCir
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteCircuit>> response = listAllDelegate(call.execute());
-        List<ExpressRouteCircuit> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listAllNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ExpressRouteCircuit> result = new PagedList<ExpressRouteCircuit>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteCircuit> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listAllNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

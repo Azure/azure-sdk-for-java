@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.LocalNetworkGateway;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -496,7 +498,7 @@ public final class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGat
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;LocalNetworkGateway&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<LocalNetworkGateway>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<LocalNetworkGateway>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -508,11 +510,12 @@ public final class LocalNetworkGatewaysOperationsImpl implements LocalNetworkGat
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<LocalNetworkGateway>> response = listDelegate(call.execute());
-        List<LocalNetworkGateway> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<LocalNetworkGateway> result = new PagedList<LocalNetworkGateway>(response.getBody()) {
+            @Override
+            public Page<LocalNetworkGateway> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

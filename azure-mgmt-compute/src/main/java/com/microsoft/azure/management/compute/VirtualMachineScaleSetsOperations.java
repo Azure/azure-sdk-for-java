@@ -16,6 +16,7 @@ import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetInstanceView;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetSku;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -327,7 +328,7 @@ public interface VirtualMachineScaleSetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineScaleSet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineScaleSet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list virtual machine scale sets under a resource group.
@@ -347,7 +348,7 @@ public interface VirtualMachineScaleSetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineScaleSet>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineScaleSet>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the list of Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
@@ -368,7 +369,7 @@ public interface VirtualMachineScaleSetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetSku&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineScaleSetSku>> listSkus(final String resourceGroupName, final String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineScaleSetSku>> listSkus(final String resourceGroupName, final String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list available skus for a virtual machine scale set.

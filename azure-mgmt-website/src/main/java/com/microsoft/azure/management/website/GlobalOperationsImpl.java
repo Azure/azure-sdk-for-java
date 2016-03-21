@@ -388,7 +388,7 @@ public final class GlobalOperationsImpl implements GlobalOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean detailed = null;
+        final Boolean detailed = null;
         Call<ResponseBody> call = service.getAllServerFarms(this.client.getSubscriptionId(), detailed, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getAllServerFarmsDelegate(call.execute());
     }

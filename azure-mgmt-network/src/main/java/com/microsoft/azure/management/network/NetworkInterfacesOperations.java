@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -181,7 +181,7 @@ public interface NetworkInterfacesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
@@ -205,7 +205,7 @@ public interface NetworkInterfacesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
@@ -281,7 +281,7 @@ public interface NetworkInterfacesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<NetworkInterface>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<NetworkInterface>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
@@ -301,7 +301,7 @@ public interface NetworkInterfacesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<NetworkInterface>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<NetworkInterface>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.

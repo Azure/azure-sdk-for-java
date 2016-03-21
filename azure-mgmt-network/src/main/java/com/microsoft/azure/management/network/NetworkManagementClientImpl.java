@@ -418,7 +418,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (this.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null.");
         }
-        String domainNameLabel = null;
+        final String domainNameLabel = null;
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
         return checkDnsNameAvailabilityDelegate(call.execute());
     }

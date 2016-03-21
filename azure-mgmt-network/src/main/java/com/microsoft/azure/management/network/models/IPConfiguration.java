@@ -63,14 +63,6 @@ public class IPConfiguration extends SubResource {
     private String etag;
 
     /**
-     * Creates an instance of IPConfiguration class.
-     */
-    public IPConfiguration() {
-        subnet = new Subnet();
-        publicIPAddress = new PublicIPAddress();
-    }
-
-    /**
      * Get the privateIPAddress value.
      *
      * @return the privateIPAddress value

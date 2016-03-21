@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -178,7 +178,7 @@ public interface VirtualNetworksOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualNetwork&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualNetwork>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualNetwork>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list VirtualNetwork returns all Virtual Networks in a subscription.
@@ -198,7 +198,7 @@ public interface VirtualNetworksOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualNetwork&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualNetwork>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualNetwork>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list VirtualNetwork returns all Virtual Networks in a resource group.

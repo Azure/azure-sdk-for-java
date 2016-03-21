@@ -16,11 +16,11 @@ import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.RoleAssignment;
 import com.microsoft.azure.management.resources.models.RoleAssignmentCreateParameters;
 import com.microsoft.azure.management.resources.models.RoleAssignmentFilter;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -40,7 +40,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the resource.
@@ -69,7 +69,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the resource.
@@ -95,7 +95,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the resource group.
@@ -116,7 +116,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> listForResourceGroup(final String resourceGroupName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> listForResourceGroup(final String resourceGroupName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the resource group.
@@ -273,7 +273,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> list() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the subscription.
@@ -292,7 +292,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> list(final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> list(final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the subscription.
@@ -313,7 +313,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the scope.
@@ -334,7 +334,7 @@ public interface RoleAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleAssignment>> listForScope(final String scope, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleAssignment>> listForScope(final String scope, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets role assignments of the scope.

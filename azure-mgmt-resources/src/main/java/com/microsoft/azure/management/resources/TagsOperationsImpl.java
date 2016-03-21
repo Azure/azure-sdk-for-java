@@ -17,6 +17,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TagDetails;
 import com.microsoft.azure.management.resources.models.TagValue;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -392,7 +394,7 @@ public final class TagsOperationsImpl implements TagsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;TagDetails&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<TagDetails>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<TagDetails>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -401,11 +403,12 @@ public final class TagsOperationsImpl implements TagsOperations {
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<TagDetails>> response = listDelegate(call.execute());
-        List<TagDetails> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<TagDetails> result = new PagedList<TagDetails>(response.getBody()) {
+            @Override
+            public Page<TagDetails> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
