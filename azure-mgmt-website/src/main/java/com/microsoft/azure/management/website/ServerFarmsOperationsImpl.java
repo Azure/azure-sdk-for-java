@@ -23,6 +23,8 @@ import com.microsoft.azure.management.website.models.Site;
 import com.microsoft.azure.management.website.models.VnetGateway;
 import com.microsoft.azure.management.website.models.VnetInfo;
 import com.microsoft.azure.management.website.models.VnetRoute;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -493,7 +495,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(serverFarmEnvelope);
-        Boolean allowPendingState = null;
+        final Boolean allowPendingState = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), serverFarmEnvelope, allowPendingState, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return beginCreateOrUpdateServerFarmDelegate(call.execute());
     }
@@ -742,8 +744,8 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
-        String filter = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getServerFarmMetricsDelegate(call.execute());
     }
@@ -1832,7 +1834,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Site&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Site>> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Site>> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1845,16 +1847,17 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String skipToken = null;
-        String filter = null;
-        String top = null;
+        final String skipToken = null;
+        final String filter = null;
+        final String top = null;
         Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.getSubscriptionId(), skipToken, filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Site>> response = getServerFarmSitesDelegate(call.execute());
-        List<Site> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = getServerFarmSitesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Site> result = new PagedList<Site>(response.getBody()) {
+            @Override
+            public Page<Site> nextPage(String nextPageLink) throws CloudException, IOException {
+                return getServerFarmSitesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1925,7 +1928,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Site&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Site>> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Site>> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1940,11 +1943,12 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         }
         Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.getSubscriptionId(), skipToken, filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Site>> response = getServerFarmSitesDelegate(call.execute());
-        List<Site> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = getServerFarmSitesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Site> result = new PagedList<Site>(response.getBody()) {
+            @Override
+            public Page<Site> nextPage(String nextPageLink) throws CloudException, IOException {
+                return getServerFarmSitesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -2119,7 +2123,7 @@ public final class ServerFarmsOperationsImpl implements ServerFarmsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean softRestart = null;
+        final Boolean softRestart = null;
         Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return restartSitesForServerFarmDelegate(call.execute());
     }

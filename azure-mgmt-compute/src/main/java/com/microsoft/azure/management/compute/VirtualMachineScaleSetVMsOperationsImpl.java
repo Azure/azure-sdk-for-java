@@ -17,6 +17,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceView;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -802,7 +804,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetVM&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -815,16 +817,17 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        VirtualMachineScaleSetVM filter = null;
-        String select = null;
-        String expand = null;
+        final VirtualMachineScaleSetVM filter = null;
+        final String select = null;
+        final String expand = null;
         Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSetVM>> response = listDelegate(call.execute());
-        List<VirtualMachineScaleSetVM> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineScaleSetVM> result = new PagedList<VirtualMachineScaleSetVM>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineScaleSetVM> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -895,7 +898,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetVM&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName, final VirtualMachineScaleSetVM filter, final String select, final String expand) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineScaleSetVM>> list(final String resourceGroupName, final String virtualMachineScaleSetName, final VirtualMachineScaleSetVM filter, final String select, final String expand) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -911,11 +914,12 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
         Validator.validate(filter);
         Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSetVM>> response = listDelegate(call.execute());
-        List<VirtualMachineScaleSetVM> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineScaleSetVM> result = new PagedList<VirtualMachineScaleSetVM>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineScaleSetVM> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

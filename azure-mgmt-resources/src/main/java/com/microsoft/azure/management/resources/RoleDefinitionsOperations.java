@@ -15,11 +15,11 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.RoleDefinition;
 import com.microsoft.azure.management.resources.models.RoleDefinitionFilter;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -127,7 +127,7 @@ public interface RoleDefinitionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleDefinition>> list(final String scope) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleDefinition>> list(final String scope) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.
@@ -148,7 +148,7 @@ public interface RoleDefinitionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RoleDefinition>> list(final String scope, final RoleDefinitionFilter filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RoleDefinition>> list(final String scope, final RoleDefinitionFilter filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get all role definitions that are applicable at scope and above. Use atScopeAndBelow filter to search below the given scope as well.

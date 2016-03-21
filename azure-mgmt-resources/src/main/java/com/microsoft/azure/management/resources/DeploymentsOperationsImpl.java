@@ -19,6 +19,8 @@ import com.microsoft.azure.management.resources.models.DeploymentExtended;
 import com.microsoft.azure.management.resources.models.DeploymentExtendedFilter;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -759,7 +761,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DeploymentExtended&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DeploymentExtended>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DeploymentExtended>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -769,15 +771,16 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        DeploymentExtendedFilter filter = null;
-        Integer top = null;
+        final DeploymentExtendedFilter filter = null;
+        final Integer top = null;
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DeploymentExtended>> response = listDelegate(call.execute());
-        List<DeploymentExtended> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DeploymentExtended> result = new PagedList<DeploymentExtended>(response.getBody()) {
+            @Override
+            public Page<DeploymentExtended> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -840,7 +843,7 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DeploymentExtended&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DeploymentExtended>> list(final String resourceGroupName, final DeploymentExtendedFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DeploymentExtended>> list(final String resourceGroupName, final DeploymentExtendedFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -853,11 +856,12 @@ public final class DeploymentsOperationsImpl implements DeploymentsOperations {
         Validator.validate(filter);
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DeploymentExtended>> response = listDelegate(call.execute());
-        List<DeploymentExtended> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DeploymentExtended> result = new PagedList<DeploymentExtended>(response.getBody()) {
+            @Override
+            public Page<DeploymentExtended> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

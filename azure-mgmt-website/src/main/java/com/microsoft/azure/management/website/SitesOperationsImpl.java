@@ -2829,7 +2829,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
+        final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteSlotsDelegate(call.execute());
     }
@@ -2978,9 +2978,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
-        String includeSiteTypes = null;
-        Boolean includeSlots = null;
+        final String propertiesToInclude = null;
+        final String includeSiteTypes = null;
+        final Boolean includeSlots = null;
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSitesDelegate(call.execute());
     }
@@ -3125,7 +3125,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
+        final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteDelegate(call.execute());
     }
@@ -3456,10 +3456,10 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(siteEnvelope);
-        String skipDnsRegistration = null;
-        String skipCustomDomainVerification = null;
-        String forceDnsRegistration = null;
-        String ttlInSeconds = null;
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return beginCreateOrUpdateSiteDelegate(call.execute());
     }
@@ -3641,10 +3641,10 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String deleteMetrics = null;
-        String deleteEmptyServerFarm = null;
-        String skipDnsRegistration = null;
-        String deleteAllSlots = null;
+        final String deleteMetrics = null;
+        final String deleteEmptyServerFarm = null;
+        final String skipDnsRegistration = null;
+        final String deleteAllSlots = null;
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteSiteDelegate(call.execute());
     }
@@ -3810,7 +3810,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
+        final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteSlotDelegate(call.execute());
     }
@@ -4175,10 +4175,10 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(siteEnvelope);
-        String skipDnsRegistration = null;
-        String skipCustomDomainVerification = null;
-        String forceDnsRegistration = null;
-        String ttlInSeconds = null;
+        final String skipDnsRegistration = null;
+        final String skipCustomDomainVerification = null;
+        final String forceDnsRegistration = null;
+        final String ttlInSeconds = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return beginCreateOrUpdateSiteSlotDelegate(call.execute());
     }
@@ -4378,10 +4378,10 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String deleteMetrics = null;
-        String deleteEmptyServerFarm = null;
-        String skipDnsRegistration = null;
-        String deleteAllSlots = null;
+        final String deleteMetrics = null;
+        final String deleteEmptyServerFarm = null;
+        final String skipDnsRegistration = null;
+        final String deleteAllSlots = null;
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteSiteSlotDelegate(call.execute());
     }
@@ -5307,8 +5307,8 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
-        String includeSiteTypes = null;
+        final String propertiesToInclude = null;
+        final String includeSiteTypes = null;
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.getSubscriptionId(), propertiesToInclude, includeSiteTypes, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDeletedSitesDelegate(call.execute());
     }
@@ -13598,7 +13598,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteUsagesSlotDelegate(call.execute());
     }
@@ -13765,7 +13765,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteUsagesDelegate(call.execute());
     }
@@ -13922,8 +13922,8 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
-        String filter = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteMetricsSlotDelegate(call.execute());
     }
@@ -14093,8 +14093,8 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean details = null;
-        String filter = null;
+        final Boolean details = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSiteMetricsDelegate(call.execute());
     }
@@ -14415,7 +14415,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String format = null;
+        final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.setFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
@@ -14586,7 +14586,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String format = null;
+        final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.setFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
@@ -14767,8 +14767,8 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean softRestart = null;
-        Boolean synchronous = null;
+        final Boolean softRestart = null;
+        final Boolean synchronous = null;
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return restartSiteDelegate(call.execute());
     }
@@ -14928,8 +14928,8 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean softRestart = null;
-        Boolean synchronous = null;
+        final Boolean softRestart = null;
+        final Boolean synchronous = null;
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), softRestart, synchronous, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return restartSiteSlotDelegate(call.execute());
     }

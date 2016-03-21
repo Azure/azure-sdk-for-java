@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.NetworkInterface;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -292,7 +294,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.get(resourceGroupName, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
@@ -601,7 +603,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<NetworkInterface>> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -619,11 +621,12 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         }
         Call<ResponseBody> call = service.listVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<NetworkInterface>> response = listVirtualMachineScaleSetVMNetworkInterfacesDelegate(call.execute());
-        List<NetworkInterface> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listVirtualMachineScaleSetVMNetworkInterfacesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<NetworkInterface> result = new PagedList<NetworkInterface>(response.getBody()) {
+            @Override
+            public Page<NetworkInterface> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listVirtualMachineScaleSetVMNetworkInterfacesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -700,7 +703,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<NetworkInterface>> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -715,11 +718,12 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         }
         Call<ResponseBody> call = service.listVirtualMachineScaleSetNetworkInterfaces(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<NetworkInterface>> response = listVirtualMachineScaleSetNetworkInterfacesDelegate(call.execute());
-        List<NetworkInterface> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listVirtualMachineScaleSetNetworkInterfacesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<NetworkInterface> result = new PagedList<NetworkInterface>(response.getBody()) {
+            @Override
+            public Page<NetworkInterface> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listVirtualMachineScaleSetNetworkInterfacesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -812,7 +816,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.getVirtualMachineScaleSetNetworkInterface(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         return getVirtualMachineScaleSetNetworkInterfaceDelegate(call.execute());
     }
@@ -978,7 +982,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<NetworkInterface>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<NetworkInterface>> listAll() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -987,11 +991,12 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<NetworkInterface>> response = listAllDelegate(call.execute());
-        List<NetworkInterface> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listAllNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<NetworkInterface> result = new PagedList<NetworkInterface>(response.getBody()) {
+            @Override
+            public Page<NetworkInterface> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listAllNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1052,7 +1057,7 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NetworkInterface&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<NetworkInterface>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<NetworkInterface>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1064,11 +1069,12 @@ public final class NetworkInterfacesOperationsImpl implements NetworkInterfacesO
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<NetworkInterface>> response = listDelegate(call.execute());
-        List<NetworkInterface> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<NetworkInterface> result = new PagedList<NetworkInterface>(response.getBody()) {
+            @Override
+            public Page<NetworkInterface> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

@@ -19,6 +19,8 @@ import com.microsoft.azure.management.resources.models.GenericResourceFilter;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupFilter;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -121,7 +123,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<GenericResource>> listResources(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<GenericResource>> listResources(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -131,15 +133,16 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        GenericResourceFilter filter = null;
-        Integer top = null;
+        final GenericResourceFilter filter = null;
+        final Integer top = null;
         Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute());
-        List<GenericResource> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listResourcesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<GenericResource> result = new PagedList<GenericResource>(response.getBody()) {
+            @Override
+            public Page<GenericResource> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listResourcesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -202,7 +205,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;GenericResource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<GenericResource>> listResources(final String resourceGroupName, final GenericResourceFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<GenericResource>> listResources(final String resourceGroupName, final GenericResourceFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -215,11 +218,12 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Validator.validate(filter);
         Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute());
-        List<GenericResource> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listResourcesNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<GenericResource> result = new PagedList<GenericResource>(response.getBody()) {
+            @Override
+            public Page<GenericResource> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listResourcesNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -716,22 +720,23 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ResourceGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ResourceGroup>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ResourceGroup>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        ResourceGroupFilter filter = null;
-        Integer top = null;
+        final ResourceGroupFilter filter = null;
+        final Integer top = null;
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute());
-        List<ResourceGroup> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ResourceGroup> result = new PagedList<ResourceGroup>(response.getBody()) {
+            @Override
+            public Page<ResourceGroup> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -788,7 +793,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ResourceGroup&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<ResourceGroup>> list(final ResourceGroupFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ResourceGroup>> list(final ResourceGroupFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -798,11 +803,12 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         Validator.validate(filter);
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute());
-        List<ResourceGroup> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<ResourceGroup> result = new PagedList<ResourceGroup>(response.getBody()) {
+            @Override
+            public Page<ResourceGroup> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

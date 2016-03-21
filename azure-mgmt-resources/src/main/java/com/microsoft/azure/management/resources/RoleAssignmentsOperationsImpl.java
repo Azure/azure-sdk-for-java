@@ -18,6 +18,8 @@ import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.RoleAssignment;
 import com.microsoft.azure.management.resources.models.RoleAssignmentCreateParameters;
 import com.microsoft.azure.management.resources.models.RoleAssignmentFilter;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -136,7 +138,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -158,14 +160,15 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        RoleAssignmentFilter filter = null;
+        final RoleAssignmentFilter filter = null;
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -250,7 +253,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -275,11 +278,12 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
         Validator.validate(filter);
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -367,7 +371,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -377,14 +381,15 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        RoleAssignmentFilter filter = null;
+        final RoleAssignmentFilter filter = null;
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceGroupDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -445,7 +450,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> listForResourceGroup(final String resourceGroupName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> listForResourceGroup(final String resourceGroupName, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -458,11 +463,12 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
         Validator.validate(filter);
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceGroupDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -950,21 +956,22 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        RoleAssignmentFilter filter = null;
+        final RoleAssignmentFilter filter = null;
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1019,7 +1026,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> list(final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> list(final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -1029,11 +1036,12 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
         Validator.validate(filter);
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1096,21 +1104,22 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        RoleAssignmentFilter filter = null;
+        final RoleAssignmentFilter filter = null;
         Call<ResponseBody> call = service.listForScope(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForScopeDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForScopeNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForScopeNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1167,7 +1176,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleAssignment>> listForScope(final String scope, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleAssignment>> listForScope(final String scope, final RoleAssignmentFilter filter) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -1177,11 +1186,12 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
         Validator.validate(filter);
         Call<ResponseBody> call = service.listForScope(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForScopeDelegate(call.execute());
-        List<RoleAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForScopeNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
+            @Override
+            public Page<RoleAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForScopeNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

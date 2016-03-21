@@ -15,11 +15,11 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.AvailabilitySet;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -106,7 +106,7 @@ public interface AvailabilitySetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;AvailabilitySet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<AvailabilitySet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<AvailabilitySet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The operation to list the availability sets.
@@ -128,7 +128,7 @@ public interface AvailabilitySetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String availabilitySetName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String availabilitySetName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists virtual-machine-sizes available to be used for an availability set.

@@ -17,11 +17,11 @@ import com.microsoft.azure.management.network.models.ExpressRouteCircuitArpTable
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitRoutesTable;
 import com.microsoft.azure.management.network.models.ExpressRouteCircuitStats;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -159,7 +159,7 @@ public interface ExpressRouteCircuitsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitArpTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ExpressRouteCircuitArpTable>> listArpTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ExpressRouteCircuitArpTable>> listArpTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
@@ -182,7 +182,7 @@ public interface ExpressRouteCircuitsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitRoutesTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ExpressRouteCircuitRoutesTable>> listRoutesTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ExpressRouteCircuitRoutesTable>> listRoutesTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
@@ -205,7 +205,7 @@ public interface ExpressRouteCircuitsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuitStats&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ExpressRouteCircuitStats>> listStats(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ExpressRouteCircuitStats>> listStats(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
@@ -227,7 +227,7 @@ public interface ExpressRouteCircuitsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuit&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ExpressRouteCircuit>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ExpressRouteCircuit>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
@@ -247,7 +247,7 @@ public interface ExpressRouteCircuitsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteCircuit&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ExpressRouteCircuit>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ExpressRouteCircuit>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.

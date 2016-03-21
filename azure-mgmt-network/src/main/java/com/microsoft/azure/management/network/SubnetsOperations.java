@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.Subnet;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -192,7 +192,7 @@ public interface SubnetsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Subnet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Subnet>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Subnet>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List subnets opertion retrieves all the subnets in a virtual network.

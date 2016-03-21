@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.RouteTable;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -179,7 +179,7 @@ public interface RouteTablesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RouteTable>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RouteTable>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a resource group.
@@ -199,7 +199,7 @@ public interface RouteTablesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RouteTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<RouteTable>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<RouteTable>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The list RouteTables returns all route tables in a subscription.

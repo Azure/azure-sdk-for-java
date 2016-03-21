@@ -21,6 +21,7 @@ import com.microsoft.azure.management.website.models.Site;
 import com.microsoft.azure.management.website.models.VnetGateway;
 import com.microsoft.azure.management.website.models.VnetInfo;
 import com.microsoft.azure.management.website.models.VnetRoute;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -526,7 +527,7 @@ public interface ServerFarmsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Site&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Site>> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Site>> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets list of Apps associated with an App Service Plan.
@@ -551,7 +552,7 @@ public interface ServerFarmsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Site&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Site>> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Site>> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets list of Apps associated with an App Service Plan.

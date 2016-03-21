@@ -131,7 +131,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
-        String type = null;
+        final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
         accountName.setName(name);
         accountName.setType(type);

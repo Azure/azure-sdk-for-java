@@ -17,11 +17,11 @@ import com.microsoft.azure.management.network.models.ConnectionSharedKey;
 import com.microsoft.azure.management.network.models.ConnectionSharedKeyResult;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGatewayConnection;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -181,7 +181,7 @@ public interface VirtualNetworkGatewayConnectionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualNetworkGatewayConnection&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualNetworkGatewayConnection>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<VirtualNetworkGatewayConnection>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.

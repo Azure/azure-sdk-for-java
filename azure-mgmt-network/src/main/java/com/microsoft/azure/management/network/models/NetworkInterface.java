@@ -83,13 +83,6 @@ public class NetworkInterface extends Resource {
     private String etag;
 
     /**
-     * Creates an instance of NetworkInterface class.
-     */
-    public NetworkInterface() {
-        networkSecurityGroup = new NetworkSecurityGroup();
-    }
-
-    /**
      * Get the virtualMachine value.
      *
      * @return the virtualMachine value

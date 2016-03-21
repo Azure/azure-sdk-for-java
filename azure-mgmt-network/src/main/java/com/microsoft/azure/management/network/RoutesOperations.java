@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.Route;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -166,7 +166,7 @@ public interface RoutesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Route&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Route>> list(final String resourceGroupName, final String routeTableName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Route>> list(final String resourceGroupName, final String routeTableName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List network security rule opertion retrieves all the routes in a route table.

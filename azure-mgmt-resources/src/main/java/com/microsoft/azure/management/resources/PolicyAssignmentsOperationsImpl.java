@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.PolicyAssignment;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -134,7 +136,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -156,14 +158,15 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listForResourceDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -248,7 +251,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -272,11 +275,12 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         }
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listForResourceDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -363,7 +367,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -373,14 +377,15 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listForResourceGroupDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -441,7 +446,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> listForResourceGroup(final String resourceGroupName, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> listForResourceGroup(final String resourceGroupName, final String filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -453,11 +458,12 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         }
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listForResourceGroupDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -986,21 +992,22 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1055,7 +1062,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> list(final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> list(final String filter) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -1064,11 +1071,12 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1130,7 +1138,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -1140,14 +1148,15 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String filter = null;
+        final String filter = null;
         Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listForScopeDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForScopeNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForScopeNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1208,7 +1217,7 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PolicyAssignment>> listForScope(final String scope, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PolicyAssignment>> listForScope(final String scope, final String filter) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -1220,11 +1229,12 @@ public final class PolicyAssignmentsOperationsImpl implements PolicyAssignmentsO
         }
         Call<ResponseBody> call = service.listForScope(scope, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PolicyAssignment>> response = listForScopeDelegate(call.execute());
-        List<PolicyAssignment> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForScopeNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PolicyAssignment> result = new PagedList<PolicyAssignment>(response.getBody()) {
+            @Override
+            public Page<PolicyAssignment> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForScopeNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

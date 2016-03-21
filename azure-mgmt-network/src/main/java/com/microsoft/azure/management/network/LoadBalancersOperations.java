@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.LoadBalancer;
 import com.microsoft.azure.management.network.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -178,7 +178,7 @@ public interface LoadBalancersOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;LoadBalancer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<LoadBalancer>> listAll() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<LoadBalancer>> listAll() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
@@ -198,7 +198,7 @@ public interface LoadBalancersOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;LoadBalancer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<LoadBalancer>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<LoadBalancer>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.

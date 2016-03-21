@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.TenantIdDescription;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -75,17 +77,18 @@ public final class TenantsOperationsImpl implements TenantsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;TenantIdDescription&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<TenantIdDescription>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<TenantIdDescription>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<TenantIdDescription>> response = listDelegate(call.execute());
-        List<TenantIdDescription> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<TenantIdDescription> result = new PagedList<TenantIdDescription>(response.getBody()) {
+            @Override
+            public Page<TenantIdDescription> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

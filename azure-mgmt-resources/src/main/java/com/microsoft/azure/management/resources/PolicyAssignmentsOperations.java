@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.PolicyAssignment;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -38,7 +38,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource.
@@ -67,7 +67,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource.
@@ -93,7 +93,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource group.
@@ -114,7 +114,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> listForResourceGroup(final String resourceGroupName, final String filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> listForResourceGroup(final String resourceGroupName, final String filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the resource group.
@@ -271,7 +271,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> list() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the subscription.
@@ -290,7 +290,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> list(final String filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> list(final String filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the subscription.
@@ -311,7 +311,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> listForScope(final String scope) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the scope.
@@ -332,7 +332,7 @@ public interface PolicyAssignmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PolicyAssignment&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<PolicyAssignment>> listForScope(final String scope, final String filter) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<PolicyAssignment>> listForScope(final String scope, final String filter) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets policy assignments of the scope.

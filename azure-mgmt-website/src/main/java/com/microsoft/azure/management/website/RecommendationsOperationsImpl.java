@@ -90,8 +90,8 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean featured = null;
-        String filter = null;
+        final Boolean featured = null;
+        final String filter = null;
         Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.getSubscriptionId(), featured, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getRecommendationBySubscriptionDelegate(call.execute());
     }
@@ -306,7 +306,7 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean featured = null;
+        final Boolean featured = null;
         Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getRecommendedRulesForSiteDelegate(call.execute());
     }
@@ -459,8 +459,8 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String startTime = null;
-        String endTime = null;
+        final String startTime = null;
+        final String endTime = null;
         Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), startTime, endTime, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getRecommendationHistoryForSiteDelegate(call.execute());
     }

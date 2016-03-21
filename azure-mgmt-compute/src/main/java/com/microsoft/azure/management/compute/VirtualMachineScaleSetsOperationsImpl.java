@@ -20,6 +20,8 @@ import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetInsta
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetSku;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -527,7 +529,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        List<String> instanceIds = null;
+        final List<String> instanceIds = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
@@ -1164,7 +1166,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineScaleSet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineScaleSet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1176,11 +1178,12 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSet>> response = listDelegate(call.execute());
-        List<VirtualMachineScaleSet> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineScaleSet> result = new PagedList<VirtualMachineScaleSet>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineScaleSet> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1245,7 +1248,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineScaleSet>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineScaleSet>> listAll() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -1254,11 +1257,12 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSet>> response = listAllDelegate(call.execute());
-        List<VirtualMachineScaleSet> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listAllNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineScaleSet> result = new PagedList<VirtualMachineScaleSet>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineScaleSet> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listAllNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1320,7 +1324,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetSku&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualMachineScaleSetSku>> listSkus(final String resourceGroupName, final String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualMachineScaleSetSku>> listSkus(final String resourceGroupName, final String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1335,11 +1339,12 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         }
         Call<ResponseBody> call = service.listSkus(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSetSku>> response = listSkusDelegate(call.execute());
-        List<VirtualMachineScaleSetSku> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listSkusNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualMachineScaleSetSku> result = new PagedList<VirtualMachineScaleSetSku>(response.getBody()) {
+            @Override
+            public Page<VirtualMachineScaleSetSku> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listSkusNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1585,7 +1590,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        List<String> instanceIds = null;
+        final List<String> instanceIds = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
@@ -1920,7 +1925,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        List<String> instanceIds = null;
+        final List<String> instanceIds = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
@@ -2255,7 +2260,7 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        List<String> instanceIds = null;
+        final List<String> instanceIds = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();

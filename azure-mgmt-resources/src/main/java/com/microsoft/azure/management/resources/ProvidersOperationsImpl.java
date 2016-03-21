@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -228,21 +230,22 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Provider>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Provider>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Integer top = null;
+        final Integer top = null;
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Provider>> response = listDelegate(call.execute());
-        List<Provider> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Provider> result = new PagedList<Provider>(response.getBody()) {
+            @Override
+            public Page<Provider> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -297,7 +300,7 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Provider>> list(final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Provider>> list(final Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -306,11 +309,12 @@ public final class ProvidersOperationsImpl implements ProvidersOperations {
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Provider>> response = listDelegate(call.execute());
-        List<Provider> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Provider> result = new PagedList<Provider>(response.getBody()) {
+            @Override
+            public Page<Provider> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

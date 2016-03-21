@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.ProviderOperationsMetadata;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -81,7 +81,7 @@ public interface ProviderOperationsMetadataOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ProviderOperationsMetadata&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ProviderOperationsMetadata>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ProviderOperationsMetadata>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets provider operations metadata list.
@@ -102,7 +102,7 @@ public interface ProviderOperationsMetadataOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ProviderOperationsMetadata&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<ProviderOperationsMetadata>> list(final String apiVersion, final String expand) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<ProviderOperationsMetadata>> list(final String apiVersion, final String expand) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets provider operations metadata list.

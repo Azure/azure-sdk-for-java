@@ -19,6 +19,8 @@ import com.microsoft.azure.management.network.models.ConnectionSharedKey;
 import com.microsoft.azure.management.network.models.ConnectionSharedKeyResult;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.VirtualNetworkGatewayConnection;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -598,7 +600,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualNetworkGatewayConnection&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<VirtualNetworkGatewayConnection>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualNetworkGatewayConnection>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -610,11 +612,12 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualNetworkGatewayConnection>> response = listDelegate(call.execute());
-        List<VirtualNetworkGatewayConnection> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<VirtualNetworkGatewayConnection> result = new PagedList<VirtualNetworkGatewayConnection>(response.getBody()) {
+            @Override
+            public Page<VirtualNetworkGatewayConnection> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -841,7 +844,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Long keyLength = null;
+        final Long keyLength = null;
         ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.setKeyLength(keyLength);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
@@ -1150,7 +1153,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String value = null;
+        final String value = null;
         ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.setValue(value);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);

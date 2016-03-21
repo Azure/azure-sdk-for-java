@@ -17,6 +17,8 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.RoleDefinition;
 import com.microsoft.azure.management.resources.models.RoleDefinitionFilter;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -385,21 +387,22 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleDefinition>> list(final String scope) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleDefinition>> list(final String scope) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        RoleDefinitionFilter filter = null;
+        final RoleDefinitionFilter filter = null;
         Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleDefinition>> response = listDelegate(call.execute());
-        List<RoleDefinition> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleDefinition> result = new PagedList<RoleDefinition>(response.getBody()) {
+            @Override
+            public Page<RoleDefinition> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -456,7 +459,7 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RoleDefinition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<RoleDefinition>> list(final String scope, final RoleDefinitionFilter filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<RoleDefinition>> list(final String scope, final RoleDefinitionFilter filter) throws CloudException, IOException, IllegalArgumentException {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -466,11 +469,12 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
         Validator.validate(filter);
         Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleDefinition>> response = listDelegate(call.execute());
-        List<RoleDefinition> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<RoleDefinition> result = new PagedList<RoleDefinition>(response.getBody()) {
+            @Override
+            public Page<RoleDefinition> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

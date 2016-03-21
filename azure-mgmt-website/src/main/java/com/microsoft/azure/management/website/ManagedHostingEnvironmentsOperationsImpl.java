@@ -521,7 +521,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Boolean forceDelete = null;
+        final Boolean forceDelete = null;
         Call<ResponseBody> call = service.beginDeleteManagedHostingEnvironment(resourceGroupName, name, this.client.getSubscriptionId(), forceDelete, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return beginDeleteManagedHostingEnvironmentDelegate(call.execute());
     }
@@ -914,7 +914,7 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String propertiesToInclude = null;
+        final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getManagedHostingEnvironmentSites(resourceGroupName, name, this.client.getSubscriptionId(), propertiesToInclude, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getManagedHostingEnvironmentSitesDelegate(call.execute());
     }

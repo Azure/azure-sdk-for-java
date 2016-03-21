@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Permission;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -85,7 +87,7 @@ public final class PermissionsOperationsImpl implements PermissionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Permission&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Permission>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Permission>> listForResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -97,11 +99,12 @@ public final class PermissionsOperationsImpl implements PermissionsOperations {
         }
         Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Permission>> response = listForResourceGroupDelegate(call.execute());
-        List<Permission> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Permission> result = new PagedList<Permission>(response.getBody()) {
+            @Override
+            public Page<Permission> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -171,7 +174,7 @@ public final class PermissionsOperationsImpl implements PermissionsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Permission&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Permission>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Permission>> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -195,11 +198,12 @@ public final class PermissionsOperationsImpl implements PermissionsOperations {
         }
         Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<Permission>> response = listForResourceDelegate(call.execute());
-        List<Permission> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listForResourceNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<Permission> result = new PagedList<Permission>(response.getBody()) {
+            @Override
+            public Page<Permission> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listForResourceNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

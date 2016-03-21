@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.FeatureResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -94,7 +96,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<FeatureResult>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<FeatureResult>> listAll() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -103,11 +105,12 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<FeatureResult>> response = listAllDelegate(call.execute());
-        List<FeatureResult> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listAllNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<FeatureResult> result = new PagedList<FeatureResult>(response.getBody()) {
+            @Override
+            public Page<FeatureResult> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listAllNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -168,7 +171,7 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;FeatureResult&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<FeatureResult>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<FeatureResult>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -180,11 +183,12 @@ public final class FeaturesOperationsImpl implements FeaturesOperations {
         }
         Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<FeatureResult>> response = listDelegate(call.execute());
-        List<FeatureResult> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<FeatureResult> result = new PagedList<FeatureResult>(response.getBody()) {
+            @Override
+            public Page<FeatureResult> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

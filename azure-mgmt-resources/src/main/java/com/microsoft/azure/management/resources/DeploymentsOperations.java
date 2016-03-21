@@ -17,11 +17,11 @@ import com.microsoft.azure.management.resources.models.DeploymentExtended;
 import com.microsoft.azure.management.resources.models.DeploymentExtendedFilter;
 import com.microsoft.azure.management.resources.models.DeploymentValidateResult;
 import com.microsoft.azure.management.resources.models.PageImpl;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -229,7 +229,7 @@ public interface DeploymentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DeploymentExtended&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<DeploymentExtended>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<DeploymentExtended>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get a list of deployments.
@@ -251,7 +251,7 @@ public interface DeploymentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DeploymentExtended&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<DeploymentExtended>> list(final String resourceGroupName, final DeploymentExtendedFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<DeploymentExtended>> list(final String resourceGroupName, final DeploymentExtendedFilter filter, final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Get a list of deployments.

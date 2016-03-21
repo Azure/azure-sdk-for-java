@@ -16,6 +16,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.network.models.PageImpl;
 import com.microsoft.azure.management.network.models.PublicIPAddress;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -272,7 +274,7 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        String expand = null;
+        final String expand = null;
         Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.getSubscriptionId(), this.client.getApiVersion(), expand, this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
@@ -578,7 +580,7 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PublicIPAddress&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PublicIPAddress>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PublicIPAddress>> listAll() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -587,11 +589,12 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         }
         Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PublicIPAddress>> response = listAllDelegate(call.execute());
-        List<PublicIPAddress> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listAllNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PublicIPAddress> result = new PagedList<PublicIPAddress>(response.getBody()) {
+            @Override
+            public Page<PublicIPAddress> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listAllNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -652,7 +655,7 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PublicIPAddress&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<PublicIPAddress>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<PublicIPAddress>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -664,11 +667,12 @@ public final class PublicIPAddressesOperationsImpl implements PublicIPAddressesO
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<PublicIPAddress>> response = listDelegate(call.execute());
-        List<PublicIPAddress> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<PublicIPAddress> result = new PagedList<PublicIPAddress>(response.getBody()) {
+            @Override
+            public Page<PublicIPAddress> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 

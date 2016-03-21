@@ -14,11 +14,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.models.PageImpl;
 import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -75,7 +75,7 @@ public interface ProvidersOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Provider>> list() throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Provider>> list() throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
@@ -94,7 +94,7 @@ public interface ProvidersOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Provider&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Provider>> list(final Integer top) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<Provider>> list(final Integer top) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of resource providers.
