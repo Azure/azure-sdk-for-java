@@ -104,7 +104,11 @@ public class ConnectionStringBuilder
 		this.connectionString = connectionString;
 	}
 	
-	URI getEndpoint()
+	/**
+	 * Get the endpoint which can be used to connect to the ServiceBus Namespace
+	 * @return Endpoint
+	 */
+	public URI getEndpoint()
 	{
 		return this.endpoint;
 	}
@@ -113,7 +117,7 @@ public class ConnectionStringBuilder
 	 * Get the shared access policy key value from the connection string
 	 * @return Shared Access Signature key
 	 */
-	String getSasKey()
+	public String getSasKey()
 	{
 		return this.sharedAccessKey;
 	}
