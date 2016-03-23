@@ -71,8 +71,8 @@ public class FileStatusProperties {
     private String permission;
 
     /**
-     * Gets the type of the path object. Possible values include: 'File',
-     * 'Directory'.
+     * Gets the type of the path object. Possible values include: 'FILE',
+     * 'DIRECTORY'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private FileType type;

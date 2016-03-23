@@ -40,7 +40,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> concurrentAppend(String filePath, String accountName, InputStream streamContents) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> concurrentAppend(String filePath, String accountName, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
@@ -52,7 +52,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concurrentAppendAsync(String filePath, String accountName, InputStream streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall concurrentAppendAsync(String filePath, String accountName, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
@@ -65,7 +65,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> concurrentAppend(String filePath, String accountName, InputStream streamContents, AppendModeType appendMode) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> concurrentAppend(String filePath, String accountName, byte[] streamContents, AppendModeType appendMode) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
@@ -78,7 +78,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concurrentAppendAsync(String filePath, String accountName, InputStream streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall concurrentAppendAsync(String filePath, String accountName, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Checks if the specified access is available at the given path.
@@ -151,7 +151,7 @@ public interface FileSystemOperations {
     ServiceCall mkdirsAsync(String path, String accountName, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
 
     /**
-     * Concatenates the list of source files into the destination file.
+     * Concatenates the list of source files into the destination file, removing all source files upon success.
      *
      * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
@@ -164,7 +164,7 @@ public interface FileSystemOperations {
     ServiceResponse<Void> concat(String destinationPath, String accountName, List<String> sources) throws CloudException, IOException, IllegalArgumentException;
 
     /**
-     * Concatenates the list of source files into the destination file.
+     * Concatenates the list of source files into the destination file, removing all source files upon success.
      *
      * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
@@ -176,7 +176,7 @@ public interface FileSystemOperations {
     ServiceCall concatAsync(String destinationPath, String accountName, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
-     * Concatenates the list of source files into the destination file. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
+     * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
      * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
@@ -186,10 +186,10 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> msConcat(String msConcatDestinationPath, String accountName, InputStream streamContents) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> msConcat(String msConcatDestinationPath, String accountName, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException;
 
     /**
-     * Concatenates the list of source files into the destination file. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
+     * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
      * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
@@ -198,33 +198,33 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall msConcatAsync(String msConcatDestinationPath, String accountName, InputStream streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall msConcatAsync(String msConcatDestinationPath, String accountName, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
-     * Concatenates the list of source files into the destination file. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
+     * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
      * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
-     * @param deletesourcedirectory Caution: Setting this parameter to true will delete the parent directory of all source files provided to the MsConcat method.
+     * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> msConcat(String msConcatDestinationPath, String accountName, InputStream streamContents, Boolean deletesourcedirectory) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> msConcat(String msConcatDestinationPath, String accountName, byte[] streamContents, Boolean deleteSourceDirectory) throws CloudException, IOException, IllegalArgumentException;
 
     /**
-     * Concatenates the list of source files into the destination file. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
+     * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
      * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
-     * @param deletesourcedirectory Caution: Setting this parameter to true will delete the parent directory of all source files provided to the MsConcat method.
+     * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall msConcatAsync(String msConcatDestinationPath, String accountName, InputStream streamContents, Boolean deletesourcedirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall msConcatAsync(String msConcatDestinationPath, String accountName, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
@@ -306,7 +306,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> append(String directFilePath, String accountName, InputStream streamContents) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> append(String directFilePath, String accountName, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
@@ -318,7 +318,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall appendAsync(String directFilePath, String accountName, InputStream streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall appendAsync(String directFilePath, String accountName, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates a file with optionally specified content.
@@ -354,7 +354,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> create(String directFilePath, String accountName, InputStream streamContents, Boolean overwrite) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<Void> create(String directFilePath, String accountName, byte[] streamContents, Boolean overwrite) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Creates a file with optionally specified content.
@@ -367,7 +367,7 @@ public interface FileSystemOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String directFilePath, String accountName, InputStream streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall createAsync(String directFilePath, String accountName, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Opens and reads from the specified file.

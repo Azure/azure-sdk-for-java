@@ -17,11 +17,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for FileType.
  */
 public enum FileType {
-    /** Enum value File. */
-    FILE("File"),
+    /** Enum value FILE. */
+    FILE("FILE"),
 
-    /** Enum value Directory. */
-    DIRECTORY("Directory");
+    /** Enum value DIRECTORY. */
+    DIRECTORY("DIRECTORY");
 
     /** The actual serialized value for a FileType instance. */
     private String value;

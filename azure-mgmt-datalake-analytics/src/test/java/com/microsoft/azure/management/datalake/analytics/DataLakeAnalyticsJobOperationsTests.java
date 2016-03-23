@@ -116,7 +116,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
 
         // Verify the job completes successfully
         Assert.assertTrue(
-                String.format("Job: {0} did not return success. Current job state: {1}. Actual result: {2}. Error (if any): {3}",
+                String.format("Job: %s did not return success. Current job state: %s. Actual result: %s. Error (if any): %s",
                 getJobResponse.getJobId(), getJobResponse.getState(), getJobResponse.getResult(), getJobResponse.getErrorMessage()),
                 getJobResponse.getState() == JobState.ENDED && getJobResponse.getResult() == JobResult.SUCCEEDED);
 

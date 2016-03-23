@@ -16,12 +16,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import sun.misc.IOUtils;
@@ -29,18 +26,13 @@ import sun.misc.IOUtils;
 public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagementTestBase {
     // constants
     private static String folderToCreate = "SDKTestFolder01";
-    private static String folderToMove = "SDKTestMoveFolder01";
-    private static String fileToCreate = "SDKTestFile01.txt";
     private static String fileToCreateWithContents = "SDKTestFile02.txt";
     private static String fileToCopy = "SDKTestCopyFile01.txt";
     private static String fileToConcatTo = "SDKTestConcatFile01.txt";
-    private static String fileToMove = "SDKTestMoveFile01.txt";
 
     private static String fileContentsToAdd = "These are some random test contents 1234!@";
-    private static String fileContentsToAppend = "More test contents, that were appended!";
 
     private static String rgName = generateName("javaadlsrg");
-    private static String location = "eastus2";
     private static String adlsAcct = generateName("javaadlsacct");
     private static String aclUserId = "027c28d5-c91d-49f0-98c5-d10134b169b3";
 
@@ -48,6 +40,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     public static void setup() throws Exception {
         createClients();
         ResourceGroup group = new ResourceGroup();
+        String location = "eastus2";
         group.setLocation(location);
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
 
@@ -183,9 +176,10 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         GetAndCompareFileOrFolder(adlsAcct, filePath, FileType.FILE, 0);
 
         // Append to the file that we created
+        String fileContentsToAppend = "More test contents, that were appended!";
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().append(filePath,
             adlsAcct,
-            new ByteArrayInputStream(fileContentsToAdd.getBytes()));
+                fileContentsToAppend.getBytes());
 
         GetAndCompareFileOrFolder(adlsAcct, filePath, FileType.FILE,
                 fileContentsToAppend.length());
@@ -194,8 +188,6 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     @Test
     public void DataLakeStoreFileSystemConcatenateFiles() throws Exception
     {
-        
-
         String filePath1 = CreateFile(adlsAcct, true, true, folderToCreate);
         GetAndCompareFileOrFolder(adlsAcct, filePath1, FileType.FILE,
                 fileContentsToAdd.length());
@@ -207,13 +199,13 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         String targetFolder = CreateFolder(adlsAcct, true);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().concat(
-                String.format("{0}/{1}", targetFolder, fileToConcatTo),
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 adlsAcct,
                 Arrays.asList(new String[]{filePath1, filePath2})
         );
 
         GetAndCompareFileOrFolder(adlsAcct,
-                String.format("{0}/{1}", targetFolder, fileToConcatTo),
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 FileType.FILE,
                 fileContentsToAdd.length() * 2);
 
@@ -251,13 +243,13 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         String targetFolder = CreateFolder(adlsAcct, true);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().msConcat(
-                String.format("{0}/{1}", targetFolder, fileToConcatTo),
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 adlsAcct,
-                new ByteArrayInputStream(String.format("sources={0},{1}", filePath1, filePath2).getBytes()),
+                String.format("sources=%s,%s", filePath1, filePath2).getBytes(),
                 false);
 
         GetAndCompareFileOrFolder(adlsAcct,
-                String.format("{0}/{1}", targetFolder, fileToConcatTo),
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 FileType.FILE,
                 fileContentsToAdd.length() * 2);
 
@@ -284,7 +276,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     @Test
     public void DataLakeStoreFileSystemMsConcatDeleteDir() throws Exception
     {
-        String concatFolderPath = String.format("{0}/{1}", folderToCreate,
+        String concatFolderPath = String.format("%s/%s", folderToCreate,
                 "msconcatFolder");
         String filePath1 = CreateFile(adlsAcct, true, true,
                 concatFolderPath);
@@ -298,14 +290,16 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         String targetFolder = CreateFolder(adlsAcct, true);
 
+        String destination = String.format("%s/%s", targetFolder, fileToConcatTo);
+
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().msConcat(
-                String.format("{0}/{1}", targetFolder, fileToConcatTo),
+                destination,
                 adlsAcct,
-                new ByteArrayInputStream(String.format("sources={0},{1}", filePath1, filePath2).getBytes()),
+                String.format("sources=%s,%s", filePath1, filePath2).getBytes(),
                 true);
 
         GetAndCompareFileOrFolder(adlsAcct,
-                String.format("{0}/{1}", targetFolder, fileToConcatTo),
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 FileType.FILE,
                 fileContentsToAdd.length()*2);
 
@@ -344,15 +338,17 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
                 fileContentsToAdd.length());
 
         String targetFolder1 = CreateFolder(adlsAcct, true);
+        String folderToMove = "SDKTestMoveFolder01";
         String targetFolder2 = generateName(folderToMove);
 
         // Move file first
+        String fileToMove = "SDKTestMoveFile01.txt";
         FileOperationResult moveFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().rename(filePath,
                 adlsAcct,
-                String.format("{0}/{1}", targetFolder1, fileToMove)).getBody();
+                String.format("%s/%s", targetFolder1, fileToMove)).getBody();
         Assert.assertTrue(moveFileResponse.getOperationResult());
         GetAndCompareFileOrFolder(adlsAcct,
-                String.format("{0}/{1}", targetFolder1, fileToMove),
+                String.format("%s/%s", targetFolder1, fileToMove),
                 FileType.FILE,
                 fileContentsToAdd.length());
 
@@ -579,7 +575,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // add an entry to the ACL Entries
         String newAcls = String.join(",", aclGetResponse.getAclStatus().getEntries());
-        newAcls += String.format(",user:{0}:rwx", aclUserId);
+        newAcls += String.format(",user:%s:rwx", aclUserId);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",
                 adlsAcct,
@@ -614,9 +610,9 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         int currentCount = aclGetResponse.getAclStatus().getEntries().size();
         // add an entry to the ACL Entries
-        String newAce = String.format("user:{0}:rwx", aclUserId);
+        String newAce = String.format("user:%s:rwx", aclUserId);
 
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries("/",
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries("",
                 adlsAcct,
                 newAce);
 
@@ -639,7 +635,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         Assert.assertTrue(found);
 
         // now remove the entry
-        String aceToRemove = String.format(",user:{0}", aclUserId);
+        String aceToRemove = String.format(",user:%s", aclUserId);
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().removeAclEntries("/",
                 adlsAcct,
                 aceToRemove);
@@ -679,7 +675,8 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
     private String CreateFile(String caboAccountName, boolean withContents, boolean randomName, String folderName) throws Exception
     {
-        String filePath = randomName ? generateName(String.format("{0}/{1}", folderName, fileToCreate)) : String.format("{0}/{1}", folderName, fileToCreate);
+        String fileToCreate = "SDKTestFile01.txt";
+        String filePath = randomName ? generateName(String.format("%s/%s", folderName, fileToCreate)) : String.format("%s/%s", folderName, fileToCreate);
 
         if (!withContents)
         {
@@ -692,7 +689,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
             dataLakeStoreFileSystemManagementClient.getFileSystemOperations().create(
                     filePath,
                     caboAccountName,
-                    new ByteArrayInputStream(fileContentsToAdd.getBytes()),
+                    fileContentsToAdd.getBytes(),
                     false); // never overwrite during create, because if it exists we want to fail.
         }
 

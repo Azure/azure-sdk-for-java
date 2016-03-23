@@ -41,9 +41,9 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     private static String secretPwd = generateName("testsecretpwd1");
 
     private static String catalogCreationScript = String.format("\n" +
-            "DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; \n" +
+            "DROP DATABASE IF EXISTS %s; CREATE DATABASE %s; \n" +
             "//Create Table\n" +
-            "CREATE TABLE {0}.dbo.{1}\n" +
+            "CREATE TABLE %s.dbo.%s\n" +
             "(\n" +
             "        //Define schema of table\n" +
             "        UserId          int, \n" +
@@ -57,10 +57,10 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "    CLUSTERED (Region ASC) //Column to cluster by\n" +
             "    PARTITIONED BY HASH (Region) //Column to partition by\n" +
             ");\n" +
-            "DROP FUNCTION IF EXISTS {0}.dbo.{2};\n" +
+            "DROP FUNCTION IF EXISTS %s.dbo.%s;\n" +
             "\n" +
             "//create table weblogs on space-delimited website log data\n" +
-            "CREATE FUNCTION {0}.dbo.{2}()\n" +
+            "CREATE FUNCTION %s.dbo.%s()\n" +
             "RETURNS @result TABLE\n" +
             "(\n" +
             "    s_date DateTime,\n" +
@@ -111,7 +111,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "\n" +
             "RETURN;\n" +
             "END;\n" +
-            "CREATE VIEW {0}.dbo.{3} \n" +
+            "CREATE VIEW %s.dbo.%s \n" +
             "AS \n" +
             "    SELECT * FROM \n" +
             "    (\n" +
@@ -119,9 +119,9 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "    ) \n" +
             "AS \n" +
             "T(a, b);\n" +
-            "CREATE PROCEDURE {0}.dbo.{4}()\n" +
+            "CREATE PROCEDURE %s.dbo.%s()\n" +
             "AS BEGIN\n" +
-            "  CREATE VIEW {0}.dbo.{3} \n" +
+            "  CREATE VIEW %s.dbo.%s \n" +
             "  AS \n" +
             "    SELECT * FROM \n" +
             "    (\n" +
@@ -349,7 +349,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
 
         // Create a credential with the secret
         String credentialCreationScript =
-                String.format("USE {0}; CREATE CREDENTIAL {1} WITH USER_NAME = \"scope@rkm4grspxa\", IDENTITY = \"{2}\";",
+                String.format("USE %s; CREATE CREDENTIAL %s WITH USER_NAME = \"scope@rkm4grspxa\", IDENTITY = \"%s\";",
                         dbName, credentialName, secretName);
 
         runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID(), credentialCreationScript);
@@ -376,7 +376,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
 
         // Drop the credential (to enable secret deletion)
         String credentialDropScript =
-                String.format("USE {0}; DROP CREDENTIAL {1};", dbName, credentialName);
+                String.format("USE %s; DROP CREDENTIAL %s;", dbName, credentialName);
         runJobToCompletion(dataLakeAnalyticsJobManagementClient,
                 adlaAcct, UUID.randomUUID(),
                 credentialDropScript);
