@@ -11,15 +11,26 @@ import org.apache.qpid.proton.message.Message;
 
 public class ReplayableWorkItem<T> extends WorkItem<T>
 {
-	final private byte[] amqpMessage;
-	final private int messageFormat;
-	final private int encodedMessageSize;
+	private byte[] amqpMessage;
+	private int messageFormat;
+	private int encodedMessageSize;
 	
 	private Exception lastKnownException;
 	
 	public ReplayableWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final Duration timeout)
 	{
 		super(completableFuture, timeout);
+		this.initialize(amqpMessage, encodedMessageSize, messageFormat);
+	}
+	
+	public ReplayableWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final TimeoutTracker timeout)
+	{
+		super(completableFuture, timeout);
+		this.initialize(amqpMessage, encodedMessageSize, messageFormat);
+	}
+	
+	private void initialize(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat)
+	{
 		this.amqpMessage = amqpMessage;
 		this.messageFormat = messageFormat;
 		this.encodedMessageSize = encodedMessageSize;

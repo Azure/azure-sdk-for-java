@@ -14,8 +14,13 @@ public class WorkItem<T>
 	
 	public WorkItem(final CompletableFuture<T> completableFuture, final Duration timeout)
 	{
+		this(completableFuture, TimeoutTracker.create(timeout));
+	}
+	
+	public WorkItem(final CompletableFuture<T> completableFuture, final TimeoutTracker tracker)
+	{
 		this.work = completableFuture;
-		this.tracker = TimeoutTracker.create(timeout);
+		this.tracker = tracker;
 	}
 
 	public TimeoutTracker getTimeoutTracker()
