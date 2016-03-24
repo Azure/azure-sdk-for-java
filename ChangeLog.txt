@@ -1,6 +1,7 @@
 2015.10.05 Version 4.0-alpha-1
  * Added support for client side encryption for blobs, queues and tables.
  * Since the encryption preview, added functionality where uploading encrypted blobs can be done with just PutBlob, not PutBlock + PutBlockList, if the blob is small enough.
+ * Since the encryption preview, fixed bugs in the Table Service where APIs such as 'CreateTable' were trying to encrypt their payload.  Encryption is only supported on entities.
 
 2015.10.05 Version 4.0.0
  * Removed deprecated table AtomPub support.
