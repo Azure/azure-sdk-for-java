@@ -5,6 +5,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.nio.BufferOverflowException;
+import java.nio.ByteBuffer;
 import java.time.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -35,7 +36,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	
-	
 	private final MessagingFactory underlyingFactory;
 	private final String sendPath;
 	private final Duration operationTimeout;
@@ -44,13 +44,17 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private final Duration timerTimeout;
 	
 	private ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> pendingSendWaiters;
+	private ConcurrentLinkedQueue<byte[]> pendingSendsWaitingForCredit;
+	
 	private Sender sendLink;
 	private CompletableFuture<MessageSender> linkFirstOpen; 
-	private AtomicLong nextTag;
+	private AtomicInteger nextTag;
+	private AtomicInteger linkCredit;
 	private TimeoutTracker openLinkTracker;
 	private boolean linkCreateScheduled;
 	private Object linkCreateLock;
 	private Exception lastKnownLinkError;
+	private Object sendCall;
 	
 	public static CompletableFuture<MessageSender> create(
 			final MessagingFactory factory,
@@ -84,9 +88,12 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		this.retryPolicy = factory.getRetryPolicy();
 		
 		this.pendingSendWaiters = new ConcurrentHashMap<byte[], ReplayableWorkItem<Void>>();
-		this.nextTag = new AtomicLong(0);
+		this.pendingSendsWaitingForCredit = new ConcurrentLinkedQueue<byte[]>();
+		this.nextTag = new AtomicInteger(0);
+		this.linkCredit = new AtomicInteger(0);
 		 
 		this.linkCreateLock = new Object();
+		this.sendCall = new Object();
 		
 		this.operationTimer = new Runnable()
 			{
@@ -134,31 +141,53 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return this.send(bytes, arrayOffset, messageFormat, null, null);
 	}
 	
-	// contract: actual send on the SenderLink should happen only in this method
+	// contract:
+	// 1. actual send on the SenderLink should happen only in this method
+	// 2. If there is any PendingSend waiting for Service to sendCreditFLow 
+	//        - this will not Send - & only Enqueue's the message
+	//  	  - except if the send msg is same as the one waiting for Credit
 	private CompletableFuture<Void> send(
 			final byte[] bytes,
 			final int arrayOffset,
 			final int messageFormat,
 			final CompletableFuture<Void> onSend,
-			final TimeoutTracker tracker)
+			final TimeoutTracker tracker,
+			final byte[] deliveryTag)
 	{
-		byte[] tag = String.valueOf(this.nextTag.incrementAndGet()).getBytes();
+		byte[] tag = deliveryTag == null ? ByteBuffer.allocate(4).putInt(this.nextTag.incrementAndGet()).array() : deliveryTag;
+		boolean messageSent = false;
 		
 		if (this.sendLink.getLocalState() == EndpointState.CLOSED)
 		{
 			this.scheduleRecreate(Duration.ofMillis(1));
-		}		
-		else
+		}
+		else if (this.linkCredit.get() > 0 && 
+				(this.pendingSendsWaitingForCredit.isEmpty() || this.pendingSendsWaitingForCredit.peek() == deliveryTag))
         {
-        	Delivery dlv = this.sendLink.delivery(tag);
-        	dlv.setMessageFormat(messageFormat);
-
-	        int sentMsgSize = this.sendLink.send(bytes, 0, arrayOffset);
-	        assert sentMsgSize != arrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
-	        
-	        this.sendLink.advance();
-        }
-        
+			synchronized (this.sendCall)
+			{
+				if (this.linkCredit.get() > 0 &&
+						(this.pendingSendsWaitingForCredit.isEmpty() || this.pendingSendsWaitingForCredit.peek() == deliveryTag))
+				{
+					this.linkCredit.decrementAndGet();
+					
+		        	Delivery dlv = this.sendLink.delivery(tag);
+		        	dlv.setMessageFormat(messageFormat);
+	
+			        int sentMsgSize = this.sendLink.send(bytes, 0, arrayOffset);
+			        assert sentMsgSize != arrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
+			        
+			        this.sendLink.advance();
+			        messageSent = true;
+				}
+			}
+		}
+		
+		if (!messageSent)
+		{
+			this.pendingSendsWaitingForCredit.offer(tag);
+		}
+		
 		CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<Void>() : onSend; 
         this.pendingSendWaiters.put(
         		tag, 
@@ -170,6 +199,16 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         				tracker == null ? this.operationTimeout : tracker.remaining()));
 		
         return onSendFuture;
+	}
+	
+	private CompletableFuture<Void> send(
+			final byte[] bytes,
+			final int arrayOffset,
+			final int messageFormat,
+			final CompletableFuture<Void> onSend,
+			final TimeoutTracker tracker)
+	{
+		return this.send(bytes, arrayOffset, messageFormat, onSend, tracker, null);
 	}
 	
 	private int getPayloadSize(Message msg)
@@ -308,22 +347,16 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			{
 				ConcurrentHashMap<byte[], ReplayableWorkItem<Void>> unacknowledgedSends = new ConcurrentHashMap<>();
 				unacknowledgedSends.putAll(this.pendingSendWaiters);
-								
+
 				if (unacknowledgedSends.size() > 0)
 					unacknowledgedSends.forEachEntry(1, new Consumer<Map.Entry<byte[], ReplayableWorkItem<Void>>>()
 					{
 						@Override
 						public void accept(Entry<byte[], ReplayableWorkItem<Void>> sendWork)
 						{
-							ReplayableWorkItem<Void> pendingSend = MessageSender.this.pendingSendWaiters.remove(sendWork.getKey());
-							if (pendingSend != null)
-							{
-								MessageSender.this.send(pendingSend.getMessage(), 
-										pendingSend.getEncodedMessageSize(),
-										pendingSend.getMessageFormat(),
-										pendingSend.getWork(),
-										pendingSend.getTimeoutTracker());
-							}
+							byte[] deliveryTag = sendWork.getKey();
+							MessageSender.this.pendingSendsWaitingForCredit.remove(deliveryTag);
+							MessageSender.this.reSend(deliveryTag, false);
 						}
 					});
 				
@@ -455,7 +488,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 						@Override
 						public void run()
 						{
-							MessageSender.this.reSend(deliveryTag);
+							MessageSender.this.reSend(deliveryTag, false);
 						}
 					}, retryInterval, TimerType.OneTimeRun);
 				}
@@ -468,7 +501,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 	}
 
-	private void reSend(Object deliveryTag)
+	private void reSend(byte[] deliveryTag, boolean reuseDeliveryTag)
 	{
 		ReplayableWorkItem<Void> pendingSend = this.pendingSendWaiters.remove(deliveryTag);
 		if (pendingSend != null)
@@ -477,7 +510,12 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 					pendingSend.getEncodedMessageSize(), 
 					pendingSend.getMessageFormat(),
 					pendingSend.getWork(),
-					pendingSend.getTimeoutTracker());
+					pendingSend.getTimeoutTracker(),
+					reuseDeliveryTag ? deliveryTag : null);
+		}
+		else
+		{
+			System.out.println("reSend - returned null");
 		}
 	}
 	
@@ -599,5 +637,18 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				referenceId,
 				isLinkOpened ? this.sendLink.getCredit() : null);
 		return errorContext;
+	}
+
+	@Override
+	public void onFlow(int credit)
+	{
+		this.linkCredit.set(credit);
+		
+		while (!this.pendingSendsWaitingForCredit.isEmpty() && this.linkCredit.get() > 0)
+		{
+			byte[] deliveryTag = this.pendingSendsWaitingForCredit.peek();
+			this.reSend(deliveryTag, true);
+			this.pendingSendsWaitingForCredit.poll();
+		}
 	}
 }
