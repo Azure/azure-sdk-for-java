@@ -226,6 +226,37 @@ public final class Constants {
     }
 
     /**
+     * Defines constants for client encryption.
+     */
+    public static class EncryptionConstants
+    {
+        /**
+         * Metadata header to store encryption materials.
+         */
+        public static final String BLOB_ENCRYPTION_DATA = "encryptiondata";
+        
+        /**
+         * Constant for the encryption protocol.
+         */
+        public static final String ENCRYPTION_PROTOCOL_V1 = "1.0";
+
+        /**
+         * Encryption metadata key for key wrapping IV.
+         */
+        public static final String KEY_WRAPPING_IV = "KeyWrappingIV";
+        
+        /**
+         * Property name to store the encryption metadata. 
+         */
+        public static final String TABLE_ENCRYPTION_KEY_DETAILS = "_ClientEncryptionMetadata1";
+
+        /**
+         * Additional property name to store the encryption metadata.
+         */
+        public static final String TABLE_ENCRYPTION_PROPERTY_DETAILS = "_ClientEncryptionMetadata2";
+    }
+    
+    /**
      * Defines constants for use with HTTP headers.
      */
     public static class HeaderConstants {
@@ -570,7 +601,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "4.0.0";
+        public static final String USER_AGENT_VERSION = "4.0-alpha-1";
 
         /**
          * The default type for content-type and accept

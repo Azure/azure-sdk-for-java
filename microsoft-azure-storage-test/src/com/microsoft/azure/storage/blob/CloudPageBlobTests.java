@@ -298,7 +298,7 @@ public class CloudPageBlobTests {
         ByteArrayOutputStream blobStream2 = new ByteArrayOutputStream();
         blob2.downloadRange(1024, new Long(1024), blobStream2);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream2.toByteArray()), wholeBlob,
-                1024, 1024, 1024, 2 * 1024);
+                0, 1024, 1024, 2 * 1024);
 
         BlobTestHelper.assertAreEqual(blob, blob2);
     }

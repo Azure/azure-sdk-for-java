@@ -13,6 +13,7 @@ import com.microsoft.azure.storage.blob.CloudAppendBlobTests;
 import com.microsoft.azure.storage.blob.CloudBlobClientTests;
 import com.microsoft.azure.storage.blob.CloudBlobContainerTests;
 import com.microsoft.azure.storage.blob.CloudBlobDirectoryTests;
+import com.microsoft.azure.storage.blob.CloudBlobEncryptionTests;
 import com.microsoft.azure.storage.blob.CloudBlockBlobTests;
 import com.microsoft.azure.storage.blob.CloudPageBlobTests;
 import com.microsoft.azure.storage.blob.LeaseTests;
@@ -24,10 +25,12 @@ import com.microsoft.azure.storage.file.CloudFileTests;
 import com.microsoft.azure.storage.file.FileSasTests;
 import com.microsoft.azure.storage.queue.CloudQueueClientGB18030Test;
 import com.microsoft.azure.storage.queue.CloudQueueClientTests;
+import com.microsoft.azure.storage.queue.CloudQueueEncryptionTests;
 import com.microsoft.azure.storage.queue.CloudQueueTests;
 import com.microsoft.azure.storage.table.TableBatchOperationTests;
 import com.microsoft.azure.storage.table.TableClientTests;
 import com.microsoft.azure.storage.table.TableDateTests;
+import com.microsoft.azure.storage.table.TableEncryptionTests;
 import com.microsoft.azure.storage.table.TableEscapingTests;
 import com.microsoft.azure.storage.table.TableODataTests;
 import com.microsoft.azure.storage.table.TableOperationTests;
@@ -98,19 +101,20 @@ public class TestRunners {
     @RunWith(Suite.class)
     @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class, 
         CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
-        LeaseTests.class, SasTests.class })
+        CloudBlobEncryptionTests.class, LeaseTests.class, SasTests.class })
     public static class BlobTestSuite {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ CloudQueueClientGB18030Test.class, CloudQueueClientTests.class, CloudQueueTests.class })
+    @SuiteClasses({ CloudQueueClientGB18030Test.class, CloudQueueClientTests.class, CloudQueueEncryptionTests.class,
+            CloudQueueTests.class })
     public static class QueueTestSuite {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ TableBatchOperationTests.class, TableClientTests.class, TableDateTests.class, TableEscapingTests.class,
-            TableODataTests.class, TableOperationTests.class, TableQueryTests.class, TableSerializerTests.class,
-            TableTests.class })
+    @SuiteClasses({ TableBatchOperationTests.class, TableClientTests.class, TableDateTests.class,
+            TableEncryptionTests.class, TableEscapingTests.class, TableODataTests.class, TableOperationTests.class,
+            TableQueryTests.class, TableSerializerTests.class, TableTests.class })
     public static class TableTestSuite {
     }
 
@@ -123,6 +127,11 @@ public class TestRunners {
     @RunWith(Suite.class)
     @SuiteClasses({ CloudAnalyticsClientTests.class })
     public static class AnalyticsTestSuite {
+    }
+    
+    @RunWith(Suite.class)
+    @SuiteClasses({ CloudBlobEncryptionTests.class, CloudQueueEncryptionTests.class, TableEncryptionTests.class })
+    public static class EncryptionTestSuite {
     }
 
     @RunWith(Suite.class)

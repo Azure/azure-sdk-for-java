@@ -32,6 +32,13 @@ import com.microsoft.azure.storage.core.Utility;
  */
 final class PropertyPair {
 
+    private Method getter = null;
+    private Method setter = null;
+    private String name = null;
+    Class<?> type = null;
+    String effectiveName = null;
+    boolean isEncrypted = false;
+    
     /**
      * Reserved for internal use. A static factory method to generate a map of property names to {@link PropertyPair}
      * instances for the specified class type. Checks if the cache is enabled and if so tries to get the property pairs
@@ -138,6 +145,10 @@ final class PropertyPair {
         final ArrayList<String> keysToAlter = new ArrayList<String>();
 
         for (final Entry<String, PropertyPair> e : propMap.entrySet()) {
+            // Encrypt if both getter and setter indicate encryption
+            e.getValue().isEncrypted = e.getValue().setter != null 
+                    && e.getValue().setter.isAnnotationPresent(Encrypt.class);
+            
             if (!e.getValue().shouldProcess()) {
                 keysToRemove.add(e.getKey());
                 continue;
@@ -165,12 +176,6 @@ final class PropertyPair {
 
         return propMap;
     }
-
-    private Method getter = null;
-    private Method setter = null;
-    private String name = null;
-    Class<?> type = null;
-    String effectiveName = null;
 
     /**
      * Reserved for internal use. Invokes the setter method on the specified instance parameter with the value of the
@@ -284,7 +289,10 @@ final class PropertyPair {
             IllegalAccessException, InvocationTargetException {
         final Class<?> getType = this.getter.getReturnType();
         Object val = this.getter.invoke(instance, (Object[]) null);
-        return new EntityProperty(val, getType);
+        
+        EntityProperty property = new EntityProperty(val, getType);
+        property.setIsEncrypted(this.isEncrypted);
+        return property;
     }
 
     /**
