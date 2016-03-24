@@ -198,8 +198,10 @@ public final class CloudTableClient extends ServiceClient {
     @DoesServiceRequest
     public Iterable<String> listTables(final String prefix, final TableRequestOptions options,
             final OperationContext opContext) {
+        TableRequestOptions modifiedOptions = TableRequestOptions.populateAndApplyDefaults(options, this);
+        modifiedOptions.clearEncryption();
         return (Iterable<String>) this.generateIteratorForQuery(this.generateListTablesQuery(prefix),
-                this.tableNameResolver, options, opContext);
+                this.tableNameResolver, modifiedOptions, opContext);
     }
 
     /**
@@ -292,10 +294,11 @@ public final class CloudTableClient extends ServiceClient {
         if (null != maxResults) {
             Utility.assertGreaterThanOrEqual("maxResults", maxResults, 1);
         }
-        
+        TableRequestOptions modifiedOptions = TableRequestOptions.populateAndApplyDefaults(options, this);
+        modifiedOptions.clearEncryption();
         return (ResultSegment<String>) this.executeQuerySegmentedImpl(
                 this.generateListTablesQuery(prefix).take(maxResults), this.tableNameResolver, continuationToken,
-                options, opContext);
+                modifiedOptions, opContext);
     }
 
     /**
@@ -587,7 +590,6 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 

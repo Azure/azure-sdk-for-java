@@ -35,6 +35,8 @@ import org.junit.Test;
 import com.microsoft.azure.keyvault.extensions.SymmetricKey;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DictionaryKeyResolver;
+import com.microsoft.azure.storage.ResultContinuation;
+import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.core.SR;
@@ -1019,6 +1021,73 @@ public class TableEncryptionTests {
         }
     }
     
+    @Test
+    public void testTableOperationsIgnoreEncryption() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException
+    {
+        SymmetricKey aesKey = TestHelper.getSymmetricKey();
+        TableRequestOptions options = new TableRequestOptions();
+        options.setEncryptionPolicy(new TableEncryptionPolicy(aesKey, null));
+        options.setRequireEncryption(true);
+        
+        CloudTableClient tableClient = TableTestHelper.createCloudTableClient();
+        CloudTable testTable = TableTestHelper.getRandomTableReference();
+        
+        try
+        {
+            // Check Create()
+            testTable.create(options, null);
+            assertTrue("Table failed to be created when encryption policy was supplied.", testTable.exists());
+
+            // Check Exists()
+            assertTrue("Table.Exists() failed when encryption policy was supplied.", testTable.exists(options, null));
+
+            // Check ListTables()
+            for (String tableName : tableClient.listTables(testTable.getName(), options, null))
+            {
+                assertEquals("ListTables failed when an encryption policy was specified.", testTable.getName(), tableName);
+            }
+            
+            // Check ListTablesSegmented()
+            for (String tableName : this.listAllTables(tableClient, testTable.getName(), options))
+            {
+                assertEquals("ListTables failed when an encryption policy was specified.", testTable.getName(), tableName);
+            }
+
+            // Check Get and Set Permissions
+            TablePermissions permissions = testTable.downloadPermissions();
+            String policyName = "samplePolicy";
+            SharedAccessTablePolicy tempPolicy = new SharedAccessTablePolicy();
+            tempPolicy.setPermissionsFromString("r");
+            tempPolicy.setSharedAccessExpiryTime(new Date());
+            permissions.getSharedAccessPolicies().put(policyName, tempPolicy);
+            testTable.uploadPermissions(permissions, options, null);
+            assertTrue(testTable.downloadPermissions().getSharedAccessPolicies().containsKey(policyName));
+            assertTrue(testTable.downloadPermissions(options, null).getSharedAccessPolicies().containsKey(policyName));
+
+            // Check Delete
+            testTable.delete(options, null);
+            assertFalse(testTable.exists());
+        }
+        finally
+        {
+            testTable.deleteIfExists();
+        }
+    }
+    
+    private ArrayList<String> listAllTables(CloudTableClient tableClient, String prefix, TableRequestOptions options) throws StorageException
+    {
+        ResultContinuation token = null;
+        ArrayList<String> tables = new ArrayList<String>();
+        
+        do
+        {
+            ResultSegment<String> tableSegment = tableClient.listTablesSegmented(prefix, null, token, options, null);
+            tables.addAll(tableSegment.getResults());
+            token = tableSegment.getContinuationToken();
+        } while (token != null);
+        return tables;
+    }
+    
     private static DynamicTableEntity generateRandomEntity(String pk) {
         DynamicTableEntity ent = new DynamicTableEntity();
         ent.getProperties().put("foo", new EntityProperty("bar"));
@@ -1028,3 +1097,5 @@ public class TableEncryptionTests {
         return ent;
     }
 }
+
+

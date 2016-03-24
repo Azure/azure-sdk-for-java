@@ -36,6 +36,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.lang.mutable.MutableInt;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,8 @@ import com.microsoft.azure.keyvault.extensions.SymmetricKey;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DictionaryKeyResolver;
 import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
@@ -894,5 +897,117 @@ public class CloudBlobEncryptionTests {
         {
             assertEquals(ex.getMessage(), SR.ENCRYPTION_NOT_SUPPORTED_FOR_OPERATION);
         }
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsEncryptCalculateMD5PassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(true, true, true);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsEncryptCalculateMD5NoPassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(true, true, false);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsEncryptNoCalculateMD5PassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(true, false, true);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsEncryptNoCalculateMD5NoPassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(true, false, false);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsNoEncryptCalculateMD5PassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(false, true, true);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsNoEncryptCalculateMD5NoPassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(false, true, false);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsNoEncryptNoCalculateMD5PassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(false, false, true);
+    }
+    
+    @Test
+    public void testBlockBlobEncryptionCountOperationsNoEncryptNoCalculateMD5NoPassInLength() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.runBlockBlobEncryptionTests(false, false, false);
+    }
+
+    public void runBlockBlobEncryptionTests(boolean encryptData, boolean calculateMD5, boolean passInLength) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, URISyntaxException, StorageException, IOException {
+        this.doEncryptionTestCountOperations(0, 1, encryptData, calculateMD5, passInLength);  // Test the zero-byte case
+        this.doEncryptionTestCountOperations(10, 1, encryptData, calculateMD5, passInLength);  // Test a case that should definitely fit in one put blob, and is not 16-byte aligned.
+        this.doEncryptionTestCountOperations(1 * Constants.MB, 1, encryptData, calculateMD5, passInLength);  // Test a case that is 16-byte aligned, and should fit in one put blob
+        this.doEncryptionTestCountOperations(13 * Constants.MB, 5, encryptData, calculateMD5, passInLength);  // Test a case that should not hit put blob, but instead several put block + put block list.
+    }
+    
+    private void doEncryptionTestCountOperations(int size, int count, boolean encryptData, boolean calculateMD5, boolean passInLength) throws URISyntaxException, StorageException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IOException
+    {
+        byte[] buffer = BlobTestHelper.getRandomBuffer(size);
+    
+        CloudBlockBlob blob = this.container.getBlockBlobReference("blockblob");
+    
+        // Create the Key to be used for wrapping.
+        SymmetricKey aesKey = TestHelper.getSymmetricKey();
+    
+        // Create the resolver to be used for unwrapping.
+        DictionaryKeyResolver resolver = null;
+    
+        // Set the encryption policy on the request options.
+        BlobRequestOptions uploadOptions = new BlobRequestOptions();
+        if (encryptData) {
+            resolver = new DictionaryKeyResolver();
+            resolver.add(aesKey);
+
+            // Create the encryption policy to be used for upload.
+            BlobEncryptionPolicy uploadPolicy = new BlobEncryptionPolicy(aesKey, null);
+            uploadOptions.setEncryptionPolicy(uploadPolicy);
+        }
+        
+        uploadOptions.setStoreBlobContentMD5(calculateMD5);
+        uploadOptions.setUseTransactionalContentMD5(calculateMD5);
+        uploadOptions.setDisableContentMD5Validation(!calculateMD5);
+        uploadOptions.setSingleBlobPutThresholdInBytes(8 * Constants.MB);
+        blob.setStreamWriteSizeInBytes(4 * Constants.MB);
+        
+        OperationContext opContext = new OperationContext();
+        
+        final MutableInt operationCount = new MutableInt(0);
+        
+        opContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+    
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                operationCount.increment();
+            }
+        });
+        
+        // Upload the encrypted contents to the blob.
+        ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
+        blob.upload(stream, passInLength ? size : -1, null, uploadOptions, opContext);
+        assertEquals(operationCount.intValue(), count);
+    
+        // Set the decryption policy on the request options.
+        BlobRequestOptions downloadOptions = new BlobRequestOptions();
+        if (encryptData) {
+            // Download the encrypted blob.
+            // Create the decryption policy to be used for download. There is no need to specify the
+            // key when the policy is only going to be used for downloads. Resolver is sufficient.
+            BlobEncryptionPolicy downloadPolicy = new BlobEncryptionPolicy(null, resolver);
+            downloadOptions.setEncryptionPolicy(downloadPolicy);
+        }
+    
+        // Download and decrypt the encrypted contents from the blob.
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        blob.download(outputStream, null, downloadOptions, null);
+    
+        // Compare that the decrypted contents match the input data.
+        TestHelper.assertStreamsAreEqualAtIndex(stream, new ByteArrayInputStream(outputStream.toByteArray()), 0, 0, 
+                size, 2 * 1024);
     }
 }

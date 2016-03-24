@@ -149,6 +149,16 @@ public class TableRequestOptions extends RequestOptions {
         TableRequestOptions.applyDefaults(modifiedOptions);
         return modifiedOptions;
     }
+    
+    /**
+     * Clears the encryption properties on this TableRequestOptions object.  Useful for operations
+     * for which encryption does not make sense, such as CreateTable.
+     */
+    protected void clearEncryption() {
+        this.setRequireEncryption(false);
+        this.setEncryptionPolicy(null);
+        this.setEncryptionResolver(null);
+    }
 
     /**
      * Applies defaults to the options passed in.

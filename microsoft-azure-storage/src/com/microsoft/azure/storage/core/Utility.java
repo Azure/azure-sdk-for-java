@@ -14,6 +14,7 @@
  */
 package com.microsoft.azure.storage.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,6 +41,8 @@ import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.concurrent.TimeoutException;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -225,6 +228,80 @@ public final class Utility {
         }
 
         return retVal;
+    }
+    
+    /**
+     * Encrypts an input stream up to a given length.
+     * Exits early if the encrypted data is longer than the abandon length.
+     * 
+     * @param sourceStream
+     *            A <code>InputStream</code> object that represents the stream to measure.
+     * @param targetStream
+     *            A <code>ByteArrayOutputStream</code> object that represents the stream to write the encrypted data.
+     * @param cipher
+     *            The <code>Cipher</code> to use to encrypt the data. 
+     * @param writeLength
+     *            The number of bytes to read and encrypt from the sourceStream.
+     * @param abandonLength
+     *            The number of bytes to read before the analysis is abandoned. Set this value to <code>-1</code> to
+     *            force the entire stream to be read. This parameter is provided to support upload thresholds.
+     * @return
+     *            The size of the encrypted stream, or -1 if the encrypted stream would be over the abandonLength.
+     * @throws IOException
+     *            If an I/O error occurs.
+     */
+    public static long encryptStreamIfUnderThreshold(final InputStream sourceStream, final ByteArrayOutputStream targetStream, Cipher cipher, long writeLength,
+            long abandonLength) throws IOException {
+        if (abandonLength < 0) {
+            abandonLength = Long.MAX_VALUE;
+        }
+
+        if (!sourceStream.markSupported()) {
+            throw new IllegalArgumentException(SR.INPUT_STREAM_SHOULD_BE_MARKABLE);
+        }
+
+        sourceStream.mark(Constants.MAX_MARK_LENGTH);
+
+        if (writeLength < 0) {
+            writeLength = Long.MAX_VALUE;
+        }
+        
+        CipherOutputStream encryptStream = new CipherOutputStream(targetStream, cipher);
+        
+        int count = -1;
+        long totalEncryptedLength = targetStream.size();
+        final byte[] retrievedBuff = new byte[Constants.BUFFER_COPY_LENGTH];
+
+        int nextCopy = (int) Math.min(retrievedBuff.length, writeLength - totalEncryptedLength);
+        count = sourceStream.read(retrievedBuff, 0, nextCopy);
+        
+        while (nextCopy > 0 && count != -1) {
+            
+            // Note: We are flushing the CryptoStream on every write here.  This way, we don't end up encrypting more data than we intend here, if
+            // we go over the abandonLength.
+            encryptStream.write(retrievedBuff, 0, count);
+            encryptStream.flush();
+            totalEncryptedLength = targetStream.size();
+
+            if (totalEncryptedLength > abandonLength) {
+                // Abandon operation
+                break;
+            }
+
+            nextCopy = (int) Math.min(retrievedBuff.length, writeLength - totalEncryptedLength);
+            count = sourceStream.read(retrievedBuff, 0, nextCopy);
+        }
+
+        sourceStream.reset();
+        sourceStream.mark(Constants.MAX_MARK_LENGTH);
+        
+        encryptStream.close();
+        totalEncryptedLength = targetStream.size();
+        if (totalEncryptedLength > abandonLength) {
+            totalEncryptedLength = -1;
+        }
+
+        return totalEncryptedLength;
     }
 
     /**
