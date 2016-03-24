@@ -643,43 +643,78 @@ public final class CloudBlockBlob extends CloudBlob {
 
         StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
+        
+        InputStream inputDataStream = sourceStream;
+        
+        // Initial check - skip the PutBlob operation if the input stream isn't markable, or if the length is known to
+        // be greater than the threshold.
+        boolean skipPutBlob = !inputDataStream.markSupported() || descriptor.getLength() > options.getSingleBlobPutThresholdInBytes();
 
-        if (sourceStream.markSupported()) {
+        if (inputDataStream.markSupported()) {
             // Mark sourceStream for current position.
-            sourceStream.mark(Constants.MAX_MARK_LENGTH);
+            inputDataStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
-        // If the stream is rewindable and the length is unknown or we need to
+        // If we're not yet skipping PutBlob and we need to encrypt, encrypt the data and check that the encrypted
+        // data is under the threshold.
+        // Note this will abort at
+        // options.getSingleBlobPutThresholdInBytes() bytes and return -1.        
+        if (!skipPutBlob && options.getEncryptionPolicy() != null)
+        {
+            class GettableByteArrayOutputStream extends ByteArrayOutputStream {
+                public byte[] getByteArray() { return this.buf; }
+            }
+            
+            Cipher cipher = options.getEncryptionPolicy().createAndSetEncryptionContext(this.getMetadata(), false /* noPadding */);
+            GettableByteArrayOutputStream targetStream = new GettableByteArrayOutputStream();
+            long byteCount = Utility.encryptStreamIfUnderThreshold(inputDataStream, targetStream, cipher, descriptor.getLength(),
+                    options.getSingleBlobPutThresholdInBytes() + 1 /*abandon if the operation hits this limit*/);
+            
+            if (byteCount >= 0)
+            {
+                inputDataStream = new ByteArrayInputStream(targetStream.getByteArray());
+                descriptor.setLength(byteCount);
+            }
+            else
+            {
+                // If the encrypted data is over the threshold, skip PutBlob.
+                skipPutBlob = true;
+            }
+        }
+        
+        // If we're not yet skipping PutBlob, and the length is still unknown or we need to
         // set md5, then analyze the stream.
         // Note this read will abort at
         // options.getSingleBlobPutThresholdInBytes() bytes and return
         // -1 as length in which case we will revert to using a stream as it is
         // over the single put threshold.
-        if (sourceStream.markSupported()
-                && (length < 0 || (options.getStoreBlobContentMD5() && length <= options
-                        .getSingleBlobPutThresholdInBytes()))) {
+        if (!skipPutBlob && (descriptor.getLength() < 0 || options.getStoreBlobContentMD5())) {
             // If the stream is of unknown length or we need to calculate
             // the MD5, then we we need to read the stream contents first
 
-            descriptor = Utility.analyzeStream(sourceStream, length, options.getSingleBlobPutThresholdInBytes() + 1,
+            descriptor = Utility.analyzeStream(inputDataStream, descriptor.getLength(), 
+                    options.getSingleBlobPutThresholdInBytes() + 1 /*abandon if the operation hits this limit*/, 
                     true /* rewindSourceStream */, options.getStoreBlobContentMD5());
 
             if (descriptor.getMd5() != null && options.getStoreBlobContentMD5()) {
                 this.properties.setContentMD5(descriptor.getMd5());
             }
+            
+            // If the data is over the threshold, skip PutBlob.  
+            if (descriptor.getLength() == -1 || descriptor.getLength() > options.getSingleBlobPutThresholdInBytes())
+            {
+                skipPutBlob = true;
+            }
         }
 
-        // If the stream is rewindable, and the length is known and less than
-        // threshold the upload in a single put, otherwise use a stream.
-        if (sourceStream.markSupported() && descriptor.getLength() != -1
-                && descriptor.getLength() < options.getSingleBlobPutThresholdInBytes() + 1
-                && options.getEncryptionPolicy() == null) {
-            this.uploadFullBlob(sourceStream, descriptor.getLength(), accessCondition, options, opContext);
+        // By now, the skipPutBlob is completely correct.
+        if (!skipPutBlob) {
+            this.uploadFullBlob(inputDataStream, descriptor.getLength(), accessCondition, options, opContext);
         }
         else {
             final BlobOutputStream writeStream = this.openOutputStream(accessCondition, options, opContext);
             try {
-                writeStream.write(sourceStream, length);
+                writeStream.write(inputDataStream, length);
             }
             finally {
                 writeStream.close();
