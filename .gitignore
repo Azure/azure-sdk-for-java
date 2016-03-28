@@ -41,3 +41,6 @@ target
 
 # Windows #
 Thumbs.db
+
+# reduced pom files should not be included
+dependency-reduced-pom.xml
