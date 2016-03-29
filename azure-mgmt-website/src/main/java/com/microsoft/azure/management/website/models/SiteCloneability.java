@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.website.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents whether or not a web app is cloneable.

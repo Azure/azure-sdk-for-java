@@ -59,4 +59,9 @@ public enum SiteAvailabilityState {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

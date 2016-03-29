@@ -59,4 +59,9 @@ public enum AutoHealActionType {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

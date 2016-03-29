@@ -62,4 +62,9 @@ public enum JobResult {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

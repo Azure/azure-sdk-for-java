@@ -62,4 +62,9 @@ public enum ComputeOperationStatus {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

@@ -56,4 +56,9 @@ public enum StatusOptions {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

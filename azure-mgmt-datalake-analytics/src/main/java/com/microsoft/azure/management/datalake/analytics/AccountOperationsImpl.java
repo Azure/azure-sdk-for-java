@@ -22,6 +22,8 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAcc
 import com.microsoft.azure.management.datalake.analytics.models.PageImpl;
 import com.microsoft.azure.management.datalake.analytics.models.SasTokenInfo;
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountInfo;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -122,19 +124,19 @@ public final class AccountOperationsImpl implements AccountOperations {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/")
-        Call<ResponseBody> listStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") StorageAccountInfo filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/")
-        Call<ResponseBody> listDataLakeStoreAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDataLakeStoreAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") DataLakeStoreAccountInfo filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts")
-        Call<ResponseBody> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") DataLakeAnalyticsAccount filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") DataLakeAnalyticsAccount filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}")
@@ -672,7 +674,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;BlobContainer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<BlobContainer>> listStorageContainers(final String resourceGroupName, final String accountName, final String storageAccountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<BlobContainer>> listStorageContainers(final String resourceGroupName, final String accountName, final String storageAccountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -690,11 +692,12 @@ public final class AccountOperationsImpl implements AccountOperations {
         }
         Call<ResponseBody> call = service.listStorageContainers(resourceGroupName, accountName, storageAccountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<BlobContainer>> response = listStorageContainersDelegate(call.execute());
-        List<BlobContainer> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listStorageContainersNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<BlobContainer> result = new PagedList<BlobContainer>(response.getBody()) {
+            @Override
+            public Page<BlobContainer> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listStorageContainersNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -770,17 +773,18 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;BlobContainer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<BlobContainer>> storageContainersListNext(final String nextLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<BlobContainer>> storageContainersListNext(final String nextLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.storageContainersListNext(nextLink, this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<BlobContainer>> response = storageContainersListNextDelegate(call.execute());
-        List<BlobContainer> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = storageContainersListNextNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<BlobContainer> result = new PagedList<BlobContainer>(response.getBody()) {
+            @Override
+            public Page<BlobContainer> nextPage(String nextPageLink) throws CloudException, IOException {
+                return storageContainersListNextNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -838,17 +842,18 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SasTokenInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<SasTokenInfo>> sasTokensListNext(final String nextLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<SasTokenInfo>> sasTokensListNext(final String nextLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
         Call<ResponseBody> call = service.sasTokensListNext(nextLink, this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<SasTokenInfo>> response = sasTokensListNextDelegate(call.execute());
-        List<SasTokenInfo> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = sasTokensListNextNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<SasTokenInfo> result = new PagedList<SasTokenInfo>(response.getBody()) {
+            @Override
+            public Page<SasTokenInfo> nextPage(String nextPageLink) throws CloudException, IOException {
+                return sasTokensListNextNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -909,7 +914,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SasTokenInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<SasTokenInfo>> listSasTokens(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<SasTokenInfo>> listSasTokens(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -930,11 +935,12 @@ public final class AccountOperationsImpl implements AccountOperations {
         }
         Call<ResponseBody> call = service.listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<SasTokenInfo>> response = listSasTokensDelegate(call.execute());
-        List<SasTokenInfo> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listSasTokensNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<SasTokenInfo> result = new PagedList<SasTokenInfo>(response.getBody()) {
+            @Override
+            public Page<SasTokenInfo> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listSasTokensNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1286,7 +1292,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;StorageAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<StorageAccountInfo>> listStorageAccounts(final String resourceGroupName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<StorageAccountInfo>> listStorageAccounts(final String resourceGroupName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1299,22 +1305,23 @@ public final class AccountOperationsImpl implements AccountOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        StorageAccountInfo filter = null;
-        Integer top = null;
-        Integer skip = null;
-        String expand = null;
-        String select = null;
-        String orderby = null;
-        Boolean count = null;
-        String search = null;
-        String format = null;
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final StorageAccountInfo filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        final String search = null;
+        final String format = null;
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<StorageAccountInfo>> response = listStorageAccountsDelegate(call.execute());
-        List<StorageAccountInfo> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listStorageAccountsNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<StorageAccountInfo> result = new PagedList<StorageAccountInfo>(response.getBody()) {
+            @Override
+            public Page<StorageAccountInfo> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listStorageAccountsNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1356,7 +1363,7 @@ public final class AccountOperationsImpl implements AccountOperations {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<StorageAccountInfo>>(serviceCallback) {
             @Override
@@ -1388,7 +1395,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1397,7 +1404,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;StorageAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<StorageAccountInfo>> listStorageAccounts(final String resourceGroupName, final String accountName, final StorageAccountInfo filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<StorageAccountInfo>> listStorageAccounts(final String resourceGroupName, final String accountName, final StorageAccountInfo filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1411,13 +1418,14 @@ public final class AccountOperationsImpl implements AccountOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<StorageAccountInfo>> response = listStorageAccountsDelegate(call.execute());
-        List<StorageAccountInfo> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listStorageAccountsNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<StorageAccountInfo> result = new PagedList<StorageAccountInfo>(response.getBody()) {
+            @Override
+            public Page<StorageAccountInfo> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listStorageAccountsNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1431,7 +1439,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1460,7 +1468,7 @@ public final class AccountOperationsImpl implements AccountOperations {
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<StorageAccountInfo>>(serviceCallback) {
             @Override
@@ -1499,7 +1507,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeStoreAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccounts(final String resourceGroupName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DataLakeStoreAccountInfo>> listDataLakeStoreAccounts(final String resourceGroupName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1512,22 +1520,23 @@ public final class AccountOperationsImpl implements AccountOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        DataLakeStoreAccountInfo filter = null;
-        Integer top = null;
-        Integer skip = null;
-        String expand = null;
-        String select = null;
-        String orderby = null;
-        Boolean count = null;
-        String search = null;
-        String format = null;
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final DataLakeStoreAccountInfo filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        final String search = null;
+        final String format = null;
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> response = listDataLakeStoreAccountsDelegate(call.execute());
-        List<DataLakeStoreAccountInfo> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listDataLakeStoreAccountsNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DataLakeStoreAccountInfo> result = new PagedList<DataLakeStoreAccountInfo>(response.getBody()) {
+            @Override
+            public Page<DataLakeStoreAccountInfo> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listDataLakeStoreAccountsNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1569,7 +1578,7 @@ public final class AccountOperationsImpl implements AccountOperations {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeStoreAccountInfo>>(serviceCallback) {
             @Override
@@ -1601,7 +1610,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1610,7 +1619,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeStoreAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccounts(final String resourceGroupName, final String accountName, final DataLakeStoreAccountInfo filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DataLakeStoreAccountInfo>> listDataLakeStoreAccounts(final String resourceGroupName, final String accountName, final DataLakeStoreAccountInfo filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1624,13 +1633,14 @@ public final class AccountOperationsImpl implements AccountOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> response = listDataLakeStoreAccountsDelegate(call.execute());
-        List<DataLakeStoreAccountInfo> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listDataLakeStoreAccountsNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DataLakeStoreAccountInfo> result = new PagedList<DataLakeStoreAccountInfo>(response.getBody()) {
+            @Override
+            public Page<DataLakeStoreAccountInfo> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listDataLakeStoreAccountsNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1644,7 +1654,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1673,7 +1683,7 @@ public final class AccountOperationsImpl implements AccountOperations {
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeStoreAccountInfo>>(serviceCallback) {
             @Override
@@ -1711,7 +1721,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DataLakeAnalyticsAccount>> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DataLakeAnalyticsAccount>> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1721,22 +1731,23 @@ public final class AccountOperationsImpl implements AccountOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        DataLakeAnalyticsAccount filter = null;
-        Integer top = null;
-        Integer skip = null;
-        String expand = null;
-        String select = null;
-        String orderby = null;
-        Boolean count = null;
-        String search = null;
-        String format = null;
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final DataLakeAnalyticsAccount filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        final String search = null;
+        final String format = null;
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> response = listByResourceGroupDelegate(call.execute());
-        List<DataLakeAnalyticsAccount> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listByResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DataLakeAnalyticsAccount> result = new PagedList<DataLakeAnalyticsAccount>(response.getBody()) {
+            @Override
+            public Page<DataLakeAnalyticsAccount> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listByResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1773,7 +1784,7 @@ public final class AccountOperationsImpl implements AccountOperations {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccount>>(serviceCallback) {
             @Override
@@ -1804,7 +1815,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1813,7 +1824,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DataLakeAnalyticsAccount>> listByResourceGroup(final String resourceGroupName, final DataLakeAnalyticsAccount filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DataLakeAnalyticsAccount>> listByResourceGroup(final String resourceGroupName, final DataLakeAnalyticsAccount filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1824,13 +1835,14 @@ public final class AccountOperationsImpl implements AccountOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> response = listByResourceGroupDelegate(call.execute());
-        List<DataLakeAnalyticsAccount> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listByResourceGroupNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DataLakeAnalyticsAccount> result = new PagedList<DataLakeAnalyticsAccount>(response.getBody()) {
+            @Override
+            public Page<DataLakeAnalyticsAccount> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listByResourceGroupNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1843,7 +1855,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1868,7 +1880,7 @@ public final class AccountOperationsImpl implements AccountOperations {
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccount>>(serviceCallback) {
             @Override
@@ -1905,29 +1917,30 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DataLakeAnalyticsAccount>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DataLakeAnalyticsAccount>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        DataLakeAnalyticsAccount filter = null;
-        Integer top = null;
-        Integer skip = null;
-        String expand = null;
-        String select = null;
-        String orderby = null;
-        Boolean count = null;
-        String search = null;
-        String format = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final DataLakeAnalyticsAccount filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        final String search = null;
+        final String format = null;
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> response = listDelegate(call.execute());
-        List<DataLakeAnalyticsAccount> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DataLakeAnalyticsAccount> result = new PagedList<DataLakeAnalyticsAccount>(response.getBody()) {
+            @Override
+            public Page<DataLakeAnalyticsAccount> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1959,7 +1972,7 @@ public final class AccountOperationsImpl implements AccountOperations {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccount>>(serviceCallback) {
             @Override
@@ -1989,7 +2002,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -1998,7 +2011,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<DataLakeAnalyticsAccount>> list(final DataLakeAnalyticsAccount filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DataLakeAnalyticsAccount>> list(final DataLakeAnalyticsAccount filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -2006,13 +2019,14 @@ public final class AccountOperationsImpl implements AccountOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> response = listDelegate(call.execute());
-        List<DataLakeAnalyticsAccount> result = response.getBody().getItems();
-        while (response.getBody().getNextPageLink() != null) {
-            response = listNext(response.getBody().getNextPageLink());
-            result.addAll(response.getBody().getItems());
-        }
+        PagedList<DataLakeAnalyticsAccount> result = new PagedList<DataLakeAnalyticsAccount>(response.getBody()) {
+            @Override
+            public Page<DataLakeAnalyticsAccount> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listNext(nextPageLink).getBody();
+            }
+        };
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -2024,7 +2038,7 @@ public final class AccountOperationsImpl implements AccountOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you’d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
@@ -2045,7 +2059,7 @@ public final class AccountOperationsImpl implements AccountOperations {
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccount>>(serviceCallback) {
             @Override

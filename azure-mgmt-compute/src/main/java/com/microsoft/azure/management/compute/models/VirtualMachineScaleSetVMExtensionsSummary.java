@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Extensions summary for virtual machines of a virtual machine scale set.

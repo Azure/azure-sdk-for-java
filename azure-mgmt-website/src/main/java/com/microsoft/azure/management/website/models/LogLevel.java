@@ -65,4 +65,9 @@ public enum LogLevel {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

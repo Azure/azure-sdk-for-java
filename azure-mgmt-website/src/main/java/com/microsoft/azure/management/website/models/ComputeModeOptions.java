@@ -56,4 +56,9 @@ public enum ComputeModeOptions {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

@@ -64,7 +64,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
-        Call<ResponseBody> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$filter") VirtualMachineImageResource filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers")
@@ -219,7 +219,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
         final VirtualMachineImageResource filter = null;
         final Integer top = null;
         final String orderby = null;
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), filter, top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute());
     }
 
@@ -265,7 +265,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
         final VirtualMachineImageResource filter = null;
         final Integer top = null;
         final String orderby = null;
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), filter, top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override
@@ -315,7 +315,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), filter, top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listDelegate(call.execute());
     }
 
@@ -362,7 +362,7 @@ public final class VirtualMachineImagesOperationsImpl implements VirtualMachineI
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.getSubscriptionId(), filter, top, orderby, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResource>>(serviceCallback) {
             @Override

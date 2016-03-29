@@ -73,7 +73,7 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     interface FileSystemService {
         @Headers("Content-Type: application/octet-stream")
         @POST("WebHdfsExt/{filePath}")
-        Call<ResponseBody> concurrentAppend(@Path("filePath") String filePath, @Body RequestBody streamContents, @Query("appendMode") String appendMode, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> concurrentAppend(@Path("filePath") String filePath, @Body RequestBody streamContents, @Query("appendMode") AppendModeType appendMode, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{path}")
@@ -188,7 +188,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final AppendModeType appendMode = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.concurrentAppend(filePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), this.client.getMapperAdapter().serializeRaw(appendMode), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return concurrentAppendDelegate(call.execute());
     }
 
@@ -234,7 +235,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final AppendModeType appendMode = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.concurrentAppend(filePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), this.client.getMapperAdapter().serializeRaw(appendMode), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -283,7 +285,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "CONCURRENTAPPEND";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.concurrentAppend(filePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), this.client.getMapperAdapter().serializeRaw(appendMode), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return concurrentAppendDelegate(call.execute());
     }
 
@@ -329,7 +332,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "CONCURRENTAPPEND";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.concurrentAppend(filePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), this.client.getMapperAdapter().serializeRaw(appendMode), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -653,7 +657,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "CONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.concat(destinationPath, this.client.getMapperAdapter().serializeList(sources, CollectionFormat.CSV), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        String sourcesConverted = this.client.getMapperAdapter().serializeList(sources, CollectionFormat.CSV);
+        Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return concatDelegate(call.execute());
     }
 
@@ -699,7 +704,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "CONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.concat(destinationPath, this.client.getMapperAdapter().serializeList(sources, CollectionFormat.CSV), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        String sourcesConverted = this.client.getMapperAdapter().serializeList(sources, CollectionFormat.CSV);
+        Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -754,7 +760,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final Boolean deleteSourceDirectory = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return msConcatDelegate(call.execute());
     }
 
@@ -800,7 +807,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final Boolean deleteSourceDirectory = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -849,7 +857,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "MSCONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return msConcatDelegate(call.execute());
     }
 
@@ -895,7 +904,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "MSCONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1223,7 +1233,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String append = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.append(directFilePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), op, append, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return appendDelegate(call.execute());
     }
 
@@ -1269,7 +1280,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String append = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.append(directFilePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), op, append, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1322,7 +1334,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.create(directFilePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -1365,7 +1378,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.create(directFilePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1412,7 +1426,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String write = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.create(directFilePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -1455,7 +1470,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String write = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.create(directFilePath, RequestBody.create(MediaType.parse("application/octet-stream"), streamContents), overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override

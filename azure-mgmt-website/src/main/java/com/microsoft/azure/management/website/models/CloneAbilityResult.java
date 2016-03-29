@@ -59,4 +59,9 @@ public enum CloneAbilityResult {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

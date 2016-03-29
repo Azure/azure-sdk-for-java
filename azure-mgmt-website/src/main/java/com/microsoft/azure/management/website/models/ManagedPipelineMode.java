@@ -56,4 +56,9 @@ public enum ManagedPipelineMode {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

@@ -84,7 +84,7 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{scope}/providers/Microsoft.Authorization/roleDefinitions")
-        Call<ResponseBody> list(@Path("scope") String scope, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("scope") String scope, @Query("$filter") RoleDefinitionFilter filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -395,7 +395,7 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final RoleDefinitionFilter filter = null;
-        Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleDefinition>> response = listDelegate(call.execute());
         PagedList<RoleDefinition> result = new PagedList<RoleDefinition>(response.getBody()) {
             @Override
@@ -427,7 +427,7 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
             return null;
         }
         final RoleDefinitionFilter filter = null;
-        Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleDefinition>>(serviceCallback) {
             @Override
@@ -467,7 +467,7 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleDefinition>> response = listDelegate(call.execute());
         PagedList<RoleDefinition> result = new PagedList<RoleDefinition>(response.getBody()) {
             @Override
@@ -500,7 +500,7 @@ public final class RoleDefinitionsOperationsImpl implements RoleDefinitionsOpera
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.list(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleDefinition>>(serviceCallback) {
             @Override

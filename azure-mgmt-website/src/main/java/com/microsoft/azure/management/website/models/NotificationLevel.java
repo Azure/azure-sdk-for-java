@@ -62,4 +62,9 @@ public enum NotificationLevel {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

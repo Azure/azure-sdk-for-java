@@ -74,7 +74,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
     interface ResourceGroupsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
-        Call<ResponseBody> listResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") GenericResourceFilter filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
@@ -102,7 +102,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") ResourceGroupFilter filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -135,7 +135,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         final GenericResourceFilter filter = null;
         final Integer top = null;
-        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute());
         PagedList<GenericResource> result = new PagedList<GenericResource>(response.getBody()) {
             @Override
@@ -172,7 +172,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         final GenericResourceFilter filter = null;
         final Integer top = null;
-        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResource>>(serviceCallback) {
             @Override
@@ -216,7 +216,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResource>> response = listResourcesDelegate(call.execute());
         PagedList<GenericResource> result = new PagedList<GenericResource>(response.getBody()) {
             @Override
@@ -254,7 +254,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listResources(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResource>>(serviceCallback) {
             @Override
@@ -290,7 +290,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Boolean object wrapped in {@link ServiceResponse} if successful.
+     * @return the boolean object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Boolean> checkExistence(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
@@ -729,7 +729,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         final ResourceGroupFilter filter = null;
         final Integer top = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute());
         PagedList<ResourceGroup> result = new PagedList<ResourceGroup>(response.getBody()) {
             @Override
@@ -761,7 +761,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
         }
         final ResourceGroupFilter filter = null;
         final Integer top = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceGroup>>(serviceCallback) {
             @Override
@@ -801,7 +801,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<ResourceGroup>> response = listDelegate(call.execute());
         PagedList<ResourceGroup> result = new PagedList<ResourceGroup>(response.getBody()) {
             @Override
@@ -834,7 +834,7 @@ public final class ResourceGroupsOperationsImpl implements ResourceGroupsOperati
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceGroup>>(serviceCallback) {
             @Override

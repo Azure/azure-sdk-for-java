@@ -80,4 +80,9 @@ public enum BackupItemStatus {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

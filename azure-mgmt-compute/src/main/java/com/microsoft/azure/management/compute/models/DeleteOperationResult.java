@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The compute long running operation response.

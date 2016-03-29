@@ -27,11 +27,11 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlTableStatist
 import com.microsoft.azure.management.datalake.analytics.models.USqlTableValuedFunction;
 import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -177,7 +177,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -199,14 +199,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -218,7 +218,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -261,7 +261,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlCredential>> listCredentials(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlCredential>> listCredentials(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -283,14 +283,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlCredential>> listCredentials(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlCredential>> listCredentials(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -302,7 +302,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -348,7 +348,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -372,14 +372,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -392,7 +392,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -438,7 +438,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -462,14 +462,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -482,7 +482,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -528,7 +528,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -552,14 +552,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -572,7 +572,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -621,7 +621,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -647,14 +647,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -668,7 +668,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -687,7 +687,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -711,14 +711,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -731,7 +731,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -777,7 +777,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -801,14 +801,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -821,7 +821,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -864,7 +864,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -886,14 +886,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -905,7 +905,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -948,7 +948,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlSchema>> listSchemas(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlSchema>> listSchemas(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -970,14 +970,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlSchema>> listSchemas(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlSchema>> listSchemas(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -989,7 +989,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1029,7 +1029,7 @@ public interface CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlDatabase&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlDatabase>> listDatabases(final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlDatabase>> listDatabases(final String accountName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1049,14 +1049,14 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlDatabase&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<USqlDatabase>> listDatabases(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlDatabase>> listDatabases(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1067,7 +1067,7 @@ public interface CatalogOperations {
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order youâ€™d like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null

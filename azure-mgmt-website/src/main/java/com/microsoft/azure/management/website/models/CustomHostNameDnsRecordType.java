@@ -56,4 +56,9 @@ public enum CustomHostNameDnsRecordType {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

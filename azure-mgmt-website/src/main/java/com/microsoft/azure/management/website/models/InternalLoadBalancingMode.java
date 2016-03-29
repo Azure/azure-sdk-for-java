@@ -59,4 +59,9 @@ public enum InternalLoadBalancingMode {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

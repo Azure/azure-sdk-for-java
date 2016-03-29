@@ -56,4 +56,9 @@ public enum DataLakeAnalyticsAccountState {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

@@ -11,8 +11,8 @@
 package com.microsoft.azure.management.network.models;
 
 import com.microsoft.azure.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 

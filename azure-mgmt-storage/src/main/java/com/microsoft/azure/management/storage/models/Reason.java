@@ -56,4 +56,9 @@ public enum Reason {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

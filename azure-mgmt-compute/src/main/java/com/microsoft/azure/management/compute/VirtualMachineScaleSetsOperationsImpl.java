@@ -22,6 +22,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMIns
 import com.microsoft.azure.management.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.serializer.CollectionFormat;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;

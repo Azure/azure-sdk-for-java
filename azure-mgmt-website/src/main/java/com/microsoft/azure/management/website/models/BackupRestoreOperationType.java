@@ -59,4 +59,9 @@ public enum BackupRestoreOperationType {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

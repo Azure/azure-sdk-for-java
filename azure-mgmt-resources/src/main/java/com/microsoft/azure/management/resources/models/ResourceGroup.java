@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource group information.

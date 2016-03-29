@@ -65,4 +65,9 @@ public enum ProvisioningState {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

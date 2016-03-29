@@ -100,7 +100,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("virtualMachineScaleSetName") String virtualMachineScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("virtualMachineScaleSetName") String virtualMachineScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("$filter") VirtualMachineScaleSetVM filter, @Query("$select") String select, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/poweroff")
@@ -820,7 +820,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
         final VirtualMachineScaleSetVM filter = null;
         final String select = null;
         final String expand = null;
-        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), filter, select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSetVM>> response = listDelegate(call.execute());
         PagedList<VirtualMachineScaleSetVM> result = new PagedList<VirtualMachineScaleSetVM>(response.getBody()) {
             @Override
@@ -863,7 +863,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
         final VirtualMachineScaleSetVM filter = null;
         final String select = null;
         final String expand = null;
-        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), filter, select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSetVM>>(serviceCallback) {
             @Override
@@ -912,7 +912,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), filter, select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineScaleSetVM>> response = listDelegate(call.execute());
         PagedList<VirtualMachineScaleSetVM> result = new PagedList<VirtualMachineScaleSetVM>(response.getBody()) {
             @Override
@@ -956,7 +956,7 @@ public final class VirtualMachineScaleSetVMsOperationsImpl implements VirtualMac
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.getSubscriptionId(), filter, select, expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineScaleSetVM>>(serviceCallback) {
             @Override

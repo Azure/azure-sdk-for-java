@@ -69,11 +69,11 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
     interface RoleAssignmentsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}providers/Microsoft.Authorization/roleAssignments")
-        Call<ResponseBody> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") RoleAssignmentFilter filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/roleAssignments")
-        Call<ResponseBody> listForResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listForResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") RoleAssignmentFilter filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}", method = "DELETE", hasBody = true)
@@ -101,11 +101,11 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") RoleAssignmentFilter filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{scope}/providers/Microsoft.Authorization/roleAssignments")
-        Call<ResponseBody> listForScope(@Path("scope") String scope, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listForScope(@Path("scope") String scope, @Query("$filter") RoleAssignmentFilter filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -161,7 +161,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -217,7 +217,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -276,7 +276,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -333,7 +333,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -382,7 +382,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceGroupDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -418,7 +418,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -461,7 +461,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForResourceGroupDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -498,7 +498,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForResourceGroup(resourceGroupName, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -964,7 +964,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -995,7 +995,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -1034,7 +1034,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -1066,7 +1066,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -1112,7 +1112,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.listForScope(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForScope(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForScopeDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -1144,7 +1144,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         final RoleAssignmentFilter filter = null;
-        Call<ResponseBody> call = service.listForScope(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForScope(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override
@@ -1184,7 +1184,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(filter);
-        Call<ResponseBody> call = service.listForScope(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForScope(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<RoleAssignment>> response = listForScopeDelegate(call.execute());
         PagedList<RoleAssignment> result = new PagedList<RoleAssignment>(response.getBody()) {
             @Override
@@ -1217,7 +1217,7 @@ public final class RoleAssignmentsOperationsImpl implements RoleAssignmentsOpera
             return null;
         }
         Validator.validate(filter, serviceCallback);
-        Call<ResponseBody> call = service.listForScope(scope, this.client.getMapperAdapter().serializeRaw(filter), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listForScope(scope, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RoleAssignment>>(serviceCallback) {
             @Override

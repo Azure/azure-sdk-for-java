@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.datalake.store.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Data Lake Store account properties information.

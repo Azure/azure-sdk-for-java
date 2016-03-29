@@ -62,4 +62,9 @@ public enum WorkerSizeOptions {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

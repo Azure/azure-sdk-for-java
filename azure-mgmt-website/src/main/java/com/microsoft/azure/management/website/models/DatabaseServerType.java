@@ -62,4 +62,9 @@ public enum DatabaseServerType {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

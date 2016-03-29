@@ -56,4 +56,9 @@ public enum HostNameType {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

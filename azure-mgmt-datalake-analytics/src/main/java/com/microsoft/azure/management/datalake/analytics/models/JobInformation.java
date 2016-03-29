@@ -11,9 +11,9 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The common Data Lake Analytics job information properties.

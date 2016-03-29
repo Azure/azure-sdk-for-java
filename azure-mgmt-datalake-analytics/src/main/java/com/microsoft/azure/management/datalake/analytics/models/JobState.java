@@ -80,4 +80,9 @@ public enum JobState {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

@@ -113,4 +113,9 @@ public enum DomainStatus {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

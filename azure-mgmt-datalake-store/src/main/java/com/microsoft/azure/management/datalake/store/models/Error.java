@@ -10,8 +10,8 @@
 
 package com.microsoft.azure.management.datalake.store.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Data Lake Store error information.

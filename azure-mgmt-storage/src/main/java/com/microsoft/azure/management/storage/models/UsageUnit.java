@@ -68,4 +68,9 @@ public enum UsageUnit {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

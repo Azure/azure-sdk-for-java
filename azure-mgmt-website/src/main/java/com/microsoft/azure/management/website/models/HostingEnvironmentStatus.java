@@ -62,4 +62,9 @@ public enum HostingEnvironmentStatus {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }

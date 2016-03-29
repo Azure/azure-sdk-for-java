@@ -59,4 +59,9 @@ public enum ManagedHostingEnvironmentStatus {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toValue();
+    }
 }
