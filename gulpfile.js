@@ -72,6 +72,12 @@ var mappings = {
         'dir': 'azure-mgmt-datalake-analytics',
         'source': 'arm-datalake-analytics/catalog/2015-10-01-preview/swagger/catalog.json',
         'package': 'com.microsoft.azure.management.datalake.analytics'
+    },
+    'batchService': {
+        'dir': 'azure-batch',
+        'source': 'batch/2015-12-01.2.2/swagger/BatchService.json',
+        'package': 'com.microsoft.azure.batch.protocol',
+        'args': '-FT 1'
     }
 };
 
