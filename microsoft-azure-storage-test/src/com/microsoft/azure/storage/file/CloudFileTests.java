@@ -786,7 +786,7 @@ public class CloudFileTests {
         ByteArrayOutputStream fileStream2 = new ByteArrayOutputStream();
         file2.downloadRange(1024, new Long(1024), fileStream2);
         FileTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(fileStream2.toByteArray()), wholeFile,
-                1024, 1024, 1024, 2 * 1024);
+                0, 1024, 1024, 2 * 1024);
 
         FileTestHelper.assertAreEqual(file, file2);
     }

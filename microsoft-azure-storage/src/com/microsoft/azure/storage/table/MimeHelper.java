@@ -162,6 +162,7 @@ final class MimeHelper {
 
             // Write each operation
             for (final TableOperation op : batch) {
+
                 // New mime part for changeset
                 MimeHelper.writeMIMEBoundary(outWriter, changeSet);
 
@@ -181,6 +182,8 @@ final class MimeHelper {
                 if (op.getOperationType() == TableOperationType.INSERT_OR_MERGE
                         || op.getOperationType() == TableOperationType.MERGE) {
                     // post tunnelling
+                    options.assertNoEncryptionPolicyOrStrictMode();
+                    
                     mimePart.headers.put(TableConstants.HeaderConstants.X_HTTP_METHOD,
                             TableOperationType.MERGE.toString());
                 }
@@ -202,9 +205,9 @@ final class MimeHelper {
                 }
 
                 if (op.getOperationType() != TableOperationType.DELETE) {
-                    mimePart.headers.put(Constants.HeaderConstants.CONTENT_TYPE,
-                            TableConstants.HeaderConstants.JSON_CONTENT_TYPE);
-                    mimePart.payload = writeStringForOperation(op, options.getTablePayloadFormat(), opContext);
+                    mimePart.headers.put(Constants.HeaderConstants.CONTENT_TYPE, TableConstants.HeaderConstants.JSON_CONTENT_TYPE);
+
+                    mimePart.payload = writeStringForOperation(op, options, opContext);
                     mimePart.headers.put(Constants.HeaderConstants.CONTENT_LENGTH,
                             Integer.toString(mimePart.payload.getBytes(Constants.UTF8_CHARSET).length));
                 }
@@ -440,6 +443,8 @@ final class MimeHelper {
      * 
      * @param operation
      *            A {@link TableOperation} containing the entity to write to the returned <code>String</code>.
+     * @param options
+     *            The {@link TableRequestOptions} to use for serializing.
      * @param opContext
      *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
      *            safely ignore operation context.
@@ -449,12 +454,12 @@ final class MimeHelper {
      *             if a Storage error occurs.
      * @throws IOException
      */
-    private static String writeStringForOperation(final TableOperation operation, TablePayloadFormat format,
+    private static String writeStringForOperation(final TableOperation operation, final TableRequestOptions options,
             final OperationContext opContext) throws StorageException, IOException {
         Utility.assertNotNull("entity", operation.getEntity());
         final StringWriter outWriter = new StringWriter();
 
-        TableEntitySerializer.writeSingleEntityToString(outWriter, format, operation.getEntity(), false, opContext);
+        TableEntitySerializer.writeSingleEntityToString(outWriter, options, operation.getEntity(), false, opContext);
         outWriter.write("\r\n");
 
         return outWriter.toString();

@@ -256,6 +256,8 @@ final class TableRequest {
                             : TableConstants.HeaderConstants.RETURN_NO_CONTENT);
         }
         else if (updateType == TableUpdateType.MERGE) {
+            tableOptions.assertNoEncryptionPolicyOrStrictMode();
+            
             retConnection = coreCreate(rootUri, tableOptions, queryBuilder, opContext, tableName, null/* ETAG */,
                     identity, "POST");
 
@@ -305,6 +307,8 @@ final class TableRequest {
     public static HttpURLConnection merge(final URI rootUri, final TableRequestOptions tableOptions,
             final UriQueryBuilder queryBuilder, final OperationContext opContext, final String tableName,
             final String identity, final String eTag) throws IOException, URISyntaxException, StorageException {
+        tableOptions.assertNoEncryptionPolicyOrStrictMode();
+
         final HttpURLConnection retConnection = coreCreate(rootUri, tableOptions, queryBuilder, opContext, tableName,
                 eTag, identity, "POST");
         retConnection.setRequestProperty(TableConstants.HeaderConstants.X_HTTP_METHOD, "MERGE");

@@ -241,6 +241,7 @@ public final class CloudTable {
 
         opContext.initialize();
         options = TableRequestOptions.populateAndApplyDefaults(options, this.tableServiceClient);
+        options.clearEncryption();
 
         Utility.assertNotNullOrEmpty("tableName", this.name);
 
@@ -586,8 +587,9 @@ public final class CloudTable {
             final TableRequestOptions options, final OperationContext opContext) {
         Utility.assertNotNull("query", query);
         Utility.assertNotNull(SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER, resolver);
+        TableRequestOptions modifiedOptions = TableRequestOptions.populateAndApplyDefaults(options, this.getServiceClient());
         query.setSourceTableName(this.getName());
-        return (Iterable<R>) this.getServiceClient().generateIteratorForQuery(query, resolver, options, opContext);
+        return (Iterable<R>) this.getServiceClient().generateIteratorForQuery(query, resolver, modifiedOptions, opContext);
     }
 
     /**
@@ -643,8 +645,9 @@ public final class CloudTable {
             final OperationContext opContext) {
         Utility.assertNotNull("query", query);
         Utility.assertNotNull(SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER, query.getClazzType());
+        TableRequestOptions modifiedOptions = TableRequestOptions.populateAndApplyDefaults(options, this.getServiceClient());
         query.setSourceTableName(this.getName());
-        return (Iterable<T>) this.getServiceClient().generateIteratorForQuery(query, null, options, opContext);
+        return (Iterable<T>) this.getServiceClient().generateIteratorForQuery(query, null, modifiedOptions, opContext);
     }
 
     /**
@@ -874,6 +877,7 @@ public final class CloudTable {
 
         opContext.initialize();
         options = TableRequestOptions.populateAndApplyDefaults(options, this.tableServiceClient);
+        options.clearEncryption();
 
         Utility.assertNotNullOrEmpty("tableName", this.name);
 

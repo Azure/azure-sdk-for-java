@@ -1251,12 +1251,61 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     @DoesServiceRequest
-    private final StorageRequest<CloudBlobClient, CloudBlob, Integer> downloadToStreamImpl(final Long blobOffset,
-            final Long length, final OutputStream outStream, final AccessCondition accessCondition,
+    private final StorageRequest<CloudBlobClient, CloudBlob, Integer> downloadToStreamImpl(Long offset,
+            Long length, final OutputStream userStream, final AccessCondition accessCondition,
             final BlobRequestOptions options, OperationContext opContext) {
+        options.assertPolicyIfRequired();
 
-        final long startingOffset = blobOffset == null ? 0 : blobOffset;
-        final boolean isRangeGet = blobOffset != null;
+        final Long userSpecifiedLength = length;
+        final long startingOffset = offset == null ? 0 : offset;
+        final boolean isRangeGet = offset != null;
+        
+        int discardFirst = 0;
+        Long endOffset = null;
+        boolean bufferIV = false;
+        if (isRangeGet && options.getEncryptionPolicy() != null)
+        {
+            // Let's say the user requests a download with offset = 39 and length = 54
+
+            // First calculate the endOffset if length has value.
+            // endOffset starts at 92 (39 + 54 - 1), but then gets increased to 95 (one less than the next higher multiple of 16)
+            if (length != null)
+            {
+                endOffset = offset + length - 1;
+
+                // AES-CBC works in 16 byte blocks. So if a user specifies a range whose start and end offsets are not multiples of 16,
+                // update them so we can download entire AES blocks to decrypt.
+                // Adjust the end offset to be a multiple of 15 mod 16.
+                endOffset +=  15 - endOffset % 16;
+            }
+
+            // Adjust the offset to be a multiple of 16.
+            // offset gets reduced down to the highest multiple of 16 lower then the current value (32) 
+            discardFirst = (int)(offset % 16);
+            offset -= discardFirst;
+
+            // We need another 16 bytes for IV if offset is not 0. If the offset is 0, it is the first AES block
+            // and the IV is obtained from blob metadata.
+            // offset is reduced by another 16 (to a final value of 16)
+            if (offset > 15)
+            {
+                offset -= 16;
+                bufferIV = true;
+            }
+
+            // Adjust the length according to the new start and end offsets.
+            // length = 80 (a multiple of 16)
+            if (endOffset != null)
+            {
+                length = endOffset - offset + 1;
+            }
+        }
+        
+        final Long offsetFinal = offset;
+        final Long lengthFinal = length;
+        final int discardFirstFinal = discardFirst;
+        final Long endOffsetFinal = endOffset;
+        final boolean bufferIVFinal = bufferIV;
         final StorageRequest<CloudBlobClient, CloudBlob, Integer> getRequest = new StorageRequest<CloudBlobClient, CloudBlob, Integer>(
                 options, this.getStorageUri()) {
 
@@ -1271,11 +1320,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 // The first time this is called, we have to set the length and blob offset. On retries, these will already have values and need not be called.
                 if (this.getOffset() == null) {
-                    this.setOffset(blobOffset);
+                    this.setOffset(offsetFinal);
                 }
 
                 if (this.getLength() == null) {
-                    this.setLength(length);
+                    this.setLength(lengthFinal);
                 }
 
                 AccessCondition tempCondition = (this.getETagLockCondition() != null) ? this.getETagLockCondition()
@@ -1347,11 +1396,19 @@ public abstract class CloudBlob implements ListBlobItem {
                 Logger.info(context, String.format(SR.CREATING_NETWORK_STREAM, expectedLength));
                 final NetworkInputStream streamRef = new NetworkInputStream(connection.getInputStream(), expectedLength);
 
-                try {
+                OutputStream outStream = userStream;
+                try {               
+                    if (options.getEncryptionPolicy() != null)
+                    {
+                        outStream = BlobEncryptionPolicy.wrapUserStreamWithDecryptStream(blob, userStream, options, 
+                                blob.metadata, blob.properties.getLength(), isRangeGet, endOffsetFinal, 
+                                userSpecifiedLength, discardFirstFinal, bufferIVFinal);
+                    }
+                    
                     // writeToOutputStream will update the currentRequestByteCount on this request in case a retry
                     // is needed and download should resume from that point
                     final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
-                            validateMD5, context, options, this);
+                            validateMD5, context, options, true, this);
 
                     // length was already checked by the NetworkInputStream, now check Md5
                     if (validateMD5 && !this.getContentMD5().equals(descriptor.getMd5())) {
@@ -1364,6 +1421,10 @@ public abstract class CloudBlob implements ListBlobItem {
                     // Close the stream and return. Closing an already closed stream is harmless. So its fine to try
                     // to drain the response and close the stream again in the executor.
                     streamRef.close();
+                    
+                    if (options.getEncryptionPolicy() != null) {
+                        outStream.close();
+                    }
                 }
 
                 return null;
@@ -1382,8 +1443,8 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 if (this.getCurrentRequestByteCount() > 0) {
                     this.setOffset(startingOffset + this.getCurrentRequestByteCount());
-                    if (length != null) {
-                        this.setLength(length - this.getCurrentRequestByteCount());
+                    if (lengthFinal != null) {
+                        this.setLength(lengthFinal - this.getCurrentRequestByteCount());
                     }
                 }
             }
@@ -2016,10 +2077,8 @@ public abstract class CloudBlob implements ListBlobItem {
      *
      * @return A <code>String</code> that represents the name of the blob.
      *
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
      */
-    public final String getName() throws URISyntaxException {
+    public final String getName() {
         return this.name;
     }
 

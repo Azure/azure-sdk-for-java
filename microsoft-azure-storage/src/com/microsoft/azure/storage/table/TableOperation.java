@@ -378,8 +378,7 @@ public class TableOperation {
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();
         try {
-            TableEntitySerializer.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(), this.entity,
-                    isTableEntry, opContext);
+            TableEntitySerializer.writeSingleEntityToStream(entityStream, options, this.entity, isTableEntry, opContext);
             // We need to buffer once and use it for all retries instead of serializing the entity every single time. 
             // In the future, this could also be used to calculate transactional MD5 for table operations.
             final byte[] entityBytes = entityStream.toByteArray();
@@ -500,8 +499,7 @@ public class TableOperation {
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();
         try {
-            TableEntitySerializer.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(),
-                    this.getEntity(), false, opContext);
+            TableEntitySerializer.writeSingleEntityToStream(entityStream, options, this.getEntity(), false, opContext);
             // We need to buffer once and use it for all retries instead of serializing the entity every single time. 
             // In the future, this could also be used to calculate transactional MD5 for table operations.
             final byte[] entityBytes = entityStream.toByteArray();
@@ -592,8 +590,7 @@ public class TableOperation {
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();
         try {
-            TableEntitySerializer.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(),
-                    this.getEntity(), false, opContext);
+            TableEntitySerializer.writeSingleEntityToStream(entityStream, options, this.getEntity(), false, opContext);
             // We need to buffer once and use it for all retries instead of serializing the entity every single time. 
             // In the future, this could also be used to calculate transactional MD5 for table operations.
             final byte[] entityBytes = entityStream.toByteArray();

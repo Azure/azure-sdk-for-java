@@ -274,4 +274,17 @@ public final class FileRequestOptions extends RequestOptions {
 
         super.setLocationMode(locationMode);
     }
+
+    /**
+     * Encryption is not supported for files.
+     * 
+     * @param requireEncryption
+     *            A value to indicate whether all data written and read must be encrypted.
+     */
+    @Override
+    public void setRequireEncryption(Boolean requireEncryption) {
+        if (requireEncryption != null && requireEncryption == true) {
+            throw new UnsupportedOperationException(SR.ENCRYPTION_NOT_SUPPORTED_FOR_FILES);
+        }
+    }
 }
