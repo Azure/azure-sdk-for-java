@@ -1420,7 +1420,9 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String write = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        if (streamContents != null) {
+            RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        }
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
@@ -1464,7 +1466,9 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String write = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        if (streamContents != null) {
+            RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        }
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
