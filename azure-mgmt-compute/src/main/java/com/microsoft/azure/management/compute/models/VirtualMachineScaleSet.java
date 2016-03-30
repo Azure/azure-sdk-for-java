@@ -39,6 +39,13 @@ public class VirtualMachineScaleSet extends Resource {
     private String provisioningState;
 
     /**
+     * Specifies whether the Virtual Machine Scale Set should be
+     * overprovisioned.
+     */
+    @JsonProperty(value = "properties.overProvision")
+    private Boolean overProvision;
+
+    /**
      * Get the sku value.
      *
      * @return the sku value
@@ -108,6 +115,24 @@ public class VirtualMachineScaleSet extends Resource {
      */
     public void setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+    }
+
+    /**
+     * Get the overProvision value.
+     *
+     * @return the overProvision value
+     */
+    public Boolean getOverProvision() {
+        return this.overProvision;
+    }
+
+    /**
+     * Set the overProvision value.
+     *
+     * @param overProvision the overProvision value to set
+     */
+    public void setOverProvision(Boolean overProvision) {
+        this.overProvision = overProvision;
     }
 
 }

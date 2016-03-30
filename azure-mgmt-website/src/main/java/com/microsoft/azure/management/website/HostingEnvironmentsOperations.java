@@ -769,29 +769,6 @@ public interface HostingEnvironmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<ServerFarmCollection> getHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
-
-    /**
-     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall getHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
-
-    /**
-     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
-     */
     ServiceResponse<ServerFarmCollection> getHostingEnvironmentWebHostingPlans(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
     /**
@@ -804,6 +781,29 @@ public interface HostingEnvironmentsOperations {
      * @return the {@link ServiceCall} object
      */
     ServiceCall getHostingEnvironmentWebHostingPlansAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ServerFarmCollection> getHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get all multi role pools.

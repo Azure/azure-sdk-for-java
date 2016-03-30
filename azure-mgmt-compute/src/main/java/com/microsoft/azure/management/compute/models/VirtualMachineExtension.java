@@ -16,6 +16,14 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineExtension extends Resource {
     /**
+     * Gets or sets how the extension handler should be forced to update even
+     * if the extension configuration has not changed. Possible values
+     * include: 'RerunExtension'.
+     */
+    @JsonProperty(value = "properties.forceUpdateTag")
+    private ForceUpdateTagTypes forceUpdateTag;
+
+    /**
      * Gets or sets the name of the extension handler publisher.
      */
     @JsonProperty(value = "properties.publisher")
@@ -41,13 +49,6 @@ public class VirtualMachineExtension extends Resource {
     private Boolean autoUpgradeMinorVersion;
 
     /**
-     * Gets or sets whether the extension handler should be forced to re-run
-     * even if the extension configuration has not changed.
-     */
-    @JsonProperty(value = "properties.forceUpdateTag")
-    private String forceUpdateTag;
-
-    /**
      * Gets or sets Json formatted public settings for the extension.
      */
     @JsonProperty(value = "properties.settings")
@@ -70,6 +71,24 @@ public class VirtualMachineExtension extends Resource {
      */
     @JsonProperty(value = "properties.instanceView")
     private VirtualMachineExtensionInstanceView instanceView;
+
+    /**
+     * Get the forceUpdateTag value.
+     *
+     * @return the forceUpdateTag value
+     */
+    public ForceUpdateTagTypes getForceUpdateTag() {
+        return this.forceUpdateTag;
+    }
+
+    /**
+     * Set the forceUpdateTag value.
+     *
+     * @param forceUpdateTag the forceUpdateTag value to set
+     */
+    public void setForceUpdateTag(ForceUpdateTagTypes forceUpdateTag) {
+        this.forceUpdateTag = forceUpdateTag;
+    }
 
     /**
      * Get the publisher value.
@@ -141,24 +160,6 @@ public class VirtualMachineExtension extends Resource {
      */
     public void setAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
         this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
-    }
-
-    /**
-     * Get the forceUpdateTag value.
-     *
-     * @return the forceUpdateTag value
-     */
-    public String getForceUpdateTag() {
-        return this.forceUpdateTag;
-    }
-
-    /**
-     * Set the forceUpdateTag value.
-     *
-     * @param forceUpdateTag the forceUpdateTag value to set
-     */
-    public void setForceUpdateTag(String forceUpdateTag) {
-        this.forceUpdateTag = forceUpdateTag;
     }
 
     /**

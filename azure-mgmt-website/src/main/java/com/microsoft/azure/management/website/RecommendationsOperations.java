@@ -114,12 +114,14 @@ public interface RecommendationsOperations {
      * @param resourceGroupName Resource group name
      * @param siteName Site name
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
+     * @param siteSku The name of site SKU.
+     * @param numSlots The number of site slots associated to the site
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Recommendation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<Recommendation>> getRecommendedRulesForSite(String resourceGroupName, String siteName, Boolean featured) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<List<Recommendation>> getRecommendedRulesForSite(String resourceGroupName, String siteName, Boolean featured, String siteSku, Integer numSlots) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of recommendations associated with the specified web site.
@@ -127,11 +129,13 @@ public interface RecommendationsOperations {
      * @param resourceGroupName Resource group name
      * @param siteName Site name
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
+     * @param siteSku The name of site SKU.
+     * @param numSlots The number of site slots associated to the site
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getRecommendedRulesForSiteAsync(String resourceGroupName, String siteName, Boolean featured, final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException;
+    ServiceCall getRecommendedRulesForSiteAsync(String resourceGroupName, String siteName, Boolean featured, String siteSku, Integer numSlots, final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the list of past recommendations optionally specified by the time range.

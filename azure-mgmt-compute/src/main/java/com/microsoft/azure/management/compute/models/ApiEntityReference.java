@@ -12,8 +12,7 @@ package com.microsoft.azure.management.compute.models;
  */
 public class ApiEntityReference {
     /**
-     * Gets or sets the relative URL in the previous Service Management API's
-     * namespace. For Example:
+     * Gets or sets ARM resource id in the form of
      * /subscriptions/{SubcriptionId}/resourceGroups/{ResourceGroupName}/...
      */
     private String id;

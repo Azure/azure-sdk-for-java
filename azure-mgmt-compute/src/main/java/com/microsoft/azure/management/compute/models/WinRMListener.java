@@ -15,7 +15,7 @@ public class WinRMListener {
      * Gets or sets the Protocol used by WinRM listener. Currently only Http
      * and Https are supported. Possible values include: 'Http', 'Https'.
      */
-    private String protocol;
+    private ProtocolTypes protocol;
 
     /**
      * Gets or sets the Certificate URL in KMS for Https listeners. Should be
@@ -28,7 +28,7 @@ public class WinRMListener {
      *
      * @return the protocol value
      */
-    public String getProtocol() {
+    public ProtocolTypes getProtocol() {
         return this.protocol;
     }
 
@@ -37,7 +37,7 @@ public class WinRMListener {
      *
      * @param protocol the protocol value to set
      */
-    public void setProtocol(String protocol) {
+    public void setProtocol(ProtocolTypes protocol) {
         this.protocol = protocol;
     }
 

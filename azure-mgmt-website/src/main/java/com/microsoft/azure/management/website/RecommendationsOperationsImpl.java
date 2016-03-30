@@ -63,7 +63,7 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations")
-        Call<ResponseBody> getRecommendedRulesForSite(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getRecommendedRulesForSite(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("siteSku") String siteSku, @Query("numSlots") Integer numSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
@@ -303,7 +303,9 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final Boolean featured = null;
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final String siteSku = null;
+        final Integer numSlots = null;
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, siteSku, numSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getRecommendedRulesForSiteDelegate(call.execute());
     }
 
@@ -337,7 +339,9 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
             return null;
         }
         final Boolean featured = null;
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final String siteSku = null;
+        final Integer numSlots = null;
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, siteSku, numSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<Recommendation>>(serviceCallback) {
             @Override
@@ -358,12 +362,14 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
      * @param resourceGroupName Resource group name
      * @param siteName Site name
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
+     * @param siteSku The name of site SKU.
+     * @param numSlots The number of site slots associated to the site
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Recommendation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Recommendation>> getRecommendedRulesForSite(String resourceGroupName, String siteName, Boolean featured) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<Recommendation>> getRecommendedRulesForSite(String resourceGroupName, String siteName, Boolean featured, String siteSku, Integer numSlots) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -376,7 +382,7 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, siteSku, numSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getRecommendedRulesForSiteDelegate(call.execute());
     }
 
@@ -386,11 +392,13 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
      * @param resourceGroupName Resource group name
      * @param siteName Site name
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
+     * @param siteSku The name of site SKU.
+     * @param numSlots The number of site slots associated to the site
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getRecommendedRulesForSiteAsync(String resourceGroupName, String siteName, Boolean featured, final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getRecommendedRulesForSiteAsync(String resourceGroupName, String siteName, Boolean featured, String siteSku, Integer numSlots, final ServiceCallback<List<Recommendation>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -410,7 +418,7 @@ public final class RecommendationsOperationsImpl implements RecommendationsOpera
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.getSubscriptionId(), featured, siteSku, numSlots, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<Recommendation>>(serviceCallback) {
             @Override

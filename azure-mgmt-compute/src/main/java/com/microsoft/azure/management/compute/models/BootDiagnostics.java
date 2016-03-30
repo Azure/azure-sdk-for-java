@@ -12,7 +12,7 @@ package com.microsoft.azure.management.compute.models;
  */
 public class BootDiagnostics {
     /**
-     * Gets or sets whether VM Agent should be provisioned on the Virtual
+     * Gets or sets whether boot diagnostics should be enabled on the Virtual
      * Machine.
      */
     private Boolean enabled;

@@ -16,7 +16,7 @@ public class OSDisk {
      * Gets or sets the Operating System type. Possible values include:
      * 'Windows', 'Linux'.
      */
-    private String osType;
+    private OperatingSystemTypes osType;
 
     /**
      * Gets or sets the disk encryption settings.
@@ -47,14 +47,14 @@ public class OSDisk {
      * Gets or sets the caching type. Possible values include: 'None',
      * 'ReadOnly', 'ReadWrite'.
      */
-    private String caching;
+    private CachingTypes caching;
 
     /**
      * Gets or sets the create option. Possible values include: 'fromImage',
      * 'empty', 'attach'.
      */
     @JsonProperty(required = true)
-    private String createOption;
+    private DiskCreateOptionTypes createOption;
 
     /**
      * Gets or sets the initial disk size in GB for blank data disks, and the
@@ -67,7 +67,7 @@ public class OSDisk {
      *
      * @return the osType value
      */
-    public String getOsType() {
+    public OperatingSystemTypes getOsType() {
         return this.osType;
     }
 
@@ -76,7 +76,7 @@ public class OSDisk {
      *
      * @param osType the osType value to set
      */
-    public void setOsType(String osType) {
+    public void setOsType(OperatingSystemTypes osType) {
         this.osType = osType;
     }
 
@@ -157,7 +157,7 @@ public class OSDisk {
      *
      * @return the caching value
      */
-    public String getCaching() {
+    public CachingTypes getCaching() {
         return this.caching;
     }
 
@@ -166,7 +166,7 @@ public class OSDisk {
      *
      * @param caching the caching value to set
      */
-    public void setCaching(String caching) {
+    public void setCaching(CachingTypes caching) {
         this.caching = caching;
     }
 
@@ -175,7 +175,7 @@ public class OSDisk {
      *
      * @return the createOption value
      */
-    public String getCreateOption() {
+    public DiskCreateOptionTypes getCreateOption() {
         return this.createOption;
     }
 
@@ -184,7 +184,7 @@ public class OSDisk {
      *
      * @param createOption the createOption value to set
      */
-    public void setCreateOption(String createOption) {
+    public void setCreateOption(DiskCreateOptionTypes createOption) {
         this.createOption = createOption;
     }
 

@@ -366,12 +366,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Response<ResponseBody> result = service.deallocate(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -401,12 +398,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.deallocate(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -526,12 +520,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         return beginDeallocateDelegate(call.execute());
     }
@@ -565,12 +556,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1427,12 +1415,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Response<ResponseBody> result = service.powerOff(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -1462,12 +1447,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.powerOff(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1587,12 +1569,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         return beginPowerOffDelegate(call.execute());
     }
@@ -1626,12 +1605,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1762,12 +1738,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Response<ResponseBody> result = service.restart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -1797,12 +1770,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.restart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1922,12 +1892,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         return beginRestartDelegate(call.execute());
     }
@@ -1961,12 +1928,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2097,12 +2061,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Response<ResponseBody> result = service.start(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -2132,12 +2093,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.start(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -2257,12 +2215,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginStart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         return beginStartDelegate(call.execute());
     }
@@ -2296,12 +2251,9 @@ public final class VirtualMachineScaleSetsOperationsImpl implements VirtualMachi
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final List<String> instanceIds = null;
-        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        if (instanceIds != null) {
-            vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
-        }
+        final String instanceIdsConverted = null;
+        VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
+        vmInstanceIDs = null;
         Call<ResponseBody> call = service.beginStart(resourceGroupName, vmScaleSetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), vmInstanceIDs);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {

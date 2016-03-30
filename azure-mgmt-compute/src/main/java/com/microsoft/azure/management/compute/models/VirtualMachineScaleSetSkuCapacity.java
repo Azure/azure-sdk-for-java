@@ -35,7 +35,7 @@ public class VirtualMachineScaleSetSkuCapacity {
      * 'Automatic', 'None'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String scaleType;
+    private VirtualMachineScaleSetSkuScaleType scaleType;
 
     /**
      * Get the minimum value.
@@ -69,7 +69,7 @@ public class VirtualMachineScaleSetSkuCapacity {
      *
      * @return the scaleType value
      */
-    public String getScaleType() {
+    public VirtualMachineScaleSetSkuScaleType getScaleType() {
         return this.scaleType;
     }
 
