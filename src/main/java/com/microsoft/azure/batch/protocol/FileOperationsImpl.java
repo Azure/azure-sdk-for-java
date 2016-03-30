@@ -255,7 +255,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileDeleteFromTaskOptions != null) {
             ocpDate = fileDeleteFromTaskOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return deleteFromTaskDelegate(call.execute());
     }
@@ -309,7 +312,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileDeleteFromTaskOptions != null) {
             ocpDate = fileDeleteFromTaskOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -475,9 +481,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetFromTaskOptions != null) {
             ifUnmodifiedSince = fileGetFromTaskOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getFromTaskDelegate(call.execute());
     }
@@ -542,9 +557,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetFromTaskOptions != null) {
             ifUnmodifiedSince = fileGetFromTaskOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -704,9 +728,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetNodeFilePropertiesFromTaskOptions != null) {
             ifUnmodifiedSince = fileGetNodeFilePropertiesFromTaskOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getNodeFilePropertiesFromTaskDelegate(call.execute());
     }
@@ -767,9 +800,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetNodeFilePropertiesFromTaskOptions != null) {
             ifUnmodifiedSince = fileGetNodeFilePropertiesFromTaskOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
@@ -920,7 +962,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileDeleteFromComputeNodeOptions != null) {
             ocpDate = fileDeleteFromComputeNodeOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return deleteFromComputeNodeDelegate(call.execute());
     }
@@ -974,7 +1019,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileDeleteFromComputeNodeOptions != null) {
             ocpDate = fileDeleteFromComputeNodeOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1140,9 +1188,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetFromComputeNodeOptions != null) {
             ifUnmodifiedSince = fileGetFromComputeNodeOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getFromComputeNodeDelegate(call.execute());
     }
@@ -1207,9 +1264,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetFromComputeNodeOptions != null) {
             ifUnmodifiedSince = fileGetFromComputeNodeOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -1369,9 +1435,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
             ifUnmodifiedSince = fileGetNodeFilePropertiesFromComputeNodeOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getNodeFilePropertiesFromComputeNodeDelegate(call.execute());
     }
@@ -1432,9 +1507,18 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
             ifUnmodifiedSince = fileGetNodeFilePropertiesFromComputeNodeOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
@@ -1598,7 +1682,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromTaskOptions != null) {
             ocpDate = fileListFromTaskOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> response = listFromTaskDelegate(call.execute());
         PagedList<NodeFile> result = new PagedList<NodeFile>(response.getBody()) {
@@ -1669,7 +1756,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromTaskOptions != null) {
             ocpDate = fileListFromTaskOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
@@ -1847,7 +1937,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromComputeNodeOptions != null) {
             ocpDate = fileListFromComputeNodeOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeDelegate(call.execute());
         PagedList<NodeFile> result = new PagedList<NodeFile>(response.getBody()) {
@@ -1918,7 +2011,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromComputeNodeOptions != null) {
             ocpDate = fileListFromComputeNodeOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
@@ -2046,7 +2142,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromTaskNextOptions != null) {
             ocpDate = fileListFromTaskNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listFromTaskNextDelegate(call.execute());
     }
@@ -2082,7 +2181,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromTaskNextOptions != null) {
             ocpDate = fileListFromTaskNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
@@ -2203,7 +2305,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromComputeNodeNextOptions != null) {
             ocpDate = fileListFromComputeNodeNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listFromComputeNodeNextDelegate(call.execute());
     }
@@ -2239,7 +2344,10 @@ public final class FileOperationsImpl implements FileOperations {
         if (fileListFromComputeNodeNextOptions != null) {
             ocpDate = fileListFromComputeNodeNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {

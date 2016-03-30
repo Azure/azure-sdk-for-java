@@ -232,7 +232,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskAddOptions != null) {
             ocpDate = taskAddOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(jobId, task, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -281,7 +284,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskAddOptions != null) {
             ocpDate = taskAddOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(jobId, task, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -441,7 +447,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskListOptions != null) {
             ocpDate = taskListOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> response = listDelegate(call.execute());
         PagedList<CloudTask> result = new PagedList<CloudTask>(response.getBody()) {
@@ -514,7 +523,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskListOptions != null) {
             ocpDate = taskListOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudTask>>(serviceCallback) {
@@ -687,9 +699,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskDeleteOptions != null) {
             ifUnmodifiedSince = taskDeleteOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return deleteDelegate(call.execute());
     }
@@ -753,9 +774,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskDeleteOptions != null) {
             ifUnmodifiedSince = taskDeleteOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -926,9 +956,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskGetOptions != null) {
             ifUnmodifiedSince = taskGetOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.get(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getDelegate(call.execute());
     }
@@ -1000,9 +1039,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskGetOptions != null) {
             ifUnmodifiedSince = taskGetOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.get(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudTask>(serviceCallback) {
@@ -1171,9 +1219,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         TaskUpdateParameter taskUpdateParameter = new TaskUpdateParameter();
         taskUpdateParameter.setConstraints(constraints);
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, taskUpdateParameter);
         return updateDelegate(call.execute());
     }
@@ -1241,9 +1298,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         TaskUpdateParameter taskUpdateParameter = new TaskUpdateParameter();
         taskUpdateParameter.setConstraints(constraints);
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, taskUpdateParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1384,7 +1450,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskListSubtasksOptions != null) {
             ocpDate = taskListSubtasksOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listSubtasks(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return listSubtasksDelegate(call.execute());
     }
@@ -1436,7 +1505,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskListSubtasksOptions != null) {
             ocpDate = taskListSubtasksOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listSubtasks(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudTaskListSubtasksResult>(serviceCallback) {
@@ -1595,9 +1667,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskTerminateOptions != null) {
             ifUnmodifiedSince = taskTerminateOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return terminateDelegate(call.execute());
     }
@@ -1661,9 +1742,18 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskTerminateOptions != null) {
             ifUnmodifiedSince = taskTerminateOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1777,7 +1867,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskListNextOptions != null) {
             ocpDate = taskListNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -1813,7 +1906,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         if (taskListNextOptions != null) {
             ocpDate = taskListNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudTask>>(serviceCallback) {
