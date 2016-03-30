@@ -1,6 +1,8 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.compute.models.CachingTypes;
+import com.microsoft.azure.management.compute.models.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.models.HardwareProfile;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
@@ -69,8 +71,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         request.getStorageProfile().setImageReference(getVMImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"));
         request.getStorageProfile().setDataDisks(null);
         request.getStorageProfile().setOsDisk(new OSDisk());
-        request.getStorageProfile().getOsDisk().setCaching("None");
-        request.getStorageProfile().getOsDisk().setCreateOption("fromImage");
+        request.getStorageProfile().getOsDisk().setCaching(CachingTypes.NONE);
+        request.getStorageProfile().getOsDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
         request.getStorageProfile().getOsDisk().setName("javatest");
         request.getStorageProfile().getOsDisk().setVhd(new VirtualHardDisk());
         request.getStorageProfile().getOsDisk().getVhd().setUri("https://" + accountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
