@@ -266,9 +266,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleExistsOptions != null) {
             ifUnmodifiedSince = jobScheduleExistsOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<Void> call = service.exists(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return existsDelegate(call.execute());
     }
@@ -331,9 +340,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleExistsOptions != null) {
             ifUnmodifiedSince = jobScheduleExistsOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<Void> call = service.exists(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
@@ -480,9 +498,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleDeleteOptions != null) {
             ifUnmodifiedSince = jobScheduleDeleteOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return deleteDelegate(call.execute());
     }
@@ -541,9 +568,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleDeleteOptions != null) {
             ifUnmodifiedSince = jobScheduleDeleteOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -701,9 +737,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleGetOptions != null) {
             ifUnmodifiedSince = jobScheduleGetOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.get(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getDelegate(call.execute());
     }
@@ -770,9 +815,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleGetOptions != null) {
             ifUnmodifiedSince = jobScheduleGetOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.get(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCallback) {
@@ -934,9 +988,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobSchedulePatchOptions != null) {
             ifUnmodifiedSince = jobSchedulePatchOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return patchDelegate(call.execute());
     }
@@ -1001,9 +1064,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobSchedulePatchOptions != null) {
             ifUnmodifiedSince = jobSchedulePatchOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1165,9 +1237,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleUpdateOptions != null) {
             ifUnmodifiedSince = jobScheduleUpdateOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return updateDelegate(call.execute());
     }
@@ -1232,9 +1313,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleUpdateOptions != null) {
             ifUnmodifiedSince = jobScheduleUpdateOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1380,9 +1470,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleDisableOptions != null) {
             ifUnmodifiedSince = jobScheduleDisableOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.disable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return disableDelegate(call.execute());
     }
@@ -1441,9 +1540,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleDisableOptions != null) {
             ifUnmodifiedSince = jobScheduleDisableOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.disable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1589,9 +1697,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleEnableOptions != null) {
             ifUnmodifiedSince = jobScheduleEnableOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.enable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return enableDelegate(call.execute());
     }
@@ -1650,9 +1767,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleEnableOptions != null) {
             ifUnmodifiedSince = jobScheduleEnableOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.enable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1798,9 +1924,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleTerminateOptions != null) {
             ifUnmodifiedSince = jobScheduleTerminateOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return terminateDelegate(call.execute());
     }
@@ -1859,9 +1994,18 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleTerminateOptions != null) {
             ifUnmodifiedSince = jobScheduleTerminateOptions.getIfUnmodifiedSince();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        DateTimeRfc1123 ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1986,7 +2130,10 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleAddOptions != null) {
             ocpDate = jobScheduleAddOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -2030,7 +2177,10 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleAddOptions != null) {
             ocpDate = jobScheduleAddOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2177,7 +2327,10 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleListOptions != null) {
             ocpDate = jobScheduleListOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> response = listDelegate(call.execute());
         PagedList<CloudJobSchedule> result = new PagedList<CloudJobSchedule>(response.getBody()) {
@@ -2245,7 +2398,10 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleListOptions != null) {
             ocpDate = jobScheduleListOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
@@ -2373,7 +2529,10 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleListNextOptions != null) {
             ocpDate = jobScheduleListNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -2409,7 +2568,10 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         if (jobScheduleListNextOptions != null) {
             ocpDate = jobScheduleListNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {

@@ -185,7 +185,10 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         if (applicationListOptions != null) {
             ocpDate = applicationListOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> response = listDelegate(call.execute());
         PagedList<ApplicationSummary> result = new PagedList<ApplicationSummary>(response.getBody()) {
@@ -241,7 +244,10 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         if (applicationListOptions != null) {
             ocpDate = applicationListOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
@@ -377,7 +383,10 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         if (applicationGetOptions != null) {
             ocpDate = applicationGetOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(applicationId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getDelegate(call.execute());
     }
@@ -420,7 +429,10 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         if (applicationGetOptions != null) {
             ocpDate = applicationGetOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(applicationId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCallback) {
@@ -534,7 +546,10 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         if (applicationListNextOptions != null) {
             ocpDate = applicationListNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -570,7 +585,10 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         if (applicationListNextOptions != null) {
             ocpDate = applicationListNextOptions.getOcpDate();
         }
-        DateTimeRfc1123 ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
