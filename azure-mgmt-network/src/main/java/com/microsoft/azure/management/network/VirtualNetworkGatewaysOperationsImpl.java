@@ -775,7 +775,7 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
         }
         final String processorArchitecture = null;
         VpnClientParameters parameters = new VpnClientParameters();
-        parameters.setProcessorArchitecture(processorArchitecture);
+        parameters = null;
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         return generatevpnclientpackageDelegate(call.execute());
     }
@@ -811,7 +811,7 @@ public final class VirtualNetworkGatewaysOperationsImpl implements VirtualNetwor
         }
         final String processorArchitecture = null;
         VpnClientParameters parameters = new VpnClientParameters();
-        parameters.setProcessorArchitecture(processorArchitecture);
+        parameters = null;
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<String>(serviceCallback) {

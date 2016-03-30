@@ -9,12 +9,9 @@ package com.microsoft.azure.management.compute;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.models.AvailabilitySet;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -32,7 +29,6 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -81,14 +77,6 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes")
         Call<ResponseBody> listAvailableSizes(@Path("resourceGroupName") String resourceGroupName, @Path("availabilitySetName") String availabilitySetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAvailableSizesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
     }
 
@@ -346,7 +334,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;AvailabilitySet&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<AvailabilitySet>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<AvailabilitySet>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -358,12 +346,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<AvailabilitySet>> response = listDelegate(call.execute());
-        PagedList<AvailabilitySet> result = new PagedList<AvailabilitySet>(response.getBody()) {
-            @Override
-            public Page<AvailabilitySet> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listNext(nextPageLink).getBody();
-            }
-        };
+        List<AvailabilitySet> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -375,7 +358,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<AvailabilitySet> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(String resourceGroupName, final ServiceCallback<List<AvailabilitySet>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -398,13 +381,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponse<PageImpl<AvailabilitySet>> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -421,7 +398,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     /**
-     * Lists virtual-machine-sizes available to be used for an availability set.
+     * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -430,7 +407,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineSize>> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -445,17 +422,12 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineSize>> response = listAvailableSizesDelegate(call.execute());
-        PagedList<VirtualMachineSize> result = new PagedList<VirtualMachineSize>(response.getBody()) {
-            @Override
-            public Page<VirtualMachineSize> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listAvailableSizesNext(nextPageLink).getBody();
-            }
-        };
+        List<VirtualMachineSize> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
-     * Lists virtual-machine-sizes available to be used for an availability set.
+     * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing availability set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
@@ -463,7 +435,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAvailableSizesAsync(final String resourceGroupName, final String availabilitySetName, final ListOperationCallback<VirtualMachineSize> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAvailableSizesAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<List<VirtualMachineSize>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -490,13 +462,7 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -506,132 +472,6 @@ public final class AvailabilitySetsOperationsImpl implements AvailabilitySetsOpe
     }
 
     private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSize>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineSize>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * The operation to list the availability sets.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;AvailabilitySet&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<AvailabilitySet>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * The operation to list the availability sets.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<AvailabilitySet> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<AvailabilitySet>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<AvailabilitySet>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<AvailabilitySet>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<AvailabilitySet>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<AvailabilitySet>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Lists virtual-machine-sizes available to be used for an availability set.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAvailableSizesNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists virtual-machine-sizes available to be used for an availability set.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAvailableSizesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<VirtualMachineSize> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineSize>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSize>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachineSize>>() { }.getType())
                 .registerError(CloudException.class)

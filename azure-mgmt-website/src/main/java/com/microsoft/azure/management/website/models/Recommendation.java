@@ -66,6 +66,13 @@ public class Recommendation {
     private Channels channels;
 
     /**
+     * The category that this recommendation belongs to. Possible values
+     * include: 'Uncategorized', 'Test', 'UpSell', 'CrossSell', 'LiveSite'.
+     */
+    @JsonProperty(required = true)
+    private Category category;
+
+    /**
      * Name of action recommended by this object.
      */
     private String actionName;
@@ -74,6 +81,16 @@ public class Recommendation {
      * On/off flag indicating the rule is currently enabled or disabled.
      */
     private Integer enabled;
+
+    /**
+     * The beginning time of a range that the recommendation refers to.
+     */
+    private DateTime startTime;
+
+    /**
+     * The end time of a range that the recommendation refers to.
+     */
+    private DateTime endTime;
 
     /**
      * When to notify this recommendation next. Null means that this will
@@ -260,6 +277,24 @@ public class Recommendation {
     }
 
     /**
+     * Get the category value.
+     *
+     * @return the category value
+     */
+    public Category getCategory() {
+        return this.category;
+    }
+
+    /**
+     * Set the category value.
+     *
+     * @param category the category value to set
+     */
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    /**
      * Get the actionName value.
      *
      * @return the actionName value
@@ -293,6 +328,42 @@ public class Recommendation {
      */
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * Get the startTime value.
+     *
+     * @return the startTime value
+     */
+    public DateTime getStartTime() {
+        return this.startTime;
+    }
+
+    /**
+     * Set the startTime value.
+     *
+     * @param startTime the startTime value to set
+     */
+    public void setStartTime(DateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * Get the endTime value.
+     *
+     * @return the endTime value
+     */
+    public DateTime getEndTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Set the endTime value.
+     *
+     * @param endTime the endTime value to set
+     */
+    public void setEndTime(DateTime endTime) {
+        this.endTime = endTime;
     }
 
     /**

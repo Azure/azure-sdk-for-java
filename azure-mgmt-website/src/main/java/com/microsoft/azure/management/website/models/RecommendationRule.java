@@ -64,6 +64,13 @@ public class RecommendationRule {
     private Channels channels;
 
     /**
+     * The category that the rule belongs to. Possible values include:
+     * 'Uncategorized', 'Test', 'UpSell', 'CrossSell', 'LiveSite'.
+     */
+    @JsonProperty(required = true)
+    private Category category;
+
+    /**
      * Get the name value.
      *
      * @return the name value
@@ -223,6 +230,24 @@ public class RecommendationRule {
      */
     public void setChannels(Channels channels) {
         this.channels = channels;
+    }
+
+    /**
+     * Get the category value.
+     *
+     * @return the category value
+     */
+    public Category getCategory() {
+        return this.category;
+    }
+
+    /**
+     * Set the category value.
+     *
+     * @param category the category value to set
+     */
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }

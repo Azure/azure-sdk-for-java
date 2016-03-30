@@ -16,11 +16,11 @@ import java.util.List;
  *
  * @param <T> type of Azure resource
  */
-public class PageImpl<T> implements Page<T> {
+public class PageImpl1<T> implements Page<T> {
     /**
      * The link to the next page.
      */
-    @JsonProperty("")
+    @JsonProperty("nextLink")
     private String nextPageLink;
 
     /**

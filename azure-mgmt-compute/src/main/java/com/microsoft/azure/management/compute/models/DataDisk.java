@@ -42,14 +42,14 @@ public class DataDisk {
      * Gets or sets the caching type. Possible values include: 'None',
      * 'ReadOnly', 'ReadWrite'.
      */
-    private String caching;
+    private CachingTypes caching;
 
     /**
      * Gets or sets the create option. Possible values include: 'fromImage',
      * 'empty', 'attach'.
      */
     @JsonProperty(required = true)
-    private String createOption;
+    private DiskCreateOptionTypes createOption;
 
     /**
      * Gets or sets the initial disk size in GB for blank data disks, and the
@@ -134,7 +134,7 @@ public class DataDisk {
      *
      * @return the caching value
      */
-    public String getCaching() {
+    public CachingTypes getCaching() {
         return this.caching;
     }
 
@@ -143,7 +143,7 @@ public class DataDisk {
      *
      * @param caching the caching value to set
      */
-    public void setCaching(String caching) {
+    public void setCaching(CachingTypes caching) {
         this.caching = caching;
     }
 
@@ -152,7 +152,7 @@ public class DataDisk {
      *
      * @return the createOption value
      */
-    public String getCreateOption() {
+    public DiskCreateOptionTypes getCreateOption() {
         return this.createOption;
     }
 
@@ -161,7 +161,7 @@ public class DataDisk {
      *
      * @param createOption the createOption value to set
      */
-    public void setCreateOption(String createOption) {
+    public void setCreateOption(DiskCreateOptionTypes createOption) {
         this.createOption = createOption;
     }
 

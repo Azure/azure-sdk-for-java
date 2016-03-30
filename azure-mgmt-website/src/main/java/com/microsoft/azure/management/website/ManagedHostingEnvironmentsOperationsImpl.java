@@ -98,12 +98,12 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
         Call<ResponseBody> getManagedHostingEnvironmentSites(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/managedHostingEnvironments/{name}/serverfarms")
-        Call<ResponseBody> getManagedHostingEnvironmentServerFarms(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/managedHostingEnvironments/{name}/webhostingplans")
         Call<ResponseBody> getManagedHostingEnvironmentWebHostingPlans(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/managedHostingEnvironments/{name}/serverfarms")
+        Call<ResponseBody> getManagedHostingEnvironmentServerFarms(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
     }
 
@@ -1050,84 +1050,6 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getManagedHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getManagedHostingEnvironmentServerFarmsDelegate(call.execute());
-    }
-
-    /**
-     * Get all serverfarms (App Service Plans) on the managed hosting environment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getManagedHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getManagedHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getManagedHostingEnvironmentServerFarmsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get all serverfarms (App Service Plans) on the managed hosting environment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
-     */
     public ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentWebHostingPlans(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
@@ -1190,6 +1112,84 @@ public final class ManagedHostingEnvironmentsOperationsImpl implements ManagedHo
     }
 
     private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getManagedHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getManagedHostingEnvironmentServerFarmsDelegate(call.execute());
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getManagedHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getManagedHostingEnvironmentServerFarms(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ServerFarmCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getManagedHostingEnvironmentServerFarmsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerFarmCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<ServerFarmCollection>() { }.getType())
                 .registerError(CloudException.class)

@@ -222,6 +222,12 @@ public class HostingEnvironment extends Resource {
     private Boolean suspended;
 
     /**
+     * Custom settings for changing the behavior of the hosting environment.
+     */
+    @JsonProperty(value = "properties.clusterSettings")
+    private List<NameValuePair> clusterSettings;
+
+    /**
      * Get the hostingEnvironmentName value.
      *
      * @return the hostingEnvironmentName value
@@ -759,6 +765,24 @@ public class HostingEnvironment extends Resource {
      */
     public void setSuspended(Boolean suspended) {
         this.suspended = suspended;
+    }
+
+    /**
+     * Get the clusterSettings value.
+     *
+     * @return the clusterSettings value
+     */
+    public List<NameValuePair> getClusterSettings() {
+        return this.clusterSettings;
+    }
+
+    /**
+     * Set the clusterSettings value.
+     *
+     * @param clusterSettings the clusterSettings value to set
+     */
+    public void setClusterSettings(List<NameValuePair> clusterSettings) {
+        this.clusterSettings = clusterSettings;
     }
 
 }

@@ -175,6 +175,19 @@ public class Site extends Resource {
     private String outboundIpAddresses;
 
     /**
+     * Size of a function container.
+     */
+    @JsonProperty(value = "properties.containerSize")
+    private Integer containerSize;
+
+    /**
+     * Maximum number of workers
+     * This only applies to function container.
+     */
+    @JsonProperty(value = "properties.maxNumberOfWorkers")
+    private Integer maxNumberOfWorkers;
+
+    /**
      * This is only valid for web app creation. If specified, web app is
      * cloned from
      * a source web app.
@@ -187,6 +200,18 @@ public class Site extends Resource {
      */
     @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
+
+    /**
+     * Site is a default container.
+     */
+    @JsonProperty(value = "properties.isDefaultContainer", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDefaultContainer;
+
+    /**
+     * Default hostname of the web app.
+     */
+    @JsonProperty(value = "properties.defaultHostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String defaultHostName;
 
     /**
      * Get the siteName value.
@@ -504,6 +529,42 @@ public class Site extends Resource {
     }
 
     /**
+     * Get the containerSize value.
+     *
+     * @return the containerSize value
+     */
+    public Integer getContainerSize() {
+        return this.containerSize;
+    }
+
+    /**
+     * Set the containerSize value.
+     *
+     * @param containerSize the containerSize value to set
+     */
+    public void setContainerSize(Integer containerSize) {
+        this.containerSize = containerSize;
+    }
+
+    /**
+     * Get the maxNumberOfWorkers value.
+     *
+     * @return the maxNumberOfWorkers value
+     */
+    public Integer getMaxNumberOfWorkers() {
+        return this.maxNumberOfWorkers;
+    }
+
+    /**
+     * Set the maxNumberOfWorkers value.
+     *
+     * @param maxNumberOfWorkers the maxNumberOfWorkers value to set
+     */
+    public void setMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
+        this.maxNumberOfWorkers = maxNumberOfWorkers;
+    }
+
+    /**
      * Get the cloningInfo value.
      *
      * @return the cloningInfo value
@@ -528,6 +589,24 @@ public class Site extends Resource {
      */
     public String getResourceGroup() {
         return this.resourceGroup;
+    }
+
+    /**
+     * Get the isDefaultContainer value.
+     *
+     * @return the isDefaultContainer value
+     */
+    public Boolean getIsDefaultContainer() {
+        return this.isDefaultContainer;
+    }
+
+    /**
+     * Get the defaultHostName value.
+     *
+     * @return the defaultHostName value
+     */
+    public String getDefaultHostName() {
+        return this.defaultHostName;
     }
 
 }

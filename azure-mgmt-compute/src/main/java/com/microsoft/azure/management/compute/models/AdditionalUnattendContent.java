@@ -18,20 +18,20 @@ public class AdditionalUnattendContent {
      * Gets or sets the pass name. Currently, the only allowable value is
      * oobeSystem. Possible values include: 'oobeSystem'.
      */
-    private String passName;
+    private PassNames passName;
 
     /**
      * Gets or sets the component name. Currently, the only allowable value is
      * Microsoft-Windows-Shell-Setup. Possible values include:
      * 'Microsoft-Windows-Shell-Setup'.
      */
-    private String componentName;
+    private ComponentNames componentName;
 
     /**
      * Gets or sets setting name (e.g. FirstLogonCommands, AutoLogon ).
      * Possible values include: 'AutoLogon', 'FirstLogonCommands'.
      */
-    private String settingName;
+    private SettingNames settingName;
 
     /**
      * Gets or sets XML formatted content that is added to the unattend.xml
@@ -46,7 +46,7 @@ public class AdditionalUnattendContent {
      *
      * @return the passName value
      */
-    public String getPassName() {
+    public PassNames getPassName() {
         return this.passName;
     }
 
@@ -55,7 +55,7 @@ public class AdditionalUnattendContent {
      *
      * @param passName the passName value to set
      */
-    public void setPassName(String passName) {
+    public void setPassName(PassNames passName) {
         this.passName = passName;
     }
 
@@ -64,7 +64,7 @@ public class AdditionalUnattendContent {
      *
      * @return the componentName value
      */
-    public String getComponentName() {
+    public ComponentNames getComponentName() {
         return this.componentName;
     }
 
@@ -73,7 +73,7 @@ public class AdditionalUnattendContent {
      *
      * @param componentName the componentName value to set
      */
-    public void setComponentName(String componentName) {
+    public void setComponentName(ComponentNames componentName) {
         this.componentName = componentName;
     }
 
@@ -82,7 +82,7 @@ public class AdditionalUnattendContent {
      *
      * @return the settingName value
      */
-    public String getSettingName() {
+    public SettingNames getSettingName() {
         return this.settingName;
     }
 
@@ -91,7 +91,7 @@ public class AdditionalUnattendContent {
      *
      * @param settingName the settingName value to set
      */
-    public void setSettingName(String settingName) {
+    public void setSettingName(SettingNames settingName) {
         this.settingName = settingName;
     }
 

@@ -220,7 +220,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         }
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption.setIncludePrivacy(includePrivacy);
+        agreementOption = null;
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);
         return listTopLevelDomainAgreementsDelegate(call.execute());
     }
@@ -251,7 +251,7 @@ public final class TopLevelDomainsOperationsImpl implements TopLevelDomainsOpera
         }
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption.setIncludePrivacy(includePrivacy);
+        agreementOption = null;
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), agreementOption);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollection>(serviceCallback) {

@@ -95,20 +95,12 @@ public final class SitesOperationsImpl implements SitesOperations {
      */
     interface SitesService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> getSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections")
+        Call<ResponseBody> getSiteVNETConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> createOrUpdateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfo connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> updateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfo connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections")
+        Call<ResponseBody> getSiteVNETConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
@@ -127,12 +119,28 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> updateSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfo connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
-        Call<ResponseBody> getSiteNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
+        Call<ResponseBody> getSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
+        Call<ResponseBody> createOrUpdateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfo connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
+        Call<ResponseBody> updateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfo connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}")
         Call<ResponseBody> getSiteNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
+        Call<ResponseBody> getSiteNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/operationresults/{operationId}")
@@ -147,8 +155,16 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> swapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap")
+        Call<ResponseBody> beginSwapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
         Call<ResponseBody> swapSlotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
+        Call<ResponseBody> beginSwapSlotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs")
@@ -159,20 +175,20 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> getSlotsDifferencesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/applySlotConfig")
-        Call<ResponseBody> applySlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/applySlotConfig")
         Call<ResponseBody> applySlotConfigToProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
-        Call<ResponseBody> resetSlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/applySlotConfig")
+        Call<ResponseBody> applySlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntity slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig")
         Call<ResponseBody> resetProductionSlotConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
+        Call<ResponseBody> resetSlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
@@ -239,12 +255,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> recoverSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntity snapshot, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restorableSnapshots")
-        Call<ResponseBody> getSiteSnapshotsOnSku(@Path("name") String name, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Query("webspaceName") String webspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restorableSnapshots")
         Call<ResponseBody> getSiteSnapshotsOnSkuSlot(@Path("name") String name, @Path("resourceGroupName") String resourceGroupName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Query("webspaceName") String webspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restorableSnapshots")
+        Call<ResponseBody> getSiteSnapshotsOnSku(@Path("name") String name, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("subscriptionName") String subscriptionName, @Query("webspaceName") String webspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots")
@@ -259,12 +275,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> getDeletedSites(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("includeSiteTypes") String includeSiteTypes, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments")
-        Call<ResponseBody> getDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments")
         Call<ResponseBody> getDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments")
+        Call<ResponseBody> getDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments")
@@ -273,42 +289,6 @@ public final class SitesOperationsImpl implements SitesOperations {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments")
         Call<ResponseBody> getInstanceDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
-        Call<ResponseBody> getDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
-        Call<ResponseBody> createDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body Deployment deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
-        Call<ResponseBody> getDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
-        Call<ResponseBody> createDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Body Deployment deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
-        Call<ResponseBody> getInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
-        Call<ResponseBody> createInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body Deployment deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}")
@@ -323,6 +303,42 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> deleteInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
+        Call<ResponseBody> getDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
+        Call<ResponseBody> createDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Body Deployment deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
+        Call<ResponseBody> getDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
+        Call<ResponseBody> createDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body Deployment deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
+        Call<ResponseBody> getInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
+        Call<ResponseBody> createInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body Deployment deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances")
         Call<ResponseBody> getSiteInstanceIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
@@ -331,12 +347,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> getSiteInstanceIdentifiersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings")
-        Call<ResponseBody> getSiteHostNameBindingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings")
         Call<ResponseBody> getSiteHostNameBindings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings")
+        Call<ResponseBody> getSiteHostNameBindingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}")
@@ -387,22 +403,6 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> updateSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfig siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
-        Call<ResponseBody> getSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
-        Call<ResponseBody> createOrUpdateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControl siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
-        Call<ResponseBody> updateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControl siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Call<ResponseBody> getSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
@@ -417,6 +417,22 @@ public final class SitesOperationsImpl implements SitesOperations {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Call<ResponseBody> updateSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControl siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
+        Call<ResponseBody> getSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
+        Call<ResponseBody> createOrUpdateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControl siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
+        Call<ResponseBody> updateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControl siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings/list")
@@ -579,12 +595,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> discoverSiteRestoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups")
-        Call<ResponseBody> listSiteBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups")
         Call<ResponseBody> listSiteBackups(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups")
+        Call<ResponseBody> listSiteBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}")
@@ -603,12 +619,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> deleteBackupSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/list")
-        Call<ResponseBody> getSiteBackupStatusSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body BackupRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/list")
         Call<ResponseBody> getSiteBackupStatusSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/list")
+        Call<ResponseBody> getSiteBackupStatusSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body BackupRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/restore")
@@ -619,28 +635,28 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> restoreSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequest request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages")
-        Call<ResponseBody> getSiteUsagesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages")
         Call<ResponseBody> getSiteUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metrics")
-        Call<ResponseBody> getSiteMetricsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages")
+        Call<ResponseBody> getSiteUsagesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metrics")
         Call<ResponseBody> getSiteMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metricdefinitions")
-        Call<ResponseBody> getSiteMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metrics")
+        Call<ResponseBody> getSiteMetricsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metricdefinitions")
         Call<ResponseBody> getSiteMetricDefinitionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metricdefinitions")
+        Call<ResponseBody> getSiteMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
@@ -677,12 +693,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> stopSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sync")
-        Call<ResponseBody> syncSiteRepositorySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sync")
         Call<ResponseBody> syncSiteRepository(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sync")
+        Call<ResponseBody> syncSiteRepositorySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/newpassword")
@@ -725,24 +741,12 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> updateSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntity connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection")
-        Call<ResponseBody> listSiteRelayServiceConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection")
         Call<ResponseBody> listSiteRelayServiceConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> getSiteVnetGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> createOrUpdateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGateway connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> updateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGateway connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection")
+        Call<ResponseBody> listSiteRelayServiceConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
@@ -757,35 +761,35 @@ public final class SitesOperationsImpl implements SitesOperations {
         Call<ResponseBody> updateSiteVNETConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGateway connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections")
-        Call<ResponseBody> getSiteVNETConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
+        Call<ResponseBody> getSiteVnetGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections")
-        Call<ResponseBody> getSiteVNETConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
+        Call<ResponseBody> createOrUpdateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGateway connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
+        Call<ResponseBody> updateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGateway connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
     }
 
     /**
-     * Retrieves a specific Virtual Network Connection associated with this web app.
+     * Retrieves a list of all Virtual Network Connections associated with this web app.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfo object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VnetInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VnetInfo> getSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VnetInfo>> getSiteVNETConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
@@ -793,21 +797,20 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionDelegate(call.execute());
+        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteVNETConnectionsDelegate(call.execute());
     }
 
     /**
-     * Retrieves a specific Virtual Network Connection associated with this web app.
+     * Retrieves a list of all Virtual Network Connections associated with this web app.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfo> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSiteVNETConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfo>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -819,10 +822,6 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
             return null;
         }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -831,13 +830,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionDelegate(response));
+                    serviceCallback.success(getSiteVNETConnectionsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -846,61 +845,55 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<VnetInfo> getSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<VnetInfo>() { }.getType())
+    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Adds a Virtual Network Connection or updates it's properties.
+     * Retrieves a list of all Virtual Network Connections associated with this web app.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @param slot The name of the slot for this web app.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfo object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VnetInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
-        if (connectionEnvelope == null) {
-            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteVNETConnectionDelegate(call.execute());
+        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteVNETConnectionsSlotDelegate(call.execute());
     }
 
     /**
-     * Adds a Virtual Network Connection or updates it's properties.
+     * Retrieves a list of all Virtual Network Connections associated with this web app.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope, final ServiceCallback<VnetInfo> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfo>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -912,100 +905,8 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
             return null;
         }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<VnetInfo>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Removes the specified Virtual Network Connection association from this web app.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> deleteSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteVNETConnectionDelegate(call.execute());
-    }
-
-    /**
-     * Removes the specified Virtual Network Connection association from this web app.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
@@ -1016,13 +917,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteVNETConnectionDelegate(response));
+                    serviceCallback.success(getSiteVNETConnectionsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1031,107 +932,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<Object> deleteSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Adds a Virtual Network Connection or updates it's properties.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param connectionEnvelope The properties of this Virtual Network Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfo object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<VnetInfo> updateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (connectionEnvelope == null) {
-            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteVNETConnectionDelegate(call.execute());
-    }
-
-    /**
-     * Adds a Virtual Network Connection or updates it's properties.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param connectionEnvelope The properties of this Virtual Network Connection
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope, final ServiceCallback<VnetInfo> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateSiteVNETConnectionDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<VnetInfo> updateSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<VnetInfo>() { }.getType())
+    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1543,25 +1346,25 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
-     * Retrieves a view of all network features in use on this web app.
+     * Retrieves a specific Virtual Network Connection associated with this web app.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @param view The type of view. This can either be "summary" or "detailed".
+     * @param vnetName The name of the Virtual Network
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkFeatures object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfo object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<NetworkFeatures> getSiteNetworkFeatures(String resourceGroupName, String name, String view) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<VnetInfo> getSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
-        if (view == null) {
-            throw new IllegalArgumentException("Parameter view is required and cannot be null.");
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
@@ -1569,21 +1372,21 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteNetworkFeaturesDelegate(call.execute());
+        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteVNETConnectionDelegate(call.execute());
     }
 
     /**
-     * Retrieves a view of all network features in use on this web app.
+     * Retrieves a specific Virtual Network Connection associated with this web app.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @param view The type of view. This can either be "summary" or "detailed".
+     * @param vnetName The name of the Virtual Network
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeatures> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfo> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1595,8 +1398,8 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
             return null;
         }
-        if (view == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter view is required and cannot be null."));
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
             return null;
         }
         if (this.client.getSubscriptionId() == null) {
@@ -1607,13 +1410,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<NetworkFeatures>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteNetworkFeaturesDelegate(response));
+                    serviceCallback.success(getSiteVNETConnectionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1622,10 +1425,292 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<NetworkFeatures>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<VnetInfo> getSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<VnetInfo>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the VnetInfo object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateSiteVNETConnectionDelegate(call.execute());
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope, final ServiceCallback<VnetInfo> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (connectionEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(connectionEnvelope, serviceCallback);
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(createOrUpdateSiteVNETConnectionDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<VnetInfo> createOrUpdateSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<VnetInfo>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Removes the specified Virtual Network Connection association from this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteSiteVNETConnectionDelegate(call.execute());
+    }
+
+    /**
+     * Removes the specified Virtual Network Connection association from this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteSiteVNETConnectionDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> deleteSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the VnetInfo object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<VnetInfo> updateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return updateSiteVNETConnectionDelegate(call.execute());
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfo connectionEnvelope, final ServiceCallback<VnetInfo> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (connectionEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(connectionEnvelope, serviceCallback);
+        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfo>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(updateSiteVNETConnectionDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<VnetInfo> updateSiteVNETConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VnetInfo, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<VnetInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1720,6 +1805,94 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<NetworkFeatures>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves a view of all network features in use on this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param view The type of view. This can either be "summary" or "detailed".
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the NetworkFeatures object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<NetworkFeatures> getSiteNetworkFeatures(String resourceGroupName, String name, String view) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (view == null) {
+            throw new IllegalArgumentException("Parameter view is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteNetworkFeaturesDelegate(call.execute());
+    }
+
+    /**
+     * Retrieves a view of all network features in use on this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param view The type of view. This can either be "summary" or "detailed".
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeatures> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (view == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter view is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<NetworkFeatures>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteNetworkFeaturesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<NetworkFeatures> getSiteNetworkFeaturesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<NetworkFeatures, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<NetworkFeatures>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -1919,9 +2092,10 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Object object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<Object> swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<Object> swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1938,8 +2112,85 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
+        Response<ResponseBody> result = service.swapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (slotSwapEntity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        }
+        Validator.validate(slotSwapEntity, serviceCallback);
         Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return swapSlotWithProductionDelegate(call.execute());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (slotSwapEntity == null) {
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(slotSwapEntity);
+        Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginSwapSlotWithProductionDelegate(call.execute());
     }
 
     /**
@@ -1952,7 +2203,7 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1977,13 +2228,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(swapSlotWithProductionDelegate(response));
+                    serviceCallback.success(beginSwapSlotWithProductionDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1992,7 +2243,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<Object> swapSlotWithProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> beginSwapSlotWithProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
@@ -2010,9 +2261,10 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the Object object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<Object> swapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<Object> swapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2032,8 +2284,93 @@ public final class SitesOperationsImpl implements SitesOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
+        Response<ResponseBody> result = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of source slot for the swap
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (slotSwapEntity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        }
+        Validator.validate(slotSwapEntity, serviceCallback);
         Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return swapSlotsSlotDelegate(call.execute());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of source slot for the swap
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> beginSwapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (slotSwapEntity == null) {
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(slotSwapEntity);
+        Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return beginSwapSlotsSlotDelegate(call.execute());
     }
 
     /**
@@ -2047,7 +2384,7 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginSwapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -2076,13 +2413,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(swapSlotsSlotDelegate(response));
+                    serviceCallback.success(beginSwapSlotsSlotDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2091,7 +2428,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<Object> swapSlotsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> beginSwapSlotsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
@@ -2291,6 +2628,95 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (slotSwapEntity == null) {
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(slotSwapEntity);
+        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return applySlotConfigToProductionDelegate(call.execute());
+    }
+
+    /**
+     * Applies the configuration settings from the target slot onto the current slot.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (slotSwapEntity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(slotSwapEntity, serviceCallback);
+        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(applySlotConfigToProductionDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> applySlotConfigToProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Applies the configuration settings from the target slot onto the current slot.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param slot Name of the source slot. Settings from the target slot will be applied onto this slot
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @throws CloudException exception thrown from REST call
@@ -2385,17 +2811,16 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
-     * Applies the configuration settings from the target slot onto the current slot.
+     * Resets the configuration settings of the current slot if they were previously modified by calling ApplySlotConfig API.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<Object> applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<Object> resetProductionSlotConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2405,28 +2830,23 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
-        if (slotSwapEntity == null) {
-            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return applySlotConfigToProductionDelegate(call.execute());
+        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return resetProductionSlotConfigDelegate(call.execute());
     }
 
     /**
-     * Applies the configuration settings from the target slot onto the current slot.
+     * Resets the configuration settings of the current slot if they were previously modified by calling ApplySlotConfig API.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -2442,22 +2862,17 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
-        if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.getSubscriptionId(), slotSwapEntity, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(applySlotConfigToProductionDelegate(response));
+                    serviceCallback.success(resetProductionSlotConfigDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -2466,7 +2881,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<Object> applySlotConfigToProductionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Object> resetProductionSlotConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
@@ -2554,84 +2969,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> resetSlotConfigSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Resets the configuration settings of the current slot if they were previously modified by calling ApplySlotConfig API.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> resetProductionSlotConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return resetProductionSlotConfigDelegate(call.execute());
-    }
-
-    /**
-     * Resets the configuration settings of the current slot if they were previously modified by calling ApplySlotConfig API.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(resetProductionSlotConfigDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> resetProductionSlotConfigDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
@@ -4890,102 +5227,6 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param name Website Name
      * @param resourceGroupName the String value
-     * @param subscriptionName Azure subscription
-     * @param webspaceName Webspace
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> getSiteSnapshotsOnSku(String name, String resourceGroupName, String subscriptionName, String webspaceName) throws CloudException, IOException, IllegalArgumentException {
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (subscriptionName == null) {
-            throw new IllegalArgumentException("Parameter subscriptionName is required and cannot be null.");
-        }
-        if (webspaceName == null) {
-            throw new IllegalArgumentException("Parameter webspaceName is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteSnapshotsOnSku(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSnapshotsOnSkuDelegate(call.execute());
-    }
-
-    /**
-     * Returns Snapshots to the user based on their SKU.
-     *
-     * @param name Website Name
-     * @param resourceGroupName the String value
-     * @param subscriptionName Azure subscription
-     * @param webspaceName Webspace
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteSnapshotsOnSkuAsync(String name, String resourceGroupName, String subscriptionName, String webspaceName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (subscriptionName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
-            return null;
-        }
-        if (webspaceName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter webspaceName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteSnapshotsOnSku(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteSnapshotsOnSkuDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> getSiteSnapshotsOnSkuDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns Snapshots to the user based on their SKU.
-     *
-     * @param name Website Name
-     * @param resourceGroupName the String value
      * @param slot the String value
      * @param subscriptionName Azure subscription
      * @param webspaceName Webspace
@@ -5080,6 +5321,102 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> getSiteSnapshotsOnSkuSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns Snapshots to the user based on their SKU.
+     *
+     * @param name Website Name
+     * @param resourceGroupName the String value
+     * @param subscriptionName Azure subscription
+     * @param webspaceName Webspace
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> getSiteSnapshotsOnSku(String name, String resourceGroupName, String subscriptionName, String webspaceName) throws CloudException, IOException, IllegalArgumentException {
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (subscriptionName == null) {
+            throw new IllegalArgumentException("Parameter subscriptionName is required and cannot be null.");
+        }
+        if (webspaceName == null) {
+            throw new IllegalArgumentException("Parameter webspaceName is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getSiteSnapshotsOnSku(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteSnapshotsOnSkuDelegate(call.execute());
+    }
+
+    /**
+     * Returns Snapshots to the user based on their SKU.
+     *
+     * @param name Website Name
+     * @param resourceGroupName the String value
+     * @param subscriptionName Azure subscription
+     * @param webspaceName Webspace
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteSnapshotsOnSkuAsync(String name, String resourceGroupName, String subscriptionName, String webspaceName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (subscriptionName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter subscriptionName is required and cannot be null."));
+            return null;
+        }
+        if (webspaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter webspaceName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getSiteSnapshotsOnSku(name, resourceGroupName, this.client.getSubscriptionId(), subscriptionName, webspaceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteSnapshotsOnSkuDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> getSiteSnapshotsOnSkuDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
@@ -5431,84 +5768,6 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentCollection object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<DeploymentCollection> getDeployments(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentsDelegate(call.execute());
-    }
-
-    /**
-     * List deployments.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getDeploymentsAsync(String resourceGroupName, String name, final ServiceCallback<DeploymentCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDeploymentsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<DeploymentCollection> getDeploymentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<DeploymentCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * List deployments.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -5585,6 +5844,84 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<DeploymentCollection> getDeploymentsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<DeploymentCollection>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DeploymentCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<DeploymentCollection> getDeployments(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDeploymentsDelegate(call.execute());
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getDeploymentsAsync(String resourceGroupName, String name, final ServiceCallback<DeploymentCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDeploymentsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<DeploymentCollection> getDeploymentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
                 .registerError(CloudException.class)
@@ -5770,876 +6107,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     private ServiceResponse<DeploymentCollection> getInstanceDeploymentsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DeploymentCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<DeploymentCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Deployment> getDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentSlotDelegate(call.execute());
-    }
-
-    /**
-     * Get the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDeploymentSlotDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Deployment> getDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Deployment>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Create a deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Deployment> createDeploymentSlot(String resourceGroupName, String name, String id, String slot, Deployment deployment) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (deployment == null) {
-            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(deployment);
-        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createDeploymentSlotDelegate(call.execute());
-    }
-
-    /**
-     * Create a deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param deployment Details of deployment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, Deployment deployment, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createDeploymentSlotDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Deployment> createDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Deployment>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDeploymentSlotDelegate(call.execute());
-    }
-
-    /**
-     * Delete the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDeploymentSlotDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> deleteDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Deployment> getDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getDeploymentDelegate(call.execute());
-    }
-
-    /**
-     * Get the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDeploymentDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Deployment> getDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Deployment>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Create a deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Deployment> createDeployment(String resourceGroupName, String name, String id, Deployment deployment) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (deployment == null) {
-            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(deployment);
-        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createDeploymentDelegate(call.execute());
-    }
-
-    /**
-     * Create a deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param deployment Details of deployment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createDeploymentAsync(String resourceGroupName, String name, String id, Deployment deployment, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createDeploymentDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Deployment> createDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Deployment>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> deleteDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteDeploymentDelegate(call.execute());
-    }
-
-    /**
-     * Delete the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDeploymentDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> deleteDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Deployment> getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (instanceId == null) {
-            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getInstanceDeploymentDelegate(call.execute());
-    }
-
-    /**
-     * Get the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param instanceId Id of web app instance
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getInstanceDeploymentDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Deployment> getInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Deployment>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Create a deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param instanceId Id of web app instance
-     * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Deployment> createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, Deployment deployment) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (instanceId == null) {
-            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (deployment == null) {
-            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(deployment);
-        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createInstanceDeploymentDelegate(call.execute());
-    }
-
-    /**
-     * Create a deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param instanceId Id of web app instance
-     * @param deployment Details of deployment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, Deployment deployment, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createInstanceDeploymentDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Deployment> createInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Deployment>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (id == null) {
-            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
-        }
-        if (instanceId == null) {
-            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteInstanceDeploymentDelegate(call.execute());
-    }
-
-    /**
-     * Delete the deployment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param id Id of the deployment
-     * @param instanceId Id of web app instance
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
-        }
-        if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteInstanceDeploymentDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> deleteInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -6971,6 +6438,876 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Deployment> getDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDeploymentDelegate(call.execute());
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDeploymentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Deployment> getDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Deployment>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param deployment Details of deployment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Deployment> createDeployment(String resourceGroupName, String name, String id, Deployment deployment) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (deployment == null) {
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(deployment);
+        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createDeploymentDelegate(call.execute());
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param deployment Details of deployment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall createDeploymentAsync(String resourceGroupName, String name, String id, Deployment deployment, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (deployment == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(deployment, serviceCallback);
+        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(createDeploymentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Deployment> createDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Deployment>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDeploymentDelegate(call.execute());
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteDeploymentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> deleteDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Deployment> getDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getDeploymentSlotDelegate(call.execute());
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDeploymentSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Deployment> getDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Deployment>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param deployment Details of deployment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Deployment> createDeploymentSlot(String resourceGroupName, String name, String id, String slot, Deployment deployment) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (deployment == null) {
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(deployment);
+        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createDeploymentSlotDelegate(call.execute());
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param deployment Details of deployment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, Deployment deployment, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (deployment == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(deployment, serviceCallback);
+        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(createDeploymentSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Deployment> createDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Deployment>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteDeploymentSlotDelegate(call.execute());
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (slot == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteDeploymentSlotDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> deleteDeploymentSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Deployment> getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getInstanceDeploymentDelegate(call.execute());
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (instanceId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getInstanceDeploymentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Deployment> getInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Deployment>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @param deployment Details of deployment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Deployment object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Deployment> createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, Deployment deployment) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (deployment == null) {
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(deployment);
+        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createInstanceDeploymentDelegate(call.execute());
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @param deployment Details of deployment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, Deployment deployment, final ServiceCallback<Deployment> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (instanceId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (deployment == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(deployment, serviceCallback);
+        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), deployment, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Deployment>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(createInstanceDeploymentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Deployment> createInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Deployment, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Deployment>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
+        }
+        if (instanceId == null) {
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteInstanceDeploymentDelegate(call.execute());
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (id == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
+            return null;
+        }
+        if (instanceId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteInstanceDeploymentDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> deleteInstanceDeploymentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets all instance of a web app.
      *
      * @param resourceGroupName Name of resource group
@@ -7140,6 +7477,84 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the HostNameBindingCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<HostNameBindingCollection> getSiteHostNameBindings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteHostNameBindingsDelegate(call.execute());
+    }
+
+    /**
+     * Get web app hostname bindings.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteHostNameBindingsAsync(String resourceGroupName, String name, final ServiceCallback<HostNameBindingCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteHostNameBindingsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get web app hostname bindings.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -7216,84 +7631,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get web app hostname bindings.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostNameBindingCollection object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<HostNameBindingCollection> getSiteHostNameBindings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteHostNameBindingsDelegate(call.execute());
-    }
-
-    /**
-     * Get web app hostname bindings.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteHostNameBindingsAsync(String resourceGroupName, String name, final ServiceCallback<HostNameBindingCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteHostNameBindingsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<HostNameBindingCollection> getSiteHostNameBindingsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<HostNameBindingCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<HostNameBindingCollection>() { }.getType())
                 .registerError(CloudException.class)
@@ -8415,340 +8752,6 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControl object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<SiteSourceControl> getSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteSourceControlDelegate(call.execute());
-    }
-
-    /**
-     * Get the source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControl> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteSourceControlDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<SiteSourceControl> getSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<SiteSourceControl>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Update the source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param siteSourceControl Request body that contains the source control parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControl object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControl(String resourceGroupName, String name, SiteSourceControl siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (siteSourceControl == null) {
-            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(siteSourceControl);
-        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteSourceControlDelegate(call.execute());
-    }
-
-    /**
-     * Update the source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param siteSourceControl Request body that contains the source control parameters
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControl siteSourceControl, final ServiceCallback<SiteSourceControl> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (siteSourceControl == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(siteSourceControl, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createOrUpdateSiteSourceControlDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<SiteSourceControl>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Delete source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> deleteSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return deleteSiteSourceControlDelegate(call.execute());
-    }
-
-    /**
-     * Delete source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteSiteSourceControlDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> deleteSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Update the source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param siteSourceControl Request body that contains the source control parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControl object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<SiteSourceControl> updateSiteSourceControl(String resourceGroupName, String name, SiteSourceControl siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (siteSourceControl == null) {
-            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(siteSourceControl);
-        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteSourceControlDelegate(call.execute());
-    }
-
-    /**
-     * Update the source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param siteSourceControl Request body that contains the source control parameters
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControl siteSourceControl, final ServiceCallback<SiteSourceControl> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (siteSourceControl == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(siteSourceControl, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateSiteSourceControlDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<SiteSourceControl> updateSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<SiteSourceControl>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get the source control configuration of web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -9108,6 +9111,340 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<SiteSourceControl> updateSiteSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<SiteSourceControl>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteSourceControl object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<SiteSourceControl> getSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteSourceControlDelegate(call.execute());
+    }
+
+    /**
+     * Get the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControl> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteSourceControlDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<SiteSourceControl> getSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<SiteSourceControl>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteSourceControl object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControl(String resourceGroupName, String name, SiteSourceControl siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (siteSourceControl == null) {
+            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(siteSourceControl);
+        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateSiteSourceControlDelegate(call.execute());
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControl siteSourceControl, final ServiceCallback<SiteSourceControl> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (siteSourceControl == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(siteSourceControl, serviceCallback);
+        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(createOrUpdateSiteSourceControlDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<SiteSourceControl> createOrUpdateSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<SiteSourceControl>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> deleteSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return deleteSiteSourceControlDelegate(call.execute());
+    }
+
+    /**
+     * Delete source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteSiteSourceControlDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> deleteSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the SiteSourceControl object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<SiteSourceControl> updateSiteSourceControl(String resourceGroupName, String name, SiteSourceControl siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (siteSourceControl == null) {
+            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(siteSourceControl);
+        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return updateSiteSourceControlDelegate(call.execute());
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControl siteSourceControl, final ServiceCallback<SiteSourceControl> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (siteSourceControl == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(siteSourceControl, serviceCallback);
+        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.getSubscriptionId(), siteSourceControl, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControl>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(updateSiteSourceControlDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<SiteSourceControl> updateSiteSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControl, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<SiteSourceControl>() { }.getType())
                 .registerError(CloudException.class)
@@ -12634,6 +12971,84 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the BackupItemCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<BackupItemCollection> listSiteBackups(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listSiteBackupsDelegate(call.execute());
+    }
+
+    /**
+     * Lists all available backups for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listSiteBackupsAsync(String resourceGroupName, String name, final ServiceCallback<BackupItemCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listSiteBackupsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<BackupItemCollection> listSiteBackupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<BackupItemCollection>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all available backups for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -12710,84 +13125,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItemCollection> listSiteBackupsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<BackupItemCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Lists all available backups for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemCollection object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<BackupItemCollection> listSiteBackups(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteBackupsDelegate(call.execute());
-    }
-
-    /**
-     * Lists all available backups for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listSiteBackupsAsync(String resourceGroupName, String name, final ServiceCallback<BackupItemCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(listSiteBackupsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<BackupItemCollection> listSiteBackupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItemCollection, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<BackupItemCollection>() { }.getType())
                 .registerError(CloudException.class)
@@ -13166,104 +13503,6 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param backupId Id of backup
-     * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItem object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<BackupItem> getSiteBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequest request) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (backupId == null) {
-            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (request == null) {
-            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(request);
-        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteBackupStatusSecretsDelegate(call.execute());
-    }
-
-    /**
-     * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param backupId Id of backup
-     * @param request Information on backup request
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequest request, final ServiceCallback<BackupItem> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteBackupStatusSecretsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<BackupItem> getSiteBackupStatusSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BackupItem, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<BackupItem>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
      * @throws CloudException exception thrown from REST call
@@ -13359,6 +13598,104 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<BackupItem> getSiteBackupStatusSecretsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<BackupItem, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<BackupItem>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @param request Information on backup request
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the BackupItem object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<BackupItem> getSiteBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequest request) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (backupId == null) {
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (request == null) {
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(request);
+        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteBackupStatusSecretsDelegate(call.execute());
+    }
+
+    /**
+     * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @param request Information on backup request
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequest request, final ServiceCallback<BackupItem> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (backupId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (request == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(request, serviceCallback);
+        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.getSubscriptionId(), request, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<BackupItem>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteBackupStatusSecretsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<BackupItem> getSiteBackupStatusSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<BackupItem, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<BackupItem>() { }.getType())
                 .registerError(CloudException.class)
@@ -13575,6 +13912,159 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<CsmUsageQuotaCollection> getSiteUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteUsagesDelegate(call.execute());
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteUsagesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<CsmUsageQuotaCollection> getSiteUsages(String resourceGroupName, String name, String filter) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteUsagesDelegate(call.execute());
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, String filter, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteUsagesDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -13742,16 +14232,16 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
-     * Gets the quota usage numbers for web app.
+     * Gets metrics for web app.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CsmUsageQuotaCollection> getSiteUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ResourceMetricCollection> getSiteMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13764,13 +14254,14 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
+        final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteUsagesDelegate(call.execute());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteMetricsDelegate(call.execute());
     }
 
     /**
-     * Gets the quota usage numbers for web app.
+     * Gets metrics for web app.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
@@ -13778,7 +14269,7 @@ public final class SitesOperationsImpl implements SitesOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -13798,14 +14289,15 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
+        final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesDelegate(response));
+                    serviceCallback.success(getSiteMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13815,17 +14307,18 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
-     * Gets the quota usage numbers for web app.
+     * Gets metrics for web app.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param details If true, metric details are included in response
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CsmUsageQuotaCollection object wrapped in {@link ServiceResponse} if successful.
+     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CsmUsageQuotaCollection> getSiteUsages(String resourceGroupName, String name, String filter) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ResourceMetricCollection> getSiteMetrics(String resourceGroupName, String name, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13838,21 +14331,22 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteUsagesDelegate(call.execute());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteMetricsDelegate(call.execute());
     }
 
     /**
-     * Gets the quota usage numbers for web app.
+     * Gets metrics for web app.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param details If true, metric details are included in response
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, String filter, final ServiceCallback<CsmUsageQuotaCollection> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, Boolean details, String filter, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -13872,13 +14366,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.getSubscriptionId(), filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollection>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesDelegate(response));
+                    serviceCallback.success(getSiteMetricsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -13887,9 +14381,9 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<CsmUsageQuotaCollection> getSiteUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsmUsageQuotaCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<CsmUsageQuotaCollection>() { }.getType())
+    private ServiceResponse<ResourceMetricCollection> getSiteMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -14070,241 +14564,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
-     * Gets metrics for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<ResourceMetricCollection> getSiteMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricsDelegate(call.execute());
-    }
-
-    /**
-     * Gets metrics for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteMetricsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    /**
-     * Gets metrics for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param details If true, metric details are included in response
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollection object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<ResourceMetricCollection> getSiteMetrics(String resourceGroupName, String name, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricsDelegate(call.execute());
-    }
-
-    /**
-     * Gets metrics for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param details If true, metric details are included in response
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, Boolean details, String filter, final ServiceCallback<ResourceMetricCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.getSubscriptionId(), details, filter, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteMetricsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<ResourceMetricCollection> getSiteMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<ResourceMetricCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets metric definitions for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the MetricDefinitionCollection object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteMetricDefinitionsDelegate(call.execute());
-    }
-
-    /**
-     * Gets metric definitions for web app.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionCollection> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteMetricDefinitionsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Gets metric definitions for web app.
      *
      * @param resourceGroupName Name of resource group
@@ -14392,6 +14651,84 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
+     * Gets metric definitions for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the MetricDefinitionCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteMetricDefinitionsDelegate(call.execute());
+    }
+
+    /**
+     * Gets metric definitions for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getSiteMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionCollection> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollection>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getSiteMetricDefinitionsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<MetricDefinitionCollection> getSiteMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<MetricDefinitionCollection, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<MetricDefinitionCollection>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets the publishing profile for web app.
      *
      * @param resourceGroupName Name of resource group
@@ -14416,7 +14753,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options = null;
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
         return listSitePublishingProfileXmlDelegate(call.execute());
     }
@@ -14452,7 +14789,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options = null;
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -14587,7 +14924,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options = null;
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
         return listSitePublishingProfileXmlSlotDelegate(call.execute());
     }
@@ -14628,7 +14965,7 @@ public final class SitesOperationsImpl implements SitesOperations {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options = null;
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), options);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -15409,6 +15746,82 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName the String value
      * @param name the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<Object> syncSiteRepository(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return syncSiteRepositoryDelegate(call.execute());
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall syncSiteRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(syncSiteRepositoryDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Object> syncSiteRepositoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
      * @param slot the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -15484,82 +15897,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     private ServiceResponse<Object> syncSiteRepositorySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     *
-     * @param resourceGroupName the String value
-     * @param name the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> syncSiteRepository(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return syncSiteRepositoryDelegate(call.execute());
-    }
-
-    /**
-     *
-     * @param resourceGroupName the String value
-     * @param name the String value
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall syncSiteRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(syncSiteRepositoryDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> syncSiteRepositoryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
@@ -16512,6 +16849,84 @@ public final class SitesOperationsImpl implements SitesOperations {
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the RelayServiceConnectionEntity object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listSiteRelayServiceConnectionsDelegate(call.execute());
+    }
+
+    /**
+     * Retrieves all Biztalk Hybrid Connections associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntity> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listSiteRelayServiceConnectionsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves all Biztalk Hybrid Connections associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
      * @param slot The name of the slot for the web app.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -16595,21 +17010,29 @@ public final class SitesOperationsImpl implements SitesOperations {
     }
 
     /**
-     * Retrieves all Biztalk Hybrid Connections associated with this web app.
+     * Retrieves a Virtual Network connection gateway associated with this web app and virtual network.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntity object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<Object> getSiteVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        }
+        if (gatewayName == null) {
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
@@ -16617,20 +17040,22 @@ public final class SitesOperationsImpl implements SitesOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return listSiteRelayServiceConnectionsDelegate(call.execute());
+        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return getSiteVnetGatewayDelegate(call.execute());
     }
 
     /**
-     * Retrieves all Biztalk Hybrid Connections associated with this web app.
+     * Retrieves a Virtual Network connection gateway associated with this web app and virtual network.
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntity> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -16642,6 +17067,14 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
             return null;
         }
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+            return null;
+        }
+        if (gatewayName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getSubscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
@@ -16650,13 +17083,13 @@ public final class SitesOperationsImpl implements SitesOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntity>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteRelayServiceConnectionsDelegate(response));
+                    serviceCallback.success(getSiteVnetGatewayDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -16665,9 +17098,224 @@ public final class SitesOperationsImpl implements SitesOperations {
         return serviceCall;
     }
 
-    private ServiceResponse<RelayServiceConnectionEntity> listSiteRelayServiceConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RelayServiceConnectionEntity, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<RelayServiceConnectionEntity>() { }.getType())
+    private ServiceResponse<Object> getSiteVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the VnetGateway object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        }
+        if (gatewayName == null) {
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return createOrUpdateSiteVNETConnectionGatewayDelegate(call.execute());
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope, final ServiceCallback<VnetGateway> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+            return null;
+        }
+        if (gatewayName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (connectionEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(connectionEnvelope, serviceCallback);
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewayDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<VnetGateway>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the VnetGateway object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<VnetGateway> updateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (vnetName == null) {
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
+        }
+        if (gatewayName == null) {
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return updateSiteVNETConnectionGatewayDelegate(call.execute());
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope, final ServiceCallback<VnetGateway> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (name == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            return null;
+        }
+        if (vnetName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
+            return null;
+        }
+        if (gatewayName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (connectionEnvelope == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(connectionEnvelope, serviceCallback);
+        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(updateSiteVNETConnectionGatewayDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<VnetGateway>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -17006,482 +17654,6 @@ public final class SitesOperationsImpl implements SitesOperations {
     private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewaySlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<VnetGateway, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<VnetGateway>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Retrieves a Virtual Network connection gateway associated with this web app and virtual network.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<Object> getSiteVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
-        }
-        if (gatewayName == null) {
-            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVnetGatewayDelegate(call.execute());
-    }
-
-    /**
-     * Retrieves a Virtual Network connection gateway associated with this web app and virtual network.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteVnetGatewayDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<Object> getSiteVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Updates the Virtual Network Gateway.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @param connectionEnvelope The properties to update this gateway with.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGateway object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
-        }
-        if (gatewayName == null) {
-            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (connectionEnvelope == null) {
-            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return createOrUpdateSiteVNETConnectionGatewayDelegate(call.execute());
-    }
-
-    /**
-     * Updates the Virtual Network Gateway.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @param connectionEnvelope The properties to update this gateway with.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope, final ServiceCallback<VnetGateway> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewayDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<VnetGateway> createOrUpdateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<VnetGateway>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Updates the Virtual Network Gateway.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @param connectionEnvelope The properties to update this gateway with.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGateway object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<VnetGateway> updateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (vnetName == null) {
-            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
-        }
-        if (gatewayName == null) {
-            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (connectionEnvelope == null) {
-            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return updateSiteVNETConnectionGatewayDelegate(call.execute());
-    }
-
-    /**
-     * Updates the Virtual Network Gateway.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param vnetName The name of the Virtual Network
-     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @param connectionEnvelope The properties to update this gateway with.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGateway connectionEnvelope, final ServiceCallback<VnetGateway> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.getSubscriptionId(), connectionEnvelope, this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGateway>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateSiteVNETConnectionGatewayDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<VnetGateway> updateSiteVNETConnectionGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGateway, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<VnetGateway>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Retrieves a list of all Virtual Network Connections associated with this web app.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetInfo&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<List<VnetInfo>> getSiteVNETConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionsDelegate(call.execute());
-    }
-
-    /**
-     * Retrieves a list of all Virtual Network Connections associated with this web app.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteVNETConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfo>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteVNETConnectionsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Retrieves a list of all Virtual Network Connections associated with this web app.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param slot The name of the slot for this web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetInfo&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (slot == null) {
-            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        return getSiteVNETConnectionsSlotDelegate(call.execute());
-    }
-
-    /**
-     * Retrieves a list of all Virtual Network Connections associated with this web app.
-     *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the web app
-     * @param slot The name of the slot for this web app.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfo>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfo>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getSiteVNETConnectionsSlotDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<List<VnetInfo>> getSiteVNETConnectionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfo>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<List<VnetInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

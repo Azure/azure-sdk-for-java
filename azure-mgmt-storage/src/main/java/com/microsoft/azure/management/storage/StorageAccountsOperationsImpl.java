@@ -130,7 +130,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
         accountName.setName(name);
-        accountName.setType(type);
+        accountName = null;
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), accountName);
         return checkNameAvailabilityDelegate(call.execute());
     }
@@ -162,7 +162,7 @@ public final class StorageAccountsOperationsImpl implements StorageAccountsOpera
         final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
         accountName.setName(name);
-        accountName.setType(type);
+        accountName = null;
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), accountName);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResult>(serviceCallback) {
