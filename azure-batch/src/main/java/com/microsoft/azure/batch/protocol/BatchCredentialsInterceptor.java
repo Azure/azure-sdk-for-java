@@ -6,25 +6,23 @@
 
 package com.microsoft.azure.batch.protocol;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.microsoft.rest.DateTimeRfc1123;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 
-import com.microsoft.rest.DateTimeRfc1123;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class BatchCredentialsInterceptor implements Interceptor {
 
@@ -62,10 +60,10 @@ public class BatchCredentialsInterceptor implements Interceptor {
             // Encoding the Signature
             // Signature=Base64(HMAC-SHA256(UTF8(StringToSign)))
             Mac hmac = Mac.getInstance("hmacSHA256");
-            hmac.init(new SecretKeySpec(Base64.getDecoder().decode(accessKey),
+            hmac.init(new SecretKeySpec(Base64.decodeBase64(accessKey),
                     "hmacSHA256"));
             byte[] digest = hmac.doFinal(stringToSign.getBytes("UTF-8"));
-            return new String(Base64.getEncoder().encode(digest), "UTF-8");
+            return Base64.encodeBase64String(digest);
         } catch (Exception e) {
             throw new IllegalArgumentException("accessKey", e);
         }

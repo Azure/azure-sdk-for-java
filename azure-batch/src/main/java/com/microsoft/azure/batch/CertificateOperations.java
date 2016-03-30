@@ -7,8 +7,19 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.Certificate;
+import com.microsoft.azure.batch.protocol.models.CertificateAddOptions;
+import com.microsoft.azure.batch.protocol.models.CertificateAddParameter;
+import com.microsoft.azure.batch.protocol.models.CertificateCancelDeletionOptions;
+import com.microsoft.azure.batch.protocol.models.CertificateDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.CertificateFormat;
+import com.microsoft.azure.batch.protocol.models.CertificateGetHeaders;
+import com.microsoft.azure.batch.protocol.models.CertificateGetOptions;
+import com.microsoft.azure.batch.protocol.models.CertificateListHeaders;
+import com.microsoft.azure.batch.protocol.models.CertificateListOptions;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +29,6 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -80,7 +90,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         addParam.setCertificateFormat(CertificateFormat.CER);
         addParam.setThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
         addParam.setThumbprint(getThumbPrint(cert));
-        addParam.setData(Base64.getEncoder().encodeToString(cert.getEncoded()));
+        addParam.setData(Base64.encodeBase64String(cert.getEncoded()));
 
         createCertificate(addParam, additionalBehaviors);
     }
