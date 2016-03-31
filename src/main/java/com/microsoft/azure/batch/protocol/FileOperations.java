@@ -94,7 +94,7 @@ public interface FileOperations {
     ServiceCall deleteFromTaskAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -107,7 +107,7 @@ public interface FileOperations {
     ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> getFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -118,7 +118,7 @@ public interface FileOperations {
      */
     ServiceCall getFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -132,7 +132,7 @@ public interface FileOperations {
     ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> getFromTask(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -249,7 +249,7 @@ public interface FileOperations {
     ServiceCall deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
@@ -262,7 +262,7 @@ public interface FileOperations {
     ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> getFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
@@ -273,7 +273,7 @@ public interface FileOperations {
      */
     ServiceCall getFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
@@ -287,7 +287,7 @@ public interface FileOperations {
     ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> getFromComputeNode(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.

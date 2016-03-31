@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -42,10 +43,11 @@ public class CertificateReference {
     /**
      * Gets or sets which user accounts on the compute node should have access
      * to the private data of the certificate. This may be any subset of the
-     * values 'starttask', 'task' and 'rdp', separated by commas. The default
-     * is all accounts, corresponding to the string 'starttask,task,rdp'.
+     * values 'starttask', 'task' and 'remoteuser', separated by commas. The
+     * default is all accounts, corresponding to the string
+     * 'starttask,task,remoteuser'.
      */
-    private String visibility;
+    private List<CertificateVisibility> visibility;
 
     /**
      * Get the thumbprint value.
@@ -124,7 +126,7 @@ public class CertificateReference {
      *
      * @return the visibility value
      */
-    public String getVisibility() {
+    public List<CertificateVisibility> getVisibility() {
         return this.visibility;
     }
 
@@ -133,7 +135,7 @@ public class CertificateReference {
      *
      * @param visibility the visibility value to set
      */
-    public void setVisibility(String visibility) {
+    public void setVisibility(List<CertificateVisibility> visibility) {
         this.visibility = visibility;
     }
 

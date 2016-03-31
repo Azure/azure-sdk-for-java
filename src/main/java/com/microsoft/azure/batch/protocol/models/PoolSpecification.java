@@ -25,16 +25,18 @@ public class PoolSpecification {
     private String vmSize;
 
     /**
-     * Gets or sets the Azure Guest OS family to be installed on the virtual
-     * machines in the pool.
+     * Gets or sets the cloud service configuration for the pool. This
+     * property and VirtualMachineConfiguration are mutually exclusive and
+     * one of the properties must be specified.
      */
-    private String osFamily;
+    private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
-     * Gets or sets the Azure Guest OS version to be installed on the virtual
-     * machines in the pool.
+     * Gets or sets the virtual machine configuration for the pool. This
+     * property and CloudServiceConfiguration are mutually exclusive and one
+     * of the properties must be specified.
      */
-    private String targetOSVersion;
+    private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
      * Gets or sets the maximum number of tasks that can run concurrently on a
@@ -143,39 +145,39 @@ public class PoolSpecification {
     }
 
     /**
-     * Get the osFamily value.
+     * Get the cloudServiceConfiguration value.
      *
-     * @return the osFamily value
+     * @return the cloudServiceConfiguration value
      */
-    public String getOsFamily() {
-        return this.osFamily;
+    public CloudServiceConfiguration getCloudServiceConfiguration() {
+        return this.cloudServiceConfiguration;
     }
 
     /**
-     * Set the osFamily value.
+     * Set the cloudServiceConfiguration value.
      *
-     * @param osFamily the osFamily value to set
+     * @param cloudServiceConfiguration the cloudServiceConfiguration value to set
      */
-    public void setOsFamily(String osFamily) {
-        this.osFamily = osFamily;
+    public void setCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
+        this.cloudServiceConfiguration = cloudServiceConfiguration;
     }
 
     /**
-     * Get the targetOSVersion value.
+     * Get the virtualMachineConfiguration value.
      *
-     * @return the targetOSVersion value
+     * @return the virtualMachineConfiguration value
      */
-    public String getTargetOSVersion() {
-        return this.targetOSVersion;
+    public VirtualMachineConfiguration getVirtualMachineConfiguration() {
+        return this.virtualMachineConfiguration;
     }
 
     /**
-     * Set the targetOSVersion value.
+     * Set the virtualMachineConfiguration value.
      *
-     * @param targetOSVersion the targetOSVersion value to set
+     * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      */
-    public void setTargetOSVersion(String targetOSVersion) {
-        this.targetOSVersion = targetOSVersion;
+    public void setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
+        this.virtualMachineConfiguration = virtualMachineConfiguration;
     }
 
     /**
