@@ -16,7 +16,12 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -710,9 +715,21 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         // download a file and ensure they are equal
         InputStream openResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().open(filePath, caboAccountName).getBody();
         Assert.assertNotNull(openResponse);
-
-        String toCompare = new String(IOUtils.readFully(openResponse, -1, true));
-        Assert.assertEquals(expectedContents, toCompare);
+        Writer writer = new StringWriter();
+        char[] buffer = new char[1024];
+        try {
+            Reader reader = new BufferedReader(
+                    new InputStreamReader(openResponse, "UTF-8"));
+            int n;
+            while ((n = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, n);
+            }
+        }
+        finally {
+            openResponse.close();
+        }
+        String fileContents =  writer.toString();
+        Assert.assertEquals(expectedContents, fileContents);
     }
 
     private void DeleteFolder(String caboAccountName, String folderPath, boolean recursive, boolean failureExpected) throws Exception
