@@ -6,8 +6,10 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.resources.SubscriptionClient;
+import com.microsoft.azure.management.resources.Subscriptions;
 
 public interface AzureAuthenticated {
-    SubscriptionClient subscriptions();
+    Subscriptions subscriptions();
+
+    Subscription subscription(String subscriptionId);
 }
