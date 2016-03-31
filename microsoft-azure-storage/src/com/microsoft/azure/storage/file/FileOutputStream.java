@@ -400,7 +400,7 @@ public class FileOutputStream extends OutputStream {
      */
     @DoesServiceRequest
     public void write(final InputStream sourceStream, final long writeLength) throws IOException, StorageException {
-        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options);
+        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, this.options, false);
     }
 
     /**

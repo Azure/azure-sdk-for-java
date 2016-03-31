@@ -830,7 +830,7 @@ public class ServicePropertiesTests {
             fail();
         }
         
-        // Thread.sleep(30000);
+        Thread.sleep(30000);
     }
 
     private ServiceProperties callDownloadServiceProperties(ServiceClient client) throws StorageException {

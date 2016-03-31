@@ -188,13 +188,36 @@ public class CloudQueueMessage {
     /**
      * Gets the content of the message for transfer (internal use only).
      * 
+     * @param shouldEncodeMessage
+     *          Indicates if the message should be encoded.
+     * @param options
+     *          A {@link QueueRequestOptions} object that specifies additional options for the request.
+     * 
      * @return A <code>String</code> which contains the content of the message.
      * 
      * @throws StorageException
      *         If a storage service error occurred.
      */
-    protected final String getMessageContentForTransfer(final boolean shouldEncodeMessage) throws StorageException {
+    protected final String getMessageContentForTransfer(final boolean shouldEncodeMessage, QueueRequestOptions options) 
+            throws StorageException {
         String result = null;
+        
+        if (options.getEncryptionPolicy() != null)
+        {
+            // Create an encrypted message that will hold the message contents along with encryption related metadata and return it.
+            // The encrypted message is already Base 64 encoded. So no need to process further in this method.
+            String encryptedMessageString = options.getEncryptionPolicy().encryptMessage(this.getMessageContentAsByte());
+
+            // the size of Base64 encoded string is the number of bytes this message will take up on server.
+            if (encryptedMessageString.length() > QueueConstants.MAX_MESSAGE_SIZE)
+            {
+                throw new IllegalArgumentException(
+                        String.format(SR.ENCRYPTED_MESSAGE_TOO_LARGE, QueueConstants.MAX_MESSAGE_SIZE));
+            }
+
+            return encryptedMessageString;
+        }
+        
         if (this.messageType == QueueMessageType.RAW_STRING && shouldEncodeMessage) {
             result = Base64.encode(this.getMessageContentAsByte());
         }

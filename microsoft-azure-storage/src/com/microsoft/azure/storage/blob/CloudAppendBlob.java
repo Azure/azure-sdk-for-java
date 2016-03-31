@@ -25,6 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.crypto.Cipher;
+
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
@@ -369,6 +371,9 @@ public final class CloudAppendBlob extends CloudBlob {
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.APPEND_BLOB, this.blobServiceClient);
 
+        // Assert no encryption policy as this is not supported for partial uploads
+        options.assertNoEncryptionPolicyOrStrictMode();
+        
         if (sourceStream.markSupported()) {
             // Mark sourceStream for current position.
             sourceStream.mark(Constants.MAX_MARK_LENGTH);
@@ -864,19 +869,31 @@ public final class CloudAppendBlob extends CloudBlob {
             opContext = new OperationContext();
         }
         
-        BlobRequestOptions modifiedOptions = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.APPEND_BLOB, 
-                this.blobServiceClient, false /* setStartTime */);
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.APPEND_BLOB, this.blobServiceClient, 
+                false /* setStartTime */);
         
-        if (create) {
-            this.createOrReplace(accessCondition, modifiedOptions, opContext);
+        options.assertPolicyIfRequired();
+        
+        Cipher cipher = null;
+        if(options.getEncryptionPolicy() != null) {
+            cipher = options.getEncryptionPolicy().createAndSetEncryptionContext(this.getMetadata(), 
+                    false /* noPadding */);
+        }
+        
+        if (create) {            
+            this.createOrReplace(accessCondition, options, opContext);
         } else {
-            if (modifiedOptions.getStoreBlobContentMD5()) {
+            if (options.getStoreBlobContentMD5()) {
                 throw new IllegalArgumentException(SR.APPEND_BLOB_MD5_NOT_POSSIBLE);
+            }
+            
+            if (options.getEncryptionPolicy() != null) {
+                throw new IllegalArgumentException(SR.ENCRYPTION_NOT_SUPPORTED_FOR_EXISTING_BLOBS);
             }
             
             // Download attributes to check the etag and date access conditions and
             // to get the blob length to verify the append position on the first write.
-            this.downloadAttributes(accessCondition, modifiedOptions, opContext);
+            this.downloadAttributes(accessCondition, options, opContext);
         }
 
         // Use an access condition with the etag and date conditions removed as we will be
@@ -887,8 +904,12 @@ public final class CloudAppendBlob extends CloudBlob {
             appendCondition.setIfAppendPositionEqual(accessCondition.getIfAppendPositionEqual());
             appendCondition.setIfMaxSizeLessThanOrEqual(accessCondition.getIfMaxSizeLessThanOrEqual());
         }
-
-        return new BlobOutputStream(this, appendCondition, modifiedOptions, opContext);
+        
+        if(options.getEncryptionPolicy() != null) {
+            return new BlobEncryptStream(this, appendCondition, options, opContext, cipher);
+        } else {
+            return new BlobOutputStreamInternal(this, appendCondition, options, opContext);
+        }
     }
 
     /**

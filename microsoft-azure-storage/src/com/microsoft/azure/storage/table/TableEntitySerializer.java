@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.microsoft.azure.storage.OperationContext;
@@ -31,19 +31,15 @@ import com.microsoft.azure.storage.core.Utility;
  * RESERVED FOR INTERNAL USE. A class used to serialize table entities to a byte array.
  */
 final class TableEntitySerializer {
-    /**
-     * Used to create Json parsers and generators.
-     */
-    private static JsonFactory jsonFactory = new JsonFactory();
-
+    
     /**
      * Reserved for internal use. Writes an entity to the stream as a JSON resource, leaving the stream open
      * for additional writing.
      * 
      * @param outStream
      *            The <code>OutputStream</code> to write the entity to.
-     * @param format
-     *            The {@link TablePayloadFormat} to use for parsing.
+     * @param options
+     *            The {@link TableRequestOptions} to use for serializing.
      * @param entity
      *            The instance implementing {@link TableEntity} to write to the output stream.
      * @param isTableEntry
@@ -57,14 +53,14 @@ final class TableEntitySerializer {
      * @throws IOException
      *             if an error occurs while accessing the stream.
      */
-    static void writeSingleEntityToStream(final OutputStream outStream, final TablePayloadFormat format,
+    static void writeSingleEntityToStream(final OutputStream outStream, final TableRequestOptions options,
             final TableEntity entity, final boolean isTableEntry, final OperationContext opContext)
             throws StorageException, IOException {
-        JsonGenerator generator = jsonFactory.createGenerator(outStream);
+        JsonGenerator generator = Utility.getJsonGenerator(outStream);
 
         try {
             // write to stream
-            writeJsonEntity(generator, format, entity, isTableEntry, opContext);
+            writeJsonEntity(generator, options, entity, isTableEntry, opContext);
         }
         finally {
             generator.close();
@@ -77,8 +73,8 @@ final class TableEntitySerializer {
      * 
      * @param strWriter
      *            The <code>StringWriter</code> to write the entity to.
-     * @param format
-     *            The {@link TablePayloadFormat} to use for parsing.
+     * @param options
+     *            The {@link TableRequestOptions} to use for serializing.
      * @param entity
      *            The instance implementing {@link TableEntity} to write to the output stream.
      * @param isTableEntry
@@ -92,14 +88,14 @@ final class TableEntitySerializer {
      * @throws IOException
      *             if an error occurs while accessing the stream.
      */
-    static void writeSingleEntityToString(final StringWriter strWriter, final TablePayloadFormat format,
+    static void writeSingleEntityToString(final StringWriter strWriter, final TableRequestOptions options,
             final TableEntity entity, final boolean isTableEntry, final OperationContext opContext)
             throws StorageException, IOException {
-        JsonGenerator generator = jsonFactory.createGenerator(strWriter);
+        JsonGenerator generator = Utility.getJsonGenerator(strWriter);
 
         try {
             // write to stream
-            writeJsonEntity(generator, format, entity, isTableEntry, opContext);
+            writeJsonEntity(generator, options, entity, isTableEntry, opContext);
         }
         finally {
             generator.close();
@@ -111,8 +107,8 @@ final class TableEntitySerializer {
      * 
      * @param generator
      *            The <code>JsonGenerator</code> to write the entity to.
-     * @param format
-     *            The {@link TablePayloadFormat} to use for parsing.
+     * @param options
+     *            The {@link TableRequestOptions} to use for serializing.
      * @param entity
      *            The instance implementing {@link TableEntity} to write to the output stream.
      * @param isTableEntry
@@ -126,14 +122,11 @@ final class TableEntitySerializer {
      * @throws IOException
      *             if an error occurs while accessing the stream.
      */
-    private static void writeJsonEntity(final JsonGenerator generator, TablePayloadFormat format,
+    private static void writeJsonEntity(final JsonGenerator generator, final TableRequestOptions options,
             final TableEntity entity, final boolean isTableEntry, final OperationContext opContext)
             throws StorageException, IOException {
 
-        HashMap<String, EntityProperty> properties = entity.writeEntity(opContext);
-        if (properties == null) {
-            properties = new HashMap<String, EntityProperty>();
-        }
+        Map<String, EntityProperty> properties = getPropertiesFromDictionary(entity, options, opContext);
 
         // start object
         generator.writeStartObject();
@@ -213,5 +206,23 @@ final class TableEntitySerializer {
         else {
             generator.writeStringField(prop.getKey(), prop.getValue().getValueAsString());
         }
+    }
+    
+    private static Map<String, EntityProperty> getPropertiesFromDictionary(TableEntity entity,
+            TableRequestOptions options, final OperationContext opContext) throws IOException, StorageException {
+        Map<String, EntityProperty> properties = entity.writeEntity(opContext);
+        if (properties == null) {
+            properties = new HashMap<String, EntityProperty>();
+        }
+
+        options.assertPolicyIfRequired();
+        
+        // Check if encryption policy is set and invoke EncryptEnity if it is set.
+        if (options.getEncryptionPolicy() != null) {
+            properties = options.getEncryptionPolicy().encryptEntity(properties, entity.getPartitionKey(),
+                    entity.getRowKey(), options.getEncryptionResolver());
+        }
+
+        return properties;
     }
 }

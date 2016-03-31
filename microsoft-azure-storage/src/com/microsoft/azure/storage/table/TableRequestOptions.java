@@ -16,6 +16,8 @@
 package com.microsoft.azure.storage.table;
 
 import com.microsoft.azure.storage.RequestOptions;
+import com.microsoft.azure.storage.ServiceClient;
+import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
 
 /**
@@ -47,6 +49,29 @@ public class TableRequestOptions extends RequestOptions {
         public EdmType propertyResolver(String pk, String rk, String key, String value);
 
     }
+    
+    /**
+     * The interface whose function is used to get the value indicating whether a property should be encrypted or not 
+     * given the partition key, row key, and the property name. 
+     */
+    public interface EncryptionResolver {
+
+        /**
+         * Given the partition key, row, key, and the property name, produces a boolean indicating whether to encrypt
+         * the property.
+         * 
+         * @param pk
+         *            A <code>String</code> which represents the partition key.
+         * @param rk
+         *            A <code>String</code> which represents the row key.
+         * @param key
+         *            A <code>String</code> which represents the property name.
+         * @return
+         *         A <code>boolean</code> indicating whether the property should be encrypted.
+         */
+        public boolean encryptionResolver(String pk, String rk, String key);
+
+    }
 
     /**
      * The interface whose function is used to get the <see cref="EdmType"/> for an entity property
@@ -69,6 +94,17 @@ public class TableRequestOptions extends RequestOptions {
     private Boolean dateBackwardCompatibility;
 
     /**
+     * The encryption policy to use for the request.
+     */
+    private TableEncryptionPolicy encryptionPolicy;
+    
+    /**
+     * The interface whose function is used to get the value indicating whether a property should be encrypted or not 
+     * given the partition key, row key, and the property name. 
+     */
+    private EncryptionResolver encryptionResolver;
+    
+    /**
      * Creates an instance of the <code>TableRequestOptions</code>
      */
     public TableRequestOptions() {
@@ -88,6 +124,8 @@ public class TableRequestOptions extends RequestOptions {
             this.setTablePayloadFormat(other.getTablePayloadFormat());
             this.setPropertyResolver(other.getPropertyResolver());
             this.setDateBackwardCompatibility(other.getDateBackwardCompatibility());
+            this.setEncryptionPolicy(other.getEncryptionPolicy());
+            this.setEncryptionResolver(other.getEncryptionResolver());
         }
     }
 
@@ -110,6 +148,16 @@ public class TableRequestOptions extends RequestOptions {
         TableRequestOptions.populate(modifiedOptions, client.getDefaultRequestOptions());
         TableRequestOptions.applyDefaults(modifiedOptions);
         return modifiedOptions;
+    }
+    
+    /**
+     * Clears the encryption properties on this TableRequestOptions object.  Useful for operations
+     * for which encryption does not make sense, such as CreateTable.
+     */
+    protected void clearEncryption() {
+        this.setRequireEncryption(false);
+        this.setEncryptionPolicy(null);
+        this.setEncryptionResolver(null);
     }
 
     /**
@@ -149,9 +197,17 @@ public class TableRequestOptions extends RequestOptions {
         if (modifiedOptions.getPropertyResolver() == null) {
             modifiedOptions.setPropertyResolver(clientOptions.getPropertyResolver());
         }
-        
+
         if (modifiedOptions.getDateBackwardCompatibility() == null) {
             modifiedOptions.setDateBackwardCompatibility(clientOptions.getDateBackwardCompatibility());
+        }
+
+        if (modifiedOptions.getEncryptionPolicy() == null) {
+            modifiedOptions.setEncryptionPolicy(clientOptions.getEncryptionPolicy());
+        }
+        
+        if (modifiedOptions.getEncryptionResolver()== null) {
+            modifiedOptions.setEncryptionResolver(clientOptions.getEncryptionResolver());
         }
     }
 
@@ -190,6 +246,28 @@ public class TableRequestOptions extends RequestOptions {
      */
     public Boolean getDateBackwardCompatibility() {
         return this.dateBackwardCompatibility;
+    }
+    
+    /**
+     * Gets the encryption policy to use for this request. For more information about the encryption policy defaults,
+     * see {@link #setEncryptionPolicy(TableEncryptionPolicy)}.
+     * 
+     * @return An {@link TableEncryptionPolicy} object that represents the current encryption policy.
+     */
+    public TableEncryptionPolicy getEncryptionPolicy() {
+        return this.encryptionPolicy;
+    }
+    
+    /**
+     * Gets the interface that contains a function which is used to get the value indicating whether a property should 
+     * be encrypted or not given the partition key, row key, and the property name. For more information about the 
+     * {@link EncryptionResolver} defaults, see {@link #setEncryptionResolver(EncryptionResolver)}.
+     * 
+     * @return
+     *         The current {@link PropertyResolver} object.
+     */
+    public EncryptionResolver getEncryptionResolver() {
+        return this.encryptionResolver;
     }
 
     /**
@@ -239,5 +317,62 @@ public class TableRequestOptions extends RequestOptions {
      */
     public void setDateBackwardCompatibility(Boolean dateBackwardCompatibility) {
         this.dateBackwardCompatibility = dateBackwardCompatibility;
+    }
+    
+    /**
+     * Sets the TableEncryptionPolicy object to use for this request.
+     * <p>
+     * The default TableEncryptionPolicy is set in the client and is by default null, indicating no encryption. You can
+     * change the TableEncryptionPolicy on this request by setting this property. You can also change the value on the
+     * {@link ServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
+     * client will use that TableEncryptionPolicy.
+     * 
+     * @param encryptionPolicy
+     *            the TableEncryptionPolicy object to use when making service requests.
+     */
+    public void setEncryptionPolicy(TableEncryptionPolicy encryptionPolicy) {
+        this.encryptionPolicy = encryptionPolicy;
+    }
+    
+    /**
+     * Sets the interface that contains a function which is used to get the value indicating whether a property should 
+     * be encrypted or not given the partition key, row key, and the property name. A {@link EncryptionResolver} is
+     * required if a {@link TableEncryptionPolicy} is specified.
+     * <p>
+     * You can change the {@link EncryptionResolver} on this request by setting this property. You can also change the 
+     * value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made 
+     * via the service client will use that {@link EncryptionResolver}.
+     * 
+     * @param propertyResolver
+     *            Specifies the {@link PropertyResolver} to set.
+     */
+    public void setEncryptionResolver(EncryptionResolver encryptionResolver) {
+        this.encryptionResolver = encryptionResolver;
+    }
+    
+    /**
+     * Assert that if validation is on, an encryption policy is not specified.
+     */
+    protected void assertNoEncryptionPolicyOrStrictMode()
+    {
+        // Throw if an encryption policy is set and encryption validation is on
+        if (this.getEncryptionPolicy() != null)
+        {
+            throw new IllegalArgumentException(SR.ENCRYPTION_NOT_SUPPORTED_FOR_OPERATION);
+        }
+        
+        // Throw if an encryption policy is not set but strict mode is on
+        this.assertPolicyIfRequired();
+    }
+    
+    /**
+     * Assert that if strict mode is on, an encryption policy is specified.
+     */
+    protected void assertPolicyIfRequired()
+    {
+        if (this.requireEncryption() != null && this.requireEncryption() && this.getEncryptionPolicy() == null)
+        {
+            throw new IllegalArgumentException(SR.ENCRYPTION_POLICY_MISSING_IN_STRICT_MODE);
+        }
     }
 }
