@@ -58,7 +58,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getJobOptions);
 
-        ServiceResponseWithHeaders<CloudJob, JobGetHeaders> response = this._parentBatchClient.getProtocolLayer().getJobOperations().get(jobId, getJobOptions);
+        ServiceResponseWithHeaders<CloudJob, JobGetHeaders> response = this._parentBatchClient.getProtocolLayer().jobs().get(jobId, getJobOptions);
         return response.getBody();
     }
 
@@ -77,7 +77,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> response = this._parentBatchClient.getProtocolLayer().getJobOperations().list(jobListOptions);
+        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> response = this._parentBatchClient.getProtocolLayer().jobs().list(jobListOptions);
 
         return response.getBody();
     }
@@ -97,7 +97,7 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> response = this._parentBatchClient.getProtocolLayer().getJobOperations().listFromJobSchedule(jobScheduleId, jobListOptions);
+        ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> response = this._parentBatchClient.getProtocolLayer().jobs().listFromJobSchedule(jobScheduleId, jobListOptions);
 
         return response.getBody();
     }
@@ -112,7 +112,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(jobListOptions);
 
-        ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = this._parentBatchClient.getProtocolLayer().getJobOperations().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
+        ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = this._parentBatchClient.getProtocolLayer().jobs().listPreparationAndReleaseTaskStatus(jobId, jobListOptions);
 
         return response.getBody();
     }
@@ -138,7 +138,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().add(job, options);
+        this._parentBatchClient.getProtocolLayer().jobs().add(job, options);
     }
 
     public void deleteJob(String jobId) throws BatchErrorException, IOException {
@@ -150,7 +150,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().delete(jobId, options);
+        this._parentBatchClient.getProtocolLayer().jobs().delete(jobId, options);
     }
 
     public void terminateJob(String jobId) throws BatchErrorException, IOException {
@@ -166,7 +166,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().terminate(jobId, terminateReason, options);
+        this._parentBatchClient.getProtocolLayer().jobs().terminate(jobId, terminateReason, options);
     }
 
     public void enableJob(String jobId) throws BatchErrorException, IOException {
@@ -178,7 +178,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().enable(jobId, options);
+        this._parentBatchClient.getProtocolLayer().jobs().enable(jobId, options);
     }
 
     public void disableJob(String jobId, DisableJobOption disableJobOption) throws BatchErrorException, IOException {
@@ -190,7 +190,7 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().disable(jobId, disableJobOption, options);
+        this._parentBatchClient.getProtocolLayer().jobs().disable(jobId, disableJobOption, options);
     }
 
     public void updateJob(String jobId, PoolInformation poolInfo) throws BatchErrorException, IOException {
@@ -216,7 +216,7 @@ public class JobOperations implements IInheritedBehaviors {
         param.setConstraints(constraints);
         param.setMetadata(metadata);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().update(jobId, param, options);
+        this._parentBatchClient.getProtocolLayer().jobs().update(jobId, param, options);
     }
 
     public void patchJob(String jobId, PoolInformation poolInfo) throws BatchErrorException, IOException {
@@ -246,6 +246,6 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobOperations().patch(jobId, jobPatchParameter, options);
+        this._parentBatchClient.getProtocolLayer().jobs().patch(jobId, jobPatchParameter, options);
     }
 }

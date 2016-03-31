@@ -109,15 +109,15 @@ public interface SubscriptionClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the SubscriptionsOperations object to access its operations.
-     * @return the SubscriptionsOperations object.
+     * Gets the Subscriptions object to access its operations.
+     * @return the Subscriptions object.
      */
-    SubscriptionsOperations getSubscriptionsOperations();
+    Subscriptions subscriptions();
 
     /**
-     * Gets the TenantsOperations object to access its operations.
-     * @return the TenantsOperations object.
+     * Gets the Tenants object to access its operations.
+     * @return the Tenants object.
      */
-    TenantsOperations getTenantsOperations();
+    Tenants tenants();
 
 }

@@ -170,147 +170,147 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Gets the ApplicationGatewaysOperations object to access its operations.
-     * @return the ApplicationGatewaysOperations object.
+     * Gets the ApplicationGateways object to access its operations.
+     * @return the ApplicationGateways object.
      */
-    public ApplicationGatewaysOperations getApplicationGatewaysOperations() {
-        return new ApplicationGatewaysOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ApplicationGateways applicationGateways() {
+        return new ApplicationGatewaysImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ExpressRouteCircuitAuthorizationsOperations object to access its operations.
-     * @return the ExpressRouteCircuitAuthorizationsOperations object.
+     * Gets the ExpressRouteCircuitAuthorizations object to access its operations.
+     * @return the ExpressRouteCircuitAuthorizations object.
      */
-    public ExpressRouteCircuitAuthorizationsOperations getExpressRouteCircuitAuthorizationsOperations() {
-        return new ExpressRouteCircuitAuthorizationsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ExpressRouteCircuitAuthorizations expressRouteCircuitAuthorizations() {
+        return new ExpressRouteCircuitAuthorizationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ExpressRouteCircuitPeeringsOperations object to access its operations.
-     * @return the ExpressRouteCircuitPeeringsOperations object.
+     * Gets the ExpressRouteCircuitPeerings object to access its operations.
+     * @return the ExpressRouteCircuitPeerings object.
      */
-    public ExpressRouteCircuitPeeringsOperations getExpressRouteCircuitPeeringsOperations() {
-        return new ExpressRouteCircuitPeeringsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ExpressRouteCircuitPeerings expressRouteCircuitPeerings() {
+        return new ExpressRouteCircuitPeeringsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ExpressRouteCircuitsOperations object to access its operations.
-     * @return the ExpressRouteCircuitsOperations object.
+     * Gets the ExpressRouteCircuits object to access its operations.
+     * @return the ExpressRouteCircuits object.
      */
-    public ExpressRouteCircuitsOperations getExpressRouteCircuitsOperations() {
-        return new ExpressRouteCircuitsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ExpressRouteCircuits expressRouteCircuits() {
+        return new ExpressRouteCircuitsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ExpressRouteServiceProvidersOperations object to access its operations.
-     * @return the ExpressRouteServiceProvidersOperations object.
+     * Gets the ExpressRouteServiceProviders object to access its operations.
+     * @return the ExpressRouteServiceProviders object.
      */
-    public ExpressRouteServiceProvidersOperations getExpressRouteServiceProvidersOperations() {
-        return new ExpressRouteServiceProvidersOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ExpressRouteServiceProviders expressRouteServiceProviders() {
+        return new ExpressRouteServiceProvidersImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the LoadBalancersOperations object to access its operations.
-     * @return the LoadBalancersOperations object.
+     * Gets the LoadBalancers object to access its operations.
+     * @return the LoadBalancers object.
      */
-    public LoadBalancersOperations getLoadBalancersOperations() {
-        return new LoadBalancersOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public LoadBalancers loadBalancers() {
+        return new LoadBalancersImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the LocalNetworkGatewaysOperations object to access its operations.
-     * @return the LocalNetworkGatewaysOperations object.
+     * Gets the LocalNetworkGateways object to access its operations.
+     * @return the LocalNetworkGateways object.
      */
-    public LocalNetworkGatewaysOperations getLocalNetworkGatewaysOperations() {
-        return new LocalNetworkGatewaysOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public LocalNetworkGateways localNetworkGateways() {
+        return new LocalNetworkGatewaysImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the NetworkInterfacesOperations object to access its operations.
-     * @return the NetworkInterfacesOperations object.
+     * Gets the NetworkInterfaces object to access its operations.
+     * @return the NetworkInterfaces object.
      */
-    public NetworkInterfacesOperations getNetworkInterfacesOperations() {
-        return new NetworkInterfacesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public NetworkInterfaces networkInterfaces() {
+        return new NetworkInterfacesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the NetworkSecurityGroupsOperations object to access its operations.
-     * @return the NetworkSecurityGroupsOperations object.
+     * Gets the NetworkSecurityGroups object to access its operations.
+     * @return the NetworkSecurityGroups object.
      */
-    public NetworkSecurityGroupsOperations getNetworkSecurityGroupsOperations() {
-        return new NetworkSecurityGroupsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public NetworkSecurityGroups networkSecurityGroups() {
+        return new NetworkSecurityGroupsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the PublicIPAddressesOperations object to access its operations.
-     * @return the PublicIPAddressesOperations object.
+     * Gets the PublicIPAddresses object to access its operations.
+     * @return the PublicIPAddresses object.
      */
-    public PublicIPAddressesOperations getPublicIPAddressesOperations() {
-        return new PublicIPAddressesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public PublicIPAddresses publicIPAddresses() {
+        return new PublicIPAddressesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the RouteTablesOperations object to access its operations.
-     * @return the RouteTablesOperations object.
+     * Gets the RouteTables object to access its operations.
+     * @return the RouteTables object.
      */
-    public RouteTablesOperations getRouteTablesOperations() {
-        return new RouteTablesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public RouteTables routeTables() {
+        return new RouteTablesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the RoutesOperations object to access its operations.
-     * @return the RoutesOperations object.
+     * Gets the Routes object to access its operations.
+     * @return the Routes object.
      */
-    public RoutesOperations getRoutesOperations() {
-        return new RoutesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Routes routes() {
+        return new RoutesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the SecurityRulesOperations object to access its operations.
-     * @return the SecurityRulesOperations object.
+     * Gets the SecurityRules object to access its operations.
+     * @return the SecurityRules object.
      */
-    public SecurityRulesOperations getSecurityRulesOperations() {
-        return new SecurityRulesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public SecurityRules securityRules() {
+        return new SecurityRulesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the SubnetsOperations object to access its operations.
-     * @return the SubnetsOperations object.
+     * Gets the Subnets object to access its operations.
+     * @return the Subnets object.
      */
-    public SubnetsOperations getSubnetsOperations() {
-        return new SubnetsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Subnets subnets() {
+        return new SubnetsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the UsagesOperations object to access its operations.
-     * @return the UsagesOperations object.
+     * Gets the Usages object to access its operations.
+     * @return the Usages object.
      */
-    public UsagesOperations getUsagesOperations() {
-        return new UsagesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Usages usages() {
+        return new UsagesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualNetworkGatewayConnectionsOperations object to access its operations.
-     * @return the VirtualNetworkGatewayConnectionsOperations object.
+     * Gets the VirtualNetworkGatewayConnections object to access its operations.
+     * @return the VirtualNetworkGatewayConnections object.
      */
-    public VirtualNetworkGatewayConnectionsOperations getVirtualNetworkGatewayConnectionsOperations() {
-        return new VirtualNetworkGatewayConnectionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualNetworkGatewayConnections virtualNetworkGatewayConnections() {
+        return new VirtualNetworkGatewayConnectionsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualNetworkGatewaysOperations object to access its operations.
-     * @return the VirtualNetworkGatewaysOperations object.
+     * Gets the VirtualNetworkGateways object to access its operations.
+     * @return the VirtualNetworkGateways object.
      */
-    public VirtualNetworkGatewaysOperations getVirtualNetworkGatewaysOperations() {
-        return new VirtualNetworkGatewaysOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualNetworkGateways virtualNetworkGateways() {
+        return new VirtualNetworkGatewaysImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualNetworksOperations object to access its operations.
-     * @return the VirtualNetworksOperations object.
+     * Gets the VirtualNetworks object to access its operations.
+     * @return the VirtualNetworks object.
      */
-    public VirtualNetworksOperations getVirtualNetworksOperations() {
-        return new VirtualNetworksOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualNetworks virtualNetworks() {
+        return new VirtualNetworksImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

@@ -150,11 +150,11 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
     }
 
     /**
-     * Gets the FeaturesOperations object to access its operations.
-     * @return the FeaturesOperations object.
+     * Gets the Features object to access its operations.
+     * @return the Features object.
      */
-    public FeaturesOperations getFeaturesOperations() {
-        return new FeaturesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Features features() {
+        return new FeaturesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

@@ -137,9 +137,9 @@ public interface DataLakeStoreFileSystemManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the FileSystemOperations object to access its operations.
-     * @return the FileSystemOperations object.
+     * Gets the FileSystems object to access its operations.
+     * @return the FileSystems object.
      */
-    FileSystemOperations getFileSystemOperations();
+    FileSystems fileSystems();
 
 }

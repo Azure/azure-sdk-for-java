@@ -129,19 +129,19 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
     }
 
     /**
-     * Gets the SubscriptionsOperations object to access its operations.
-     * @return the SubscriptionsOperations object.
+     * Gets the Subscriptions object to access its operations.
+     * @return the Subscriptions object.
      */
-    public SubscriptionsOperations getSubscriptionsOperations() {
-        return new SubscriptionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Subscriptions subscriptions() {
+        return new SubscriptionsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the TenantsOperations object to access its operations.
-     * @return the TenantsOperations object.
+     * Gets the Tenants object to access its operations.
+     * @return the Tenants object.
      */
-    public TenantsOperations getTenantsOperations() {
-        return new TenantsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Tenants tenants() {
+        return new TenantsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

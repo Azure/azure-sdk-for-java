@@ -123,87 +123,87 @@ public interface WebSiteManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the CertificatesOperations object to access its operations.
-     * @return the CertificatesOperations object.
+     * Gets the Certificates object to access its operations.
+     * @return the Certificates object.
      */
-    CertificatesOperations getCertificatesOperations();
+    Certificates certificates();
 
     /**
-     * Gets the ClassicMobileServicesOperations object to access its operations.
-     * @return the ClassicMobileServicesOperations object.
+     * Gets the ClassicMobileServices object to access its operations.
+     * @return the ClassicMobileServices object.
      */
-    ClassicMobileServicesOperations getClassicMobileServicesOperations();
+    ClassicMobileServices classicMobileServices();
 
     /**
-     * Gets the DomainsOperations object to access its operations.
-     * @return the DomainsOperations object.
+     * Gets the Domains object to access its operations.
+     * @return the Domains object.
      */
-    DomainsOperations getDomainsOperations();
+    Domains domains();
 
     /**
-     * Gets the GlobalOperations object to access its operations.
-     * @return the GlobalOperations object.
+     * Gets the Globals object to access its operations.
+     * @return the Globals object.
      */
-    GlobalOperations getGlobalOperations();
+    Globals globals();
 
     /**
-     * Gets the GlobalDomainRegistrationOperations object to access its operations.
-     * @return the GlobalDomainRegistrationOperations object.
+     * Gets the GlobalDomainRegistrations object to access its operations.
+     * @return the GlobalDomainRegistrations object.
      */
-    GlobalDomainRegistrationOperations getGlobalDomainRegistrationOperations();
+    GlobalDomainRegistrations globalDomainRegistrations();
 
     /**
-     * Gets the GlobalResourceGroupsOperations object to access its operations.
-     * @return the GlobalResourceGroupsOperations object.
+     * Gets the GlobalResourceGroups object to access its operations.
+     * @return the GlobalResourceGroups object.
      */
-    GlobalResourceGroupsOperations getGlobalResourceGroupsOperations();
+    GlobalResourceGroups globalResourceGroups();
 
     /**
-     * Gets the HostingEnvironmentsOperations object to access its operations.
-     * @return the HostingEnvironmentsOperations object.
+     * Gets the HostingEnvironments object to access its operations.
+     * @return the HostingEnvironments object.
      */
-    HostingEnvironmentsOperations getHostingEnvironmentsOperations();
+    HostingEnvironments hostingEnvironments();
 
     /**
-     * Gets the ManagedHostingEnvironmentsOperations object to access its operations.
-     * @return the ManagedHostingEnvironmentsOperations object.
+     * Gets the ManagedHostingEnvironments object to access its operations.
+     * @return the ManagedHostingEnvironments object.
      */
-    ManagedHostingEnvironmentsOperations getManagedHostingEnvironmentsOperations();
+    ManagedHostingEnvironments managedHostingEnvironments();
 
     /**
-     * Gets the ProviderOperations object to access its operations.
-     * @return the ProviderOperations object.
+     * Gets the Providers object to access its operations.
+     * @return the Providers object.
      */
-    ProviderOperations getProviderOperations();
+    Providers providers();
 
     /**
-     * Gets the RecommendationsOperations object to access its operations.
-     * @return the RecommendationsOperations object.
+     * Gets the Recommendations object to access its operations.
+     * @return the Recommendations object.
      */
-    RecommendationsOperations getRecommendationsOperations();
+    Recommendations recommendations();
 
     /**
-     * Gets the ServerFarmsOperations object to access its operations.
-     * @return the ServerFarmsOperations object.
+     * Gets the ServerFarms object to access its operations.
+     * @return the ServerFarms object.
      */
-    ServerFarmsOperations getServerFarmsOperations();
+    ServerFarms serverFarms();
 
     /**
-     * Gets the SitesOperations object to access its operations.
-     * @return the SitesOperations object.
+     * Gets the Sites object to access its operations.
+     * @return the Sites object.
      */
-    SitesOperations getSitesOperations();
+    Sites sites();
 
     /**
-     * Gets the TopLevelDomainsOperations object to access its operations.
-     * @return the TopLevelDomainsOperations object.
+     * Gets the TopLevelDomains object to access its operations.
+     * @return the TopLevelDomains object.
      */
-    TopLevelDomainsOperations getTopLevelDomainsOperations();
+    TopLevelDomains topLevelDomains();
 
     /**
-     * Gets the UsageOperations object to access its operations.
-     * @return the UsageOperations object.
+     * Gets the Usages object to access its operations.
+     * @return the Usages object.
      */
-    UsageOperations getUsageOperations();
+    Usages usages();
 
 }

@@ -123,57 +123,57 @@ public interface ComputeManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the AvailabilitySetsOperations object to access its operations.
-     * @return the AvailabilitySetsOperations object.
+     * Gets the AvailabilitySets object to access its operations.
+     * @return the AvailabilitySets object.
      */
-    AvailabilitySetsOperations getAvailabilitySetsOperations();
+    AvailabilitySets availabilitySets();
 
     /**
-     * Gets the VirtualMachineExtensionImagesOperations object to access its operations.
-     * @return the VirtualMachineExtensionImagesOperations object.
+     * Gets the VirtualMachineExtensionImages object to access its operations.
+     * @return the VirtualMachineExtensionImages object.
      */
-    VirtualMachineExtensionImagesOperations getVirtualMachineExtensionImagesOperations();
+    VirtualMachineExtensionImages virtualMachineExtensionImages();
 
     /**
-     * Gets the VirtualMachineExtensionsOperations object to access its operations.
-     * @return the VirtualMachineExtensionsOperations object.
+     * Gets the VirtualMachineExtensions object to access its operations.
+     * @return the VirtualMachineExtensions object.
      */
-    VirtualMachineExtensionsOperations getVirtualMachineExtensionsOperations();
+    VirtualMachineExtensions virtualMachineExtensions();
 
     /**
-     * Gets the VirtualMachineImagesOperations object to access its operations.
-     * @return the VirtualMachineImagesOperations object.
+     * Gets the VirtualMachineImages object to access its operations.
+     * @return the VirtualMachineImages object.
      */
-    VirtualMachineImagesOperations getVirtualMachineImagesOperations();
+    VirtualMachineImages virtualMachineImages();
 
     /**
-     * Gets the UsageOperations object to access its operations.
-     * @return the UsageOperations object.
+     * Gets the Usages object to access its operations.
+     * @return the Usages object.
      */
-    UsageOperations getUsageOperations();
+    Usages usages();
 
     /**
-     * Gets the VirtualMachineSizesOperations object to access its operations.
-     * @return the VirtualMachineSizesOperations object.
+     * Gets the VirtualMachineSizes object to access its operations.
+     * @return the VirtualMachineSizes object.
      */
-    VirtualMachineSizesOperations getVirtualMachineSizesOperations();
+    VirtualMachineSizes virtualMachineSizes();
 
     /**
-     * Gets the VirtualMachinesOperations object to access its operations.
-     * @return the VirtualMachinesOperations object.
+     * Gets the VirtualMachines object to access its operations.
+     * @return the VirtualMachines object.
      */
-    VirtualMachinesOperations getVirtualMachinesOperations();
+    VirtualMachines virtualMachines();
 
     /**
-     * Gets the VirtualMachineScaleSetsOperations object to access its operations.
-     * @return the VirtualMachineScaleSetsOperations object.
+     * Gets the VirtualMachineScaleSets object to access its operations.
+     * @return the VirtualMachineScaleSets object.
      */
-    VirtualMachineScaleSetsOperations getVirtualMachineScaleSetsOperations();
+    VirtualMachineScaleSets virtualMachineScaleSets();
 
     /**
-     * Gets the VirtualMachineScaleSetVMsOperations object to access its operations.
-     * @return the VirtualMachineScaleSetVMsOperations object.
+     * Gets the VirtualMachineScaleSetVMs object to access its operations.
+     * @return the VirtualMachineScaleSetVMs object.
      */
-    VirtualMachineScaleSetVMsOperations getVirtualMachineScaleSetVMsOperations();
+    VirtualMachineScaleSetVMs virtualMachineScaleSetVMs();
 
 }

@@ -129,112 +129,112 @@ public interface NetworkManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the ApplicationGatewaysOperations object to access its operations.
-     * @return the ApplicationGatewaysOperations object.
+     * Gets the ApplicationGateways object to access its operations.
+     * @return the ApplicationGateways object.
      */
-    ApplicationGatewaysOperations getApplicationGatewaysOperations();
+    ApplicationGateways applicationGateways();
 
     /**
-     * Gets the ExpressRouteCircuitAuthorizationsOperations object to access its operations.
-     * @return the ExpressRouteCircuitAuthorizationsOperations object.
+     * Gets the ExpressRouteCircuitAuthorizations object to access its operations.
+     * @return the ExpressRouteCircuitAuthorizations object.
      */
-    ExpressRouteCircuitAuthorizationsOperations getExpressRouteCircuitAuthorizationsOperations();
+    ExpressRouteCircuitAuthorizations expressRouteCircuitAuthorizations();
 
     /**
-     * Gets the ExpressRouteCircuitPeeringsOperations object to access its operations.
-     * @return the ExpressRouteCircuitPeeringsOperations object.
+     * Gets the ExpressRouteCircuitPeerings object to access its operations.
+     * @return the ExpressRouteCircuitPeerings object.
      */
-    ExpressRouteCircuitPeeringsOperations getExpressRouteCircuitPeeringsOperations();
+    ExpressRouteCircuitPeerings expressRouteCircuitPeerings();
 
     /**
-     * Gets the ExpressRouteCircuitsOperations object to access its operations.
-     * @return the ExpressRouteCircuitsOperations object.
+     * Gets the ExpressRouteCircuits object to access its operations.
+     * @return the ExpressRouteCircuits object.
      */
-    ExpressRouteCircuitsOperations getExpressRouteCircuitsOperations();
+    ExpressRouteCircuits expressRouteCircuits();
 
     /**
-     * Gets the ExpressRouteServiceProvidersOperations object to access its operations.
-     * @return the ExpressRouteServiceProvidersOperations object.
+     * Gets the ExpressRouteServiceProviders object to access its operations.
+     * @return the ExpressRouteServiceProviders object.
      */
-    ExpressRouteServiceProvidersOperations getExpressRouteServiceProvidersOperations();
+    ExpressRouteServiceProviders expressRouteServiceProviders();
 
     /**
-     * Gets the LoadBalancersOperations object to access its operations.
-     * @return the LoadBalancersOperations object.
+     * Gets the LoadBalancers object to access its operations.
+     * @return the LoadBalancers object.
      */
-    LoadBalancersOperations getLoadBalancersOperations();
+    LoadBalancers loadBalancers();
 
     /**
-     * Gets the LocalNetworkGatewaysOperations object to access its operations.
-     * @return the LocalNetworkGatewaysOperations object.
+     * Gets the LocalNetworkGateways object to access its operations.
+     * @return the LocalNetworkGateways object.
      */
-    LocalNetworkGatewaysOperations getLocalNetworkGatewaysOperations();
+    LocalNetworkGateways localNetworkGateways();
 
     /**
-     * Gets the NetworkInterfacesOperations object to access its operations.
-     * @return the NetworkInterfacesOperations object.
+     * Gets the NetworkInterfaces object to access its operations.
+     * @return the NetworkInterfaces object.
      */
-    NetworkInterfacesOperations getNetworkInterfacesOperations();
+    NetworkInterfaces networkInterfaces();
 
     /**
-     * Gets the NetworkSecurityGroupsOperations object to access its operations.
-     * @return the NetworkSecurityGroupsOperations object.
+     * Gets the NetworkSecurityGroups object to access its operations.
+     * @return the NetworkSecurityGroups object.
      */
-    NetworkSecurityGroupsOperations getNetworkSecurityGroupsOperations();
+    NetworkSecurityGroups networkSecurityGroups();
 
     /**
-     * Gets the PublicIPAddressesOperations object to access its operations.
-     * @return the PublicIPAddressesOperations object.
+     * Gets the PublicIPAddresses object to access its operations.
+     * @return the PublicIPAddresses object.
      */
-    PublicIPAddressesOperations getPublicIPAddressesOperations();
+    PublicIPAddresses publicIPAddresses();
 
     /**
-     * Gets the RouteTablesOperations object to access its operations.
-     * @return the RouteTablesOperations object.
+     * Gets the RouteTables object to access its operations.
+     * @return the RouteTables object.
      */
-    RouteTablesOperations getRouteTablesOperations();
+    RouteTables routeTables();
 
     /**
-     * Gets the RoutesOperations object to access its operations.
-     * @return the RoutesOperations object.
+     * Gets the Routes object to access its operations.
+     * @return the Routes object.
      */
-    RoutesOperations getRoutesOperations();
+    Routes routes();
 
     /**
-     * Gets the SecurityRulesOperations object to access its operations.
-     * @return the SecurityRulesOperations object.
+     * Gets the SecurityRules object to access its operations.
+     * @return the SecurityRules object.
      */
-    SecurityRulesOperations getSecurityRulesOperations();
+    SecurityRules securityRules();
 
     /**
-     * Gets the SubnetsOperations object to access its operations.
-     * @return the SubnetsOperations object.
+     * Gets the Subnets object to access its operations.
+     * @return the Subnets object.
      */
-    SubnetsOperations getSubnetsOperations();
+    Subnets subnets();
 
     /**
-     * Gets the UsagesOperations object to access its operations.
-     * @return the UsagesOperations object.
+     * Gets the Usages object to access its operations.
+     * @return the Usages object.
      */
-    UsagesOperations getUsagesOperations();
+    Usages usages();
 
     /**
-     * Gets the VirtualNetworkGatewayConnectionsOperations object to access its operations.
-     * @return the VirtualNetworkGatewayConnectionsOperations object.
+     * Gets the VirtualNetworkGatewayConnections object to access its operations.
+     * @return the VirtualNetworkGatewayConnections object.
      */
-    VirtualNetworkGatewayConnectionsOperations getVirtualNetworkGatewayConnectionsOperations();
+    VirtualNetworkGatewayConnections virtualNetworkGatewayConnections();
 
     /**
-     * Gets the VirtualNetworkGatewaysOperations object to access its operations.
-     * @return the VirtualNetworkGatewaysOperations object.
+     * Gets the VirtualNetworkGateways object to access its operations.
+     * @return the VirtualNetworkGateways object.
      */
-    VirtualNetworkGatewaysOperations getVirtualNetworkGatewaysOperations();
+    VirtualNetworkGateways virtualNetworkGateways();
 
     /**
-     * Gets the VirtualNetworksOperations object to access its operations.
-     * @return the VirtualNetworksOperations object.
+     * Gets the VirtualNetworks object to access its operations.
+     * @return the VirtualNetworks object.
      */
-    VirtualNetworksOperations getVirtualNetworksOperations();
+    VirtualNetworks virtualNetworks();
 
     /**
      * Checks whether a domain name in the cloudapp.net zone is available for use.

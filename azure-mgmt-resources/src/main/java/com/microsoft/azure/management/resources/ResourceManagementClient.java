@@ -123,57 +123,57 @@ public interface ResourceManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the DeploymentsOperations object to access its operations.
-     * @return the DeploymentsOperations object.
+     * Gets the Deployments object to access its operations.
+     * @return the Deployments object.
      */
-    DeploymentsOperations getDeploymentsOperations();
+    Deployments deployments();
 
     /**
-     * Gets the ProvidersOperations object to access its operations.
-     * @return the ProvidersOperations object.
+     * Gets the Providers object to access its operations.
+     * @return the Providers object.
      */
-    ProvidersOperations getProvidersOperations();
+    Providers providers();
 
     /**
-     * Gets the ResourceGroupsOperations object to access its operations.
-     * @return the ResourceGroupsOperations object.
+     * Gets the ResourceGroups object to access its operations.
+     * @return the ResourceGroups object.
      */
-    ResourceGroupsOperations getResourceGroupsOperations();
+    ResourceGroups resourceGroups();
 
     /**
-     * Gets the ResourcesOperations object to access its operations.
-     * @return the ResourcesOperations object.
+     * Gets the Resources object to access its operations.
+     * @return the Resources object.
      */
-    ResourcesOperations getResourcesOperations();
+    Resources resources();
 
     /**
-     * Gets the TagsOperations object to access its operations.
-     * @return the TagsOperations object.
+     * Gets the Tags object to access its operations.
+     * @return the Tags object.
      */
-    TagsOperations getTagsOperations();
+    Tags tags();
 
     /**
-     * Gets the DeploymentOperationsOperations object to access its operations.
-     * @return the DeploymentOperationsOperations object.
+     * Gets the DeploymentOperations object to access its operations.
+     * @return the DeploymentOperations object.
      */
-    DeploymentOperationsOperations getDeploymentOperationsOperations();
+    DeploymentOperations deploymentOperations();
 
     /**
-     * Gets the ResourceProviderOperationDetailsOperations object to access its operations.
-     * @return the ResourceProviderOperationDetailsOperations object.
+     * Gets the ResourceProviderOperationDetails object to access its operations.
+     * @return the ResourceProviderOperationDetails object.
      */
-    ResourceProviderOperationDetailsOperations getResourceProviderOperationDetailsOperations();
+    ResourceProviderOperationDetails resourceProviderOperationDetails();
 
     /**
-     * Gets the PolicyDefinitionsOperations object to access its operations.
-     * @return the PolicyDefinitionsOperations object.
+     * Gets the PolicyDefinitions object to access its operations.
+     * @return the PolicyDefinitions object.
      */
-    PolicyDefinitionsOperations getPolicyDefinitionsOperations();
+    PolicyDefinitions policyDefinitions();
 
     /**
-     * Gets the PolicyAssignmentsOperations object to access its operations.
-     * @return the PolicyAssignmentsOperations object.
+     * Gets the PolicyAssignments object to access its operations.
+     * @return the PolicyAssignments object.
      */
-    PolicyAssignmentsOperations getPolicyAssignmentsOperations();
+    PolicyAssignments policyAssignments();
 
 }

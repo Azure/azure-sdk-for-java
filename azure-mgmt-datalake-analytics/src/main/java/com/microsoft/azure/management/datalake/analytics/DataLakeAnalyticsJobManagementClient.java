@@ -137,9 +137,9 @@ public interface DataLakeAnalyticsJobManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the JobOperations object to access its operations.
-     * @return the JobOperations object.
+     * Gets the Jobs object to access its operations.
+     * @return the Jobs object.
      */
-    JobOperations getJobOperations();
+    Jobs jobs();
 
 }

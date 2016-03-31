@@ -117,7 +117,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getCertificateOperations().add(certificate, options);
+        this._parentBatchClient.getProtocolLayer().certificates().add(certificate, options);
     }
 
     public void cancelDeleteCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -129,7 +129,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getCertificateOperations().cancelDeletion(thumbprintAlgorithm, thumbprint, options);
+        this._parentBatchClient.getProtocolLayer().certificates().cancelDeletion(thumbprintAlgorithm, thumbprint, options);
     }
 
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -141,7 +141,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getCertificateOperations().delete(thumbprintAlgorithm, thumbprint, options);
+        this._parentBatchClient.getProtocolLayer().certificates().delete(thumbprintAlgorithm, thumbprint, options);
     }
 
     public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -158,7 +158,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getCertificateOptions);
 
-        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response = this._parentBatchClient.getProtocolLayer().getCertificateOperations().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
+        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response = this._parentBatchClient.getProtocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
         return response.getBody();
     }
 
@@ -177,7 +177,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(certificateListOptions);
 
-        ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> response = this._parentBatchClient.getProtocolLayer().getCertificateOperations().list(certificateListOptions);
+        ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> response = this._parentBatchClient.getProtocolLayer().certificates().list(certificateListOptions);
 
         return response.getBody();
     }

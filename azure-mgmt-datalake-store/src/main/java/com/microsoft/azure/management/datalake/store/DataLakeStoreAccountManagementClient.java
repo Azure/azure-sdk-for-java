@@ -123,9 +123,9 @@ public interface DataLakeStoreAccountManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the AccountOperations object to access its operations.
-     * @return the AccountOperations object.
+     * Gets the Accounts object to access its operations.
+     * @return the Accounts object.
      */
-    AccountOperations getAccountOperations();
+    Accounts accounts();
 
 }

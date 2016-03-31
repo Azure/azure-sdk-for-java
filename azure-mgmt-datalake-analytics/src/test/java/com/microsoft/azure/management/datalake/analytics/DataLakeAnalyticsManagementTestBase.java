@@ -13,12 +13,10 @@ import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementClientImpl;
-
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
 
 import java.util.UUID;
-
-import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class DataLakeAnalyticsManagementTestBase {
     protected static DataLakeAnalyticsAccountManagementClient dataLakeAnalyticsAccountManagementClient;
@@ -71,10 +69,10 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         jobToSubmit.setType(JobType.USQL);
         jobToSubmit.setProperties(jobProperties);
 
-        JobInformation jobCreateResponse = jobClient.getJobOperations().create(jobId, adlaAcct, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = jobClient.jobs().create(jobId, adlaAcct, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformation getJobResponse = jobClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+        JobInformation getJobResponse = jobClient.jobs().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 180; // 3 minutes should be long enough
@@ -85,7 +83,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
-            getJobResponse = jobClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+            getJobResponse = jobClient.jobs().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
             Assert.assertNotNull(getJobResponse);
         }
 

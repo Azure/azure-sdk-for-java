@@ -14,7 +14,6 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -136,12 +135,12 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         createClients();
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
-        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
+        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
         adlsAccount.setLocation(location);
         adlsAccount.setName(adlsAcct);
-        dataLakeStoreAccountManagementClient.getAccountOperations().create(rgName, adlsAcct, adlsAccount);
+        dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         // Create the ADLA acct to use.
         DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
@@ -157,7 +156,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         createParams.setLocation(location);
         createParams.setName(adlaAcct);
         createParams.setProperties(createProperties);
-        dataLakeAnalyticsAccountManagementClient.getAccountOperations().create(rgName, adlaAcct, createParams);
+        dataLakeAnalyticsAccountManagementClient.accounts().create(rgName, adlaAcct, createParams);
         // Sleep for two minutes to ensure the account is totally provisioned.
         Thread.sleep(120000);
 
@@ -169,8 +168,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     public static void cleanup() throws Exception {
         // delete the ADLA account first
         try {
-            dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
-            resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+            dataLakeAnalyticsAccountManagementClient.accounts().delete(rgName, adlaAcct);
+            resourceManagementClient.resourceGroups().delete(rgName);
         }
         catch (Exception e) {
             // ignore failures during cleanup, as it is best effort
@@ -178,7 +177,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     }
     @Test
     public void canGetCatalogItems() throws Exception {
-        List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listDatabases(adlaAcct).getBody();
+        List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listDatabases(adlaAcct).getBody();
         Assert.assertTrue(dbListResponse.size() >= 1);
 
         // look for the DB we created
@@ -192,12 +191,12 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific Database as well
-        USqlDatabase dbGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getDatabase(dbName, adlaAcct).getBody();
+        USqlDatabase dbGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getDatabase(dbName, adlaAcct).getBody();
 
         Assert.assertEquals(dbName, dbGetResponse.getName());
 
         // Get the table list
-        List<USqlTable> tableListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTables(dbName, "dbo", adlaAcct).getBody();
+        List<USqlTable> tableListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTables(dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(tableListResponse.size() >= 1);
 
@@ -212,13 +211,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific table as well
-        USqlTable tableGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getTable(
+        USqlTable tableGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getTable(
                 dbName, "dbo", tableName, adlaAcct).getBody();
 
         Assert.assertEquals(tableName, tableGetResponse.getName());
 
         // Get the TVF list
-        List<USqlTableValuedFunction> tvfListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTableValuedFunctions(dbName, "dbo", adlaAcct).getBody();
+        List<USqlTableValuedFunction> tvfListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTableValuedFunctions(dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(tvfListResponse.size() >= 1);
 
@@ -233,13 +232,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific TVF as well
-        USqlTableValuedFunction tvfGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getTableValuedFunction(
+        USqlTableValuedFunction tvfGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getTableValuedFunction(
                 dbName, "dbo", tvfName, adlaAcct).getBody();
 
         Assert.assertEquals(tvfName, tvfGetResponse.getName());
 
         // Get the View list
-        List<USqlView> viewListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listViews(dbName, "dbo", adlaAcct).getBody();
+        List<USqlView> viewListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listViews(dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(viewListResponse.size() >= 1);
 
@@ -254,13 +253,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific view as well
-        USqlView viewGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getView(
+        USqlView viewGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getView(
                 dbName, "dbo", viewName, adlaAcct).getBody();
 
         Assert.assertEquals(viewName, viewGetResponse.getName());
 
         // Get the Procedure list
-        List<USqlProcedure> procListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listProcedures(
+        List<USqlProcedure> procListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listProcedures(
                 dbName, "dbo", adlaAcct).getBody();
 
         Assert.assertTrue(procListResponse.size() >= 1);
@@ -276,13 +275,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific procedure as well
-        USqlProcedure procGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getProcedure(
+        USqlProcedure procGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getProcedure(
                 dbName, "dbo", procName, adlaAcct).getBody();
 
         Assert.assertEquals(procName, procGetResponse.getName());
 
         // Get all the types
-        List<USqlType> typeGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTypes(
+        List<USqlType> typeGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTypes(
                 dbName, "dbo", adlaAcct).getBody();
 
 
@@ -292,7 +291,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         // Get all the types that are not complex
         USqlType filterOn = new USqlType();
         filterOn.setIsComplexType(false);
-        typeGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTypes(
+        typeGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTypes(
                 dbName, "dbo", adlaAcct, filterOn, null, null, null, null, null, null).getBody();
 
 
@@ -314,7 +313,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters createParams = new DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters();
         createParams.setPassword(secretPwd);
         createParams.setUri("https://adlasecrettest.contoso.com:443");
-        USqlSecret secretCreateResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().createSecret(
+        USqlSecret secretCreateResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().createSecret(
                 dbName, secretName,
                 adlaAcct,
                 createParams).getBody();
@@ -328,7 +327,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
          * TODO: Enable once confirmed that we throw 409s when a secret already exists
         // Attempt to create the secret again, which should throw
         try {
-            USqlSecret secondTry = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().createSecret(
+            USqlSecret secondTry = dataLakeAnalyticsCatalogManagementClient.catalogs().createSecret(
                 dbName, secretName,
                 adlaAcct,
                 createParams).getBody();
@@ -341,7 +340,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         */
 
         // Get the secret and ensure the response contains a date.
-        USqlSecret secretGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getSecret(
+        USqlSecret secretGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getSecret(
                 dbName, secretName, adlaAcct).getBody();
 
         Assert.assertNotNull(secretGetResponse);
@@ -355,7 +354,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID(), credentialCreationScript);
 
         // Get the Credential list
-        List<USqlCredential> credListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listCredentials(
+        List<USqlCredential> credListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listCredentials(
                 dbName, adlaAcct).getBody();
         Assert.assertTrue(credListResponse.size() >= 1);
 
@@ -370,7 +369,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific credential as well
-        USqlCredential credGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getCredential(
+        USqlCredential credGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getCredential(
                 dbName, credentialName, adlaAcct).getBody();
         Assert.assertEquals(credentialName, credGetResponse.getName());
 
@@ -382,12 +381,12 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 credentialDropScript);
 
         // Delete the secret
-        dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().deleteSecret(
+        dataLakeAnalyticsCatalogManagementClient.catalogs().deleteSecret(
                 dbName, secretName, adlaAcct);
 
         // Try to get the secret which should throw
         try {
-            dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getSecret(
+            dataLakeAnalyticsCatalogManagementClient.catalogs().getSecret(
                     dbName, secretName, adlaAcct);
 
             // should never make it here

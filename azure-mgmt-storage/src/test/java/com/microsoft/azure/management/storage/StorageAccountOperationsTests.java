@@ -22,12 +22,12 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         createClients();
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
-        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
+        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        resourceManagementClient.resourceGroups().delete(rgName);
     }
 
     @Test
@@ -40,12 +40,12 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         parameters.setTags(new HashMap<String, String>());
         parameters.getTags().put("department", "finance");
         parameters.getTags().put("tagname", "tagvalue");
-        StorageAccount storageAccount = storageManagementClient.getStorageAccountsOperations().create(rgName, accountName, parameters).getBody();
+        StorageAccount storageAccount = storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
         Assert.assertEquals(location, storageAccount.getLocation());
         Assert.assertEquals(AccountType.STANDARD_LRS, storageAccount.getAccountType());
         Assert.assertEquals(2, storageAccount.getTags().size());
         // List
-        List<StorageAccount> listResult = storageManagementClient.getStorageAccountsOperations().list().getBody();
+        List<StorageAccount> listResult = storageManagementClient.storageAccounts().list().getBody();
         StorageAccount storageResult = null;
         for (StorageAccount sa : listResult) {
             if (sa.getName().equals(accountName)) {
@@ -58,14 +58,14 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         Assert.assertEquals("tagvalue", storageResult.getTags().get("tagname"));
         Assert.assertEquals(location, storageResult.getLocation());
         // Get
-        StorageAccount getResult = storageManagementClient.getStorageAccountsOperations().getProperties(rgName, accountName).getBody();
+        StorageAccount getResult = storageManagementClient.storageAccounts().getProperties(rgName, accountName).getBody();
         Assert.assertNotNull(getResult);
         Assert.assertEquals("finance", getResult.getTags().get("department"));
         Assert.assertEquals("tagvalue", getResult.getTags().get("tagname"));
         Assert.assertEquals(location, getResult.getLocation());
         // Delete
-        storageManagementClient.getStorageAccountsOperations().delete(rgName, accountName);
-        CheckNameAvailabilityResult availabilityResult = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(accountName, "Microsoft.Storage/storageAccounts").getBody();
+        storageManagementClient.storageAccounts().delete(rgName, accountName);
+        CheckNameAvailabilityResult availabilityResult = storageManagementClient.storageAccounts().checkNameAvailability(accountName, "Microsoft.Storage/storageAccounts").getBody();
         Assert.assertTrue(availabilityResult.getNameAvailable());
     }
 }

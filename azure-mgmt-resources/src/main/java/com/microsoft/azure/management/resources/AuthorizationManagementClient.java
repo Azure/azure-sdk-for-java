@@ -123,33 +123,33 @@ public interface AuthorizationManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the ClassicAdministratorsOperations object to access its operations.
-     * @return the ClassicAdministratorsOperations object.
+     * Gets the ClassicAdministrators object to access its operations.
+     * @return the ClassicAdministrators object.
      */
-    ClassicAdministratorsOperations getClassicAdministratorsOperations();
+    ClassicAdministrators classicAdministrators();
 
     /**
-     * Gets the PermissionsOperations object to access its operations.
-     * @return the PermissionsOperations object.
+     * Gets the Permissions object to access its operations.
+     * @return the Permissions object.
      */
-    PermissionsOperations getPermissionsOperations();
+    Permissions permissions();
 
     /**
-     * Gets the ProviderOperationsMetadataOperations object to access its operations.
-     * @return the ProviderOperationsMetadataOperations object.
+     * Gets the ProviderOperationsMetadatas object to access its operations.
+     * @return the ProviderOperationsMetadatas object.
      */
-    ProviderOperationsMetadataOperations getProviderOperationsMetadataOperations();
+    ProviderOperationsMetadatas providerOperationsMetadatas();
 
     /**
-     * Gets the RoleAssignmentsOperations object to access its operations.
-     * @return the RoleAssignmentsOperations object.
+     * Gets the RoleAssignments object to access its operations.
+     * @return the RoleAssignments object.
      */
-    RoleAssignmentsOperations getRoleAssignmentsOperations();
+    RoleAssignments roleAssignments();
 
     /**
-     * Gets the RoleDefinitionsOperations object to access its operations.
-     * @return the RoleDefinitionsOperations object.
+     * Gets the RoleDefinitions object to access its operations.
+     * @return the RoleDefinitions object.
      */
-    RoleDefinitionsOperations getRoleDefinitionsOperations();
+    RoleDefinitions roleDefinitions();
 
 }

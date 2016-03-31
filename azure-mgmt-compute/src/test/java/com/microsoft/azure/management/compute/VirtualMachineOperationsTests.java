@@ -42,17 +42,17 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         createClients();
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
-        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
+        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         StorageAccountCreateParameters parameters = new StorageAccountCreateParameters();
         parameters.setLocation(location);
         parameters.setAccountType(AccountType.STANDARD_LRS);
-        storageManagementClient.getStorageAccountsOperations().create(rgName, accountName, parameters).getBody();
+        storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
 
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+        resourceManagementClient.resourceGroups().delete(rgName);
     }
 
     @Test
@@ -83,11 +83,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         PublicIPAddress address = createPublicIP();
         nir.setId(createNIC(createVNET(), address != null ? address.getIpAddress() : null).getId());
         request.getNetworkProfile().getNetworkInterfaces().add(nir);
-        VirtualMachine result = computeManagementClient.getVirtualMachinesOperations().createOrUpdate(rgName, vmName, request).getBody();
+        VirtualMachine result = computeManagementClient.virtualMachines().createOrUpdate(rgName, vmName, request).getBody();
         Assert.assertNotNull(result);
         Assert.assertEquals(location, result.getLocation());
         // List
-        List<VirtualMachine> listResult = computeManagementClient.getVirtualMachinesOperations().list(rgName).getBody();
+        List<VirtualMachine> listResult = computeManagementClient.virtualMachines().list(rgName).getBody();
         VirtualMachine listVM = null;
         for (VirtualMachine vm : listResult) {
             if (vm.getName().equals(vmName)) {
@@ -98,15 +98,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         Assert.assertNotNull(listVM);
         Assert.assertEquals(location, listVM.getLocation());
         // Get
-        VirtualMachine getResult = computeManagementClient.getVirtualMachinesOperations().get(rgName, vmName, null).getBody();
+        VirtualMachine getResult = computeManagementClient.virtualMachines().get(rgName, vmName, null).getBody();
         Assert.assertNotNull(getResult);
         Assert.assertEquals(location, getResult.getLocation());
         // Delete
-        computeManagementClient.getVirtualMachinesOperations().delete(rgName, vmName);
+        computeManagementClient.virtualMachines().delete(rgName, vmName);
     }
 
     private ImageReference getVMImage(String publisher, String offer, String sku) throws CloudException, IOException {
-        String name = computeManagementClient.getVirtualMachineImagesOperations().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
+        String name = computeManagementClient.virtualMachineImages().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
         ImageReference imageReference = new ImageReference();
         imageReference.setOffer(offer);
         imageReference.setPublisher(publisher);
@@ -124,11 +124,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         configuration.setPrivateIPAllocationMethod("Dynamic");
         configuration.setSubnet(subnet);
         if (publicIP != null) {
-            configuration.setPublicIPAddress(networkManagementClient.getPublicIPAddressesOperations().get(rgName, publicIP, null).getBody());
+            configuration.setPublicIPAddress(networkManagementClient.publicIPAddresses().get(rgName, publicIP, null).getBody());
         }
         nic.getIpConfigurations().add(configuration);
-        networkManagementClient.getNetworkInterfacesOperations().createOrUpdate(rgName, "javanic", nic);
-        return networkManagementClient.getNetworkInterfacesOperations().get(rgName, "javanic", null).getBody();
+        networkManagementClient.networkInterfaces().createOrUpdate(rgName, "javanic", nic);
+        return networkManagementClient.networkInterfaces().get(rgName, "javanic", null).getBody();
     }
 
     private Subnet createVNET() throws Exception {
@@ -146,8 +146,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         subnet.setName("javasn");
         subnet.setAddressPrefix("10.0.0.0/24");
         vnet.getSubnets().add(subnet);
-        networkManagementClient.getVirtualNetworksOperations().createOrUpdate(rgName, "javavn", vnet);
-        return networkManagementClient.getSubnetsOperations().get(rgName, "javavn", "javasn", null).getBody();
+        networkManagementClient.virtualNetworks().createOrUpdate(rgName, "javavn", vnet);
+        return networkManagementClient.subnets().get(rgName, "javavn", "javasn", null).getBody();
     }
 
     private PublicIPAddress createPublicIP() throws Exception {
@@ -157,7 +157,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         publicIPAddress.setDnsSettings(new PublicIPAddressDnsSettings());
         publicIPAddress.getDnsSettings().setDomainNameLabel("javadn");
 
-        networkManagementClient.getPublicIPAddressesOperations().createOrUpdate(rgName, "javapip", publicIPAddress);
-        return networkManagementClient.getPublicIPAddressesOperations().get(rgName, "javapip", null).getBody();
+        networkManagementClient.publicIPAddresses().createOrUpdate(rgName, "javapip", publicIPAddress);
+        return networkManagementClient.publicIPAddresses().get(rgName, "javapip", null).getBody();
     }
 }

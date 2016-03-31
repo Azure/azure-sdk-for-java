@@ -19,9 +19,9 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
         group.setTags(new HashMap<String, String>());
         group.getTags().put("department", "finance");
         group.getTags().put("tagname", "tagvalue");
-        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
+        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // List
-        List<ResourceGroup> listResult = resourceManagementClient.getResourceGroupsOperations().list().getBody();
+        List<ResourceGroup> listResult = resourceManagementClient.resourceGroups().list().getBody();
         ResourceGroup groupResult = null;
         for (ResourceGroup rg : listResult) {
             if (rg.getName().equals(rgName)) {
@@ -34,12 +34,12 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
         Assert.assertEquals("tagvalue", groupResult.getTags().get("tagname"));
         Assert.assertEquals(location, groupResult.getLocation());
         // Get
-        ResourceGroup getGroup = resourceManagementClient.getResourceGroupsOperations().get(rgName).getBody();
+        ResourceGroup getGroup = resourceManagementClient.resourceGroups().get(rgName).getBody();
         Assert.assertNotNull(getGroup);
         Assert.assertEquals(rgName, getGroup.getName());
         Assert.assertEquals(location, getGroup.getLocation());
         // Delete
-        resourceManagementClient.getResourceGroupsOperations().delete(rgName);
-        Assert.assertFalse(resourceManagementClient.getResourceGroupsOperations().checkExistence(rgName).getBody());
+        resourceManagementClient.resourceGroups().delete(rgName);
+        Assert.assertFalse(resourceManagementClient.resourceGroups().checkExistence(rgName).getBody());
     }
 }

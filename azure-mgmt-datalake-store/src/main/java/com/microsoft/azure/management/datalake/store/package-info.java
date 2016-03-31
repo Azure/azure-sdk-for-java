@@ -3,7 +3,7 @@
 // license information.
 
 /**
- * This package contains the classes for DataLakeStoreFileSystemManagementClient.
- * Creates an Azure Data Lake Store filesystem client.
+ * This package contains the classes for DataLakeStoreAccountManagementClient.
+ * Creates an Azure Data Lake Store account management client.
  */
 package com.microsoft.azure.management.datalake.store;

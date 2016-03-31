@@ -150,75 +150,75 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Gets the AvailabilitySetsOperations object to access its operations.
-     * @return the AvailabilitySetsOperations object.
+     * Gets the AvailabilitySets object to access its operations.
+     * @return the AvailabilitySets object.
      */
-    public AvailabilitySetsOperations getAvailabilitySetsOperations() {
-        return new AvailabilitySetsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public AvailabilitySets availabilitySets() {
+        return new AvailabilitySetsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachineExtensionImagesOperations object to access its operations.
-     * @return the VirtualMachineExtensionImagesOperations object.
+     * Gets the VirtualMachineExtensionImages object to access its operations.
+     * @return the VirtualMachineExtensionImages object.
      */
-    public VirtualMachineExtensionImagesOperations getVirtualMachineExtensionImagesOperations() {
-        return new VirtualMachineExtensionImagesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachineExtensionImages virtualMachineExtensionImages() {
+        return new VirtualMachineExtensionImagesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachineExtensionsOperations object to access its operations.
-     * @return the VirtualMachineExtensionsOperations object.
+     * Gets the VirtualMachineExtensions object to access its operations.
+     * @return the VirtualMachineExtensions object.
      */
-    public VirtualMachineExtensionsOperations getVirtualMachineExtensionsOperations() {
-        return new VirtualMachineExtensionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachineExtensions virtualMachineExtensions() {
+        return new VirtualMachineExtensionsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachineImagesOperations object to access its operations.
-     * @return the VirtualMachineImagesOperations object.
+     * Gets the VirtualMachineImages object to access its operations.
+     * @return the VirtualMachineImages object.
      */
-    public VirtualMachineImagesOperations getVirtualMachineImagesOperations() {
-        return new VirtualMachineImagesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachineImages virtualMachineImages() {
+        return new VirtualMachineImagesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the UsageOperations object to access its operations.
-     * @return the UsageOperations object.
+     * Gets the Usages object to access its operations.
+     * @return the Usages object.
      */
-    public UsageOperations getUsageOperations() {
-        return new UsageOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Usages usages() {
+        return new UsagesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachineSizesOperations object to access its operations.
-     * @return the VirtualMachineSizesOperations object.
+     * Gets the VirtualMachineSizes object to access its operations.
+     * @return the VirtualMachineSizes object.
      */
-    public VirtualMachineSizesOperations getVirtualMachineSizesOperations() {
-        return new VirtualMachineSizesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachineSizes virtualMachineSizes() {
+        return new VirtualMachineSizesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachinesOperations object to access its operations.
-     * @return the VirtualMachinesOperations object.
+     * Gets the VirtualMachines object to access its operations.
+     * @return the VirtualMachines object.
      */
-    public VirtualMachinesOperations getVirtualMachinesOperations() {
-        return new VirtualMachinesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachines virtualMachines() {
+        return new VirtualMachinesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachineScaleSetsOperations object to access its operations.
-     * @return the VirtualMachineScaleSetsOperations object.
+     * Gets the VirtualMachineScaleSets object to access its operations.
+     * @return the VirtualMachineScaleSets object.
      */
-    public VirtualMachineScaleSetsOperations getVirtualMachineScaleSetsOperations() {
-        return new VirtualMachineScaleSetsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachineScaleSets virtualMachineScaleSets() {
+        return new VirtualMachineScaleSetsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the VirtualMachineScaleSetVMsOperations object to access its operations.
-     * @return the VirtualMachineScaleSetVMsOperations object.
+     * Gets the VirtualMachineScaleSetVMs object to access its operations.
+     * @return the VirtualMachineScaleSetVMs object.
      */
-    public VirtualMachineScaleSetVMsOperations getVirtualMachineScaleSetVMsOperations() {
-        return new VirtualMachineScaleSetVMsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public VirtualMachineScaleSetVMs virtualMachineScaleSetVMs() {
+        return new VirtualMachineScaleSetVMsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

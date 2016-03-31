@@ -150,11 +150,11 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
     }
 
     /**
-     * Gets the AccountOperations object to access its operations.
-     * @return the AccountOperations object.
+     * Gets the Accounts object to access its operations.
+     * @return the Accounts object.
      */
-    public AccountOperations getAccountOperations() {
-        return new AccountOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Accounts accounts() {
+        return new AccountsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

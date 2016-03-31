@@ -150,43 +150,43 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     }
 
     /**
-     * Gets the ClassicAdministratorsOperations object to access its operations.
-     * @return the ClassicAdministratorsOperations object.
+     * Gets the ClassicAdministrators object to access its operations.
+     * @return the ClassicAdministrators object.
      */
-    public ClassicAdministratorsOperations getClassicAdministratorsOperations() {
-        return new ClassicAdministratorsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ClassicAdministrators classicAdministrators() {
+        return new ClassicAdministratorsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the PermissionsOperations object to access its operations.
-     * @return the PermissionsOperations object.
+     * Gets the Permissions object to access its operations.
+     * @return the Permissions object.
      */
-    public PermissionsOperations getPermissionsOperations() {
-        return new PermissionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Permissions permissions() {
+        return new PermissionsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ProviderOperationsMetadataOperations object to access its operations.
-     * @return the ProviderOperationsMetadataOperations object.
+     * Gets the ProviderOperationsMetadatas object to access its operations.
+     * @return the ProviderOperationsMetadatas object.
      */
-    public ProviderOperationsMetadataOperations getProviderOperationsMetadataOperations() {
-        return new ProviderOperationsMetadataOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ProviderOperationsMetadatas providerOperationsMetadatas() {
+        return new ProviderOperationsMetadatasImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the RoleAssignmentsOperations object to access its operations.
-     * @return the RoleAssignmentsOperations object.
+     * Gets the RoleAssignments object to access its operations.
+     * @return the RoleAssignments object.
      */
-    public RoleAssignmentsOperations getRoleAssignmentsOperations() {
-        return new RoleAssignmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public RoleAssignments roleAssignments() {
+        return new RoleAssignmentsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the RoleDefinitionsOperations object to access its operations.
-     * @return the RoleDefinitionsOperations object.
+     * Gets the RoleDefinitions object to access its operations.
+     * @return the RoleDefinitions object.
      */
-    public RoleDefinitionsOperations getRoleDefinitionsOperations() {
-        return new RoleDefinitionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public RoleDefinitions roleDefinitions() {
+        return new RoleDefinitionsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

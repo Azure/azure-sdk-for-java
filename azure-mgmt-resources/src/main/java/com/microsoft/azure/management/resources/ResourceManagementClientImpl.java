@@ -150,75 +150,75 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * Gets the DeploymentsOperations object to access its operations.
-     * @return the DeploymentsOperations object.
+     * Gets the Deployments object to access its operations.
+     * @return the Deployments object.
      */
-    public DeploymentsOperations getDeploymentsOperations() {
-        return new DeploymentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Deployments deployments() {
+        return new DeploymentsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ProvidersOperations object to access its operations.
-     * @return the ProvidersOperations object.
+     * Gets the Providers object to access its operations.
+     * @return the Providers object.
      */
-    public ProvidersOperations getProvidersOperations() {
-        return new ProvidersOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Providers providers() {
+        return new ProvidersImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ResourceGroupsOperations object to access its operations.
-     * @return the ResourceGroupsOperations object.
+     * Gets the ResourceGroups object to access its operations.
+     * @return the ResourceGroups object.
      */
-    public ResourceGroupsOperations getResourceGroupsOperations() {
-        return new ResourceGroupsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ResourceGroups resourceGroups() {
+        return new ResourceGroupsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ResourcesOperations object to access its operations.
-     * @return the ResourcesOperations object.
+     * Gets the Resources object to access its operations.
+     * @return the Resources object.
      */
-    public ResourcesOperations getResourcesOperations() {
-        return new ResourcesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Resources resources() {
+        return new ResourcesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the TagsOperations object to access its operations.
-     * @return the TagsOperations object.
+     * Gets the Tags object to access its operations.
+     * @return the Tags object.
      */
-    public TagsOperations getTagsOperations() {
-        return new TagsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Tags tags() {
+        return new TagsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the DeploymentOperationsOperations object to access its operations.
-     * @return the DeploymentOperationsOperations object.
+     * Gets the DeploymentOperations object to access its operations.
+     * @return the DeploymentOperations object.
      */
-    public DeploymentOperationsOperations getDeploymentOperationsOperations() {
-        return new DeploymentOperationsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public DeploymentOperations deploymentOperations() {
+        return new DeploymentOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ResourceProviderOperationDetailsOperations object to access its operations.
-     * @return the ResourceProviderOperationDetailsOperations object.
+     * Gets the ResourceProviderOperationDetails object to access its operations.
+     * @return the ResourceProviderOperationDetails object.
      */
-    public ResourceProviderOperationDetailsOperations getResourceProviderOperationDetailsOperations() {
-        return new ResourceProviderOperationDetailsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ResourceProviderOperationDetails resourceProviderOperationDetails() {
+        return new ResourceProviderOperationDetailsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the PolicyDefinitionsOperations object to access its operations.
-     * @return the PolicyDefinitionsOperations object.
+     * Gets the PolicyDefinitions object to access its operations.
+     * @return the PolicyDefinitions object.
      */
-    public PolicyDefinitionsOperations getPolicyDefinitionsOperations() {
-        return new PolicyDefinitionsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public PolicyDefinitions policyDefinitions() {
+        return new PolicyDefinitionsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the PolicyAssignmentsOperations object to access its operations.
-     * @return the PolicyAssignmentsOperations object.
+     * Gets the PolicyAssignments object to access its operations.
+     * @return the PolicyAssignments object.
      */
-    public PolicyAssignmentsOperations getPolicyAssignmentsOperations() {
-        return new PolicyAssignmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public PolicyAssignments policyAssignments() {
+        return new PolicyAssignmentsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

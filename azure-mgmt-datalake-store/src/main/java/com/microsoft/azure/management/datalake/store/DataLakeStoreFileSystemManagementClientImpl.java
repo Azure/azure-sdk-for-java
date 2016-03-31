@@ -171,11 +171,11 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
     }
 
     /**
-     * Gets the FileSystemOperations object to access its operations.
-     * @return the FileSystemOperations object.
+     * Gets the FileSystems object to access its operations.
+     * @return the FileSystems object.
      */
-    public FileSystemOperations getFileSystemOperations() {
-        return new FileSystemOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public FileSystems fileSystems() {
+        return new FileSystemsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

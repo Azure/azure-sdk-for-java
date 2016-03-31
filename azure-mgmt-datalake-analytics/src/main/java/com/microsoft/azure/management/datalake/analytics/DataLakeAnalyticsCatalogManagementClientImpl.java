@@ -171,11 +171,11 @@ public final class DataLakeAnalyticsCatalogManagementClientImpl extends AzureSer
     }
 
     /**
-     * Gets the CatalogOperations object to access its operations.
-     * @return the CatalogOperations object.
+     * Gets the Catalogs object to access its operations.
+     * @return the Catalogs object.
      */
-    public CatalogOperations getCatalogOperations() {
-        return new CatalogOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Catalogs catalogs() {
+        return new CatalogsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

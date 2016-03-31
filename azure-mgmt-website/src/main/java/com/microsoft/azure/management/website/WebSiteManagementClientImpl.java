@@ -150,115 +150,115 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Gets the CertificatesOperations object to access its operations.
-     * @return the CertificatesOperations object.
+     * Gets the Certificates object to access its operations.
+     * @return the Certificates object.
      */
-    public CertificatesOperations getCertificatesOperations() {
-        return new CertificatesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Certificates certificates() {
+        return new CertificatesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ClassicMobileServicesOperations object to access its operations.
-     * @return the ClassicMobileServicesOperations object.
+     * Gets the ClassicMobileServices object to access its operations.
+     * @return the ClassicMobileServices object.
      */
-    public ClassicMobileServicesOperations getClassicMobileServicesOperations() {
-        return new ClassicMobileServicesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ClassicMobileServices classicMobileServices() {
+        return new ClassicMobileServicesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the DomainsOperations object to access its operations.
-     * @return the DomainsOperations object.
+     * Gets the Domains object to access its operations.
+     * @return the Domains object.
      */
-    public DomainsOperations getDomainsOperations() {
-        return new DomainsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Domains domains() {
+        return new DomainsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the GlobalOperations object to access its operations.
-     * @return the GlobalOperations object.
+     * Gets the Globals object to access its operations.
+     * @return the Globals object.
      */
-    public GlobalOperations getGlobalOperations() {
-        return new GlobalOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Globals globals() {
+        return new GlobalsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the GlobalDomainRegistrationOperations object to access its operations.
-     * @return the GlobalDomainRegistrationOperations object.
+     * Gets the GlobalDomainRegistrations object to access its operations.
+     * @return the GlobalDomainRegistrations object.
      */
-    public GlobalDomainRegistrationOperations getGlobalDomainRegistrationOperations() {
-        return new GlobalDomainRegistrationOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public GlobalDomainRegistrations globalDomainRegistrations() {
+        return new GlobalDomainRegistrationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the GlobalResourceGroupsOperations object to access its operations.
-     * @return the GlobalResourceGroupsOperations object.
+     * Gets the GlobalResourceGroups object to access its operations.
+     * @return the GlobalResourceGroups object.
      */
-    public GlobalResourceGroupsOperations getGlobalResourceGroupsOperations() {
-        return new GlobalResourceGroupsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public GlobalResourceGroups globalResourceGroups() {
+        return new GlobalResourceGroupsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the HostingEnvironmentsOperations object to access its operations.
-     * @return the HostingEnvironmentsOperations object.
+     * Gets the HostingEnvironments object to access its operations.
+     * @return the HostingEnvironments object.
      */
-    public HostingEnvironmentsOperations getHostingEnvironmentsOperations() {
-        return new HostingEnvironmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public HostingEnvironments hostingEnvironments() {
+        return new HostingEnvironmentsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ManagedHostingEnvironmentsOperations object to access its operations.
-     * @return the ManagedHostingEnvironmentsOperations object.
+     * Gets the ManagedHostingEnvironments object to access its operations.
+     * @return the ManagedHostingEnvironments object.
      */
-    public ManagedHostingEnvironmentsOperations getManagedHostingEnvironmentsOperations() {
-        return new ManagedHostingEnvironmentsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ManagedHostingEnvironments managedHostingEnvironments() {
+        return new ManagedHostingEnvironmentsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ProviderOperations object to access its operations.
-     * @return the ProviderOperations object.
+     * Gets the Providers object to access its operations.
+     * @return the Providers object.
      */
-    public ProviderOperations getProviderOperations() {
-        return new ProviderOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Providers providers() {
+        return new ProvidersImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the RecommendationsOperations object to access its operations.
-     * @return the RecommendationsOperations object.
+     * Gets the Recommendations object to access its operations.
+     * @return the Recommendations object.
      */
-    public RecommendationsOperations getRecommendationsOperations() {
-        return new RecommendationsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Recommendations recommendations() {
+        return new RecommendationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ServerFarmsOperations object to access its operations.
-     * @return the ServerFarmsOperations object.
+     * Gets the ServerFarms object to access its operations.
+     * @return the ServerFarms object.
      */
-    public ServerFarmsOperations getServerFarmsOperations() {
-        return new ServerFarmsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ServerFarms serverFarms() {
+        return new ServerFarmsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the SitesOperations object to access its operations.
-     * @return the SitesOperations object.
+     * Gets the Sites object to access its operations.
+     * @return the Sites object.
      */
-    public SitesOperations getSitesOperations() {
-        return new SitesOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Sites sites() {
+        return new SitesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the TopLevelDomainsOperations object to access its operations.
-     * @return the TopLevelDomainsOperations object.
+     * Gets the TopLevelDomains object to access its operations.
+     * @return the TopLevelDomains object.
      */
-    public TopLevelDomainsOperations getTopLevelDomainsOperations() {
-        return new TopLevelDomainsOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public TopLevelDomains topLevelDomains() {
+        return new TopLevelDomainsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the UsageOperations object to access its operations.
-     * @return the UsageOperations object.
+     * Gets the Usages object to access its operations.
+     * @return the Usages object.
      */
-    public UsageOperations getUsageOperations() {
-        return new UsageOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Usages usages() {
+        return new UsagesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

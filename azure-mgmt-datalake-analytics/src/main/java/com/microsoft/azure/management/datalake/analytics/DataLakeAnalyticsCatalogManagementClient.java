@@ -137,9 +137,9 @@ public interface DataLakeAnalyticsCatalogManagementClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the CatalogOperations object to access its operations.
-     * @return the CatalogOperations object.
+     * Gets the Catalogs object to access its operations.
+     * @return the Catalogs object.
      */
-    CatalogOperations getCatalogOperations();
+    Catalogs catalogs();
 
 }

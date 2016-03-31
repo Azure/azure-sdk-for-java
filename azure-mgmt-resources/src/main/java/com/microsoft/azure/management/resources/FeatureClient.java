@@ -123,9 +123,9 @@ public interface FeatureClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the FeaturesOperations object to access its operations.
-     * @return the FeaturesOperations object.
+     * Gets the Features object to access its operations.
+     * @return the Features object.
      */
-    FeaturesOperations getFeaturesOperations();
+    Features features();
 
 }

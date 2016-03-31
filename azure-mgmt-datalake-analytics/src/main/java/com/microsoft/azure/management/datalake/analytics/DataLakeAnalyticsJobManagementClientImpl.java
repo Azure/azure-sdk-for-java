@@ -171,11 +171,11 @@ public final class DataLakeAnalyticsJobManagementClientImpl extends AzureService
     }
 
     /**
-     * Gets the JobOperations object to access its operations.
-     * @return the JobOperations object.
+     * Gets the Jobs object to access its operations.
+     * @return the Jobs object.
      */
-    public JobOperations getJobOperations() {
-        return new JobOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public Jobs jobs() {
+        return new JobsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
