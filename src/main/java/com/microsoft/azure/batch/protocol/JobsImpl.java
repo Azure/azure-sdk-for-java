@@ -76,30 +76,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in JobOperations.
+ * in Jobs.
  */
-public final class JobOperationsImpl implements JobOperations {
+public final class JobsImpl implements Jobs {
     /** The Retrofit service to perform REST calls. */
-    private JobService service;
+    private JobsService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of JobOperations.
+     * Initializes an instance of Jobs.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public JobOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(JobService.class);
+    public JobsImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(JobsService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for JobOperations to be
+     * The interface defining all the services for Jobs to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface JobService {
+    interface JobsService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("lifetimejobstats")
         Call<ResponseBody> getAllJobsLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

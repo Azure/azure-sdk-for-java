@@ -59,30 +59,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in FileOperations.
+ * in Files.
  */
-public final class FileOperationsImpl implements FileOperations {
+public final class FilesImpl implements Files {
     /** The Retrofit service to perform REST calls. */
-    private FileService service;
+    private FilesService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of FileOperations.
+     * Initializes an instance of Files.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FileOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(FileService.class);
+    public FilesImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(FilesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for FileOperations to be
+     * The interface defining all the services for Files to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface FileService {
+    interface FilesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "jobs/{jobId}/tasks/{taskId}/files/{fileName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> deleteFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

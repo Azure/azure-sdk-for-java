@@ -41,30 +41,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in ApplicationOperations.
+ * in Applications.
  */
-public final class ApplicationOperationsImpl implements ApplicationOperations {
+public final class ApplicationsImpl implements Applications {
     /** The Retrofit service to perform REST calls. */
-    private ApplicationService service;
+    private ApplicationsService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of ApplicationOperations.
+     * Initializes an instance of Applications.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ApplicationOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(ApplicationService.class);
+    public ApplicationsImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(ApplicationsService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ApplicationOperations to be
+     * The interface defining all the services for Applications to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface ApplicationService {
+    interface ApplicationsService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("applications")
         Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

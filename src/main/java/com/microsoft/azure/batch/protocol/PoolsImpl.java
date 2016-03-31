@@ -87,30 +87,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in PoolOperations.
+ * in Pools.
  */
-public final class PoolOperationsImpl implements PoolOperations {
+public final class PoolsImpl implements Pools {
     /** The Retrofit service to perform REST calls. */
-    private PoolService service;
+    private PoolsService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of PoolOperations.
+     * Initializes an instance of Pools.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PoolOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(PoolService.class);
+    public PoolsImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(PoolsService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PoolOperations to be
+     * The interface defining all the services for Pools to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface PoolService {
+    interface PoolsService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("poolusagemetrics")
         Call<ResponseBody> listPoolUsageMetrics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("starttime") DateTime startTime, @Query("endtime") DateTime endTime, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

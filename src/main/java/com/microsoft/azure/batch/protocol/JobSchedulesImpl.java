@@ -67,30 +67,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in JobScheduleOperations.
+ * in JobSchedules.
  */
-public final class JobScheduleOperationsImpl implements JobScheduleOperations {
+public final class JobSchedulesImpl implements JobSchedules {
     /** The Retrofit service to perform REST calls. */
-    private JobScheduleService service;
+    private JobSchedulesService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of JobScheduleOperations.
+     * Initializes an instance of JobSchedules.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public JobScheduleOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(JobScheduleService.class);
+    public JobSchedulesImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(JobSchedulesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for JobScheduleOperations to be
+     * The interface defining all the services for JobSchedules to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface JobScheduleService {
+    interface JobSchedulesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HEAD("jobschedules/{jobScheduleId}")
         Call<Void> exists(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);

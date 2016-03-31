@@ -59,30 +59,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in TaskOperations.
+ * in Tasks.
  */
-public final class TaskOperationsImpl implements TaskOperations {
+public final class TasksImpl implements Tasks {
     /** The Retrofit service to perform REST calls. */
-    private TaskService service;
+    private TasksService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of TaskOperations.
+     * Initializes an instance of Tasks.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TaskOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(TaskService.class);
+    public TasksImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(TasksService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for TaskOperations to be
+     * The interface defining all the services for Tasks to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface TaskService {
+    interface TasksService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("jobs/{jobId}/tasks")
         Call<ResponseBody> add(@Path("jobId") String jobId, @Body TaskAddParameter task, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

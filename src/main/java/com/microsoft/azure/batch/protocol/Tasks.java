@@ -36,9 +36,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in TaskOperations.
+ * in Tasks.
  */
-public interface TaskOperations {
+public interface Tasks {
     /**
      * Adds a task to the specified job.
      *

@@ -109,51 +109,51 @@ public interface BatchServiceClient {
     void setGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the ApplicationOperations object to access its operations.
-     * @return the ApplicationOperations object.
+     * Gets the Applications object to access its operations.
+     * @return the Applications object.
      */
-    ApplicationOperations getApplicationOperations();
+    Applications applications();
 
     /**
-     * Gets the PoolOperations object to access its operations.
-     * @return the PoolOperations object.
+     * Gets the Pools object to access its operations.
+     * @return the Pools object.
      */
-    PoolOperations getPoolOperations();
+    Pools pools();
 
     /**
-     * Gets the JobOperations object to access its operations.
-     * @return the JobOperations object.
+     * Gets the Jobs object to access its operations.
+     * @return the Jobs object.
      */
-    JobOperations getJobOperations();
+    Jobs jobs();
 
     /**
-     * Gets the CertificateOperations object to access its operations.
-     * @return the CertificateOperations object.
+     * Gets the Certificates object to access its operations.
+     * @return the Certificates object.
      */
-    CertificateOperations getCertificateOperations();
+    Certificates certificates();
 
     /**
-     * Gets the FileOperations object to access its operations.
-     * @return the FileOperations object.
+     * Gets the Files object to access its operations.
+     * @return the Files object.
      */
-    FileOperations getFileOperations();
+    Files files();
 
     /**
-     * Gets the JobScheduleOperations object to access its operations.
-     * @return the JobScheduleOperations object.
+     * Gets the JobSchedules object to access its operations.
+     * @return the JobSchedules object.
      */
-    JobScheduleOperations getJobScheduleOperations();
+    JobSchedules jobSchedules();
 
     /**
-     * Gets the TaskOperations object to access its operations.
-     * @return the TaskOperations object.
+     * Gets the Tasks object to access its operations.
+     * @return the Tasks object.
      */
-    TaskOperations getTaskOperations();
+    Tasks tasks();
 
     /**
-     * Gets the ComputeNodeOperations object to access its operations.
-     * @return the ComputeNodeOperations object.
+     * Gets the ComputeNodes object to access its operations.
+     * @return the ComputeNodes object.
      */
-    ComputeNodeOperations getComputeNodeOperations();
+    ComputeNodes computeNodes();
 
 }

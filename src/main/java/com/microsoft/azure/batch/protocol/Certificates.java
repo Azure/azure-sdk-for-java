@@ -30,9 +30,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in CertificateOperations.
+ * in Certificates.
  */
-public interface CertificateOperations {
+public interface Certificates {
     /**
      * Adds a certificate to the specified account.
      *

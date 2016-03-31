@@ -46,7 +46,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response = this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().exists(jobScheduleId, options);
+        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response = this._parentBatchClient.getProtocolLayer().jobSchedules().exists(jobScheduleId, options);
 
         return response.getBody();
     }
@@ -60,7 +60,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().delete(jobScheduleId, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().delete(jobScheduleId, options);
     }
 
     public CloudJobSchedule getJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {
@@ -77,7 +77,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response = this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().get(jobScheduleId, options);
+        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response = this._parentBatchClient.getProtocolLayer().jobSchedules().get(jobScheduleId, options);
 
         return response.getBody();
     }
@@ -99,7 +99,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         param.setJobSpecification(jobSpecification);
         param.setMetadata(metadata);
         param.setSchedule(schedule);
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().patch(jobScheduleId, param, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().patch(jobScheduleId, param, options);
     }
 
     public void updateJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification) throws BatchErrorException, IOException {
@@ -119,7 +119,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         param.setJobSpecification(jobSpecification);
         param.setMetadata(metadata);
         param.setSchedule(schedule);
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().update(jobScheduleId, param, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().update(jobScheduleId, param, options);
     }
 
     public void disableJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {
@@ -131,7 +131,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().disable(jobScheduleId, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().disable(jobScheduleId, options);
     }
 
     public void enableJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {
@@ -143,7 +143,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().enable(jobScheduleId, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().enable(jobScheduleId, options);
     }
 
     public void terminateJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {
@@ -155,7 +155,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().terminate(jobScheduleId, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().terminate(jobScheduleId, options);
     }
 
     public void createJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification) throws BatchErrorException, IOException {
@@ -179,7 +179,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().add(param, options);
+        this._parentBatchClient.getProtocolLayer().jobSchedules().add(param, options);
     }
 
     public List<CloudJobSchedule> listJobSchedules() throws BatchErrorException, IOException {
@@ -196,7 +196,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> response = this._parentBatchClient.getProtocolLayer().getJobScheduleOperations().list(options);
+        ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> response = this._parentBatchClient.getProtocolLayer().jobSchedules().list(options);
 
         return response.getBody();
     }

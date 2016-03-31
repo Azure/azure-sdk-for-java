@@ -51,30 +51,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in CertificateOperations.
+ * in Certificates.
  */
-public final class CertificateOperationsImpl implements CertificateOperations {
+public final class CertificatesImpl implements Certificates {
     /** The Retrofit service to perform REST calls. */
-    private CertificateService service;
+    private CertificatesService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of CertificateOperations.
+     * Initializes an instance of Certificates.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CertificateOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(CertificateService.class);
+    public CertificatesImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(CertificatesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CertificateOperations to be
+     * The interface defining all the services for Certificates to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface CertificateService {
+    interface CertificatesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("certificates")
         Call<ResponseBody> add(@Body CertificateAddParameter certificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

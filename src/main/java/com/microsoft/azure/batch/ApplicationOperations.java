@@ -46,7 +46,7 @@ public class ApplicationOperations  implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> response = this._parentBatchClient.getProtocolLayer().getApplicationOperations().list(options);
+        ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> response = this._parentBatchClient.getProtocolLayer().applications().list(options);
 
         return response.getBody();
     }
@@ -60,7 +60,7 @@ public class ApplicationOperations  implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response = this._parentBatchClient.getProtocolLayer().getApplicationOperations().get(applicationId, options);
+        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response = this._parentBatchClient.getProtocolLayer().applications().get(applicationId, options);
 
         return response.getBody();
     }

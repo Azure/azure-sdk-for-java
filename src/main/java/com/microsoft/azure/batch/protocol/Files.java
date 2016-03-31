@@ -37,9 +37,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in FileOperations.
+ * in Files.
  */
-public interface FileOperations {
+public interface Files {
     /**
      * Deletes the specified task file from the compute node where the task ran.
      *

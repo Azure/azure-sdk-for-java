@@ -23,9 +23,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in ApplicationOperations.
+ * in Applications.
  */
-public interface ApplicationOperations {
+public interface Applications {
     /**
      * Lists all of the applications available in the specified account.
      *

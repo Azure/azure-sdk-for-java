@@ -45,9 +45,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in ComputeNodeOperations.
+ * in ComputeNodes.
  */
-public interface ComputeNodeOperations {
+public interface ComputeNodes {
     /**
      * Adds a user account to the specified compute node.
      *

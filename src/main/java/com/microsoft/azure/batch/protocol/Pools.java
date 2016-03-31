@@ -61,9 +61,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in PoolOperations.
+ * in Pools.
  */
-public interface PoolOperations {
+public interface Pools {
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      *

@@ -71,30 +71,30 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in ComputeNodeOperations.
+ * in ComputeNodes.
  */
-public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
+public final class ComputeNodesImpl implements ComputeNodes {
     /** The Retrofit service to perform REST calls. */
-    private ComputeNodeService service;
+    private ComputeNodesService service;
     /** The service client containing this operation class. */
     private BatchServiceClient client;
 
     /**
-     * Initializes an instance of ComputeNodeOperations.
+     * Initializes an instance of ComputeNodes.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ComputeNodeOperationsImpl(Retrofit retrofit, BatchServiceClient client) {
-        this.service = retrofit.create(ComputeNodeService.class);
+    public ComputeNodesImpl(Retrofit retrofit, BatchServiceClient client) {
+        this.service = retrofit.create(ComputeNodesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeNodeOperations to be
+     * The interface defining all the services for ComputeNodes to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface ComputeNodeService {
+    interface ComputeNodesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/users")
         Call<ResponseBody> addUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body ComputeNodeUser user, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);

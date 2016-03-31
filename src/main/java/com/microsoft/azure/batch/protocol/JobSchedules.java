@@ -42,9 +42,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in JobScheduleOperations.
+ * in JobSchedules.
  */
-public interface JobScheduleOperations {
+public interface JobSchedules {
     /**
      * Checks the specified job schedule exists.
      *

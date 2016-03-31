@@ -51,9 +51,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in JobOperations.
+ * in Jobs.
  */
-public interface JobOperations {
+public interface Jobs {
     /**
      * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
