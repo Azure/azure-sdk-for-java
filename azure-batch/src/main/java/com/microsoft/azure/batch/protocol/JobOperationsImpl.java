@@ -176,9 +176,25 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions = null;
         Integer timeout = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            timeout = jobGetAllJobsLifetimeStatisticsOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            clientRequestId = jobGetAllJobsLifetimeStatisticsOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            returnClientRequestId = jobGetAllJobsLifetimeStatisticsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            ocpDate = jobGetAllJobsLifetimeStatisticsOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getAllJobsLifetimeStatisticsDelegate(call.execute());
     }
@@ -200,9 +216,25 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions = null;
         Integer timeout = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            timeout = jobGetAllJobsLifetimeStatisticsOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            clientRequestId = jobGetAllJobsLifetimeStatisticsOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            returnClientRequestId = jobGetAllJobsLifetimeStatisticsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobGetAllJobsLifetimeStatisticsOptions != null) {
+            ocpDate = jobGetAllJobsLifetimeStatisticsOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
@@ -333,13 +365,49 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobDeleteOptions jobDeleteOptions = null;
         Integer timeout = null;
+        if (jobDeleteOptions != null) {
+            timeout = jobDeleteOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobDeleteOptions != null) {
+            clientRequestId = jobDeleteOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobDeleteOptions != null) {
+            returnClientRequestId = jobDeleteOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobDeleteOptions != null) {
+            ocpDate = jobDeleteOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobDeleteOptions != null) {
+            ifMatch = jobDeleteOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobDeleteOptions != null) {
+            ifNoneMatch = jobDeleteOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobDeleteOptions != null) {
+            ifModifiedSince = jobDeleteOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobDeleteOptions != null) {
+            ifUnmodifiedSince = jobDeleteOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return deleteDelegate(call.execute());
     }
@@ -366,13 +434,49 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobDeleteOptions jobDeleteOptions = null;
         Integer timeout = null;
+        if (jobDeleteOptions != null) {
+            timeout = jobDeleteOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobDeleteOptions != null) {
+            clientRequestId = jobDeleteOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobDeleteOptions != null) {
+            returnClientRequestId = jobDeleteOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobDeleteOptions != null) {
+            ocpDate = jobDeleteOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobDeleteOptions != null) {
+            ifMatch = jobDeleteOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobDeleteOptions != null) {
+            ifNoneMatch = jobDeleteOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobDeleteOptions != null) {
+            ifModifiedSince = jobDeleteOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobDeleteOptions != null) {
+            ifUnmodifiedSince = jobDeleteOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -560,11 +664,33 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobGetOptions jobGetOptions = null;
         String select = null;
+        if (jobGetOptions != null) {
+            select = jobGetOptions.getSelect();
+        }
         String expand = null;
+        if (jobGetOptions != null) {
+            expand = jobGetOptions.getExpand();
+        }
         Integer timeout = null;
+        if (jobGetOptions != null) {
+            timeout = jobGetOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobGetOptions != null) {
+            clientRequestId = jobGetOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobGetOptions != null) {
+            returnClientRequestId = jobGetOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobGetOptions != null) {
+            ocpDate = jobGetOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getDelegate(call.execute());
     }
@@ -591,11 +717,33 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobGetOptions jobGetOptions = null;
         String select = null;
+        if (jobGetOptions != null) {
+            select = jobGetOptions.getSelect();
+        }
         String expand = null;
+        if (jobGetOptions != null) {
+            expand = jobGetOptions.getExpand();
+        }
         Integer timeout = null;
+        if (jobGetOptions != null) {
+            timeout = jobGetOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobGetOptions != null) {
+            clientRequestId = jobGetOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobGetOptions != null) {
+            returnClientRequestId = jobGetOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobGetOptions != null) {
+            ocpDate = jobGetOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCallback) {
@@ -756,13 +904,49 @@ public final class JobOperationsImpl implements JobOperations {
         Validator.validate(jobPatchParameter);
         final JobPatchOptions jobPatchOptions = null;
         Integer timeout = null;
+        if (jobPatchOptions != null) {
+            timeout = jobPatchOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobPatchOptions != null) {
+            clientRequestId = jobPatchOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobPatchOptions != null) {
+            returnClientRequestId = jobPatchOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobPatchOptions != null) {
+            ocpDate = jobPatchOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobPatchOptions != null) {
+            ifMatch = jobPatchOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobPatchOptions != null) {
+            ifNoneMatch = jobPatchOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobPatchOptions != null) {
+            ifModifiedSince = jobPatchOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobPatchOptions != null) {
+            ifUnmodifiedSince = jobPatchOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return patchDelegate(call.execute());
     }
@@ -795,13 +979,49 @@ public final class JobOperationsImpl implements JobOperations {
         Validator.validate(jobPatchParameter, serviceCallback);
         final JobPatchOptions jobPatchOptions = null;
         Integer timeout = null;
+        if (jobPatchOptions != null) {
+            timeout = jobPatchOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobPatchOptions != null) {
+            clientRequestId = jobPatchOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobPatchOptions != null) {
+            returnClientRequestId = jobPatchOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobPatchOptions != null) {
+            ocpDate = jobPatchOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobPatchOptions != null) {
+            ifMatch = jobPatchOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobPatchOptions != null) {
+            ifNoneMatch = jobPatchOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobPatchOptions != null) {
+            ifModifiedSince = jobPatchOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobPatchOptions != null) {
+            ifUnmodifiedSince = jobPatchOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1005,13 +1225,49 @@ public final class JobOperationsImpl implements JobOperations {
         Validator.validate(jobUpdateParameter);
         final JobUpdateOptions jobUpdateOptions = null;
         Integer timeout = null;
+        if (jobUpdateOptions != null) {
+            timeout = jobUpdateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobUpdateOptions != null) {
+            clientRequestId = jobUpdateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobUpdateOptions != null) {
+            returnClientRequestId = jobUpdateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobUpdateOptions != null) {
+            ocpDate = jobUpdateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobUpdateOptions != null) {
+            ifMatch = jobUpdateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobUpdateOptions != null) {
+            ifNoneMatch = jobUpdateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobUpdateOptions != null) {
+            ifModifiedSince = jobUpdateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobUpdateOptions != null) {
+            ifUnmodifiedSince = jobUpdateOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return updateDelegate(call.execute());
     }
@@ -1044,13 +1300,49 @@ public final class JobOperationsImpl implements JobOperations {
         Validator.validate(jobUpdateParameter, serviceCallback);
         final JobUpdateOptions jobUpdateOptions = null;
         Integer timeout = null;
+        if (jobUpdateOptions != null) {
+            timeout = jobUpdateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobUpdateOptions != null) {
+            clientRequestId = jobUpdateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobUpdateOptions != null) {
+            returnClientRequestId = jobUpdateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobUpdateOptions != null) {
+            ocpDate = jobUpdateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobUpdateOptions != null) {
+            ifMatch = jobUpdateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobUpdateOptions != null) {
+            ifNoneMatch = jobUpdateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobUpdateOptions != null) {
+            ifModifiedSince = jobUpdateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobUpdateOptions != null) {
+            ifUnmodifiedSince = jobUpdateOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1253,15 +1545,51 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobDisableOptions jobDisableOptions = null;
         Integer timeout = null;
+        if (jobDisableOptions != null) {
+            timeout = jobDisableOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobDisableOptions != null) {
+            clientRequestId = jobDisableOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobDisableOptions != null) {
+            returnClientRequestId = jobDisableOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobDisableOptions != null) {
+            ocpDate = jobDisableOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobDisableOptions != null) {
+            ifMatch = jobDisableOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (jobDisableOptions != null) {
+            ifNoneMatch = jobDisableOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobDisableOptions != null) {
+            ifModifiedSince = jobDisableOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobDisableOptions != null) {
+            ifUnmodifiedSince = jobDisableOptions.getIfUnmodifiedSince();
+        }
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
         jobDisableParameter.setDisableTasks(disableTasks);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.disable(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter);
         return disableDelegate(call.execute());
     }
@@ -1293,15 +1621,51 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobDisableOptions jobDisableOptions = null;
         Integer timeout = null;
+        if (jobDisableOptions != null) {
+            timeout = jobDisableOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobDisableOptions != null) {
+            clientRequestId = jobDisableOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobDisableOptions != null) {
+            returnClientRequestId = jobDisableOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobDisableOptions != null) {
+            ocpDate = jobDisableOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobDisableOptions != null) {
+            ifMatch = jobDisableOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (jobDisableOptions != null) {
+            ifNoneMatch = jobDisableOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobDisableOptions != null) {
+            ifModifiedSince = jobDisableOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobDisableOptions != null) {
+            ifUnmodifiedSince = jobDisableOptions.getIfUnmodifiedSince();
+        }
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
         jobDisableParameter.setDisableTasks(disableTasks);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.disable(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1502,13 +1866,49 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobEnableOptions jobEnableOptions = null;
         Integer timeout = null;
+        if (jobEnableOptions != null) {
+            timeout = jobEnableOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobEnableOptions != null) {
+            clientRequestId = jobEnableOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobEnableOptions != null) {
+            returnClientRequestId = jobEnableOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobEnableOptions != null) {
+            ocpDate = jobEnableOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobEnableOptions != null) {
+            ifMatch = jobEnableOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobEnableOptions != null) {
+            ifNoneMatch = jobEnableOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobEnableOptions != null) {
+            ifModifiedSince = jobEnableOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobEnableOptions != null) {
+            ifUnmodifiedSince = jobEnableOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.enable(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return enableDelegate(call.execute());
     }
@@ -1535,13 +1935,49 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobEnableOptions jobEnableOptions = null;
         Integer timeout = null;
+        if (jobEnableOptions != null) {
+            timeout = jobEnableOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobEnableOptions != null) {
+            clientRequestId = jobEnableOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobEnableOptions != null) {
+            returnClientRequestId = jobEnableOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobEnableOptions != null) {
+            ocpDate = jobEnableOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobEnableOptions != null) {
+            ifMatch = jobEnableOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobEnableOptions != null) {
+            ifNoneMatch = jobEnableOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobEnableOptions != null) {
+            ifModifiedSince = jobEnableOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobEnableOptions != null) {
+            ifUnmodifiedSince = jobEnableOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.enable(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1730,15 +2166,54 @@ public final class JobOperationsImpl implements JobOperations {
         final String terminateReason = null;
         final JobTerminateOptions jobTerminateOptions = null;
         Integer timeout = null;
+        if (jobTerminateOptions != null) {
+            timeout = jobTerminateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobTerminateOptions != null) {
+            clientRequestId = jobTerminateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobTerminateOptions != null) {
+            returnClientRequestId = jobTerminateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobTerminateOptions != null) {
+            ocpDate = jobTerminateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobTerminateOptions != null) {
+            ifMatch = jobTerminateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobTerminateOptions != null) {
+            ifNoneMatch = jobTerminateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobTerminateOptions != null) {
+            ifModifiedSince = jobTerminateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobTerminateOptions != null) {
+            ifUnmodifiedSince = jobTerminateOptions.getIfUnmodifiedSince();
+        }
+        JobTerminateParameter jobTerminateParameter = null;
+        if (terminateReason != null) {
+            jobTerminateParameter = new JobTerminateParameter();
+            jobTerminateParameter.setTerminateReason(terminateReason);
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
-        jobTerminateParameter = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter);
         return terminateDelegate(call.execute());
     }
@@ -1766,15 +2241,54 @@ public final class JobOperationsImpl implements JobOperations {
         final String terminateReason = null;
         final JobTerminateOptions jobTerminateOptions = null;
         Integer timeout = null;
+        if (jobTerminateOptions != null) {
+            timeout = jobTerminateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobTerminateOptions != null) {
+            clientRequestId = jobTerminateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (jobTerminateOptions != null) {
+            returnClientRequestId = jobTerminateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobTerminateOptions != null) {
+            ocpDate = jobTerminateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (jobTerminateOptions != null) {
+            ifMatch = jobTerminateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (jobTerminateOptions != null) {
+            ifNoneMatch = jobTerminateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (jobTerminateOptions != null) {
+            ifModifiedSince = jobTerminateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (jobTerminateOptions != null) {
+            ifUnmodifiedSince = jobTerminateOptions.getIfUnmodifiedSince();
+        }
+        JobTerminateParameter jobTerminateParameter = null;
+        if (terminateReason != null) {
+            jobTerminateParameter = new JobTerminateParameter();
+            jobTerminateParameter.setTerminateReason(terminateReason);
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
-        jobTerminateParameter = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1975,9 +2489,25 @@ public final class JobOperationsImpl implements JobOperations {
         Validator.validate(job);
         final JobAddOptions jobAddOptions = null;
         Integer timeout = null;
+        if (jobAddOptions != null) {
+            timeout = jobAddOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobAddOptions != null) {
+            clientRequestId = jobAddOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobAddOptions != null) {
+            returnClientRequestId = jobAddOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobAddOptions != null) {
+            ocpDate = jobAddOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(job, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -2005,9 +2535,25 @@ public final class JobOperationsImpl implements JobOperations {
         Validator.validate(job, serviceCallback);
         final JobAddOptions jobAddOptions = null;
         Integer timeout = null;
+        if (jobAddOptions != null) {
+            timeout = jobAddOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobAddOptions != null) {
+            clientRequestId = jobAddOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobAddOptions != null) {
+            returnClientRequestId = jobAddOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobAddOptions != null) {
+            ocpDate = jobAddOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(job, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2145,19 +2691,54 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListOptions jobListOptions = null;
         String filter = null;
+        if (jobListOptions != null) {
+            filter = jobListOptions.getFilter();
+        }
         String select = null;
+        if (jobListOptions != null) {
+            select = jobListOptions.getSelect();
+        }
         String expand = null;
+        if (jobListOptions != null) {
+            expand = jobListOptions.getExpand();
+        }
         Integer maxResults = null;
+        if (jobListOptions != null) {
+            maxResults = jobListOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (jobListOptions != null) {
+            timeout = jobListOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobListOptions != null) {
+            clientRequestId = jobListOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListOptions != null) {
+            returnClientRequestId = jobListOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListOptions != null) {
+            ocpDate = jobListOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> response = listDelegate(call.execute());
         PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
+                JobListNextOptions jobListNextOptions = null;
+                if (jobListOptions != null) {
+                    jobListNextOptions = new JobListNextOptions();
+                    jobListNextOptions.setClientRequestId(jobListOptions.getClientRequestId());
+                    jobListNextOptions.setReturnClientRequestId(jobListOptions.getReturnClientRequestId());
+                    jobListNextOptions.setOcpDate(jobListOptions.getOcpDate());
+                }
+                return listNext(nextPageLink, jobListNextOptions).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -2180,13 +2761,41 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListOptions jobListOptions = null;
         String filter = null;
+        if (jobListOptions != null) {
+            filter = jobListOptions.getFilter();
+        }
         String select = null;
+        if (jobListOptions != null) {
+            select = jobListOptions.getSelect();
+        }
         String expand = null;
+        if (jobListOptions != null) {
+            expand = jobListOptions.getExpand();
+        }
         Integer maxResults = null;
+        if (jobListOptions != null) {
+            maxResults = jobListOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (jobListOptions != null) {
+            timeout = jobListOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobListOptions != null) {
+            clientRequestId = jobListOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListOptions != null) {
+            returnClientRequestId = jobListOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListOptions != null) {
+            ocpDate = jobListOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -2197,7 +2806,14 @@ public final class JobOperationsImpl implements JobOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        JobListNextOptions jobListNextOptions = null;
+                        if (jobListOptions != null) {
+                            jobListNextOptions = new JobListNextOptions();
+                            jobListNextOptions.setClientRequestId(jobListOptions.getClientRequestId());
+                            jobListNextOptions.setReturnClientRequestId(jobListOptions.getReturnClientRequestId());
+                            jobListNextOptions.setOcpDate(jobListOptions.getOcpDate());
+                        }
+                        listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -2384,19 +3000,54 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListFromJobScheduleOptions jobListFromJobScheduleOptions = null;
         String filter = null;
+        if (jobListFromJobScheduleOptions != null) {
+            filter = jobListFromJobScheduleOptions.getFilter();
+        }
         String select = null;
+        if (jobListFromJobScheduleOptions != null) {
+            select = jobListFromJobScheduleOptions.getSelect();
+        }
         String expand = null;
+        if (jobListFromJobScheduleOptions != null) {
+            expand = jobListFromJobScheduleOptions.getExpand();
+        }
         Integer maxResults = null;
+        if (jobListFromJobScheduleOptions != null) {
+            maxResults = jobListFromJobScheduleOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (jobListFromJobScheduleOptions != null) {
+            timeout = jobListFromJobScheduleOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobListFromJobScheduleOptions != null) {
+            clientRequestId = jobListFromJobScheduleOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListFromJobScheduleOptions != null) {
+            returnClientRequestId = jobListFromJobScheduleOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListFromJobScheduleOptions != null) {
+            ocpDate = jobListFromJobScheduleOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleDelegate(call.execute());
         PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listFromJobScheduleNext(nextPageLink, null).getBody();
+                JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
+                if (jobListFromJobScheduleOptions != null) {
+                    jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
+                    jobListFromJobScheduleNextOptions.setClientRequestId(jobListFromJobScheduleOptions.getClientRequestId());
+                    jobListFromJobScheduleNextOptions.setReturnClientRequestId(jobListFromJobScheduleOptions.getReturnClientRequestId());
+                    jobListFromJobScheduleNextOptions.setOcpDate(jobListFromJobScheduleOptions.getOcpDate());
+                }
+                return listFromJobScheduleNext(nextPageLink, jobListFromJobScheduleNextOptions).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -2424,13 +3075,41 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListFromJobScheduleOptions jobListFromJobScheduleOptions = null;
         String filter = null;
+        if (jobListFromJobScheduleOptions != null) {
+            filter = jobListFromJobScheduleOptions.getFilter();
+        }
         String select = null;
+        if (jobListFromJobScheduleOptions != null) {
+            select = jobListFromJobScheduleOptions.getSelect();
+        }
         String expand = null;
+        if (jobListFromJobScheduleOptions != null) {
+            expand = jobListFromJobScheduleOptions.getExpand();
+        }
         Integer maxResults = null;
+        if (jobListFromJobScheduleOptions != null) {
+            maxResults = jobListFromJobScheduleOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (jobListFromJobScheduleOptions != null) {
+            timeout = jobListFromJobScheduleOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobListFromJobScheduleOptions != null) {
+            clientRequestId = jobListFromJobScheduleOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListFromJobScheduleOptions != null) {
+            returnClientRequestId = jobListFromJobScheduleOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListFromJobScheduleOptions != null) {
+            ocpDate = jobListFromJobScheduleOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -2441,7 +3120,14 @@ public final class JobOperationsImpl implements JobOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
+                        if (jobListFromJobScheduleOptions != null) {
+                            jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
+                            jobListFromJobScheduleNextOptions.setClientRequestId(jobListFromJobScheduleOptions.getClientRequestId());
+                            jobListFromJobScheduleNextOptions.setReturnClientRequestId(jobListFromJobScheduleOptions.getReturnClientRequestId());
+                            jobListFromJobScheduleNextOptions.setOcpDate(jobListFromJobScheduleOptions.getOcpDate());
+                        }
+                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -2637,18 +3323,50 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions = null;
         String filter = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            filter = jobListPreparationAndReleaseTaskStatusOptions.getFilter();
+        }
         String select = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            select = jobListPreparationAndReleaseTaskStatusOptions.getSelect();
+        }
         Integer maxResults = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            maxResults = jobListPreparationAndReleaseTaskStatusOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            timeout = jobListPreparationAndReleaseTaskStatusOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            clientRequestId = jobListPreparationAndReleaseTaskStatusOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            returnClientRequestId = jobListPreparationAndReleaseTaskStatusOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            ocpDate = jobListPreparationAndReleaseTaskStatusOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusDelegate(call.execute());
         PagedList<JobPreparationAndReleaseTaskExecutionInformation> result = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
             @Override
             public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listPreparationAndReleaseTaskStatusNext(nextPageLink, null).getBody();
+                JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
+                if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+                    jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
+                    jobListPreparationAndReleaseTaskStatusNextOptions.setClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.getClientRequestId());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.setReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.getReturnClientRequestId());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.setOcpDate(jobListPreparationAndReleaseTaskStatusOptions.getOcpDate());
+                }
+                return listPreparationAndReleaseTaskStatusNext(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -2676,12 +3394,37 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions = null;
         String filter = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            filter = jobListPreparationAndReleaseTaskStatusOptions.getFilter();
+        }
         String select = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            select = jobListPreparationAndReleaseTaskStatusOptions.getSelect();
+        }
         Integer maxResults = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            maxResults = jobListPreparationAndReleaseTaskStatusOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            timeout = jobListPreparationAndReleaseTaskStatusOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            clientRequestId = jobListPreparationAndReleaseTaskStatusOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            returnClientRequestId = jobListPreparationAndReleaseTaskStatusOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+            ocpDate = jobListPreparationAndReleaseTaskStatusOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
@@ -2692,7 +3435,14 @@ public final class JobOperationsImpl implements JobOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
+                        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+                            jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
+                            jobListPreparationAndReleaseTaskStatusNextOptions.setClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.getClientRequestId());
+                            jobListPreparationAndReleaseTaskStatusNextOptions.setReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.getReturnClientRequestId());
+                            jobListPreparationAndReleaseTaskStatusNextOptions.setOcpDate(jobListPreparationAndReleaseTaskStatusOptions.getOcpDate());
+                        }
+                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -2877,8 +3627,21 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListNextOptions jobListNextOptions = null;
         String clientRequestId = null;
+        if (jobListNextOptions != null) {
+            clientRequestId = jobListNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListNextOptions != null) {
+            returnClientRequestId = jobListNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListNextOptions != null) {
+            ocpDate = jobListNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -2902,8 +3665,21 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListNextOptions jobListNextOptions = null;
         String clientRequestId = null;
+        if (jobListNextOptions != null) {
+            clientRequestId = jobListNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListNextOptions != null) {
+            returnClientRequestId = jobListNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListNextOptions != null) {
+            ocpDate = jobListNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -2914,7 +3690,7 @@ public final class JobOperationsImpl implements JobOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -3040,8 +3816,21 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
         String clientRequestId = null;
+        if (jobListFromJobScheduleNextOptions != null) {
+            clientRequestId = jobListFromJobScheduleNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListFromJobScheduleNextOptions != null) {
+            returnClientRequestId = jobListFromJobScheduleNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListFromJobScheduleNextOptions != null) {
+            ocpDate = jobListFromJobScheduleNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listFromJobScheduleNextDelegate(call.execute());
     }
@@ -3065,8 +3854,21 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
         String clientRequestId = null;
+        if (jobListFromJobScheduleNextOptions != null) {
+            clientRequestId = jobListFromJobScheduleNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListFromJobScheduleNextOptions != null) {
+            returnClientRequestId = jobListFromJobScheduleNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListFromJobScheduleNextOptions != null) {
+            ocpDate = jobListFromJobScheduleNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -3077,7 +3879,7 @@ public final class JobOperationsImpl implements JobOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -3203,8 +4005,21 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
         String clientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
+            clientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
+            returnClientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
+            ocpDate = jobListPreparationAndReleaseTaskStatusNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listPreparationAndReleaseTaskStatusNextDelegate(call.execute());
     }
@@ -3228,8 +4043,21 @@ public final class JobOperationsImpl implements JobOperations {
         }
         final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
         String clientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
+            clientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
+            returnClientRequestId = jobListPreparationAndReleaseTaskStatusNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (jobListPreparationAndReleaseTaskStatusNextOptions != null) {
+            ocpDate = jobListPreparationAndReleaseTaskStatusNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
@@ -3240,7 +4068,7 @@ public final class JobOperationsImpl implements JobOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }

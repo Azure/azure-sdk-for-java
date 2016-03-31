@@ -121,6 +121,12 @@ public interface BatchServiceClient {
     PoolOperations getPoolOperations();
 
     /**
+     * Gets the AccountOperations object to access its operations.
+     * @return the AccountOperations object.
+     */
+    AccountOperations getAccountOperations();
+
+    /**
      * Gets the JobOperations object to access its operations.
      * @return the JobOperations object.
      */

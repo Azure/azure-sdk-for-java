@@ -19,9 +19,9 @@ public class PoolInformation {
     private String poolId;
 
     /**
-     * Gets or sets characteristics for a temporary 'auto pool.' The Batch
-     * service will create this auto pool and run all the tasks of the job on
-     * it, and will delete the pool once the job has completed. You must
+     * Gets or sets characteristics for a temporary 'auto pool'. The Batch
+     * service will create this auto pool and run all of the tasks of the job
+     * on it, and will delete the pool once the job has completed. You must
      * specify either PoolId or AutoPoolSpecification, but not both.
      */
     private AutoPoolSpecification autoPoolSpecification;

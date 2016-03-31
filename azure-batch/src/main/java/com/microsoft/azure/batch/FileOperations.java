@@ -153,6 +153,7 @@ public class FileOperations implements IInheritedBehaviors {
         properties.setContentType(response.getHeaders().getContentType());
         properties.setCreationTime(response.getHeaders().getOcpCreationTime());
         properties.setLastModified(response.getHeaders().getLastModified());
+        properties.setFileMode(response.getHeaders().getOcpBatchFileMode());
         return properties;
     }
 
@@ -172,6 +173,7 @@ public class FileOperations implements IInheritedBehaviors {
         properties.setContentType(response.getHeaders().getContentType());
         properties.setCreationTime(response.getHeaders().getOcpCreationTime());
         properties.setLastModified(response.getHeaders().getLastModified());
+        properties.setFileMode(response.getHeaders().getOcpBatchFileMode());
         return properties;
     }
 
