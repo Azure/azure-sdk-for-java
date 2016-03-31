@@ -20,13 +20,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsManagementTestBase {
     private static String rgName = generateName("javaadlarg");
-    private static String location = "eastus2";
+    private static String location;
     private static String adlsAcct = generateName("javaadlsacct");
     private static String adlaAcct = generateName("javaadlaacct");
 
@@ -40,10 +41,10 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     private static String secretName = generateName("testsecret1");
     private static String secretPwd = generateName("testsecretpwd1");
 
-    private static String catalogCreationScript = String.format("\n" +
-            "DROP DATABASE IF EXISTS %s; CREATE DATABASE %s; \n" +
+    private static String catalogCreationScript = MessageFormat.format("\n" +
+            "DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; \n" +
             "//Create Table\n" +
-            "CREATE TABLE %s.dbo.%s\n" +
+            "CREATE TABLE {0}.dbo.{1}\n" +
             "(\n" +
             "        //Define schema of table\n" +
             "        UserId          int, \n" +
@@ -57,10 +58,10 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "    CLUSTERED (Region ASC) //Column to cluster by\n" +
             "    PARTITIONED BY HASH (Region) //Column to partition by\n" +
             ");\n" +
-            "DROP FUNCTION IF EXISTS %s.dbo.%s;\n" +
+            "DROP FUNCTION IF EXISTS {0}.dbo.{2};\n" +
             "\n" +
             "//create table weblogs on space-delimited website log data\n" +
-            "CREATE FUNCTION %s.dbo.%s()\n" +
+            "CREATE FUNCTION {0}.dbo.{2}()\n" +
             "RETURNS @result TABLE\n" +
             "(\n" +
             "    s_date DateTime,\n" +
@@ -106,12 +107,12 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "        sc_bytes int,\n" +
             "        cs_bytes int,\n" +
             "        s_timetaken int\n" +
-            "    FROM @\"\"/Samples/Data/WebLog.log\"\"\n" +
+            "    FROM @\"/Samples/Data/WebLog.log\"\n" +
             "    USING Extractors.Text(delimiter:' ');\n" +
             "\n" +
             "RETURN;\n" +
             "END;\n" +
-            "CREATE VIEW %s.dbo.%s \n" +
+            "CREATE VIEW {0}.dbo.{3} \n" +
             "AS \n" +
             "    SELECT * FROM \n" +
             "    (\n" +
@@ -119,9 +120,9 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             "    ) \n" +
             "AS \n" +
             "T(a, b);\n" +
-            "CREATE PROCEDURE %s.dbo.%s()\n" +
+            "CREATE PROCEDURE {0}.dbo.{4}()\n" +
             "AS BEGIN\n" +
-            "  CREATE VIEW %s.dbo.%s \n" +
+            "  CREATE VIEW {0}.dbo.{3} \n" +
             "  AS \n" +
             "    SELECT * FROM \n" +
             "    (\n" +
@@ -134,6 +135,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
+        location = environmentLocation;
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);

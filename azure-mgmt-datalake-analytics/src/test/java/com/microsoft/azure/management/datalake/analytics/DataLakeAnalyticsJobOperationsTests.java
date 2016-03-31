@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManagementTestBase {
     private static String rgName = generateName("javaadlarg");
-    private static String location = "eastus2";
+    private static String location;
     private static String adlsAcct = generateName("javaadlsacct");
     private static String adlaAcct = generateName("javaadlaacct");
     private static String jobScript = "DROP DATABASE IF EXISTS testdb; CREATE DATABASE testdb;";
@@ -30,6 +30,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
+        location = environmentLocation;
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
@@ -54,8 +55,8 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         createParams.setName(adlaAcct);
         createParams.setProperties(createProperties);
         dataLakeAnalyticsAccountManagementClient.getAccountOperations().create(rgName, adlaAcct, createParams);
-        // Sleep for two minutes to ensure the account is totally provisioned.
-        Thread.sleep(120000);
+        // Sleep for three minutes to ensure the account is totally provisioned.
+        Thread.sleep(180000);
     }
 
     @AfterClass

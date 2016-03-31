@@ -77,147 +77,147 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     interface CatalogService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Call<ResponseBody> createSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Call<ResponseBody> updateSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Call<ResponseBody> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "catalog/usql/databases/{databaseName}/secrets/{secretName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}")
-        Call<ResponseBody> getExternalDataSource(@Path("databaseName") String databaseName, @Path("externalDataSourceName") String externalDataSourceName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getExternalDataSource(@Path("databaseName") String databaseName, @Path("externalDataSourceName") String externalDataSourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/externaldatasources")
-        Call<ResponseBody> listExternalDataSources(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listExternalDataSources(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
-        Call<ResponseBody> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/credentials")
-        Call<ResponseBody> listCredentials(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listCredentials(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures/{procedureName}")
-        Call<ResponseBody> getProcedure(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("procedureName") String procedureName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getProcedure(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("procedureName") String procedureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures")
-        Call<ResponseBody> listProcedures(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listProcedures(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}")
-        Call<ResponseBody> getTable(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTable(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables")
-        Call<ResponseBody> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}")
-        Call<ResponseBody> getView(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("viewName") String viewName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getView(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("viewName") String viewName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views")
-        Call<ResponseBody> listViews(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listViews(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics/{statisticsName}")
-        Call<ResponseBody> getTableStatistic(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("statisticsName") String statisticsName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTableStatistic(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("statisticsName") String statisticsName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics")
-        Call<ResponseBody> listTableStatistics(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableStatistics(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/types")
-        Call<ResponseBody> listTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") USqlType filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") USqlType filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions/{tableValuedFunctionName}")
-        Call<ResponseBody> getTableValuedFunction(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableValuedFunctionName") String tableValuedFunctionName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTableValuedFunction(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableValuedFunctionName") String tableValuedFunctionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions")
-        Call<ResponseBody> listTableValuedFunctions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableValuedFunctions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/assemblies/{assemblyName}")
-        Call<ResponseBody> getAssembly(@Path("databaseName") String databaseName, @Path("assemblyName") String assemblyName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAssembly(@Path("databaseName") String databaseName, @Path("assemblyName") String assemblyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/assemblies")
-        Call<ResponseBody> listAssemblies(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAssemblies(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}")
-        Call<ResponseBody> getSchema(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSchema(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas")
-        Call<ResponseBody> listSchemas(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSchemas(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}")
-        Call<ResponseBody> getDatabase(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDatabase(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases")
-        Call<ResponseBody> listDatabases(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDatabases(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listExternalDataSourcesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listExternalDataSourcesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listCredentialsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listCredentialsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listProceduresNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listProceduresNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTablesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTablesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listViewsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listViewsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTableStatisticsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableStatisticsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTypesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTypesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTableValuedFunctionsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableValuedFunctionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listAssembliesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAssembliesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listSchemasNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSchemasNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listDatabasesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDatabasesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
     }
 
@@ -252,13 +252,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createSecretDelegate(call.execute());
     }
 
@@ -301,14 +298,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecret>(serviceCallback) {
             @Override
@@ -361,13 +354,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return updateSecretDelegate(call.execute());
     }
 
@@ -410,14 +400,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecret>(serviceCallback) {
             @Override
@@ -466,12 +452,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSecretDelegate(call.execute());
     }
 
@@ -509,13 +492,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecret>(serviceCallback) {
             @Override
@@ -564,12 +543,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteSecretDelegate(call.execute());
     }
 
@@ -607,13 +583,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -661,12 +633,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getExternalDataSourceDelegate(call.execute());
     }
 
@@ -704,13 +673,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlExternalDataSource>(serviceCallback) {
             @Override
@@ -755,9 +720,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -767,7 +729,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlExternalDataSource>> response = listExternalDataSourcesDelegate(call.execute());
         PagedList<USqlExternalDataSource> result = new PagedList<USqlExternalDataSource>(response.getBody()) {
             @Override
@@ -807,10 +769,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -820,7 +778,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSource>>(serviceCallback) {
             @Override
@@ -872,12 +830,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlExternalDataSource>> response = listExternalDataSourcesDelegate(call.execute());
         PagedList<USqlExternalDataSource> result = new PagedList<USqlExternalDataSource>(response.getBody()) {
             @Override
@@ -924,13 +879,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSource>>(serviceCallback) {
             @Override
@@ -986,12 +937,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getCredentialDelegate(call.execute());
     }
 
@@ -1029,13 +977,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlCredential>(serviceCallback) {
             @Override
@@ -1080,9 +1024,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -1092,7 +1033,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlCredential>> response = listCredentialsDelegate(call.execute());
         PagedList<USqlCredential> result = new PagedList<USqlCredential>(response.getBody()) {
             @Override
@@ -1132,10 +1073,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -1145,7 +1082,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredential>>(serviceCallback) {
             @Override
@@ -1197,12 +1134,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlCredential>> response = listCredentialsDelegate(call.execute());
         PagedList<USqlCredential> result = new PagedList<USqlCredential>(response.getBody()) {
             @Override
@@ -1249,13 +1183,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredential>>(serviceCallback) {
             @Override
@@ -1315,12 +1245,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getProcedureDelegate(call.execute());
     }
 
@@ -1363,13 +1290,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlProcedure>(serviceCallback) {
             @Override
@@ -1418,9 +1341,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -1430,7 +1350,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlProcedure>> response = listProceduresDelegate(call.execute());
         PagedList<USqlProcedure> result = new PagedList<USqlProcedure>(response.getBody()) {
             @Override
@@ -1475,10 +1395,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -1488,7 +1404,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedure>>(serviceCallback) {
             @Override
@@ -1544,12 +1460,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlProcedure>> response = listProceduresDelegate(call.execute());
         PagedList<USqlProcedure> result = new PagedList<USqlProcedure>(response.getBody()) {
             @Override
@@ -1601,13 +1514,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedure>>(serviceCallback) {
             @Override
@@ -1667,12 +1576,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getTableDelegate(call.execute());
     }
 
@@ -1715,13 +1621,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTable>(serviceCallback) {
             @Override
@@ -1770,9 +1672,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -1782,7 +1681,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTable>> response = listTablesDelegate(call.execute());
         PagedList<USqlTable> result = new PagedList<USqlTable>(response.getBody()) {
             @Override
@@ -1827,10 +1726,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -1840,7 +1735,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTable>>(serviceCallback) {
             @Override
@@ -1896,12 +1791,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTable>> response = listTablesDelegate(call.execute());
         PagedList<USqlTable> result = new PagedList<USqlTable>(response.getBody()) {
             @Override
@@ -1953,13 +1845,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTable>>(serviceCallback) {
             @Override
@@ -2019,12 +1907,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getViewDelegate(call.execute());
     }
 
@@ -2067,13 +1952,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlView>(serviceCallback) {
             @Override
@@ -2122,9 +2003,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -2134,7 +2012,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlView>> response = listViewsDelegate(call.execute());
         PagedList<USqlView> result = new PagedList<USqlView>(response.getBody()) {
             @Override
@@ -2179,10 +2057,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -2192,7 +2066,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlView>>(serviceCallback) {
             @Override
@@ -2248,12 +2122,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlView>> response = listViewsDelegate(call.execute());
         PagedList<USqlView> result = new PagedList<USqlView>(response.getBody()) {
             @Override
@@ -2305,13 +2176,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlView>>(serviceCallback) {
             @Override
@@ -2375,12 +2242,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getTableStatisticDelegate(call.execute());
     }
 
@@ -2428,13 +2292,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableStatistics>(serviceCallback) {
             @Override
@@ -2487,9 +2347,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -2499,7 +2356,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableStatistics>> response = listTableStatisticsDelegate(call.execute());
         PagedList<USqlTableStatistics> result = new PagedList<USqlTableStatistics>(response.getBody()) {
             @Override
@@ -2549,10 +2406,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -2562,7 +2415,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatistics>>(serviceCallback) {
             @Override
@@ -2622,12 +2475,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableStatistics>> response = listTableStatisticsDelegate(call.execute());
         PagedList<USqlTableStatistics> result = new PagedList<USqlTableStatistics>(response.getBody()) {
             @Override
@@ -2684,13 +2534,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatistics>>(serviceCallback) {
             @Override
@@ -2746,9 +2592,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final USqlType filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -2758,7 +2601,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlType>> response = listTypesDelegate(call.execute());
         PagedList<USqlType> result = new PagedList<USqlType>(response.getBody()) {
             @Override
@@ -2803,10 +2646,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final USqlType filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -2816,7 +2655,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlType>>(serviceCallback) {
             @Override
@@ -2872,13 +2711,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(filter);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlType>> response = listTypesDelegate(call.execute());
         PagedList<USqlType> result = new PagedList<USqlType>(response.getBody()) {
             @Override
@@ -2930,14 +2766,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(filter, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlType>>(serviceCallback) {
             @Override
@@ -2997,12 +2829,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getTableValuedFunctionDelegate(call.execute());
     }
 
@@ -3045,13 +2874,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableValuedFunction>(serviceCallback) {
             @Override
@@ -3100,9 +2925,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -3112,7 +2934,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableValuedFunction>> response = listTableValuedFunctionsDelegate(call.execute());
         PagedList<USqlTableValuedFunction> result = new PagedList<USqlTableValuedFunction>(response.getBody()) {
             @Override
@@ -3157,10 +2979,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -3170,7 +2988,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunction>>(serviceCallback) {
             @Override
@@ -3226,12 +3044,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableValuedFunction>> response = listTableValuedFunctionsDelegate(call.execute());
         PagedList<USqlTableValuedFunction> result = new PagedList<USqlTableValuedFunction>(response.getBody()) {
             @Override
@@ -3283,13 +3098,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunction>>(serviceCallback) {
             @Override
@@ -3345,12 +3156,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getAssemblyDelegate(call.execute());
     }
 
@@ -3388,13 +3196,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlAssembly>(serviceCallback) {
             @Override
@@ -3439,9 +3243,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -3451,7 +3252,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlAssemblyClr>> response = listAssembliesDelegate(call.execute());
         PagedList<USqlAssemblyClr> result = new PagedList<USqlAssemblyClr>(response.getBody()) {
             @Override
@@ -3491,10 +3292,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -3504,7 +3301,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClr>>(serviceCallback) {
             @Override
@@ -3556,12 +3353,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlAssemblyClr>> response = listAssembliesDelegate(call.execute());
         PagedList<USqlAssemblyClr> result = new PagedList<USqlAssemblyClr>(response.getBody()) {
             @Override
@@ -3608,13 +3402,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClr>>(serviceCallback) {
             @Override
@@ -3670,12 +3460,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSchemaDelegate(call.execute());
     }
 
@@ -3713,13 +3500,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSchema>(serviceCallback) {
             @Override
@@ -3764,9 +3547,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -3776,7 +3556,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlSchema>> response = listSchemasDelegate(call.execute());
         PagedList<USqlSchema> result = new PagedList<USqlSchema>(response.getBody()) {
             @Override
@@ -3816,10 +3596,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -3829,7 +3605,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchema>>(serviceCallback) {
             @Override
@@ -3881,12 +3657,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlSchema>> response = listSchemasDelegate(call.execute());
         PagedList<USqlSchema> result = new PagedList<USqlSchema>(response.getBody()) {
             @Override
@@ -3933,13 +3706,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchema>>(serviceCallback) {
             @Override
@@ -3991,12 +3760,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDatabaseDelegate(call.execute());
     }
 
@@ -4029,13 +3795,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlDatabase>(serviceCallback) {
             @Override
@@ -4076,9 +3838,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -4088,7 +3847,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlDatabase>> response = listDatabasesDelegate(call.execute());
         PagedList<USqlDatabase> result = new PagedList<USqlDatabase>(response.getBody()) {
             @Override
@@ -4123,10 +3882,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -4136,7 +3891,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabase>>(serviceCallback) {
             @Override
@@ -4184,12 +3939,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlDatabase>> response = listDatabasesDelegate(call.execute());
         PagedList<USqlDatabase> result = new PagedList<USqlDatabase>(response.getBody()) {
             @Override
@@ -4231,13 +3983,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabase>>(serviceCallback) {
             @Override
@@ -4279,10 +4027,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getAcceptLanguage());
         return listExternalDataSourcesNextDelegate(call.execute());
     }
 
@@ -4303,11 +4048,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSource>>(serviceCallback) {
             @Override
@@ -4349,10 +4090,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getAcceptLanguage());
         return listCredentialsNextDelegate(call.execute());
     }
 
@@ -4373,11 +4111,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredential>>(serviceCallback) {
             @Override
@@ -4419,10 +4153,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getAcceptLanguage());
         return listProceduresNextDelegate(call.execute());
     }
 
@@ -4443,11 +4174,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedure>>(serviceCallback) {
             @Override
@@ -4489,10 +4216,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getAcceptLanguage());
         return listTablesNextDelegate(call.execute());
     }
 
@@ -4513,11 +4237,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTable>>(serviceCallback) {
             @Override
@@ -4559,10 +4279,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getAcceptLanguage());
         return listViewsNextDelegate(call.execute());
     }
 
@@ -4583,11 +4300,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlView>>(serviceCallback) {
             @Override
@@ -4629,10 +4342,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getAcceptLanguage());
         return listTableStatisticsNextDelegate(call.execute());
     }
 
@@ -4653,11 +4363,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatistics>>(serviceCallback) {
             @Override
@@ -4699,10 +4405,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getAcceptLanguage());
         return listTypesNextDelegate(call.execute());
     }
 
@@ -4723,11 +4426,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlType>>(serviceCallback) {
             @Override
@@ -4769,10 +4468,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getAcceptLanguage());
         return listTableValuedFunctionsNextDelegate(call.execute());
     }
 
@@ -4793,11 +4489,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunction>>(serviceCallback) {
             @Override
@@ -4839,10 +4531,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getAcceptLanguage());
         return listAssembliesNextDelegate(call.execute());
     }
 
@@ -4863,11 +4552,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClr>>(serviceCallback) {
             @Override
@@ -4909,10 +4594,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getAcceptLanguage());
         return listSchemasNextDelegate(call.execute());
     }
 
@@ -4933,11 +4615,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchema>>(serviceCallback) {
             @Override
@@ -4979,10 +4657,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getAcceptLanguage());
         return listDatabasesNextDelegate(call.execute());
     }
 
@@ -5003,11 +4678,7 @@ public final class CatalogOperationsImpl implements CatalogOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabase>>(serviceCallback) {
             @Override

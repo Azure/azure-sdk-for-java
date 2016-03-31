@@ -3,7 +3,7 @@
 // license information.
 
 /**
- * This package contains the classes for DataLakeAnalyticsCatalogManagementClient.
- * Creates an Azure Data Lake Analytics catalog client.
+ * This package contains the classes for DataLakeAnalyticsJobManagementClient.
+ * Creates an Azure Data Lake Analytics job client.
  */
 package com.microsoft.azure.management.datalake.analytics;

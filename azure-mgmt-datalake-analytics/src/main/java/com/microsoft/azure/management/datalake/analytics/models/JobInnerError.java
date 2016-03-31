@@ -23,7 +23,7 @@ public class JobInnerError {
      * 'Warning', 'Error'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String severity;
+    private SeverityTypes severity;
 
     /**
      * Gets the details of the error message.
@@ -96,7 +96,7 @@ public class JobInnerError {
      *
      * @return the severity value
      */
-    public String getSeverity() {
+    public SeverityTypes getSeverity() {
         return this.severity;
     }
 

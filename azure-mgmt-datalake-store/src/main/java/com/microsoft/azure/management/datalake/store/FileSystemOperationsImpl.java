@@ -69,84 +69,84 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     interface FileSystemService {
         @Headers("Content-Type: application/octet-stream")
         @POST("WebHdfsExt/{filePath}")
-        Call<ResponseBody> concurrentAppend(@Path("filePath") String filePath, @Body RequestBody streamContents, @Query("appendMode") AppendModeType appendMode, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> concurrentAppend(@Path("filePath") String filePath, @Body RequestBody streamContents, @Query("appendMode") AppendModeType appendMode, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{path}")
-        Call<ResponseBody> checkAccess(@Path("path") String path, @Query("fsaction") String fsaction, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> checkAccess(@Path("path") String path, @Query("fsaction") String fsaction, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{path}")
-        Call<ResponseBody> mkdirs(@Path("path") String path, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> mkdirs(@Path("path") String path, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("webhdfs/v1/{destinationPath}")
-        Call<ResponseBody> concat(@Path("destinationPath") String destinationPath, @Query("sources") String sources, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> concat(@Path("destinationPath") String destinationPath, @Query("sources") String sources, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/octet-stream")
         @POST("webhdfs/v1/{msConcatDestinationPath}")
-        Call<ResponseBody> msConcat(@Path("msConcatDestinationPath") String msConcatDestinationPath, @Query("deleteSourceDirectory") Boolean deleteSourceDirectory, @Body RequestBody streamContents, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> msConcat(@Path("msConcatDestinationPath") String msConcatDestinationPath, @Query("deleteSourceDirectory") Boolean deleteSourceDirectory, @Body RequestBody streamContents, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{listFilePath}")
-        Call<ResponseBody> listFileStatus(@Path("listFilePath") String listFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listFileStatus(@Path("listFilePath") String listFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/va/{getContentSummaryFilePath}")
-        Call<ResponseBody> getContentSummary(@Path("getContentSummaryFilePath") String getContentSummaryFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getContentSummary(@Path("getContentSummaryFilePath") String getContentSummaryFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{getFilePath}")
-        Call<ResponseBody> getFileStatus(@Path("getFilePath") String getFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getFileStatus(@Path("getFilePath") String getFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/octet-stream")
         @POST("webhdfs/v1/{directFilePath}")
-        Call<ResponseBody> append(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("op") String op, @Query("append") String append, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> append(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("op") String op, @Query("append") String append, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/octet-stream")
         @PUT("webhdfs/v1/{directFilePath}")
-        Call<ResponseBody> create(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("overwrite") Boolean overwrite, @Query("op") String op, @Query("write") String write, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> create(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("overwrite") Boolean overwrite, @Query("op") String op, @Query("write") String write, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{directFilePath}")
         @Streaming
-        Call<ResponseBody> open(@Path("directFilePath") String directFilePath, @Query("length") Long length, @Query("offset") Long offset, @Query("op") String op, @Query("read") String read, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> open(@Path("directFilePath") String directFilePath, @Query("length") Long length, @Query("offset") Long offset, @Query("op") String op, @Query("read") String read, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{setAclFilePath}")
-        Call<ResponseBody> setAcl(@Path("setAclFilePath") String setAclFilePath, @Query("aclspec") String aclspec, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> setAcl(@Path("setAclFilePath") String setAclFilePath, @Query("aclspec") String aclspec, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{modifyAclFilePath}")
-        Call<ResponseBody> modifyAclEntries(@Path("modifyAclFilePath") String modifyAclFilePath, @Query("aclspec") String aclspec, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> modifyAclEntries(@Path("modifyAclFilePath") String modifyAclFilePath, @Query("aclspec") String aclspec, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{removeAclFilePath}")
-        Call<ResponseBody> removeAclEntries(@Path("removeAclFilePath") String removeAclFilePath, @Query("aclspec") String aclspec, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> removeAclEntries(@Path("removeAclFilePath") String removeAclFilePath, @Query("aclspec") String aclspec, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{aclFilePath}")
-        Call<ResponseBody> removeAcl(@Path("aclFilePath") String aclFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> removeAcl(@Path("aclFilePath") String aclFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{aclFilePath}")
-        Call<ResponseBody> getAclStatus(@Path("aclFilePath") String aclFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAclStatus(@Path("aclFilePath") String aclFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "webhdfs/v1/{filePath}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("filePath") String filePath, @Query("recursive") Boolean recursive, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("filePath") String filePath, @Query("recursive") Boolean recursive, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{renameFilePath}")
-        Call<ResponseBody> rename(@Path("renameFilePath") String renameFilePath, @Query("destination") String destination, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> rename(@Path("renameFilePath") String renameFilePath, @Query("destination") String destination, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{setOwnerFilePath}")
-        Call<ResponseBody> setOwner(@Path("setOwnerFilePath") String setOwnerFilePath, @Query("owner") String owner, @Query("group") String group, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> setOwner(@Path("setOwnerFilePath") String setOwnerFilePath, @Query("owner") String owner, @Query("group") String group, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("webhdfs/v1/{setPermissionFilePath}")
-        Call<ResponseBody> setPermission(@Path("setPermissionFilePath") String setPermissionFilePath, @Query("permission") String permission, @Query("op") String op, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> setPermission(@Path("setPermissionFilePath") String setPermissionFilePath, @Query("permission") String permission, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
     }
 
@@ -177,15 +177,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "CONCURRENTAPPEND";
         final AppendModeType appendMode = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return concurrentAppendDelegate(call.execute());
     }
 
@@ -223,16 +220,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "CONCURRENTAPPEND";
         final AppendModeType appendMode = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -275,14 +268,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "CONCURRENTAPPEND";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return concurrentAppendDelegate(call.execute());
     }
 
@@ -321,15 +311,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "CONCURRENTAPPEND";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -373,14 +359,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "CHECKACCESS";
         final String fsaction = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return checkAccessDelegate(call.execute());
     }
 
@@ -413,15 +396,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "CHECKACCESS";
         final String fsaction = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -460,13 +439,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "CHECKACCESS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return checkAccessDelegate(call.execute());
     }
 
@@ -500,14 +476,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "CHECKACCESS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -551,13 +523,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "MKDIRS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.mkdirs(path, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.mkdirs(path, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return mkdirsDelegate(call.execute());
     }
 
@@ -590,14 +559,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "MKDIRS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.mkdirs(path, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.mkdirs(path, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
@@ -646,15 +611,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(sources);
         final String op = "CONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         String sourcesConverted = this.client.getMapperAdapter().serializeList(sources, CollectionFormat.CSV);
-        Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return concatDelegate(call.execute());
     }
 
@@ -692,16 +654,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(sources, serviceCallback);
         final String op = "CONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         String sourcesConverted = this.client.getMapperAdapter().serializeList(sources, CollectionFormat.CSV);
-        Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -749,15 +707,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "MSCONCAT";
         final Boolean deleteSourceDirectory = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return msConcatDelegate(call.execute());
     }
 
@@ -795,16 +750,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "MSCONCAT";
         final Boolean deleteSourceDirectory = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -847,14 +798,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "MSCONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return msConcatDelegate(call.execute());
     }
 
@@ -893,15 +841,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "MSCONCAT";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -945,13 +889,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "LISTSTATUS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.listFileStatus(listFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listFileStatus(listFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listFileStatusDelegate(call.execute());
     }
 
@@ -984,14 +925,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "LISTSTATUS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.listFileStatus(listFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listFileStatus(listFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileStatusesResult>(serviceCallback) {
             @Override
@@ -1036,13 +973,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "GETCONTENTSUMMARY";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getContentSummaryDelegate(call.execute());
     }
 
@@ -1075,14 +1009,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "GETCONTENTSUMMARY";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ContentSummaryResult>(serviceCallback) {
             @Override
@@ -1127,13 +1057,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "GETFILESTATUS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getFileStatusDelegate(call.execute());
     }
 
@@ -1166,14 +1093,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "GETFILESTATUS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileStatusResult>(serviceCallback) {
             @Override
@@ -1222,15 +1145,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "APPEND";
         final String append = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return appendDelegate(call.execute());
     }
 
@@ -1268,16 +1188,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "APPEND";
         final String append = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1321,16 +1237,14 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "CREATE";
         final String write = "true";
-        final RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
+        final byte[] streamContents = new byte[0];
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -1363,17 +1277,14 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "CREATE";
         final String write = "true";
-        final RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
+        final byte[] streamContents = new byte[0];
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1413,18 +1324,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "CREATE";
         final String write = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
-        if (streamContents != null) {
-            streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        }
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -1459,19 +1364,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "CREATE";
         final String write = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
-        if (streamContents != null) {
-            streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        }
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1515,16 +1413,13 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "OPEN";
         final String read = "true";
         final Long length = null;
         final Long offset = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return openDelegate(call.execute());
     }
 
@@ -1557,17 +1452,13 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "OPEN";
         final String read = "true";
         final Long length = null;
         final Long offset = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
@@ -1607,14 +1498,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "OPEN";
         final String read = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return openDelegate(call.execute());
     }
 
@@ -1649,15 +1537,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "OPEN";
         final String read = "true";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
@@ -1706,13 +1590,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "SETACL";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return setAclDelegate(call.execute());
     }
 
@@ -1750,14 +1631,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "SETACL";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1805,13 +1682,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "MODIFYACLENTRIES";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return modifyAclEntriesDelegate(call.execute());
     }
 
@@ -1849,14 +1723,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "MODIFYACLENTRIES";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1904,13 +1774,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "REMOVEACLENTRIES";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return removeAclEntriesDelegate(call.execute());
     }
 
@@ -1948,14 +1815,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "REMOVEACLENTRIES";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1999,13 +1862,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "REMOVEACL";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.removeAcl(aclFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.removeAcl(aclFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return removeAclDelegate(call.execute());
     }
 
@@ -2038,14 +1898,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "REMOVEACL";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.removeAcl(aclFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.removeAcl(aclFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2089,13 +1945,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "GETACLSTATUS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getAclStatusDelegate(call.execute());
     }
 
@@ -2128,14 +1981,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "GETACLSTATUS";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<AclStatusResult>(serviceCallback) {
             @Override
@@ -2180,14 +2029,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "DELETE";
         final Boolean recursive = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteDelegate(call.execute());
     }
 
@@ -2220,15 +2066,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "DELETE";
         final Boolean recursive = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
@@ -2267,13 +2109,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "DELETE";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteDelegate(call.execute());
     }
 
@@ -2307,14 +2146,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "DELETE";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
@@ -2363,13 +2198,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "RENAME";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return renameDelegate(call.execute());
     }
 
@@ -2407,14 +2239,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "RENAME";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
@@ -2459,15 +2287,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "SETOWNER";
         final String owner = null;
         final String group = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return setOwnerDelegate(call.execute());
     }
 
@@ -2500,16 +2325,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "SETOWNER";
         final String owner = null;
         final String group = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2549,13 +2370,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "SETOWNER";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return setOwnerDelegate(call.execute());
     }
 
@@ -2590,14 +2408,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "SETOWNER";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2641,14 +2455,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "SETPERMISSION";
         final String permission = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return setPermissionDelegate(call.execute());
     }
 
@@ -2681,15 +2492,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "SETPERMISSION";
         final String permission = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2728,13 +2535,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String op = "SETPERMISSION";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return setPermissionDelegate(call.execute());
     }
 
@@ -2768,14 +2572,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String op = "SETPERMISSION";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override

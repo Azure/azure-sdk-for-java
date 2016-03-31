@@ -27,36 +27,65 @@ public abstract class DataLakeAnalyticsManagementTestBase {
     protected static ResourceManagementClient resourceManagementClient;
     protected static DataLakeStoreAccountManagementClient dataLakeStoreAccountManagementClient;
     protected static StorageManagementClient storageManagementClient;
-
+    protected static String environmentLocation;
     public static void createClients() {
+        String environment = System.getenv("arm.environmentType");
+        String armUri = "";
+        String adlaSuffix = "";
+        environmentLocation = "eastus2";
+        AzureEnvironment authEnv;
+        switch (environment.toLowerCase()) {
+            case "production":
+                armUri = "https://management.azure.com";
+                adlaSuffix = "azuredatalakeanalytics.net";
+                authEnv = AzureEnvironment.AZURE;
+                break;
+            case "ppe":
+                armUri = "https://api-dogfood.resources.windows-int.net";
+                adlaSuffix = "konaaccountdogfood.net";
+                authEnv = new AzureEnvironment("https://login.windows-ppe.net/", "https://management.core.windows.net/", true);
+                break;
+            case "test":
+                armUri = "https://api-dogfood.resources.windows-int.net";
+                adlaSuffix = "konaaccountdogfood.net";
+                environmentLocation = "westus";
+                authEnv = new AzureEnvironment("https://login.windows-ppe.net/", "https://management.core.windows.net/", true);
+                break;
+            default: // default to production
+                armUri = "https://management.azure.com";
+                adlaSuffix = "azuredatalakeanalytics.net";
+                authEnv = AzureEnvironment.AZURE;
+                break;
+        }
+
         UserTokenCredentials credentials = new UserTokenCredentials(
                 System.getenv("arm.clientid"),
                 System.getenv("arm.domain"),
                 System.getenv("arm.username"),
                 System.getenv("arm.password"),
                 null,
-                AzureEnvironment.AZURE);
+                authEnv);
 
-        dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(credentials);
+        dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(armUri, credentials);
         dataLakeAnalyticsAccountManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         dataLakeAnalyticsAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
         dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(credentials);
-        dataLakeAnalyticsJobManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
         dataLakeAnalyticsJobManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        dataLakeAnalyticsJobManagementClient.setAdlaJobDnsSuffix(adlaSuffix);
 
         dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(credentials);
-        dataLakeAnalyticsCatalogManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
         dataLakeAnalyticsCatalogManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        dataLakeAnalyticsCatalogManagementClient.setAdlaCatalogDnsSuffix(adlaSuffix);
 
-        resourceManagementClient = new ResourceManagementClientImpl(credentials);
+        resourceManagementClient = new ResourceManagementClientImpl(armUri, credentials);
         resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
         resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
 
-        dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(credentials);
+        dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(armUri, credentials);
         dataLakeStoreAccountManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         dataLakeStoreAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
 
-        storageManagementClient = new StorageManagementClientImpl(credentials);
+        storageManagementClient = new StorageManagementClientImpl(armUri, credentials);
         storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
     }

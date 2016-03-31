@@ -31,7 +31,6 @@ public abstract class DataLakeStoreManagementTestBase {
 
         dataLakeStoreFileSystemManagementClient = new DataLakeStoreFileSystemManagementClientImpl(credentials);
         dataLakeStoreFileSystemManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
-        dataLakeStoreFileSystemManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
     }
 
     public static String generateName(String prefix) {
