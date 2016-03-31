@@ -9,12 +9,12 @@ import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
 import com.microsoft.azure.management.datalake.store.models.FileStatusesResult;
 import com.microsoft.azure.management.datalake.store.models.FileType;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import sun.misc.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -25,8 +25,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import sun.misc.IOUtils;
 
 public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagementTestBase {
     // constants
@@ -456,7 +454,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         // Set the other acl to RWX
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",
                 adlsAcct,
-                String.join(",", aclToReplaceWith));
+                StringUtils.join(",", aclToReplaceWith));
 
         AclStatusResult newAcl = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
                 adlsAcct).getBody();
@@ -579,7 +577,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         int currentCount = aclGetResponse.getAclStatus().getEntries().size();
 
         // add an entry to the ACL Entries
-        String newAcls = String.join(",", aclGetResponse.getAclStatus().getEntries());
+        String newAcls = StringUtils.join(",", aclGetResponse.getAclStatus().getEntries());
         newAcls += String.format(",user:%s:rwx", aclUserId);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",

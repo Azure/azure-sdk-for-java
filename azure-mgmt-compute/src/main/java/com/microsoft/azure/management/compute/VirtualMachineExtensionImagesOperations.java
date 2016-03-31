@@ -8,7 +8,6 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtensionImage;
-import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -55,9 +54,9 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineExtensionImage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listTypes(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<List<VirtualMachineExtensionImage>> listTypes(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image types.
@@ -68,7 +67,7 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException;
+    ServiceCall listTypesAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineExtensionImage>> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image versions.
@@ -79,9 +78,9 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineExtensionImage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<List<VirtualMachineExtensionImage>> listVersions(String location, String publisherName, String type) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image versions.
@@ -93,7 +92,7 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listVersionsAsync(String location, String publisherName, String type, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException;
+    ServiceCall listVersionsAsync(String location, String publisherName, String type, final ServiceCallback<List<VirtualMachineExtensionImage>> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets a list of virtual machine extension image versions.
      *
@@ -106,9 +105,9 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResource&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineExtensionImage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<List<VirtualMachineImageResource>> listVersions(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<List<VirtualMachineExtensionImage>> listVersions(String location, String publisherName, String type, VirtualMachineExtensionImage filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets a list of virtual machine extension image versions.
@@ -123,6 +122,6 @@ public interface VirtualMachineExtensionImagesOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listVersionsAsync(String location, String publisherName, String type, VirtualMachineImageResource filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResource>> serviceCallback) throws IllegalArgumentException;
+    ServiceCall listVersionsAsync(String location, String publisherName, String type, VirtualMachineExtensionImage filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineExtensionImage>> serviceCallback) throws IllegalArgumentException;
 
 }

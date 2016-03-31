@@ -696,7 +696,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final Long keyLength = null;
         ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
-        parameters.setKeyLength(keyLength);
+        parameters = null;
         Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKey>() { }.getType());
     }
@@ -728,7 +728,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final Long keyLength = null;
         ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
-        parameters.setKeyLength(keyLength);
+        parameters = null;
         Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -842,7 +842,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final Long keyLength = null;
         ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
-        parameters.setKeyLength(keyLength);
+        parameters = null;
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         return beginResetSharedKeyDelegate(call.execute());
     }
@@ -878,7 +878,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final Long keyLength = null;
         ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
-        parameters.setKeyLength(keyLength);
+        parameters = null;
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKey>(serviceCallback) {
@@ -1005,7 +1005,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final String value = null;
         ConnectionSharedKey parameters = new ConnectionSharedKey();
-        parameters.setValue(value);
+        parameters = null;
         Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKey>() { }.getType());
     }
@@ -1037,7 +1037,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final String value = null;
         ConnectionSharedKey parameters = new ConnectionSharedKey();
-        parameters.setValue(value);
+        parameters = null;
         Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1151,7 +1151,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final String value = null;
         ConnectionSharedKey parameters = new ConnectionSharedKey();
-        parameters.setValue(value);
+        parameters = null;
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         return beginSetSharedKeyDelegate(call.execute());
     }
@@ -1187,7 +1187,7 @@ public final class VirtualNetworkGatewayConnectionsOperationsImpl implements Vir
         }
         final String value = null;
         ConnectionSharedKey parameters = new ConnectionSharedKey();
-        parameters.setValue(value);
+        parameters = null;
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKey>(serviceCallback) {

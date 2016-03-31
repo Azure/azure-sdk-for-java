@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
  */
 public class InstanceViewStatus {
     /**
-     * Gets or sets the status Code.
+     * Gets the status Code.
      */
     private String code;
 
@@ -21,7 +21,7 @@ public class InstanceViewStatus {
      * Gets or sets the level Code. Possible values include: 'Info',
      * 'Warning', 'Error'.
      */
-    private String level;
+    private StatusLevelTypes level;
 
     /**
      * Gets or sets the short localizable label for the status.
@@ -29,8 +29,8 @@ public class InstanceViewStatus {
     private String displayStatus;
 
     /**
-     * Gets or sets the optional detailed Message, including for alerts and
-     * error messages.
+     * Gets or sets the detailed Message, including for alerts and error
+     * messages.
      */
     private String message;
 
@@ -62,7 +62,7 @@ public class InstanceViewStatus {
      *
      * @return the level value
      */
-    public String getLevel() {
+    public StatusLevelTypes getLevel() {
         return this.level;
     }
 
@@ -71,7 +71,7 @@ public class InstanceViewStatus {
      *
      * @param level the level value to set
      */
-    public void setLevel(String level) {
+    public void setLevel(StatusLevelTypes level) {
         this.level = level;
     }
 

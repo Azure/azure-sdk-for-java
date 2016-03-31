@@ -319,29 +319,6 @@ public interface ManagedHostingEnvironmentsOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
-
-    /**
-     * Get all serverfarms (App Service Plans) on the managed hosting environment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall getManagedHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
-
-    /**
-     * Get all serverfarms (App Service Plans) on the managed hosting environment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
-     */
     ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentWebHostingPlans(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
 
     /**
@@ -354,5 +331,28 @@ public interface ManagedHostingEnvironmentsOperations {
      * @return the {@link ServiceCall} object
      */
     ServiceCall getManagedHostingEnvironmentWebHostingPlansAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ServerFarmCollection object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<ServerFarmCollection> getManagedHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getManagedHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollection> serviceCallback) throws IllegalArgumentException;
 
 }

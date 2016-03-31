@@ -44,6 +44,12 @@ public class VnetInfo extends Resource {
     private List<VnetRoute> routes;
 
     /**
+     * Flag to determine if a resync is required.
+     */
+    @JsonProperty(value = "properties.resyncRequired")
+    private Boolean resyncRequired;
+
+    /**
      * Get the vnetResourceId value.
      *
      * @return the vnetResourceId value
@@ -113,6 +119,24 @@ public class VnetInfo extends Resource {
      */
     public void setRoutes(List<VnetRoute> routes) {
         this.routes = routes;
+    }
+
+    /**
+     * Get the resyncRequired value.
+     *
+     * @return the resyncRequired value
+     */
+    public Boolean getResyncRequired() {
+        return this.resyncRequired;
+    }
+
+    /**
+     * Set the resyncRequired value.
+     *
+     * @param resyncRequired the resyncRequired value to set
+     */
+    public void setResyncRequired(Boolean resyncRequired) {
+        this.resyncRequired = resyncRequired;
     }
 
 }

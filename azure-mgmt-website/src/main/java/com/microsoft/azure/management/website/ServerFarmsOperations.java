@@ -569,7 +569,7 @@ public interface ServerFarmsOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of server farm
-     * @param workerName Name of worker machine, typically IP address
+     * @param workerName Name of worker machine, typically starts with RD
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -582,7 +582,7 @@ public interface ServerFarmsOperations {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of server farm
-     * @param workerName Name of worker machine, typically IP address
+     * @param workerName Name of worker machine, typically starts with RD
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object

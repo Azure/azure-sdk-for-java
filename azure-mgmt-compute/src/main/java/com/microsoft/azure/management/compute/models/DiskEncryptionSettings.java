@@ -24,6 +24,12 @@ public class DiskEncryptionSettings {
     private KeyVaultKeyReference keyEncryptionKey;
 
     /**
+     * Gets or sets whether disk encryption should be enabled on the Virtual
+     * Machine.
+     */
+    private Boolean enabled;
+
+    /**
      * Get the diskEncryptionKey value.
      *
      * @return the diskEncryptionKey value
@@ -57,6 +63,24 @@ public class DiskEncryptionSettings {
      */
     public void setKeyEncryptionKey(KeyVaultKeyReference keyEncryptionKey) {
         this.keyEncryptionKey = keyEncryptionKey;
+    }
+
+    /**
+     * Get the enabled value.
+     *
+     * @return the enabled value
+     */
+    public Boolean getEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set the enabled value.
+     *
+     * @param enabled the enabled value to set
+     */
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
 }

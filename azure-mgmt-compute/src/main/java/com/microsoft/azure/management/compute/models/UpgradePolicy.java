@@ -15,14 +15,14 @@ public class UpgradePolicy {
      * Gets or sets the upgrade mode. Possible values include: 'Automatic',
      * 'Manual'.
      */
-    private String mode;
+    private UpgradeMode mode;
 
     /**
      * Get the mode value.
      *
      * @return the mode value
      */
-    public String getMode() {
+    public UpgradeMode getMode() {
         return this.mode;
     }
 
@@ -31,7 +31,7 @@ public class UpgradePolicy {
      *
      * @param mode the mode value to set
      */
-    public void setMode(String mode) {
+    public void setMode(UpgradeMode mode) {
         this.mode = mode;
     }
 

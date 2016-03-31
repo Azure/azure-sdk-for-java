@@ -10,6 +10,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.compute.models.InstanceViewTypes;
 import com.microsoft.azure.management.compute.models.PageImpl;
 import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParameters;
@@ -92,7 +93,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("$expand") InstanceViewTypes expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/deallocate")
@@ -152,20 +153,12 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
         Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAvailableSizesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
     }
 
     /**
-     * Captures the VM by copying VirtualHardDisks of the VM and outputs a template that can be used to create similar VMs.
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -198,7 +191,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
     }
 
     /**
-     * Captures the VM by copying VirtualHardDisks of the VM and outputs a template that can be used to create similar VMs.
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -243,7 +236,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
     }
 
     /**
-     * Captures the VM by copying VirtualHardDisks of the VM and outputs a template that can be used to create similar VMs.
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -275,7 +268,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
     }
 
     /**
-     * Captures the VM by copying VirtualHardDisks of the VM and outputs a template that can be used to create similar VMs.
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -641,7 +634,6 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -670,7 +662,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final String expand = null;
+        final InstanceViewTypes expand = null;
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
@@ -704,7 +696,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final String expand = null;
+        final InstanceViewTypes expand = null;
         Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachine>(serviceCallback) {
@@ -725,13 +717,13 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. Possible values include: 'instanceView'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachine object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualMachine> get(String resourceGroupName, String vmName, InstanceViewTypes expand) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -753,12 +745,12 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param expand The expand expression to apply on the operation.
+     * @param expand The expand expression to apply on the operation. Possible values include: 'instanceView'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String resourceGroupName, String vmName, String expand, final ServiceCallback<VirtualMachine> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAsync(String resourceGroupName, String vmName, InstanceViewTypes expand, final ServiceCallback<VirtualMachine> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1031,7 +1023,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachine&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachine>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachine>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1043,12 +1035,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachine>> response = listDelegate(call.execute());
-        PagedList<VirtualMachine> result = new PagedList<VirtualMachine>(response.getBody()) {
-            @Override
-            public Page<VirtualMachine> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listNext(nextPageLink).getBody();
-            }
-        };
+        List<VirtualMachine> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -1060,7 +1047,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachine> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(String resourceGroupName, final ServiceCallback<List<VirtualMachine>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1083,13 +1070,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponse<PageImpl<VirtualMachine>> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1180,7 +1161,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
     }
 
     /**
-     * Lists virtual-machine-sizes available to be used for a virtual machine.
+     * Lists all available virtual machine sizes it can be resized to for a virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1189,7 +1170,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachineSize>> listAvailableSizes(final String resourceGroupName, final String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<VirtualMachineSize>> listAvailableSizes(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1204,17 +1185,12 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineSize>> response = listAvailableSizesDelegate(call.execute());
-        PagedList<VirtualMachineSize> result = new PagedList<VirtualMachineSize>(response.getBody()) {
-            @Override
-            public Page<VirtualMachineSize> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listAvailableSizesNext(nextPageLink).getBody();
-            }
-        };
+        List<VirtualMachineSize> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
-     * Lists virtual-machine-sizes available to be used for a virtual machine.
+     * Lists all available virtual machine sizes it can be resized to for a virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1222,7 +1198,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAvailableSizesAsync(final String resourceGroupName, final String vmName, final ListOperationCallback<VirtualMachineSize> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAvailableSizesAsync(String resourceGroupName, String vmName, final ServiceCallback<List<VirtualMachineSize>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1249,13 +1225,7 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -1852,69 +1822,6 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
     }
 
     /**
-     * The operation to list virtual machines under a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachine&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<VirtualMachine>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * The operation to list virtual machines under a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<VirtualMachine> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachine>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<VirtualMachine>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<VirtualMachine>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachine>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachine>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -1973,69 +1880,6 @@ public final class VirtualMachinesOperationsImpl implements VirtualMachinesOpera
     private ServiceResponse<PageImpl<VirtualMachine>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<VirtualMachine>, CloudException>(this.client.getMapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachine>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Lists virtual-machine-sizes available to be used for a virtual machine.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineSize&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
-        return listAvailableSizesNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists virtual-machine-sizes available to be used for a virtual machine.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAvailableSizesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<VirtualMachineSize> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listAvailableSizesNext(nextPageLink, this.client.getAcceptLanguage());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineSize>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<VirtualMachineSize>> result = listAvailableSizesNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAvailableSizesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<VirtualMachineSize>> listAvailableSizesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSize>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineSize>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

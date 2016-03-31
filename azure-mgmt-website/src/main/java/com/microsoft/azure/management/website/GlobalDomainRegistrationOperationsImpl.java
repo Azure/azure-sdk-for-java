@@ -290,7 +290,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         }
         final String name = null;
         NameIdentifier identifier = new NameIdentifier();
-        identifier.setName(name);
+        identifier = null;
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), identifier);
         return checkDomainAvailabilityDelegate(call.execute());
     }
@@ -316,7 +316,7 @@ public final class GlobalDomainRegistrationOperationsImpl implements GlobalDomai
         }
         final String name = null;
         NameIdentifier identifier = new NameIdentifier();
-        identifier.setName(name);
+        identifier = null;
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), identifier);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResult>(serviceCallback) {

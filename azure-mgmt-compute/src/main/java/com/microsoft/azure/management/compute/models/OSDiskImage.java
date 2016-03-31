@@ -17,14 +17,14 @@ public class OSDiskImage {
      * include: 'Windows', 'Linux'.
      */
     @JsonProperty(required = true)
-    private String operatingSystem;
+    private OperatingSystemTypes operatingSystem;
 
     /**
      * Get the operatingSystem value.
      *
      * @return the operatingSystem value
      */
-    public String getOperatingSystem() {
+    public OperatingSystemTypes getOperatingSystem() {
         return this.operatingSystem;
     }
 
@@ -33,7 +33,7 @@ public class OSDiskImage {
      *
      * @param operatingSystem the operatingSystem value to set
      */
-    public void setOperatingSystem(String operatingSystem) {
+    public void setOperatingSystem(OperatingSystemTypes operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 

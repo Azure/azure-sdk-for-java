@@ -254,6 +254,12 @@ public class SiteConfig extends Resource {
     private Boolean localMySqlEnabled;
 
     /**
+     * Ip Security restrictions.
+     */
+    @JsonProperty(value = "properties.ipSecurityRestrictions")
+    private List<IpSecurityRestriction> ipSecurityRestrictions;
+
+    /**
      * Get the numberOfWorkers value.
      *
      * @return the numberOfWorkers value
@@ -953,6 +959,24 @@ public class SiteConfig extends Resource {
      */
     public void setLocalMySqlEnabled(Boolean localMySqlEnabled) {
         this.localMySqlEnabled = localMySqlEnabled;
+    }
+
+    /**
+     * Get the ipSecurityRestrictions value.
+     *
+     * @return the ipSecurityRestrictions value
+     */
+    public List<IpSecurityRestriction> getIpSecurityRestrictions() {
+        return this.ipSecurityRestrictions;
+    }
+
+    /**
+     * Set the ipSecurityRestrictions value.
+     *
+     * @param ipSecurityRestrictions the ipSecurityRestrictions value to set
+     */
+    public void setIpSecurityRestrictions(List<IpSecurityRestriction> ipSecurityRestrictions) {
+        this.ipSecurityRestrictions = ipSecurityRestrictions;
     }
 
 }
