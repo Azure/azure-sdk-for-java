@@ -53,14 +53,8 @@ public class TableTestHelper extends TestHelper {
     }
 
     public static Class1 generateRandomEntity(String pk) {
-        Class1 ref = new Class1();
-
-        ref.setA("foo_A");
-        ref.setB("foo_B");
-        ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
-        ref.setPartitionKey(pk);
-        ref.setRowKey(UUID.randomUUID().toString());
+        Class1 ref = new Class1(pk, UUID.randomUUID().toString());
+        ref.populate();
         return ref;
     }
 
@@ -82,35 +76,35 @@ public class TableTestHelper extends TestHelper {
             super(pk, rk);
         }
 
-        public synchronized String getA() {
+        public String getA() {
             return this.A;
         }
 
-        public synchronized String getB() {
+        public String getB() {
             return this.B;
         }
 
-        public synchronized String getC() {
+        public String getC() {
             return this.C;
         }
 
-        public synchronized byte[] getD() {
+        public byte[] getD() {
             return this.D;
         }
 
-        public synchronized void setA(final String a) {
+        public void setA(final String a) {
             this.A = a;
         }
 
-        public synchronized void setB(final String b) {
+        public void setB(final String b) {
             this.B = b;
         }
 
-        public synchronized void setC(final String c) {
+        public void setC(final String c) {
             this.C = c;
         }
 
-        public synchronized void setD(final byte[] d) {
+        public void setD(final byte[] d) {
             this.D = d;
         }
 
@@ -129,6 +123,108 @@ public class TableTestHelper extends TestHelper {
                 return EdmType.BINARY;
             }
             return null;
+        }
+        
+        public void populate() {
+            this.setA("foo_A");
+            this.setB("foo_B");
+            this.setC("foo_C");
+            this.setD(new byte[] { 0, 1, 2 });
+        }
+        
+        public void validate()
+        {
+            assertEquals(this.A, "foo_A");
+            assertEquals(this.B, "foo_B");
+            assertEquals(this.C, "foo_C");
+            assertArrayEquals(this.D, new byte[] { 0, 1, 2 });
+        }
+    }
+    
+    public static class EncryptedClass1 extends TableServiceEntity implements PropertyResolver {
+
+        public String A;
+
+        public String B;
+
+        public String C;
+
+        public byte[] D;
+
+        public EncryptedClass1() {
+            // empty ctor
+        }
+
+        public EncryptedClass1(String pk, String rk) {
+            super(pk, rk);
+        }
+
+        @Encrypt
+        public String getA() {
+            return this.A;
+        }
+
+        @Encrypt
+        public String getB() {
+            return this.B;
+        }
+
+        public String getC() {
+            return this.C;
+        }
+
+        public byte[] getD() {
+            return this.D;
+        }
+
+        @Encrypt
+        public void setA(final String a) {
+            this.A = a;
+        }
+
+        @Encrypt
+        public void setB(final String b) {
+            this.B = b;
+        }
+
+        public void setC(final String c) {
+            this.C = c;
+        }
+
+        public void setD(final byte[] d) {
+            this.D = d;
+        }
+
+        @Override
+        public EdmType propertyResolver(String pk, String rk, String key, String value) {
+            if (key.equals("A")) {
+                return EdmType.STRING;
+            }
+            else if (key.equals("B")) {
+                return EdmType.STRING;
+            }
+            else if (key.equals("C")) {
+                return EdmType.STRING;
+            }
+            else if (key.equals("D")) {
+                return EdmType.BINARY;
+            }
+            return null;
+        }
+        
+        public void populate() {
+            this.setA("foo_A");
+            this.setB("foo_B");
+            this.setC("foo_C");
+            this.setD(new byte[] { 0, 1, 2 });
+        }
+        
+        public void validate()
+        {
+            assertEquals(this.A, "foo_A");
+            assertEquals(this.B, "foo_B");
+            assertEquals(this.C, "foo_C");
+            assertArrayEquals(this.D, new byte[] { 0, 1, 2 });
         }
     }
 

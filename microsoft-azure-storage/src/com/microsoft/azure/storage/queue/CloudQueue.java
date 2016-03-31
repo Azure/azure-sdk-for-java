@@ -260,6 +260,7 @@ public final class CloudQueue {
 
         opContext.initialize();
         options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
+        options.assertPolicyIfRequired();
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.addMessageImpl(message, realTimeToLiveInSeconds, initialVisibilityDelayInSeconds, options),
@@ -269,7 +270,7 @@ public final class CloudQueue {
     private StorageRequest<CloudQueueClient, CloudQueue, Void> addMessageImpl(final CloudQueueMessage message,
             final int timeToLiveInSeconds, final int initialVisibilityDelayInSeconds, final QueueRequestOptions options)
             throws StorageException {
-        final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage);
+        final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage, options);
 
         try {
             final byte[] messageBytes = QueueMessageSerializer.generateMessageRequestBody(stringToSend);
@@ -1094,6 +1095,7 @@ public final class CloudQueue {
 
         opContext.initialize();
         options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
+        options.assertPolicyIfRequired();
 
         return ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.peekMessagesImpl(numberOfMessages, options), options.getRetryPolicyFactory(), opContext);
@@ -1131,8 +1133,20 @@ public final class CloudQueue {
                     return null;
                 }
                 else {
-                    return QueueMessageHandler.readMessages(this.getConnection().getInputStream(),
-                            queue.shouldEncodeMessage);
+                    // Parse the returned messages
+                    ArrayList<CloudQueueMessage> messages = QueueMessageHandler.readMessages(
+                            this.getConnection().getInputStream(), queue.shouldEncodeMessage);
+
+                    // Decode the messages if necessary
+                    if (options.getEncryptionPolicy() != null) {
+                        for (CloudQueueMessage message : messages) {
+                            byte[] decryptedMessage = options.getEncryptionPolicy().decryptMessage(
+                                    message.messageContent, options.requireEncryption());
+                            message.setMessageContent(decryptedMessage);
+                        }
+                    }
+
+                    return messages;
                 }
             }
 
@@ -1242,6 +1256,7 @@ public final class CloudQueue {
 
         opContext.initialize();
         options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
+        options.assertPolicyIfRequired();
 
         return ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.retrieveMessagesImpl(numberOfMessages, visibilityTimeoutInSeconds, options),
@@ -1275,8 +1290,20 @@ public final class CloudQueue {
                     return null;
                 }
                 else {
-                    return QueueMessageHandler.readMessages(this.getConnection().getInputStream(),
-                            queue.shouldEncodeMessage);
+                    // Parse the returned messages
+                    ArrayList<CloudQueueMessage> messages = QueueMessageHandler.readMessages(
+                            this.getConnection().getInputStream(), queue.shouldEncodeMessage);
+
+                    // Decode the messages if necessary
+                    if (options.getEncryptionPolicy() != null) {
+                        for (CloudQueueMessage message : messages) {
+                            byte[] decryptedMessage = options.getEncryptionPolicy().decryptMessage(
+                                    message.messageContent, options.requireEncryption());
+                            message.setMessageContent(decryptedMessage);
+                        }
+                    }
+
+                    return messages;
                 }
             }
         };
@@ -1367,6 +1394,7 @@ public final class CloudQueue {
 
         opContext.initialize();
         options = QueueRequestOptions.populateAndApplyDefaults(options, this.queueServiceClient);
+        options.assertPolicyIfRequired();
 
         ExecutionEngine.executeWithRetry(this.queueServiceClient, this,
                 this.updateMessageImpl(message, visibilityTimeoutInSeconds, messageUpdateFields, options),
@@ -1376,7 +1404,7 @@ public final class CloudQueue {
     private StorageRequest<CloudQueueClient, CloudQueue, Void> updateMessageImpl(final CloudQueueMessage message,
             final int visibilityTimeoutInSeconds, final EnumSet<MessageUpdateFields> messageUpdateFields,
             final QueueRequestOptions options) throws StorageException {
-        final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage);
+        final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage, options);
 
         final StorageRequest<CloudQueueClient, CloudQueue, Void> putRequest = new StorageRequest<CloudQueueClient, CloudQueue, Void>(
                 options, this.getStorageUri()) {

@@ -50,6 +50,11 @@ public abstract class RequestOptions {
      * Represents the start time, in milliseconds, from the client's perspective.
      */
     private Long operationExpiryTime;
+    
+    /**
+     * A value to indicate whether all data written and read must be encrypted.
+     */
+    private Boolean requireEncryption;
 
     /**
      * Creates an instance of the <code>RequestOptions</code> class.
@@ -72,6 +77,7 @@ public abstract class RequestOptions {
             this.setLocationMode(other.getLocationMode());
             this.setMaximumExecutionTimeInMs(other.getMaximumExecutionTimeInMs());
             this.setOperationExpiryTimeInMs(other.getOperationExpiryTimeInMs());
+            this.setRequireEncryption(other.requireEncryption());
         }
     }
 
@@ -90,6 +96,10 @@ public abstract class RequestOptions {
         if (modifiedOptions.getLocationMode() == null) {
             modifiedOptions.setLocationMode(LocationMode.PRIMARY_ONLY);
         }
+        
+        if (modifiedOptions.requireEncryption() == null) {
+            modifiedOptions.setRequireEncryption(false);
+        }
     }
 
     /**
@@ -107,6 +117,10 @@ public abstract class RequestOptions {
 
         if (modifiedOptions.getTimeoutIntervalInMs() == null) {
             modifiedOptions.setTimeoutIntervalInMs(clientOptions.getTimeoutIntervalInMs());
+        }
+        
+        if (modifiedOptions.requireEncryption() == null) {
+            modifiedOptions.setRequireEncryption(clientOptions.requireEncryption());
         }
 
         if (modifiedOptions.getMaximumExecutionTimeInMs() == null) {
@@ -163,6 +177,17 @@ public abstract class RequestOptions {
      */
     public Integer getMaximumExecutionTimeInMs() {
         return this.maximumExecutionTimeInMs;
+    }
+    
+    /**
+     * Gets a value to indicate whether all data written and read must be encrypted. Use <code>true</code> to
+     * encrypt/decrypt data for transactions; otherwise, <code>false</code>. For more
+     * information about require encryption defaults, see {@link #setRequireEncryption(Boolean)}.
+     * 
+     * @return A value to indicate whether all data written and read must be encrypted.
+     */
+    public Boolean requireEncryption() {
+        return this.requireEncryption;
     }
 
     /**
@@ -250,6 +275,22 @@ public abstract class RequestOptions {
      */
     public void setMaximumExecutionTimeInMs(Integer maximumExecutionTimeInMs) {
         this.maximumExecutionTimeInMs = maximumExecutionTimeInMs;
+    }
+    
+    /**
+     * Sets a value to indicate whether all data written and read must be encrypted. Use <code>true</code> to
+     * encrypt/decrypt data for transactions; otherwise, <code>false</code>.
+     * <p>
+     * The default is set in the client and is by default false, indicating encryption is not required. You can change
+     * the value on this request by setting this property. You can also change the value on the
+     * {@link ServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made via the service
+     * client will use the appropriate value.
+     * 
+     * @param requireEncryption
+     *            A value to indicate whether all data written and read must be encrypted.
+     */
+    public void setRequireEncryption(Boolean requireEncryption) {
+        this.requireEncryption = requireEncryption;
     }
 
     /**

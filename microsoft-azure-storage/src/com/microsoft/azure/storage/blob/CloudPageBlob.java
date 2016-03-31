@@ -24,6 +24,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import javax.crypto.Cipher;
+
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
@@ -278,6 +280,10 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+
+        // Assert no encryption policy as this is not supported for partial uploads
+        options.assertNoEncryptionPolicyOrStrictMode();
+
         PageRange range = new PageRange(offset, offset + length - 1);
 
         this.putPagesInternal(range, PageOperationType.CLEAR, null, length, null, accessCondition, options, opContext);
@@ -614,11 +620,18 @@ public final class CloudPageBlob extends CloudBlob {
 
         assertNoWriteOperationForSnapshot();
 
-        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient, 
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient,
                 false /* setStartTime */);
+
+        options.assertPolicyIfRequired();
 
         if (options.getStoreBlobContentMD5()) {
             throw new IllegalArgumentException(SR.BLOB_MD5_NOT_SUPPORTED_FOR_PAGE_BLOBS);
+        }
+
+        Cipher cipher = null;
+        if (options.getEncryptionPolicy() != null) {
+            cipher = options.getEncryptionPolicy().createAndSetEncryptionContext(this.getMetadata(), true /* noPadding */);
         }
 
         if (length != null) {
@@ -628,7 +641,11 @@ public final class CloudPageBlob extends CloudBlob {
 
             this.create(length, accessCondition, options, opContext);
         }
+
         else {
+            if (options.getEncryptionPolicy() != null) {
+                throw new IllegalArgumentException(SR.ENCRYPTION_NOT_SUPPORTED_FOR_EXISTING_BLOBS);
+            }
             this.downloadAttributes(accessCondition, options, opContext);
             length = this.getProperties().getLength();
         }
@@ -637,7 +654,12 @@ public final class CloudPageBlob extends CloudBlob {
             accessCondition = AccessCondition.generateLeaseCondition(accessCondition.getLeaseID());
         }
 
-        return new BlobOutputStream(this, length, accessCondition, options, opContext);
+        if (options.getEncryptionPolicy() != null) {
+            return new BlobEncryptStream(this, length, accessCondition, options, opContext, cipher);
+        }
+        else {
+            return new BlobOutputStreamInternal(this, length, accessCondition, options, opContext);
+        }
     }
 
     /**
@@ -882,6 +904,7 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+        options.assertPolicyIfRequired();
 
         if (length <= 0 || length % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
@@ -985,6 +1008,9 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+        
+        // Assert no encryption policy as this is not supported for partial uploads
+        options.assertNoEncryptionPolicyOrStrictMode();
 
         final PageRange pageRange = new PageRange(offset, offset + length - 1);
         final byte[] data = new byte[(int) length];

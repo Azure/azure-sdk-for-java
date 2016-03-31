@@ -129,6 +129,11 @@ public final class StorageErrorCodeStrings {
     public static final String EMPTY_METADATA_KEY = "EmptyMetadataKey";
 
     /**
+     * An error occurred during decryption.
+     */
+    public static final String DECRYPTION_ERROR = "DecryptionError";
+    
+    /**
      * The entity already exists
      */
     public static final String ENTITY_ALREADY_EXISTS = "EntityAlreadyExists";

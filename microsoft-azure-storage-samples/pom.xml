@@ -26,7 +26,12 @@
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-storage</artifactId>
-			<version>4.0.0</version>
+			<version>4.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-keyvault-extensions</artifactId>
+			<version>0.8.0</version>
 		</dependency>
 	</dependencies>
 </project>

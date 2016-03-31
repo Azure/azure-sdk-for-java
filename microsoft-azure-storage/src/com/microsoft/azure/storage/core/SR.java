@@ -40,12 +40,22 @@ public class SR {
     public static final String CREATING_NETWORK_STREAM = "Creating a NetworkInputStream and expecting to read %s bytes.";
     public static final String CREDENTIALS_CANNOT_SIGN_REQUEST = "CloudBlobClient, CloudQueueClient and CloudTableClient require credentials that can sign a request.";
     public static final String CUSTOM_RESOLVER_THREW = "The custom property resolver delegate threw an exception. Check the inner exception for more details.";
+    public static final String DECRYPTION_LOGIC_ERROR = "Decryption logic threw error. Please check the inner exception for more details.";
     public static final String DEFAULT_SERVICE_VERSION_ONLY_SET_FOR_BLOB_SERVICE = "DefaultServiceVersion can only be set for the Blob service.";
     public static final String DELETE_SNAPSHOT_NOT_VALID_ERROR = "The option '%s' must be 'None' to delete a specific snapshot specified by '%s'.";
     public static final String DIRECTORY = "directory";
     public static final String EDMTYPE_WAS_NULL = "EdmType cannot be null.";
     public static final String ENUMERATION_ERROR = "An error occurred while enumerating the result, check the original exception for details.";
     public static final String EMPTY_BATCH_NOT_ALLOWED = "Cannot execute an empty batch operation.";
+    public static final String ENCRYPTED_MESSAGE_DESERIALIZING_ERROR = "Error while de-serializing the encrypted queue message string from the wire. Please check inner exception for more details.";
+    public static final String ENCRYPTED_MESSAGE_TOO_LARGE = "Encrypted Messages cannot be larger than {0} bytes. Please note that encrypting queue messages can increase their size.";
+    public static final String ENCRYPTING_NULL_PROPERTIES_NOT_ALLOWED = "Null properties cannot be encrypted. Please assign a default value to the property if you wish to encrypt it.";
+    public static final String ENCRYPTION_DATA_NOT_PRESENT_ERROR = "Encryption data does not exist. If you do not want to decrypt the data, please do not set the require encryption flag on request options";
+    public static final String ENCRYPTION_POLICY_MISSING_IN_STRICT_MODE = "Encryption Policy is mandatory when RequireEncryption is set to true. If you do not want to encrypt/decrypt data, please set RequireEncryption to false in request options.";
+    public static final String ENCRYPTION_PROTOCOL_VERSION_INVALID = "Invalid Encryption Agent. This version of the client library does not understand the Encryption Agent set on the blob.";
+    public static final String ENCRYPTION_NOT_SUPPORTED_FOR_EXISTING_BLOBS = "Encryption is not supported for a blob that already exists. Please do not specify an encryption policy.";
+    public static final String ENCRYPTION_NOT_SUPPORTED_FOR_FILES = "Encryption is not supported for files.";
+    public static final String ENCRYPTION_NOT_SUPPORTED_FOR_OPERATION = "Encryption is not supported for the current operation. Please ensure that EncryptionPolicy is not set on RequestOptions.";
     public static final String ENDPOINT_INFORMATION_UNAVAILABLE = "Endpoint information not available for Account using Shared Access Credentials.";
     public static final String ENTITY_PROPERTY_CANNOT_BE_NULL_FOR_PRIMITIVES = "EntityProperty cannot be set to null for primitive value types.";
     public static final String ETAG_INVALID_FOR_DELETE = "Delete requires a valid ETag (which may be the '*' wildcard).";
@@ -80,6 +90,7 @@ public class SR {
     public static final String INVALID_CORS_RULE = "A CORS rule must contain at least one allowed origin and allowed method, and MaxAgeInSeconds cannot have a value less than zero.";
     public static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
     public static final String INVALID_EDMTYPE_VALUE = "Invalid value '%s' for EdmType.";
+    public static final String INVALID_ENCRYPTION_ALGORITHM = "Invalid Encryption Algorithm found on the resource. This version of the client library does not support the specified encryption algorithm.";
     public static final String INVALID_FILE_LENGTH = "File length must be greater than 0 bytes.";
     public static final String INVALID_GEO_REPLICATION_STATUS = "Null or Invalid geo-replication status in response: %s.";
     public static final String INVALID_IP_ADDRESS = "Error when parsing IPv4 address: IP address '%s' is invalid.";
@@ -102,6 +113,9 @@ public class SR {
     public static final String INVALID_STORAGE_SERVICE = "Invalid storage service specified.";
     public static final String INVALID_STREAM_LENGTH = "Invalid stream length; stream must be between 0 and %s MB in length.";
     public static final String ITERATOR_EMPTY = "There are no more elements in this enumeration.";
+    public static final String KEY_AND_RESOLVER_MISSING = "Key and Resolver are not initialized. Decryption requires either of them to be initialized.";
+    public static final String KEY_MISMATCH = "Key mismatch. The key id stored on the service does not match the specified key.";
+    public static final String KEY_MISSING = "Key is not initialized. Encryption requires it to be initialized.";
     public static final String LEASE_CONDITION_ON_SOURCE = "A lease condition cannot be specified on the source of a copy.";
     public static final String LOG_STREAM_END_ERROR = "Error parsing log record: unexpected end of stream.";
     public static final String LOG_STREAM_DELIMITER_ERROR = "Error parsing log record: unexpected delimiter encountered.";
@@ -170,4 +184,5 @@ public class SR {
     public static final String UNEXPECTED_STATUS_CODE_RECEIVED = "Unexpected http status code received.";
     public static final String UNEXPECTED_STREAM_READ_ERROR = "Unexpected error. Stream returned unexpected number of bytes.";
     public static final String UNKNOWN_TABLE_OPERATION = "Unknown table operation.";
+    public static final String UNSUPPORTED_PROPERTY_TYPE_FOR_ENCRYPTION = "Unsupported type : %s encountered during encryption. Only string properties can be encrypted on the client side.";
 }

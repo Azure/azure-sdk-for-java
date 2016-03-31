@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DoesServiceRequest;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
@@ -197,8 +198,10 @@ public final class CloudTableClient extends ServiceClient {
     @DoesServiceRequest
     public Iterable<String> listTables(final String prefix, final TableRequestOptions options,
             final OperationContext opContext) {
+        TableRequestOptions modifiedOptions = TableRequestOptions.populateAndApplyDefaults(options, this);
+        modifiedOptions.clearEncryption();
         return (Iterable<String>) this.generateIteratorForQuery(this.generateListTablesQuery(prefix),
-                this.tableNameResolver, options, opContext);
+                this.tableNameResolver, modifiedOptions, opContext);
     }
 
     /**
@@ -291,10 +294,11 @@ public final class CloudTableClient extends ServiceClient {
         if (null != maxResults) {
             Utility.assertGreaterThanOrEqual("maxResults", maxResults, 1);
         }
-        
+        TableRequestOptions modifiedOptions = TableRequestOptions.populateAndApplyDefaults(options, this);
+        modifiedOptions.clearEncryption();
         return (ResultSegment<String>) this.executeQuerySegmentedImpl(
                 this.generateListTablesQuery(prefix).take(maxResults), this.tableNameResolver, continuationToken,
-                options, opContext);
+                modifiedOptions, opContext);
     }
 
     /**
@@ -372,6 +376,15 @@ public final class CloudTableClient extends ServiceClient {
         if (resolver == null) {
             Utility.assertNotNull(SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER, queryToExecute.getClazzType());
         }
+        
+        options.assertPolicyIfRequired();
+        
+        // If encryption policy is set, then add the encryption metadata column to Select columns in order to be able to
+        // decrypt properties.
+        if (options.getEncryptionPolicy() != null)
+        {
+            addEncryptionProperties(queryToExecute);
+        }
 
         final StorageRequest<CloudTableClient, TableQuery<T>, ResultSegment<T>> getRequest = new StorageRequest<CloudTableClient, TableQuery<T>, ResultSegment<T>>(
                 options, this.getStorageUri()) {
@@ -447,6 +460,13 @@ public final class CloudTableClient extends ServiceClient {
         if (resolver == null) {
             Utility.assertNotNull(SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER, queryToExecute.getClazzType());
         }
+        
+        // If encryption policy is set, then add the encryption metadata column to Select columns in order to be able to
+        // decrypt properties.
+        if (options.getEncryptionPolicy() != null)
+        {
+            addEncryptionProperties(queryToExecute);
+        }
 
         final StorageRequest<CloudTableClient, TableQuery<T>, ResultSegment<R>> getRequest = new StorageRequest<CloudTableClient, TableQuery<T>, ResultSegment<R>>(
                 options, this.getStorageUri()) {
@@ -515,6 +535,27 @@ public final class CloudTableClient extends ServiceClient {
 
         return getRequest;
     }
+    
+    /**
+     * Adds the table encryption properties to the table query.
+     * 
+     * @param queryToExecute
+     *          The query to add the properties to.
+     */
+    private static void addEncryptionProperties(final TableQuery<?> queryToExecute) {
+        String[] columns;
+        if (queryToExecute.getColumns() != null) {
+            columns = new String[queryToExecute.getColumns().length + 2];
+            System.arraycopy(queryToExecute.getColumns(), 0, columns, 2, queryToExecute.getColumns().length);
+        } else {
+            columns = new String[2];
+        }
+
+        columns[0] = Constants.EncryptionConstants.TABLE_ENCRYPTION_KEY_DETAILS;
+        columns[1] = Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS;
+        
+        queryToExecute.setColumns(columns);
+    }
 
     protected final StorageUri getTransformedEndPoint(final OperationContext opContext) throws URISyntaxException,
             StorageException {
@@ -549,7 +590,6 @@ public final class CloudTableClient extends ServiceClient {
         }
 
         opContext.initialize();
-        options = TableRequestOptions.populateAndApplyDefaults(options, this);
 
         SegmentedStorageRequest segmentedRequest = new SegmentedStorageRequest();
 

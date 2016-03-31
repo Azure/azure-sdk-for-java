@@ -19,11 +19,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -31,19 +33,15 @@ import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.core.EncryptionData;
 import com.microsoft.azure.storage.core.JsonUtilities;
 import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.Utility;
 
 /**
  * Reserved for internal use. A class used to read Table entities.
  */
 final class TableDeserializer {
-
-    /**
-     * Used to create Json parsers and generators.
-     */
-    private static JsonFactory jsonFactory = new JsonFactory();
-
     /**
      * Reserved for internal use. Parses the operation response as a collection of entities. Reads entity data from the
      * specified input stream using the specified class type and optionally projects each entity result with the
@@ -86,7 +84,7 @@ final class TableDeserializer {
         ODataPayload<R> resolvedPayload = null;
         ODataPayload<?> commonPayload = null;
 
-        JsonParser parser = createJsonParserFromStream(inStream);
+        JsonParser parser = Utility.getJsonParser(inStream);
 
         try {
 
@@ -194,7 +192,7 @@ final class TableDeserializer {
             final TableRequestOptions options, final int httpStatusCode, final Class<T> clazzType,
             final EntityResolver<R> resolver, final OperationContext opContext) throws JsonParseException, IOException,
             InstantiationException, IllegalAccessException, StorageException {
-        JsonParser parser = createJsonParserFromStream(inStream);
+        JsonParser parser = Utility.getJsonParser(inStream);
 
         try {
             final TableResult res = parseJsonEntity(parser, clazzType,
@@ -247,7 +245,7 @@ final class TableDeserializer {
             IOException, StorageException, InstantiationException, IllegalAccessException {
         final TableResult res = new TableResult();
 
-        final HashMap<String, EntityProperty> properties = new HashMap<String, EntityProperty>();
+        HashMap<String, EntityProperty> properties = new HashMap<String, EntityProperty>();
 
         if (!parser.hasCurrentToken()) {
             parser.nextToken();
@@ -334,14 +332,57 @@ final class TableDeserializer {
                 res.setEtag(etag);
             }
         }
+        
+        // Deserialize the metadata property value to get the names of encrypted properties so that they can be parsed correctly below.
+        Key cek = null;
+        EncryptionData encryptionData = new EncryptionData();
+        HashSet<String> encryptedPropertyDetailsSet = null;
+        if (options.getEncryptionPolicy() != null) {     
+            EntityProperty propertyDetailsProperty = properties
+                    .get(Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS);
+            EntityProperty keyProperty = properties.get(Constants.EncryptionConstants.TABLE_ENCRYPTION_KEY_DETAILS);
+
+            if (propertyDetailsProperty != null && !propertyDetailsProperty.getIsNull() && 
+                    keyProperty != null && !keyProperty.getIsNull()) {
+                // Decrypt the metadata property value to get the names of encrypted properties.
+                cek = options.getEncryptionPolicy().decryptMetadataAndReturnCEK(partitionKey, rowKey, keyProperty,
+                        propertyDetailsProperty, encryptionData);
+
+                properties.put(Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS, propertyDetailsProperty);
+
+                encryptedPropertyDetailsSet = parsePropertyDetails(propertyDetailsProperty);
+            }
+            else {
+                if (options.requireEncryption() != null && options.requireEncryption()) {
+                    throw new StorageException(StorageErrorCodeStrings.DECRYPTION_ERROR,
+                            SR.ENCRYPTION_DATA_NOT_PRESENT_ERROR, null);
+                }
+            }
+        }
 
         // do further processing for type if JsonNoMetdata by inferring type information via resolver or clazzType
         if (options.getTablePayloadFormat() == TablePayloadFormat.JsonNoMetadata
                 && (options.getPropertyResolver() != null || clazzType != null)) {
-            if (options.getPropertyResolver() != null) {
-                for (final Entry<String, EntityProperty> p : properties.entrySet()) {
-                    final String key = p.getKey();
-                    final String value = p.getValue().getValueAsString();
+            for (final Entry<String, EntityProperty> property : properties.entrySet()) {
+                if (Constants.EncryptionConstants.TABLE_ENCRYPTION_KEY_DETAILS.equals(property.getKey()))
+                {
+                    // This and the following check are required because in JSON no-metadata, the type information for 
+                    // the properties are not returned and users are not expected to provide a type for them. So based 
+                    // on how the user defined property resolvers treat unknown properties, we might get unexpected results.
+                    final EntityProperty newProp = new EntityProperty(property.getValue().getValueAsString(), EdmType.STRING);
+                    properties.put(property.getKey(), newProp);
+                } 
+                else if (Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS.equals(property.getKey()))
+                {
+                    if (options.getEncryptionPolicy() == null) {
+                        final EntityProperty newProp = new EntityProperty(property.getValue().getValueAsString(),
+                                EdmType.BINARY);
+                        properties.put(property.getKey(), newProp);
+                    }
+                }
+                else if (options.getPropertyResolver() != null) {
+                    final String key = property.getKey();
+                    final String value = property.getValue().getValueAsString();
                     EdmType edmType;
 
                     // try to use the property resolver to get the type
@@ -355,9 +396,10 @@ final class TableDeserializer {
 
                     // try to create a new entity property using the returned type
                     try {
-                        final EntityProperty newProp = new EntityProperty(value, edmType);
+                        final EntityProperty newProp = new EntityProperty(value, 
+                                isEncrypted(encryptedPropertyDetailsSet, key) ? EdmType.BINARY : edmType);
                         newProp.setDateBackwardCompatibility(options.getDateBackwardCompatibility());
-                        properties.put(p.getKey(), newProp);
+                        properties.put(property.getKey(), newProp);
                     }
                     catch (IllegalArgumentException e) {
                         throw new StorageException(StorageErrorCodeStrings.INVALID_TYPE, String.format(
@@ -365,29 +407,36 @@ final class TableDeserializer {
                                 Constants.HeaderConstants.HTTP_UNUSED_306, null, e);
                     }
                 }
-            }
-            else if (clazzType != null) {
-                if (classProperties == null) {
-                    classProperties = PropertyPair.generatePropertyPairs(clazzType);
-                }
-                for (final Entry<String, EntityProperty> p : properties.entrySet()) {
-                    PropertyPair propPair = classProperties.get(p.getKey());
+                else if (clazzType != null) {
+                    if (classProperties == null) {
+                        classProperties = PropertyPair.generatePropertyPairs(clazzType);
+                    }
+                    PropertyPair propPair = classProperties.get(property.getKey());
                     if (propPair != null) {
-                        final EntityProperty newProp = new EntityProperty(p.getValue().getValueAsString(),
-                                propPair.type);
+                        EntityProperty newProp;
+                        if (isEncrypted(encryptedPropertyDetailsSet, property.getKey())) {
+                            newProp = new EntityProperty(property.getValue().getValueAsString(), EdmType.BINARY);
+                        }
+                        else {
+                            newProp = new EntityProperty(property.getValue().getValueAsString(), propPair.type);
+                        }
                         newProp.setDateBackwardCompatibility(options.getDateBackwardCompatibility());
-                        properties.put(p.getKey(), newProp);
+                        properties.put(property.getKey(), newProp);
                     }
                 }
             }
         }
-
+        
         // set the result properties, now that they are appropriately parsed
-        res.setProperties(properties);
-
+        if (options.getEncryptionPolicy() != null && cek != null) {
+            // decrypt properties, if necessary
+            properties = decryptProperties(properties, options, partitionKey, rowKey, cek, encryptionData);
+        } 
+       res.setProperties(properties);
+        
         // use resolver if provided, else create entity based on clazz type
         if (resolver != null) {
-            res.setResult(resolver.resolve(partitionKey, rowKey, timestamp, res.getProperties(), res.getEtag()));
+            res.setResult(resolver.resolve(partitionKey, rowKey, timestamp, properties, res.getEtag()));
         }
         else if (clazzType != null) {
             // Generate new entity and return
@@ -398,7 +447,7 @@ final class TableDeserializer {
             entity.setRowKey(rowKey);
             entity.setTimestamp(timestamp);
             
-            entity.readEntity(res.getProperties(), opContext);
+            entity.readEntity(properties, opContext);
 
             res.setResult(entity);
         }
@@ -429,16 +478,32 @@ final class TableDeserializer {
 
         return edmType;
     }
-
-    private static JsonParser createJsonParserFromStream(final InputStream streamRef) throws JsonParseException,
-            IOException {
-        JsonParser parser = jsonFactory.createParser(streamRef);
+    
+    private static boolean isEncrypted(HashSet<String> encryptedPropertyDetailsSet, String key)
+    {
+        // Handle the case where the property is encrypted.
+        return encryptedPropertyDetailsSet != null && encryptedPropertyDetailsSet.contains(key);
+    }
+    
+    private static HashMap<String, EntityProperty> decryptProperties(HashMap<String, EntityProperty> properties,
+            TableRequestOptions options, String partitionKey, String rowKey, Key contentEncryptionKey,
+            EncryptionData encryptionData) throws IOException, StorageException {
+        // Deserialize the metadata property value to get the names of encrypted properties.
+        EntityProperty propertyDetailsProperty = properties.get(Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS);
+        HashSet<String> encryptedPropertyDetailsSet = parsePropertyDetails(propertyDetailsProperty);
+        return options.getEncryptionPolicy().decryptEntity(properties, encryptedPropertyDetailsSet, partitionKey,
+                rowKey, contentEncryptionKey, encryptionData);
+    }
+    
+    private static HashSet<String> parsePropertyDetails(EntityProperty propertyDetailsProperty) {
+        HashSet<String> encryptedPropertyDetailsSet = null;        
+        if (propertyDetailsProperty != null && !propertyDetailsProperty.getIsNull()) {
+            byte[] binaryVal = propertyDetailsProperty.getValueAsByteArray();
+            String stringProperty = new String(binaryVal, 0, binaryVal.length).replaceAll(" ", "");
+            encryptedPropertyDetailsSet = new HashSet<String>(
+                    Arrays.asList(stringProperty.substring(1, stringProperty.length() - 1).split(",")));
+        }
         
-        return parser
-                // allows handling of infinity, -infinity, and NaN for Doubles
-                .enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS)
-                // don't close the stream and allow it to be drained completely
-                // in ExecutionEngine to improve socket reuse
-                .disable(JsonParser.Feature.AUTO_CLOSE_SOURCE);
+        return encryptedPropertyDetailsSet;
     }
 }
