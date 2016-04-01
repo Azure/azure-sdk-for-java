@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.google.common.io.CharStreams;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.rest.ServiceResponseWithHeaders;
@@ -13,6 +14,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 
@@ -71,6 +73,17 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         NodeUpdateUserParameter param = new NodeUpdateUserParameter();
         param.setPassword(password);
         param.setExpiryTime(expiryTime);
+
+        updateComputeNodeUser(poolId, nodeId, userName, param, additionalBehaviors);
+    }
+
+    public void updateComputeNodeUser(String poolId, String nodeId, String userName, String sshPublicKey) throws BatchErrorException, IOException {
+        updateComputeNodeUser(poolId, nodeId, userName, sshPublicKey, (Iterable<BatchClientBehavior>)null);
+    }
+
+    public void updateComputeNodeUser(String poolId, String nodeId, String userName, String sshPublicKey, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        NodeUpdateUserParameter param = new NodeUpdateUserParameter();
+        param.setSshPublicKey(sshPublicKey);
 
         updateComputeNodeUser(poolId, nodeId, userName, param, additionalBehaviors);
     }
@@ -163,16 +176,35 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         this._parentBatchClient.getProtocolLayer().getComputeNodeOperations().enableScheduling(poolId, nodeId, options);
     }
 
-    public InputStream getComputeNodeRemoteDesktop(String poolId, String nodeId) throws BatchErrorException, IOException {
+    public String getComputeNodeRemoteDesktop(String poolId, String nodeId) throws BatchErrorException, IOException {
         return getComputeNodeRemoteDesktop(poolId, nodeId, null);
     }
 
-    public InputStream getComputeNodeRemoteDesktop(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public String getComputeNodeRemoteDesktop(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteDesktopOptions options = new ComputeNodeGetRemoteDesktopOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
         ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response = this._parentBatchClient.getProtocolLayer().getComputeNodeOperations().getRemoteDesktop(poolId, nodeId, options);
+
+        if (response.getBody() != null) {
+            return CharStreams.toString(new InputStreamReader(response.getBody(), "UTF-8"));
+        }
+        else {
+            return null;
+        }
+    }
+
+    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException {
+        return getRemoteLoginSettings(poolId, nodeId, null);
+    }
+
+    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        ComputeNodeGetRemoteLoginSettingsOptions options = new ComputeNodeGetRemoteLoginSettingsOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response = this._parentBatchClient.getProtocolLayer().getComputeNodeOperations().getRemoteLoginSettings(poolId, nodeId, options);
 
         return response.getBody();
     }

@@ -145,6 +145,14 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
     }
 
     /**
+     * Gets the AccountOperations object to access its operations.
+     * @return the AccountOperations object.
+     */
+    public AccountOperations getAccountOperations() {
+        return new AccountOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
      * Gets the JobOperations object to access its operations.
      * @return the JobOperations object.
      */
@@ -231,7 +239,7 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
 
     @Override
     protected void initialize() {
-        this.apiVersion = "2015-12-01.2.2";
+        this.apiVersion = "2016-02-01.3.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;

@@ -22,6 +22,9 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsHeaders;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListNextOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListOptions;
@@ -128,6 +131,10 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         Call<ResponseBody> enableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @GET("pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
+        Call<ResponseBody> getRemoteLoginSettings(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
+
+        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}/rdp")
         @Streaming
         Call<ResponseBody> getRemoteDesktop(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
@@ -169,9 +176,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         Validator.validate(user);
         final ComputeNodeAddUserOptions computeNodeAddUserOptions = null;
         Integer timeout = null;
+        if (computeNodeAddUserOptions != null) {
+            timeout = computeNodeAddUserOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeAddUserOptions != null) {
+            clientRequestId = computeNodeAddUserOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeAddUserOptions != null) {
+            returnClientRequestId = computeNodeAddUserOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeAddUserOptions != null) {
+            ocpDate = computeNodeAddUserOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addUserDelegate(call.execute());
     }
@@ -209,9 +232,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         Validator.validate(user, serviceCallback);
         final ComputeNodeAddUserOptions computeNodeAddUserOptions = null;
         Integer timeout = null;
+        if (computeNodeAddUserOptions != null) {
+            timeout = computeNodeAddUserOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeAddUserOptions != null) {
+            clientRequestId = computeNodeAddUserOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeAddUserOptions != null) {
+            returnClientRequestId = computeNodeAddUserOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeAddUserOptions != null) {
+            ocpDate = computeNodeAddUserOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -379,9 +418,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions = null;
         Integer timeout = null;
+        if (computeNodeDeleteUserOptions != null) {
+            timeout = computeNodeDeleteUserOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeDeleteUserOptions != null) {
+            clientRequestId = computeNodeDeleteUserOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeDeleteUserOptions != null) {
+            returnClientRequestId = computeNodeDeleteUserOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeDeleteUserOptions != null) {
+            ocpDate = computeNodeDeleteUserOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return deleteUserDelegate(call.execute());
     }
@@ -418,9 +473,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions = null;
         Integer timeout = null;
+        if (computeNodeDeleteUserOptions != null) {
+            timeout = computeNodeDeleteUserOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeDeleteUserOptions != null) {
+            clientRequestId = computeNodeDeleteUserOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeDeleteUserOptions != null) {
+            returnClientRequestId = computeNodeDeleteUserOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeDeleteUserOptions != null) {
+            ocpDate = computeNodeDeleteUserOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -591,9 +662,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         Validator.validate(nodeUpdateUserParameter);
         final ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions = null;
         Integer timeout = null;
+        if (computeNodeUpdateUserOptions != null) {
+            timeout = computeNodeUpdateUserOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeUpdateUserOptions != null) {
+            clientRequestId = computeNodeUpdateUserOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeUpdateUserOptions != null) {
+            returnClientRequestId = computeNodeUpdateUserOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeUpdateUserOptions != null) {
+            ocpDate = computeNodeUpdateUserOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return updateUserDelegate(call.execute());
     }
@@ -636,9 +723,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         Validator.validate(nodeUpdateUserParameter, serviceCallback);
         final ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions = null;
         Integer timeout = null;
+        if (computeNodeUpdateUserOptions != null) {
+            timeout = computeNodeUpdateUserOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeUpdateUserOptions != null) {
+            clientRequestId = computeNodeUpdateUserOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeUpdateUserOptions != null) {
+            returnClientRequestId = computeNodeUpdateUserOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeUpdateUserOptions != null) {
+            ocpDate = computeNodeUpdateUserOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -811,10 +914,29 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeGetOptions computeNodeGetOptions = null;
         String select = null;
+        if (computeNodeGetOptions != null) {
+            select = computeNodeGetOptions.getSelect();
+        }
         Integer timeout = null;
+        if (computeNodeGetOptions != null) {
+            timeout = computeNodeGetOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeGetOptions != null) {
+            clientRequestId = computeNodeGetOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeGetOptions != null) {
+            returnClientRequestId = computeNodeGetOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetOptions != null) {
+            ocpDate = computeNodeGetOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getDelegate(call.execute());
     }
@@ -846,10 +968,29 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeGetOptions computeNodeGetOptions = null;
         String select = null;
+        if (computeNodeGetOptions != null) {
+            select = computeNodeGetOptions.getSelect();
+        }
         Integer timeout = null;
+        if (computeNodeGetOptions != null) {
+            timeout = computeNodeGetOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeGetOptions != null) {
+            clientRequestId = computeNodeGetOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeGetOptions != null) {
+            returnClientRequestId = computeNodeGetOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetOptions != null) {
+            ocpDate = computeNodeGetOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ComputeNode>(serviceCallback) {
@@ -1011,11 +1152,30 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         final ComputeNodeRebootOption nodeRebootOption = null;
         final ComputeNodeRebootOptions computeNodeRebootOptions = null;
         Integer timeout = null;
+        if (computeNodeRebootOptions != null) {
+            timeout = computeNodeRebootOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeRebootOptions != null) {
+            clientRequestId = computeNodeRebootOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeRebootOptions != null) {
+            returnClientRequestId = computeNodeRebootOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeRebootOptions != null) {
+            ocpDate = computeNodeRebootOptions.getOcpDate();
+        }
+        NodeRebootParameter nodeRebootParameter = null;
+        if (nodeRebootOption != null) {
+            nodeRebootParameter = new NodeRebootParameter();
+            nodeRebootParameter.setNodeRebootOption(nodeRebootOption);
+        }
         DateTimeRfc1123 ocpDateConverted = null;
-        NodeRebootParameter nodeRebootParameter = new NodeRebootParameter();
-        nodeRebootParameter = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter);
         return rebootDelegate(call.execute());
     }
@@ -1048,11 +1208,30 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         final ComputeNodeRebootOption nodeRebootOption = null;
         final ComputeNodeRebootOptions computeNodeRebootOptions = null;
         Integer timeout = null;
+        if (computeNodeRebootOptions != null) {
+            timeout = computeNodeRebootOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeRebootOptions != null) {
+            clientRequestId = computeNodeRebootOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeRebootOptions != null) {
+            returnClientRequestId = computeNodeRebootOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeRebootOptions != null) {
+            ocpDate = computeNodeRebootOptions.getOcpDate();
+        }
+        NodeRebootParameter nodeRebootParameter = null;
+        if (nodeRebootOption != null) {
+            nodeRebootParameter = new NodeRebootParameter();
+            nodeRebootParameter.setNodeRebootOption(nodeRebootOption);
+        }
         DateTimeRfc1123 ocpDateConverted = null;
-        NodeRebootParameter nodeRebootParameter = new NodeRebootParameter();
-        nodeRebootParameter = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1218,11 +1397,30 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         final ComputeNodeReimageOption nodeReimageOption = null;
         final ComputeNodeReimageOptions computeNodeReimageOptions = null;
         Integer timeout = null;
+        if (computeNodeReimageOptions != null) {
+            timeout = computeNodeReimageOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeReimageOptions != null) {
+            clientRequestId = computeNodeReimageOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeReimageOptions != null) {
+            returnClientRequestId = computeNodeReimageOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeReimageOptions != null) {
+            ocpDate = computeNodeReimageOptions.getOcpDate();
+        }
+        NodeReimageParameter nodeReimageParameter = null;
+        if (nodeReimageOption != null) {
+            nodeReimageParameter = new NodeReimageParameter();
+            nodeReimageParameter.setNodeReimageOption(nodeReimageOption);
+        }
         DateTimeRfc1123 ocpDateConverted = null;
-        NodeReimageParameter nodeReimageParameter = new NodeReimageParameter();
-        nodeReimageParameter = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter);
         return reimageDelegate(call.execute());
     }
@@ -1255,11 +1453,30 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         final ComputeNodeReimageOption nodeReimageOption = null;
         final ComputeNodeReimageOptions computeNodeReimageOptions = null;
         Integer timeout = null;
+        if (computeNodeReimageOptions != null) {
+            timeout = computeNodeReimageOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeReimageOptions != null) {
+            clientRequestId = computeNodeReimageOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeReimageOptions != null) {
+            returnClientRequestId = computeNodeReimageOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeReimageOptions != null) {
+            ocpDate = computeNodeReimageOptions.getOcpDate();
+        }
+        NodeReimageParameter nodeReimageParameter = null;
+        if (nodeReimageOption != null) {
+            nodeReimageParameter = new NodeReimageParameter();
+            nodeReimageParameter.setNodeReimageOption(nodeReimageOption);
+        }
         DateTimeRfc1123 ocpDateConverted = null;
-        NodeReimageParameter nodeReimageParameter = new NodeReimageParameter();
-        nodeReimageParameter = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1425,11 +1642,30 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         final DisableComputeNodeSchedulingOption nodeDisableSchedulingOption = null;
         final ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions = null;
         Integer timeout = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            timeout = computeNodeDisableSchedulingOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            clientRequestId = computeNodeDisableSchedulingOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            returnClientRequestId = computeNodeDisableSchedulingOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            ocpDate = computeNodeDisableSchedulingOptions.getOcpDate();
+        }
+        NodeDisableSchedulingParameter nodeDisableSchedulingParameter = null;
+        if (nodeDisableSchedulingOption != null) {
+            nodeDisableSchedulingParameter = new NodeDisableSchedulingParameter();
+            nodeDisableSchedulingParameter.setNodeDisableSchedulingOption(nodeDisableSchedulingOption);
+        }
         DateTimeRfc1123 ocpDateConverted = null;
-        NodeDisableSchedulingParameter nodeDisableSchedulingParameter = new NodeDisableSchedulingParameter();
-        nodeDisableSchedulingParameter = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter);
         return disableSchedulingDelegate(call.execute());
     }
@@ -1462,11 +1698,30 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         final DisableComputeNodeSchedulingOption nodeDisableSchedulingOption = null;
         final ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions = null;
         Integer timeout = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            timeout = computeNodeDisableSchedulingOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            clientRequestId = computeNodeDisableSchedulingOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            returnClientRequestId = computeNodeDisableSchedulingOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeDisableSchedulingOptions != null) {
+            ocpDate = computeNodeDisableSchedulingOptions.getOcpDate();
+        }
+        NodeDisableSchedulingParameter nodeDisableSchedulingParameter = null;
+        if (nodeDisableSchedulingOption != null) {
+            nodeDisableSchedulingParameter = new NodeDisableSchedulingParameter();
+            nodeDisableSchedulingParameter.setNodeDisableSchedulingOption(nodeDisableSchedulingOption);
+        }
         DateTimeRfc1123 ocpDateConverted = null;
-        NodeDisableSchedulingParameter nodeDisableSchedulingParameter = new NodeDisableSchedulingParameter();
-        nodeDisableSchedulingParameter = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1631,9 +1886,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions = null;
         Integer timeout = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            timeout = computeNodeEnableSchedulingOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            clientRequestId = computeNodeEnableSchedulingOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            returnClientRequestId = computeNodeEnableSchedulingOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            ocpDate = computeNodeEnableSchedulingOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return enableSchedulingDelegate(call.execute());
     }
@@ -1665,9 +1936,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions = null;
         Integer timeout = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            timeout = computeNodeEnableSchedulingOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            clientRequestId = computeNodeEnableSchedulingOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            returnClientRequestId = computeNodeEnableSchedulingOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeEnableSchedulingOptions != null) {
+            ocpDate = computeNodeEnableSchedulingOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1799,6 +2086,227 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
     }
 
     /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (poolId == null) {
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
+        }
+        if (nodeId == null) {
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        final ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions = null;
+        Integer timeout = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            timeout = computeNodeGetRemoteLoginSettingsOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            ocpDate = computeNodeGetRemoteLoginSettingsOptions.getOcpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        return getRemoteLoginSettingsDelegate(call.execute());
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions = null;
+        Integer timeout = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            timeout = computeNodeGetRemoteLoginSettingsOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            ocpDate = computeNodeGetRemoteLoginSettingsOptions.getOcpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (poolId == null) {
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
+        }
+        if (nodeId == null) {
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(computeNodeGetRemoteLoginSettingsOptions);
+        Integer timeout = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            timeout = computeNodeGetRemoteLoginSettingsOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            ocpDate = computeNodeGetRemoteLoginSettingsOptions.getOcpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        return getRemoteLoginSettingsDelegate(call.execute());
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(computeNodeGetRemoteLoginSettingsOptions, serviceCallback);
+        Integer timeout = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            timeout = computeNodeGetRemoteLoginSettingsOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            ocpDate = computeNodeGetRemoteLoginSettingsOptions.getOcpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettingsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ComputeNodeGetRemoteLoginSettingsResult, BatchErrorException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<ComputeNodeGetRemoteLoginSettingsResult>() { }.getType())
+                .registerError(BatchErrorException.class)
+                .buildWithHeaders(response, ComputeNodeGetRemoteLoginSettingsHeaders.class);
+    }
+
+    /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
@@ -1820,9 +2328,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions = null;
         Integer timeout = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            timeout = computeNodeGetRemoteDesktopOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            clientRequestId = computeNodeGetRemoteDesktopOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteDesktopOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            ocpDate = computeNodeGetRemoteDesktopOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getRemoteDesktopDelegate(call.execute());
     }
@@ -1854,9 +2378,25 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions = null;
         Integer timeout = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            timeout = computeNodeGetRemoteDesktopOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            clientRequestId = computeNodeGetRemoteDesktopOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteDesktopOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteDesktopOptions != null) {
+            ocpDate = computeNodeGetRemoteDesktopOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -2005,18 +2545,50 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeListOptions computeNodeListOptions = null;
         String filter = null;
+        if (computeNodeListOptions != null) {
+            filter = computeNodeListOptions.getFilter();
+        }
         String select = null;
+        if (computeNodeListOptions != null) {
+            select = computeNodeListOptions.getSelect();
+        }
         Integer maxResults = null;
+        if (computeNodeListOptions != null) {
+            maxResults = computeNodeListOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (computeNodeListOptions != null) {
+            timeout = computeNodeListOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeListOptions != null) {
+            clientRequestId = computeNodeListOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeListOptions != null) {
+            returnClientRequestId = computeNodeListOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeListOptions != null) {
+            ocpDate = computeNodeListOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> response = listDelegate(call.execute());
         PagedList<ComputeNode> result = new PagedList<ComputeNode>(response.getBody()) {
             @Override
             public Page<ComputeNode> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
+                ComputeNodeListNextOptions computeNodeListNextOptions = null;
+                if (computeNodeListOptions != null) {
+                    computeNodeListNextOptions = new ComputeNodeListNextOptions();
+                    computeNodeListNextOptions.setClientRequestId(computeNodeListOptions.getClientRequestId());
+                    computeNodeListNextOptions.setReturnClientRequestId(computeNodeListOptions.getReturnClientRequestId());
+                    computeNodeListNextOptions.setOcpDate(computeNodeListOptions.getOcpDate());
+                }
+                return listNext(nextPageLink, computeNodeListNextOptions).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -2044,12 +2616,37 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeListOptions computeNodeListOptions = null;
         String filter = null;
+        if (computeNodeListOptions != null) {
+            filter = computeNodeListOptions.getFilter();
+        }
         String select = null;
+        if (computeNodeListOptions != null) {
+            select = computeNodeListOptions.getSelect();
+        }
         Integer maxResults = null;
+        if (computeNodeListOptions != null) {
+            maxResults = computeNodeListOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (computeNodeListOptions != null) {
+            timeout = computeNodeListOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (computeNodeListOptions != null) {
+            clientRequestId = computeNodeListOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeListOptions != null) {
+            returnClientRequestId = computeNodeListOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeListOptions != null) {
+            ocpDate = computeNodeListOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
@@ -2060,7 +2657,14 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        ComputeNodeListNextOptions computeNodeListNextOptions = null;
+                        if (computeNodeListOptions != null) {
+                            computeNodeListNextOptions = new ComputeNodeListNextOptions();
+                            computeNodeListNextOptions.setClientRequestId(computeNodeListOptions.getClientRequestId());
+                            computeNodeListNextOptions.setReturnClientRequestId(computeNodeListOptions.getReturnClientRequestId());
+                            computeNodeListNextOptions.setOcpDate(computeNodeListOptions.getOcpDate());
+                        }
+                        listNextAsync(result.getBody().getNextPageLink(), computeNodeListNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -2245,8 +2849,21 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeListNextOptions computeNodeListNextOptions = null;
         String clientRequestId = null;
+        if (computeNodeListNextOptions != null) {
+            clientRequestId = computeNodeListNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeListNextOptions != null) {
+            returnClientRequestId = computeNodeListNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeListNextOptions != null) {
+            ocpDate = computeNodeListNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -2270,8 +2887,21 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
         }
         final ComputeNodeListNextOptions computeNodeListNextOptions = null;
         String clientRequestId = null;
+        if (computeNodeListNextOptions != null) {
+            clientRequestId = computeNodeListNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (computeNodeListNextOptions != null) {
+            returnClientRequestId = computeNodeListNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeListNextOptions != null) {
+            ocpDate = computeNodeListNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
@@ -2282,7 +2912,7 @@ public final class ComputeNodeOperationsImpl implements ComputeNodeOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), computeNodeListNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }

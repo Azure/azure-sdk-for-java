@@ -90,26 +90,44 @@ public class PoolOperations implements IInheritedBehaviors {
         this._parentBatchClient.getProtocolLayer().getPoolOperations().delete(poolId, options);
     }
 
-    public void createPool(String poolId, String osFamily, String virtualMachineSize) throws BatchErrorException, IOException {
-        createPool(poolId, osFamily, virtualMachineSize, null, null);
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, cloudServiceConfiguration, null, null);
     }
 
-    public void createPool(String poolId, String osFamily, String virtualMachineSize, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        createPool(poolId, osFamily, virtualMachineSize, null, additionalBehaviors);
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, int targetDedicated) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, cloudServiceConfiguration, targetDedicated, null);
     }
 
-    public void createPool(String poolId, String osFamily, String virtualMachineSize, int targetDedicated) throws BatchErrorException, IOException {
-        createPool(poolId, osFamily, virtualMachineSize, targetDedicated, null);
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, cloudServiceConfiguration, null, additionalBehaviors);
     }
 
-    public void createPool(String poolId, String osFamily, String virtualMachineSize, int targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        createPool(poolId, osFamily, virtualMachineSize, (Integer)targetDedicated, additionalBehaviors);
-    }
-
-    private void createPool(String poolId, String osFamily, String virtualMachineSize, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolAddParameter parameter = new PoolAddParameter();
         parameter.setId(poolId);
-        parameter.setOsFamily(osFamily);
+        parameter.setCloudServiceConfiguration(cloudServiceConfiguration);
+        parameter.setTargetDedicated(targetDedicated);
+        parameter.setVmSize(virtualMachineSize);
+
+        createPool(parameter, additionalBehaviors);
+    }
+
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, virtualMachineConfiguration, null, null);
+    }
+
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicated) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, virtualMachineConfiguration, targetDedicated, null);
+    }
+
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        createPool(poolId, virtualMachineSize, virtualMachineConfiguration, null, additionalBehaviors);
+    }
+
+    public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        PoolAddParameter parameter = new PoolAddParameter();
+        parameter.setId(poolId);
+        parameter.setVirtualMachineConfiguration(virtualMachineConfiguration);
         parameter.setTargetDedicated(targetDedicated);
         parameter.setVmSize(virtualMachineSize);
 
@@ -303,6 +321,23 @@ public class PoolOperations implements IInheritedBehaviors {
         this._parentBatchClient.getProtocolLayer().getPoolOperations().updateProperties(poolId, param, options);
     }
 
+    public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences, Collection<MetadataItem> metadata) throws BatchErrorException, IOException {
+        patchPool(poolId, startTask, certificateReferences, metadata, null);
+    }
+
+    public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences, Collection<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        PoolPatchOptions options = new PoolPatchOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        PoolPatchParameter param = new PoolPatchParameter();
+        param.setMetadata(new LinkedList<MetadataItem>(metadata));
+        param.setCertificateReferences(new LinkedList<CertificateReference>(certificateReferences));
+        param.setStartTask(startTask);
+
+        this._parentBatchClient.getProtocolLayer().getPoolOperations().patch(poolId, param, options);
+    }
+
     public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime) throws BatchErrorException, IOException {
         return listPoolUsageMetrics(startTime, endTime, null, null);
     }
@@ -337,5 +372,4 @@ public class PoolOperations implements IInheritedBehaviors {
 
         return response.getBody();
     }
-
 }

@@ -12,6 +12,10 @@ import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudTask;
 import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
 import com.microsoft.azure.batch.protocol.models.PageImpl;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionHeaders;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionParameter;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionResult;
 import com.microsoft.azure.batch.protocol.models.TaskAddHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskAddOptions;
 import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
@@ -34,6 +38,7 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
+import com.microsoft.rest.serializer.CollectionFormat;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -92,6 +97,10 @@ public final class TaskOperationsImpl implements TaskOperations {
         Call<ResponseBody> list(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @POST("jobs/{jobId}/addtaskcollection")
+        Call<ResponseBody> addCollection(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body TaskAddCollectionParameter taskCollection);
+
+        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "jobs/{jobId}/tasks/{taskId}", method = "DELETE", hasBody = true)
         Call<ResponseBody> delete(@Path("jobId") String jobId, @Path("taskId") String taskId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince);
 
@@ -140,9 +149,25 @@ public final class TaskOperationsImpl implements TaskOperations {
         Validator.validate(task);
         final TaskAddOptions taskAddOptions = null;
         Integer timeout = null;
+        if (taskAddOptions != null) {
+            timeout = taskAddOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskAddOptions != null) {
+            clientRequestId = taskAddOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskAddOptions != null) {
+            returnClientRequestId = taskAddOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddOptions != null) {
+            ocpDate = taskAddOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(jobId, task, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -175,9 +200,25 @@ public final class TaskOperationsImpl implements TaskOperations {
         Validator.validate(task, serviceCallback);
         final TaskAddOptions taskAddOptions = null;
         Integer timeout = null;
+        if (taskAddOptions != null) {
+            timeout = taskAddOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskAddOptions != null) {
+            clientRequestId = taskAddOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskAddOptions != null) {
+            returnClientRequestId = taskAddOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddOptions != null) {
+            ocpDate = taskAddOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(jobId, task, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -328,19 +369,54 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskListOptions taskListOptions = null;
         String filter = null;
+        if (taskListOptions != null) {
+            filter = taskListOptions.getFilter();
+        }
         String select = null;
+        if (taskListOptions != null) {
+            select = taskListOptions.getSelect();
+        }
         String expand = null;
+        if (taskListOptions != null) {
+            expand = taskListOptions.getExpand();
+        }
         Integer maxResults = null;
+        if (taskListOptions != null) {
+            maxResults = taskListOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (taskListOptions != null) {
+            timeout = taskListOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskListOptions != null) {
+            clientRequestId = taskListOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskListOptions != null) {
+            returnClientRequestId = taskListOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskListOptions != null) {
+            ocpDate = taskListOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> response = listDelegate(call.execute());
         PagedList<CloudTask> result = new PagedList<CloudTask>(response.getBody()) {
             @Override
             public Page<CloudTask> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
+                TaskListNextOptions taskListNextOptions = null;
+                if (taskListOptions != null) {
+                    taskListNextOptions = new TaskListNextOptions();
+                    taskListNextOptions.setClientRequestId(taskListOptions.getClientRequestId());
+                    taskListNextOptions.setReturnClientRequestId(taskListOptions.getReturnClientRequestId());
+                    taskListNextOptions.setOcpDate(taskListOptions.getOcpDate());
+                }
+                return listNext(nextPageLink, taskListNextOptions).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -368,13 +444,41 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskListOptions taskListOptions = null;
         String filter = null;
+        if (taskListOptions != null) {
+            filter = taskListOptions.getFilter();
+        }
         String select = null;
+        if (taskListOptions != null) {
+            select = taskListOptions.getSelect();
+        }
         String expand = null;
+        if (taskListOptions != null) {
+            expand = taskListOptions.getExpand();
+        }
         Integer maxResults = null;
+        if (taskListOptions != null) {
+            maxResults = taskListOptions.getMaxResults();
+        }
         Integer timeout = null;
+        if (taskListOptions != null) {
+            timeout = taskListOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskListOptions != null) {
+            clientRequestId = taskListOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskListOptions != null) {
+            returnClientRequestId = taskListOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskListOptions != null) {
+            ocpDate = taskListOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudTask>>(serviceCallback) {
@@ -385,7 +489,14 @@ public final class TaskOperationsImpl implements TaskOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        TaskListNextOptions taskListNextOptions = null;
+                        if (taskListOptions != null) {
+                            taskListNextOptions = new TaskListNextOptions();
+                            taskListNextOptions.setClientRequestId(taskListOptions.getClientRequestId());
+                            taskListNextOptions.setReturnClientRequestId(taskListOptions.getReturnClientRequestId());
+                            taskListNextOptions.setOcpDate(taskListOptions.getOcpDate());
+                        }
+                        listNextAsync(result.getBody().getNextPageLink(), taskListNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -564,6 +675,239 @@ public final class TaskOperationsImpl implements TaskOperations {
     }
 
     /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
+        }
+        Validator.validate(value);
+        final TaskAddCollectionOptions taskAddCollectionOptions = null;
+        Integer timeout = null;
+        if (taskAddCollectionOptions != null) {
+            timeout = taskAddCollectionOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            clientRequestId = taskAddCollectionOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            returnClientRequestId = taskAddCollectionOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddCollectionOptions != null) {
+            ocpDate = taskAddCollectionOptions.getOcpDate();
+        }
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        return addCollectionDelegate(call.execute());
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        if (value == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(value, serviceCallback);
+        final TaskAddCollectionOptions taskAddCollectionOptions = null;
+        Integer timeout = null;
+        if (taskAddCollectionOptions != null) {
+            timeout = taskAddCollectionOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            clientRequestId = taskAddCollectionOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            returnClientRequestId = taskAddCollectionOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddCollectionOptions != null) {
+            ocpDate = taskAddCollectionOptions.getOcpDate();
+        }
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<TaskAddCollectionResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(addCollectionDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
+        }
+        Validator.validate(value);
+        Validator.validate(taskAddCollectionOptions);
+        Integer timeout = null;
+        if (taskAddCollectionOptions != null) {
+            timeout = taskAddCollectionOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            clientRequestId = taskAddCollectionOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            returnClientRequestId = taskAddCollectionOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddCollectionOptions != null) {
+            ocpDate = taskAddCollectionOptions.getOcpDate();
+        }
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        return addCollectionDelegate(call.execute());
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        if (value == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(value, serviceCallback);
+        Validator.validate(taskAddCollectionOptions, serviceCallback);
+        Integer timeout = null;
+        if (taskAddCollectionOptions != null) {
+            timeout = taskAddCollectionOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            clientRequestId = taskAddCollectionOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            returnClientRequestId = taskAddCollectionOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddCollectionOptions != null) {
+            ocpDate = taskAddCollectionOptions.getOcpDate();
+        }
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<TaskAddCollectionResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(addCollectionDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollectionDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<TaskAddCollectionResult, BatchErrorException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<TaskAddCollectionResult>() { }.getType())
+                .registerError(BatchErrorException.class)
+                .buildWithHeaders(response, TaskAddCollectionHeaders.class);
+    }
+
+    /**
      * Deletes a task from the specified job.
      *
      * @param jobId The id of the job from which to delete the task.
@@ -585,13 +929,49 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskDeleteOptions taskDeleteOptions = null;
         Integer timeout = null;
+        if (taskDeleteOptions != null) {
+            timeout = taskDeleteOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskDeleteOptions != null) {
+            clientRequestId = taskDeleteOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskDeleteOptions != null) {
+            returnClientRequestId = taskDeleteOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskDeleteOptions != null) {
+            ocpDate = taskDeleteOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskDeleteOptions != null) {
+            ifMatch = taskDeleteOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (taskDeleteOptions != null) {
+            ifNoneMatch = taskDeleteOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskDeleteOptions != null) {
+            ifModifiedSince = taskDeleteOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskDeleteOptions != null) {
+            ifUnmodifiedSince = taskDeleteOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return deleteDelegate(call.execute());
     }
@@ -623,13 +1003,49 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskDeleteOptions taskDeleteOptions = null;
         Integer timeout = null;
+        if (taskDeleteOptions != null) {
+            timeout = taskDeleteOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskDeleteOptions != null) {
+            clientRequestId = taskDeleteOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskDeleteOptions != null) {
+            returnClientRequestId = taskDeleteOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskDeleteOptions != null) {
+            ocpDate = taskDeleteOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskDeleteOptions != null) {
+            ifMatch = taskDeleteOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (taskDeleteOptions != null) {
+            ifNoneMatch = taskDeleteOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskDeleteOptions != null) {
+            ifModifiedSince = taskDeleteOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskDeleteOptions != null) {
+            ifUnmodifiedSince = taskDeleteOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -830,15 +1246,57 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskGetOptions taskGetOptions = null;
         String select = null;
+        if (taskGetOptions != null) {
+            select = taskGetOptions.getSelect();
+        }
         String expand = null;
+        if (taskGetOptions != null) {
+            expand = taskGetOptions.getExpand();
+        }
         Integer timeout = null;
+        if (taskGetOptions != null) {
+            timeout = taskGetOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskGetOptions != null) {
+            clientRequestId = taskGetOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskGetOptions != null) {
+            returnClientRequestId = taskGetOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskGetOptions != null) {
+            ocpDate = taskGetOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskGetOptions != null) {
+            ifMatch = taskGetOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (taskGetOptions != null) {
+            ifNoneMatch = taskGetOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskGetOptions != null) {
+            ifModifiedSince = taskGetOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskGetOptions != null) {
+            ifUnmodifiedSince = taskGetOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.get(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getDelegate(call.execute());
     }
@@ -870,15 +1328,57 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskGetOptions taskGetOptions = null;
         String select = null;
+        if (taskGetOptions != null) {
+            select = taskGetOptions.getSelect();
+        }
         String expand = null;
+        if (taskGetOptions != null) {
+            expand = taskGetOptions.getExpand();
+        }
         Integer timeout = null;
+        if (taskGetOptions != null) {
+            timeout = taskGetOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskGetOptions != null) {
+            clientRequestId = taskGetOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskGetOptions != null) {
+            returnClientRequestId = taskGetOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskGetOptions != null) {
+            ocpDate = taskGetOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskGetOptions != null) {
+            ifMatch = taskGetOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (taskGetOptions != null) {
+            ifNoneMatch = taskGetOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskGetOptions != null) {
+            ifModifiedSince = taskGetOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskGetOptions != null) {
+            ifUnmodifiedSince = taskGetOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.get(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudTask>(serviceCallback) {
@@ -1096,15 +1596,51 @@ public final class TaskOperationsImpl implements TaskOperations {
         final TaskConstraints constraints = null;
         final TaskUpdateOptions taskUpdateOptions = null;
         Integer timeout = null;
+        if (taskUpdateOptions != null) {
+            timeout = taskUpdateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskUpdateOptions != null) {
+            clientRequestId = taskUpdateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskUpdateOptions != null) {
+            returnClientRequestId = taskUpdateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskUpdateOptions != null) {
+            ocpDate = taskUpdateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskUpdateOptions != null) {
+            ifMatch = taskUpdateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (taskUpdateOptions != null) {
+            ifNoneMatch = taskUpdateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskUpdateOptions != null) {
+            ifModifiedSince = taskUpdateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskUpdateOptions != null) {
+            ifUnmodifiedSince = taskUpdateOptions.getIfUnmodifiedSince();
+        }
         TaskUpdateParameter taskUpdateParameter = new TaskUpdateParameter();
-        taskUpdateParameter = null;
+        taskUpdateParameter.setConstraints(constraints);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, taskUpdateParameter);
         return updateDelegate(call.execute());
     }
@@ -1137,15 +1673,51 @@ public final class TaskOperationsImpl implements TaskOperations {
         final TaskConstraints constraints = null;
         final TaskUpdateOptions taskUpdateOptions = null;
         Integer timeout = null;
+        if (taskUpdateOptions != null) {
+            timeout = taskUpdateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskUpdateOptions != null) {
+            clientRequestId = taskUpdateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskUpdateOptions != null) {
+            returnClientRequestId = taskUpdateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskUpdateOptions != null) {
+            ocpDate = taskUpdateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskUpdateOptions != null) {
+            ifMatch = taskUpdateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (taskUpdateOptions != null) {
+            ifNoneMatch = taskUpdateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskUpdateOptions != null) {
+            ifModifiedSince = taskUpdateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskUpdateOptions != null) {
+            ifUnmodifiedSince = taskUpdateOptions.getIfUnmodifiedSince();
+        }
         TaskUpdateParameter taskUpdateParameter = new TaskUpdateParameter();
-        taskUpdateParameter = null;
+        taskUpdateParameter.setConstraints(constraints);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, taskUpdateParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1354,10 +1926,29 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskListSubtasksOptions taskListSubtasksOptions = null;
         String select = null;
+        if (taskListSubtasksOptions != null) {
+            select = taskListSubtasksOptions.getSelect();
+        }
         Integer timeout = null;
+        if (taskListSubtasksOptions != null) {
+            timeout = taskListSubtasksOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskListSubtasksOptions != null) {
+            clientRequestId = taskListSubtasksOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskListSubtasksOptions != null) {
+            returnClientRequestId = taskListSubtasksOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskListSubtasksOptions != null) {
+            ocpDate = taskListSubtasksOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listSubtasks(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return listSubtasksDelegate(call.execute());
     }
@@ -1389,10 +1980,29 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskListSubtasksOptions taskListSubtasksOptions = null;
         String select = null;
+        if (taskListSubtasksOptions != null) {
+            select = taskListSubtasksOptions.getSelect();
+        }
         Integer timeout = null;
+        if (taskListSubtasksOptions != null) {
+            timeout = taskListSubtasksOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskListSubtasksOptions != null) {
+            clientRequestId = taskListSubtasksOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskListSubtasksOptions != null) {
+            returnClientRequestId = taskListSubtasksOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskListSubtasksOptions != null) {
+            ocpDate = taskListSubtasksOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listSubtasks(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudTaskListSubtasksResult>(serviceCallback) {
@@ -1553,13 +2163,49 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskTerminateOptions taskTerminateOptions = null;
         Integer timeout = null;
+        if (taskTerminateOptions != null) {
+            timeout = taskTerminateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskTerminateOptions != null) {
+            clientRequestId = taskTerminateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskTerminateOptions != null) {
+            returnClientRequestId = taskTerminateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskTerminateOptions != null) {
+            ocpDate = taskTerminateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskTerminateOptions != null) {
+            ifMatch = taskTerminateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (taskTerminateOptions != null) {
+            ifNoneMatch = taskTerminateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskTerminateOptions != null) {
+            ifModifiedSince = taskTerminateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskTerminateOptions != null) {
+            ifUnmodifiedSince = taskTerminateOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return terminateDelegate(call.execute());
     }
@@ -1591,13 +2237,49 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskTerminateOptions taskTerminateOptions = null;
         Integer timeout = null;
+        if (taskTerminateOptions != null) {
+            timeout = taskTerminateOptions.getTimeout();
+        }
         String clientRequestId = null;
+        if (taskTerminateOptions != null) {
+            clientRequestId = taskTerminateOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        if (taskTerminateOptions != null) {
+            returnClientRequestId = taskTerminateOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskTerminateOptions != null) {
+            ocpDate = taskTerminateOptions.getOcpDate();
+        }
         String ifMatch = null;
+        if (taskTerminateOptions != null) {
+            ifMatch = taskTerminateOptions.getIfMatch();
+        }
         String ifNoneMatch = null;
+        if (taskTerminateOptions != null) {
+            ifNoneMatch = taskTerminateOptions.getIfNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskTerminateOptions != null) {
+            ifModifiedSince = taskTerminateOptions.getIfModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskTerminateOptions != null) {
+            ifUnmodifiedSince = taskTerminateOptions.getIfUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, taskId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1791,8 +2473,21 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskListNextOptions taskListNextOptions = null;
         String clientRequestId = null;
+        if (taskListNextOptions != null) {
+            clientRequestId = taskListNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskListNextOptions != null) {
+            returnClientRequestId = taskListNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskListNextOptions != null) {
+            ocpDate = taskListNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -1816,8 +2511,21 @@ public final class TaskOperationsImpl implements TaskOperations {
         }
         final TaskListNextOptions taskListNextOptions = null;
         String clientRequestId = null;
+        if (taskListNextOptions != null) {
+            clientRequestId = taskListNextOptions.getClientRequestId();
+        }
         Boolean returnClientRequestId = null;
+        if (taskListNextOptions != null) {
+            returnClientRequestId = taskListNextOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskListNextOptions != null) {
+            ocpDate = taskListNextOptions.getOcpDate();
+        }
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudTask>>(serviceCallback) {
@@ -1828,7 +2536,7 @@ public final class TaskOperationsImpl implements TaskOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), taskListNextOptions, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }

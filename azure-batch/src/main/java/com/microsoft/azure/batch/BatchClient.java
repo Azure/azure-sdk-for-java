@@ -26,6 +26,7 @@ public class BatchClient {
     private FileOperations fileOperations;
     private ComputeNodeOperations computeNodeOperations;
     private ApplicationOperations applicationOperations;
+    private AccountOperations accountOperations;
     private Collection<BatchClientBehavior> customBehaviors;
 
     public BatchServiceClient getProtocolLayer() {
@@ -44,6 +45,7 @@ public class BatchClient {
         this.poolOperations = new PoolOperations(this, getCustomBehaviors());
         this.fileOperations = new FileOperations(this, getCustomBehaviors());
         this.applicationOperations = new ApplicationOperations(this, getCustomBehaviors());
+        this.accountOperations = new AccountOperations(this, getCustomBehaviors());
         this.computeNodeOperations = new ComputeNodeOperations(this, getCustomBehaviors());
     }
 
@@ -81,6 +83,10 @@ public class BatchClient {
 
     public ApplicationOperations getApplicationOperations() {
         return applicationOperations;
+    }
+
+    public AccountOperations getAccountOperations() {
+        return accountOperations;
     }
 
     public Collection<BatchClientBehavior> getCustomBehaviors() {
