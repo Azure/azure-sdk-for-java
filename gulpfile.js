@@ -65,7 +65,7 @@ var mappings = {
     },
     'datalake.analytics.job': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/job/2015-11-01-preview/swagger/job.json',
+        'source': 'arm-datalake-analytics/job/2016-03-20-preview/swagger/job.json',
         'package': 'com.microsoft.azure.management.datalake.analytics'
     },
     'datalake.analytics.catalog': {
@@ -94,7 +94,7 @@ gulp.task('default', function() {
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.16.0-Nightly20160314'; // default
+var autoRestVersion = '0.16.0-Nightly20160330'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

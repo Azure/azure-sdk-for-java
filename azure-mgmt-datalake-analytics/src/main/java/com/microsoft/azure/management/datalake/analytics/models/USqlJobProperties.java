@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.List;
+import org.joda.time.Period;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -43,28 +44,28 @@ public class USqlJobProperties extends JobProperties {
      * set by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String totalCompilationTime;
+    private Period totalCompilationTime;
 
     /**
      * Gets the total time this job spent paused. This value should not be set
      * by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String totalPauseTime;
+    private Period totalPauseTime;
 
     /**
      * Gets the total time this job spent queued. This value should not be set
      * by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String totalQueuedTime;
+    private Period totalQueuedTime;
 
     /**
      * Gets the total time this job spent executing. This value should not be
      * set by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String totalRunningTime;
+    private Period totalRunningTime;
 
     /**
      * Gets the ID used to identify the job manager coordinating job
@@ -93,7 +94,7 @@ public class USqlJobProperties extends JobProperties {
      * Gets or sets the compile mode for the job. Possible values include:
      * 'Semantic', 'Full', 'SingleBox'.
      */
-    private String compileMode;
+    private CompileMode compileMode;
 
     /**
      * Get the resources value.
@@ -163,7 +164,7 @@ public class USqlJobProperties extends JobProperties {
      *
      * @return the totalCompilationTime value
      */
-    public String getTotalCompilationTime() {
+    public Period getTotalCompilationTime() {
         return this.totalCompilationTime;
     }
 
@@ -172,7 +173,7 @@ public class USqlJobProperties extends JobProperties {
      *
      * @return the totalPauseTime value
      */
-    public String getTotalPauseTime() {
+    public Period getTotalPauseTime() {
         return this.totalPauseTime;
     }
 
@@ -181,7 +182,7 @@ public class USqlJobProperties extends JobProperties {
      *
      * @return the totalQueuedTime value
      */
-    public String getTotalQueuedTime() {
+    public Period getTotalQueuedTime() {
         return this.totalQueuedTime;
     }
 
@@ -190,7 +191,7 @@ public class USqlJobProperties extends JobProperties {
      *
      * @return the totalRunningTime value
      */
-    public String getTotalRunningTime() {
+    public Period getTotalRunningTime() {
         return this.totalRunningTime;
     }
 
@@ -226,7 +227,7 @@ public class USqlJobProperties extends JobProperties {
      *
      * @return the compileMode value
      */
-    public String getCompileMode() {
+    public CompileMode getCompileMode() {
         return this.compileMode;
     }
 
@@ -235,7 +236,7 @@ public class USqlJobProperties extends JobProperties {
      *
      * @param compileMode the compileMode value to set
      */
-    public void setCompileMode(String compileMode) {
+    public void setCompileMode(CompileMode compileMode) {
         this.compileMode = compileMode;
     }
 

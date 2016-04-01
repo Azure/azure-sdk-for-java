@@ -66,35 +66,35 @@ public final class JobOperationsImpl implements JobOperations {
     interface JobService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/GetStatistics")
-        Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/GetDebugDataPath")
-        Call<ResponseBody> getDebugDataPath(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDebugDataPath(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("BuildJob")
-        Call<ResponseBody> build(@Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> build(@Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/CancelJob")
-        Call<ResponseBody> cancel(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> cancel(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("Jobs/{jobIdentity}")
-        Call<ResponseBody> get(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("Jobs/{jobIdentity}")
-        Call<ResponseBody> create(@Path("jobIdentity") UUID jobIdentity, @Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> create(@Path("jobIdentity") UUID jobIdentity, @Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("Jobs")
-        Call<ResponseBody> list(@Query("$filter") JobInformation filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Query("$filter") JobInformation filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
     }
 
@@ -121,12 +121,9 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getStatisticsDelegate(call.execute());
     }
 
@@ -159,13 +156,9 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
             @Override
@@ -210,12 +203,9 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDebugDataPathDelegate(call.execute());
     }
 
@@ -248,13 +238,9 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobDataPath>(serviceCallback) {
             @Override
@@ -299,13 +285,10 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return buildDelegate(call.execute());
     }
 
@@ -338,14 +321,10 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformation>(serviceCallback) {
             @Override
@@ -390,12 +369,9 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return cancelDelegate(call.execute());
     }
 
@@ -428,13 +404,9 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -478,12 +450,9 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -516,13 +485,9 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformation>(serviceCallback) {
             @Override
@@ -571,13 +536,10 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -615,14 +577,10 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformation>(serviceCallback) {
             @Override
@@ -663,9 +621,6 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final JobInformation filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -677,7 +632,7 @@ public final class JobOperationsImpl implements JobOperations {
         final String format = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<JobInformation>> response = listDelegate(call.execute());
         PagedList<JobInformation> result = new PagedList<JobInformation>(response.getBody()) {
             @Override
@@ -712,10 +667,6 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final JobInformation filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -727,7 +678,7 @@ public final class JobOperationsImpl implements JobOperations {
         final String format = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformation>>(serviceCallback) {
             @Override
@@ -777,13 +728,10 @@ public final class JobOperationsImpl implements JobOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(filter);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<JobInformation>> response = listDelegate(call.execute());
         PagedList<JobInformation> result = new PagedList<JobInformation>(response.getBody()) {
             @Override
@@ -827,14 +775,10 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(filter, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformation>>(serviceCallback) {
             @Override
@@ -876,10 +820,7 @@ public final class JobOperationsImpl implements JobOperations {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -900,11 +841,7 @@ public final class JobOperationsImpl implements JobOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformation>>(serviceCallback) {
             @Override

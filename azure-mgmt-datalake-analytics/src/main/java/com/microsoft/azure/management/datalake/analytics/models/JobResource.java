@@ -25,7 +25,7 @@ public class JobResource {
      * Gets or sets the job resource type. Possible values include:
      * 'VertexResource', 'StatisticsResource'.
      */
-    private String type;
+    private JobResourceType type;
 
     /**
      * Get the name value.
@@ -68,7 +68,7 @@ public class JobResource {
      *
      * @return the type value
      */
-    public String getType() {
+    public JobResourceType getType() {
         return this.type;
     }
 
@@ -77,7 +77,7 @@ public class JobResource {
      *
      * @param type the type value to set
      */
-    public void setType(String type) {
+    public void setType(JobResourceType type) {
         this.type = type;
     }
 

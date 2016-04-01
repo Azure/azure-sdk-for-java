@@ -24,7 +24,7 @@ import java.util.List;
 
 public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsManagementTestBase {
     private static String rgName = generateName("javaadlarg");
-    private static String location = "eastus2";
+    private static String location;
     private static String storageAcct = generateName("javasto");
     private static String adlsAcct = generateName("javaadlsacct");
     private static String adlsAcct2 = generateName("javaadlsacct2");
@@ -34,6 +34,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
+        location =environmentLocation;
         ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
