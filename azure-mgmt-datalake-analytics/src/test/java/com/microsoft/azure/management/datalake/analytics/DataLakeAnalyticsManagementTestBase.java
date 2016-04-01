@@ -17,8 +17,11 @@ import com.microsoft.azure.management.storage.StorageManagementClientImpl;
 import org.junit.Assert;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
 
 public abstract class DataLakeAnalyticsManagementTestBase {
     protected static DataLakeAnalyticsAccountManagementClient dataLakeAnalyticsAccountManagementClient;
@@ -69,7 +72,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(armUri, credentials);
         dataLakeAnalyticsAccountManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         dataLakeAnalyticsAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(credentials);
+        dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(credentials, new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder());
         dataLakeAnalyticsJobManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         dataLakeAnalyticsJobManagementClient.setAdlaJobDnsSuffix(adlaSuffix);
 

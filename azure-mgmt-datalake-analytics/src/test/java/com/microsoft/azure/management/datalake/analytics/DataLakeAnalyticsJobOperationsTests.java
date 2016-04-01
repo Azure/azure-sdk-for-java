@@ -55,7 +55,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         createParams.setName(adlaAcct);
         createParams.setProperties(createProperties);
         dataLakeAnalyticsAccountManagementClient.getAccountOperations().create(rgName, adlaAcct, createParams);
-        // Sleep for three minutes to ensure the account is totally provisioned.
+        // Sleep for two minutes to ensure the account is totally provisioned.
         Thread.sleep(180000);
     }
 
