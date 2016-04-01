@@ -87,7 +87,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
-		this.reactor = Proton.reactor(reactorHandler);
+		this.reactor = ProtonUtil.reactor(reactorHandler);
 		this.reactorThread = new Thread(new RunReactor(this.reactor));
 		this.reactorThread.start();
 	}
