@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.interceptor.DetailLevelInterceptor;
@@ -7,9 +13,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by xingwu on 1/29/2016.
- */
 class BehaviorManager {
 
     private Collection<BatchClientBehavior> perCallBehaviors;
