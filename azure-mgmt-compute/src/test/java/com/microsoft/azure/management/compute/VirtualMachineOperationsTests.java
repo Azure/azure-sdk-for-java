@@ -20,7 +20,7 @@ import com.microsoft.azure.management.network.models.PublicIPAddress;
 import com.microsoft.azure.management.network.models.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.models.Subnet;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import org.junit.AfterClass;

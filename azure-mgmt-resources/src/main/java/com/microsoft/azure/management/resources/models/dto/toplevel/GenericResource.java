@@ -1,0 +1,62 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
+package com.microsoft.azure.management.resources.models.dto.toplevel;
+
+import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.resources.models.dto.Plan;
+
+/**
+ * Resource information.
+ */
+public class GenericResource extends Resource {
+    /**
+     * Gets or sets the plan of the resource.
+     */
+    private Plan plan;
+
+    /**
+     * Gets or sets the resource properties.
+     */
+    private Object properties;
+
+    /**
+     * Get the plan value.
+     *
+     * @return the plan value
+     */
+    public Plan getPlan() {
+        return this.plan;
+    }
+
+    /**
+     * Set the plan value.
+     *
+     * @param plan the plan value to set
+     */
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    /**
+     * Get the properties value.
+     *
+     * @return the properties value
+     */
+    public Object getProperties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties value.
+     *
+     * @param properties the properties value to set
+     */
+    public void setProperties(Object properties) {
+        this.properties = properties;
+    }
+
+}
