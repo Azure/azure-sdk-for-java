@@ -142,10 +142,10 @@ public interface ResourceManagementClient {
     ResourceGroups resourceGroups();
 
     /**
-     * Gets the Resources object to access its operations.
-     * @return the Resources object.
+     * Gets the GenericResources object to access its operations.
+     * @return the GenericResources object.
      */
-    Resources resources();
+    GenericResources resources();
 
     /**
      * Gets the Tags object to access its operations.

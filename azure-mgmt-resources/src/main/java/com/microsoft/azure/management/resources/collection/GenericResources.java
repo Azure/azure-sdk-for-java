@@ -20,9 +20,9 @@ import java.io.IOException;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in Resources.
+ * in GenericResources.
  */
-public interface Resources {
+public interface GenericResources {
     /**
      * Begin moving resources.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
      *

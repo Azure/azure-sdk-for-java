@@ -11,7 +11,7 @@ import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.collection.Resources;
+import com.microsoft.azure.management.resources.collection.GenericResources;
 import com.microsoft.azure.management.resources.models.dto.toplevel.GenericResource;
 import com.microsoft.azure.management.resources.models.dto.GenericResourceFilter;
 import com.microsoft.azure.management.resources.models.dto.PageImpl;
@@ -45,27 +45,27 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in Resources.
+ * in GenericResources.
  */
-public final class ResourcesImpl implements Resources {
+public final class GenericResourcesImpl implements GenericResources {
     /** The Retrofit service to perform REST calls. */
     private ResourcesService service;
     /** The service client containing this operation class. */
     private ResourceManagementClient client;
 
     /**
-     * Initializes an instance of Resources.
+     * Initializes an instance of GenericResources.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ResourcesImpl(Retrofit retrofit, ResourceManagementClient client) {
+    public GenericResourcesImpl(Retrofit retrofit, ResourceManagementClient client) {
         this.service = retrofit.create(ResourcesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Resources to be
+     * The interface defining all the services for GenericResources to be
      * used by Retrofit to perform actually REST calls.
      */
     interface ResourcesService {
