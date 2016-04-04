@@ -8,7 +8,7 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.VirtualNetworks;
-import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.collection.ResourceGroups;
 import com.microsoft.azure.management.storage.StorageAccounts;
 
 public interface Subscription {

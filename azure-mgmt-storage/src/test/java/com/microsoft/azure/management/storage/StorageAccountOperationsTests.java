@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.models.StorageAccount;

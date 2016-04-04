@@ -2,7 +2,7 @@ package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountProperties;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

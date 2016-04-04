@@ -299,7 +299,7 @@
   </profiles>
   <modules>
     <module>./azure</module>
-    <module>./azure-batch</module>
+    <!--<module>./azure-batch</module>-->
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-resources</module>
     <module>./azure-mgmt-storage</module>

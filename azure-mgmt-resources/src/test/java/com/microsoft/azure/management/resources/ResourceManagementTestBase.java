@@ -1,6 +1,8 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.resources.client.ResourceManagementClient;
+import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class ResourceManagementTestBase {

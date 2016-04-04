@@ -9,7 +9,7 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAcc
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountInfo;
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountProperties;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import org.junit.AfterClass;

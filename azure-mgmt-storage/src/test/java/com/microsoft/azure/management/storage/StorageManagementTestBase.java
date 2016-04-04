@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.client.ResourceManagementClient;
+import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
 

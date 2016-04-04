@@ -6,7 +6,7 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.collection.Subscriptions;
 
 public interface AzureAuthenticated {
     Subscriptions subscriptions();

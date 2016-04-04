@@ -8,14 +8,14 @@ package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.Subscription;
 import com.microsoft.azure.management.compute.ComputeManagementClient;
-import com.microsoft.azure.management.compute.ComputeManagementClientImpl;
+import com.microsoft.azure.management.compute.implementation.ComputeManagementClientImpl;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.NetworkManagementClient;
 import com.microsoft.azure.management.network.NetworkManagementClientImpl;
 import com.microsoft.azure.management.network.VirtualNetworks;
-import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.collection.ResourceGroups;
+import com.microsoft.azure.management.resources.client.ResourceManagementClient;
+import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementClientImpl;
