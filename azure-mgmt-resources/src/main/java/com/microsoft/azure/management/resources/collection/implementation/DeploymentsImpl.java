@@ -12,7 +12,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.resources.collection.Deployments;
 import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.models.dto.Deployment;
+import com.microsoft.azure.management.resources.models.dto.toplevel.Deployment;
 import com.microsoft.azure.management.resources.models.dto.DeploymentExtendedFilter;
 import com.microsoft.azure.management.resources.models.dto.DeploymentValidateResult;
 import com.microsoft.azure.management.resources.models.dto.PageImpl;

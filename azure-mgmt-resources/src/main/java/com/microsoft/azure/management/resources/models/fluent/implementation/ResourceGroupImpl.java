@@ -13,10 +13,10 @@ import java.util.Map;
 public class ResourceGroupImpl 	extends
         IndexableRefreshableWrapperImpl<ResourceGroup, com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup>
         implements
-        ResourceGroup.Update,
-        ResourceGroup.DefinitionProvisionable,
+        ResourceGroup,
         ResourceGroup.DefinitionBlank,
-        ResourceGroup {
+        ResourceGroup.DefinitionProvisionable,
+        ResourceGroup.Update  {
 
     private final EntitiesImpl<Azure> collection;
 
@@ -25,10 +25,19 @@ public class ResourceGroupImpl 	extends
         this.collection = collection;
     }
 
-
     /***********************************************************
      * Getters
      ***********************************************************/
+
+    @Override
+    public String name() {
+        return this.inner().getName();
+    }
+
+    @Override
+    public String provisioningState() throws Exception {
+        return this.inner().getProperties().getProvisioningState();
+    }
 
     @Override
     public String region() throws Exception {
@@ -40,30 +49,30 @@ public class ResourceGroupImpl 	extends
         return Collections.unmodifiableMap(this.inner().getTags());
     }
 
-    @Override
-    public String provisioningState() throws Exception {
-        return this.inner().getProperties().getProvisioningState();
-    }
-
-    @Override
-    public String name() {
-        return this.inner().getName();
-    }
-
-
     /**************************************************************
      * Setters (fluent interface)
      **************************************************************/
 
     @Override
-    public ResourceGroupImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<String, String>(tags));
+    public ResourceGroupImpl withRegion(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
+        this.inner().setLocation(regionName);                      //
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withTag(String key, String value) {
-        if(this.inner().getTags() == null) {
+    public ResourceGroupImpl withRegion(Region region) {            //  FLUENT: implementation of ResourceGroup.DefinitionBlank
+        return this.withRegion(region.toString());                  //
+    }
+
+    @Override
+    public ResourceGroupImpl withTags(Map<String, String> tags) {   //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+        this.inner().setTags(new HashMap<String, String>(tags));    //                   ResourceGroup.Update.UpdateBlank.Taggable<Update>
+        return this;
+    }
+
+    @Override
+    public ResourceGroupImpl withTag(String key, String value) {    //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+        if(this.inner().getTags() == null) {                        //                   ResourceGroup.Update.UpdateBlank.Taggable<Update>
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().getTags().put(key, value);
@@ -71,29 +80,17 @@ public class ResourceGroupImpl 	extends
     }
 
     @Override
-    public ResourceGroupImpl withoutTag(String key) {
-        this.inner().getTags().remove(key);
+    public ResourceGroupImpl withoutTag(String key) {               //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Taggable<Update>
+        this.inner().getTags().remove(key);                         //
         return this;
     }
-
-    @Override
-    public ResourceGroupImpl withRegion(String regionName) {
-        this.inner().setLocation(regionName);
-        return this;
-    }
-
-    @Override
-    public ResourceGroupImpl withRegion(Region region) {
-        return this.withRegion(region.toString());
-    }
-
 
     /************************************************************
      * Verbs
      ************************************************************/
 
     @Override
-    public ResourceGroupImpl apply() throws Exception {
+    public ResourceGroupImpl apply() throws Exception {             //  FLUENT: implementation of ResourceGroup.Update.Updatable<T>
         com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup params =
                 new com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup();
         ResourceGroup group;
@@ -113,15 +110,13 @@ public class ResourceGroupImpl 	extends
         return this;
     }
 
-
     @Override
-    public void delete() throws Exception {
+    public void delete() throws Exception {                         //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Delete
         this.collection.azure().resourceGroups().delete(this.id);
     }
 
-
     @Override
-    public ResourceGroupImpl provision() throws Exception {
+    public ResourceGroupImpl provision() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
         com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup params =
                 new com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup();
         params.setLocation(this.inner().getLocation());
@@ -130,9 +125,8 @@ public class ResourceGroupImpl 	extends
         return this;
     }
 
-
     @Override
-    public ResourceGroupImpl refresh() throws Exception {
+    public ResourceGroupImpl refresh() throws Exception {           //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
         this.setInner(this.collection.azure().resourceManagementClient().resourceGroups().get(this.id).getBody());
         return this;
     }

@@ -4,8 +4,10 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.models.dto;
+package com.microsoft.azure.management.resources.models.dto.toplevel;
 
+
+import com.microsoft.azure.management.resources.models.dto.DeploymentProperties;
 
 /**
  * Deployment operation parameters.

@@ -12,31 +12,32 @@ public interface ResourceGroup extends
         Wrapper<com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup>,
         Deletable {
 
+    /***********************************************************
+     * Getters
+     ***********************************************************/
+
+    String name();
+    String provisioningState() throws Exception;
     String region() throws Exception;
     Map<String, String> tags() throws Exception;
-    String provisioningState() throws Exception;
-    String name();
 
+    /**************************************************************
+     * Setters (fluent interface)
+     **************************************************************/
 
     interface DefinitionBlank {
         DefinitionProvisionable withRegion(String regionName);
         DefinitionProvisionable withRegion(Region region);
     }
 
-
-    interface DefinitionProvisionable extends
-            Provisionable<ResourceGroup> {
+    interface DefinitionProvisionable extends Provisionable<ResourceGroup> {
         DefinitionProvisionable withTags(Map<String, String> tags);
         DefinitionProvisionable withTag(String key, String value);
     }
 
-    interface Update extends
-            UpdateBlank,
-            Updatable<Update> {
+    interface Update extends UpdateBlank, Updatable<Update> {
     }
 
-    interface UpdateBlank extends
-            Deletable,
-            Taggable<Update> {
+    interface UpdateBlank extends Deletable, Taggable<Update> {
     }
 }

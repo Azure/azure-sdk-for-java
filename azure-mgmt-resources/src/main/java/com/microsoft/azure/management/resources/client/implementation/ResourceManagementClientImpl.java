@@ -180,8 +180,8 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * Gets the Resources object to access its operations.
      * @return the Resources object.
      */
-    public Resources resources() {
-        return new ResourcesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public GenericResources resources() {
+        return new GenericResourcesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
