@@ -17,14 +17,17 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.management.resources.collection.fluent.common;
 
-public interface SupportsDeletingByGroup {
+package com.microsoft.azure.management.resources.fluentcore.arm.collection;
+
+import java.util.Map;
+
+public interface SupportsListingByGroup<T> {
 	/**
-	 * Deletes a resource from a specific group
-	 * @param groupName The group the resource is part of
-	 * @param name The name of the resource within that group
+	 * Lists the entities in a specific group
+ 	 * @param groupName
+	 * @return
 	 * @throws Exception
 	 */
-	void delete(String groupName, String name) throws Exception;
+	Map<String, T> list(String groupName) throws Exception;
 }

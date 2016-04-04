@@ -18,16 +18,9 @@
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.microsoft.azure.management.resources.collection.fluent.common;
+package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-import java.util.Map;
-
-public interface SupportsListingByGroup<T> {
-	/**
-	 * Lists the entities in a specific group
- 	 * @param groupName
-	 * @return
-	 * @throws Exception
-	 */
-	Map<String, T> list(String groupName) throws Exception;
+// Requires class to support reading entities with a supplied group name
+public interface SupportsGettingByGroup<T> {
+	T get(String groupName, String name) throws Exception;
 }

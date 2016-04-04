@@ -1,10 +1,10 @@
-package com.microsoft.azure.management.resources.models.fluent.common.implementation;
+package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.Azure;
+import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
 import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import com.microsoft.azure.management.resources.models.fluent.common.Region;
-import com.microsoft.azure.management.resources.models.fluent.common.Resource;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 
 import java.util.Collections;
 import java.util.HashMap;

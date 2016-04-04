@@ -17,9 +17,9 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.management.resources.collection.fluent.common.implementation;
+package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.Azure;
+import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
 import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
 
 public abstract class ArmEntitiesImpl extends EntitiesImpl<Azure> {

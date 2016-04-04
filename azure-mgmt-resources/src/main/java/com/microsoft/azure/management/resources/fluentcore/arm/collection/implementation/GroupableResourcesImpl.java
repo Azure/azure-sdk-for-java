@@ -1,7 +1,7 @@
-package com.microsoft.azure.management.resources.collection.fluent.common.implementation;
+package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.Azure;
-import com.microsoft.azure.management.resources.models.fluent.common.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 import java.util.Collections;
 import java.util.HashMap;

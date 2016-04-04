@@ -3,7 +3,7 @@ package com.microsoft.azure.management.resources.models.fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Deletable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.models.fluent.common.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 
 public interface GenericResource extends
         GroupableResource,

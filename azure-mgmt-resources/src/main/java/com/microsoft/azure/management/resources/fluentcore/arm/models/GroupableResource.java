@@ -1,9 +1,10 @@
-package com.microsoft.azure.management.resources.models.fluent.common;
+package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.models.fluent.ResourceGroup;
 
 public interface GroupableResource extends
-	Resource {
+		Resource {
 	
 	public String group();
 

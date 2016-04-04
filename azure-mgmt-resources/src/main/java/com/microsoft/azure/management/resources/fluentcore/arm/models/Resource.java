@@ -1,5 +1,7 @@
-package com.microsoft.azure.management.resources.models.fluent.common;
+package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 import java.util.Map;

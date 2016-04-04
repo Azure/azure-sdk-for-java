@@ -1,4 +1,4 @@
-package com.microsoft.azure.management.resources.models.fluent.common;
+package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
 import java.util.Map;
 

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.models.dto;
 import java.util.List;
 
 /**
- * The ResourceManagementErrorWithDetails model.
+ * The ResourceManagementErrorWithDetails models.
  */
 public class ResourceManagementErrorWithDetails extends ResourceManagementError {
     /**

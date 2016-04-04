@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ResourceManagementError model.
+ * The ResourceManagementError models.
  */
 public class ResourceManagementError {
     /**

@@ -17,10 +17,14 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-package com.microsoft.azure.management.resources.collection.fluent.common;
-
-// Requires class to support reading entities with a supplied group name
-public interface SupportsGettingByGroup<T> {
-	T get(String groupName, String name) throws Exception;
+public interface SupportsDeletingByGroup {
+	/**
+	 * Deletes a resource from a specific group
+	 * @param groupName The group the resource is part of
+	 * @param name The name of the resource within that group
+	 * @throws Exception
+	 */
+	void delete(String groupName, String name) throws Exception;
 }

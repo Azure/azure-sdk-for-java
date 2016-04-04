@@ -1,4 +1,4 @@
-package com.microsoft.azure.management.resources.fluentcore;
+package com.microsoft.azure.management.resources.fluentcore.arm;
 
 import com.microsoft.azure.management.resources.collection.fluent.ResourceGroups;
 import com.microsoft.azure.management.resources.models.fluent.ResourceGroup;
