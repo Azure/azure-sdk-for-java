@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagementTestBase {
     // constants
@@ -37,7 +38,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
     private static String rgName = generateName("javaadlsrg");
     private static String adlsAcct = generateName("javaadlsacct");
-    private static String aclUserId = "027c28d5-c91d-49f0-98c5-d10134b169b3";
+
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -454,7 +455,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         // Set the other acl to RWX
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",
                 adlsAcct,
-                StringUtils.join(",", aclToReplaceWith));
+                StringUtils.join(aclToReplaceWith, ","));
 
         AclStatusResult newAcl = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
                 adlsAcct).getBody();
@@ -577,7 +578,8 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         int currentCount = aclGetResponse.getAclStatus().getEntries().size();
 
         // add an entry to the ACL Entries
-        String newAcls = StringUtils.join(",", aclGetResponse.getAclStatus().getEntries());
+        String newAcls = StringUtils.join(aclGetResponse.getAclStatus().getEntries(), ",");
+        String aclUserId = UUID.randomUUID().toString();
         newAcls += String.format(",user:%s:rwx", aclUserId);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",
@@ -613,6 +615,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         int currentCount = aclGetResponse.getAclStatus().getEntries().size();
         // add an entry to the ACL Entries
+        String aclUserId = UUID.randomUUID().toString();
         String newAce = String.format("user:%s:rwx", aclUserId);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries("",
@@ -693,7 +696,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
                     filePath,
                     caboAccountName,
                     fileContentsToAdd.getBytes(),
-                    false); // never overwrite during create, because if it exists we want to fail.
+                    true);
         }
 
         return filePath;
