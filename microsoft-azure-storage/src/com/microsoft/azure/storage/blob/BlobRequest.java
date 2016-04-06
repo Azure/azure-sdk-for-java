@@ -479,6 +479,26 @@ final class BlobRequest {
             accessCondition.applyConditionToRequest(request);
         }
 
+        addRange(request, offset, count);
+
+        if (offset != null && requestRangeContentMD5) {
+            request.setRequestProperty(Constants.HeaderConstants.RANGE_GET_CONTENT_MD5, Constants.TRUE);
+        }
+
+        return request;
+    }
+
+    /**
+     * Adds the Range Header for Blob Service Operations.
+     * 
+     * @param request
+     *            The request to add the range header to.
+     * @param offset
+     *            Starting byte of the range.
+     * @param count
+     *            Number of bytes in the range.
+     */
+    private static void addRange(HttpURLConnection request, Long offset, Long count) {
         if (offset != null) {
             long rangeStart = offset;
             long rangeEnd;
@@ -492,12 +512,6 @@ final class BlobRequest {
                         Utility.LOCALE_US, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, rangeStart));
             }
         }
-
-        if (offset != null && requestRangeContentMD5) {
-            request.setRequestProperty(Constants.HeaderConstants.RANGE_GET_CONTENT_MD5, Constants.TRUE);
-        }
-
-        return request;
     }
 
     /**
@@ -642,6 +656,10 @@ final class BlobRequest {
      *            An {@link AccessCondition} object that represents the access conditions for the blob.
      * @param snapshotVersion
      *            The snapshot version, if the blob is a snapshot.
+     * @param offset
+     *            The offset at which to begin returning content.
+     * @param count
+     *            The number of bytes to return.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -652,8 +670,8 @@ final class BlobRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection getPageRanges(final URI uri, final BlobRequestOptions blobOptions,
-            final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion)
-            throws StorageException, IOException, URISyntaxException {
+            final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion,
+            final Long offset, final Long count) throws StorageException, IOException, URISyntaxException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add(Constants.QueryConstants.COMPONENT, PAGE_LIST_QUERY_ELEMENT_NAME);
@@ -666,7 +684,64 @@ final class BlobRequest {
             accessCondition.applyConditionToRequest(request);
         }
 
-        BaseRequest.addOptionalHeader(request, BlobConstants.SNAPSHOT, snapshotVersion);
+        addRange(request, offset, count);
+        
+        return request;
+    }
+    
+    /**
+     * Constructs a HttpURLConnection to return a list of the PageBlob's page ranges. Sign with no length specified.
+     * 
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param blobOptions
+     *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudBlobClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param snapshotVersion
+     *            The snapshot version, if the blob is a snapshot.
+     * @param previousSnapshot
+     *            A string representing the snapshot timestamp to use as the starting point for the diff. If this
+     *            CloudPageBlob represents a snapshot, the previousSnapshot parameter must be prior to the current
+     *            snapshot.
+     * @param offset
+     *            The offset at which to begin returning content.
+     * @param count
+     *            The number of bytes to return.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection getPageRangesDiff(final URI uri, final BlobRequestOptions blobOptions,
+            final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion,
+            final String previousSnapshot, final Long offset, final Long count) throws StorageException,
+            IOException, URISyntaxException {
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, PAGE_LIST_QUERY_ELEMENT_NAME);
+        builder.add(BlobConstants.PREV_SNAPSHOT, previousSnapshot);
+        BlobRequest.addSnapshot(builder, snapshotVersion);
+
+        final HttpURLConnection request = createURLConnection(uri, builder, blobOptions, opContext);
+        request.setRequestMethod(Constants.HTTP_GET);
+
+        if (accessCondition != null) {
+            accessCondition.applyConditionToRequest(request);
+        }
+        
+        addRange(request, offset, count);
+
         return request;
     }
 

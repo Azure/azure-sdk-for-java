@@ -81,6 +81,11 @@ final class BlobConstants {
     public static final String BLOCK_LIST_ELEMENT = "BlockList";
 
     /**
+     * XML element for clear ranges.
+     */
+    public static final String CLEAR_RANGE_ELEMENT = "ClearRange";
+    
+    /**
      * XML element for committed blocks.
      */
     public static final String COMMITTED_BLOCKS_ELEMENT = "CommittedBlocks";
@@ -186,6 +191,11 @@ final class BlobConstants {
      * The header that specifies page write mode.
      */
     public static final String PAGE_WRITE = Constants.PREFIX_FOR_STORAGE_HEADER + "page-write";
+
+    /**
+     * Query component value for previous snapshot.
+     */
+    public static final String PREV_SNAPSHOT = "prevsnapshot";
 
     /**
      * The header for specifying the sequence number.

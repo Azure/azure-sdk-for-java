@@ -17,7 +17,7 @@ package com.microsoft.azure.storage.blob;
 /**
  * Represents a range of pages in a page blob.
  */
-public final class PageRange {
+public class PageRange {
     /**
      * Represents the ending offset of the page range.
      */
