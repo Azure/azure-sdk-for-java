@@ -4,28 +4,47 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.nio.BufferOverflowException;
-import java.time.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
-import java.util.function.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.IAmqpSender;
+import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
+import com.microsoft.azure.servicebus.amqp.SessionHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
-import org.apache.qpid.proton.amqp.transport.*;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Sender;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
-import com.microsoft.azure.servicebus.Timer;
-import com.microsoft.azure.servicebus.amqp.*;
+import java.nio.BufferOverflowException;
+import java.time.Duration;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Abstracts all amqp related details
@@ -191,7 +210,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		        	dlv.setMessageFormat(messageFormat);
 	
 			        int sentMsgSize = this.sendLink.send(bytes, 0, arrayOffset);
-			        assert sentMsgSize != arrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
+			        assert sentMsgSize == arrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
 			        
 			        this.sendLink.advance();
 			        messageSent = true;
