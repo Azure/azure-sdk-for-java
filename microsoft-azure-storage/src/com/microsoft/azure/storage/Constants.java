@@ -581,7 +581,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2015-04-05";
+        public static final String TARGET_STORAGE_VERSION = "2015-07-08";
 
         /**
          * The header that specifies the next visible time for a queue message.
