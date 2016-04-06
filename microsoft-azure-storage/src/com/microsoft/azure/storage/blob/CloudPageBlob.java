@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.Cipher;
 
@@ -438,11 +439,75 @@ public final class CloudPageBlob extends CloudBlob {
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.downloadPageRangesImpl(accessCondition, options), options.getRetryPolicyFactory(), opContext);
+                this.downloadPageRangesImpl(null /* offset */, null /* length */, accessCondition, options),
+                options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, ArrayList<PageRange>> downloadPageRangesImpl(
-            final AccessCondition accessCondition, final BlobRequestOptions options) {
+    /**
+     * Returns a collection of page ranges and their starting and ending byte offsets.
+     *
+     * @param offset
+     *            The starting offset of the data range over which to list page ranges, in bytes. Must be a multiple of
+     *            512.
+     * @param length
+     *            The length of the data range over which to list page ranges, in bytes. Must be a multiple of 512.
+     * @return A <code>List</code> object which represents the set of page ranges and their starting and ending
+     *         byte offsets.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public List<PageRange> downloadPageRanges(final long offset, final Long length) throws StorageException {
+        return this.downloadPageRanges(offset, length, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Returns a collection of page ranges and their starting and ending byte offsets using the specified request
+     * options and operation context.
+     * 
+     * @param offset
+     *            The starting offset of the data range over which to list page ranges, in bytes. Must be a multiple of
+     *            512.
+     * @param length
+     *            The length of the data range over which to list page ranges, in bytes. Must be a multiple of 512.
+     * @param accessCondition
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A <code>List</code> object which represents the set of page ranges and their starting and ending
+     *         byte offsets.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public List<PageRange> downloadPageRanges(final long offset, final Long length,
+            final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        if (offset < 0 || (length != null && length <= 0)) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.downloadPageRangesImpl(offset, length, accessCondition, options), options.getRetryPolicyFactory(), opContext);
+    }
+    
+    private StorageRequest<CloudBlobClient, CloudBlob, ArrayList<PageRange>> downloadPageRangesImpl(final Long offset,
+            final Long length, final AccessCondition accessCondition, final BlobRequestOptions options) {
         final StorageRequest<CloudBlobClient, CloudBlob, ArrayList<PageRange>> getRequest = new StorageRequest<CloudBlobClient, CloudBlob, ArrayList<PageRange>>(
                 options, this.getStorageUri()) {
 
@@ -455,7 +520,7 @@ public final class CloudPageBlob extends CloudBlob {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
                 return BlobRequest.getPageRanges(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, blob.snapshotID);
+                        options, context, accessCondition, blob.snapshotID, offset, length);
             }
 
             @Override
@@ -484,6 +549,117 @@ public final class CloudPageBlob extends CloudBlob {
                 return PageRangeHandler.getPageRanges(this.getConnection().getInputStream());
             }
 
+        };
+
+        return getRequest;
+    }
+    
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this object.
+     * 
+     * @param previousSnapshot
+     *            A string representing the snapshot to use as the starting point for the diff. If this
+     *            CloudPageBlob represents a snapshot, the previousSnapshot parameter must be prior to the current
+     *            snapshot.
+     * @return A <code>List</code> object containing the set of differing page ranges.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public List<PageRangeDiff> downloadPageRangesDiff(final String previousSnapshot) throws StorageException {
+        return this.downloadPageRangesDiff(previousSnapshot, null /* offset */, null/* length */,
+                null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this object.
+     * 
+     * @param previousSnapshot
+     *            A string representing the snapshot timestamp to use as the starting point for the diff. If this
+     *            CloudPageBlob represents a snapshot, the previousSnapshot parameter must be prior to the current
+     *            snapshot.
+     * @param offset
+     *            The starting offset of the data range over which to list page ranges, in bytes. Must be a multiple of
+     *            512.
+     * @param length
+     *            The length of the data range over which to list page ranges, in bytes. Must be a multiple of 512.
+     * @param accessCondition
+     *            An {@link AccessCondition} object which represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object which represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A <code>List</code> object containing the set of differing page ranges.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public List<PageRangeDiff> downloadPageRangesDiff(final String previousSnapshot, final Long offset,
+            final Long length, final AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.downloadPageRangesDiffImpl(previousSnapshot, offset, length, accessCondition, options),
+                options.getRetryPolicyFactory(), opContext);
+    }
+
+    private StorageRequest<CloudBlobClient, CloudBlob, List<PageRangeDiff>> downloadPageRangesDiffImpl(
+            final String previousSnapshot, final Long offset, final Long length, final AccessCondition accessCondition,
+            final BlobRequestOptions options) {
+        final StorageRequest<CloudBlobClient, CloudBlob, List<PageRangeDiff>> getRequest = new StorageRequest<CloudBlobClient, CloudBlob, List<PageRangeDiff>>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public void setRequestLocationMode() {
+                this.setRequestLocationMode(RequestLocationMode.PRIMARY_OR_SECONDARY);
+            }
+
+            @Override
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+                    throws Exception {
+                return BlobRequest.getPageRangesDiff(
+                        blob.getTransformedAddress(context).getUri(this.getCurrentLocation()), options, context,
+                        accessCondition, blob.snapshotID, previousSnapshot, offset, length);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
+            }
+
+            @Override
+            public List<PageRangeDiff> preProcessResponse(CloudBlob parentObject, CloudBlobClient client,
+                    OperationContext context) throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                }
+
+                return null;
+            }
+
+            @Override
+            public List<PageRangeDiff> postProcessResponse(HttpURLConnection connection, CloudBlob blob,
+                    CloudBlobClient client, OperationContext context, List<PageRangeDiff> storageObject)
+                    throws Exception {
+                blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                blob.updateLengthFromResponse(this.getConnection());
+
+                return PageRangeDiffHandler.getPageRangesDiff(this.getConnection().getInputStream());
+            }
         };
 
         return getRequest;
