@@ -1,0 +1,65 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
+package com.microsoft.azure.management.resources.models.implementation.api;
+
+import java.util.List;
+
+/**
+ * Role definition permissions.
+ */
+public class PermissionInner {
+    /**
+     * Role definition allowed actions.
+     */
+    private List<String> actions;
+
+    /**
+     * Role definition denied actions.
+     */
+    private List<String> notActions;
+
+    /**
+     * Get the actions value.
+     *
+     * @return the actions value
+     */
+    public List<String> actions() {
+        return this.actions;
+    }
+
+    /**
+     * Set the actions value.
+     *
+     * @param actions the actions value to set
+     * @return the PermissionInner object itself.
+     */
+    public PermissionInner setActions(List<String> actions) {
+        this.actions = actions;
+        return this;
+    }
+
+    /**
+     * Get the notActions value.
+     *
+     * @return the notActions value
+     */
+    public List<String> notActions() {
+        return this.notActions;
+    }
+
+    /**
+     * Set the notActions value.
+     *
+     * @param notActions the notActions value to set
+     * @return the PermissionInner object itself.
+     */
+    public PermissionInner setNotActions(List<String> notActions) {
+        this.notActions = notActions;
+        return this;
+    }
+
+}
