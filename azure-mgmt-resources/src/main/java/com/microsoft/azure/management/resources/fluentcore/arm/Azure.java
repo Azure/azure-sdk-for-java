@@ -1,8 +1,8 @@
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
-import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.collection.fluent.ResourceGroups;
-import com.microsoft.azure.management.resources.models.fluent.ResourceGroup;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 
 public class Azure {
     public ResourceGroups resourceGroups() {
@@ -13,7 +13,7 @@ public class Azure {
         return null;
     }
 
-    public ResourceManagementClient resourceManagementClient() {
+    public ResourceManagementClientImpl resourceManagementClient() {
         return null;
     }
 }
