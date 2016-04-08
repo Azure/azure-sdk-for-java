@@ -6,7 +6,11 @@
 
 package com.microsoft.azure.batch.auth;
 
-public class BatchSharedKeyCredentials extends BatchCredentials {
+import com.microsoft.azure.batch.auth.BatchCredentialsInterceptor;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
+import okhttp3.OkHttpClient;
+
+public class BatchSharedKeyCredentials extends BatchCredentials implements ServiceClientCredentials {
 
     private String accountName;
 
@@ -36,5 +40,10 @@ public class BatchSharedKeyCredentials extends BatchCredentials {
         this.setBaseUrl(baseUrl);
         this.accountName = accountName;
         this.keyValue = keyValue;
+    }
+
+    @Override
+    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
+        clientBuilder.interceptors().add(new BatchCredentialsInterceptor(this));
     }
 }
